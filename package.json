@@ -32,6 +32,7 @@
     "topojson": "~1.6.19"
   },
   "scripts": {
+    "deploy": "scripts/deploy.sh",
     "vendor": "npm install && scripts/vendor.sh"
   }
 }

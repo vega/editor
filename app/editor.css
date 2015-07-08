@@ -2,7 +2,7 @@
   display: -webkit-flex;
   display: flex;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 11pt;
+  font-size: 14px;
 }
 
 .vega-editor .mod_spec {
@@ -57,23 +57,13 @@
   padding: 4px 4px 4px 6px;
   background: #eee;
   border-bottom: 1px solid #ccc;
+  line-height: 22px;
 }
 
 .vega-editor .mod_ctrls {
   float: right;
 }
 
-.vega-editor .mod_title {
-  line-height: 14pt;
-}
-.vega-editor .mod_title a {
-  color: #aaa; 
-  cursor: pointer;
-  margin-right: 5px;
-}
-.vega-editor .mod_title a.active {
-  color: #000;
-}
-.vega-editor .mod_title a:hover {
-  color: #b00;
+.vega-editor .mod_ctrls input {
+  height: 19px;
 }
