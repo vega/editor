@@ -1,0 +1,79 @@
+.vega-editor {
+  display: -webkit-flex;
+  display: flex;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 11pt;
+}
+
+.vega-editor .mod_spec {
+  -webkit-flex-grow: 0;
+  -webkit-flex-shrink: 0;
+  flex-grow: 0;
+  flex-shrink: 0;
+  min-width: 540px;
+}
+
+.vega-editor .mod_vis {
+  -webkit-flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+  margin-left: 2px;
+}
+
+.vega-editor .module {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.vega-editor .mod_body {
+  -webkit-flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding-top: 2px;
+  overflow: auto;
+}
+
+.vega-editor .spec { 
+  font-family: Monaco, Courier New;
+  font-size: 10px;
+  white-space: pre;
+}
+
+.vega-editor .vis svg, .vega-editor .vis canvas {
+  border: 1px dashed #ccc;
+}
+
+.vega-editor .mod_header {
+  -webkit-flex-grow: 0;
+  -webkit-flex-shrink: 0;
+  flex-grow: 0;
+  flex-shrink: 0;
+  padding: 4px 4px 4px 6px;
+  background: #eee;
+  border-bottom: 1px solid #ccc;
+}
+
+.vega-editor .mod_ctrls {
+  float: right;
+}
+
+.vega-editor .mod_title {
+  line-height: 14pt;
+}
+.vega-editor .mod_title a {
+  color: #aaa; 
+  cursor: pointer;
+  margin-right: 5px;
+}
+.vega-editor .mod_title a.active {
+  color: #000;
+}
+.vega-editor .mod_title a:hover {
+  color: #b00;
+}
