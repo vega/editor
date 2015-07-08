@@ -3,7 +3,7 @@ TARGET=vendor
 STAGE=gh_pages_stage
 
 # Check if all files are commited
-if [! -z "$(git status --porcelain)" ]; then 
+if [ ! -z "$(git status --porcelain)" ]; then 
   echo "There are uncommitted files. Please commit or stash first!"
   git status
   exit 1
