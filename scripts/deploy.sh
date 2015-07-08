@@ -22,9 +22,10 @@ fi
 git checkout master
 
 # Ensure vendor dependencies
-if [ ! -z "$(npm run vendor)" ]; then
+npm run vendor
+rc=$?; if [[ $rc != 0 ]]; then
   echo 'Error while ensuring vendor dependencies.'
-  exit 1
+  exit 1;
 fi
 
 # Populate staging directory
