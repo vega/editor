@@ -91,10 +91,7 @@
     {
       "name": "scope",
       "streams": [
-        {"type": "@timesGroup:mousedown", "expr": "event.vgTimesGroupItem"},
-        {"type": "@delayGroup:mousedown", "expr": "event.vgDelayGroupItem"},
-        {"type": "@distGroup:mousedown", "expr": "event.vgDistGroupItem"},
-        {"type": "@dayGroup:mousedown", "expr": "event.vgDayGroupItem"}
+        {"type": "mousedown", "expr": "group()"}
       ]
     },
     {
@@ -102,7 +99,7 @@
       "init": -1,
       "streams": [{
         "type": "@timesGroup:mousedown", 
-        "expr": "event.vgTimesGroupX",
+        "expr": "mouseX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -110,8 +107,8 @@
       "name": "timesEnd",
       "init": -1,
       "streams": [{
-        "type": "@timesGroup:mousedown, [@timesGroup:mousedown, @timesGroup:mouseup] > @timesGroup:mousemove",
-        "expr": "event.vgTimesGroupX",
+        "type": "@timesGroup:mousedown, [@timesGroup:mousedown, window:mouseup] > window:mousemove",
+        "expr": "mouseX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -123,7 +120,7 @@
       "init": -1,
       "streams": [{
         "type": "@delayGroup:mousedown", 
-        "expr": "event.vgDelayGroupX",
+        "expr": "mouseX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -131,8 +128,8 @@
       "name": "delayEnd",
       "init": -1,
       "streams": [{
-        "type": "@delayGroup:mousedown, [@delayGroup:mousedown, @delayGroup:mouseup] > @delayGroup:mousemove",
-        "expr": "event.vgDelayGroupX",
+        "type": "@delayGroup:mousedown, [@delayGroup:mousedown, window:mouseup] > window:mousemove",
+        "expr": "mouseX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -144,7 +141,7 @@
       "init": -1,
       "streams": [{
         "type": "@distGroup:mousedown", 
-        "expr": "event.vgDistGroupX",
+        "expr": "mouseX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -152,8 +149,8 @@
       "name": "distEnd",
       "init": -1,
       "streams": [{
-        "type": "@distGroup:mousedown, [@distGroup:mousedown, @distGroup:mouseup] > @distGroup:mousemove",
-        "expr": "event.vgDistGroupX",
+        "type": "@distGroup:mousedown, [@distGroup:mousedown, window:mouseup] > window:mousemove",
+        "expr": "mouseX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -164,15 +161,15 @@
       "name": "dayStart",
       "streams": [{
         "type": "@dayGroup:mousedown", 
-        "expr": "event.vgDayGroupX",
+        "expr": "mouseX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
     {
       "name": "dayEnd",
       "streams": [{
-        "type": "@dayGroup:mousedown, [@dayGroup:mousedown, @dayGroup:mouseup] > @dayGroup:mousemove",
-        "expr": "event.vgDayGroupX",
+        "type": "@dayGroup:mousedown, [@dayGroup:mousedown, window:mouseup] > window:mousemove",
+        "expr": "mouseX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
