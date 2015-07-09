@@ -24,8 +24,7 @@ ved.select = function() {
     d3.xhr(spec.uri, function(error, response) {
       ved.editor.setValue(response.responseText);
       ved.editor.gotoLine(0);
-      ved.parse();
-      desc.html(spec.desc || '');
+      ved.parse(function() { desc.html(spec.desc || ''); });
     });
   } else {
     ved.editor.setValue('');
@@ -50,7 +49,7 @@ ved.format = function(event) {
   el.property('value', text);
 };
 
-ved.parse = function() {
+ved.parse = function(cb) {
   var spec, source;
   try {
     spec = JSON.parse(ved.editor.getValue());
@@ -69,6 +68,7 @@ ved.parse = function() {
       renderer: ved.renderType
     });
     (ved.view = view).update();
+    if (cb) cb(view);
   });
 };
 
@@ -79,7 +79,7 @@ ved.resize = function(event) {
 ved.init = function(el, dir) {
   // Set base directory
   var PATH = dir || 'app/';
-  vg.config.load.baseURL = ved.path =PATH;
+  vg.config.load.baseURL = PATH;
 
   function specPath(d) { return (d.uri = PATH+'spec/'+d.name+'.json', d); }
 
