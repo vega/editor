@@ -17,7 +17,7 @@
       "name": "cell",
       "init": {},
       "streams": [
-        {"type": "@cell:mousedown, @point:mousedown", "expr": "group()"}
+        {"type": "@cell:mousedown, @point:mousedown", "expr": "eventGroup()"}
       ]
     },
     {
@@ -25,7 +25,7 @@
       "init": {"x": 0, "y": 0},
       "streams": [{
         "type": "@cell:mousedown, @point:mousedown", 
-        "expr": "{x: clamp(mouseX(cell), 0, cell.width), y: clamp(mouseY(cell), 0, cell.height)}"
+        "expr": "{x: clamp(eventX(cell), 0, cell.width), y: clamp(eventY(cell), 0, cell.height)}"
       }]
     },
     {
@@ -33,7 +33,7 @@
       "init": {"x": 0, "y": 0},
       "streams": [{
         "type": "@cell:mousedown, @point:mousedown, [(@cell:mousedown, @point:mousedown), window:mouseup] > window:mousemove",
-        "expr": "{x: clamp(mouseX(cell), 0, cell.width), y: clamp(mouseY(cell), 0, cell.height)}"
+        "expr": "{x: clamp(eventX(cell), 0, cell.width), y: clamp(eventY(cell), 0, cell.height)}"
       }]
     },
     {

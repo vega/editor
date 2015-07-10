@@ -116,7 +116,7 @@
       "init": 0,
       "streams":[{
         "type": "mousemove[dragging], touchmove", 
-        "expr": "sqrt(pow(mouseX()-cX, 2) + pow(mouseY()-cY, 2))"
+        "expr": "sqrt(pow(eventX()-cX, 2) + pow(eventY()-cY, 2))"
       }]
     },
     {
@@ -124,7 +124,7 @@
       "init": 0,
       "streams":[{
         "type": "mousemove[dragging], touchmove", 
-        "expr": "sqrt(pow(mouseX()-pX, 2) + pow(mouseY()-pY, 2))"
+        "expr": "sqrt(pow(eventX()-pX, 2) + pow(eventY()-pY, 2))"
       }]
     },
     {
@@ -132,7 +132,7 @@
       "init": 0,
       "streams":[{
         "type": "mousemove[dragging], touchmove", 
-        "expr": "sqrt(pow(mouseX()-nX, 2) + pow(mouseY()-nY, 2))"
+        "expr": "sqrt(pow(eventX()-nX, 2) + pow(eventY()-nY, 2))"
       }]
     },
     {
@@ -140,7 +140,7 @@
       "init": 0,
       "streams": [{
         "type": "mousemove[dragging], touchmove", 
-        "expr": "((pX-cX) * (mouseX()-cX) + (pY-cY) * (mouseY()-cY))/prevDist || -999999"
+        "expr": "((pX-cX) * (eventX()-cX) + (pY-cY) * (eventY()-cY))/prevDist || -999999"
       }]
     },
     {
@@ -148,7 +148,7 @@
       "init": 0,
       "streams": [{
         "type": "mousemove[dragging], touchmove", 
-        "expr": "((nX-cX) * (mouseX()-cX) + (nY-cY) * (mouseY()-cY))/nextDist || -999999"
+        "expr": "((nX-cX) * (eventX()-cX) + (nY-cY) * (eventY()-cY))/nextDist || -999999"
       }]
     },
     {
@@ -171,7 +171,7 @@
       "name": "dragging",
       "init": 0,
       "streams": [
-        {"type": "@point:mousedown, @point:touchstart", "expr":"mouseX()"},
+        {"type": "@point:mousedown, @point:touchstart", "expr":"eventX()"},
         {"type": "mouseup, touchend", "expr": "0"}
       ]
     },

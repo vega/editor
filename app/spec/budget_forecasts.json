@@ -17,7 +17,7 @@
       "name": "handleYear",
       "streams": [{
         "type": "mousemove[dragging]",
-        "expr": "clamp(mouseX(), 10, 10000)",
+        "expr": "clamp(eventX(), 10, 10000)",
         "scale": {"name": "x", "invert": true}
       }]
     },
@@ -29,14 +29,14 @@
     {
       "name": "tipYear",
       "streams": [{
-        "type": "mousemove[!dragging]", "expr": "mouseX()",
+        "type": "mousemove[!dragging]", "expr": "eventX()",
         "scale": {"name": "x", "invert": true}
       }]
     },
     {
       "name": "tipValue",
       "streams": [{
-        "type": "mousemove[!dragging]", "expr": "mouseY()",
+        "type": "mousemove[!dragging]", "expr": "eventY()",
         "scale": {"name": "y", "invert": true}
       }]
     }

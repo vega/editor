@@ -18,7 +18,7 @@
       "init": 0,
       "streams": [{
         "type": "mousedown",
-        "expr": "mouse()"
+        "expr": "{x: eventX(), y: eventY()}"
       }]
     },
     {
@@ -26,7 +26,7 @@
       "init": 0,
       "streams": [{
         "type": "[mousedown, window:mouseup] > window:mousemove",
-        "expr": "{x: point.x - mouseX(), y: mouseY() - point.y}"
+        "expr": "{x: point.x - eventX(), y: eventY() - point.y}"
       }]
     },
     {
@@ -34,7 +34,7 @@
       "init": 0,
       "streams": [{
         "type": "mousemove",
-        "expr": "mouseX()",
+        "expr": "eventX()",
         "scale": {"name":"x", "invert":true}
       }]
     },
@@ -43,7 +43,7 @@
       "init": 0,
       "streams": [{
         "type": "mousemove",
-        "expr": "mouseY()",
+        "expr": "eventY()",
         "scale": {"name":"y", "invert":true}
       }]
     },

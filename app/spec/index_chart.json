@@ -9,7 +9,7 @@
       "init": {"expr": "time('Jan 1 2005')"},
       "streams": [{
         "type": "mousemove",
-        "expr": "clamp(mouseX(), 0, group('root').width)",
+        "expr": "clamp(eventX(), 0, eventGroup('root').width)",
         "scale": {"name": "x", "invert": true}
       }]
     },

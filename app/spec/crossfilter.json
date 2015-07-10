@@ -90,8 +90,9 @@
   "signals": [
     {
       "name": "scope",
+      "init": {"width": 0},
       "streams": [
-        {"type": "mousedown", "expr": "group()"}
+        {"type": "mousedown", "expr": "eventGroup()"}
       ]
     },
     {
@@ -99,7 +100,7 @@
       "init": -1,
       "streams": [{
         "type": "@timesGroup:mousedown", 
-        "expr": "mouseX(scope)",
+        "expr": "eventX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -108,7 +109,7 @@
       "init": -1,
       "streams": [{
         "type": "@timesGroup:mousedown, [@timesGroup:mousedown, window:mouseup] > window:mousemove",
-        "expr": "mouseX(scope)",
+        "expr": "clamp(eventX(scope), 0, scope.width)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -120,7 +121,7 @@
       "init": -1,
       "streams": [{
         "type": "@delayGroup:mousedown", 
-        "expr": "mouseX(scope)",
+        "expr": "eventX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -129,7 +130,7 @@
       "init": -1,
       "streams": [{
         "type": "@delayGroup:mousedown, [@delayGroup:mousedown, window:mouseup] > window:mousemove",
-        "expr": "mouseX(scope)",
+        "expr": "clamp(eventX(scope), 0, scope.width)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -141,7 +142,7 @@
       "init": -1,
       "streams": [{
         "type": "@distGroup:mousedown", 
-        "expr": "mouseX(scope)",
+        "expr": "eventX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -150,7 +151,7 @@
       "init": -1,
       "streams": [{
         "type": "@distGroup:mousedown, [@distGroup:mousedown, window:mouseup] > window:mousemove",
-        "expr": "mouseX(scope)",
+        "expr": "clamp(eventX(scope), 0, scope.width)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -161,7 +162,7 @@
       "name": "dayStart",
       "streams": [{
         "type": "@dayGroup:mousedown", 
-        "expr": "mouseX(scope)",
+        "expr": "eventX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
@@ -169,7 +170,7 @@
       "name": "dayEnd",
       "streams": [{
         "type": "@dayGroup:mousedown, [@dayGroup:mousedown, window:mouseup] > window:mousemove",
-        "expr": "mouseX(scope)",
+        "expr": "clamp(eventX(scope), 0, scope.width)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
     },
