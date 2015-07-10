@@ -15,19 +15,21 @@ ved.params = function() {
 };
 
 ved.select = function() {
-  var sel = ved.$d3.select('.sel_spec').node(),
-      idx = sel.selectedIndex,
-      uri = sel.options[idx].value;
+  var sel  = ved.$d3.select('.sel_spec').node(),
+      desc = ved.$d3.select('.spec_desc'),
+      idx  = sel.selectedIndex,
+      spec = d3.select(sel.options[idx]).data()[0];
 
   if (idx > 0) {
-    d3.xhr(uri, function(error, response) {
+    d3.xhr(spec.uri, function(error, response) {
       ved.editor.setValue(response.responseText);
       ved.editor.gotoLine(0);
-      ved.parse();
+      ved.parse(function() { desc.html(spec.desc || ''); });
     });
   } else {
     ved.editor.setValue('');
     ved.editor.gotoLine(0);
+    desc.html('');
   }
 };
 
@@ -47,7 +49,7 @@ ved.format = function(event) {
   el.property('value', text);
 };
 
-ved.parse = function() {
+ved.parse = function(cb) {
   var spec, source;
   try {
     spec = JSON.parse(ved.editor.getValue());
@@ -66,6 +68,7 @@ ved.parse = function() {
       renderer: ved.renderType
     });
     (ved.view = view).update();
+    if (cb) cb(view);
   });
 };
 
@@ -77,6 +80,8 @@ ved.init = function(el, dir) {
   // Set base directory
   var PATH = dir || 'app/';
   vg.config.load.baseURL = PATH;
+
+  function specPath(d) { return (d.uri = PATH+'spec/'+d.name+'.json', d); }
 
   el = (ved.$d3 = d3.select(el));
 
@@ -92,19 +97,17 @@ ved.init = function(el, dir) {
       .attr('label', 'Static');
 
     st.selectAll('option.spec')
-      .data(STATIC_SPECS)
+      .data(STATIC_SPECS.map(specPath))
      .enter().append('option')
-      .attr('value', function(d) { return PATH + 'spec/'+d+'.json'; })
-      .text(function(d) { return d; });
+      .text(function(d) { return d.name; });
 
     var interactive = sel.append('optgroup')
       .attr('label', 'Interactive');
 
     interactive.selectAll('option.spec')
-      .data(INTERACTIVE_SPECS)
+      .data(INTERACTIVE_SPECS.map(specPath))
      .enter().append('option')
-      .attr('value', function(d) { return PATH + 'spec/'+d+'.json'; })
-      .text(function(d) { return d; });
+      .text(function(d) { return d.name; });
 
     // Renderer drop-down menu
     var ren = el.select('.sel_render');
