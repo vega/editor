@@ -117,7 +117,7 @@
       "init": {},
       "streams": [
         {"type": "@point:mousedown, @point:touchstart", "expr": "datum"},
-        {"type": "window:mouseup", "expr": "{}"}
+        {"type": "window:mouseup, window:touchend", "expr": "{}"}
       ]
     },
     {"name": "isActive", "expr": "active.country"},
@@ -304,7 +304,7 @@
 
   "legends": [{
     "fill": "c",
-    "orient": "bottom",
+    "orient": "right",
     "properties": {
       "labels": {
         "text": {"scale": "label", "field": "data"}
