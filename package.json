@@ -18,7 +18,7 @@
   },
   "author": {
     "name": "Jeffrey Heer",
-    "url": "http://idl.cs.washington.edu/"
+    "url": "http://idl.cs.washington.edu"
   },
   "contributors": [
     {"name": "Ruijia (Iris) Wang"}
@@ -26,13 +26,17 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "ace-builds": "ajaxorg/ace-builds",
-    "d3": "~3.5.6",
+    "d3": "3.5.x",
     "d3-cloud": "jasondavies/d3-cloud",
-    "d3-geo-projection": "~0.2.15",
-    "topojson": "~1.6.19"
+    "d3-geo-projection": "0.2.x",
+    "topojson": "1.6.x"
+  },
+  "devDependencies": {
+    "chokidar": "latest"
   },
   "scripts": {
     "deploy": "scripts/deploy.sh",
-    "vendor": "npm install && scripts/vendor.sh"
+    "vendor": "npm install && scripts/vendor.sh",
+    "watch": "node scripts/watch.js"
   }
 }
