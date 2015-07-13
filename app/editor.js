@@ -145,18 +145,20 @@ ved.init = function(el, dir) {
   
     // Handle application parameters
     var p = ved.params();
+
+    if (p.renderer) {
+      ren.node().selectedIndex = p.renderer.toLowerCase() === 'svg' ? 1 : 0;
+      ved.renderType = p.renderer;
+    }
+
     if (p.spec) {
-      var idx = STATIC_SPECS.concat(INTERACTIVE_SPECS).indexOf(p.spec) + 1;
+      var specs = STATIC_SPECS.concat(INTERACTIVE_SPECS).map(function(d) { return d.name; }),
+          idx = specs.indexOf(p.spec) + 1;
+
       if (idx > 0) {
         sel.node().selectedIndex = idx;
         ved.select();
       }
-    }
-
-    if (p.renderer) {
-      var ren = el.select('sel_render').node();
-      ren.selectedIndex = p.renderer.toLowerCase() === 'svg' ? 1 : 0;
-      ved.renderer();
     }
   });
 };
