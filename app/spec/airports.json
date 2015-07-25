@@ -1,0 +1,164 @@
+{
+  "width": 960,
+  "height": 520,
+  "padding": 0,
+  
+  "signals": [
+    {
+      "name": "hover", "init": null,
+      "streams": [
+        {"type": "@cell:mouseover", "expr": "datum.iata"},
+        {"type": "@cell:mouseout", "expr": "null"}
+      ]
+    },
+    {
+      "name": "cell_stroke", "init": null,
+      "streams": [{"type": "dblclick", "expr": "cell_stroke ? null : 'brown'"}]
+    },
+    {
+      "name": "title", "init": "U.S. Airports",
+      "streams": [{"type": "hover", "expr": "hover || 'U.S. Airports'"}]
+    }
+  ],
+  
+  "data": [
+    {
+      "name": "states",
+      "url": "data/us-10m.json",
+      "format": {"type": "topojson", "feature": "states"},
+      "transform": [
+        {"type": "geopath", "projection": "albersUsa"}
+      ]
+    },
+    {
+      "name": "traffic",
+      "url": "data/flights-airport.csv",
+      "format": {"type": "csv", "parse": "auto"},
+      "transform": [
+        {
+          "type": "aggregate", "groupby": ["origin"],
+          "summarize": [{"field": "count", "ops": ["sum"], "as": ["flights"]}]
+        }
+      ]
+    },
+    {
+      "name": "airports",
+      "url": "data/airports.csv",
+      "format": {"type": "csv", "parse": "auto"},
+      "transform": [
+        {
+          "type": "zip", "as": "traffic",
+          "key": "iata", "with": "traffic", "withKey": "origin"
+        },
+        {
+          "type": "geo", "projection": "albersUsa",
+          "lon": "longitude", "lat": "latitude"
+        },
+        {
+          "type": "filter",
+          "test": "datum.traffic && datum.layout_x != null && datum.layout_y != null"
+        },
+        { "type": "sort", "by": "-traffic.flights" },
+        { "type": "voronoi", "x": "layout_x", "y": "layout_y" }
+      ]
+    },
+    {
+      "name": "routes",
+      "url": "data/flights-airport.csv",
+      "format": {"type": "csv", "parse": "auto"},
+      "transform": [
+        {
+          "type": "zip", "as": "_source",
+          "key": "origin", "with": "airports", "withKey": "iata"
+        },
+        {
+          "type": "zip", "as": "_target",
+          "key": "destination", "with": "airports", "withKey": "iata"
+        },
+        { "type": "filter", "test": "datum._source && datum._target" },
+        { "type": "linkpath" },
+        { "type": "filter", "test": "hover == datum._source.iata" }
+      ]
+    }
+  ],
+  
+  "scales": [
+    {
+      "name": "size",
+      "type": "sqrt",
+      "domain": {"data": "traffic", "field": "flights"},
+      "range": [9, 500]
+    }
+  ],
+  
+  "marks": [
+    {
+      "type": "path",
+      "from": {"data": "states"},
+      "properties": {
+        "enter": {
+          "path": {"field": "layout_path"},
+          "fill": {"value": "#dedede"},
+          "stroke": {"value": "white"}
+        }
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "airports"},
+      "properties": {
+        "enter": {
+          "x": {"field": "layout_x"},
+          "y": {"field": "layout_y"},
+          "size": {"scale": "size", "field": "traffic.flights"},
+          "fill": {"value": "steelblue"},
+          "fillOpacity": {"value": 0.8},
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 1.5}
+        }
+      }
+    },
+    {
+      "type": "path",
+      "name": "cell",
+      "from": {"data": "airports"},
+      "properties": {
+        "enter": {
+          "path": {"field": "layout_path"},
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35}
+        },
+        "update": {
+          "stroke": {"signal": "cell_stroke"}
+        }
+      }
+    },
+    {
+      "type": "path",
+      "interactive": false,
+      "from": {"data": "routes"},
+      "properties": {
+        "enter": {
+          "path": {"field": "layout_path"},
+          "stroke": {"value": "black"},
+          "strokeOpacity": {"value": 0.35}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "properties": {
+        "enter": {
+          "x": {"value": 760},
+          "y": {"value": 380},
+          "fill": {"value": "black"},
+          "fontSize": {"value": 24}
+        },
+        "update": {
+          "text": {"signal": "title"}
+        }
+      }
+    }
+  ]
+}
