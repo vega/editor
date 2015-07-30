@@ -21,6 +21,10 @@ else
 fi
 git checkout master
 
+# Fresh npm install to ensure no dev changes are included
+rm -rf node_modules
+npm install
+
 # Ensure vendor dependencies
 npm run vendor
 rc=$?; if [[ $rc != 0 ]]; then
