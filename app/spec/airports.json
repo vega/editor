@@ -1,13 +1,13 @@
 {
   "width": 960,
   "height": 520,
-  "padding": 0,
+  "padding": {"top": 25, "left": 5, "right": 0, "bottom": 0},
   
   "signals": [
     {
       "name": "hover", "init": null,
       "streams": [
-        {"type": "@cell:mouseover", "expr": "datum.iata"},
+        {"type": "@cell:mouseover", "expr": "datum"},
         {"type": "@cell:mouseout", "expr": "null"}
       ]
     },
@@ -16,8 +16,11 @@
       "streams": [{"type": "dblclick", "expr": "cell_stroke ? null : 'brown'"}]
     },
     {
-      "name": "title", "init": "U.S. Airports",
-      "streams": [{"type": "hover", "expr": "hover || 'U.S. Airports'"}]
+      "name": "title", "init": "U.S. Airports, 2008",
+      "streams": [{
+        "type": "hover", 
+        "expr": "hover ? hover.name + ' (' + hover.iata + ')' : 'U.S. Airports, 2008'"
+      }]
     }
   ],
   
@@ -73,7 +76,7 @@
         },
         { "type": "filter", "test": "datum._source && datum._target" },
         { "type": "linkpath" },
-        { "type": "filter", "test": "hover == datum._source.iata" }
+        { "type": "filter", "test": "hover && hover.iata == datum._source.iata" }
       ]
     }
   ],
@@ -146,8 +149,8 @@
       "interactive": false,
       "properties": {
         "enter": {
-          "x": {"value": 760},
-          "y": {"value": 380},
+          "x": {"value": 0},
+          "y": {"value": 0},
           "fill": {"value": "black"},
           "fontSize": {"value": 24}
         },
