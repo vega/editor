@@ -27,7 +27,8 @@ var STATIC_SPECS = [
   { "name": "stacked_area" },
   { "name": "stacked_bar" },
   { "name": "stocks" },
-  { "name": "weather" }
+  { "name": "weather" },
+  { "name": "wordcloud" }
 ];
 
 var INTERACTIVE_SPECS = [
