@@ -1,13 +1,13 @@
 {
   "width": 960,
   "height": 520,
-  "padding": 0,
+  "padding": {"top": 25, "left": 5, "right": 0, "bottom": 0},
   
   "signals": [
     {
       "name": "hover", "init": null,
       "streams": [
-        {"type": "@cell:mouseover", "expr": "datum.iata"},
+        {"type": "@cell:mouseover", "expr": "datum"},
         {"type": "@cell:mouseout", "expr": "null"}
       ]
     },
@@ -16,8 +16,11 @@
       "streams": [{"type": "dblclick", "expr": "cell_stroke ? null : 'brown'"}]
     },
     {
-      "name": "title", "init": "U.S. Airports",
-      "streams": [{"type": "hover", "expr": "hover || 'U.S. Airports'"}]
+      "name": "title", "init": "U.S. Airports, 2008",
+      "streams": [{
+        "type": "hover", 
+        "expr": "hover ? hover.name + ' (' + hover.iata + ')' : 'U.S. Airports, 2008'"
+      }]
     }
   ],
   
@@ -47,8 +50,8 @@
       "format": {"type": "csv", "parse": "auto"},
       "transform": [
         {
-          "type": "zip", "as": "traffic",
-          "key": "iata", "with": "traffic", "withKey": "origin"
+          "type": "lookup", "on": "traffic", "onKey": "origin",
+          "keys": ["iata"], "as": ["traffic"]
         },
         {
           "type": "geo", "projection": "albersUsa",
@@ -68,16 +71,12 @@
       "format": {"type": "csv", "parse": "auto"},
       "transform": [
         {
-          "type": "zip", "as": "_source",
-          "key": "origin", "with": "airports", "withKey": "iata"
-        },
-        {
-          "type": "zip", "as": "_target",
-          "key": "destination", "with": "airports", "withKey": "iata"
+          "type": "lookup", "on": "airports", "onKey": "iata",
+          "keys": ["origin", "destination"], "as": ["_source", "_target"]
         },
         { "type": "filter", "test": "datum._source && datum._target" },
         { "type": "linkpath" },
-        { "type": "filter", "test": "hover == datum._source.iata" }
+        { "type": "filter", "test": "hover && hover.iata == datum._source.iata" }
       ]
     }
   ],
@@ -150,8 +149,8 @@
       "interactive": false,
       "properties": {
         "enter": {
-          "x": {"value": 760},
-          "y": {"value": 380},
+          "x": {"value": 0},
+          "y": {"value": 0},
           "fill": {"value": "black"},
           "fontSize": {"value": 24}
         },

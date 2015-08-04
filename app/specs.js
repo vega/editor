@@ -49,6 +49,10 @@ var INTERACTIVE_SPECS = [
     "desc": "Based on <a href='http://vialab.science.uoit.ca/portfolio/dimpvis'>DimpVis</a> by Brittany Kondo and Christopher Collins. <em>University of Ontario Institute of Technology</em> (2014)."
   },
   { "name": "index_chart" },
+  {
+    "name": "force_drag",
+    "desc": "Drag nodes to reposition them. Double-click nodes to fix them in place."
+  },
   { "name": "linking" },
   {
     "name": "overview+detail",
