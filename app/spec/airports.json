@@ -47,8 +47,8 @@
       "format": {"type": "csv", "parse": "auto"},
       "transform": [
         {
-          "type": "zip", "as": "traffic",
-          "key": "iata", "with": "traffic", "withKey": "origin"
+          "type": "lookup", "on": "traffic", "onKey": "origin",
+          "keys": ["iata"], "as": ["traffic"]
         },
         {
           "type": "geo", "projection": "albersUsa",
@@ -68,12 +68,8 @@
       "format": {"type": "csv", "parse": "auto"},
       "transform": [
         {
-          "type": "zip", "as": "_source",
-          "key": "origin", "with": "airports", "withKey": "iata"
-        },
-        {
-          "type": "zip", "as": "_target",
-          "key": "destination", "with": "airports", "withKey": "iata"
+          "type": "lookup", "on": "airports", "onKey": "iata",
+          "keys": ["origin", "destination"], "as": ["_source", "_target"]
         },
         { "type": "filter", "test": "datum._source && datum._target" },
         { "type": "linkpath" },
