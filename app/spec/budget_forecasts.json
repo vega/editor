@@ -64,15 +64,20 @@
           "summarize": [
             {"field": "value", "ops": ["min", "argmin"], "as": ["min", "argmin"]}
           ]
-        }
+        },
+        {"type": "formula", "field": "minYear", "expr": "datum.argmin.budgetYear"}
       ]
     },
     {
       "name": "tipForecast",
       "source": "budgets",
       "transform": [
-        {"type": "zip", "with": "tooltip", "as": "t"},
-        {"type": "filter", "test": "datum.t && datum.t.argmin.budgetYear == datum.budgetYear"}
+        {
+          "type": "lookup", 
+          "on": "tooltip", "onKey": "minYear",
+          "keys": ["budgetYear"], "as": ["t"]
+        },
+        {"type": "filter", "test": "datum.t"}
       ]
     }
   ],

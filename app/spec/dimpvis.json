@@ -59,21 +59,21 @@
       "source": "countries",
       "transform": [
         {
-          "type": "zip", 
-          "with": "thisYear", "as": "this",
-          "key": "country", "withKey": "country",
+          "type": "lookup", 
+          "on": "thisYear", "onKey": "country",
+          "keys": ["country"], "as": ["this"],
           "default": {}
         },
         {
-          "type": "zip", 
-          "with": "prevYear", "as": "prev",
-          "key": "country", "withKey": "country",
+          "type": "lookup", 
+          "on": "prevYear", "onKey": "country",
+          "keys": ["country"], "as": ["prev"],
           "default": {}
         },
         {
-          "type": "zip", 
-          "with": "nextYear", "as": "next",
-          "key": "country", "withKey": "country",
+          "type": "lookup", 
+          "on": "nextYear", "onKey": "country",
+          "keys": ["country"], "as": ["next"],
           "default": {}
         },
         {
