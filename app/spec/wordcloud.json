@@ -64,13 +64,14 @@
           "fontWeight": {"field": "layout_fontWeight"},
           "text": {"field": "text"},
           "align": {"value": "center"},
-          "baseline": {"value": "alphabetic"}
-        },
-        "update": {
+          "baseline": {"value": "alphabetic"},
           "fill": {"scale": "color", "field": "text"}
         },
+        "update": {
+          "fillOpacity": {"value": 1}
+        },
         "hover": {
-          "fill": {"value": "#f00"}
+          "fillOpacity": {"value": 0.5}
         }
       }
     }
