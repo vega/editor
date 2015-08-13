@@ -1,5 +1,5 @@
 var ved = {
-  version: 1.0,
+  version: '1.0.1',
   data: undefined,
   renderType: 'canvas',
   editor: null
@@ -14,11 +14,20 @@ ved.params = function() {
     }, {});
 };
 
-ved.select = function() {
+ved.select = function(spec) {
+  var desc = ved.$d3.select('.spec_desc');
+
+  if (spec) {
+    ved.editor.setValue(spec);
+    ved.editor.gotoLine(0);
+    desc.html('');
+    ved.parse();
+    return;
+  }
+  
   var sel  = ved.$d3.select('.sel_spec').node(),
-      desc = ved.$d3.select('.spec_desc'),
-      idx  = sel.selectedIndex,
-      spec = d3.select(sel.options[idx]).data()[0];
+      idx  = sel.selectedIndex;
+  spec = d3.select(sel.options[idx]).data()[0];
 
   if (idx > 0) {
     d3.xhr(spec.uri, function(error, response) {
@@ -42,11 +51,10 @@ ved.renderer = function() {
   ved.parse();
 };
 
-ved.format = function(event) {
-  var el = ved.$d3.select('.spec'),
-      spec = JSON.parse(el.property('value')),
+ved.format = function() {
+  var spec = JSON.parse(ved.editor.getValue()),
       text = JSON.stringify(spec, null, 2);
-  el.property('value', text);
+  ved.editor.setValue(text);
 };
 
 ved.parse = function(cb) {
@@ -152,12 +160,22 @@ ved.init = function(el, dir) {
     }
 
     if (p.spec) {
-      var specs = STATIC_SPECS.concat(INTERACTIVE_SPECS).map(function(d) { return d.name; }),
-          idx = specs.indexOf(p.spec) + 1;
+      var spec = decodeURIComponent(p.spec),
+          specs = STATIC_SPECS.concat(INTERACTIVE_SPECS).map(function(d) { return d.name; }),
+          idx = specs.indexOf(spec) + 1;
 
       if (idx > 0) {
         sel.node().selectedIndex = idx;
         ved.select();
+      } else {
+        console.log('trying', spec);
+        try {
+          var json = JSON.parse(spec);
+          ved.select(spec);
+        } catch (err) {
+          console.error(err);
+          console.error('Specification loading failed: ' + spec);
+        }
       }
     }
   });
