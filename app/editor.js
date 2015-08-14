@@ -6,7 +6,9 @@ var ved = {
 };
 
 ved.params = function() {
-  return location.search.slice(1)
+  var query = location.search.slice(1);
+  if (query.slice(-1) === '/') query = query.slice(0,-1);
+  return query
     .split('&')
     .map(function(x) { return x.split('='); })
     .reduce(function(a, b) {
@@ -168,7 +170,6 @@ ved.init = function(el, dir) {
         sel.node().selectedIndex = idx;
         ved.select();
       } else {
-        console.log('trying', spec);
         try {
           var json = JSON.parse(spec);
           ved.select(spec);
