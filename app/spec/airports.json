@@ -1,36 +1,18 @@
 {
-  "width": 960,
-  "height": 520,
-  "padding": {"top": 25, "left": 5, "right": 0, "bottom": 0},
-  
-  "signals": [
-    {
-      "name": "hover", "init": null,
-      "streams": [
-        {"type": "@cell:mouseover", "expr": "datum"},
-        {"type": "@cell:mouseout", "expr": "null"}
-      ]
-    },
-    {
-      "name": "cell_stroke", "init": null,
-      "streams": [{"type": "dblclick", "expr": "cell_stroke ? null : 'brown'"}]
-    },
-    {
-      "name": "title", "init": "U.S. Airports, 2008",
-      "streams": [{
-        "type": "hover", 
-        "expr": "hover ? hover.name + ' (' + hover.iata + ')' : 'U.S. Airports, 2008'"
-      }]
-    }
-  ],
-  
+  "width": 900,
+  "height": 560,
+  "padding": {"top": 25, "left": 0, "right": 0, "bottom": 0},
+
   "data": [
     {
       "name": "states",
       "url": "data/us-10m.json",
       "format": {"type": "topojson", "feature": "states"},
       "transform": [
-        {"type": "geopath", "projection": "albersUsa"}
+        {
+          "type": "geopath", "projection": "albersUsa",
+          "scale": 1200, "translate": [450, 280]
+        }
       ]
     },
     {
@@ -55,6 +37,7 @@
         },
         {
           "type": "geo", "projection": "albersUsa",
+          "scale": 1200, "translate": [450, 280],
           "lon": "longitude", "lat": "latitude"
         },
         {
@@ -76,20 +59,41 @@
         },
         { "type": "filter", "test": "datum._source && datum._target" },
         { "type": "linkpath" },
-        { "type": "filter", "test": "hover && hover.iata == datum._source.iata" }
+        { "type": "filter", "test": "hover && hover.iata == datum.origin" }
       ]
     }
   ],
-  
+
   "scales": [
     {
       "name": "size",
-      "type": "sqrt",
+      "type": "linear",
       "domain": {"data": "traffic", "field": "flights"},
-      "range": [9, 500]
+      "range": [16, 1000]
     }
   ],
-  
+
+  "signals": [
+    {
+      "name": "hover", "init": null,
+      "streams": [
+        {"type": "@cell:mouseover", "expr": "datum"},
+        {"type": "@cell:mouseout", "expr": "null"}
+      ]
+    },
+    {
+      "name": "title", "init": "U.S. Airports, 2008",
+      "streams": [{
+        "type": "hover", 
+        "expr": "hover ? hover.name + ' (' + hover.iata + ')' : 'U.S. Airports, 2008'"
+      }]
+    },
+    {
+      "name": "cell_stroke", "init": null,
+      "streams": [{"type": "dblclick", "expr": "cell_stroke ? null : 'brown'"}]
+    }
+  ],
+
   "marks": [
     {
       "type": "path",
@@ -149,10 +153,11 @@
       "interactive": false,
       "properties": {
         "enter": {
-          "x": {"value": 0},
+          "x": {"value": 895},
           "y": {"value": 0},
           "fill": {"value": "black"},
-          "fontSize": {"value": 24}
+          "fontSize": {"value": 20},
+          "align": {"value": "right"}
         },
         "update": {
           "text": {"signal": "title"}
