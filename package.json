@@ -30,7 +30,8 @@
     "d3-cloud": "jasondavies/d3-cloud",
     "d3-geo-projection": "^0.2.15",
     "topojson": "^1.6.19",
-    "vega": "latest"
+    "vega": "latest",
+    "vega-embed": "latest"
   },
   "devDependencies": {
     "chokidar": "^1.0.3"

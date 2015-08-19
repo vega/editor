@@ -13,6 +13,7 @@ cp node_modules/d3.layout.cloud/d3.layout.cloud.js $TARGET
 cp node_modules/d3-geo-projection/d3.geo.projection.min.js $TARGET
 cp node_modules/topojson/topojson.js $TARGET
 cp node_modules/vega/vega* $TARGET
+cp node_modules/vega-embed/vega-embed* $TARGET
 
 if [ ! -d "$TARGET/ace" ]; then
   mkdir $TARGET/ace
