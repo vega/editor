@@ -53,13 +53,13 @@
       "url": "data/flights-airport.csv",
       "format": {"type": "csv", "parse": "auto"},
       "transform": [
+        { "type": "filter", "test": "hover && hover.iata == datum.origin" },
         {
           "type": "lookup", "on": "airports", "onKey": "iata",
           "keys": ["origin", "destination"], "as": ["_source", "_target"]
         },
         { "type": "filter", "test": "datum._source && datum._target" },
-        { "type": "linkpath" },
-        { "type": "filter", "test": "hover && hover.iata == datum.origin" }
+        { "type": "linkpath" }
       ]
     }
   ],
