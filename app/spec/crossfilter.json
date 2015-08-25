@@ -14,6 +14,30 @@
           "type": "formula", 
           "field": "day", 
           "expr": "datetime((month(datum.date)+1) + '/' + date(datum.date) + '/2001')"
+        },
+        {
+          "type": "bin",
+          "field": "hour",
+          "min": 0,
+          "max": 24,
+          "step": 1,
+          "output": {"bin": "bin_hour"}
+        },
+        {
+          "type": "bin",
+          "field": "delay",
+          "min": -60,
+          "max": 140,
+          "step": 10,
+          "output": {"bin": "bin_delay"}
+        },
+        {
+          "type": "bin",
+          "field": "distance",
+          "min": 0,
+          "max": 2000,
+          "step": 50,
+          "output": {"bin": "bin_dist"}
         }
       ]
     },
@@ -23,15 +47,8 @@
       "transform": [
         {"type": "filter", "test": "(minDay == maxDay || (datum.day >= minDay && datum.day <= maxDay)) && (minDist == maxDist || (datum.distance >= minDist && datum.distance <= maxDist)) && (minDelay == maxDelay || (datum.delay >= minDelay && datum.delay <= maxDelay))"},
         {
-          "type": "bin",
-          "field": "hour",
-          "min": 0,
-          "max": 24,
-          "step": 1
-        },
-        {
           "type": "aggregate",
-          "groupby": ["bin"],
+          "groupby": ["bin_hour"],
           "summarize": {"delay": ["count"]}
         }
       ]
@@ -40,18 +57,10 @@
       "name": "delay",
       "source": "flights",
       "transform": [
-        {"type": "filter", "test": "(minDay == maxDay || (datum.day >= minDay && datum.day <= maxDay)) && (minDist == maxDist || (datum.distance >= minDist && datum.distance <= maxDist)) && (minTime == maxTime || (datum.hour >= minTime && datum.hour <= maxTime))"},
-        {
-          "type": "bin",
-          "field": "delay",
-          "min": -60,
-          "max": 140,
-          "step": 10
-        },
-        {"type": "filter", "test": "datum.bin <= 140"},
+        {"type": "filter", "test": "(minDay == maxDay || (datum.day >= minDay && datum.day <= maxDay)) && (minDist == maxDist || (datum.distance >= minDist && datum.distance <= maxDist)) && (minTime == maxTime || (datum.hour >= minTime && datum.hour <= maxTime)) && datum.bin_delay <= 140"},
         {
           "type": "aggregate",
-          "groupby": ["bin"],
+          "groupby": ["bin_delay"],
           "summarize": {"delay": ["count"]}
         }
       ]
@@ -60,18 +69,10 @@
       "name": "distance",
       "source": "flights",
       "transform": [
-        {"type": "filter", "test": "(minDay == maxDay || (datum.day >= minDay && datum.day <= maxDay)) && (minDelay == maxDelay || (datum.delay >= minDelay && datum.delay <= maxDelay)) && (minTime == maxTime || (datum.hour >= minTime && datum.hour <= maxTime))"},
-        {
-          "type": "bin",
-          "field": "distance",
-          "min": 0,
-          "max": 2000,
-          "step": 50
-        },
-        {"type": "filter", "test": "datum.bin <= 2000"},
+        {"type": "filter", "test": "(minDay == maxDay || (datum.day >= minDay && datum.day <= maxDay)) && (minDelay == maxDelay || (datum.delay >= minDelay && datum.delay <= maxDelay)) && (minTime == maxTime || (datum.hour >= minTime && datum.hour <= maxTime)) && datum.bin_dist <= 2000"},
         {
           "type": "aggregate",
-          "groupby": ["bin"],
+          "groupby": ["bin_dist"],
           "summarize": {"delay": ["count"]}
         }
       ]
@@ -80,8 +81,7 @@
       "name": "date",
       "source": "flights",
       "transform": [
-        {"type": "filter", "test": "(minDist == maxDist || (datum.distance >= minDist && datum.distance <= maxDist)) && (minDelay == maxDelay || (datum.delay >= minDelay && datum.delay <= maxDelay)) && (minTime == maxTime || (datum.hour >= minTime && datum.hour <= maxTime))"},
-        {"type": "filter", "test": "datum.day < datetime('4/1/2001')"},
+        {"type": "filter", "test": "(minDist == maxDist || (datum.distance >= minDist && datum.distance <= maxDist)) && (minDelay == maxDelay || (datum.delay >= minDelay && datum.delay <= maxDelay)) && (minTime == maxTime || (datum.hour >= minTime && datum.hour <= maxTime)) && datum.day < datetime('4/1/2001')"},
         {
           "type": "aggregate",
           "groupby": ["day"],
@@ -290,14 +290,14 @@
           "from": {"data": "times"},
           "properties": {
             "update": {
-              "x": {"scale": "x", "field": "bin"},
+              "x": {"scale": "x", "field": "bin_hour"},
               "width": {"value": 9.5},
               "y": {"scale": "y", "field": "count_delay"},
               "y2": {"scale": "y", "value": 0},
               "fill": {
                 "rule": [
                   {
-                    "predicate": {"name": "timesBrush", "x": {"field": "bin"}},
+                    "predicate": {"name": "timesBrush", "x": {"field": "bin_hour"}},
                     "value": "steelblue"
                   },
                   {"value": "#bbb"}
@@ -375,14 +375,14 @@
           "from": {"data": "delay"},
           "properties": {
             "update": {
-              "x": {"scale": "x", "field": "bin"},
+              "x": {"scale": "x", "field": "bin_delay"},
               "width": {"value": 9.5},
               "y": {"scale": "y", "field": "count_delay"},
               "y2": {"scale": "y", "value": 0},
               "fill": {
                 "rule": [
                   {
-                    "predicate": {"name": "delayBrush", "x": {"field": "bin"}},
+                    "predicate": {"name": "delayBrush", "x": {"field": "bin_delay"}},
                     "value": "steelblue"
                   },
                   {"value": "#bbb"}
@@ -459,14 +459,14 @@
           "from": {"data": "distance"},
           "properties": {
             "update": {
-              "x": {"scale": "x", "field": "bin"},
+              "x": {"scale": "x", "field": "bin_dist"},
               "width": {"value": 9.5},
               "y": {"scale": "y", "field": "count_delay"},
               "y2": {"scale": "y", "value": 0},
               "fill": {
                 "rule": [
                   {
-                    "predicate": {"name": "distBrush", "x": {"field": "bin"}},
+                    "predicate": {"name": "distBrush", "x": {"field": "bin_dist"}},
                     "value": "steelblue"
                   },
                   {"value": "#bbb"}
@@ -589,6 +589,5 @@
         }
       ]
     }
-
   ]
 }
