@@ -36,13 +36,17 @@
           "keys": ["iata"], "as": ["traffic"]
         },
         {
+          "type": "filter",
+          "test": "datum.traffic != null"
+        },
+        {
           "type": "geo", "projection": "albersUsa",
           "scale": 1200, "translate": [450, 280],
           "lon": "longitude", "lat": "latitude"
         },
         {
           "type": "filter",
-          "test": "datum.traffic && datum.layout_x != null && datum.layout_y != null"
+          "test": "datum.layout_x != null && datum.layout_y != null"
         },
         { "type": "sort", "by": "-traffic.flights" },
         { "type": "voronoi", "x": "layout_x", "y": "layout_y" }
@@ -100,9 +104,11 @@
       "from": {"data": "states"},
       "properties": {
         "enter": {
-          "path": {"field": "layout_path"},
           "fill": {"value": "#dedede"},
           "stroke": {"value": "white"}
+        },
+        "update": {
+          "path": {"field": "layout_path"}
         }
       }
     },
@@ -111,13 +117,15 @@
       "from": {"data": "airports"},
       "properties": {
         "enter": {
-          "x": {"field": "layout_x"},
-          "y": {"field": "layout_y"},
           "size": {"scale": "size", "field": "traffic.flights"},
           "fill": {"value": "steelblue"},
           "fillOpacity": {"value": 0.8},
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 1.5}
+        },
+        "update": {
+          "x": {"field": "layout_x"},
+          "y": {"field": "layout_y"}
         }
       }
     },
@@ -127,11 +135,11 @@
       "from": {"data": "airports"},
       "properties": {
         "enter": {
-          "path": {"field": "layout_path"},
           "fill": {"value": "transparent"},
           "strokeWidth": {"value": 0.35}
         },
         "update": {
+          "path": {"field": "layout_path"},
           "stroke": {"signal": "cell_stroke"}
         }
       }

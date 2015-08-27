@@ -6,18 +6,14 @@
 }
 
 .vega-editor .mod_spec {
-  -webkit-flex-grow: 0;
-  -webkit-flex-shrink: 0;
-  flex-grow: 0;
-  flex-shrink: 0;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
   min-width: 540px;
 }
 
 .vega-editor .mod_vis {
-  -webkit-flex-grow: 1;
-  -webkit-flex-shrink: 1;
-  flex-grow: 1;
-  flex-shrink: 1;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
   min-width: 0;
   margin-left: 10px;
 }
@@ -30,13 +26,38 @@
   height: 100vh;
 }
 
+.vega-editor .mod_header {
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  padding: 4px 4px 4px 6px;
+  background: #eee;
+  border-bottom: 1px solid #ccc;
+  line-height: 22px;
+}
+
 .vega-editor .mod_body {
-  -webkit-flex-grow: 1;
-  -webkit-flex-shrink: 1;
-  flex-grow: 1;
-  flex-shrink: 1;
+  -webkit-flex: 1 1 0;
+  flex: 1 1 auto;
   padding-top: 2px;
   overflow: auto;
+}
+
+.vega-editor .vis {
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.vega-editor .mod_params {
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.vega-editor .spec_desc {
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  padding-top: 10px;
+  font-size: 12px;
+  color: #666;
 }
 
 .vega-editor .spec { 
@@ -45,19 +66,9 @@
   white-space: pre;
 }
 
-.vega-editor .vis svg, .vega-editor .vis canvas {
+.vega-editor .vis svg,
+.vega-editor .vis canvas {
   border: 1px dashed #ccc;
-}
-
-.vega-editor .mod_header {
-  -webkit-flex-grow: 0;
-  -webkit-flex-shrink: 0;
-  flex-grow: 0;
-  flex-shrink: 0;
-  padding: 4px 4px 4px 6px;
-  background: #eee;
-  border-bottom: 1px solid #ccc;
-  line-height: 22px;
 }
 
 .vega-editor .mod_ctrls {
@@ -68,15 +79,49 @@
   height: 19px;
 }
 
-.vega-editor .vis {
-  -webkit-flex-grow: 0;
-  -webkit-flex-shrink: 0;
-  flex-grow: 0;
-  flex-shrink: 0;
+.vega-param {
+  line-height: 15px;
 }
 
-.vega-editor .spec_desc {
-  margin-top: 10px;
-  font-size: 12px;
-  color: #666;
+.vega-param * {
+  vertical-align: middle;
+}
+
+.vega-param-name {
+  display: inline-block;
+  width: 60px;
+  margin-right: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  overflow: hidden;
+}
+
+.vega-params label {
+  font-size: 10px;
+  margin-right: 5px;
+}
+
+.vega-params label.vega-range {
+  display: inline-block;
+  max-width: 30px;
+  overflow: hidden;
+}
+
+.vega-params input[type=range] {
+  max-width: 100px;
+  margin-right: 5px;
+}
+
+.vega-params input[type=text] {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 2px 4px;
+  margin: 2px 0;
+}
+
+.vega-params select,
+.vega-params input[type=text] {
+  box-sizing: border-box;
+  width: 130px;
+  max-width: 130px;
 }
