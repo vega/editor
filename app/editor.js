@@ -78,10 +78,11 @@ ved.parse = function(callback) {
   }
   opt.actions = false;
   opt.renderer = opt.renderer || ved.renderType;
-  opt.el_params = '.mod_params';
+  opt.parameter_el = '.mod_params';
 
   if (ved.view) ved.view.destroy();
   d3.select('.mod_params').html('');
+  d3.select('.spec_desc').html('');
   vg.embed('.vis', opt, function(view, spec) {
     ved.spec = spec;
     if (callback) callback(ved.view = view);
