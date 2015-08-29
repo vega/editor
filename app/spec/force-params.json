@@ -1,5 +1,5 @@
 {
-  "url": "/app/spec/force_drag.json",
+  "url": "app/spec/force_drag.json",
   "parameters": [
     { 
       "name": "distance",

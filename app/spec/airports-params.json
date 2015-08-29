@@ -1,5 +1,5 @@
 {
-  "url": "/app/spec/airports.json",
+  "url": "app/spec/airports.json",
   "parameters": [
     {
       "signal": "scale", "type": "range",
