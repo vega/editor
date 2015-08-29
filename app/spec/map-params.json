@@ -2,7 +2,7 @@
   "parameters": [
     { 
       "signal": "rotate", "type": "range",
-      "value": 0, "min": -540, "max": 540
+      "value": 0, "min": -360, "max": 360
     }
   ],
   "spec": {

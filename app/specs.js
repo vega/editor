@@ -64,9 +64,21 @@ var SPECS = {
     { "name": "tooltip" }
   ],
   'Parameterized': [
-    { "name": "embed-airports" },
-    { "name": "embed-force" },
-    { "name": "embed-jobs" },
-    { "name": "embed-world" }
+    { 
+      "name": "airports-params",
+      "desc": "Uses <a href='http://github.com/vega/vega-embed'>vega-embed</a> to parameterize the visualization."
+    },
+    {
+      "name": "force-params",
+      "desc": "Uses <a href='http://github.com/vega/vega-embed'>vega-embed</a> to parameterize the visualization."
+    },
+    {
+      "name": "jobs-params",
+      "desc": "Uses <a href='http://github.com/vega/vega-embed'>vega-embed</a> to parameterize the visualization."
+    },
+    {
+      "name": "map-params",
+      "desc": "Uses <a href='http://github.com/vega/vega-embed'>vega-embed</a> to parameterize the visualization."
+    }
   ]
 };
