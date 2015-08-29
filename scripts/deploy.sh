@@ -22,8 +22,8 @@ fi
 git checkout master
 
 # Fresh npm install to ensure no dev changes are included
+# npm install subsequently invoked by npm run vendor
 rm -rf node_modules
-npm install
 
 # Ensure vendor dependencies
 npm run vendor
