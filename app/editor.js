@@ -27,12 +27,12 @@ ved.select = function(spec) {
     return;
   }
   
-  var sel  = ved.$d3.select('.sel_spec').node(),
-      idx  = sel.selectedIndex;
-  spec = d3.select(sel.options[idx]).data()[0];
+  var sel = ved.$d3.select('.sel_spec').node(),
+      idx = sel.selectedIndex;
+  spec = d3.select(sel.options[idx]).datum();
 
   if (idx > 0) {
-    d3.xhr(spec.uri, function(error, response) {
+    d3.xhr(ved.uri(spec), function(error, response) {
       ved.editor.setValue(response.responseText);
       ved.editor.gotoLine(0);
       ved.parse(function() { desc.html(spec.desc || ''); });
@@ -42,6 +42,10 @@ ved.select = function(spec) {
     ved.editor.gotoLine(0);
     desc.html('');
   }
+};
+
+ved.uri = function(entry) {
+  return ved.path + 'spec/' + entry.name + '.json';
 };
 
 ved.renderer = function() {
@@ -59,26 +63,29 @@ ved.format = function() {
   ved.editor.setValue(text);
 };
 
-ved.parse = function(cb) {
-  var spec, source;
+ved.parse = function(callback) {
+  var opt, source;
   try {
-    spec = JSON.parse(ved.editor.getValue());
+    opt = JSON.parse(ved.editor.getValue());
   } catch (e) {
     console.log(e);
     return;
   }
 
-  ved.spec = spec;
+  if (!opt.spec && !opt.url && !opt.source) {
+    // wrap spec for handoff to vega-embed
+    opt = {spec: opt};
+  }
+  opt.actions = false;
+  opt.renderer = opt.renderer || ved.renderType;
+  opt.parameter_el = '.mod_params';
+
   if (ved.view) ved.view.destroy();
-  vg.parse.spec(spec, function(chart) {
-    var vis = ved.$d3.select('.vis').selectAll('*').remove();
-    var view = chart({
-      el: '.vis', // vis.node()
-      data: ved.data,
-      renderer: ved.renderType
-    });
-    (ved.view = view).update();
-    if (cb) cb(view);
+  d3.select('.mod_params').html('');
+  d3.select('.spec_desc').html('');
+  vg.embed('.vis', opt, function(view, spec) {
+    ved.spec = spec;
+    if (callback) callback(ved.view = view);
   });
 };
 
@@ -90,8 +97,7 @@ ved.init = function(el, dir) {
   // Set base directory
   var PATH = dir || 'app/';
   vg.config.load.baseURL = PATH;
-
-  function specPath(d) { return (d.uri = PATH+'spec/'+d.name+'.json', d); }
+  ved.path = PATH;
 
   el = (ved.$d3 = d3.select(el));
 
@@ -102,20 +108,12 @@ ved.init = function(el, dir) {
     var sel = el.select('.sel_spec');
     sel.on('change', ved.select);
     sel.append('option').text('Custom');
-
-    var st = sel.append('optgroup')
-      .attr('label', 'Static');
-
-    st.selectAll('option.spec')
-      .data(STATIC_SPECS.map(specPath))
-     .enter().append('option')
-      .text(function(d) { return d.name; });
-
-    var interactive = sel.append('optgroup')
-      .attr('label', 'Interactive');
-
-    interactive.selectAll('option.spec')
-      .data(INTERACTIVE_SPECS.map(specPath))
+    sel.selectAll('optgroup')
+      .data(Object.keys(SPECS))
+     .enter().append('optgroup')
+      .attr('label', function(key) { return key; })
+     .selectAll('option.spec')
+      .data(function(key) { return SPECS[key]; })
      .enter().append('option')
       .text(function(d) { return d.name; });
 
@@ -153,10 +151,10 @@ ved.init = function(el, dir) {
     d3.select(window).on('resize', ved.resize);
     ved.resize();
 
-    ved.specs = STATIC_SPECS
-      .concat(INTERACTIVE_SPECS)
-      .map(function(d) { return d.name; });
-  
+    ved.specs = Object.keys(SPECS).reduce(function(a, k) {
+      return a.concat(SPECS[k].map(function(d) { return d.name; }));
+    }, []);
+
     // Handle application parameters
     var p = ved.params();
     if (p.renderer) {
