@@ -85,7 +85,8 @@ ved.parse = function(callback) {
   d3.select('.spec_desc').html('');
   vg.embed('.vis', opt, function(view, spec) {
     ved.spec = spec;
-    if (callback) callback(ved.view = view);
+    ved.view = view;
+    if (callback) callback(view);
   });
 };
 
