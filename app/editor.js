@@ -1,5 +1,5 @@
 var ved = {
-  version: '1.0.1',
+  version: '1.1.1',
   data: undefined,
   renderType: 'canvas',
   editor: null
@@ -94,6 +94,21 @@ ved.resize = function(event) {
   ved.editor.resize();
 };
 
+ved.export = function() {
+  var ext = ved.renderType === 'canvas' ? 'png' : 'svg',
+      url = ved.view.toImageURL(ext);
+
+  var el = d3.select(document.createElement('a'))
+    .attr('href', url)
+    .attr('target', '_blank')
+    .attr('download', (ved.spec.name || 'vega') + '.' + ext)
+    .node();
+
+  var evt = document.createEvent('MouseEvents');
+  evt.initMouseEvent('click', true, true, document.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+  el.dispatchEvent(evt);
+};
+
 ved.init = function(el, dir) {
   // Set base directory
   var PATH = dir || 'app/';
@@ -149,6 +164,7 @@ ved.init = function(el, dir) {
     // Initialize application
     el.select('.btn_spec_format').on('click', ved.format);
     el.select('.btn_spec_parse').on('click', ved.parse);
+    el.select('.btn_export').on('click', ved.export);
     d3.select(window).on('resize', ved.resize);
     ved.resize();
 
