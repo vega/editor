@@ -60,6 +60,7 @@ var SPECS = {
       "desc": "Based on <a href='http://bl.ocks.org/mbostock/1667367'>Focus+Context with Brushing</a> by Mike Bostock."
     },
     { "name": "panzoom_points" },
+    { "name": "reorder_matrix" },
     { "name": "shiftclick_select" },
     { "name": "tooltip" }
   ],
