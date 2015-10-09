@@ -39,6 +39,7 @@
   "scripts": {
     "deploy": "scripts/deploy.sh",
     "vendor": "npm install && scripts/vendor.sh",
+    "postvendor": "scripts/update-data.sh",
     "watch": "node scripts/watch.js"
   }
 }
