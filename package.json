@@ -37,9 +37,10 @@
     "chokidar": "^1.0.3"
   },
   "scripts": {
+    "data": "scripts/update-data.sh",
     "deploy": "scripts/deploy.sh",
     "vendor": "npm install && scripts/vendor.sh",
-    "postvendor": "scripts/update-data.sh",
+    "postvendor": "npm run data",
     "watch": "node scripts/watch.js"
   }
 }
