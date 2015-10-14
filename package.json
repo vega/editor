@@ -37,7 +37,7 @@
     "chokidar": "^1.0.3"
   },
   "scripts": {
-    "data": "scripts/update-data.sh",
+    "data": "git subtree pull --prefix app/data git@github.com:vega/vega-datasets.git gh-pages",
     "deploy": "scripts/deploy.sh",
     "vendor": "npm install && scripts/vendor.sh",
     "postvendor": "npm run data",
