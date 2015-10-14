@@ -21,7 +21,7 @@
           "min": 0,
           "max": 24,
           "step": 1,
-          "output": {"bin": "bin_hour"}
+          "output": {"start": "bin_hour"}
         },
         {
           "type": "bin",
@@ -29,7 +29,7 @@
           "min": -60,
           "max": 140,
           "step": 10,
-          "output": {"bin": "bin_delay"}
+          "output": {"start": "bin_delay"}
         },
         {
           "type": "bin",
@@ -37,7 +37,7 @@
           "min": 0,
           "max": 2000,
           "step": 50,
-          "output": {"bin": "bin_dist"}
+          "output": {"start": "bin_dist"}
         }
       ]
     },
