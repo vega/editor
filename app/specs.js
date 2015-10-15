@@ -1,4 +1,11 @@
-var SPECS = {
+var VL_SPECS = [
+  {
+    "name": "bar",
+    "desc": "Simple bar chart with embedded data"
+  }
+];
+
+var VG_SPECS = {
   'Static': [
     { "name": "arc" },
     { "name": "area" },
@@ -10,7 +17,7 @@ var SPECS = {
     { "name": "choropleth" },
     {
       "name": "driving",
-      "desc": "Based on <a href='http://www.nytimes.com/imagepages/2010/05/02/business/02metrics.html'>Driving Shifts Into Reverse</a> by Hannah Fairfield. <em>The New York Times</em> (May 2, 2010)." 
+      "desc": "Based on <a href='http://www.nytimes.com/imagepages/2010/05/02/business/02metrics.html'>Driving Shifts Into Reverse</a> by Hannah Fairfield. <em>The New York Times</em> (May 2, 2010)."
     },
     { "name": "error" },
     { "name": "force" },
@@ -68,7 +75,7 @@ var SPECS = {
     { "name": "tooltip" }
   ],
   'Parameterized': [
-    { 
+    {
       "name": "airports-params",
       "desc": "Uses <a href='http://github.com/vega/vega-embed'>vega-embed</a> to parameterize the visualization."
     },
