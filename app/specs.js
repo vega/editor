@@ -49,6 +49,9 @@ var SPECS = {
       "name": "dimpvis",
       "desc": "Based on <a href='http://vialab.science.uoit.ca/portfolio/dimpvis'>DimpVis</a> by Brittany Kondo and Christopher Collins. <em>University of Ontario Institute of Technology</em> (2014)."
     },
+    { "name": "horizon",
+      "desc": "<a href='http://idl.cs.washington.edu/papers/horizon/'>Horizon graph</a> example. Click to change the number of layers."
+    },
     { "name": "index_chart" },
     {
       "name": "force_drag",
