@@ -1,5 +1,5 @@
 var ved = {
-  version: '1.1.1',
+  version: '1.2.1',
   data: undefined,
   renderType: 'canvas',
   editor: null
@@ -26,7 +26,7 @@ ved.select = function(spec) {
     ved.parse();
     return;
   }
-  
+
   var sel = ved.$d3.select('.sel_spec').node(),
       idx = sel.selectedIndex;
   spec = d3.select(sel.options[idx]).datum();
@@ -120,7 +120,7 @@ ved.init = function(el, dir) {
   d3.text(PATH + 'template.html', function(err, text) {
     el.html(text);
 
-    // Specification drop-down menu               
+    // Specification drop-down menu
     var sel = el.select('.sel_spec');
     sel.on('change', ved.select);
     sel.append('option').text('Custom');
