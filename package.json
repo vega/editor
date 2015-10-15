@@ -27,7 +27,7 @@
   "dependencies": {
     "ace-builds": "ajaxorg/ace-builds",
     "d3": "^3.5.6",
-    "d3-cloud": "jasondavies/d3-cloud",
+    "d3-cloud": "~1.1.0",
     "d3-geo-projection": "^0.2.15",
     "topojson": "^1.6.19",
     "vega": "latest",
