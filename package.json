@@ -1,6 +1,6 @@
 {
   "name": "vega-editor",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Web-based Vega authoring environment.",
   "keywords": [
     "vega",
@@ -21,13 +21,19 @@
     "url": "http://idl.cs.washington.edu"
   },
   "contributors": [
-    {"name": "Ruijia (Iris) Wang"}
+    {
+      "name": "Arvind Satyanarayan",
+      "url": "http://arvindsatya.com"
+    },
+    {
+      "name": "Ruijia (Iris) Wang"
+    }
   ],
   "license": "BSD-3-Clause",
   "dependencies": {
     "ace-builds": "ajaxorg/ace-builds",
     "d3": "^3.5.6",
-    "d3-cloud": "jasondavies/d3-cloud",
+    "d3-cloud": "^1.2.1",
     "d3-geo-projection": "^0.2.15",
     "topojson": "^1.6.19",
     "vega": "latest",
