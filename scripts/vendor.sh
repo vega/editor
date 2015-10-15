@@ -1,6 +1,7 @@
 #!/bin/bash
 ACE=node_modules/ace-builds/src-min
 TARGET=vendor
+DATA=app/data
 
 echo "Copying dependencies to '$TARGET'."
 
@@ -21,3 +22,11 @@ fi
 cp $ACE/ace.js $TARGET/ace
 cp $ACE/mode-json.js $TARGET/ace
 cp $ACE/worker-json.js $TARGET/ace
+
+echo "Copying data to '$DATA'."
+
+if [ ! -d "$DATA" ]; then
+  mkdir $DATA
+fi
+
+cp node_modules/vega-datasets/data/* $DATA
