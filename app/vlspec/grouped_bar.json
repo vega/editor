@@ -9,7 +9,6 @@
       "type": "O"
     },
     "color": {
-      "scale": {"quantitativeRange": ["#AFC6A3","#09622A"]},
       "name": "Origin",
       "type": "N"
     }

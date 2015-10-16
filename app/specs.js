@@ -4,10 +4,6 @@ var VL_SPECS = {
       "name": "bar",
       "desc": "A simple bar chart with embedded data."
     },
-    {
-      "name": "filtered_bar",
-      "desc": "A simple bar chart with embedded data and uses a filter and formulas."
-    },
     {"name": "agg_bar"},
     {"name": "grouped_bar","desc": "Grouped bar chart."},
     {
@@ -35,19 +31,21 @@ var VL_SPECS = {
       "desc": "Classic Barley Example. Trellis Plot, sorted by mean yield."
     }
   ],
-  'Trellis': [
+  'Other': [
+    {
+      "name": "filtered_bar",
+      "desc": "A simple bar chart with embedded data and uses a filter and formulas."
+    },
+    {
+      "name": "movie_ratings",
+      "desc": "Scatter plot with ordinal on top"
+    },
     {"name": "trellis_area"},
     {"name": "trellis_stacked_bar"},
     {"name": "trellis_scatter"},
     {
       "name": "heatmap",
       "desc": "Text Heatmap with overencoded data."
-    }
-  ],
-  'Other': [
-    {
-      "name": "movie_ratings",
-      "desc": "Scatter plot with ordinal on top"
     }
   ]
 };
