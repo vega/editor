@@ -36,7 +36,7 @@ ved.mode = function() {
     });
 
     ved.el.select('.vega-editor').attr('class', 'vega-editor vega');
-    ved.vgEditor.resize();
+    ved.resize();
   } else if (ved.currentMode === 'vega-lite') {
     ved.vgEditor.setOptions({
       readOnly: true,
@@ -45,8 +45,7 @@ ved.mode = function() {
     });
 
     ved.el.select('.vega-editor').attr('class', 'vega-editor vega-lite');
-    ved.vgEditor.resize();
-    ved.vlEditor.resize();
+    ved.resize();
     if (ved.vlEditor.getValue().length > 0) {
       ved.parseVl();
     } else {
@@ -98,6 +97,7 @@ ved.selectVl = function(spec) {
     ved.vlEditor.gotoLine(0);
     desc.html('');
     ved.parseVl();
+    ved.resizeVlEditor();
     return;
   }
 
@@ -117,6 +117,7 @@ ved.selectVl = function(spec) {
     ved.vgEditor.setValue('');
     ved.resetView();
   }
+  ved.resizeVlEditor();
 };
 
 ved.uriVl = function(entry) {
@@ -215,6 +216,21 @@ ved.resetView = function() {
 
 ved.resize = function(event) {
   ved.vgEditor.resize();
+  ved.vlEditor.resize();
+};
+
+ved.resizeVlEditor = function() {
+  var height = ved.vlEditor.getSession().getDocument().getLength() *
+  ved.vlEditor.renderer.lineHeight + ved.vlEditor.renderer.scrollBar.getWidth();
+
+  if (height > 600) {
+    return;
+  } else if (height < 200) {
+    height = 200;
+  }
+
+  ved.$d3.select('.vl-spec').style('height', height + 'px');
+  ved.vlEditor.resize();
 };
 
 ved.export = function() {
@@ -308,20 +324,8 @@ ved.init = function(el, dir) {
     });
 
     // adjust height of vl editor based on content
-    var resizeVlEditor = function() {
-      var height = vlEditor.getSession().getDocument().getLength() *
-      vlEditor.renderer.lineHeight + vlEditor.renderer.scrollBar.getWidth();
-
-      if (height > 600) {
-        return;
-      } else if (height < 200) {
-        height = 200;
-      }
-
-      ved.$d3.select('.vl-spec').style('height', height + 'px');
-      vlEditor.resize();
-    };
-    vlEditor.on('input', resizeVlEditor);
+    vlEditor.on('input', ved.resizeVlEditor);
+    ved.resizeVlEditor();
 
     // Initialize application
     el.select('.btn_spec_format').on('click', ved.format);
