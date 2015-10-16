@@ -56,6 +56,12 @@
 .vega-editor .vis {
 }
 
+.vega-editor .sel_mode {
+  font-size: 15pt;
+  width: 125px;
+  margin-left: 5px;
+}
+
 .vega-editor .mod_params {
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
@@ -73,6 +79,10 @@
   font-family: Monaco, Courier New;
   font-size: 10px;
   white-space: pre;
+}
+
+.vg-spec .ace_content.disabled {
+  background-color: #E4E4E4;
 }
 
 .vega-editor .vis svg,

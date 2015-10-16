@@ -34,8 +34,9 @@ ved.mode = function() {
       highlightActiveLine: true,
       highlightGutterLine: true
     });
-
     ved.el.select('.vega-editor').attr('class', 'vega-editor vega');
+    ved.el.select('.vg-spec .ace_content').attr('class', 'ace_content');
+
     ved.resize();
   } else if (ved.currentMode === 'vega-lite') {
     ved.vgEditor.setOptions({
@@ -43,6 +44,8 @@ ved.mode = function() {
       highlightActiveLine: false,
       highlightGutterLine: false
     });
+
+    ved.el.select('.vg-spec .ace_content').attr('class', 'ace_content disabled');
 
     ved.el.select('.vega-editor').attr('class', 'vega-editor vega-lite');
     ved.resize();
