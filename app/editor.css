@@ -88,6 +88,14 @@
   height: 19px;
 }
 
+.vega-editor .vl-spec .ace_scrollbar {
+  display: none;
+}
+
+.vega-editor .vl-spec:hover .ace_scrollbar {
+  display: block;
+}
+
 .vega-param {
   line-height: 15px;
 }

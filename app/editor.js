@@ -307,6 +307,22 @@ ved.init = function(el, dir) {
       editor.gotoLine(0);
     });
 
+    // adjust height of vl editor based on content
+    var resizeVlEditor = function() {
+      var height = vlEditor.getSession().getDocument().getLength() *
+      vlEditor.renderer.lineHeight + vlEditor.renderer.scrollBar.getWidth();
+
+      if (height > 600) {
+        return;
+      } else if (height < 200) {
+        height = 200;
+      }
+
+      ved.$d3.select('.vl-spec').style('height', height + 'px');
+      vlEditor.resize();
+    };
+    vlEditor.on('input', resizeVlEditor);
+
     // Initialize application
     el.select('.btn_spec_format').on('click', ved.format);
     el.select('.btn_vg_parse').on('click', ved.parseVg);

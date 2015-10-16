@@ -12,7 +12,7 @@ var VL_SPECS = {
     {"name": "grouped_bar","desc": "Grouped bar chart."},
     {
       "name": "scatter",
-      "desc": "Horse power and miles per gallon"
+      "desc": "Horse power and miles per gallon of cars."
     },
     {"name": "binned_scatter"},
     {
