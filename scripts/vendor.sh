@@ -15,6 +15,7 @@ cp node_modules/topojson/topojson.js $TARGET
 cp node_modules/vega-lite/vega-lite.js $TARGET
 cp node_modules/vega/vega* $TARGET
 cp node_modules/vega-embed/vega-embed* $TARGET
+cp lib/json3-compactstringify.js $TARGET
 
 if [ ! -d "$TARGET/ace" ]; then
   mkdir $TARGET/ace
