@@ -1,9 +1,56 @@
-var VL_SPECS = [
-  {
-    "name": "bar",
-    "desc": "Simple bar chart with embedded data"
-  }
-];
+var VL_SPECS = {
+  'Basic': [
+    {
+      "name": "bar",
+      "desc": "A simple bar chart with embedded data."
+    },
+    {
+      "name": "filtered_bar",
+      "desc": "A simple bar chart with embedded data and uses a filter and formulas."
+    },
+    {"name": "agg_bar"},
+    {"name": "grouped_bar","desc": "Grouped bar chart."},
+    {
+      "name": "scatter",
+      "desc": "Horse power and miles per gallon"
+    },
+    {"name": "binned_scatter"},
+    {
+      "name": "horsepower",
+      "desc": "Line chart of horsepower over time"
+    },
+    {"name": "histogram"},
+    {
+      "name": "stacked_histogram",
+      "desc": "Simple histogram with bars broken down by the number of cylinders. Also has a legend."
+    },
+    {"name": "area"},
+    {"name": "stacked_area"},
+    {"name": "stacked_bar"},
+    {"name": "1d_bar"}
+  ],
+  'Demos': [
+    {
+      "name": "barley",
+      "desc": "Classic Barley Example. Trellis Plot, sorted by mean yield."
+    }
+  ],
+  'Trellis': [
+    {"name": "trellis_area"},
+    {"name": "trellis_stacked_bar"},
+    {"name": "trellis_scatter"},
+    {
+      "name": "heatmap",
+      "desc": "Text Heatmap with overencoded data."
+    }
+  ],
+  'Other': [
+    {
+      "name": "movie_ratings",
+      "desc": "Scatter plot with ordinal on top"
+    }
+  ]
+};
 
 var VG_SPECS = {
   'Static': [

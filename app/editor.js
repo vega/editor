@@ -172,7 +172,7 @@ ved.parseVl = function(callback) {
 
   // use dataset stats only if the spec does not have embedded stats
   if (!opt.data  || opt.data.values === undefined) {
-    d3.json(opt.data.url, function(err, data) {
+    d3.json(ved.path + opt.data.url, function(err, data) {
       if (err) return alert('Error loading data ' + err.statusText);
       haveStats(vl.data.stats(data));
     });
@@ -262,7 +262,11 @@ ved.init = function(el, dir) {
     vlSel.on('change', ved.selectVl);
     vlSel.append('option').text('Custom');
     vlSel.selectAll('optgroup')
-      .data(VL_SPECS)
+      .data(Object.keys(VL_SPECS))
+     .enter().append('optgroup')
+      .attr('label', function(key) { return key; })
+     .selectAll('option.spec')
+      .data(function(key) { return VL_SPECS[key]; })
      .enter().append('option')
       .text(function(d) { return d.name; });
 
@@ -312,13 +316,14 @@ ved.init = function(el, dir) {
     d3.select(window).on('resize', ved.resize);
     ved.resize();
 
-    ved.vgSpecs = Object.keys(VG_SPECS).reduce(function(a, k) {
-      return a.concat(VG_SPECS[k].map(function(d) { return d.name; }));
-    }, []);
+    var getIndexes = function(obj) {
+      return Object.keys(obj).reduce(function(a, k) {
+        return a.concat(obj[k].map(function(d) { return d.name; }));
+      }, []);
+    };
 
-    ved.vlSpecs = VL_SPECS.reduce(function(a, d) {
-      return a.concat(d.name);
-    }, []);
+    ved.vgSpecs = getIndexes(VG_SPECS);
+    ved.vlSpecs = getIndexes(VL_SPECS);
 
     // Handle application parameters
     var p = ved.params();

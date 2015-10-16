@@ -1,0 +1,13 @@
+{
+  "marktype": "bar",
+  "encoding": {
+    "x": {
+      "bin": {"maxbins": 15},
+      "name": "Horsepower",
+      "type": "Q"
+    },
+    "y": {"name": "*","type": "Q","aggregate": "count"},
+    "color": {"name": "Cylinders","type": "N"}
+  },
+  "data": {"url": "data/cars.json"}
+}
