@@ -142,7 +142,7 @@ ved.format = function() {
     var text = editor.getValue();
     if (text.length) {
       var spec = JSON.parse(text);
-      text = JSON.stringify(spec, null, 2, 60);
+      text = JSON3.stringify(spec, null, 2, 60);
       editor.setValue(text);
       editor.gotoLine(0);
     }
@@ -160,7 +160,7 @@ ved.parseVl = function(callback) {
 
   var haveStats = function(stats) {
     var vgSpec = vl.compile(opt, stats);
-    var text = JSON.stringify(vgSpec, null, 2, 60);
+    var text = JSON3.stringify(vgSpec, null, 2, 60);
     ved.vgEditor.setValue(text);
     ved.vgEditor.gotoLine(0);
 
