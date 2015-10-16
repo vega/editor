@@ -1,6 +1,6 @@
 {
   "name": "vega-editor",
-  "version": "1.2.1",
+  "version": "1.2.0",
   "description": "Web-based Vega authoring environment.",
   "keywords": [
     "vega",
@@ -38,17 +38,15 @@
     "topojson": "^1.6.19",
     "vega": "latest",
     "vega-embed": "latest",
-    "vega-lite": "^0.8.0"
+    "vega-lite": "^0.8.0",
+    "vega-datasets": "vega/vega-datasets#gh-pages"
   },
   "devDependencies": {
     "chokidar": "^1.0.3"
   },
   "scripts": {
-    "data": "scripts/data.sh",
     "deploy": "scripts/deploy.sh",
     "vendor": "npm install && scripts/vendor.sh",
-    "link": "scripts/link.sh",
-    "postvendor": "npm run data",
     "watch": "node scripts/watch.js"
   }
 }
