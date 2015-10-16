@@ -2,7 +2,10 @@ var ved = {
   version: '1.2.1',
   data: undefined,
   renderType: 'canvas',
-  editor: null
+  vgEditor: null,
+  vlEditor: null,
+  el: null,
+  currentMode: null
 };
 
 ved.params = function() {
@@ -16,36 +19,112 @@ ved.params = function() {
     }, {});
 };
 
-ved.select = function(spec) {
+ved.mode = function() {
+  var sel = ved.$d3.select('.sel_mode').node(),
+      idx = sel.selectedIndex,
+      newMode = sel.options[idx].value;
+
+  if (ved.currentMode === newMode)
+    return;
+  ved.currentMode = newMode;
+
+  if (ved.currentMode === 'vega') {
+    ved.vgEditor.setOptions({
+      readOnly: false,
+      highlightActiveLine: true,
+      highlightGutterLine: true
+    });
+
+    ved.el.select('.vega-editor').attr('class', 'vega-editor vega');
+    ved.vgEditor.resize();
+  } else if (ved.currentMode === 'vega-lite') {
+    ved.vgEditor.setOptions({
+      readOnly: true,
+      highlightActiveLine: false,
+      highlightGutterLine: false
+    });
+
+    ved.el.select('.vega-editor').attr('class', 'vega-editor vega-lite');
+    ved.vgEditor.resize();
+    ved.vlEditor.resize();
+    if (ved.vlEditor.getValue().length > 0) {
+      ved.parseVl();
+    } else {
+      ved.resetView();
+      ved.vgEditor.setValue('');
+    }
+  }
+};
+
+ved.switchToVega = function() {
+  var sel = ved.$d3.select('.sel_mode').node();
+  sel.selectedIndex = 0;
+  ved.mode();
+};
+
+ved.selectVg = function(spec) {
   var desc = ved.$d3.select('.spec_desc');
 
   if (spec) {
-    ved.editor.setValue(spec);
-    ved.editor.gotoLine(0);
+    ved.vgEditor.setValue(spec);
+    ved.vgEditor.gotoLine(0);
     desc.html('');
-    ved.parse();
+    ved.parseVg();
     return;
   }
 
-  var sel = ved.$d3.select('.sel_spec').node(),
+  var sel = ved.$d3.select('.sel_vg_spec').node(),
       idx = sel.selectedIndex;
   spec = d3.select(sel.options[idx]).datum();
 
   if (idx > 0) {
-    d3.xhr(ved.uri(spec), function(error, response) {
-      ved.editor.setValue(response.responseText);
-      ved.editor.gotoLine(0);
-      ved.parse(function() { desc.html(spec.desc || ''); });
+    d3.xhr(ved.uriVg(spec), function(error, response) {
+      ved.vgEditor.setValue(response.responseText);
+      ved.vgEditor.gotoLine(0);
+      ved.parseVg(function() { desc.html(spec.desc || ''); });
     });
   } else {
-    ved.editor.setValue('');
-    ved.editor.gotoLine(0);
-    desc.html('');
+    ved.vgEditor.setValue('');
+    ved.vgEditor.gotoLine(0);
+    ved.resetView();
   }
 };
 
-ved.uri = function(entry) {
-  return ved.path + 'spec/' + entry.name + '.json';
+ved.selectVl = function(spec) {
+  var desc = ved.$d3.select('.spec_desc');
+
+  if (spec) {
+    ved.vlEditor.setValue(spec);
+    ved.vlEditor.gotoLine(0);
+    desc.html('');
+    ved.parseVl();
+    return;
+  }
+
+  var sel = ved.$d3.select('.sel_vl_spec').node(),
+      idx = sel.selectedIndex;
+  spec = d3.select(sel.options[idx]).datum();
+
+  if (idx > 0) {
+    d3.xhr(ved.uriVl(spec), function(error, response) {
+      ved.vlEditor.setValue(response.responseText);
+      ved.vlEditor.gotoLine(0);
+      ved.parseVl(function() { desc.html(spec.desc || ''); });
+    });
+  } else {
+    ved.vlEditor.setValue('');
+    ved.vlEditor.gotoLine(0);
+    ved.vgEditor.setValue('');
+    ved.resetView();
+  }
+};
+
+ved.uriVl = function(entry) {
+  return ved.path + 'vlspec/' + entry.name + '.json';
+};
+
+ved.uriVg = function(entry) {
+  return ved.path + 'vgspec/' + entry.name + '.json';
 };
 
 ved.renderer = function() {
@@ -54,19 +133,58 @@ ved.renderer = function() {
       ren = sel.options[idx].value;
 
   ved.renderType = ren;
-  ved.parse();
+  ved.parseVg();
 };
 
 ved.format = function() {
-  var spec = JSON.parse(ved.editor.getValue()),
+  [ved.vlEditor, ved.vgEditor].forEach(function(editor) {
+    var text = editor.getValue();
+    if (text.length) {
+      var spec = JSON.parse(text);
       text = JSON.stringify(spec, null, 2);
-  ved.editor.setValue(text);
+      editor.setValue(text);
+      editor.gotoLine(0);
+    }
+  });
 };
 
-ved.parse = function(callback) {
+ved.parseVl = function(callback) {
   var opt, source;
   try {
-    opt = JSON.parse(ved.editor.getValue());
+    opt = JSON.parse(ved.vlEditor.getValue());
+  } catch (e) {
+    console.log(e);
+    return;
+  }
+
+  var haveStats = function(stats) {
+    var vgSpec = vl.compile(opt, stats);
+    var text = JSON.stringify(vgSpec, null, 2);
+    ved.vgEditor.setValue(text);
+    ved.vgEditor.gotoLine(0);
+
+    // change select for vega to Custom
+    var vgSel = ved.el.select('.sel_vg_spec');
+    vgSel.node().selectedIndex = 0;
+
+    ved.parseVg(callback);
+  };
+
+  // use dataset stats only if the spec does not have embedded stats
+  if (!opt.data  || opt.data.values === undefined) {
+    d3.json(opt.data.url, function(err, data) {
+      if (err) return alert('Error loading data ' + err.statusText);
+      haveStats(vl.data.stats(data));
+    });
+  } else {
+    haveStats(null);
+  }
+};
+
+ved.parseVg = function(callback) {
+  var opt, source;
+  try {
+    opt = JSON.parse(ved.vgEditor.getValue());
   } catch (e) {
     console.log(e);
     return;
@@ -80,18 +198,23 @@ ved.parse = function(callback) {
   opt.renderer = opt.renderer || ved.renderType;
   opt.parameter_el = '.mod_params';
 
-  if (ved.view) ved.view.destroy();
-  d3.select('.mod_params').html('');
-  d3.select('.spec_desc').html('');
-  vg.embed('.vis', opt, function(view, spec) {
+  ved.resetView();
+  var a = vg.embed('.vis', opt, function(view, spec) {
     ved.spec = spec;
     ved.view = view;
     if (callback) callback(view);
   });
 };
 
+ved.resetView = function() {
+  if (ved.view) ved.view.destroy();
+  d3.select('.mod_params').html('');
+  d3.select('.spec_desc').html('');
+  d3.select('.vis').html('');
+};
+
 ved.resize = function(event) {
-  ved.editor.resize();
+  ved.vgEditor.resize();
 };
 
 ved.export = function() {
@@ -116,60 +239,85 @@ ved.init = function(el, dir) {
   ved.path = PATH;
 
   el = (ved.$d3 = d3.select(el));
+  ved.el = el;
 
   d3.text(PATH + 'template.html', function(err, text) {
     el.html(text);
 
-    // Specification drop-down menu
-    var sel = el.select('.sel_spec');
-    sel.on('change', ved.select);
-    sel.append('option').text('Custom');
-    sel.selectAll('optgroup')
-      .data(Object.keys(SPECS))
+    // Vega specification drop-down menu
+    var vgSel = el.select('.sel_vg_spec');
+    vgSel.on('change', ved.selectVg);
+    vgSel.append('option').text('Custom');
+    vgSel.selectAll('optgroup')
+      .data(Object.keys(VG_SPECS))
      .enter().append('optgroup')
       .attr('label', function(key) { return key; })
      .selectAll('option.spec')
-      .data(function(key) { return SPECS[key]; })
+      .data(function(key) { return VG_SPECS[key]; })
+     .enter().append('option')
+      .text(function(d) { return d.name; });
+
+    // Vega-lite specification drop-down menu
+    var vlSel = el.select('.sel_vl_spec');
+    vlSel.on('change', ved.selectVl);
+    vlSel.append('option').text('Custom');
+    vlSel.selectAll('optgroup')
+      .data(VL_SPECS)
      .enter().append('option')
       .text(function(d) { return d.name; });
 
     // Renderer drop-down menu
     var ren = el.select('.sel_render');
-    ren.on('change', ved.renderer)
+    ren.on('change', ved.renderer);
     ren.selectAll('option')
       .data(['Canvas', 'SVG'])
      .enter().append('option')
       .attr('value', function(d) { return d.toLowerCase(); })
       .text(function(d) { return d; });
 
-    // Code Editor
-    var editor = ved.editor = ace.edit(ved.$d3.select('.spec').node());
-    editor.getSession().setMode('ace/mode/json');
-    editor.getSession().setTabSize(2);
-    editor.getSession().setUseSoftTabs(true);
-    editor.setShowPrintMargin(false);
-    editor.on('focus', function() {
-      editor.setHighlightActiveLine(true);
-      d3.selectAll('.ace_gutter-active-line').style('background', '#DCDCDC');
-      d3.selectAll('.ace-tm .ace_cursor').style('visibility', 'visible');
+    // Vega or Vega-lite mode
+    var mode = el.select('.sel_mode');
+    mode.on('change', ved.mode);
+
+    // Code Editors
+    var vlEditor = ved.vlEditor = ace.edit(ved.$d3.select('.vl-spec').node());
+    var vgEditor = ved.vgEditor = ace.edit(ved.$d3.select('.vg-spec').node());
+
+    [vlEditor, vgEditor].forEach(function(editor) {
+      editor.getSession().setMode('ace/mode/json');
+      editor.getSession().setTabSize(2);
+      editor.getSession().setUseSoftTabs(true);
+      editor.setShowPrintMargin(false);
+      editor.on('focus', function() {
+        d3.selectAll('.ace_gutter-active-line').style('background', '#DCDCDC');
+        d3.selectAll('.ace-tm .ace_cursor').style('visibility', 'visible');
+      });
+      editor.on('blur', function() {
+        d3.selectAll('.ace_gutter-active-line').style('background', 'transparent');
+        d3.selectAll('.ace-tm .ace_cursor').style('visibility', 'hidden');
+        editor.clearSelection();
+      });
+      editor.$blockScrolling = Infinity;
+
+      editor.setValue('');
+      editor.gotoLine(0);
     });
-    editor.on('blur', function() {
-      editor.setHighlightActiveLine(false);
-      d3.selectAll('.ace_gutter-active-line').style('background', 'transparent');
-      d3.selectAll('.ace-tm .ace_cursor').style('visibility', 'hidden');
-      editor.clearSelection();
-    });
-    editor.$blockScrolling = Infinity;
 
     // Initialize application
     el.select('.btn_spec_format').on('click', ved.format);
-    el.select('.btn_spec_parse').on('click', ved.parse);
+    el.select('.btn_vg_parse').on('click', ved.parseVg);
+    el.select('.btn_vl_parse').on('click', ved.parseVl);
+    el.select('.btn_to_vega').on('click', ved.switchToVega);
     el.select('.btn_export').on('click', ved.export);
     d3.select(window).on('resize', ved.resize);
     ved.resize();
 
-    ved.specs = Object.keys(SPECS).reduce(function(a, k) {
-      return a.concat(SPECS[k].map(function(d) { return d.name; }));
+    ved.vgSpecs = Object.keys(VG_SPECS).reduce(function(a, k) {
+      return a.concat(VG_SPECS[k].map(function(d) { return d.name; }));
+    }, []);
+
+    ved.vlSpecs = VL_SPECS.reduce(function(a, d) {
+      return a.concat(d.name);
     }, []);
 
     // Handle application parameters
@@ -178,17 +326,27 @@ ved.init = function(el, dir) {
       ren.node().selectedIndex = p.renderer.toLowerCase() === 'svg' ? 1 : 0;
       ved.renderType = p.renderer;
     }
+
+    if (p.mode) {
+      mode.node().selectedIndex = p.mode.toLowerCase() === 'vega-lite' ? 1 : 0;
+    }
+    ved.mode();
+
     if (p.spec) {
       var spec = decodeURIComponent(p.spec),
-          idx = ved.specs.indexOf(spec) + 1;
+          isVl = ved.currentMode === 'vega-lite',
+          specs = isVl ? ved.vlSpecs : ved.vgSpecs,
+          idx = specs.indexOf(spec) + 1,
+          sel = isVl ? vlSel : vgSel,
+          select = isVl ? ved.selectVl : ved.selectVg;
 
       if (idx > 0) {
         sel.node().selectedIndex = idx;
-        ved.select();
+        select();
       } else {
         try {
           var json = JSON.parse(spec);
-          ved.select(spec);
+          select(spec);
         } catch (err) {
           console.error(err);
           console.error('Specification loading failed: ' + spec);
@@ -206,12 +364,15 @@ ved.init = function(el, dir) {
         evt.source.postMessage(true, '*');
       }
 
+      // only handle post messages for vega
+      ved.switchToVega();
+
       // load spec
       if (data.spec) {
-        ved.select(data.spec);
+        ved.selectVl(data.spec);
       } else if (data.file) {
         sel.node().selectedIndex = ved.specs.indexOf(data.file) + 1;
-        ved.select();
+        ved.selectVl();
       }
     }, false);
   });
