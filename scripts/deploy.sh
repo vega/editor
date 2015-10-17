@@ -3,7 +3,7 @@ TARGET=vendor
 STAGE=gh_pages_stage
 
 # Check if all files are commited
-if [ ! -z "$(git status --porcelain)" ]; then 
+if [ ! -z "$(git status --porcelain)" ]; then
   echo "There are uncommitted files. Please commit or stash first!"
   git status
   exit 1
@@ -11,9 +11,9 @@ fi
 
 # Check if gh-pages files are commited
 git checkout gh-pages
-if [ -z "$(git status --porcelain)" ]; then 
+if [ -z "$(git status --porcelain)" ]; then
   echo "All tracked files are commited. Publishing files to github pages."
-else 
+else
   echo "There are uncommitted gh-pages files. Please commit or stash first!"
   git status
   git checkout master
@@ -22,8 +22,9 @@ fi
 git checkout master
 
 # Fresh npm install to ensure no dev changes are included
-# npm install subsequently invoked by npm run vendor
-rm -rf node_modules
+# move node modules out of the way so npm link remains
+mv node_modules temp
+npm install
 
 # Ensure vendor dependencies
 npm run vendor
@@ -49,3 +50,5 @@ git push origin gh-pages
 
 # Restore state
 git checkout master
+tm -rf node_modules
+mv temp node_modules
