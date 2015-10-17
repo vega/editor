@@ -45,7 +45,8 @@
   },
   "scripts": {
     "deploy": "scripts/deploy.sh",
-    "vendor": "npm install && scripts/vendor.sh",
+    "prevendor": "npm install",
+    "vendor": "scripts/vendor.sh",
     "watch": "node scripts/watch.js"
   }
 }
