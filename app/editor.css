@@ -54,6 +54,7 @@
 }
 
 .vega-editor .vis {
+  overflow: auto;
 }
 
 .vega-editor .sel_mode {
