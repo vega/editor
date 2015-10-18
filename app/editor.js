@@ -80,63 +80,51 @@ ved.editorVisibility = function() {
   ved.resize();
 };
 
-ved.selectVg = function(spec) {
+ved.select = function(spec) {
   var desc = ved.$d3.select('.spec_desc');
 
-  if (spec) {
-    ved.vgEditor.setValue(spec);
-    ved.vgEditor.gotoLine(0);
-    desc.html('');
-    ved.parseVg();
-    return;
+  var editor, parse, sel;
+
+  if (ved.currentMode === 'vega') {
+    editor = ved.vgEditor;
+    parse = ved.parseVg;
+    sel = ved.$d3.select('.sel_vg_spec').node();
+  } else if (ved.currentMode === 'vega-lite') {
+    editor = ved.vlEditor;
+    parse = ved.parseVl;
+    sel = ved.$d3.select('.sel_vl_spec').node();
   }
 
-  var sel = ved.$d3.select('.sel_vg_spec').node(),
-      idx = sel.selectedIndex;
-  spec = d3.select(sel.options[idx]).datum();
-
-  if (idx > 0) {
-    d3.xhr(ved.uriVg(spec), function(error, response) {
-      ved.vgEditor.setValue(response.responseText);
-      ved.vgEditor.gotoLine(0);
-      ved.parseVg(function() { desc.html(spec.desc || ''); });
-    });
-  } else {
-    ved.vgEditor.setValue('');
-    ved.vgEditor.gotoLine(0);
-    ved.resetView();
-  }
-};
-
-ved.selectVl = function(spec) {
-  var desc = ved.$d3.select('.spec_desc');
-
   if (spec) {
-    ved.vlEditor.setValue(spec);
-    ved.vlEditor.gotoLine(0);
+    editor.setValue(spec);
+    editor.gotoLine(0);
     desc.html('');
-    ved.parseVl();
+    parse();
     ved.resizeVlEditor();
     return;
   }
 
-  var sel = ved.$d3.select('.sel_vl_spec').node(),
-      idx = sel.selectedIndex;
+  var idx = sel.selectedIndex;
   spec = d3.select(sel.options[idx]).datum();
 
   if (idx > 0) {
     d3.xhr(ved.uriVl(spec), function(error, response) {
-      ved.vlEditor.setValue(response.responseText);
-      ved.vlEditor.gotoLine(0);
-      ved.parseVl(function() { desc.html(spec.desc || ''); });
+      editor.setValue(response.responseText);
+      editor.gotoLine(0);
+      parse(function() { desc.html(spec.desc || ''); });
     });
   } else {
-    ved.vlEditor.setValue('');
-    ved.vlEditor.gotoLine(0);
+    editor.setValue('');
+    editor.gotoLine(0);
     ved.vgEditor.setValue('');
     ved.resetView();
   }
-  ved.resizeVlEditor();
+
+  if (ved.currentMode === 'vega') {
+    ved.resize();
+  } else if (ved.currentMode === 'vl') {
+    ved.resizeVlEditor();
+  }
 };
 
 ved.uriVl = function(entry) {
@@ -239,7 +227,7 @@ ved.resize = function(event) {
 };
 
 ved.resizeVlEditor = function() {
-  if (ved.vgHidden)
+  if (ved.vgHidden || ved.currentMode !== 'vega-lite')
     return;
 
   var height = ved.vlEditor.getSession().getDocument().getLength() *
@@ -316,7 +304,7 @@ ved.init = function(el, dir) {
 
     // Vega specification drop-down menu
     var vgSel = el.select('.sel_vg_spec');
-    vgSel.on('change', ved.selectVg);
+    vgSel.on('change', ved.select);
     vgSel.append('option').text('Custom');
     vgSel.selectAll('optgroup')
       .data(Object.keys(VG_SPECS))
@@ -329,7 +317,7 @@ ved.init = function(el, dir) {
 
     // Vega-lite specification drop-down menu
     var vlSel = el.select('.sel_vl_spec');
-    vlSel.on('change', ved.selectVl);
+    vlSel.on('change', ved.select);
     vlSel.append('option').text('Custom');
     vlSel.selectAll('optgroup')
       .data(Object.keys(VL_SPECS))
@@ -433,16 +421,15 @@ ved.init = function(el, dir) {
           isVl = ved.currentMode === 'vega-lite',
           specs = isVl ? ved.vlSpecs : ved.vgSpecs,
           idx = specs.indexOf(spec) + 1,
-          sel = isVl ? vlSel : vgSel,
-          select = isVl ? ved.selectVl : ved.selectVg;
+          sel = isVl ? vlSel : vgSel;
 
       if (idx > 0) {
         sel.node().selectedIndex = idx;
-        select();
+        ved.select();
       } else {
         try {
           var json = JSON.parse(decodeURIComponent(spec));
-          select(spec);
+          ved.select(spec);
           ved.format();
         } catch (err) {
           console.error(err);
@@ -466,10 +453,10 @@ ved.init = function(el, dir) {
 
       // load spec
       if (data.spec) {
-        ved.selectVl(data.spec);
+        ved.select(data.spec);
       } else if (data.file) {
         sel.node().selectedIndex = ved.specs.indexOf(data.file) + 1;
-        ved.selectVl();
+        ved.select();
       }
     }, false);
   });
