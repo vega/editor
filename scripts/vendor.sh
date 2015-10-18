@@ -39,7 +39,6 @@ cp lib/json3-compactstringify.js $TARGET
 eval $VEGA_OP "$CWD/node_modules/vega/vega*" $TARGET
 eval $VEGA_EMBED_OP "$CWD/node_modules/vega-embed/vega-embed*" $TARGET
 eval $VEGA_LITE_OP "$CWD/node_modules/vega-lite/vega-lite*" $TARGET
-eval $VEGA_LITE_OP "$CWD/node_modules/vega-lite/spec.json" $TARGET
 
 if [ ! -d "$TARGET/ace" ]; then
   mkdir $TARGET/ace
