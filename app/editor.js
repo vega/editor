@@ -4,8 +4,8 @@ var ved = {
   renderType: 'canvas',
   vgEditor: null,
   vlEditor: null,
-  el: null,
-  currentMode: null
+  currentMode: null,
+  vgHidden: true  // vega editor hidden in vl mode
 };
 
 ved.params = function() {
@@ -34,10 +34,8 @@ ved.mode = function() {
       highlightActiveLine: true,
       highlightGutterLine: true
     });
-    ved.el.select('.vega-editor').attr('class', 'vega-editor vega');
-    ved.el.select('.vg-spec .ace_content').attr('class', 'ace_content');
-
-    ved.resize();
+    ved.$d3.select('.vega-editor').attr('class', 'vega-editor vega');
+    ved.$d3.select('.vg-spec .ace_content').attr('class', 'ace_content');
   } else if (ved.currentMode === 'vega-lite') {
     ved.vgEditor.setOptions({
       readOnly: true,
@@ -45,23 +43,39 @@ ved.mode = function() {
       highlightGutterLine: false
     });
 
-    ved.el.select('.vg-spec .ace_content').attr('class', 'ace_content disabled');
+    ved.$d3.select('.vg-spec .ace_content').attr('class', 'ace_content disabled');
+    ved.$d3.select('.vega-editor').attr('class', 'vega-editor vega-lite');
 
-    ved.el.select('.vega-editor').attr('class', 'vega-editor vega-lite');
-    ved.resize();
     if (ved.vlEditor.getValue().length > 0) {
       ved.parseVl();
     } else {
       ved.resetView();
       ved.vgEditor.setValue('');
     }
+  } else {
+    console.warn('Unknown mode ' + ved.currentMode);
   }
+
+  ved.editorVisibility();
 };
 
 ved.switchToVega = function() {
   var sel = ved.$d3.select('.sel_mode').node();
   sel.selectedIndex = 0;
   ved.mode();
+};
+
+// Changes visibility of vega editor in vl mode
+ved.editorVisibility = function() {
+  if (ved.vgHidden && ved.currentMode === 'vega-lite') {
+    ved.$d3.select('.vg-spec').style('display', 'none');
+    ved.$d3.select('.vl-spec')
+      .style('flex', '1 1 auto');
+  } else {
+    ved.$d3.select('.vg-spec').style('display', 'block');
+    ved.resizeVlEditor();
+  }
+  ved.resize();
 };
 
 ved.selectVg = function(spec) {
@@ -168,7 +182,7 @@ ved.parseVl = function(callback) {
     ved.vgEditor.gotoLine(0);
 
     // change select for vega to Custom
-    var vgSel = ved.el.select('.sel_vg_spec');
+    var vgSel = ved.$d3.select('.sel_vg_spec');
     vgSel.node().selectedIndex = 0;
 
     ved.parseVg(callback);
@@ -223,6 +237,9 @@ ved.resize = function(event) {
 };
 
 ved.resizeVlEditor = function() {
+  if (ved.vgHidden)
+    return;
+
   var height = ved.vlEditor.getSession().getDocument().getLength() *
   ved.vlEditor.renderer.lineHeight + ved.vlEditor.renderer.scrollBar.getWidth();
 
@@ -232,8 +249,41 @@ ved.resizeVlEditor = function() {
     height = 200;
   }
 
-  ved.$d3.select('.vl-spec').style('height', height + 'px');
-  ved.vlEditor.resize();
+  ved.$d3.select('.vl-spec')
+    .style('height', height + 'px')
+    .style('flex', 'none');
+  ved.resize();
+};
+
+ved.getPermanentUrl = function() {
+  var params = [];
+  params.push('mode=' + ved.currentMode);
+
+  var sel;
+  if (ved.currentMode === 'vega') {
+    sel = ved.$d3.select('.sel_vg_spec').node();
+  } else {
+    sel = ved.$d3.select('.sel_vl_spec').node();
+  }
+  var idx = sel.selectedIndex,
+    spec = d3.select(sel.options[idx]).datum();
+
+  if (spec) {
+    params.push('spec=' + spec.name);
+  } else {
+    if (ved.currentMode === 'vega') {
+      spec = JSON.parse(ved.vgEditor.getValue());
+    } else {
+      spec = JSON.parse(ved.vlEditor.getValue());
+    }
+    params.push('spec=' + encodeURIComponent(JSON.stringify(spec)));
+  }
+
+  if (!ved.vgHidden)
+    params.push('showEditor=1');
+
+  var path = location.protocol + '//' + location.host + location.pathname;
+  return path + '?' + params.join('&');
 };
 
 ved.export = function() {
@@ -258,7 +308,6 @@ ved.init = function(el, dir) {
   ved.path = PATH;
 
   el = (ved.$d3 = d3.select(el));
-  ved.el = el;
 
   d3.text(PATH + 'template.html', function(err, text) {
     el.html(text);
@@ -336,6 +385,13 @@ ved.init = function(el, dir) {
     el.select('.btn_vl_parse').on('click', ved.parseVl);
     el.select('.btn_to_vega').on('click', ved.switchToVega);
     el.select('.btn_export').on('click', ved.export);
+    el.select('.btn_toggle_vega').on('click', function() {
+      ved.vgHidden = !ved.vgHidden;
+      ved.editorVisibility();
+    });
+    el.select('.btn_permanent').on('click', function() {
+      location = ved.getPermanentUrl();
+    });
     d3.select(window).on('resize', ved.resize);
     ved.resize();
 
@@ -360,6 +416,13 @@ ved.init = function(el, dir) {
     }
     ved.mode();
 
+    if (ved.currentMode === 'vega-lite') {
+      if (p.showEditor) {
+        ved.vgHidden = false;
+        ved.editorVisibility();
+      }
+    }
+
     if (p.spec) {
       var spec = decodeURIComponent(p.spec),
           isVl = ved.currentMode === 'vega-lite',
@@ -373,8 +436,9 @@ ved.init = function(el, dir) {
         select();
       } else {
         try {
-          var json = JSON.parse(spec);
+          var json = JSON.parse(decodeURIComponent(spec));
           select(spec);
+          ved.format();
         } catch (err) {
           console.error(err);
           console.error('Specification loading failed: ' + spec);
