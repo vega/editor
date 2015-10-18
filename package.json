@@ -38,7 +38,7 @@
     "topojson": "^1.6.19",
     "vega": "latest",
     "vega-embed": "latest",
-    "vega-lite": "^0.8.0",
+    "vega-lite": "latest",
     "vega-datasets": "vega/vega-datasets#gh-pages"
   },
   "devDependencies": {
