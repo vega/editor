@@ -383,7 +383,7 @@ ved.init = function(el, dir) {
       ved.editorVisibility();
     });
     el.select('.btn_permanent').on('click', function() {
-      location = ved.getPermanentUrl();
+      window.history.replaceState("", document.title, ved.getPermanentUrl());
     });
     d3.select(window).on('resize', ved.resize);
     ved.resize();
