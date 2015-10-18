@@ -448,14 +448,19 @@ ved.init = function(el, dir) {
         evt.source.postMessage(true, '*');
       }
 
-      // only handle post messages for vega
-      ved.switchToVega();
+      // set vg or vl mode
+      if (data.mode) {
+        mode.node().selectedIndex =
+          data.mode.toLowerCase() === 'vega-lite' ? 1 : 0;
+        ved.mode();
+      }
 
       // load spec
       if (data.spec) {
         ved.select(data.spec);
       } else if (data.file) {
-        sel.node().selectedIndex = ved.specs.indexOf(data.file) + 1;
+        var specs = isVl ? ved.vlSpecs : ved.vgSpecs;
+        sel.node().selectedIndex = specs.indexOf(data.file) + 1;
         ved.select();
       }
     }, false);
