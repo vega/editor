@@ -85,6 +85,10 @@
   background-color: #E4E4E4;
 }
 
+.vg-spec .ace_content.disabled .ace_cursor {
+  color: transparent;
+}
+
 .vega-editor .vis svg,
 .vega-editor .vis canvas {
   border: 1px dashed #ccc;
@@ -151,6 +155,26 @@
   box-sizing: border-box;
   width: 130px;
   max-width: 130px;
+}
+
+.vega-editor .click_toggle_vega {
+  cursor: pointer;
+  display: inline-block;
+  width: 64px;
+  height: 13px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px;
+  position: relative;
+  top: 3px;
+}
+
+.vega-editor .click_toggle_vega.up {
+  background-image: url("../images/chevron_up.png");
+}
+
+.vega-editor .click_toggle_vega.down {
+  background-image: url("../images/chevron_down.png");
 }
 
 /* hide some elements in vega mode */

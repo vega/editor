@@ -71,9 +71,11 @@ ved.editorVisibility = function() {
     ved.$d3.select('.vg-spec').style('display', 'none');
     ved.$d3.select('.vl-spec')
       .style('flex', '1 1 auto');
+    ved.$d3.select('.click_toggle_vega').attr('class', 'click_toggle_vega up');
   } else {
     ved.$d3.select('.vg-spec').style('display', 'block');
     ved.resizeVlEditor();
+    ved.$d3.select('.click_toggle_vega').attr('class', 'click_toggle_vega down');
   }
   ved.resize();
 };
@@ -383,9 +385,12 @@ ved.init = function(el, dir) {
     el.select('.btn_spec_format').on('click', ved.format);
     el.select('.btn_vg_parse').on('click', ved.parseVg);
     el.select('.btn_vl_parse').on('click', ved.parseVl);
-    el.select('.btn_to_vega').on('click', ved.switchToVega);
+    el.select('.btn_to_vega').on('click', function() {
+      d3.event.preventDefault();
+      ved.switchToVega();
+    });
     el.select('.btn_export').on('click', ved.export);
-    el.select('.btn_toggle_vega').on('click', function() {
+    el.select('.click_toggle_vega').on('click', function() {
       ved.vgHidden = !ved.vgHidden;
       ved.editorVisibility();
     });
