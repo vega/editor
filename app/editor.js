@@ -43,7 +43,8 @@ ved.mode = function() {
       highlightGutterLine: false
     });
 
-    ved.$d3.select('.vg-spec .ace_content').attr('class', 'ace_content disabled');
+    ved.$d3.select('.vg-spec .ace_content')
+      .attr('class', 'ace_content disabled');
     ved.$d3.select('.vega-editor').attr('class', 'vega-editor vega-lite');
 
     if (ved.vlEditor.getValue().length > 0) {
