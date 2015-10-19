@@ -460,7 +460,9 @@ ved.init = function(el, dir) {
       if (data.spec) {
         ved.select(data.spec);
       } else if (data.file) {
-        var specs = isVl ? ved.vlSpecs : ved.vgSpecs;
+        var isVl = ved.currentMode === 'vega-lite', 
+          specs = isVl ? ved.vlSpecs : ved.vgSpecs,
+          sel = isVl ? vlSel : vgSel;
         sel.node().selectedIndex = specs.indexOf(data.file) + 1;
         ved.select();
       }
