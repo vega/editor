@@ -109,7 +109,7 @@ ved.select = function(spec) {
   spec = d3.select(sel.options[idx]).datum();
 
   if (idx > 0) {
-    d3.xhr(ved.uriVl(spec), function(error, response) {
+    d3.xhr(ved.uri(spec), function(error, response) {
       editor.setValue(response.responseText);
       editor.gotoLine(0);
       parse(function() { desc.html(spec.desc || ''); });
@@ -128,12 +128,12 @@ ved.select = function(spec) {
   }
 };
 
-ved.uriVl = function(entry) {
-  return ved.path + 'vlspec/' + entry.name + '.json';
-};
-
-ved.uriVg = function(entry) {
-  return ved.path + 'vgspec/' + entry.name + '.json';
+ved.uri = function(entry) {
+  if (ved.currentMode === 'vega') {
+    return ved.path + 'vgspec/' + entry.name + '.json';
+  } else if (ved.currentMode === 'vega-lite') {
+    return ved.path + 'vlspec/' + entry.name + '.json';
+  }
 };
 
 ved.renderer = function() {
