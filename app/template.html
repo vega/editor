@@ -2,15 +2,28 @@
   <div class="mod_spec module">
     <div class="mod_header">
       <div class="mod_ctrls">
-        <select class="sel_spec"></select>
+        <select class="sel_vg_spec hide-vl"></select>
+        <select class="sel_vl_spec hide-vg"></select>
         <input type="button" class="btn_spec_format" value="Format"></input>
-        <input type="button" class="btn_spec_parse" value="Parse"></input>
+        <input type="button" class="btn_vg_parse hide-vl" value="Parse"></input>
+        <input type="button" class="btn_vl_parse hide-vg" value="Parse"></input>
       </div>
       <div class="mod_title">
-        <a class="link_spec active">Vega</a>         
+        <select class="sel_mode">
+          <option value="vega">Vega</option>
+          <option value="vega-lite">Vega-lite</option>
+        </select>
       </div>
     </div>
-    <div class="mod_body spec" spellcheck="false"></div>
+    <div class="mod_body spec vl-spec hide-vg" spellcheck="false"></div>
+    <div class="vg_pane mod_subheader hide-vg">
+      <div class="mod_ctrls">
+        <input type="button" class="btn_to_vega" value="Edit Vega spec"></input>
+      </div>
+      Vega compiled from Vega-Lite (read-only)
+      <span class="click_toggle_vega" title="Expand/Collapse Vega editor"></span>
+    </div>
+    <div class="mod_body spec vg-spec" spellcheck="false"></div>
   </div>
   <div class="mod_vis module">
     <div class="mod_header">
@@ -20,7 +33,7 @@
       </div>
       <div class="mod_title">Visualization</div>
     </div>
-    <div class="mod_body vis"></div>
+    <div class="vis"></div>
     <div class="mod_params"></div>
     <div class="spec_desc"></p>
   </div>

@@ -35,6 +35,20 @@
   line-height: 22px;
 }
 
+.vega-editor .mod_subheader {
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  padding: 2px 4px 2px 6px;
+  background: #eee;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  line-height: 18px;
+  font-size: 12px;
+}
+
+.vega-editor .vg_pane { cursor: pointer; }
+.vega-editor .vg_pane:hover { background: #fafafa; }
+
 .vega-editor .mod_body {
   -webkit-flex: 1 1 0;
   flex: 1 1 auto;
@@ -43,8 +57,13 @@
 }
 
 .vega-editor .vis {
-  -webkit-flex: 0 0 auto;
-  flex: 0 0 auto;
+  overflow: auto;
+}
+
+.vega-editor .sel_mode {
+  font-size: 15pt;
+  width: 125px;
+  margin-left: 5px;
 }
 
 .vega-editor .mod_params {
@@ -60,10 +79,18 @@
   color: #666;
 }
 
-.vega-editor .spec { 
+.vega-editor .spec {
   font-family: Monaco, Courier New;
   font-size: 10px;
   white-space: pre;
+}
+
+.vg-spec .ace_content.disabled {
+  background-color: #E4E4E4;
+}
+
+.vg-spec .ace_content.disabled .ace_cursor {
+  color: transparent;
 }
 
 .vega-editor .vis svg,
@@ -77,6 +104,14 @@
 
 .vega-editor .mod_ctrls input {
   height: 19px;
+}
+
+.vega-editor .vl-spec .ace_scrollbar {
+  display: none;
+}
+
+.vega-editor .vl-spec:hover .ace_scrollbar {
+  display: block;
 }
 
 .vega-param {
@@ -124,4 +159,34 @@
   box-sizing: border-box;
   width: 130px;
   max-width: 130px;
+}
+
+.vega-editor .click_toggle_vega {
+  cursor: pointer;
+  display: inline-block;
+  width: 64px;
+  height: 13px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px;
+  position: relative;
+  top: 3px;
+  opacity: 0.7;
+}
+
+.vega-editor .click_toggle_vega.up {
+  background-image: url("../images/chevron_up.png");
+}
+
+.vega-editor .click_toggle_vega.down {
+  background-image: url("../images/chevron_down.png");
+}
+
+/* hide some elements in vega mode */
+.vega-editor.vega .hide-vg {
+  display: none;
+}
+
+.vega-editor.vega-lite .hide-vl {
+  display: none;
 }
