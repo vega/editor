@@ -43,7 +43,8 @@ ved.mode = function() {
       highlightGutterLine: false
     });
 
-    ved.$d3.select('.vg-spec .ace_content').attr('class', 'ace_content disabled');
+    ved.$d3.select('.vg-spec .ace_content')
+      .attr('class', 'ace_content disabled');
     ved.$d3.select('.vega-editor').attr('class', 'vega-editor vega-lite');
 
     if (ved.vlEditor.getValue().length > 0) {
@@ -108,7 +109,7 @@ ved.select = function(spec) {
   spec = d3.select(sel.options[idx]).datum();
 
   if (idx > 0) {
-    d3.xhr(ved.uriVl(spec), function(error, response) {
+    d3.xhr(ved.uri(spec), function(error, response) {
       editor.setValue(response.responseText);
       editor.gotoLine(0);
       parse(function() { desc.html(spec.desc || ''); });
@@ -127,12 +128,12 @@ ved.select = function(spec) {
   }
 };
 
-ved.uriVl = function(entry) {
-  return ved.path + 'vlspec/' + entry.name + '.json';
-};
-
-ved.uriVg = function(entry) {
-  return ved.path + 'vgspec/' + entry.name + '.json';
+ved.uri = function(entry) {
+  if (ved.currentMode === 'vega') {
+    return ved.path + 'vgspec/' + entry.name + '.json';
+  } else if (ved.currentMode === 'vega-lite') {
+    return ved.path + 'vlspec/' + entry.name + '.json';
+  }
 };
 
 ved.renderer = function() {
@@ -448,14 +449,21 @@ ved.init = function(el, dir) {
         evt.source.postMessage(true, '*');
       }
 
-      // only handle post messages for vega
-      ved.switchToVega();
+      // set vg or vl mode
+      if (data.mode) {
+        mode.node().selectedIndex =
+          data.mode.toLowerCase() === 'vega-lite' ? 1 : 0;
+        ved.mode();
+      }
 
       // load spec
       if (data.spec) {
         ved.select(data.spec);
       } else if (data.file) {
-        sel.node().selectedIndex = ved.specs.indexOf(data.file) + 1;
+        var isVl = ved.currentMode === 'vega-lite',
+          specs = isVl ? ved.vlSpecs : ved.vgSpecs,
+          sel = isVl ? vlSel : vgSel;
+        sel.node().selectedIndex = specs.indexOf(data.file) + 1;
         ved.select();
       }
     }, false);
