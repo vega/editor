@@ -246,37 +246,6 @@ ved.resizeVlEditor = function() {
   ved.resize();
 };
 
-ved.getPermanentUrl = function() {
-  var params = [];
-  params.push('mode=' + ved.currentMode);
-
-  var sel;
-  if (ved.currentMode === 'vega') {
-    sel = ved.$d3.select('.sel_vg_spec').node();
-  } else {
-    sel = ved.$d3.select('.sel_vl_spec').node();
-  }
-  var idx = sel.selectedIndex,
-    spec = d3.select(sel.options[idx]).datum();
-
-  if (spec) {
-    params.push('spec=' + spec.name);
-  } else {
-    if (ved.currentMode === 'vega') {
-      spec = JSON.parse(ved.vgEditor.getValue());
-    } else {
-      spec = JSON.parse(ved.vlEditor.getValue());
-    }
-    params.push('spec=' + encodeURIComponent(JSON.stringify(spec)));
-  }
-
-  if (!ved.vgHidden)
-    params.push('showEditor=1');
-
-  var path = location.protocol + '//' + location.host + location.pathname;
-  return path + '?' + params.join('&');
-};
-
 ved.export = function() {
   var ext = ved.renderType === 'canvas' ? 'png' : 'svg',
       url = ved.view.toImageURL(ext);
@@ -383,9 +352,6 @@ ved.init = function(el, dir) {
       ved.vgHidden = !ved.vgHidden;
       ved.editorVisibility();
     });
-    el.select('.btn_permanent').on('click', function() {
-      location = ved.getPermanentUrl();
-    });
     d3.select(window).on('resize', ved.resize);
     ved.resize();
 
@@ -460,7 +426,7 @@ ved.init = function(el, dir) {
       if (data.spec) {
         ved.select(data.spec);
       } else if (data.file) {
-        var isVl = ved.currentMode === 'vega-lite', 
+        var isVl = ved.currentMode === 'vega-lite',
           specs = isVl ? ved.vlSpecs : ved.vgSpecs,
           sel = isVl ? vlSel : vgSel;
         sel.node().selectedIndex = specs.indexOf(data.file) + 1;
