@@ -1,5 +1,5 @@
 {
-  "url": "app/vgspec/airports.json",
+  "url": "app/spec/vega/airports.json",
   "parameters": [
     {
       "signal": "scale", "type": "range",

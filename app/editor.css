@@ -3,12 +3,14 @@
   display: flex;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 14px;
+  background-color: #f6f6f6;
 }
 
 .vega-editor .mod_spec {
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
   min-width: 540px;
+  border-right: 1px solid #ccc;
 }
 
 .vega-editor .mod_vis {
@@ -16,6 +18,8 @@
   flex: 1 1 auto;
   min-width: 0;
   margin-left: 10px;
+  background-color: white;
+  border-left: 1px solid #ccc;
 }
 
 .vega-editor .module {
@@ -46,6 +50,9 @@
   font-size: 12px;
 }
 
+.vega-editor .vg_pane { cursor: pointer; }
+.vega-editor .vg_pane:hover { background: #fafafa; }
+
 .vega-editor .mod_body {
   -webkit-flex: 1 1 0;
   flex: 1 1 auto;
@@ -55,6 +62,7 @@
 
 .vega-editor .vis {
   overflow: auto;
+  margin: 4px;
 }
 
 .vega-editor .sel_mode {
@@ -71,7 +79,7 @@
 .vega-editor .spec_desc {
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
-  padding-top: 10px;
+  margin: 4px;
   font-size: 12px;
   color: #666;
 }
@@ -168,6 +176,7 @@
   background-size: 18px;
   position: relative;
   top: 3px;
+  opacity: 0.7;
 }
 
 .vega-editor .click_toggle_vega.up {

@@ -1,5 +1,5 @@
 {
-  "url": "app/vgspec/force_drag.json",
+  "url": "app/spec/vega/force_drag.json",
   "parameters": [
     {
       "name": "distance",

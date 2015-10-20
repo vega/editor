@@ -20,12 +20,15 @@ ved.params = function() {
 };
 
 ved.mode = function() {
-  var sel = ved.$d3.select('.sel_mode').node(),
+  var $d3  = ved.$d3,
+      sel = $d3.select('.sel_mode').node(),
+      vge = $d3.select('.vega-editor'),
+      ace = $d3.select('.vg-spec .ace_content'),
       idx = sel.selectedIndex,
-      newMode = sel.options[idx].value;
+      newMode = sel.options[idx].value,
+      spec;
 
-  if (ved.currentMode === newMode)
-    return;
+  if (ved.currentMode === newMode) return;
   ved.currentMode = newMode;
 
   if (ved.currentMode === 'vega') {
@@ -34,8 +37,10 @@ ved.mode = function() {
       highlightActiveLine: true,
       highlightGutterLine: true
     });
-    ved.$d3.select('.vega-editor').attr('class', 'vega-editor vega');
-    ved.$d3.select('.vg-spec .ace_content').attr('class', 'ace_content');
+
+    vge.attr('class', 'vega-editor vega');
+    ace.attr('class', 'ace_content');
+    spec = $d3.select('.sel_vg_spec');
   } else if (ved.currentMode === 'vega-lite') {
     ved.vgEditor.setOptions({
       readOnly: true,
@@ -43,57 +48,59 @@ ved.mode = function() {
       highlightGutterLine: false
     });
 
-    ved.$d3.select('.vg-spec .ace_content')
-      .attr('class', 'ace_content disabled');
-    ved.$d3.select('.vega-editor').attr('class', 'vega-editor vega-lite');
-
-    if (ved.vlEditor.getValue().length > 0) {
-      ved.parseVl();
-    } else {
-      ved.resetView();
-      ved.vgEditor.setValue('');
-    }
+    vge.attr('class', 'vega-editor vega-lite');
+    ace.attr('class', 'ace_content disabled');
+    spec = $d3.select('.sel_vl_spec');
   } else {
-    console.warn('Unknown mode ' + ved.currentMode);
+    throw new Error('Unknown mode ' + ved.currentMode);
   }
 
   ved.editorVisibility();
+  spec.node().selectedIndex = 0;
+  ved.select('');
 };
 
 ved.switchToVega = function() {
-  var sel = ved.$d3.select('.sel_mode').node();
+  var sel = ved.$d3.select('.sel_mode').node(),
+      spec = ved.vgEditor.getValue();
   sel.selectedIndex = 0;
   ved.mode();
+  ved.select(spec);
 };
 
 // Changes visibility of vega editor in vl mode
 ved.editorVisibility = function() {
+  var $d3 = ved.$d3,
+      vgs = $d3.select('.vg-spec'),
+      vls = $d3.select('.vl-spec'),
+      toggle = $d3.select('.click_toggle_vega');
+
   if (ved.vgHidden && ved.currentMode === 'vega-lite') {
-    ved.$d3.select('.vg-spec').style('display', 'none');
-    ved.$d3.select('.vl-spec')
-      .style('flex', '1 1 auto');
-    ved.$d3.select('.click_toggle_vega').attr('class', 'click_toggle_vega up');
+    vgs.style('display', 'none');
+    vls.style('flex', '1 1 auto');
+    toggle.attr('class', 'click_toggle_vega up');
   } else {
-    ved.$d3.select('.vg-spec').style('display', 'block');
+    vgs.style('display', 'block');
     ved.resizeVlEditor();
-    ved.$d3.select('.click_toggle_vega').attr('class', 'click_toggle_vega down');
+    toggle.attr('class', 'click_toggle_vega down');
   }
   ved.resize();
 };
 
 ved.select = function(spec) {
-  var desc = ved.$d3.select('.spec_desc');
+  var $d3 = ved.$d3,
+      mode = ved.currentMode,
+      desc = $d3.select('.spec_desc'),
+      editor, parse, sel;
 
-  var editor, parse, sel;
-
-  if (ved.currentMode === 'vega') {
+  if (mode === 'vega') {
     editor = ved.vgEditor;
-    parse = ved.parseVg;
-    sel = ved.$d3.select('.sel_vg_spec').node();
-  } else if (ved.currentMode === 'vega-lite') {
+    parse  = ved.parseVg;
+    sel = $d3.select('.sel_vg_spec').node();
+  } else if (mode === 'vega-lite') {
     editor = ved.vlEditor;
-    parse = ved.parseVl;
-    sel = ved.$d3.select('.sel_vl_spec').node();
+    parse  = ved.parseVl;
+    sel = $d3.select('.sel_vl_spec').node();
   }
 
   if (spec) {
@@ -121,19 +128,16 @@ ved.select = function(spec) {
     ved.resetView();
   }
 
-  if (ved.currentMode === 'vega') {
+  if (mode === 'vega') {
     ved.resize();
-  } else if (ved.currentMode === 'vl') {
+  } else if (mode === 'vl') {
     ved.resizeVlEditor();
   }
 };
 
 ved.uri = function(entry) {
-  if (ved.currentMode === 'vega') {
-    return ved.path + 'vgspec/' + entry.name + '.json';
-  } else if (ved.currentMode === 'vega-lite') {
-    return ved.path + 'vlspec/' + entry.name + '.json';
-  }
+  return ved.path + '/spec/' + ved.currentMode +
+    '/' + entry.name + '.json';
 };
 
 ved.renderer = function() {
@@ -216,10 +220,11 @@ ved.parseVg = function(callback) {
 };
 
 ved.resetView = function() {
+  var $d3 = ved.$d3;
   if (ved.view) ved.view.destroy();
-  d3.select('.mod_params').html('');
-  d3.select('.spec_desc').html('');
-  d3.select('.vis').html('');
+  $d3.select('.mod_params').html('');
+  $d3.select('.spec_desc').html('');
+  $d3.select('.vis').html('');
 };
 
 ved.resize = function(event) {
@@ -379,7 +384,7 @@ ved.init = function(el, dir) {
       ved.switchToVega();
     });
     el.select('.btn_export').on('click', ved.export);
-    el.select('.click_toggle_vega').on('click', function() {
+    el.select('.vg_pane').on('click', function() {
       ved.vgHidden = !ved.vgHidden;
       ved.editorVisibility();
     });
