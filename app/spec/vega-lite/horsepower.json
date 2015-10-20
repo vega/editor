@@ -1,8 +1,8 @@
 {
+  "data": {"url": "data/cars.json"},
   "marktype": "line",
   "encoding": {
     "x": {"name": "Year","type": "T","timeUnit": "year"},
     "y": {"name": "Horsepower","type": "Q","aggregate": "mean"}
-  },
-  "data": {"url": "data/cars.json"}
+  }
 }
