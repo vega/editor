@@ -1,0 +1,9 @@
+{
+  "marktype": "bar",
+  "encoding": {
+    "x": {"name": "yield","type": "Q","aggregate": "sum"},
+    "y": {"name": "variety","type": "N"},
+    "color": {"name": "site","type": "N"}
+  },
+  "data": {"url": "data/barley.json"}
+}

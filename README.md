@@ -12,4 +12,17 @@ To run the editor locally, you must first install the dependencies and then laun
 
 ### Local Testing & Debugging
 
-The editor is useful for testing if you are involved in Vega development. The editor includes a watch script (launched via `npm run watch`) that will automatically copy new Vega builds into the `vendor` folder. By default, the watch script assumes that your local Vega repository resides at `../vega` relative to the vega-editor directory. Alternatively, you can indicate the desired Vega project directory as a command line argument (`npm run watch VEGA_DIR`).
+The editor is useful for testing if you are involved in Vega and Vega-Lite development. To use Vega, Vega-Lite, Vega Datasets, or Vega-Embed from another directory on your computer, link it into vendor. For this, run `npm link` in the directory of the library that you want to link. Then link a library into `vendor` with `npm run vendor -- -l LIBRARY`. This script also automatically links the node modules to your local library directory (if you previously ran `npm link` in that directory).
+
+For example, to link Vega and Vega-Lite, run
+
+```bash
+cd VEGA_DIR
+npm link
+
+cd VEGA_LITE_DIR
+npm link
+
+cd VEGA_EDITOR_DIR
+npm run vendor -- -l vega-lite -l vega
+```

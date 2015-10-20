@@ -1,0 +1,8 @@
+{
+  "marktype": "point",
+  "encoding": {
+    "x": {"name": "MPAA_Rating","type": "N"},
+    "y": {"name": "Release_Date","type": "N"}
+  },
+  "data": {"url": "data/movies.json"}
+}

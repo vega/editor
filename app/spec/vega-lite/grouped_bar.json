@@ -1,0 +1,17 @@
+{
+  "marktype": "bar",
+  "encoding": {
+    "x": {"name": "Origin","type": "N"},
+    "y": {"name": "Acceleration","type": "Q","aggregate": "mean"},
+    "col": {
+      "axis": {"maxLabelLength": 25},
+      "name": "Cylinders",
+      "type": "O"
+    },
+    "color": {
+      "name": "Origin",
+      "type": "N"
+    }
+  },
+  "data": {"url": "data/cars.json"}
+}
