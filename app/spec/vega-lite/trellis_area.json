@@ -1,9 +1,9 @@
 {
+  "data": {"url": "data/cars.json"},
   "marktype": "area",
   "encoding": {
     "x": {"name": "Year","type": "T","timeUnit": "year"},
     "y": {"name": "Weight_in_lbs","type": "Q","aggregate": "sum"},
     "col": {"name": "Cylinders","type": "O"}
-  },
-  "data": {"url": "data/cars.json"}
+  }
 }

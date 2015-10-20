@@ -1,4 +1,5 @@
 {
+  "data": {"url": "data/cars.json"},
   "marktype": "bar",
   "encoding": {
     "x": {"name": "Origin","type": "N"},
@@ -12,6 +13,5 @@
       "name": "Origin",
       "type": "N"
     }
-  },
-  "data": {"url": "data/cars.json"}
+  }
 }

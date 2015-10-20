@@ -1,10 +1,11 @@
 {
+  "data": {"url": "data/cars.json"},
   "marktype": "text",
   "encoding": {
     "row": {"name": "Origin","type": "O"},
     "col": {"name": "Cylinders","type": "O"},
     "color": {"name": "Horsepower","type": "Q","aggregate": "mean"},
     "text": {"name": "*","type": "Q","aggregate": "count"}
-  },
-  "data": {"url": "data/cars.json"}
+  }
+
 }

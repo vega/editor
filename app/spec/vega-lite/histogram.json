@@ -1,4 +1,5 @@
 {
+  "data": {"url": "data/cars.json"},
   "marktype": "bar",
   "encoding": {
     "x": {
@@ -7,6 +8,6 @@
       "type": "Q"
     },
     "y": {"name": "*","type": "Q","aggregate": "count"}
-  },
-  "data": {"url": "data/cars.json"}
+  }
+
 }
