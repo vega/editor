@@ -263,18 +263,18 @@ ved.setPermanentUrl = function() {
     sel = ved.$d3.select('.sel_vl_spec').node();
   }
   var idx = sel.selectedIndex,
-    spec = d3.select(sel.options[idx]).datum();
+    spec = d3.select(sel.options[idx]).datum() || '';
 
-  if (spec) {
-    params.push('spec=' + spec.name);
+  if (spec !== '') {
+    spec = spec.name;
   } else {
+    var encodeJSON = function(string) {
+      return encodeURIComponent(JSON.stringify(JSON.parse(string)));
+    };
     if (ved.currentMode === 'vega' && ved.vgEditor.getValue()) {
-      spec = JSON.parse(ved.vgEditor.getValue());
+      spec = encodeJSON(ved.vgEditor.getValue());
     } else if(ved.currentMode === 'vega-lite' && ved.vlEditor.getValue()) {
-      spec = JSON.parse(ved.vlEditor.getValue());
-    }
-    if (spec) {
-      params.push('spec=' + encodeURIComponent(JSON.stringify(spec)));
+      spec = encodeJSON(ved.vlEditor.getValue());
     }
   }
 
@@ -290,9 +290,13 @@ ved.setPermanentUrl = function() {
 
   var url = path + '?' + params.join('&');
 
-  // Long URLs ae not well supported so we rather have no permanent URL
-  if (url.length > 2000) {
-    url = path;
+  // Long URLs ae not well supported swe only add the spec to the URL if the
+  // result has fewer than 2000 chars
+  if (url.length + spec.length < 2000) {
+    if (spec) {
+      params.push('spec=' + spec);
+      url = path + '?' + params.join('&');
+    }
   }
 
   window.history.replaceState("", document.title, url);
