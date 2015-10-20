@@ -55,6 +55,7 @@ ved.mode = function() {
     throw new Error('Unknown mode ' + ved.currentMode);
   }
 
+  ved.editorVisibility();
   spec.node().selectedIndex = 0;
   ved.select('');
 };
@@ -132,8 +133,6 @@ ved.select = function(spec) {
   } else if (mode === 'vl') {
     ved.resizeVlEditor();
   }
-
-  ved.editorVisibility();
 };
 
 ved.uri = function(entry) {
