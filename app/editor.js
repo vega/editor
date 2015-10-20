@@ -55,7 +55,6 @@ ved.mode = function() {
     throw new Error('Unknown mode ' + ved.currentMode);
   }
 
-  ved.editorVisibility();
   spec.node().selectedIndex = 0;
   ved.select('');
 };
@@ -133,6 +132,8 @@ ved.select = function(spec) {
   } else if (mode === 'vl') {
     ved.resizeVlEditor();
   }
+
+  ved.editorVisibility();
 };
 
 ved.uri = function(entry) {
@@ -251,7 +252,7 @@ ved.resizeVlEditor = function() {
   ved.resize();
 };
 
-ved.getPermanentUrl = function() {
+ved.setPermanentUrl = function() {
   var params = [];
   params.push('mode=' + ved.currentMode);
 
@@ -267,19 +268,34 @@ ved.getPermanentUrl = function() {
   if (spec) {
     params.push('spec=' + spec.name);
   } else {
-    if (ved.currentMode === 'vega') {
+    if (ved.currentMode === 'vega' && ved.vgEditor.getValue()) {
       spec = JSON.parse(ved.vgEditor.getValue());
-    } else {
+    } else if(ved.currentMode === 'vega-lite' && ved.vlEditor.getValue()) {
       spec = JSON.parse(ved.vlEditor.getValue());
     }
-    params.push('spec=' + encodeURIComponent(JSON.stringify(spec)));
+    if (spec) {
+      params.push('spec=' + encodeURIComponent(JSON.stringify(spec)));
+    }
   }
 
-  if (!ved.vgHidden)
+  if (!ved.vgHidden && ved.currentMode === 'vega-lite') {
     params.push('showEditor=1');
+  }
+
+  if (ved.$d3.select('.sel_render').node().selectedIndex === 1) {
+    params.push('renderer=svg');
+  }
 
   var path = location.protocol + '//' + location.host + location.pathname;
-  return path + '?' + params.join('&');
+
+  var url = path + '?' + params.join('&');
+
+  // Long URLs ae not well supported so we rather have no permanent URL
+  if (url.length > 2000) {
+    url = path;
+  }
+
+  window.history.replaceState("", document.title, url);
 };
 
 ved.export = function() {
@@ -297,6 +313,13 @@ ved.export = function() {
   el.dispatchEvent(evt);
 };
 
+ved.setUrlAfter = function(func) {
+  return function() {
+    func();
+    ved.setPermanentUrl();
+  };
+};
+
 ved.init = function(el, dir) {
   // Set base directory
   var PATH = dir || 'app/';
@@ -310,7 +333,7 @@ ved.init = function(el, dir) {
 
     // Vega specification drop-down menu
     var vgSel = el.select('.sel_vg_spec');
-    vgSel.on('change', ved.select);
+    vgSel.on('change', ved.setUrlAfter(ved.select));
     vgSel.append('option').text('Custom');
     vgSel.selectAll('optgroup')
       .data(Object.keys(VG_SPECS))
@@ -323,7 +346,7 @@ ved.init = function(el, dir) {
 
     // Vega-lite specification drop-down menu
     var vlSel = el.select('.sel_vl_spec');
-    vlSel.on('change', ved.select);
+    vlSel.on('change', ved.setUrlAfter(ved.select));
     vlSel.append('option').text('Custom');
     vlSel.selectAll('optgroup')
       .data(Object.keys(VL_SPECS))
@@ -336,7 +359,7 @@ ved.init = function(el, dir) {
 
     // Renderer drop-down menu
     var ren = el.select('.sel_render');
-    ren.on('change', ved.renderer);
+    ren.on('change', ved.setUrlAfter(ved.renderer));
     ren.selectAll('option')
       .data(['Canvas', 'SVG'])
      .enter().append('option')
@@ -345,7 +368,7 @@ ved.init = function(el, dir) {
 
     // Vega or Vega-lite mode
     var mode = el.select('.sel_mode');
-    mode.on('change', ved.mode);
+    mode.on('change', ved.setUrlAfter(ved.mode));
 
     // Code Editors
     var vlEditor = ved.vlEditor = ace.edit(ved.$d3.select('.vl-spec').node());
@@ -377,20 +400,17 @@ ved.init = function(el, dir) {
 
     // Initialize application
     el.select('.btn_spec_format').on('click', ved.format);
-    el.select('.btn_vg_parse').on('click', ved.parseVg);
-    el.select('.btn_vl_parse').on('click', ved.parseVl);
-    el.select('.btn_to_vega').on('click', function() {
+    el.select('.btn_vg_parse').on('click', ved.setUrlAfter(ved.parseVg));
+    el.select('.btn_vl_parse').on('click', ved.setUrlAfter(ved.parseVl));
+    el.select('.btn_to_vega').on('click', ved.setUrlAfter(function() {
       d3.event.preventDefault();
       ved.switchToVega();
-    });
+    }));
     el.select('.btn_export').on('click', ved.export);
-    el.select('.vg_pane').on('click', function() {
+    el.select('.vg_pane').on('click', ved.setUrlAfter(function() {
       ved.vgHidden = !ved.vgHidden;
       ved.editorVisibility();
-    });
-    el.select('.btn_permanent').on('click', function() {
-      window.history.replaceState("", document.title, ved.getPermanentUrl());
-    });
+    }));
     d3.select(window).on('resize', ved.resize);
     ved.resize();
 
