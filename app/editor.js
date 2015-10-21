@@ -262,19 +262,10 @@ ved.setPermanentUrl = function() {
     sel = ved.$d3.select('.sel_vl_spec').node();
   }
   var idx = sel.selectedIndex,
-    spec = d3.select(sel.options[idx]).datum() || '';
+    spec = d3.select(sel.options[idx]).datum();
 
-  if (spec !== '') {
-    spec = spec.name;
-  } else {
-    var encodeJSON = function(string) {
-      return encodeURIComponent(JSON.stringify(JSON.parse(string)));
-    };
-    if (ved.currentMode === 'vega' && ved.vgEditor.getValue()) {
-      spec = encodeJSON(ved.vgEditor.getValue());
-    } else if(ved.currentMode === 'vega-lite' && ved.vlEditor.getValue()) {
-      spec = encodeJSON(ved.vlEditor.getValue());
-    }
+  if (spec) {
+    params.push('spec=' + spec.name);
   }
 
   if (!ved.vgHidden && ved.currentMode === 'vega-lite') {
@@ -286,7 +277,6 @@ ved.setPermanentUrl = function() {
   }
 
   var path = location.protocol + '//' + location.host + location.pathname;
-
   var url = path + '?' + params.join('&');
 
   window.history.replaceState("", document.title, url);
@@ -303,7 +293,8 @@ ved.export = function() {
     .node();
 
   var evt = document.createEvent('MouseEvents');
-  evt.initMouseEvent('click', true, true, document.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+  evt.initMouseEvent('click', true, true, document.defaultView, 1, 0, 0, 0, 0,
+    false, false, false, false, 0, null);
   el.dispatchEvent(evt);
 };
 
@@ -311,6 +302,19 @@ ved.setUrlAfter = function(func) {
   return function() {
     func();
     ved.setPermanentUrl();
+  };
+};
+
+ved.goCustom = function(func) {
+  return function() {
+    var sel;
+    if (ved.currentMode === 'vega') {
+      sel = ved.$d3.select('.sel_vg_spec');
+    } else if (ved.currentMode === 'vega-lite') {
+      sel = ved.$d3.select('.sel_vl_spec');
+    }
+    sel.node().selectedIndex = 0;
+    func();
   };
 };
 
@@ -394,8 +398,10 @@ ved.init = function(el, dir) {
 
     // Initialize application
     el.select('.btn_spec_format').on('click', ved.format);
-    el.select('.btn_vg_parse').on('click', ved.setUrlAfter(ved.parseVg));
-    el.select('.btn_vl_parse').on('click', ved.setUrlAfter(ved.parseVl));
+    el.select('.btn_vg_parse').on('click',
+      ved.goCustom(ved.setUrlAfter(ved.parseVg)));
+    el.select('.btn_vl_parse').on('click',
+      ved.goCustom(ved.setUrlAfter(ved.parseVl)));
     el.select('.btn_to_vega').on('click', ved.setUrlAfter(function() {
       d3.event.preventDefault();
       ved.switchToVega();
