@@ -289,15 +289,6 @@ ved.setPermanentUrl = function() {
 
   var url = path + '?' + params.join('&');
 
-  // Long URLs ae not well supported swe only add the spec to the URL if the
-  // result has fewer than 2000 chars
-  if (url.length + spec.length < 2000) {
-    if (spec) {
-      params.push('spec=' + spec);
-      url = path + '?' + params.join('&');
-    }
-  }
-
   window.history.replaceState("", document.title, url);
 };
 
