@@ -369,8 +369,8 @@ ved.init = function(el, dir) {
     mode.on('change', ved.setUrlAfter(ved.mode));
 
     // Code Editors
-    var vlEditor = ved.vlEditor = ace.edit(ved.$d3.select('.vl-spec').node());
-    var vgEditor = ved.vgEditor = ace.edit(ved.$d3.select('.vg-spec').node());
+    var vlEditor = ved.vlEditor = ace.edit(el.select('.vl-spec').node());
+    var vgEditor = ved.vgEditor = ace.edit(el.select('.vg-spec').node());
 
     [vlEditor, vgEditor].forEach(function(editor) {
       editor.getSession().setMode('ace/mode/json');
@@ -387,6 +387,8 @@ ved.init = function(el, dir) {
         editor.clearSelection();
       });
       editor.$blockScrolling = Infinity;
+      d3.select(editor.textInput.getElement())
+        .on('keydown', ved.goCustom(ved.setPermanentUrl));
 
       editor.setValue('');
       editor.gotoLine(0);
@@ -398,10 +400,8 @@ ved.init = function(el, dir) {
 
     // Initialize application
     el.select('.btn_spec_format').on('click', ved.format);
-    el.select('.btn_vg_parse').on('click',
-      ved.goCustom(ved.setUrlAfter(ved.parseVg)));
-    el.select('.btn_vl_parse').on('click',
-      ved.goCustom(ved.setUrlAfter(ved.parseVl)));
+    el.select('.btn_vg_parse').on('click', ved.setUrlAfter(ved.parseVg));
+    el.select('.btn_vl_parse').on('click',ved.setUrlAfter(ved.parseVl));
     el.select('.btn_to_vega').on('click', ved.setUrlAfter(function() {
       d3.event.preventDefault();
       ved.switchToVega();
