@@ -36,7 +36,7 @@ fi
 # Populate staging directory
 rm -rf $STAGE
 mkdir $STAGE
-cp -r index.html app vendor $STAGE
+cp -r index.html app images vendor $STAGE
 
 # Copy staged files to gh-pages
 git checkout gh-pages
@@ -50,5 +50,5 @@ git push origin gh-pages
 
 # Restore state
 git checkout master
-tm -rf node_modules
+rm -rf node_modules
 mv temp node_modules
