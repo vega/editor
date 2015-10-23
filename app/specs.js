@@ -21,7 +21,8 @@ var VL_SPECS = {
       "desc": "Simple histogram with bars broken down by the number of cylinders. Also has a legend."
     },
     {"name": "area"},
-    {"name": "stacked_area"},
+    // hide until we add impute to stack area
+    // {"name": "stacked_area"},
     {"name": "stacked_bar"},
     {"name": "1d_bar"}
   ],
@@ -32,17 +33,16 @@ var VL_SPECS = {
     }
   ],
   'Other': [
-    {
-      "name": "filtered_bar",
-      "desc": "A simple bar chart with embedded data and uses a filter and formulas."
-    },
-    {
-      "name": "movie_ratings",
-      "desc": "Scatter plot with ordinal on top"
-    },
-    {"name": "trellis_area"},
+    // hide ntil we fix layout
+    // {
+    //   "name": "filtered_bar",
+    //   "desc": "A simple bar chart with embedded data and uses a filter and formulas."
+    // },
+    // hide until we fix axis labels
+    // {"name": "trellis_area"},
     {"name": "trellis_stacked_bar"},
-    {"name": "trellis_scatter"},
+    // hide until we fix layout
+    // {"name": "trellis_scatter"},
     {
       "name": "heatmap",
       "desc": "Text Heatmap with overencoded data."
