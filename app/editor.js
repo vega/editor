@@ -185,7 +185,7 @@ ved.parseVl = function(callback) {
 
   // use dataset stats only if the spec does not have embedded stats
   if (!opt.data  || opt.data.values === undefined) {
-    d3.json(ved.path + opt.data.url, function(err, data) {
+    d3[opt.data.formatType || 'json'](ved.path + opt.data.url, function(err, data) {
       if (err) return alert('Error loading data ' + err.statusText);
       haveStats(vl.data.stats(data));
     });
