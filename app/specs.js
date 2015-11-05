@@ -21,8 +21,7 @@ var VL_SPECS = {
       "desc": "Simple histogram with bars broken down by the number of cylinders. Also has a legend."
     },
     {"name": "area"},
-    // hide until we add impute to stack area
-    // {"name": "stacked_area"},
+    {"name": "stacked_area"},
     {"name": "stacked_bar"},
     {"name": "1d_bar"}
   ],
