@@ -183,9 +183,9 @@ ved.parseVl = function(callback) {
     ved.parseVg(callback);
   };
 
-  // use dataset stats only if the spec does not have embedded stats
-  if (!opt.data  || opt.data.values === undefined) {
-    d3[opt.data.formatType || 'json'](ved.path + opt.data.url, function(err, data) {
+  // compute dataset stats only if the spec does not have embedded data
+  if (opt.data.values === undefined) {
+    d3[opt.data.formatType || 'json'].json(ved.path + opt.data.url, function(err, data) {
       if (err) return alert('Error loading data ' + err.statusText);
       haveStats(vl.data.stats(data));
     });
