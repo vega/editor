@@ -2,10 +2,10 @@
   "data": {"url": "data/cars.json"},
   "marktype": "text",
   "encoding": {
-    "row": {"name": "Origin","type": "O"},
-    "col": {"name": "Cylinders","type": "O"},
-    "color": {"name": "Horsepower","type": "Q","aggregate": "mean"},
-    "text": {"name": "*","type": "Q","aggregate": "count"}
+    "row": {"name": "Origin","type": "ordinal"},
+    "col": {"name": "Cylinders","type": "ordinal"},
+    "color": {"name": "Horsepower","type": "quantitative","aggregate": "mean"},
+    "text": {"name": "*","type": "quantitative","aggregate": "count"}
   }
 
 }

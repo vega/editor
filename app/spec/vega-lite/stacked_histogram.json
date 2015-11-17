@@ -5,9 +5,9 @@
     "x": {
       "bin": {"maxbins": 15},
       "name": "Horsepower",
-      "type": "Q"
+      "type": "quantitative"
     },
-    "y": {"name": "*","type": "Q","aggregate": "count"},
-    "color": {"name": "Cylinders","type": "N"}
+    "y": {"name": "*","type": "quantitative","aggregate": "count"},
+    "color": {"name": "Cylinders","type": "nominal"}
   }
 }
