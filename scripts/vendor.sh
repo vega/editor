@@ -46,6 +46,7 @@ fi
 cp $ACE/ace.js $TARGET/ace
 cp $ACE/mode-json.js $TARGET/ace
 cp $ACE/worker-json.js $TARGET/ace
+cp $ACE/ext-searchbox.js $TARGET/ace
 
 echo "Copying data to '$DATA'."
 
