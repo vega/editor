@@ -42,7 +42,7 @@
     "vega-datasets": "vega/vega-datasets#gh-pages"
   },
   "devDependencies": {
-    "chokidar": "^1.0.3"
+    "chokidar": "^1.2.0"
   },
   "scripts": {
     "deploy": "scripts/deploy.sh",
