@@ -171,7 +171,8 @@ ved.parseVl = function(callback) {
   }
 
   var haveStats = function(stats) {
-    var vgSpec = vl.compile(opt, stats);
+    // TODO: display error / warnings
+    var vgSpec = vl.compile(opt, stats).spec;
     var text = JSON3.stringify(vgSpec, null, 2, 60);
     ved.vgEditor.setValue(text);
     ved.vgEditor.gotoLine(0);
