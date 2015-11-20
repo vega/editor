@@ -167,16 +167,29 @@ ved.format = function() {
 };
 
 ved.parseVl = function(callback) {
-  var opt, source;
+  var spec, source,
+    value = ved.vlEditor.getValue();
+
+  // delete cookie if editor is empty
+  if (!value) {
+    docCookies.removeItem('vlspec');
+  }
+
   try {
-    opt = JSON.parse(ved.vlEditor.getValue());
+    spec = JSON.parse(value);
   } catch (e) {
     console.log(e);
     return;
   }
 
+  var vlSel = ved.$d3.select('.sel_vl_spec');
+  if (vlSel.node().selectedIndex === 0) {
+    // store spec in cookie for a day
+    docCookies.setItem('vlspec', value, 86400);
+  }
+
   var haveStats = function(stats) {
-    var vgSpec = vl.compile(opt, stats);
+    var vgSpec = vl.compile(spec, stats);
     var text = JSON3.stringify(vgSpec, null, 2, 60);
     ved.vgEditor.setValue(text);
     ved.vgEditor.gotoLine(0);
@@ -189,8 +202,8 @@ ved.parseVl = function(callback) {
   };
 
   // compute dataset stats only if the spec does not have embedded data
-  if (opt.data.values === undefined) {
-    d3[opt.data.formatType || 'json'](ved.path + opt.data.url, function(err, data) {
+  if (spec.data.values === undefined) {
+    d3[spec.data.formatType || 'json'](ved.path + spec.data.url, function(err, data) {
       if (err) return alert('Error loading data ' + err.statusText);
       haveStats(vl.data.stats(data));
     });
@@ -200,12 +213,24 @@ ved.parseVl = function(callback) {
 };
 
 ved.parseVg = function(callback) {
-  var opt, source;
+  var opt, source,
+    value = ved.vgEditor.getValue();
+
+  // delete cookie if editor is empty
+  if (!value) {
+    docCookies.removeItem('vgspec');
+  }
+
   try {
     opt = JSON.parse(ved.vgEditor.getValue());
   } catch (e) {
     console.log(e);
     return;
+  }
+
+  var vgSel = ved.$d3.select('.sel_vg_spec');
+  if (vgSel.node().selectedIndex === 0 && ved.currentMode === 'vega') {
+    docCookies.setItem('vgspec', value, 86400);
   }
 
   if (!opt.spec && !opt.url && !opt.source) {
@@ -467,6 +492,13 @@ ved.init = function(el, dir) {
           console.error('Specification loading failed: ' + spec);
         }
       }
+    }
+
+    // Load content from cookies
+    if (ved.currentMode === 'vega-lite' && docCookies.hasItem('vlspec') && !p.spec) {
+      ved.select(docCookies.getItem('vlspec'));
+    } else if (ved.currentMode === 'vega' && docCookies.hasItem('vgspec') && !p.spec) {
+      ved.select(docCookies.getItem('vgspec'));
     }
 
     // Handle post messages
