@@ -1,3 +1,8 @@
+'use strict';
+
+/*global location, window, d3, vl, vg, docCookies, document,
+alert, console, VG_SPECS, VL_SPECS, ace, JSON3*/
+
 var ved = {
   version: '1.2.0',
   data: undefined,
