@@ -5,30 +5,6 @@
     {
       "name": "barley",
       "url": "data/barley.json"
-    },
-    {
-      "name": "variety",
-      "source": "barley",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["variety"],
-          "summarize": [{"field": "yield", "ops": ["median"]}]
-        },
-        {"type": "sort", "by": "-median_yield"}
-      ]
-    },
-    {
-      "name": "site",
-      "source": "barley",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["site"],
-          "summarize": [{"field": "yield", "ops": ["median"]}]
-        },
-        {"type": "sort", "by": "-median_yield"}
-      ]
     }
   ],
   "scales": [
@@ -37,7 +13,11 @@
       "type": "ordinal",
       "range": "height",
       "padding": 0.15,
-      "domain": {"data": "site", "field": "site"}
+      "domain": {
+        "data": "barley", "field": "site",
+        "sort": {"field": "yield", "op": "median"}
+      },
+      "reverse": true
     },
     {
       "name": "x",
@@ -61,21 +41,7 @@
   ],
   "marks": [
     {
-      "type": "text",
-      "from": {"data": "site"},
-      "properties": {
-        "enter": {
-          "x": {"field": {"group": "width"}, "mult": 0.5},
-          "y": {"scale": "g", "field": "site", "offset": -2},
-          "fontWeight": {"value": "bold"},
-          "text": {"field": "site"},
-          "align": {"value": "center"},
-          "baseline": {"value": "bottom"},
-          "fill": {"value": "#000"}
-        }
-      }
-    },
-    {
+      "name": "sites",
       "type": "group",
       "from": {
         "data": "barley",
@@ -88,7 +54,11 @@
           "range": "height",
           "points": true,
           "padding": 1.2,
-          "domain": {"data": "variety", "field": "variety"}
+          "domain": {
+            "data": "barley", "field": "variety",
+            "sort": {"field": "yield", "op": "median"}
+          },
+          "reverse": true
         }
       ],
       "axes": [
@@ -122,6 +92,21 @@
           }
         }
       ]
+    },
+    {
+      "type": "text",
+      "from": {"mark": "sites"},
+      "properties": {
+        "enter": {
+          "x": {"field": {"group": "width"}, "mult": 0.5},
+          "y": {"field": "y", "offset": -2},
+          "fontWeight": {"value": "bold"},
+          "text": {"field": "datum.site"},
+          "align": {"value": "center"},
+          "baseline": {"value": "bottom"},
+          "fill": {"value": "#000"}
+        }
+      }
     }
   ]
 }
