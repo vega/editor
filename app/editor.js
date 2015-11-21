@@ -1,6 +1,6 @@
 'use strict';
 
-/*global location, window, d3, vl, vg, docCookies, document,
+/*global location, window, d3, vl, vg, localStorage, document,
 alert, console, VG_SPECS, VL_SPECS, ace, JSON3*/
 
 var ved = {
@@ -172,7 +172,7 @@ ved.parseVl = function(callback) {
 
   // delete cookie if editor is empty
   if (!value) {
-    docCookies.removeItem('vlspec');
+    localStorage.removeItem('vlspec');
   }
 
   try {
@@ -184,8 +184,7 @@ ved.parseVl = function(callback) {
 
   var vlSel = ved.$d3.select('.sel_vl_spec');
   if (vlSel.node().selectedIndex === 0) {
-    // store spec in cookie for a day
-    docCookies.setItem('vlspec', value, 86400);
+    localStorage.setItem('vlspec', value);
   }
 
   var haveStats = function(stats) {
@@ -218,7 +217,7 @@ ved.parseVg = function(callback) {
 
   // delete cookie if editor is empty
   if (!value) {
-    docCookies.removeItem('vgspec');
+    localStorage.removeItem('vgspec');
   }
 
   try {
@@ -230,7 +229,7 @@ ved.parseVg = function(callback) {
 
   var vgSel = ved.$d3.select('.sel_vg_spec');
   if (vgSel.node().selectedIndex === 0 && ved.currentMode === 'vega') {
-    docCookies.setItem('vgspec', value, 86400);
+    localStorage.setItem('vgspec', value);
   }
 
   if (!opt.spec && !opt.url && !opt.source) {
@@ -495,10 +494,10 @@ ved.init = function(el, dir) {
     }
 
     // Load content from cookies
-    if (ved.currentMode === 'vega-lite' && docCookies.hasItem('vlspec') && !p.spec) {
-      ved.select(docCookies.getItem('vlspec'));
-    } else if (ved.currentMode === 'vega' && docCookies.hasItem('vgspec') && !p.spec) {
-      ved.select(docCookies.getItem('vgspec'));
+    if (ved.currentMode === 'vega-lite' && localStorage.getItem('vlspec') && !p.spec) {
+      ved.select(localStorage.getItem('vlspec'));
+    } else if (ved.currentMode === 'vega' && localStorage.getItem('vgspec') && !p.spec) {
+      ved.select(localStorage.getItem('vgspec'));
     }
 
     // Handle post messages
