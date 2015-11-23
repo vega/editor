@@ -8,6 +8,10 @@ var ved = {
   vgHidden: true  // vega editor hidden in vl mode
 };
 
+ved.isPathAbsolute = function(path) {
+  return /^(?:\/|[a-z]+:\/\/)/.test(path);
+}
+
 ved.params = function() {
   var query = location.search.slice(1);
   if (query.slice(-1) === '/') query = query.slice(0,-1);
@@ -185,7 +189,8 @@ ved.parseVl = function(callback) {
 
   // compute dataset stats only if the spec does not have embedded data
   if (opt.data.values === undefined) {
-    d3[opt.data.formatType || 'json'](ved.path + opt.data.url, function(err, data) {
+    var prefix = ved.isPathAbsolute(opt.data.url) ? '' : ved.path;
+    d3[opt.data.formatType || 'json'](prefix + opt.data.url, function(err, data) {
       if (err) return alert('Error loading data ' + err.statusText);
       haveStats(vl.data.stats(data));
     });
