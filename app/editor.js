@@ -1,3 +1,8 @@
+'use strict';
+
+/*global location, window, d3, vl, vg, localStorage, document,
+alert, console, VG_SPECS, VL_SPECS, ace, JSON3*/
+
 var ved = {
   version: '1.2.0',
   data: undefined,
@@ -10,7 +15,7 @@ var ved = {
 
 ved.isPathAbsolute = function(path) {
   return /^(?:\/|[a-z]+:\/\/)/.test(path);
-}
+};
 
 ved.params = function() {
   var query = location.search.slice(1);
@@ -166,17 +171,29 @@ ved.format = function() {
 };
 
 ved.parseVl = function(callback) {
-  var opt, source;
+  var spec, source,
+    value = ved.vlEditor.getValue();
+
+  // delete cookie if editor is empty
+  if (!value) {
+    localStorage.removeItem('vlspec');
+  }
+
   try {
-    opt = JSON.parse(ved.vlEditor.getValue());
+    spec = JSON.parse(value);
   } catch (e) {
     console.log(e);
     return;
   }
 
+  var vlSel = ved.$d3.select('.sel_vl_spec');
+  if (vlSel.node().selectedIndex === 0) {
+    localStorage.setItem('vlspec', value);
+  }
+
   var haveStats = function(stats) {
     // TODO: display error / warnings
-    var vgSpec = vl.compile(opt, stats).spec;
+    var vgSpec = vl.compile(spec, stats).spec;
     var text = JSON3.stringify(vgSpec, null, 2, 60);
     ved.vgEditor.setValue(text);
     ved.vgEditor.gotoLine(0);
@@ -189,9 +206,9 @@ ved.parseVl = function(callback) {
   };
 
   // compute dataset stats only if the spec does not have embedded data
-  if (opt.data.values === undefined) {
-    var prefix = ved.isPathAbsolute(opt.data.url) ? '' : ved.path;
-    d3[opt.data.formatType || 'json'](prefix + opt.data.url, function(err, data) {
+  if (spec.data.values === undefined) {
+    var prefix = ved.isPathAbsolute(spec.data.url) ? '' : ved.path;
+    d3[spec.data.formatType || 'json'](prefix + spec.data.url, function(err, data) {
       if (err) return alert('Error loading data ' + err.statusText);
       haveStats(vl.data.stats(data));
     });
@@ -201,12 +218,24 @@ ved.parseVl = function(callback) {
 };
 
 ved.parseVg = function(callback) {
-  var opt, source;
+  var opt, source,
+    value = ved.vgEditor.getValue();
+
+  // delete cookie if editor is empty
+  if (!value) {
+    localStorage.removeItem('vgspec');
+  }
+
   try {
     opt = JSON.parse(ved.vgEditor.getValue());
   } catch (e) {
     console.log(e);
     return;
+  }
+
+  var vgSel = ved.$d3.select('.sel_vg_spec');
+  if (vgSel.node().selectedIndex === 0 && ved.currentMode === 'vega') {
+    localStorage.setItem('vgspec', value);
   }
 
   if (!opt.spec && !opt.url && !opt.source) {
@@ -468,6 +497,13 @@ ved.init = function(el, dir) {
           console.error('Specification loading failed: ' + spec);
         }
       }
+    }
+
+    // Load content from cookies
+    if (ved.currentMode === 'vega-lite' && localStorage.getItem('vlspec') && !p.spec) {
+      ved.select(localStorage.getItem('vlspec'));
+    } else if (ved.currentMode === 'vega' && localStorage.getItem('vgspec') && !p.spec) {
+      ved.select(localStorage.getItem('vgspec'));
     }
 
     // Handle post messages
