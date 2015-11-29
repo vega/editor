@@ -191,30 +191,17 @@ ved.parseVl = function(callback) {
     localStorage.setItem('vlspec', value);
   }
 
-  var haveStats = function(stats) {
-    // TODO: display error / warnings
-    var vgSpec = vl.compile(spec, stats).spec;
-    var text = JSON3.stringify(vgSpec, null, 2, 60);
-    ved.vgEditor.setValue(text);
-    ved.vgEditor.gotoLine(0);
+  // TODO: display error / warnings
+  var vgSpec = vl.compile(spec).spec;
+  var text = JSON3.stringify(vgSpec, null, 2, 60);
+  ved.vgEditor.setValue(text);
+  ved.vgEditor.gotoLine(0);
 
-    // change select for vega to Custom
-    var vgSel = ved.$d3.select('.sel_vg_spec');
-    vgSel.node().selectedIndex = 0;
+  // change select for vega to Custom
+  var vgSel = ved.$d3.select('.sel_vg_spec');
+  vgSel.node().selectedIndex = 0;
 
-    ved.parseVg(callback);
-  };
-
-  // compute dataset stats only if the spec does not have embedded data
-  if (spec.data.values === undefined) {
-    var prefix = ved.isPathAbsolute(spec.data.url) ? '' : ved.path;
-    d3[spec.data.formatType || 'json'](prefix + spec.data.url, function(err, data) {
-      if (err) return alert('Error loading data ' + err.statusText);
-      haveStats(vl.data.stats(data));
-    });
-  } else {
-    haveStats(null);
-  }
+  ved.parseVg(callback);
 };
 
 ved.parseVg = function(callback) {
