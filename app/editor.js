@@ -340,6 +340,22 @@ ved.goCustom = function(func) {
   };
 };
 
+ved.getSelect = function() {
+  if (ved.currentMode === 'vega-lite') {
+    return ved.$d3.select('.sel_vl_spec');
+  } else if (ved.currentMode === 'vega') {
+    return ved.$d3.select('.sel_vg_spec');
+  }
+};
+
+ved.getSpecs = function() {
+  if (ved.currentMode === 'vega-lite') {
+    return ved.vlSpecs;
+  } else if (ved.currentMode === 'vega') {
+    return ved.vgSpecs;
+  }
+};
+
 ved.init = function(el, dir) {
   // Set base directory
   var PATH = dir || 'app/';
@@ -466,13 +482,10 @@ ved.init = function(el, dir) {
 
     if (p.spec) {
       var spec = decodeURIComponent(p.spec),
-          isVl = ved.currentMode === 'vega-lite',
-          specs = isVl ? ved.vlSpecs : ved.vgSpecs,
-          idx = specs.indexOf(spec) + 1,
-          sel = isVl ? vlSel : vgSel;
+          idx = ved.getSpecs().indexOf(spec) + 1;
 
       if (idx > 0) {
-        sel.node().selectedIndex = idx;
+        ved.getSelect().node().selectedIndex = idx;
         ved.select();
       } else {
         try {
@@ -486,11 +499,13 @@ ved.init = function(el, dir) {
       }
     }
 
-    // Load content from cookies
-    if (ved.currentMode === 'vega-lite' && localStorage.getItem('vlspec') && !p.spec) {
-      ved.select(localStorage.getItem('vlspec'));
-    } else if (ved.currentMode === 'vega' && localStorage.getItem('vgspec') && !p.spec) {
-      ved.select(localStorage.getItem('vgspec'));
+    // Load content from cookies if no example has been loaded
+    if (ved.getSelect().node().selectedIndex === 0) {
+      if (ved.currentMode === 'vega-lite' && localStorage.getItem('vlspec')) {
+        ved.select(localStorage.getItem('vlspec'));
+      } else if (ved.currentMode === 'vega' && localStorage.getItem('vgspec')) {
+        ved.select(localStorage.getItem('vgspec'));
+      }
     }
 
     // Handle post messages
@@ -514,10 +529,7 @@ ved.init = function(el, dir) {
       if (data.spec) {
         ved.select(data.spec);
       } else if (data.file) {
-        var isVl = ved.currentMode === 'vega-lite',
-          specs = isVl ? ved.vlSpecs : ved.vgSpecs,
-          sel = isVl ? vlSel : vgSel;
-        sel.node().selectedIndex = specs.indexOf(data.file) + 1;
+        ved.getSelect().node().selectedIndex = ved.getSpecs().indexOf(data.file) + 1;
         ved.select();
       }
     }, false);
