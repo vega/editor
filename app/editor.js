@@ -12,7 +12,7 @@ var ved = {
   renderType: 'canvas',
   editor: {
     vega: null,
-    VEGA_LITE: null
+    'vega-lite': null
   },
   currentMode: null,
   vgHidden: true  // vega editor hidden in vl mode
@@ -154,7 +154,8 @@ ved.renderer = function() {
 };
 
 ved.format = function() {
-  ved.editor.values().forEach(function(editor) {
+  for (var key in ved.editor) {
+    var editor = ved.editor[key];
     var text = editor.getValue();
     if (text.length) {
       var spec = JSON.parse(text);
@@ -162,7 +163,7 @@ ved.format = function() {
       editor.setValue(text);
       editor.gotoLine(0);
     }
-  });
+  }
 };
 
 ved.parseVl = function(callback) {
