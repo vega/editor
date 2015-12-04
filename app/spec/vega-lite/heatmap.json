@@ -1,6 +1,6 @@
 {
   "data": {"url": "data/cars.json"},
-  "marktype": "text",
+  "mark": "text",
   "encoding": {
     "row": {"field": "Origin","type": "ordinal"},
     "column": {"field": "Cylinders","type": "ordinal"},

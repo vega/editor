@@ -14,7 +14,7 @@
     "filter": "datum.b > 60",
     "formulas": [{"field": "b","expr": "2*datum.b"}]
   },
-  "marktype": "bar",
+  "mark": "bar",
   "encoding": {
     "y": {"type": "quantitative","field": "b"},
     "x": {"type": "ordinal","field": "a"}

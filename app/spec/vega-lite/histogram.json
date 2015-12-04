@@ -1,6 +1,6 @@
 {
   "data": {"url": "data/cars.json"},
-  "marktype": "bar",
+  "mark": "bar",
   "encoding": {
     "x": {
       "bin": {"maxbins": 15},

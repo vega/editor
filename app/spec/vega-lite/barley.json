@@ -1,6 +1,6 @@
 {
   "data": {"url": "data/barley.json"},
-  "marktype": "point",
+  "mark": "point",
   "encoding": {
     "x": {"type": "quantitative","field": "yield","aggregate": "mean"},
     "y": {

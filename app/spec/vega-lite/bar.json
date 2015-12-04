@@ -12,7 +12,7 @@
       {"a": "I","b": 52}
     ]
   },
-  "marktype": "bar",
+  "mark": "bar",
   "encoding": {
     "x": {"type": "ordinal","field": "a"},
     "y": {"type": "quantitative","field": "b"}

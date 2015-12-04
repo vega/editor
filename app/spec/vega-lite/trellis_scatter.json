@@ -1,6 +1,6 @@
 {
   "data": {"url": "data/movies.json"},
-  "marktype": "point",
+  "mark": "point",
   "encoding": {
     "x": {"field": "Worldwide_Gross","type": "quantitative"},
     "y": {"field": "US_DVD_Sales","type": "quantitative"},
