@@ -16,7 +16,7 @@
   },
   "marktype": "bar",
   "encoding": {
-    "y": {"type": "Q","name": "b"},
-    "x": {"type": "O","name": "a"}
+    "y": {"type": "quantitative","field": "b"},
+    "x": {"type": "ordinal","field": "a"}
   }
 }

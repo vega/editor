@@ -2,7 +2,7 @@
   "data": {"url": "data/cars.json"},
   "marktype": "bar",
   "encoding": {
-    "x": {"name": "Acceleration","type": "Q","aggregate": "sum"},
-    "color": {"name": "Origin","type": "N"}
+    "x": {"field": "Acceleration","type": "quantitative","aggregate": "sum"},
+    "color": {"field": "Origin","type": "nominal"}
   }
 }

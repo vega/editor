@@ -1,16 +1,26 @@
+'use strict';
+
+/*global location, window, d3, vl, vg, localStorage, document,
+alert, console, VG_SPECS, VL_SPECS, ace, JSON3*/
+
+var VEGA = 'vega';
+var VEGA_LITE = 'vega-lite';
+
 var ved = {
   version: '1.2.0',
   data: undefined,
   renderType: 'canvas',
-  vgEditor: null,
-  vlEditor: null,
+  editor: {
+    vega: null,
+    'vega-lite': null
+  },
   currentMode: null,
   vgHidden: true  // vega editor hidden in vl mode
 };
 
 ved.isPathAbsolute = function(path) {
   return /^(?:\/|[a-z]+:\/\/)/.test(path);
-}
+};
 
 ved.params = function() {
   var query = location.search.slice(1);
@@ -35,38 +45,36 @@ ved.mode = function() {
   if (ved.currentMode === newMode) return;
   ved.currentMode = newMode;
 
-  if (ved.currentMode === 'vega') {
-    ved.vgEditor.setOptions({
+  if (ved.currentMode === VEGA) {
+    ved.editor[VEGA].setOptions({
       readOnly: false,
       highlightActiveLine: true,
       highlightGutterLine: true
     });
 
-    vge.attr('class', 'vega-editor vega');
     ace.attr('class', 'ace_content');
-    spec = $d3.select('.sel_vg_spec');
-  } else if (ved.currentMode === 'vega-lite') {
-    ved.vgEditor.setOptions({
+  } else if (ved.currentMode === VEGA_LITE) {
+    ved.editor[VEGA].setOptions({
       readOnly: true,
       highlightActiveLine: false,
       highlightGutterLine: false
     });
 
-    vge.attr('class', 'vega-editor vega-lite');
     ace.attr('class', 'ace_content disabled');
-    spec = $d3.select('.sel_vl_spec');
   } else {
     throw new Error('Unknown mode ' + ved.currentMode);
   }
 
+  vge.attr('class', 'vega-editor ' + ved.currentMode);
+
   ved.editorVisibility();
-  spec.node().selectedIndex = 0;
+  ved.getSelect().selectedIndex = 0;
   ved.select('');
 };
 
 ved.switchToVega = function() {
   var sel = ved.$d3.select('.sel_mode').node(),
-      spec = ved.vgEditor.getValue();
+      spec = ved.editor[VEGA].getValue();
   sel.selectedIndex = 0;
   ved.mode();
   ved.select(spec);
@@ -79,7 +87,7 @@ ved.editorVisibility = function() {
       vls = $d3.select('.vl-spec'),
       toggle = $d3.select('.click_toggle_vega');
 
-  if (ved.vgHidden && ved.currentMode === 'vega-lite') {
+  if (ved.vgHidden && ved.currentMode === VEGA_LITE) {
     vgs.style('display', 'none');
     vls.style('flex', '1 1 auto');
     toggle.attr('class', 'click_toggle_vega up');
@@ -95,17 +103,9 @@ ved.select = function(spec) {
   var $d3 = ved.$d3,
       mode = ved.currentMode,
       desc = $d3.select('.spec_desc'),
-      editor, parse, sel;
-
-  if (mode === 'vega') {
-    editor = ved.vgEditor;
-    parse  = ved.parseVg;
-    sel = $d3.select('.sel_vg_spec').node();
-  } else if (mode === 'vega-lite') {
-    editor = ved.vlEditor;
-    parse  = ved.parseVl;
-    sel = $d3.select('.sel_vl_spec').node();
-  }
+      editor = ved.editor[mode],
+      sel = ved.getSelect(),
+      parse = mode === VEGA ? ved.parseVg : ved.parseVl;
 
   if (spec) {
     editor.setValue(spec);
@@ -128,11 +128,11 @@ ved.select = function(spec) {
   } else {
     editor.setValue('');
     editor.gotoLine(0);
-    ved.vgEditor.setValue('');
+    ved.editor[VEGA].setValue('');
     ved.resetView();
   }
 
-  if (mode === 'vega') {
+  if (mode === VEGA) {
     ved.resize();
   } else if (mode === 'vl') {
     ved.resizeVlEditor();
@@ -154,7 +154,8 @@ ved.renderer = function() {
 };
 
 ved.format = function() {
-  [ved.vlEditor, ved.vgEditor].forEach(function(editor) {
+  for (var key in ved.editor) {
+    var editor = ved.editor[key];
     var text = editor.getValue();
     if (text.length) {
       var spec = JSON.parse(text);
@@ -162,50 +163,62 @@ ved.format = function() {
       editor.setValue(text);
       editor.gotoLine(0);
     }
-  });
+  }
 };
 
 ved.parseVl = function(callback) {
-  var opt, source;
+  var spec, source,
+    value = ved.editor[VEGA_LITE].getValue();
+
+  // delete cookie if editor is empty
+  if (!value) {
+    localStorage.removeItem('vega-lite-spec');
+    return;
+  }
+
   try {
-    opt = JSON.parse(ved.vlEditor.getValue());
+    spec = JSON.parse(value);
   } catch (e) {
     console.log(e);
     return;
   }
 
-  var haveStats = function(stats) {
-    var vgSpec = vl.compile(opt, stats);
-    var text = JSON3.stringify(vgSpec, null, 2, 60);
-    ved.vgEditor.setValue(text);
-    ved.vgEditor.gotoLine(0);
-
-    // change select for vega to Custom
-    var vgSel = ved.$d3.select('.sel_vg_spec');
-    vgSel.node().selectedIndex = 0;
-
-    ved.parseVg(callback);
-  };
-
-  // compute dataset stats only if the spec does not have embedded data
-  if (opt.data.values === undefined) {
-    var prefix = ved.isPathAbsolute(opt.data.url) ? '' : ved.path;
-    d3[opt.data.formatType || 'json'](prefix + opt.data.url, function(err, data) {
-      if (err) return alert('Error loading data ' + err.statusText);
-      haveStats(vl.data.stats(data));
-    });
-  } else {
-    haveStats(null);
+  if (ved.getSelect().selectedIndex === 0) {
+    localStorage.setItem('vega-lite-spec', value);
   }
+
+  // TODO: display error / warnings
+  var vgSpec = vl.compile(spec).spec;
+  var text = JSON3.stringify(vgSpec, null, 2, 60);
+  ved.editor[VEGA].setValue(text);
+  ved.editor[VEGA].gotoLine(0);
+
+  // change select for vega to Custom
+  var vgSel = ved.$d3.select('.sel_vega_spec');
+  vgSel.node().selectedIndex = 0;
+
+  ved.parseVg(callback);
 };
 
 ved.parseVg = function(callback) {
-  var opt, source;
+  var opt, source,
+    value = ved.editor[VEGA].getValue();
+
+  // delete cookie if editor is empty
+  if (!value) {
+    localStorage.removeItem('vega-spec');
+    return;
+  }
+
   try {
-    opt = JSON.parse(ved.vgEditor.getValue());
+    opt = JSON.parse(ved.editor[VEGA].getValue());
   } catch (e) {
     console.log(e);
     return;
+  }
+
+  if (ved.getSelect().selectedIndex === 0 && ved.currentMode === VEGA) {
+    localStorage.setItem('vega-spec', value);
   }
 
   if (!opt.spec && !opt.url && !opt.source) {
@@ -233,16 +246,17 @@ ved.resetView = function() {
 };
 
 ved.resize = function(event) {
-  ved.vgEditor.resize();
-  ved.vlEditor.resize();
+  ved.editor[VEGA].resize();
+  ved.editor[VEGA_LITE].resize();
 };
 
 ved.resizeVlEditor = function() {
-  if (ved.vgHidden || ved.currentMode !== 'vega-lite')
+  if (ved.vgHidden || ved.currentMode !== VEGA_LITE)
     return;
 
-  var height = ved.vlEditor.getSession().getDocument().getLength() *
-  ved.vlEditor.renderer.lineHeight + ved.vlEditor.renderer.scrollBar.getWidth();
+  var editor = ved.editor[VEGA_LITE];
+  var height = editor.getSession().getDocument().getLength() *
+  editor.renderer.lineHeight + editor.renderer.scrollBar.getWidth();
 
   if (height > 600) {
     return;
@@ -260,12 +274,7 @@ ved.setPermanentUrl = function() {
   var params = [];
   params.push('mode=' + ved.currentMode);
 
-  var sel;
-  if (ved.currentMode === 'vega') {
-    sel = ved.$d3.select('.sel_vg_spec').node();
-  } else {
-    sel = ved.$d3.select('.sel_vl_spec').node();
-  }
+  var sel = ved.getSelect();
   var idx = sel.selectedIndex,
     spec = d3.select(sel.options[idx]).datum();
 
@@ -273,7 +282,7 @@ ved.setPermanentUrl = function() {
     params.push('spec=' + spec.name);
   }
 
-  if (!ved.vgHidden && ved.currentMode === 'vega-lite') {
+  if (!ved.vgHidden && ved.currentMode === VEGA_LITE) {
     params.push('showEditor=1');
   }
 
@@ -294,7 +303,7 @@ ved.export = function() {
   var el = d3.select(document.createElement('a'))
     .attr('href', url)
     .attr('target', '_blank')
-    .attr('download', (ved.spec.name || 'vega') + '.' + ext)
+    .attr('download', (ved.spec.name || VEGA) + '.' + ext)
     .node();
 
   var evt = document.createEvent('MouseEvents');
@@ -312,15 +321,13 @@ ved.setUrlAfter = function(func) {
 
 ved.goCustom = function(func) {
   return function() {
-    var sel;
-    if (ved.currentMode === 'vega') {
-      sel = ved.$d3.select('.sel_vg_spec');
-    } else if (ved.currentMode === 'vega-lite') {
-      sel = ved.$d3.select('.sel_vl_spec');
-    }
-    sel.node().selectedIndex = 0;
+    ved.getSelect().selectedIndex = 0;
     func();
   };
+};
+
+ved.getSelect = function() {
+  return ved.$d3.select('.sel_' + ved.currentMode + '_spec').node();
 };
 
 ved.init = function(el, dir) {
@@ -335,7 +342,7 @@ ved.init = function(el, dir) {
     el.html(text);
 
     // Vega specification drop-down menu
-    var vgSel = el.select('.sel_vg_spec');
+    var vgSel = el.select('.sel_vega_spec');
     vgSel.on('change', ved.setUrlAfter(ved.select));
     vgSel.append('option').text('Custom');
     vgSel.selectAll('optgroup')
@@ -348,7 +355,7 @@ ved.init = function(el, dir) {
       .text(function(d) { return d.name; });
 
     // Vega-lite specification drop-down menu
-    var vlSel = el.select('.sel_vl_spec');
+    var vlSel = el.select('.sel_vega-lite_spec');
     vlSel.on('change', ved.setUrlAfter(ved.select));
     vlSel.append('option').text('Custom');
     vlSel.selectAll('optgroup')
@@ -374,8 +381,8 @@ ved.init = function(el, dir) {
     mode.on('change', ved.setUrlAfter(ved.mode));
 
     // Code Editors
-    var vlEditor = ved.vlEditor = ace.edit(el.select('.vl-spec').node());
-    var vgEditor = ved.vgEditor = ace.edit(el.select('.vg-spec').node());
+    var vlEditor = ved.editor[VEGA_LITE] = ace.edit(el.select('.vl-spec').node());
+    var vgEditor = ved.editor[VEGA] = ace.edit(el.select('.vg-spec').node());
 
     [vlEditor, vgEditor].forEach(function(editor) {
       editor.getSession().setMode('ace/mode/json');
@@ -406,7 +413,7 @@ ved.init = function(el, dir) {
     // Initialize application
     el.select('.btn_spec_format').on('click', ved.format);
     el.select('.btn_vg_parse').on('click', ved.setUrlAfter(ved.parseVg));
-    el.select('.btn_vl_parse').on('click',ved.setUrlAfter(ved.parseVl));
+    el.select('.btn_vl_parse').on('click', ved.setUrlAfter(ved.parseVl));
     el.select('.btn_to_vega').on('click', ved.setUrlAfter(function() {
       d3.event.preventDefault();
       ved.switchToVega();
@@ -425,8 +432,9 @@ ved.init = function(el, dir) {
       }, []);
     };
 
-    ved.vgSpecs = getIndexes(VG_SPECS);
-    ved.vlSpecs = getIndexes(VL_SPECS);
+    ved.specs = {};
+    ved.specs[VEGA] = getIndexes(VG_SPECS);
+    ved.specs[VEGA_LITE] = getIndexes(VL_SPECS);
 
     // Handle application parameters
     var p = ved.params();
@@ -436,11 +444,11 @@ ved.init = function(el, dir) {
     }
 
     if (p.mode) {
-      mode.node().selectedIndex = p.mode.toLowerCase() === 'vega-lite' ? 1 : 0;
+      mode.node().selectedIndex = p.mode.toLowerCase() === VEGA_LITE ? 1 : 0;
     }
     ved.mode();
 
-    if (ved.currentMode === 'vega-lite') {
+    if (ved.currentMode === VEGA_LITE) {
       if (p.showEditor) {
         ved.vgHidden = false;
         ved.editorVisibility();
@@ -449,13 +457,10 @@ ved.init = function(el, dir) {
 
     if (p.spec) {
       var spec = decodeURIComponent(p.spec),
-          isVl = ved.currentMode === 'vega-lite',
-          specs = isVl ? ved.vlSpecs : ved.vgSpecs,
-          idx = specs.indexOf(spec) + 1,
-          sel = isVl ? vlSel : vgSel;
+          idx = ved.specs[ved.currentMode].indexOf(spec) + 1;
 
       if (idx > 0) {
-        sel.node().selectedIndex = idx;
+        ved.getSelect().selectedIndex = idx;
         ved.select();
       } else {
         try {
@@ -467,6 +472,12 @@ ved.init = function(el, dir) {
           console.error('Specification loading failed: ' + spec);
         }
       }
+    }
+
+    // Load content from cookies if no example has been loaded
+    var key = ved.currentMode + '-spec';
+    if (ved.getSelect().selectedIndex === 0 && localStorage.getItem(key)) {
+      ved.select(localStorage.getItem(key));
     }
 
     // Handle post messages
@@ -482,7 +493,7 @@ ved.init = function(el, dir) {
       // set vg or vl mode
       if (data.mode) {
         mode.node().selectedIndex =
-          data.mode.toLowerCase() === 'vega-lite' ? 1 : 0;
+          data.mode.toLowerCase() === VEGA_LITE ? 1 : 0;
         ved.mode();
       }
 
@@ -490,10 +501,7 @@ ved.init = function(el, dir) {
       if (data.spec) {
         ved.select(data.spec);
       } else if (data.file) {
-        var isVl = ved.currentMode === 'vega-lite',
-          specs = isVl ? ved.vlSpecs : ved.vgSpecs,
-          sel = isVl ? vlSel : vgSel;
-        sel.node().selectedIndex = specs.indexOf(data.file) + 1;
+        ved.getSelect().selectedIndex = ved.specs[ved.currentMode].indexOf(data.file) + 1;
         ved.select();
       }
     }, false);

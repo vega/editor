@@ -2,13 +2,13 @@
   "data": {"url": "data/barley.json"},
   "marktype": "point",
   "encoding": {
-    "x": {"type": "Q","name": "yield","aggregate": "mean"},
+    "x": {"type": "quantitative","field": "yield","aggregate": "mean"},
     "y": {
       "sort": {"field": "yield","op": "mean"},
-      "type": "O",
-      "name": "variety"
+      "type": "ordinal",
+      "field": "variety"
     },
-    "row": {"type": "O","name": "site"},
-    "color": {"type": "N","name": "year"}
+    "row": {"type": "ordinal","field": "site"},
+    "color": {"type": "nominal","field": "year"}
   }
 }

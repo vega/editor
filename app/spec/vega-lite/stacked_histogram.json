@@ -4,10 +4,10 @@
   "encoding": {
     "x": {
       "bin": {"maxbins": 15},
-      "name": "Horsepower",
-      "type": "Q"
+      "field": "Horsepower",
+      "type": "quantitative"
     },
-    "y": {"name": "*","type": "Q","aggregate": "count"},
-    "color": {"name": "Cylinders","type": "N"}
+    "y": {"field": "*","type": "quantitative","aggregate": "count"},
+    "color": {"field": "Cylinders","type": "nominal"}
   }
 }

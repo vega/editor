@@ -2,8 +2,8 @@
   "data": {"url": "data/movies.json"},
   "marktype": "point",
   "encoding": {
-    "x": {"name": "Worldwide_Gross","type": "Q"},
-    "y": {"name": "US_DVD_Sales","type": "Q"},
-    "col": {"name": "MPAA_Rating","type": "O"}
+    "x": {"field": "Worldwide_Gross","type": "quantitative"},
+    "y": {"field": "US_DVD_Sales","type": "quantitative"},
+    "column": {"field": "MPAA_Rating","type": "ordinal"}
   }
 }
