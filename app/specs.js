@@ -1,16 +1,20 @@
 var VL_SPECS = {
   'Basic': [
     {
+      "name": "area",
+      "title": "Area Chart"
+    },
+    {
       "name": "bar",
       "title": "Simple Bar Chart"
     },
     {
-      "name": "bar_filter_calc",
-      "title": "Bar with filter and calculation"
-    },
-    {
       "name": "bar_aggregate",
       "title": "Aggregate Bar Chart"
+    },
+    {
+      "name": "bar_filter_calc",
+      "title": "Bar with filter and calculation"
     },
     {
       "name": "bar_grouped",
@@ -19,6 +23,18 @@ var VL_SPECS = {
     {
       "name": "bar_log",
       "title": "Bar chart with log scale and large numbers",
+    },
+    {
+      "name": "histogram",
+      "title": "Histogram"
+    },
+    {
+      "name": "line",
+      "title": "Line chart"
+    },
+    {
+      "name": "line_month",
+      "title": "Line showing pattern between months"
     },
     {
       "name": "scatter",
@@ -34,22 +50,7 @@ var VL_SPECS = {
       "name": "tick",
       "title": "Tick marks"
     },
-    {
-      "name": "line",
-      "title": "Line chart"
-    },
-    {
-      "name": "line_month",
-      "title": "Line showing pattern between months"
-    },
-    {
-      "name": "histogram",
-      "title": "Histogram"
-    },
-    {
-      "name": "area",
-      "title": "Area Chart"
-    }
+
     // Hide until we finalize heatmap
     // {
     //   "name": "tableheatmap",
