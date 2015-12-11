@@ -7,5 +7,4 @@
     "color": {"field": "Horsepower","type": "quantitative","aggregate": "mean"},
     "text": {"field": "*","type": "quantitative","aggregate": "count"}
   }
-
 }

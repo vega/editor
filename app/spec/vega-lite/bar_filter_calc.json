@@ -1,4 +1,5 @@
 {
+  "description": "A simple bar chart with embedded data that uses a filter and calculate.",
   "data": {
     "values": [
       {"a": "A","b": 28},
@@ -12,7 +13,7 @@
       {"a": "F","b": 53}
     ],
     "filter": "datum.b > 60",
-    "formulas": [{"field": "b","expr": "2*datum.b"}]
+    "calculate": [{"field": "b","expr": "2*datum.b"}]
   },
   "mark": "bar",
   "encoding": {

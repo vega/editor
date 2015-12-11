@@ -7,7 +7,12 @@
       "field": "Horsepower",
       "type": "quantitative"
     },
-    "y": {"field": "*","type": "quantitative","aggregate": "count"}
+    "y": {
+      "aggregate": "count",
+      "field": "*",
+      "type": "quantitative",
+      "displayName": "Number of Records"
+    }
   }
 
 }
