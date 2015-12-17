@@ -239,7 +239,7 @@ ved.parseVg = function(callback) {
 
 ved.resetView = function() {
   var $d3 = ved.$d3;
-  if (ved.view) ved.view.destroy();
+  if (ved.view && ved.view.destroy) ved.view.destroy();
   $d3.select('.mod_params').html('');
   $d3.select('.spec_desc').html('');
   $d3.select('.vis').html('');
