@@ -123,7 +123,10 @@ ved.select = function(spec) {
     d3.xhr(ved.uri(spec), function(error, response) {
       editor.setValue(response.responseText);
       editor.gotoLine(0);
-      parse(function() { desc.html(spec.desc || ''); });
+      parse(function(err) {
+        if (err) console.error(err);
+        desc.html(spec.desc || '');
+      });
     });
   } else {
     editor.setValue('');
@@ -201,6 +204,15 @@ ved.parseVl = function(callback) {
 };
 
 ved.parseVg = function(callback) {
+  if (!callback) {
+    callback = function(err) {
+      if (err) {
+        ved.view.destroy();
+        console.error(err);
+      }
+    };
+  }
+
   var opt, source,
     value = ved.editor[VEGA].getValue();
 
@@ -213,8 +225,7 @@ ved.parseVg = function(callback) {
   try {
     opt = JSON.parse(ved.editor[VEGA].getValue());
   } catch (e) {
-    console.log(e);
-    return;
+    return callback(e);
   }
 
   if (ved.getSelect().selectedIndex === 0 && ved.currentMode === VEGA) {
@@ -230,16 +241,17 @@ ved.parseVg = function(callback) {
   opt.parameter_el = '.mod_params';
 
   ved.resetView();
-  var a = vg.embed('.vis', opt, function(view, spec) {
-    ved.spec = spec;
-    ved.view = view;
-    if (callback) callback(view);
+  var a = vg.embed('.vis', opt, function(err, result) {
+    if (err) return callback(err);
+    ved.spec = result.spec;
+    ved.view = result.view;
+    callback(null, result.view);
   });
 };
 
 ved.resetView = function() {
   var $d3 = ved.$d3;
-  if (ved.view && ved.view.destroy) ved.view.destroy();
+  if (ved.view) ved.view.destroy();
   $d3.select('.mod_params').html('');
   $d3.select('.spec_desc').html('');
   $d3.select('.vis').html('');
