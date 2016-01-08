@@ -1,12 +1,18 @@
 {
-  "marktype": "bar",
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
   "encoding": {
     "x": {
       "bin": {"maxbins": 15},
-      "name": "Horsepower",
-      "type": "Q"
+      "field": "Horsepower",
+      "type": "quantitative"
     },
-    "y": {"name": "*","type": "Q","aggregate": "count"}
-  },
-  "data": {"url": "data/cars.json"}
+    "y": {
+      "aggregate": "count",
+      "field": "*",
+      "type": "quantitative",
+      "displayName": "Number of Records"
+    }
+  }
+
 }

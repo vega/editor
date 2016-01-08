@@ -1,8 +1,0 @@
-{
-  "marktype": "bar",
-  "encoding": {
-    "x": {"name": "Acceleration","type": "Q","aggregate": "sum"},
-    "color": {"name": "Origin","type": "N"}
-  },
-  "data": {"url": "data/cars.json"}
-}
