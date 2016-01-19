@@ -11,8 +11,8 @@
       "transform": [
         {"type": "formula", "field": "hour", "expr": "hours(datum.date)"},
         {
-          "type": "formula", 
-          "field": "day", 
+          "type": "formula",
+          "field": "day",
           "expr": "datetime((month(datum.date)+1) + '/' + date(datum.date) + '/2001')"
         },
         {
@@ -86,7 +86,7 @@
           "type": "aggregate",
           "groupby": ["day"],
           "summarize": {"delay": ["count"]}
-        }        
+        }
       ]
     }
   ],
@@ -103,7 +103,7 @@
       "name": "timesStart",
       "init": -1,
       "streams": [{
-        "type": "@timesGroup:mousedown", 
+        "type": "@timesGroup:mousedown",
         "expr": "eventX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
@@ -124,7 +124,7 @@
       "name": "delayStart",
       "init": -1,
       "streams": [{
-        "type": "@delayGroup:mousedown", 
+        "type": "@delayGroup:mousedown",
         "expr": "eventX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
@@ -145,7 +145,7 @@
       "name": "distStart",
       "init": -1,
       "streams": [{
-        "type": "@distGroup:mousedown", 
+        "type": "@distGroup:mousedown",
         "expr": "eventX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
@@ -165,7 +165,7 @@
     {
       "name": "dayStart",
       "streams": [{
-        "type": "@dayGroup:mousedown", 
+        "type": "@dayGroup:mousedown",
         "expr": "eventX(scope)",
         "scale": {"scope": "scope", "name": "x", "invert": true}
       }]
@@ -180,76 +180,6 @@
     },
     {"name": "minDay", "expr": "max(min(dayStart, dayEnd), datetime('Jan 1 2001'))"},
     {"name": "maxDay", "expr": "min(max(dayStart, dayEnd), datetime('Mar 31 2001'))"}
-  ],
-
-  "predicates": [
-    {
-      "name": "timesEqual",
-      "type": "==",
-      "operands": [{"signal": "timesStart"}, {"signal": "timesEnd"}]
-    },
-    {
-      "name": "timesRange",
-      "type": "in",
-      "item": {"arg": "x"},
-      "range": [{"signal": "timesStart"}, {"signal": "timesEnd"}]
-    },
-    {
-      "name": "timesBrush",
-      "type": "or",
-      "operands": [{"predicate": "timesEqual"}, {"predicate": "timesRange"}]
-    },
-
-    {
-      "name": "delayEqual",
-      "type": "==",
-      "operands": [{"signal": "delayStart"}, {"signal": "delayEnd"}]
-    },
-    {
-      "name": "delayRange",
-      "type": "in",
-      "item": {"arg": "x"},
-      "range": [{"signal": "delayStart"}, {"signal": "delayEnd"}]
-    },
-    {
-      "name": "delayBrush",
-      "type": "or",
-      "operands": [{"predicate": "delayEqual"}, {"predicate": "delayRange"}]
-    },
-
-    {
-      "name": "distEqual",
-      "type": "==",
-      "operands": [{"signal": "distStart"}, {"signal": "distEnd"}]
-    },
-    {
-      "name": "distRange",
-      "type": "in",
-      "item": {"arg": "x"},
-      "range": [{"signal": "distStart"}, {"signal": "distEnd"}]
-    },
-    {
-      "name": "distBrush",
-      "type": "or",
-      "operands": [{"predicate": "distEqual"}, {"predicate": "distRange"}]
-    },
-
-    {
-      "name": "dayEqual",
-      "type": "==",
-      "operands": [{"signal": "dayStart"}, {"signal": "dayEnd"}]
-    },
-    {
-      "name": "dayRange",
-      "type": "in",
-      "item": {"arg": "x"},
-      "range": [{"signal": "dayStart"}, {"signal": "dayEnd"}]
-    },
-    {
-      "name": "dayBrush",
-      "type": "or",
-      "operands": [{"predicate": "dayEqual"}, {"predicate": "dayRange"}]
-    }
   ],
 
   "marks": [
@@ -297,7 +227,7 @@
               "fill": {
                 "rule": [
                   {
-                    "predicate": {"name": "timesBrush", "x": {"field": "bin_hour"}},
+                    "test": "timesStart == timesEnd || inrange(datum.bin_hour, timesStart, timesEnd)",
                     "value": "steelblue"
                   },
                   {"value": "#bbb"}
@@ -382,7 +312,7 @@
               "fill": {
                 "rule": [
                   {
-                    "predicate": {"name": "delayBrush", "x": {"field": "bin_delay"}},
+                    "test": "delayStart == delayEnd || inrange(datum.bin_delay, delayStart, delayEnd)",
                     "value": "steelblue"
                   },
                   {"value": "#bbb"}
@@ -466,7 +396,7 @@
               "fill": {
                 "rule": [
                   {
-                    "predicate": {"name": "distBrush", "x": {"field": "bin_dist"}},
+                    "test": "distStart == distEnd || inrange(datum.bin_dist, distStart, distEnd)",
                     "value": "steelblue"
                   },
                   {"value": "#bbb"}
@@ -550,7 +480,7 @@
               "fill": {
                 "rule": [
                   {
-                    "predicate": {"name": "dayBrush", "x": {"field": "day"}},
+                    "test": "!dayStart || time(dayStart) == time(dayEnd) || inrange(datum.day, dayStart, dayEnd)",
                     "value": "steelblue"
                   },
                   {"value": "#bbb"}

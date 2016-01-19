@@ -38,16 +38,6 @@
     }
   ],
 
-  "predicates": [
-    {
-      "name": "isFixed",
-      "item": {"arg": "id"},
-      "type": "in", 
-      "data": "fixed",
-      "field": "id"
-    }
-  ],
-
   "data": [
     {
       "name": "fixed",
@@ -111,11 +101,11 @@
         "update": {
           "x": {"field": "layout_x"},
           "y": {"field": "layout_y"},
-          "stroke": {"rule": [
-            { "predicate": {"name": "isFixed", "id": {"field": "_id"}},
+          "stroke": [
+            { "test": "indata('fixed', datum._id, 'id')",
               "value": "firebrick" },
             { "value": "steelblue" }
-          ]}
+          ]
         }
       }
     }
