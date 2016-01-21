@@ -73,7 +73,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "annotation","field": "text"},
-      "range": ["#ddd","#FFC0CB"]
+      "range": ["#ddd","#ffc0cb"]
     }
   ],
   "axes": [
@@ -147,7 +147,7 @@
           "x": {"signal": "width","mult": 0.5},
           "y": {"value": -10},
           "text": {
-            "template": "Population in Falkensee from {{datum.min_year}} to {{datum.max_year}}"
+            "template": "Population of Falkensee from {{datum.min_year}} to {{datum.max_year}}"
           },
           "fill": {"value": "black"},
           "fontSize": {"value": 16},
