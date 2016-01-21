@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "width": 500,
   "height": 200,
   "padding": "auto",
@@ -74,7 +73,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "annotation","field": "text"},
-      "range": ["#eee","#f0f8ff"]
+      "range": ["#ddd","#FFC0CB"]
     }
   ],
   "axes": [
