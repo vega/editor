@@ -107,6 +107,10 @@ var VG_SPECS = {
     },
     { "name": "error" },
     { "name": "force" },
+    {
+      "name": "falkensee",
+      "desc": "Based on an <a href='https://de.wikipedia.org/wiki/Datei:Bev%C3%B6lkerungsentwicklung_Falkensee.pdf'>image from Wikipedia</a>."
+    },
     { "name": "grouped_bar" },
     { "name": "heatmap" },
     { "name": "image" },
