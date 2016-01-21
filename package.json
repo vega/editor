@@ -51,6 +51,7 @@
   "scripts": {
     "deploy": "scripts/deploy.sh",
     "prevendor": "npm install",
-    "vendor": "scripts/vendor.sh"
+    "vendor": "scripts/vendor.sh",
+    "start": "python -m SimpleHTTPServer"
   }
 }
