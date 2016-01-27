@@ -1,95 +1,154 @@
 var VL_SPECS = {
-  'Basic': [
+  "Showcase": [
     {
-      "name": "area",
-      "title": "Area Chart"
-    },
-    {
-      "name": "bar",
-      "title": "Simple Bar Chart"
-    },
-    {
-      "name": "bar_aggregate",
-      "title": "Aggregate Bar Chart"
-    },
-    {
-      "name": "bar_filter_calc",
-      "title": "Bar with filter and calculation"
-    },
-    {
-      "name": "bar_grouped",
-      "title": "Grouped bar chart."
-    },
-    {
-      "name": "bar_log",
-      "title": "Bar chart with log scale and large numbers",
-    },
-    {
-      "name": "histogram",
-      "title": "Histogram"
-    },
-    {
-      "name": "line",
-      "title": "Line chart"
-    },
-    {
-      "name": "line_month",
-      "title": "Line showing pattern between months"
-    },
-    {
-      "name": "scatter",
-      "title": "A scatterplot"
-    },
-    // TODO: colored & shape scatter,
-    // TOOD: bubble scatter,
-    {
-      "name": "scatter_binned",
-      "title": "Binned Scatterplot"
-    },
-    {
-      "name": "tick",
-      "title": "Tick marks"
-    },
-
-    // Hide until we finalize heatmap
-    // {
-    //   "name": "tableheatmap",
-    //   "title": "Table Heatmap."
-    // }
-  ],
-  'stack': [
-    {
-      "name": "stacked_area",
-      "title": "Stacked Area Chart"
+      "name": "bar_layered_transparent",
+      "title": "Bar chart with transparent layers",
+      "showInEditor": true
     },
     {
       "name": "stacked_bar_h",
       "title": "Horizontal Stacked Bar Chart"
     },
     {
+      "name": "trellis_barley",
+      "title": "Trellis Plot",
+      "showInEditor": true
+    }
+  ],
+  "Basic": [
+    {
+      "name": "bar",
+      "title": "Simple Bar Chart",
+      "showInEditor": true
+    },
+    {
+      "name": "bar_filter_calc",
+      "title": "Bar with filter and calculation",
+      "showInEditor": true
+    },
+    {
+      "name": "bar_aggregate",
+      "title": "Aggregate Bar Chart",
+      "showInEditor": true
+    },
+    {
+      "name": "bar_grouped",
+      "title": "Grouped bar chart.",
+      "showInEditor": true
+    },
+    {
+      "name": "bar_yearmonth",
+      "title": "Temperature in Seattle",
+      "showInEditor": true
+    },
+    {
+      "name": "scatter",
+      "title": "A scatterplot",
+      "showInEditor": true
+    },
+    {
+      "name": "scatter_binned_axes",
+      "title": "Scatterplot with binned axes",
+      "showInEditor": true
+    },
+    {
+      "name": "scatter_binned_color",
+      "title": "Scatterplot with binned color"
+    },
+    {
+      "name": "scatter_binned_size",
+      "title": "Bubble Scatterplot with binned size"
+    },
+    {
+      "name": "scatter_bubble",
+      "title": "Bubble Scatterplot",
+      "showInEditor": true
+    },
+    {
+      "name": "scatter_colored_with_shape",
+      "title": "Scatterplot with shape and color encoding"
+    },
+    {
+      "name": "scatter_log",
+      "title": "Scatter plot with log scale and large numbers",
+      "showInEditor": true
+    },
+    {
+      "name": "tick",
+      "title": "Tick marks",
+      "showInEditor": true
+    },
+    {
+      "name": "line",
+      "title": "Line chart",
+      "showInEditor": true
+    },
+    {
+      "name": "line_color",
+      "title": "Colored Line chart",
+      "showInEditor": true
+    },
+    {
+      "name": "line_month",
+      "title": "Temperature in Seattle",
+      "showInEditor": true
+    },
+    {
+      "name": "histogram",
+      "title": "Histogram",
+      "showInEditor": true
+    },
+    {
+      "name": "area",
+      "title": "Area Chart",
+      "showInEditor": true
+    },
+    {
+      "name": "area_vertical",
+      "title": "Vertical Area Chart"
+    },
+    {
+      "name": "text_table_heatmap",
+      "title": "Table Heatmap"
+    }
+  ],
+  "Stack": [
+    {
+      "name": "stacked_area",
+      "title": "Stacked Area Chart",
+      "showInEditor": true
+    },
+    {
       "name": "stacked_bar_v",
-      "title": "Vertical Stacked Bar Chart"
+      "title": "Vertical Stacked Bar Chart",
+      "showInEditor": true
     },
     {
       "name": "stacked_bar_1d",
-      "title": '1D Stacked Bar Chart'
+      "title": "1D Stacked Bar Chart"
     }
   ],
-  'Trellis': [
+  "Trellis": [
     {
-      "name": "trellis_barley",
-      "title": "Trellis Plot"
+      "name": "trellis_bar",
+      "title": "Population distribution of age groups and gender in 2000"
     },
     {
-      "name": "trellis_area",
-      "title": 'Trellis Area chart'
+      "name": "trellis_stacked_bar",
+      "title": "Trellis Stacked Bar Chart",
+      "showInEditor": true
     },
     {
-      "name": "trellis_stacked_bar", "title": 'Trellis Stacked Bar Chart'
+      "name": "trellis_scatter",
+      "title": "Trellis Scatter Plot"
     },
-    {"name": "trellis_scatter"}
+    {
+      "name": "trellis_scatter_binned_row",
+      "title": "Trellis Scatter Plot, faceted by Binned Row"
+    }
   ]
-};
+}
+;
 
 var VG_SPECS = {
   'Static': [
