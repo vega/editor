@@ -1,5 +1,5 @@
 {
-  "mark": "bar",
+  "mark": "point",
   "data": {
     "values": [
       {"m_teps": 33.5330810546875,"dataset": "ak2010"},
@@ -40,12 +40,11 @@
     ]
   },
   "encoding": {
+    "x": {"field": "dataset", "type": "ordinal"},
     "y": {
+      "field": "m_teps", "type": "quantitative",
       "scale": {"type": "log"},
-      "type": "quantitative",
-      "field": "m_teps",
       "axis": {"title": "MTEPS"}
-    },
-    "x": {"type": "ordinal","field": "dataset"}
+    }
   }
 }
