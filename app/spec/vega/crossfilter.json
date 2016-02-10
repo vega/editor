@@ -179,7 +179,7 @@
       }]
     },
     {"name": "minDay", "expr": "max(min(dayStart, dayEnd), datetime('Jan 1 2001'))"},
-    {"name": "maxDay", "expr": "min(max(dayStart, dayEnd), datetime('Mar 31 2001'))"}
+    {"name": "maxDay", "expr": "min(max(dayStart, dayEnd), datetime('Mar 31 2001')) || datetime('Mar 31 2001')"}
   ],
 
   "marks": [
