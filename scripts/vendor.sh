@@ -2,13 +2,14 @@
 ACE=node_modules/ace-builds/src-min
 TARGET=vendor
 DATA=app/data
+SPEC=app/spec
 
 # Copy dependencies by default. Link if a -l flag is specified.
 CWD=$(pwd)
-VEGA_OP="cp"
-VEGA_DATASETS_OP="cp"
-VEGA_EMBED_OP="cp"
-VEGA_LITE_OP="cp"
+VEGA_OP="cp -R"
+VEGA_DATASETS_OP="cp -R"
+VEGA_EMBED_OP="cp -R"
+VEGA_LITE_OP="cp -R"
 
 while getopts :l: FLAG; do
   case $FLAG in
@@ -21,9 +22,10 @@ while getopts :l: FLAG; do
   esac
 done
 
-# delete old vendor and data directories to start with a clean slate
+# delete old vendor, data, and spec directories to start with a clean slate.
 rm -rf $TARGET
 rm -rf $DATA
+rm -rf $SPEC
 
 echo "Copying dependencies to '$TARGET'."
 
@@ -55,3 +57,12 @@ if [ ! -d "$DATA" ]; then
 fi
 
 eval $VEGA_DATASETS_OP "$CWD/node_modules/vega-datasets/data/*" $DATA
+
+echo "Copy examples to '$SPEC'."
+
+if [ ! -d "$SPEC" ]; then
+  mkdir $SPEC
+fi
+
+eval $VEGA_OP "$CWD/node_modules/vega/examples" "$SPEC/vega"
+eval $VEGA_LITE_OP "$CWD/node_modules/vega-lite/examples" "$SPEC/vega-lite"

@@ -2,6 +2,7 @@
 .idea
 _site
 app/data
+app/spec
 coverage
 node_modules
 temp
