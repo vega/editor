@@ -47,6 +47,7 @@ rm -rf $STAGE
 
 # Add, commit and push files
 git add -A
+git add app/vl-specs.js -f
 git commit -m "Update deployed files."
 git push origin gh-pages
 

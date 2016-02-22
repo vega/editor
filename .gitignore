@@ -3,6 +3,7 @@
 _site
 app/data
 app/spec
+app/vl-specs.js
 coverage
 node_modules
 temp
