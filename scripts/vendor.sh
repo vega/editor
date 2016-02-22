@@ -65,4 +65,5 @@ if [ ! -d "$SPEC" ]; then
 fi
 
 eval $VEGA_OP "$CWD/node_modules/vega/examples" "$SPEC/vega"
-eval $VEGA_LITE_OP "$CWD/node_modules/vega-lite/examples" "$SPEC/vega-lite"
+eval $VEGA_LITE_OP "$CWD/node_modules/vega-lite/examples/specs" "$SPEC/vega-lite"
+echo "var VL_SPECS = "`cat $CWD/node_modules/vega-lite/examples/vl-examples.json` > app/vl-specs.js
