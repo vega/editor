@@ -377,6 +377,7 @@ ved.init = function(el, dir) {
      .selectAll('option.spec')
       .data(function(key) { return VL_SPECS[key]; })
      .enter().append('option')
+      .attr('label', function(d) { return d.title; })
       .text(function(d) { return d.name; });
 
     // Renderer drop-down menu
