@@ -143,7 +143,7 @@ ved.select = function(spec) {
 };
 
 ved.uri = function(entry) {
-  return ved.path + '/spec/' + ved.currentMode +
+  return ved.path + 'spec/' + ved.currentMode +
     '/' + entry.name + '.json';
 };
 
