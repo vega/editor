@@ -1,1 +1,0 @@
-var VL_SPECS = 

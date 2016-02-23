@@ -39,11 +39,11 @@
     "d3": "^3.5.6",
     "d3-cloud": "^1.2.1",
     "d3-geo-projection": "^0.2.15",
-    "topojson": "^1.6.19",
+    "topojson": "^1.6.24",
+    "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega": "latest",
     "vega-embed": "latest",
-    "vega-lite": "latest",
-    "vega-datasets": "vega/vega-datasets#gh-pages"
+    "vega-lite": "latest"
   },
   "devDependencies": {
     "chokidar": "^1.2.0"
