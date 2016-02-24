@@ -207,7 +207,7 @@ ved.parseVg = function(callback) {
   if (!callback) {
     callback = function(err) {
       if (err) {
-        ved.view.destroy();
+        if (ved.view) ved.view.destroy();
         console.error(err);
       }
     };
