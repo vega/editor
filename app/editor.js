@@ -53,6 +53,7 @@ ved.mode = function() {
     });
 
     ace.attr('class', 'ace_content');
+    debug.init();
   } else if (ved.currentMode === VEGA_LITE) {
     ved.editor[VEGA].setOptions({
       readOnly: true,
@@ -228,6 +229,14 @@ ved.parseVg = function(callback) {
     return callback(e);
   }
 
+  var tracking = {
+    "name": "group_vgTRACKING",
+    "streams": [
+      {"type": "mousemove", "expr": "eventGroup()"}
+    ]
+  }
+  if(opt.signals) opt.signals.push(tracking);
+
   if (ved.getSelect().selectedIndex === 0 && ved.currentMode === VEGA) {
     localStorage.setItem('vega-spec', value);
   }
@@ -246,6 +255,9 @@ ved.parseVg = function(callback) {
     ved.spec = result.spec;
     ved.view = result.view;
     callback(null, result.view);
+    if(ved.currentMode === VEGA) {
+      debug.start();
+    }
   });
 };
 

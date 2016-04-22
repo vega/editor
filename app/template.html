@@ -7,6 +7,7 @@
         <input type="button" class="btn_spec_format" value="Format"></input>
         <input type="button" class="btn_vg_parse hide-vl" value="Parse"></input>
         <input type="button" class="btn_vl_parse hide-vg" value="Parse"></input>
+        <span class="btn_debug fa fa-bug hide-vl" title="Debug"></span>
       </div>
       <div class="mod_title">
         <select class="sel_mode">
@@ -24,6 +25,18 @@
       <span class="click_toggle_vega" title="Expand/Collapse Vega editor"></span>
     </div>
     <div class="mod_body spec vg-spec" spellcheck="false"></div>
+    <div class="vg_pane mod_subheader debug">
+      <div class="mod_ctrls">
+        <select class="sel_debug debug">
+          <option value="timeline">Timeline</option>
+          <option value="data">Data</option>
+        </select>
+      </div>
+      Debugging Tools (Alpha)
+      <span class="click_toggle_vega up debug" title="Expand/Collapse Debugging Tools"></span>
+    </div>
+    <div id="overview" class="debug"></div>
+    <div class="mod_body debug min"></div>
   </div>
   <div class="mod_vis module">
     <div class="mod_header">
@@ -31,7 +44,11 @@
         Renderer <select class="sel_render"></select>
         <input type="button" class="btn_export" value="Export"></input>
       </div>
-      <div class="mod_title">Visualization</div>
+      <div class="mod_title">Visualization
+        <span class="btn_mode fa fa-play debug selected" title = "Play" value="play"></span>
+        <span class="btn_mode fa fa-dot-circle-o debug" title="Record" value="record"></span>
+        <span class="btn_mode fa fa-history debug" title="Replay" value="replay"></span>
+      </div>
     </div>
     <div class="vis"></div>
     <div class="mod_params"></div>
