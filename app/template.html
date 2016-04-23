@@ -7,6 +7,7 @@
         <input type="button" class="btn_spec_format" value="Format"></input>
         <input type="button" class="btn_vg_parse hide-vl" value="Parse"></input>
         <input type="button" class="btn_vl_parse hide-vg" value="Parse"></input>
+        <span class="btn_debug fa fa-bug hide-vl" title="Debug"></span>
       </div>
       <div class="mod_title">
         <select class="sel_mode">
@@ -24,6 +25,22 @@
       <span class="click_toggle_vega" title="Expand/Collapse Vega editor"></span>
     </div>
     <div class="mod_body spec vg-spec" spellcheck="false"></div>
+    <div class="vg_pane mod_subheader debug">
+      <div class="mod_ctrls">
+        <select class="sel_debug debug">
+          <option value="timeline">Timeline</option>
+          <option value="data">Data</option>
+        </select>
+      </div>
+      Debugging Tools (Alpha)
+      <span class="btn_mode fa fa-pause debug" title="replay" value="replay"></span>
+      <span class="click_toggle_vega up debug" title="Expand/Collapse Debugging Tools"></span>
+    </div>
+    <div id="overview" class="debug"></div>
+    <div class="mod_body debug min"></div>
+  </div>
+  <div class="click_toggle_vis left">
+    <span class="fa fa-angle-double-left" title="Expand/Collapse Specification"></span>
   </div>
   <div class="mod_vis module">
     <div class="mod_header">

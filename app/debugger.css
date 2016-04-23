@@ -1,0 +1,370 @@
+/*************************** Debugger **************************/
+
+.btn_debug {
+	padding: 0px 5px;
+	color: #aaa;
+  cursor: pointer;
+}
+
+.btn_mode {
+	padding-left: 5px;
+	color: #aaa;
+  cursor: pointer;
+}
+
+.btn_mode.selected, .btn_debug.selected {
+	color: #4F99FC;
+}
+
+/* hide debugging tools unless in debug mode */
+.vega-editor.vega .debug {
+  display: none;
+}
+
+.vega-editor.vega-lite .debug {
+  display: none;
+}
+
+.vega-editor.vega.debugging .debug {
+  display: inline-block;
+}
+
+.vega-editor.vega.debugging .debug.min {
+	display: none;
+}
+
+.mod_body.debug {
+  max-height: 50%;
+}
+
+.click_toggle_vis span {
+  position: relative;
+  top: 50vh;
+  padding: 0px 2px;
+  color: #aaa;
+}
+.click_toggle_vis:hover { 
+  background: #eee;
+}
+
+/************************** Overview **************************/
+#overview {
+  background: #eee;
+  height: 75px;
+  width: 100%;
+}
+
+#overview svg {
+  position: relative;
+  width: 60%;
+  height: 100%;
+  left: 20%;
+}
+
+.brush {
+  width: 100%;
+}
+
+.brush rect {
+  top: 0px;
+  height: 75px;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+}
+
+/************************ Variability *************************/
+.line {
+  fill: none;
+  stroke-width: 2px;
+}
+
+/************************* Data Table *************************/
+/*************************** Table ****************************/
+#data {
+  width: 100px;
+}
+
+#header {
+  overflow: scroll;
+  margin: 2px 2px 0px 2px;
+}
+
+#header table {
+  margin-bottom: -2px
+}
+
+#cells {
+  overflow: scroll;
+  margin: -1px 2px 2px 2px;
+}
+
+#data table {
+  overflow: scroll;
+  border-collapse: collapse;
+  font-size: 8pt;
+}
+
+#data table::-webkit-scrollbar { 
+  display: none; 
+}
+
+.more {
+  cursor: pointer;
+}
+
+/************************** Data Tabs *************************/
+
+#header td {
+  height: 12px;
+  border: 1px solid white;
+  overflow: auto;
+  color: gray;
+  padding: 4px;
+  cursor: pointer;
+}
+
+#data .active {
+  background-color: #F1F1F1;
+}
+
+#data .inactive {
+  background-color: lightgray;
+}
+
+/*************************** Schema ***************************/
+
+.histogram {
+  background-color: #F1F1F1;
+  max-height: 50px;
+  height: 50px;
+  border: 1px solid lightgray;
+}
+
+.header, .header div {
+  min-width: 26px;
+  max-width: 150px;
+  padding: 2px;
+  background-color: #F1F1F1;
+  border: 1px solid #F1F1F1;
+}
+
+/*************************** Cells ****************************/
+
+#cells .cell {
+  border: 1px solid lightgray;
+}
+
+#cells .cell, #cells .cell div {
+  overflow: hidden;
+  max-width: 150px;
+  min-width: 26px;
+  height: 12px;
+  padding: 2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.more {
+  font-size: 8pt;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  padding: 2px;
+  padding-left: 5px;
+  overflow: hidden;
+  height: 12px;
+  color: #A4A4A4;
+}
+
+span.data {
+  color: #3E6A74;
+}
+span.name {
+  color: #5997A6;
+}
+
+.dataTooltip {
+  position: absolute;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 8pt;
+  pointer-events: none; 
+  cursor: default;
+  padding: 4px;
+  color: #8BB6C1;
+  background-color: #F1F1F1;
+  overflow: hidden;
+  box-shadow: inset 0 0 2px #5997A6;
+}
+
+/************************** Timeline **************************/
+
+.cursor {
+  position: absolute;
+  pointer-events: none;
+}
+
+/*************************** Table ****************************/
+#timeline, table, tr {
+  width: 100%;
+}
+
+#timeline table, #timeline td {
+  border-collapse: collapse;
+  font-size: 8pt;
+}
+
+#timeline td {
+  border: 1px solid lightgray;
+  cursor: pointer;
+  padding: 0px;
+}
+
+#timeline td.fixed-width {
+  width: 100px;
+}
+
+#timeline div.fixed-width {
+  padding: 4px;
+  width: 100px;
+  height: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/********************** Signal Timeline ***********************/
+.values {
+  height: 20px;
+}
+
+.values svg {
+  height: 100%;
+  width: 100%;
+}
+
+.values rect {
+  top: 0px;
+  height: 20px;
+  stroke: white;
+  stroke-width: 0.5;
+  cursor: pointer;
+}
+
+/************************** Tooltip ***************************/
+
+.tooltip {
+  position: relative;
+  top: -90%;
+  left: 10%;
+  width: 80%;
+  min-height: 18px;
+
+  text-align: center;
+  font: 10px monospace;  
+  color: white;
+  padding: 2px;
+  background: rgba(0, 0, 0, 0.8); 
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.extension {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 8pt;
+  pointer-events: none; 
+  padding: 4px;
+  height: 12px;
+  max-width: 300px;
+  color: white;
+  overflow: hidden;
+}
+
+.label {   
+  position: absolute;           
+  text-align: center;           
+  pointer-events: none; 
+  box-shadow: inset 0 0 2px white;
+  border-radius: 2px;
+}
+
+.label th, .label th div {
+  padding: 1px;
+  padding-bottom: 0px;
+  font: 5pt monospace;
+}
+
+.label td, .label td div {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 8pt;
+  pointer-events: none; 
+  padding: 2px;
+  color: white;
+  overflow: hidden;
+  border: none;
+}
+
+/************************* Data Popup *************************/
+.popup {
+  background-color: black;
+  opacity: 0.5;
+  z-index: 5;
+  position: absolute;
+  top: 0px;
+}
+
+.popupContents {
+  background-color: #F1F1F1;
+  opacity: 0.9;
+  z-index: 6;
+  position: absolute;
+  min-width: 25%;
+  min-height: 25%;
+  max-width: 75%;
+  max-height: 75%;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 8pt;
+  padding: 10px;
+  color: #8BB6C1;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  box-shadow: inset 0 0 10px #5997A6;
+  cursor: pointer;
+}
+
+.popupContents h {
+  font-size: 10pt;
+}
+
+/************************* Annotation *************************/
+.overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: rgba(238, 238, 238, 0.48);
+  pointer-events: none;
+}
+
+.probe {   
+  position: absolute;           
+  text-align: center;           
+  padding: 2px;             
+  color: white;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 2px;
+  pointer-events: none;  
+}
+
+.probe table, .probe td, .probe th {
+  border: none;
+  font: 10pt monospace;
+  padding-top, padding-bottom: 0px;
+  padding-left, padding-right: 2px;
+}
+
+.probe th {
+  color: #5997A6; /* blueGray */
+  font: 8pt monospace;
+}
