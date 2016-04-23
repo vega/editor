@@ -1,6 +1,7 @@
 var model = {
   internalsHidden:  true,   // Hide internals while debugging
-  trackingHidden:   true    // Hide debugging tracking
+  trackingHidden:   true,   // Hide debugging tracking
+  propertiesHidden: ["_prev"]
 };
 
 model.init = function() {
@@ -71,6 +72,7 @@ model.mode = function(newMode) {
   if(model.signals) enableSignals();
   if(model.currentMode === "replay") disableSignals();
   if(model.currentMode === "record") {
+    if(!model.times) return;
     var time = model.times[model.times.length - 1];
     Object.keys(model.streams).forEach(function(signalName) {
       var signal = model.valueOfSignalAtTime(signalName, time);
@@ -415,12 +417,16 @@ function extractData() {
   var specData = ved.spec.data.map(function(data) { return data.name; });
   ved.view.model().data()
       .filter(function(dataset) {
-        return specData.indexOf(dataset.name()) !== -1 || !datasets.internalsHidden;
+        return specData.indexOf(dataset.name()) !== -1 || !model.internalsHidden;
       })
       .forEach(function(dataset) {
         model.data[dataset.name()] = dataset;
         var values = model.data[dataset.name()].values();
-        if(values.length != 0) model.schema[dataset.name()] = vg.util.keys(values[0]);
+        var properties = vg.util.keys(values[0]).filter(function(property) {
+          if(model.propertiesHidden.indexOf(property) !== -1 && model.internalsHidden) return false;
+          return true;
+        });
+        if(values.length != 0) model.schema[dataset.name()] = properties;
       });
 };
 

@@ -1,5 +1,4 @@
 var datasets = {
-  internalsHidden: true,
   max: 10,
   minBarSize: 5
 };
@@ -41,7 +40,8 @@ datasets.initTable = function() {
   var div = datasets.div.append("div")
       .attr("id", "header");
   datasets.table = div.append("table");
-  datasets.color = d3.scale.category20b();
+  datasets.color = d3.scale.ordinal()
+      .range(['#fec44f','#fe9929','#ec7014','#cc4c02','#993404','#662506']);
 
   extractData();
   initTableHeader();
@@ -119,18 +119,18 @@ function datasetCells(data, table) {
   var index = 0;
   var values = data.values();
   var value;
-  while(index < datasets.max) {
+  var max = Math.min(datasets.max, values.length)
+  while(index < max) {
     value = values[index];
     index += 1;
-
     var row = table.append("tr").attr("class", "dataRow");
-    vg.util.keys(value).forEach(function(v) {
+    model.schema[data.name()].forEach(function(property) {
       var cell = row.append("td")
           .attr("class", "cell")
         .on("mouseover", datasets.drawCellTooltip)
         .on("mouseout", function() { d3.selectAll(".dataTooltip").remove(); })
         .append("div")
-          .html(JSON.stringify(value[v]));
+          .html(JSON.stringify(value[property]));
     });
   }
 

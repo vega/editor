@@ -37,6 +37,16 @@
   max-height: 50%;
 }
 
+.click_toggle_vis span {
+  position: relative;
+  top: 50vh;
+  padding: 0px 2px;
+  color: #aaa;
+}
+.click_toggle_vis:hover { 
+  background: #eee;
+}
+
 /************************** Overview **************************/
 #overview {
   background: #eee;
@@ -82,6 +92,10 @@
   margin: 2px 2px 0px 2px;
 }
 
+#header table {
+  margin-bottom: -2px
+}
+
 #cells {
   overflow: scroll;
   margin: -1px 2px 2px 2px;
@@ -108,7 +122,7 @@
   border: 1px solid white;
   overflow: auto;
   color: gray;
-  padding: 2px;
+  padding: 4px;
   cursor: pointer;
 }
 
@@ -345,12 +359,12 @@ span.name {
 
 .probe table, .probe td, .probe th {
   border: none;
-  font: 7pt monospace;
+  font: 10pt monospace;
   padding-top, padding-bottom: 0px;
   padding-left, padding-right: 2px;
 }
 
 .probe th {
   color: #5997A6; /* blueGray */
-  font: 5pt monospace;
+  font: 8pt monospace;
 }

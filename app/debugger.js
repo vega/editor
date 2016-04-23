@@ -9,7 +9,9 @@ debug.config = {
     "darkBlue": "#3E6A74",    "lightBlue": "#8BB6C1",
     "lightGray": "#F1F1F1",   "middleGray": "#d9d9d9",
     "gray": "#A4A4A4",        "red": "#C3423F"
-  }
+  },
+  "replay": "fa-pause",    // Font Awesome symbol to replay
+  "record": "fa-play"      // Font Awesome symbtol to record
 };
 
 /**********************                  ***********************/
@@ -27,6 +29,11 @@ debug.init = function() {
 		ved.resize();
 	});
 
+  d3.select(".click_toggle_vega.debug")
+      .style("margin-left", function() {
+        return this.parentNode.getBoundingClientRect().width / 2 - 175 + "px";
+      });
+
 	d3.select(".vg_pane.debug").on("click", function() {
   	subviewVisibility();
   });
@@ -38,8 +45,9 @@ debug.init = function() {
   });
 
   // Set up the mode radio buttons
-  debug.currentMode = "play";
+  debug.currentMode = "record";
   d3.selectAll(".btn_mode").on("click", function() {
+    d3.event.stopPropagation();
     model.current = {
       "time": model.times[model.times.length - 1],
       "pulse": model.pulses[model.pulses.length - 1]
@@ -54,6 +62,8 @@ debug.init = function() {
   });
 
   d3.select("body").on("keydown", keyboardNavigation);
+
+  specVisibility();
 };
 
 debug.start = function() {
@@ -65,11 +75,11 @@ debug.start = function() {
 
 // Reset the debugging tools.
 debug.reset = function() {
-  debug.mode("play");
+  debug.mode("record");
 
   // Initialize the model
   model.reset();
-  debug.mode("play");
+  debug.mode("record");
 
   // Initialize the timeline
   var panel = d3.select(".mod_body.debug");
@@ -104,13 +114,10 @@ debug.close = function() {
 
 debug.mode = function(mode) {
   debug.currentMode = mode;
-  d3.selectAll(".btn_mode").attr("class", function() {
-    return this.className.replace(" selected", "");
-  });
-  if(mode === "play") toggle(".fa-play", "selected");
-  if(mode === "replay") toggle(".fa-history", "selected");
-  if(mode === "record") toggle(".fa-dot-circle-o", "selected");
-
+  var type = (mode === "replay") ? "record" : "replay";
+  d3.selectAll(".btn_mode").attr("class", "btn_mode debug selected fa " + debug.config[type])
+      .attr("title", type)
+      .attr("value", type);
   model.mode(debug.currentMode);
 };
 
@@ -162,6 +169,21 @@ function toggle(el, toggle) {
 		if(className.indexOf(toggle) == -1) return className + " " + toggle;
 		return className.replace(" " + toggle, "");
 	});
+};
+
+function specVisibility() {
+  d3.select(".click_toggle_vis").on("click", function() {
+    var current = d3.select(this).attr("class");
+    if(current.indexOf("left") !== -1) {
+      d3.select(this).attr("class", current.replace("left", "right"))
+        .select("span").attr("class", "fa fa-angle-double-right");
+      d3.select(".mod_spec").style("display", "none");
+    } else {
+      d3.select(this).attr("class", current.replace("right", "left"))
+        .select("span").attr("class", "fa fa-angle-double-left");
+      d3.select(".mod_spec").style("display", "flex");
+    }
+  })
 };
 
 /********************* Keyboard Navigation *********************/
