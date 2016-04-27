@@ -235,7 +235,11 @@ ved.parseVg = function(callback) {
       {"type": "mousemove", "expr": "eventGroup()"}
     ]
   }
-  if(opt.signals) opt.signals.push(tracking);
+  if(opt.signals) {
+    opt.signals.push(tracking);
+  } else {
+    opt.signals = [tracking]
+  }
 
   if (ved.getSelect().selectedIndex === 0 && ved.currentMode === VEGA) {
     localStorage.setItem('vega-spec', value);

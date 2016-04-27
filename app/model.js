@@ -353,7 +353,7 @@ function classifyScales(root) {
       obj["name"] = scale.name;
       obj["domain"] = "height";
       obj["data"] = (scale.range == "height" ? "domain" : "range");
-      if(positions.indexOf("width") != -1) {
+      if(positions.indexOf("height") != -1) {
         obj["type"] = "group";
       } else {
         obj["type"] = "position";
@@ -502,8 +502,10 @@ function enableSignals() {
 };
 
 model.context = function() {
-  var context = ved.view.model().signal("group_vgTRACKING")._value;
-  if(!context) context = ved.view.model().scene().items[0];
+  var context = ved.view.model().scene().items[0];
+  if(ved.view.model().signal("group_vgTRACKING")) {
+    context = ved.view.model().signal("group_vgTRACKING")._value || context;
+  }
   return context;
 };
 

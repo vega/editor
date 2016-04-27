@@ -3,6 +3,7 @@ var timeline = {
 };
 
 timeline.init = function(panel, streams) {
+  if(Object.keys(streams).length === 0) return;
   timeline.div = panel.append("div")
       .attr("class", "debug")
       .attr("id", "timeline");
@@ -23,6 +24,7 @@ timeline.close = function() {
 };
 
 timeline.update = function(streams) {
+  if(Object.keys(streams).length === 0) return;
   updateValues(streams);
   updateTimeline(streams);
   drawCursor();

@@ -127,10 +127,14 @@ function datasetCells(data, table) {
     model.schema[data.name()].forEach(function(property) {
       var cell = row.append("td")
           .attr("class", "cell")
+        .on("click", function() { drawPopup(property, value[property]); })
         .on("mouseover", datasets.drawCellTooltip)
         .on("mouseout", function() { d3.selectAll(".dataTooltip").remove(); })
         .append("div")
-          .html(JSON.stringify(value[property]));
+          .html(function() {
+            try { return JSON.stringify(value[property]); } 
+            catch(err) { return "--"; }
+          });
     });
   }
 
