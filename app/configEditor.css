@@ -1,0 +1,26 @@
+/* Hides config option when minimized */
+.config.min {
+  display: none;
+}
+
+/* Changes color of icon when clicked */
+.btn_config.selected {
+	color: #1FFFFF;
+}
+
+/* hide config editor unless in config editing mode */
+.config_hidden {
+  display: none;
+}
+
+.max.hide-config-spec {
+	display: none;
+}
+
+.min.hide-config-spec {
+	display: none;
+}
+
+.hide-config-spec {
+	display: none;
+}

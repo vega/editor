@@ -5,6 +5,7 @@ alert, console, VG_SPECS, VL_SPECS, ace, JSON3*/
 
 var VEGA = 'vega';
 var VEGA_LITE = 'vega-lite';
+var VEGA_CONFIG = 'vega-config';
 
 var ved = {
   version: '1.2.0',
@@ -12,7 +13,8 @@ var ved = {
   renderType: 'canvas',
   editor: {
     vega: null,
-    'vega-lite': null
+    'vega-lite': null,
+    config: null
   },
   currentMode: null,
   vgHidden: true  // vega editor hidden in vl mode
@@ -54,6 +56,7 @@ ved.mode = function() {
 
     ace.attr('class', 'ace_content');
     debug.init();
+    configEditor.init();
   } else if (ved.currentMode === VEGA_LITE) {
     ved.editor[VEGA].setOptions({
       readOnly: true,
@@ -271,6 +274,7 @@ ved.resetView = function() {
 
 ved.resize = function(event) {
   ved.editor[VEGA].resize();
+  ved.editor[VEGA_CONFIG].resize();
   ved.editor[VEGA_LITE].resize();
 };
 
@@ -408,8 +412,9 @@ ved.init = function(el, dir) {
     // Code Editors
     var vlEditor = ved.editor[VEGA_LITE] = ace.edit(el.select('.vl-spec').node());
     var vgEditor = ved.editor[VEGA] = ace.edit(el.select('.vg-spec').node());
+    var vcEditor = ved.editor[VEGA_CONFIG] = ace.edit(el.select('.vc-spec').node());
 
-    [vlEditor, vgEditor].forEach(function(editor) {
+    [vlEditor, vgEditor, vcEditor].forEach(function(editor) {
       editor.getSession().setMode('ace/mode/json');
       editor.getSession().setTabSize(2);
       editor.getSession().setUseSoftTabs(true);
