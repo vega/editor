@@ -42,6 +42,7 @@
   top: 50vh;
   padding: 0px 2px;
   color: #aaa;
+  cursor: pointer;
 }
 .click_toggle_vis:hover { 
   background: #eee;
