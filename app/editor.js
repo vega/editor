@@ -242,6 +242,7 @@ ved.parseVg = function(callback) {
   }
 
   if (ved.getSelect().selectedIndex === 0 && ved.currentMode === VEGA) {
+    // Only save the Vega spec to local storage if the mode is Vega since parseVl() also calls this method. 
     localStorage.setItem('vega-spec', value);
   }
 
