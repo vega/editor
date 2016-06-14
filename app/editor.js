@@ -56,7 +56,6 @@ ved.mode = function() {
 
     ace.attr('class', 'ace_content');
     debug.init();
-    configEditor.init();
   } else if (ved.currentMode === VEGA_LITE) {
     ved.editor[VEGA].setOptions({
       readOnly: true,
@@ -217,8 +216,9 @@ ved.parseVg = function(callback) {
     };
   }
 
-  var opt, source,
-    value = ved.editor[VEGA].getValue();
+  var value = ved.editor[VEGA].getValue(),
+    config  = ved.editor[VEGA_CONFIG].getValue() || '{}',
+    opt;
 
   // delete cookie if editor is empty
   if (!value) {
@@ -227,7 +227,8 @@ ved.parseVg = function(callback) {
   }
 
   try {
-    opt = JSON.parse(ved.editor[VEGA].getValue());
+    opt = JSON.parse(value);
+    config = JSON.parse(config);
   } catch (e) {
     return callback(e);
   }
@@ -251,6 +252,7 @@ ved.parseVg = function(callback) {
   opt.actions = false;
   opt.renderer = opt.renderer || ved.renderType;
   opt.parameter_el = '.mod_params';
+  opt.config = config;
 
   ved.resetView();
   var a = vg.embed('.vis', opt, function(err, result) {
@@ -455,6 +457,7 @@ ved.init = function(el, dir) {
     }));
     d3.select(window).on('resize', ved.resize);
     ved.resize();
+    config.init();
 
     var getIndexes = function(obj) {
       return Object.keys(obj).reduce(function(a, k) {
