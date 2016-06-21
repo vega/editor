@@ -1,5 +1,8 @@
 <div class="vega-editor">
+  <!-- LHS/SPECIFICATION PANE -->
   <div class="mod_spec module">
+
+    <!-- MODE + EXAMPLES HEADER -->
     <div class="mod_header">
       <div class="mod_ctrls">
         <select class="sel_vega_spec hide-vl"></select>
@@ -8,6 +11,7 @@
         <input type="button" class="btn_vg_parse hide-vl" value="Parse"></input>
         <input type="button" class="btn_vl_parse hide-vg" value="Parse"></input>
         <span class="btn_debug fa fa-bug hide-vl" title="Debug"></span>
+        <span class="btn_config fa fa-cog" title="Config"></span>
       </div>
       <div class="mod_title">
         <select class="sel_mode">
@@ -16,7 +20,11 @@
         </select>
       </div>
     </div>
+
+    <!-- VEGA-LITE SPEC EDITOR -->
     <div class="mod_body spec vl-spec hide-vg" spellcheck="false"></div>
+
+    <!-- VEGA-LITE TO VEGA HEADER -->
     <div class="vg_pane mod_subheader hide-vg">
       <div class="mod_ctrls">
         <input type="button" class="btn_to_vega" value="Edit Vega spec"></input>
@@ -24,7 +32,28 @@
       Vega compiled from Vega-Lite (read-only)
       <span class="click_toggle_vega" title="Expand/Collapse Vega editor"></span>
     </div>
+
+    <!-- VEGA SPEC EDITOR -->
     <div class="mod_body spec vg-spec" spellcheck="false"></div>
+
+    <!-- VEGA CONFIG/THEME HEADER -->
+    <div class="vg_pane mod_subheader config">
+      <div class="mod_ctrls">
+        <select class="sel_config config">
+          <option value="">Custom</option>
+          <option value="default">Default</option>
+          <optgroup label="Themes">
+          </optgroup>
+        </select>
+      </div>
+
+      Theme + Configuration
+    </div>
+
+    <!-- VEGA CONFIG/THEME EDITOR -->
+    <div class="spec vc-spec mod_body config" spellcheck="false"></div>
+
+    <!-- DEBUGGER -->
     <div class="vg_pane mod_subheader debug">
       <div class="mod_ctrls">
         <select class="sel_debug debug">
@@ -39,9 +68,13 @@
     <div id="overview" class="debug"></div>
     <div class="mod_body debug min"></div>
   </div>
+
+  <!-- CENTER DIVIDER -->
   <div class="click_toggle_vis left">
     <span class="fa fa-angle-double-left" title="Expand/Collapse Specification"></span>
   </div>
+
+  <!-- RHS/VISUALIZATION PANE -->
   <div class="mod_vis module">
     <div class="mod_header">
       <div class="mod_ctrls">

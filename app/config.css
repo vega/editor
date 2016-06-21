@@ -1,0 +1,18 @@
+.btn_config {
+  color: #666;
+  cursor: pointer;
+}
+
+/* Changes color of icon when clicked */
+.btn_config.selected {
+  color: #4F99FC;
+}
+
+/* Hides config option when minimized */
+.config {
+  display: none;
+}
+
+.config.show {
+  display: block;
+}

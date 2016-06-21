@@ -1,7 +1,8 @@
 var model = {
   internalsHidden:  true,   // Hide internals while debugging
   trackingHidden:   true,   // Hide debugging tracking
-  propertiesHidden: ["_prev"]
+  propertiesHidden: ["_prev"],
+  pulses: []
 };
 
 model.init = function() {
@@ -106,7 +107,7 @@ model.redraw = function() {
   var newSignals = {};
   Object.keys(model.streams).forEach(function(signalName) {
     var value = model.valueOfSignalAtTime(signalName, model.current.time).value;
-    newSignals[signalName] = value      
+    newSignals[signalName] = value
   });
 
   ved.view.signal(newSignals, true).update();
@@ -118,7 +119,7 @@ model.redraw = function() {
 model.valueToString = function(value) {
   var string;
   if(typeof value === "object") {
-  
+
     try {
       string = JSON.stringify(value);
       if(string && string.length >= 100) {
@@ -132,7 +133,7 @@ model.valueToString = function(value) {
     } catch(err) {
       string = "Click to show.";
     }
-  
+
   } else {
     string = JSON.stringify(value);
   }
@@ -156,18 +157,18 @@ function setListeners() {
   var signals = ved.view.model()._signals;
   var specSignals = ved.spec.signals.map(function(signal) { return signal.name });
   Object.keys(signals).forEach(function(signalName) {
-    if((model.internalsHidden && specSignals.indexOf(signalName) === -1) 
+    if((model.internalsHidden && specSignals.indexOf(signalName) === -1)
     || (model.trackingHidden  && signalName.indexOf("_vgTRACKING") !== -1)) {
       model.streamsHidden[signalName] = [{
         "pulse": 0,
-        "time": model.current.time, 
+        "time": model.current.time,
         "value": signals[signalName].value()
       }];
       signals[signalName].on(recordHidden);
     } else {
       model.streams[signalName] = [{
         "pulse": 0,
-        "time": model.current.time, 
+        "time": model.current.time,
         "value": signals[signalName].value()
       }];
       model.pulseCounts[0] += 1;
@@ -190,8 +191,8 @@ function recordEvent(signalName, value) {
   }
   model.pulseCounts[pulse] = (model.pulseCounts[pulse] || 0) + 1;
   var obj = {
-    "pulse": pulse, 
-    "time": time, 
+    "pulse": pulse,
+    "time": time,
     "value": value
   };
   model.streams[signalName].push(obj);
@@ -215,7 +216,7 @@ function recordHidden(signalName, value) {
 
 function cacheData(signalName, value, time, pulse) {
   var dataNames = model.clearPoints[signalName].datasets;
-  var mod = model.modifies.filter(function(m) { 
+  var mod = model.modifies.filter(function(m) {
     return dataNames.indexOf(m.name) !== -1;
   });
   mod.forEach(function(m) {
@@ -246,8 +247,8 @@ model.replayModifiesFromTo = function(start, end) {
 function dependencies(signalName) {
   var deps = [];
   var signalNames = Object.keys(model.streams);
-  var signal = ved.spec.signals.filter(function(signal) { 
-    return signal.name === signalName; 
+  var signal = ved.spec.signals.filter(function(signal) {
+    return signal.name === signalName;
   })[0];
 
   // Check for dependent signals in the stream definition.
@@ -293,7 +294,7 @@ model.scalesOfSignal = function(signalName) {
   signal.streams.forEach(function(stream) {
     var obj = {};
     if(stream.scale instanceof Object) {
-      
+
       obj.invert = stream.scale.invert;
       if(stream.scale.scope) {
         var time = model.valueOfSignalAtTime(signalName, model.current.time).time;
@@ -320,7 +321,7 @@ model.scalesOfSignal = function(signalName) {
 
 function modifies() {
   var result = {};
-  var mod = ved.spec.data.filter(function(d) { 
+  var mod = ved.spec.data.filter(function(d) {
     return d.modify;
   });
   return mod;
@@ -556,7 +557,7 @@ model.back = function() {
 };
 
 model.forwardPulse = function() {
-  var index = model.pulses.indexOf(model.current.pulse);  
+  var index = model.pulses.indexOf(model.current.pulse);
   if(index === model.pulses.length - 1) {
     // Indicate that the visualization should start recording again.
     model.mode("record");
@@ -588,6 +589,6 @@ model.forward = function() {
   Object.keys(model.streams).forEach(function(signalName) {
     var value = model.valueOfSignalAtTime(signalName, newTime);
     if(value.time === newTime) model.current = value;
-  }); 
+  });
   return "replay";
 };

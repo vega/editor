@@ -90,3 +90,5 @@ var VG_SPECS = {
     }
   ]
 };
+
+var VG_CONFIGS = ["excel", "ggplot2", "quartz", "vox"];
