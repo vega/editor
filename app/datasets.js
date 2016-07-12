@@ -1,7 +1,4 @@
-var datasets = {
-  max: 10,
-  minBarSize: 5
-};
+var datasets = {};
 
 datasets.init = function(panel) {
   datasets.div = panel.append("div")
@@ -12,6 +9,8 @@ datasets.init = function(panel) {
     });
 
   datasets.active = null;
+  datasets.max = 10;
+  datasets.minBarSize = 5;
 
   datasets.initTable();
 };
@@ -20,15 +19,16 @@ datasets.reset = function(panel) {
   datasets.init(panel);
 };
 
-datasets.close = function() {
+datasets.close = function(changed) {
   if(datasets.div) datasets.div.remove();
 };
 
-datasets.update = function() {
-  datasets.div.style("width", d3.select("#overview").style("width"));
-
-  drawTableCells();
-  updateHistograms();
+datasets.update = function(changed) {
+  datasets.div.style("width", debug.width);
+  if(changed) {
+    drawTableCells();
+    updateHistograms();
+  }
   drawLines();
 };
 
@@ -45,7 +45,7 @@ datasets.initTable = function() {
 
   extractData();
   initTableHeader();
-  drawTableCells();
+  datasets.update(true);
 };
 
 function initTableHeader() {
@@ -59,6 +59,7 @@ function initTableHeader() {
         })
         .append("div").html(dataName)
         .on("click", function() {
+          if(datasets.active == d3.select(this).html()) return;
           datasets.active = d3.select(this).html();
           switchTable();
         });
@@ -67,13 +68,12 @@ function initTableHeader() {
 
 function switchTable() {
   d3.select("#cells").remove();
-  drawTableCells();
   datasets.header.selectAll("td")
       .attr("class", function() {
         var id = d3.select(this).attr("id").replace("-header", "");
         return (id == datasets.active) ? "active" : "inactive";
       });
-  datasets.update();
+  datasets.update(true);
 };
 
 // Draw the table cells.
@@ -82,7 +82,10 @@ function drawTableCells() {
   var table = datasets.div.select("#cells");
   if(!table[0][0]) table = datasets.div.append("table").attr("id", "cells");
   d3.selectAll(".dataRow").remove();
-  if(data.values().length == 0 && !model.schema[datasets.active]) return;
+  if(data.values().length == 0 && !model.schema[datasets.active]) {
+    datasetMore(data, table);
+    return;
+  }
   if(!model.schema[datasets.active]) {
     model.schema[datasets.active] = vg.util.keys(data.values()[0]);
   }
@@ -116,6 +119,7 @@ function datasetHeader(data, table) {
 
 function datasetCells(data, table) {
   // Create a new row for each data element.
+  d3.selectAll(".dataRow").remove();
   var index = 0;
   var values = data.values();
   var value;
@@ -137,20 +141,22 @@ function datasetCells(data, table) {
           });
     });
   }
+  datasetMore(data, table);
+};
 
+function datasetMore(data, table) {
   d3.select(".more").remove();
-  var clickString =  (datasets.max <= values.length) ? ". Click for more." : ".";
+  var clickString =  (datasets.max <= data.values().length) ? ". Click for more." : ".";
   var moreString = "Showing <span class=name>" 
                  + Math.min(datasets.max, data.values().length) + "</span>"
                  + " of <span class=name>" 
                  + data.values().length + "</span>"
                  + clickString;
 
-  var width = document.getElementById("histograms").getBoundingClientRect().width;
   var row = datasets.div.append("div")
       .html(moreString)
       .attr("class", "more")
-  if(datasets.max >= values.length) return;
+  if(datasets.max >= data.values().length) return;
   row.on("click", function() {
       datasets.max *= 2;
       datasetCells(data, table);

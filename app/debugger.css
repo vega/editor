@@ -88,9 +88,6 @@
 
 /************************* Data Table *************************/
 /*************************** Table ****************************/
-#data {
-  width: 100px;
-}
 
 #header {
   overflow: scroll;
@@ -213,7 +210,7 @@ span.name {
 }
 
 /*************************** Table ****************************/
-#timeline, table, tr {
+#timeline, #timeline table, #timeline tr {
   width: 100%;
 }
 

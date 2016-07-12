@@ -64,6 +64,8 @@ debug.init = function() {
   d3.select("body").on("keydown", keyboardNavigation);
 
   specVisibility();
+
+  debug.width = d3.select("#overview").style("width");
 };
 
 debug.start = function() {
@@ -87,13 +89,34 @@ debug.reset = function() {
   timeline.reset(panel, model.streams);
   overview.reset();
   datasets.reset(panel);
+
+  // Switch to the data if there are no signals
+  if(Object.keys(model.streams).length == 0) {
+    debug.view = "data";
+    d3.select(".sel_debug").selectAll("option")
+        .filter(function() { 
+          return this.value == "data";
+        })[0][0].selected = true;
+  }
   viewVisibility();
 };
 
 debug.update = function(click) {
   if(!debug.open) return;
   if(debug.view === "timeline") timeline.update(model.streams);
-  if(debug.view === "data") datasets.update();
+  
+  if(debug.view === "data") {
+    var change = 0;
+    if(model.difference[datasets.active]) {
+      model.schema[datasets.active].forEach(function(property) {
+        var difference = model.difference[datasets.active][property];
+        change += difference[difference.length - 1];
+      });
+    }
+    var changed = !model.difference[datasets.active] || change != 0;
+    datasets.update(changed);
+  }
+
   overview.update(model.pulseCounts, model.streams);
   if(debug.currentMode === "replay") {
     annotation.overlay();
