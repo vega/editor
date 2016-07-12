@@ -503,9 +503,12 @@ function enableSignals() {
 };
 
 model.context = function() {
-  var context = ved.view.model().scene().items[0];
+  var context;
   if(ved.view.model().signal("group_vgTRACKING")) {
-    context = ved.view.model().signal("group_vgTRACKING")._value || context;
+    context = ved.view.model().signal("group_vgTRACKING").value();
+  }
+  if(Object.keys(context).length === 0) {
+    context = ved.view.model().scene().items[0];
   }
   return context;
 };

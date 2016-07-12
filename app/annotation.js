@@ -107,13 +107,23 @@ function scaleRow(table, context, type, value) {
   if(pscale) {
     // Determine the direction of the scale.
     var invert = pos.data == "domain" ? false : true;
-    row.append("td").append("div").html(round(pscale.invert(value)));
+    row.append("td").append("div").html(function() {
+      var result = pscale.invert(value);
+      if(typeof result === "number") result = round(result);
+      if(result instanceof Date) result = result.toDateString();
+      return result;
+    });
     row.append("td").append("div").html(arrow(pos.name, invert));
     row.append("td").append("div").html(round(value));
   } else if(gscale) {
     // Determine the direction of the scale.
     var invert = gpos.data == "domain" ? false : true;
-    row.append("td").append("div").html(gscale.invert(value));
+    row.append("td").append("div").html(function() {
+      var result = gscale.invert(value);
+      if(typeof result === "number") result = round(result);
+      if(result instanceof Date) result = result.toDateString();
+      return result;
+    });
     row.append("td").append("div").html(arrow(gpos.name, invert));
     row.append("td").append("div").html(round(value));
   } else {
