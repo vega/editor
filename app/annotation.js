@@ -79,9 +79,9 @@ function drawPosition() {
   
   // Table header
   var row = table.append("tr");
-  row.append("th").append("div").html("pixel");
-  row.append("th").append("div").html("scale");
   row.append("th").append("div").html("data");
+  row.append("th").append("div").html("scale");
+  row.append("th").append("div").html("encoding");
 
   var x = d3.event.layerX - annotation.offsetX;
   var y = d3.event.layerY - annotation.offsetY;
@@ -106,16 +106,16 @@ function scaleRow(table, context, type, value) {
   var gscale = gpos ? context.scale(gpos.name) : null;
   if(pscale) {
     // Determine the direction of the scale.
-    var invert = pos.data == "domain" ? true : false;
-    row.append("td").append("div").html(round(value));
-    row.append("td").append("div").html(arrow(pos.name, invert));
+    var invert = pos.data == "domain" ? false : true;
     row.append("td").append("div").html(round(pscale.invert(value)));
+    row.append("td").append("div").html(arrow(pos.name, invert));
+    row.append("td").append("div").html(round(value));
   } else if(gscale) {
     // Determine the direction of the scale.
-    var invert = gpos.data == "domain" ? true : false;
-    row.append("td").append("div").html(round(value));
-    row.append("td").append("div").html(arrow(gpos.name, invert));
+    var invert = gpos.data == "domain" ? false : true;
     row.append("td").append("div").html(gscale.invert(value));
+    row.append("td").append("div").html(arrow(gpos.name, invert));
+    row.append("td").append("div").html(round(value));
   } else {
     containsScale = false;
   }
