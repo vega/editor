@@ -104,18 +104,6 @@ debug.reset = function() {
 debug.update = function(click) {
   if(!debug.open) return;
   if(debug.view === "timeline") timeline.update(model.streams);
-  
-  if(debug.view === "data") {
-    var change = 0;
-    if(model.difference[datasets.active]) {
-      model.schema[datasets.active].forEach(function(property) {
-        var difference = model.difference[datasets.active][property];
-        change += difference[difference.length - 1];
-      });
-    }
-    var changed = !model.difference[datasets.active] || change != 0;
-    datasets.update(changed);
-  }
 
   overview.update(model.pulseCounts, model.streams);
   if(debug.currentMode === "replay") {
@@ -124,6 +112,19 @@ debug.update = function(click) {
   } else {
     if(annotation.svg) annotation.svg.remove();
     annotation.svg = null;
+  }
+  
+  if(debug.view === "data") {
+    var change = 0;
+    if(model.difference[datasets.active]) {
+      var index = model.pulses.indexOf(model.current.pulse);
+      model.schema[datasets.active].forEach(function(property) {
+        var difference = model.difference[datasets.active][property];
+        change += difference[index];
+      });
+    }
+    var changed = !model.difference[datasets.active] || change != 0;
+    datasets.update(changed);
   }
 };
 
