@@ -29,6 +29,10 @@ debug.init = function() {
 		ved.resize();
 	});
 
+  d3.select(".fa-question-circle").on("click", function() {
+    d3.event.stopPropagation();
+  });
+
   d3.select(".click_toggle_vega.debug")
       .style("margin-left", function() {
         return this.parentNode.getBoundingClientRect().width / 2 - 175 + "px";
