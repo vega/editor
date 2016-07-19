@@ -107,6 +107,7 @@
   overflow: scroll;
   border-collapse: collapse;
   font-size: 8pt;
+  cursor: pointer;
 }
 
 #data table::-webkit-scrollbar {
