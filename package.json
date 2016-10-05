@@ -1,57 +1,35 @@
 {
-  "name": "vega-editor",
-  "version": "1.3.0",
-  "description": "Web-based Vega authoring environment.",
-  "keywords": [
-    "vega",
-    "editor",
-    "JSON",
-    "visualization",
-    "interaction",
-    "dataflow",
-    "grammar",
-    "d3"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/vega/vega-editor.git"
+  "name": "vega-editor-redux",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "chokidar": "^1.2.0",
+    "react-scripts": "^0.6.1"
   },
-  "author": {
-    "name": "Jeffrey Heer",
-    "url": "http://idl.cs.washington.edu"
-  },
-  "contributors": [
-    {
-      "name": "Arvind Satyanarayan",
-      "url": "http://arvindsatya.com"
-    },
-    {
-      "name": "Dominik Moritz",
-      "url": "http://domoritz.de"
-    },
-    {
-      "name": "Ruijia (Iris) Wang"
-    }
-  ],
-  "license": "BSD-3-Clause",
   "dependencies": {
-    "ace-builds": "ajaxorg/ace-builds",
     "d3": "^3.5.6",
     "d3-cloud": "^1.2.1",
     "d3-geo-projection": "^0.2.15",
+    "react": "^15.3.2",
+    "react-ace": "^3.6.0",
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
+    "react-router-redux": "^4.0.6",
+    "redux": "^3.6.0",
+    "redux-devtools": "^3.3.1",
+    "redux-devtools-dock-monitor": "^1.1.1",
+    "redux-devtools-log-monitor": "^1.0.11",
+    "redux-thunk": "^2.1.0",
     "topojson": "^1.6.24",
-    "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega": "latest",
+    "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "latest",
     "vega-lite": "latest"
   },
-  "devDependencies": {
-    "chokidar": "^1.2.0"
-  },
   "scripts": {
-    "deploy": "scripts/deploy.sh",
-    "prevendor": "npm install",
-    "vendor": "scripts/vendor.sh",
-    "start": "python -m SimpleHTTPServer"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }

@@ -1,8 +1,8 @@
 #!/bin/bash
 ACE=node_modules/ace-builds/src-min
-TARGET=vendor
-DATA=app/data
-SPEC=app/spec
+TARGET=public/vendor
+DATA=data
+SPEC=spec
 
 # Copy dependencies by default. Link if a -l flag is specified.
 CWD=$(pwd)
@@ -66,4 +66,4 @@ fi
 
 eval $VEGA_OP "$CWD/node_modules/vega/examples" "$SPEC/vega"
 eval $VEGA_LITE_OP "$CWD/node_modules/vega-lite/examples/specs" "$SPEC/vega-lite"
-echo "var VL_SPECS = "`cat $CWD/node_modules/vega-lite/examples/vl-examples.json` > app/vl-specs.js
+echo "var VL_SPECS = "`cat $CWD/node_modules/vega-lite/examples/vl-examples.json` > public/js/vl-specs.js
