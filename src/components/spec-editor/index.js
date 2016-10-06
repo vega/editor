@@ -3,7 +3,7 @@ import Renderer from './renderer';
 
 function mapStateToProps (state, ownProps) {
   return {
-    vegaSpec: state.editor.vegaSpec
+    value: state.app.editorString
   };
 }
 

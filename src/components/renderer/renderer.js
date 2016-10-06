@@ -4,21 +4,13 @@ import React from 'react';
 
 export default class Editor extends React.Component {
   static propTypes = {
-    vegaSpec: React.PropTypes.string
+    vegaSpec: React.PropTypes.object
   }
 
   renderVega () {
-    let vegaSpecObject;
-    try {
-      vegaSpecObject = JSON.parse(this.props.vegaSpec);
-    } catch (e) {
-      return;
-    }
-
-    vg.parse.spec(vegaSpecObject, (chart) => {
+    vg.parse.spec(this.props.vegaSpec, (chart) => {
       const vis = chart({ el: this.refs.chart });
       vis.update();
-
     });
   }
 

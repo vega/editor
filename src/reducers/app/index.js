@@ -1,7 +1,11 @@
 import defaultVegaSpec from '../../../spec/vega/arc.json';
 
 export default (state = {
-  vegaSpec: JSON.stringify(defaultVegaSpec, null, 2)
+  editorString: JSON.stringify(defaultVegaSpec, null, 2),
+  vegaSpec: defaultVegaSpec,
+  vegaLiteSpec: null,
+  mode: 'vega',
+  renderTarget: 'svg'
 }, action) => {
   switch (action.type) {
     default:

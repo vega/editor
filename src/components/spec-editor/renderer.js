@@ -6,6 +6,10 @@ import 'brace/mode/json';
 import 'brace/theme/github';
 
 export default class Editor extends React.Component {
+  static propTypes = {
+    value: React.PropTypes.string
+  }
+
   render () {
     return (
       <div>
@@ -14,7 +18,7 @@ export default class Editor extends React.Component {
           theme='github'
           width={'100%'}
           height={window.innerHeight + 'px'}
-          value={this.props.vegaSpec}
+          value={this.props.value}
           />
       </div>
     );
