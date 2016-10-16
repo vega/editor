@@ -1,10 +1,19 @@
 import { connect } from 'react-redux';
 import Renderer from './renderer';
+import * as EditorActions from '../../actions/editor';
 
-function mapStateToProps (state, ownProps) {
+const mapStateToProps = function (state, ownProps) {
   return {
     value: state.app.editorString
   };
-}
+};
 
-export default connect(mapStateToProps)(Renderer);
+const mapDispatchToProps = function (dispatch) {
+  return {
+    onChange: (val) => {
+      dispatch(EditorActions.updateVegaSpec(val));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Renderer);

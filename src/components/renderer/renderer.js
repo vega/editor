@@ -1,6 +1,8 @@
-/* global vg */
+/* global vg, vl */
 
 import React from 'react';
+// import vl from 'vega-lite';
+// import vg from 'vega';
 
 export default class Editor extends React.Component {
   static propTypes = {
@@ -15,6 +17,11 @@ export default class Editor extends React.Component {
   }
 
   componentDidMount () {
+    this.renderVega();
+    console.log(vl);
+  }
+
+  componentWillReceiveProps (nextProps) {
     this.renderVega();
   }
 

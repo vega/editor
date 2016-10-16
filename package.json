@@ -16,6 +16,7 @@
     "react-grid-layout": "^0.13.7",
     "react-redux": "^4.4.5",
     "react-router-redux": "^4.0.6",
+    "react-split-pane": "^0.1.51",
     "redux": "^3.6.0",
     "redux-devtools": "^3.3.1",
     "redux-devtools-dock-monitor": "^1.1.1",
