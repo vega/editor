@@ -18,7 +18,6 @@ export default class Editor extends React.Component {
 
   componentDidMount () {
     this.renderVega();
-    console.log(vl);
   }
 
   componentWillReceiveProps (nextProps) {

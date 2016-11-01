@@ -1,8 +1,10 @@
 import React from 'react';
-import SpecEditor from './spec-editor';
 import Renderer from './renderer';
 import Header from './header';
 import SplitPane from 'react-split-pane';
+import InputPanel from './input-panel';
+
+
 import './app.css';
 
 export default class App extends React.Component {
@@ -15,7 +17,7 @@ export default class App extends React.Component {
       <div>
         <Header />
         <SplitPane split="vertical" minSize={300} defaultSize={w * 0.33}>
-          <SpecEditor />
+          <InputPanel />
           <Renderer />
         </SplitPane>
       </div>
