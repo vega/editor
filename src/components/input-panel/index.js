@@ -25,7 +25,6 @@ class InputPanel extends React.Component {
   render () {
     const innerPanes = this.getInnerPanes();
 
-    console.log(innerPanes);
     let outerComponent;
     if (innerPanes.length > 1) {
       outerComponent = React.createElement(SplitPane, {

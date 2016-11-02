@@ -10,7 +10,7 @@ export default (state = {
   vegaLiteSpec: null,
   mode: MODES.Vega,
   debug: false,
-  renderer: RENDERERS.SVG
+  renderer: RENDERERS.Canvas
 }, action) => {
   let spec, vegaSpec;
   switch (action.type) {
@@ -45,7 +45,6 @@ export default (state = {
         debug: !state.debug,
       });
     case CYCLE_RENDERER:
-      console.log('cycleRenderer')
       const rendererVals = Object.values(RENDERERS);
       const currentRenderer = rendererVals.indexOf(state.renderer);
       const nextRenderer = rendererVals[(currentRenderer + 1) % rendererVals.length];
