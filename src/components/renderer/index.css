@@ -8,6 +8,7 @@
   height: 100%;
   background: rgba(243, 240, 240, 0.63);
   padding: 20px;
+  overflow: scroll;
 }
 
 .chart svg, .chart canvas {

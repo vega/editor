@@ -57,3 +57,7 @@ body, html {
 .Resizer.disabled:hover {
   border-color: transparent;
 }
+
+.Pane.vertical {
+  overflow-x: scroll;
+}
