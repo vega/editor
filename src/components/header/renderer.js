@@ -33,6 +33,10 @@ export default class Header extends React.Component {
       this.onSelectVegaLite(key.substr(10));
     } else if (key.startsWith('vega-')) {
       this.onSelectVega(key.substr(5));
+    } else if (key === 'custom-vega') {
+      this.props.updateVegaSpec('{}');
+    } else if (key === 'custom-vega-lite') {
+      this.props.updateVegaSpec('{}');
     }
   }
 
@@ -59,7 +63,7 @@ export default class Header extends React.Component {
               })
             }
           </SubMenu>
-          <SubMenu title="Vega Lite Examples">
+          <SubMenu title="Vega-Lite Examples">
             {
               Object.keys(SPECS.VegaLite).map((specType) => {
                 const specs = SPECS.VegaLite[specType];
@@ -76,6 +80,10 @@ export default class Header extends React.Component {
                 )
               })
             }
+          </SubMenu>
+          <SubMenu title="Custom">
+            <MenuItem key={`custom-vega`}>{'Vega'}</MenuItem>
+            <MenuItem key={`custom-vega-lite`}>{'Vega-Lite'}</MenuItem>
           </SubMenu>
         </Menu>
       </div>
