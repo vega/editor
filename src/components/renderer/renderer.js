@@ -29,7 +29,9 @@ export default class Editor extends React.Component {
 
   render () {
     return (
-      <div ref='chart'>
+      <div className='chart-container'>
+        <div className='chart' ref='chart'>
+        </div>
       </div>
     );
   };

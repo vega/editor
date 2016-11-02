@@ -5,4 +5,7 @@ const Vega = 'vega';
 const VegaLite = 'vega-lite';
 
 const MODES = { Vega, VegaLite };
-export { MODES, SPECS };
+
+const LAYOUT = { HeaderHeight: 58 };
+
+export { MODES, SPECS, LAYOUT };

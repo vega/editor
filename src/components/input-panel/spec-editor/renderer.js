@@ -1,7 +1,7 @@
 import React from 'react';
 import AceEditor from 'react-ace';
 import ReactResizeDetector from 'react-resize-detector';
-import { MODES } from '../../../constants';
+import { MODES, LAYOUT } from '../../../constants';
 
 import 'brace/mode/json';
 import 'brace/theme/github';
@@ -15,7 +15,7 @@ export default class Editor extends React.Component {
   }
 
   state = {
-    height: window.innerHeight - 70
+    height: window.innerHeight - LAYOUT.HeaderHeight
   }
 
   setHeight (width, height) {
@@ -26,6 +26,8 @@ export default class Editor extends React.Component {
   }
 
   handleEditorChange (spec) {
+    console.log('onChange');
+    console.log(spec)
     if (this.props.mode === MODES.Vega) {
       this.props.updateVegaSpec(spec);
     } else if (this.props.mode === MODES.VegaLite) {
@@ -34,15 +36,15 @@ export default class Editor extends React.Component {
   }
 
   render () {
-    console.log(this.state.height);
     return (
-        <div style={{height: '100%', width: '100%'}}>
+        <div style={{width: '100%'}}>
           <AceEditor
             mode='json'
             theme='github'
+            showGutter={true}
             key={JSON.stringify(this.state)}
             width={'100%'}
-            onChange={this.props.onChange}
+            onChange={this.handleEditorChange.bind(this)}
             height={this.state.height + 'px'}
             value={this.props.value}
             />

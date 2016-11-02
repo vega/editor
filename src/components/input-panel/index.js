@@ -29,10 +29,10 @@ class InputPanel extends React.Component {
     let outerComponent;
     if (innerPanes.length > 1) {
       outerComponent = React.createElement(SplitPane, {
-          split: 'horizontal'
+        split: 'horizontal'
       }, innerPanes);
     } else {
-      outerComponent = React.createElement('div', {style: {width: '100%', height: '100%'}}, innerPanes);
+      outerComponent = React.createElement('div', {style: {width: '100%'}}, innerPanes);
     }
 
     return outerComponent;

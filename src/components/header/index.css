@@ -40,7 +40,12 @@ img {
 }
 
 .rc-menu-horizontal > .rc-menu-item, .rc-menu-horizontal > .rc-menu-submenu > .rc-menu-submenu-title {
-  padding: 25px 20px;
+  padding: 15px 20px;
+  padding-top: 20px;
+}
+
+.rc-menu-horizontal > .rc-menu-submenu {
+  border-bottom: solid 5px white;
 }
 
 .rc-menu-horizontal > .rc-menu-submenu-selected {
