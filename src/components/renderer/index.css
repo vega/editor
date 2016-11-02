@@ -9,7 +9,6 @@
   background: rgba(243, 240, 240, 0.63);
   padding: 20px;
   overflow: scroll;
-  position: relative;
 }
 
 .chart svg, .chart canvas {
@@ -18,13 +17,13 @@
 }
 
 .toolbar {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  left: 0;
+  right: 0;
 }
 
 .toolbar > div {
-  margin-left: 10px;
+  margin-right: 10px;
   margin-bottom: 10px;
   display: inline-block;
   padding: 5px 5px;
