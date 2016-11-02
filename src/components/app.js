@@ -17,7 +17,7 @@ export default class App extends React.Component {
       <div className="app-container">
         <Header />
         <div style={{position: 'relative', height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`}}>
-          <SplitPane split="vertical" minSize={300} defaultSize={w * 0.33}>
+          <SplitPane split="vertical" minSize={300} defaultSize={w * 0.4}>
             <InputPanel />
             <Renderer />
           </SplitPane>

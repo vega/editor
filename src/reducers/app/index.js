@@ -1,8 +1,8 @@
 /* global vg, vl */
 
 import defaultVegaSpec from '../../../spec/vega/arc.json';
-import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG } from '../../actions/editor';
-import { MODES } from '../../constants';
+import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER } from '../../actions/editor';
+import { MODES, RENDERERS } from '../../constants';
 
 export default (state = {
   editorString: JSON.stringify(defaultVegaSpec, null, 2),
@@ -10,7 +10,7 @@ export default (state = {
   vegaLiteSpec: null,
   mode: MODES.Vega,
   debug: false,
-  renderTarget: 'svg'
+  renderer: RENDERERS.SVG
 }, action) => {
   let spec, vegaSpec;
   switch (action.type) {
@@ -43,6 +43,14 @@ export default (state = {
     case TOGGLE_DEBUG:
       return Object.assign({}, state, {
         debug: !state.debug,
+      });
+    case CYCLE_RENDERER:
+      console.log('cycleRenderer')
+      const rendererVals = Object.values(RENDERERS);
+      const currentRenderer = rendererVals.indexOf(state.renderer);
+      const nextRenderer = rendererVals[(currentRenderer + 1) % rendererVals.length];
+      return Object.assign({}, state, {
+        renderer: nextRenderer
       });
     default:
       return state;

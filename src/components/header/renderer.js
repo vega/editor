@@ -72,7 +72,7 @@ export default class Header extends React.Component {
                   {
                     specs.map((spec) => {
                       return (
-                        <MenuItem key={`vega-lite-${spec.name}`}>{formatExampleName(spec.name)}</MenuItem>
+                        <MenuItem key={`vega-lite-${spec.name}`}>{spec.title}</MenuItem>
                       )
                     })
                   }

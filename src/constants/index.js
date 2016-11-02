@@ -8,4 +8,6 @@ const MODES = { Vega, VegaLite };
 
 const LAYOUT = { HeaderHeight: 58 };
 
-export { MODES, SPECS, LAYOUT };
+const RENDERERS = { SVG: 'svg', Canvas: 'canvas' };
+
+export { MODES, SPECS, LAYOUT, RENDERERS };

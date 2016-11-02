@@ -8,12 +8,14 @@ import './index.css';
 
 export default class Editor extends React.Component {
   static propTypes = {
-    vegaSpec: React.PropTypes.object
+    vegaSpec: React.PropTypes.object,
+    debug: React.PropTypes.bool,
+    renderer: React.PropTypes.string
   }
 
   renderVega (vegaSpec) {
     vg.parse.spec(vegaSpec, (chart) => {
-      const vis = chart({ el: this.refs.chart });
+      const vis = chart({ el: this.refs.chart, renderer: this.props.renderer });
       vis.update();
     });
   }
@@ -38,9 +40,9 @@ export default class Editor extends React.Component {
               this.props.debug ? 'Hide debug tools' : 'Show debug tools'
             }
           </div>
-          <div className='renderer-toggle'>
+          <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
             {
-              'Renderer: SVG'
+              `Renderer: ${this.props.renderer}`
             }
           </div>
         </div>
