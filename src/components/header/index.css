@@ -1,4 +1,8 @@
 
+
+.header {
+  border-bottom: solid 2px rgba(0, 0, 0, 0.2);
+}
 ul {
   margin-top: 0;
 }
@@ -19,6 +23,10 @@ ul {
   padding-bottom: 5px;
 }
 
+.rc-menu-horizontal {
+  /*display: inline-block;
+  width: 75%;*/
+}
 
 .rc-menu .rc-menu {
   max-height: 75vh;
@@ -28,6 +36,11 @@ ul {
 .rc-menu-horizontal {
   background-color: white;
   color: black;
+  border-bottom: none;
+}
+
+.options-menu {
+
 }
 
 img {

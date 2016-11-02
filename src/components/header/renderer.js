@@ -38,7 +38,7 @@ export default class Header extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className='header'>
         <img height={57} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
         <Menu onSelect={this.onSelect.bind(this)} mode="horizontal">
           <SubMenu title="Vega Examples">
@@ -63,11 +63,17 @@ export default class Header extends React.Component {
             {
               Object.keys(SPECS.VegaLite).map((specType) => {
                 const specs = SPECS.VegaLite[specType];
-                return specs.map((spec) => {
-                  return (
-                    <MenuItem key={`vega-lite-${spec.name}`}>{formatExampleName(spec.name)}</MenuItem>
-                  )
-                })
+                return (
+                  <ItemGroup key={`vega-${specType}`} title={specType}>
+                  {
+                    specs.map((spec) => {
+                      return (
+                        <MenuItem key={`vega-lite-${spec.name}`}>{formatExampleName(spec.name)}</MenuItem>
+                      )
+                    })
+                  }
+                  </ItemGroup>
+                )
               })
             }
           </SubMenu>
