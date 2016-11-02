@@ -4,14 +4,19 @@ import * as EditorActions from '../../../actions/editor';
 
 const mapStateToProps = function (state, ownProps) {
   return {
-    value: state.app.editorString
+    value: state.app.editorString,
+    mode: state.app.mode
   };
 };
 
 const mapDispatchToProps = function (dispatch) {
   return {
-    onChange: (val) => {
+    updateVegaSpec: (val) => {
       dispatch(EditorActions.updateVegaSpec(val));
+    },
+
+    updateVegaLiteSpec: (val) => {
+      dispatch(EditorActions.updateVegaLiteSpec(val));
     }
   };
 };

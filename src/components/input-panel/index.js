@@ -5,6 +5,7 @@ import Debug from './debug';
 import SplitPane from 'react-split-pane';
 import { MODES } from '../../constants';
 import { connect } from 'react-redux';
+import './index.css'
 
 class InputPanel extends React.Component {
 
@@ -12,7 +13,7 @@ class InputPanel extends React.Component {
     const { mode, debug } = this.props;
     const innerPanes = [<SpecEditor key='editor' />];
     if (mode === MODES.VegaLite) {
-      innerPanes.push(<CompiledSpecDisplay key='compiled' />);
+      // innerPanes.push(<CompiledSpecDisplay key='compiled' />);
     }
     if (debug) {
       innerPanes.push(<Debug key='debug' />);
@@ -24,13 +25,14 @@ class InputPanel extends React.Component {
   render () {
     const innerPanes = this.getInnerPanes();
 
+    console.log(innerPanes);
     let outerComponent;
     if (innerPanes.length > 1) {
       outerComponent = React.createElement(SplitPane, {
           split: 'horizontal'
       }, innerPanes);
     } else {
-      outerComponent = React.createElement('div', {}, innerPanes);
+      outerComponent = React.createElement('div', {style: {width: '100%', height: '100%'}}, innerPanes);
     }
 
     return outerComponent;

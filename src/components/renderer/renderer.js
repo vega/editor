@@ -4,24 +4,27 @@ import React from 'react';
 // import vl from 'vega-lite';
 // import vg from 'vega';
 
+import './index.css';
+
 export default class Editor extends React.Component {
   static propTypes = {
     vegaSpec: React.PropTypes.object
   }
 
-  renderVega () {
-    vg.parse.spec(this.props.vegaSpec, (chart) => {
+  renderVega (vegaSpec) {
+    vg.parse.spec(vegaSpec, (chart) => {
       const vis = chart({ el: this.refs.chart });
       vis.update();
     });
   }
 
   componentDidMount () {
-    this.renderVega();
+    this.renderVega(this.props.vegaSpec);
   }
 
   componentWillReceiveProps (nextProps) {
-    this.renderVega();
+    this.renderVega(nextProps.vegaSpec);
+    // visual.update(nextProps.vegaSpec);
   }
 
   render () {

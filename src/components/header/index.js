@@ -1,19 +1,21 @@
-import React from 'react';
+import { connect } from 'react-redux';
+import Renderer from './renderer';
+import * as EditorActions from '../../actions/editor';
 
-const styles = {
-  height: 30,
-  background: '#222'
-}
-
-export default class Header extends React.Component {
-  // static propTypes = {
-  //   value: React.PropTypes.string
-  // }
-
-  render () {
-    return (
-      <div style={styles}>
-      </div>
-    );
+const mapStateToProps = function (state, ownProps) {
+  return {
   };
 };
+
+const mapDispatchToProps = function (dispatch) {
+  return {
+    updateVegaSpec: (val) => {
+      dispatch(EditorActions.updateVegaSpec(val));
+    },
+    updateVegaLiteSpec: (val) => {
+      dispatch(EditorActions.updateVegaLiteSpec(val));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Renderer);
