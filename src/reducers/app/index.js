@@ -1,7 +1,7 @@
 /* global vg, vl */
 
 import defaultVegaSpec from '../../../spec/vega/arc.json';
-import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC } from '../../actions/editor';
+import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG } from '../../actions/editor';
 import { MODES } from '../../constants';
 
 export default (state = {
@@ -39,6 +39,10 @@ export default (state = {
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
         editorString: action.spec
+      });
+    case TOGGLE_DEBUG:
+      return Object.assign({}, state, {
+        debug: !state.debug,
       });
     default:
       return state;

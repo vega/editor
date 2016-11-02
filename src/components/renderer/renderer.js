@@ -32,6 +32,18 @@ export default class Editor extends React.Component {
       <div className='chart-container'>
         <div className='chart' ref='chart'>
         </div>
+        <div className='toolbar'>
+          <div className='debug-toggle' onClick={this.props.toggleDebug}>
+            {
+              this.props.debug ? 'Hide debug tools' : 'Show debug tools'
+            }
+          </div>
+          <div className='renderer-toggle'>
+            {
+              'Renderer: SVG'
+            }
+          </div>
+        </div>
       </div>
     );
   };

@@ -9,9 +9,37 @@
   background: rgba(243, 240, 240, 0.63);
   padding: 20px;
   overflow: scroll;
+  position: relative;
 }
 
 .chart svg, .chart canvas {
   background: white;
   padding: 10px;
+}
+
+.toolbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.toolbar > div {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.renderer-toggle {
+  background: #777;
+  color: white;
+}
+
+.toolbar .debug-toggle {
+  background: #399e39;
+  color: white;
+  margin-left: 20px;
 }
