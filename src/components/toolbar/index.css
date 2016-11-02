@@ -1,0 +1,27 @@
+
+.toolbar {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+.toolbar > div {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.renderer-toggle {
+  background: #777;
+  color: white;
+}
+
+.toolbar .debug-toggle {
+  background: #399e39;
+  color: white;
+  margin-left: 20px;
+}

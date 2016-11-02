@@ -8,9 +8,7 @@ import './index.css';
 
 export default class Editor extends React.Component {
   static propTypes = {
-    vegaSpec: React.PropTypes.object,
-    debug: React.PropTypes.bool,
-    renderer: React.PropTypes.string
+    vegaSpec: React.PropTypes.object
   }
 
   renderVega (vegaSpec) {
@@ -33,18 +31,6 @@ export default class Editor extends React.Component {
     return (
       <div className='chart-container'>
         <div className='chart' ref='chart'>
-        </div>
-        <div className='toolbar'>
-          <div className='debug-toggle' onClick={this.props.toggleDebug}>
-            {
-              this.props.debug ? 'Hide debug tools' : 'Show debug tools'
-            }
-          </div>
-          <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
-            {
-              `Renderer: ${this.props.renderer}`
-            }
-          </div>
         </div>
       </div>
     );

@@ -23,7 +23,6 @@ export default class Header extends React.Component {
 
   onSelectVegaLite (name) {
     const spec = require(`../../../spec/vega-lite/${name}.vl.json`);
-    console.log('updating spec vlite');
     this.props.updateVegaLiteSpec(JSON.stringify(spec, null, 2));
   }
 
@@ -44,7 +43,7 @@ export default class Header extends React.Component {
     return (
       <div className='header'>
         <img height={57} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
-        <Menu onSelect={this.onSelect.bind(this)} mode="horizontal">
+        <Menu onSelect={this.onSelect.bind(this)} mode="horizontal" defaultActiveFirst={true}>
           <SubMenu title="Vega Examples">
             {
               Object.keys(SPECS.Vega).map((specType) => {
