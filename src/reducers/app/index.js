@@ -1,4 +1,4 @@
-/* global vg, vl */
+import vl from 'vega-lite';
 
 import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';

@@ -1,8 +1,7 @@
-/* global vega, vl */
+/* global vega */
 
 import React from 'react';
-// import vl from 'vega-lite';
-// import vg from 'vega';
+// import vega from 'vega';
 
 import './index.css';
 
