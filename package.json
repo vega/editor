@@ -29,7 +29,8 @@
     "vega": "^2.6.0",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "latest",
-    "vega-lite": "^1.3.0"
+    "vega-lite": "^1.3.0",
+    "ace-builds": "^1.2.5"
   },
   "scripts": {
     "start": "react-scripts start",
