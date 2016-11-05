@@ -1,7 +1,7 @@
 #!/bin/bash
 ACE=node_modules/ace-builds/src-min
 TARGET=public/vendor
-DATA=data
+DATA=public/data
 SPEC=spec
 
 # Copy dependencies by default. Link if a -l flag is specified.
