@@ -1,4 +1,4 @@
-/* global vg, vl */
+/* global vega, vl */
 
 import React from 'react';
 // import vl from 'vega-lite';
@@ -12,10 +12,13 @@ export default class Editor extends React.Component {
   }
 
   renderVega (vegaSpec) {
-    vg.parse.spec(vegaSpec, (chart) => {
-      const vis = chart({ el: this.refs.chart, renderer: this.props.renderer });
-      vis.update();
-    });
+    const runtime = vega.parse(vegaSpec);
+    new vega.View(runtime)
+      .logLevel(vega.Warn)
+      .initialize(this.refs.chart)
+      .renderer(this.props.renderer)
+      .hover()
+      .run();
   }
 
   componentDidMount () {

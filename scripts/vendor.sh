@@ -33,12 +33,15 @@ if [ ! -d "$TARGET" ]; then
   mkdir $TARGET
 fi
 
-cp node_modules/d3/d3.min.js $TARGET
-cp node_modules/d3-cloud/build/d3.layout.cloud.js $TARGET
-cp node_modules/d3-geo-projection/d3.geo.projection.min.js $TARGET
-cp node_modules/topojson/build/topojson.js $TARGET
+cp node_modules/d3/build/d3.min.js $TARGET
 cp lib/json3-compactstringify.js $TARGET
-eval $VEGA_OP "$CWD/node_modules/vega/vega*" $TARGET
+
+# build vega
+cd node_modules/vega
+npm run build
+cd ../..
+
+eval $VEGA_OP "$CWD/node_modules/vega/build/*" $TARGET
 eval $VEGA_EMBED_OP "$CWD/node_modules/vega-embed/vega-embed*" $TARGET
 
 if [ ! -d "$TARGET/ace" ]; then

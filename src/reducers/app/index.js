@@ -1,12 +1,11 @@
 /* global vg, vl */
 
-import defaultVegaSpec from '../../../spec/vega/arc.vg.json';
 import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 
 export default (state = {
-  editorString: JSON.stringify(defaultVegaSpec, null, 2),
-  vegaSpec: defaultVegaSpec,
+  editorString: JSON.stringify({}, null, 2),
+  vegaSpec: {},
   vegaLiteSpec: null,
   mode: MODES.Vega,
   debug: false,

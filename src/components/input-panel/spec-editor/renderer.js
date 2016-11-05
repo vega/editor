@@ -26,8 +26,8 @@ export default class Editor extends React.Component {
   }
 
   handleEditorChange (spec) {
-    console.log('onChange');
-    console.log(spec)
+    // console.log('onChange');
+    // console.log(spec)
     if (this.props.mode === MODES.Vega) {
       this.props.updateVegaSpec(spec);
     } else if (this.props.mode === MODES.VegaLite) {
