@@ -17,7 +17,7 @@ export default class Header extends React.Component {
   // }
 
   onSelectVega (name) {
-    const spec = require(`../../../spec/vega/${name}.json`);
+    const spec = require(`../../../spec/vega/${name}.vg.json`);
     this.props.updateVegaSpec(JSON.stringify(spec, null, 2));
   }
 

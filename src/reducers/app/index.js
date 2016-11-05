@@ -1,6 +1,6 @@
 /* global vg, vl */
 
-import defaultVegaSpec from '../../../spec/vega/arc.json';
+import defaultVegaSpec from '../../../spec/vega/arc.vg.json';
 import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 
