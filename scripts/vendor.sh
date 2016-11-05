@@ -63,6 +63,6 @@ if [ ! -d "$SPEC" ]; then
   mkdir $SPEC
 fi
 
-eval $VEGA_OP "$CWD/node_modules/vega/examples" "$SPEC/vega"
+eval $VEGA_OP "$CWD/node_modules/vega/spec" "$SPEC/vega"
 eval $VEGA_LITE_OP "$CWD/node_modules/vega-lite/examples/specs" "$SPEC/vega-lite"
 echo "var VL_SPECS = "`cat $CWD/node_modules/vega-lite/examples/vl-examples.json` > public/js/vl-specs.js
