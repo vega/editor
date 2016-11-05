@@ -35,7 +35,7 @@ export default class Header extends React.Component {
     } else if (key === 'custom-vega') {
       this.props.updateVegaSpec('{}');
     } else if (key === 'custom-vega-lite') {
-      this.props.updateVegaSpec('{}');
+      this.props.updateVegaLiteSpec('{}');
     }
   }
 
