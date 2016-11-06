@@ -29,6 +29,7 @@ export default (state = {
       try {
         spec = JSON.parse(action.spec);
         vegaSpec = vl.compile(spec).spec;
+        console.log('Generated Vega spec', JSON.stringify(vegaSpec))
       } catch (e) {
         console.warn('Error parsing json string');
         return state;
