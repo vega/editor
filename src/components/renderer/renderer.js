@@ -1,7 +1,5 @@
-/* global vega */
-
 import React from 'react';
-// import vega from 'vega';
+import * as vega from 'vega';
 
 import './index.css';
 

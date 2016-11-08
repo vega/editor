@@ -1,5 +1,4 @@
 #!/bin/bash
-ACE=node_modules/ace-builds/src-min
 TARGET=public/vendor
 DATA=public/data
 SPEC=spec
@@ -33,24 +32,7 @@ if [ ! -d "$TARGET" ]; then
   mkdir $TARGET
 fi
 
-cp node_modules/d3/build/d3.min.js $TARGET
 cp lib/json3-compactstringify.js $TARGET
-
-# build vega
-cd node_modules/vega
-npm run build
-cd ../..
-
-eval $VEGA_OP "$CWD/node_modules/vega/build/*" $TARGET
-eval $VEGA_EMBED_OP "$CWD/node_modules/vega-embed/vega-embed*" $TARGET
-
-if [ ! -d "$TARGET/ace" ]; then
-  mkdir $TARGET/ace
-fi
-cp $ACE/ace.js $TARGET/ace
-cp $ACE/mode-json.js $TARGET/ace
-cp $ACE/worker-json.js $TARGET/ace
-cp $ACE/ext-searchbox.js $TARGET/ace
 
 echo "Copying data to '$DATA'."
 

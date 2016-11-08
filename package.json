@@ -1,7 +1,6 @@
 {
   "name": "vega-editor-redux",
   "version": "0.1.0",
-  "private": true,
   "devDependencies": {
     "chokidar": "^1.2.0",
     "react-scripts": "^0.6.1"
@@ -26,15 +25,14 @@
     "topojson": "^2.0.0",
     "vega": "^3.0.0-beta.1",
     "vega-datasets": "vega/vega-datasets#gh-pages",
-    "vega-embed": "latest",
-    "vega-lite": "vega/vega-lite#vg3",
-    "ace-builds": "^1.2.5"
+    "vega-lite": "vega/vega-lite#vg3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "postinstall": "npm run vendor",
     "vendor": "./scripts/vendor.sh"
   }
 }
