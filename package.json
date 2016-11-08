@@ -6,13 +6,11 @@
     "react-scripts": "^0.6.1"
   },
   "dependencies": {
-    "d3": "^4.3.0",
     "rc-menu": "^5.0.3",
     "react": "^15.3.2",
     "react-ace": "^3.6.0",
     "react-dom": "^15.3.2",
     "react-grid-layout": "^0.13.7",
-    "react-height": "^2.1.1",
     "react-redux": "^4.4.5",
     "react-resize-detector": "^0.3.3",
     "react-router-redux": "^4.0.6",
@@ -22,7 +20,6 @@
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.0.11",
     "redux-thunk": "^2.1.0",
-    "topojson": "^2.0.0",
     "vega": "^3.0.0-beta.1",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-lite": "vega/vega-lite#vg3"
