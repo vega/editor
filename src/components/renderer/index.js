@@ -4,7 +4,8 @@ import * as EditorActions from '../../actions/editor';
 
 function mapStateToProps (state, ownProps) {
   return {
-    vegaSpec: state.app.vegaSpec
+    vegaSpec: state.app.vegaSpec,
+    renderer: state.app.renderer
   };
 }
 
