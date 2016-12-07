@@ -9,7 +9,18 @@ import MonacoEditor from 'react-monaco-editor';
 
 import './index.css'
 
-const schema = require('../../../../schema/vega.schema.json');
+const vegaSchema = require('../../../../schema/vega.schema.json');
+const vegaLiteSchema = require('../../../../schema/vl.schema.json');
+
+const schemas = {
+  [MODES.Vega]: {
+    schema: vegaSchema,
+    fileMatch: ['*']
+  }, [MODES.VegaLite]: {
+    schema: vegaLiteSchema,
+    fileMatch: ['*']
+  }
+};
 
 export default class Editor extends React.Component {
   static propTypes = {
@@ -37,16 +48,11 @@ export default class Editor extends React.Component {
   }
 
   editorWillMount (monaco) {
-    console.log('editor will mount');
-		monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-			validate: true,
-			allowComments: true,
-			schemas: [{
-					uri: "./js/vega-schema.json",
-					schema: schema,
-					fileMatch: ['*']
-			}]
-		});
+    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+      validate: true,
+      allowComments: true,
+      schemas: [schemas[this.props.mode]]
+    });
   }
 
   render () {
@@ -59,7 +65,7 @@ export default class Editor extends React.Component {
             key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample}))}
             defaultValue={this.props.value}
             onChange={this.handleEditorChange.bind(this)}
-						editorWillMount={this.editorWillMount.bind(this)}
+            editorWillMount={this.editorWillMount.bind(this)}
           />
           <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
         </div>
