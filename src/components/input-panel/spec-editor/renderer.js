@@ -37,6 +37,7 @@ export default class Editor extends React.Component {
   }
 
   editorWillMount (monaco) {
+    console.log('editor will mount');
 		monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
 			validate: true,
 			allowComments: true,
@@ -55,8 +56,8 @@ export default class Editor extends React.Component {
             width={'100%'}
             height={this.state.height}
             language='json'
-            key={JSON.stringify(this.state)}
-            value={this.props.value}
+            key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample}))}
+            defaultValue={this.props.value}
             onChange={this.handleEditorChange.bind(this)}
 						editorWillMount={this.editorWillMount.bind(this)}
           />

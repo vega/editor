@@ -5,7 +5,8 @@ import * as EditorActions from '../../../actions/editor';
 const mapStateToProps = function (state, ownProps) {
   return {
     value: state.app.editorString,
-    mode: state.app.mode
+    mode: state.app.mode,
+    selectedExample: state.app.selectedExample
   };
 };
 
