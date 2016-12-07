@@ -1,12 +1,15 @@
 import React from 'react';
-import AceEditor from 'react-ace';
+// import AceEditor from 'react-ace';
 import ReactResizeDetector from 'react-resize-detector';
 import { MODES, LAYOUT } from '../../../constants';
+import MonacoEditor from 'react-monaco-editor';
 
-import 'brace/mode/json';
-import 'brace/theme/github';
+// import 'brace/mode/json';
+// import 'brace/theme/github';
 
 import './index.css'
+
+const schema = require('../../../../schema/vega.schema.json');
 
 export default class Editor extends React.Component {
   static propTypes = {
@@ -26,8 +29,6 @@ export default class Editor extends React.Component {
   }
 
   handleEditorChange (spec) {
-    // console.log('onChange');
-    // console.log(spec)
     if (this.props.mode === MODES.Vega) {
       this.props.updateVegaSpec(spec);
     } else if (this.props.mode === MODES.VegaLite) {
@@ -35,20 +36,31 @@ export default class Editor extends React.Component {
     }
   }
 
+  editorWillMount (monaco) {
+    console.log('editor will mount');
+		monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+			validate: true,
+			allowComments: true,
+			schemas: [{
+					uri: "./js/vega-schema.json",
+					schema: schema,
+					fileMatch: ['*']
+			}]
+		});
+  }
+
   render () {
     return (
         <div style={{width: '100%'}}>
-          <AceEditor
-            mode='json'
-            theme='github'
-            showGutter={true}
-            key={JSON.stringify(this.state)}
+          <MonacoEditor
             width={'100%'}
+            height={this.state.height}
+            language='json'
+            key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample}))}
+            defaultValue={this.props.value}
             onChange={this.handleEditorChange.bind(this)}
-            height={this.state.height + 'px'}
-            value={this.props.value}
-            />
-
+						editorWillMount={this.editorWillMount.bind(this)}
+          />
           <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
         </div>
     );
