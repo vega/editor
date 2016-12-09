@@ -78,3 +78,28 @@ img {
   background: white;
   color: black;
 }
+
+.modal {
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  width: 70%;
+  border: 2px solid gray;
+  border-radius: 7px;
+  background: #DCDCDC;
+  margin: 10px;
+  padding: 10px;
+  z-index: 100;
+}
+
+.exampleButton {
+  padding: 15px;
+  font-size: 20px;
+  background: #fff;
+  border: 1px solid gray;
+  cursor: pointer;
+}
+
+.exampleButton:hover {
+    background-color: #DCDCDC;
+}

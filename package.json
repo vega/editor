@@ -11,6 +11,7 @@
     "react-ace": "^3.6.0",
     "react-dom": "^15.3.2",
     "react-grid-layout": "^0.13.7",
+    "react-portal": "^3.0.0",
     "react-redux": "^4.4.5",
     "react-resize-detector": "^0.3.3",
     "react-router-redux": "^4.0.6",
