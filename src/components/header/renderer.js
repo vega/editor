@@ -20,8 +20,7 @@ export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isPortalOpened: false,
-      someValue: 'init',
+      showVega: true, // true: showVega example, false: showVegalite
     };
     this.onSelectVega = this.onSelectVega.bind(this);
   }
@@ -60,67 +59,84 @@ export default class Header extends React.Component {
           this.setState({
             isOpened: true
           });
+          console.log(this.state);
         }}
       >
         {'Examples'}
       </button>
     );
 
-    return (
-      <div className='header'> 
-        <img height={57} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
-        
-          <div>
-          {button}
-          <Portal
-            closeOnOutsideClick
-            isOpened={this.state.isOpened}
-            onClose={() => { this.setState({ isOpened: false });}}
-          >
-            <div className='modal'>
-              <div className="vega">
-                <p>Vega Examples</p>
-                {
-                    Object.keys(SPECS.Vega).map((specType) => {
-                      const specs = SPECS.Vega[specType];
-                      return (
-                        <div className='itemGroup' value={`vega-${specType}`}>{specType}
-                          {
-                            specs.map((spec) => {
-                              return (
-                                <button value={`vega-${spec.name}`} onClick={this.onSelect.bind(this)}>{formatExampleName(spec.name)}</button>
-                              )
-                            })
-                          }
-                        </div>
-                      );
-                    })
-                }
-              </div>
+    const vega = (
+      <div className="vega">
+        <p>Vega Examples</p>
+        {
+            Object.keys(SPECS.Vega).map((specType) => {
+              const specs = SPECS.Vega[specType];
+              return (
+                <div className='itemGroup' value={`vega-${specType}`}>
+                  <div className='specType'>{specType}</div>
+                  <div className='items'>
+                    {
+                      specs.map((spec) => {
+                        return (
+                          <button className='item' value={`vega-${spec.name}`} onClick={this.onSelect.bind(this)}>{formatExampleName(spec.name)}</button>
+                        )
+                      })
+                    }
+                  </div>
+                </div>
+              );
+            })
+        }
+      </div>
+    );
 
-              <div className="vega-Lite" >
-                  <p>Vega-Lite Examples</p>
+    const vegalite = (
+      <div className="vega-Lite">
+        <p>Vega-Lite Examples</p>
+        {
+          Object.keys(SPECS.VegaLite).map((specType) => {
+            const specs = SPECS.VegaLite[specType];
+            return (
+              <div className='itemGroup' value={`vega-${specType}`}>
+                <div className='specType'>{specType}</div>
+                <div className='items'>
                   {
-                    Object.keys(SPECS.VegaLite).map((specType) => {
-                      const specs = SPECS.VegaLite[specType];
+                    specs.map((spec) => {
                       return (
-                        <div className='itemGroup' value={`vega-${specType}`}>{specType}
-                          {
-                            specs.map((spec) => {
-                              return (
-                                <button value={`vega-lite-${spec.name}`} onClick={this.onSelect.bind(this)}>{spec.title}</button>
-                              )
-                            })
-                          }
-                        </div>
-                      );
+                        <button className='item' value={`vega-lite-${spec.name}`} onClick={this.onSelect.bind(this)}>{spec.title}</button>
+                      )
                     })
                   }
+                </div>
               </div>
+            );
+          })
+        }
+      </div>
+    );
+
+    return (
+      <div className='header'> 
+        <img height={57} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" /> 
+        {button}
+        <Portal className='portal'
+          closeOnOutsideClick
+          isOpened={this.state.isOpened}
+          onClose={() => { this.setState({ isOpened: false });}}
+        >
+          <div className='modal-background'>
+            <div className='modal'>
+              <div className='button-groups'>
+                <button onClick={() => { this.setState({ showVega: true });}}>{'Vega'}</button>
+                <button onClick={() => { this.setState({ showVega: false });}}>{'Vega Lite'}</button>
+              </div>
+
+              <button className='close-button' onClick={() => { this.setState({ isOpened: false });}}>X</button>
+              { this.state.showVega ? vega : vegalite }
+            </div>
           </div>
         </Portal>
-        </div>
-        
       </div>
     );
   };
