@@ -10,7 +10,7 @@ export default (state = {
   selectedExample: null,
   mode: MODES.Vega,
   debug: false,
-  vegaRenderer: RENDERERS.Canvas
+  renderer: RENDERERS.Canvas
 }, action) => {
   let spec, vegaSpec;
   switch (action.type) {
