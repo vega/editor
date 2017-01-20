@@ -13,7 +13,7 @@ class InputPanel extends React.Component {
     const { mode, debug } = this.props;
     const innerPanes = [<SpecEditor key='editor' />];
     if (mode === MODES.VegaLite) {
-      // innerPanes.push(<CompiledSpecDisplay key='compiled' />);
+      innerPanes.push(<CompiledSpecDisplay key='compiled'/>);
     }
     if (debug) {
       innerPanes.push(<Debug key='debug' />);
