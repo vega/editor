@@ -27,9 +27,13 @@ class InputPanel extends React.Component {
 
     let outerComponent;
     if (innerPanes.length > 1) {
-      outerComponent = React.createElement(SplitPane, {
-        split: 'horizontal'
-      }, innerPanes);
+      if (this.props.mode === MODES.VegaLite) {
+        outerComponent = React.createElement('div', {style: {width: '100%'}}, innerPanes);
+      } else {
+        outerComponent = React.createElement(SplitPane, {
+          split: 'horizontal'
+        }, innerPanes);
+      }
     } else {
       outerComponent = React.createElement('div', {style: {width: '100%'}}, innerPanes);
     }

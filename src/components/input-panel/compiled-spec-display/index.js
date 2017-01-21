@@ -3,7 +3,6 @@ import ReactResizeDetector from 'react-resize-detector';
 import { MODES, LAYOUT } from '../../../constants';
 import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
-import './index.css'
 
 // import 'brace/mode/json';
 // import 'brace/theme/github';
@@ -15,6 +14,7 @@ import './index.css'
     display: 'inline-block',
     fontSize: '15px',
     width: '100%',
+    height: '20px',
     backgroundColor: 'grey',
   };
 
@@ -35,7 +35,6 @@ class CompiledSpecDisplay extends React.Component {
     this.setState(preState => ({
       showCompiledSpec: !preState.showCompiledSpec
     }));
-    console.log(this.props);
   }
       
   render () {
