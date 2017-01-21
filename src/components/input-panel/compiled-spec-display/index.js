@@ -10,12 +10,13 @@ import MonacoEditor from 'react-monaco-editor';
   const toggleStyle = {
     position: 'absolute',
     bottom: '0px',
+    color: 'white',
     cursor: 'pointer',
     display: 'inline-block',
     fontSize: '15px',
     width: '100%',
     height: '20px',
-    backgroundColor: 'grey',
+    backgroundColor: 'black',
   };
 
 class CompiledSpecDisplay extends React.Component {
@@ -56,7 +57,7 @@ class CompiledSpecDisplay extends React.Component {
               width={'100%'}
               height={this.state.height}      
               // value={JSON.stringify(this.props.value)}
-              value='Show compiled vega spec'
+              value={this.props.value}
             />
       </div>)
     } else {
@@ -75,7 +76,8 @@ class CompiledSpecDisplay extends React.Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    value: state.app.vegaSpec,
+    value: state.app.editorString,
+    // value: state.app.vegaSpec,
   };
 }
 
