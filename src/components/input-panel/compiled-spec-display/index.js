@@ -8,10 +8,19 @@ import './index.css'
 // import 'brace/mode/json';
 // import 'brace/theme/github';
 
+  const toggleStyle = {
+    position: 'absolute',
+    bottom: '0px',
+    cursor: 'pointer',
+    display: 'inline-block',
+    fontSize: '15px',
+    width: '100%',
+    backgroundColor: 'grey',
+  };
+
 class CompiledSpecDisplay extends React.Component {
   state = {
-    // height: window.innerHeight - LAYOUT.HeaderHeight,
-    height: 300,
+    height: (window.innerHeight - LAYOUT.HeaderHeight)/2,
     showCompiledSpec: false
   }
 
@@ -31,24 +40,32 @@ class CompiledSpecDisplay extends React.Component {
       
   render () {
     if (this.state.showCompiledSpec) {
+      let toggleStyleUp = Object.assign({}, toggleStyle, {
+        position: 'absolute',
+        bottom: this.state.height + 'px'
+      });
       return (
-        <div style={{width: '100%'}} className='compiledSpecDisplay'>
-          <span onClick={this.handleClick.bind(this)}>Read only, click to hide spec </span>
-          <MonacoEditor
-            mode='json'
-            theme='github'
-            showGutter={true}
-            key={JSON.stringify(this.state)}
-            width={'100%'}
-            height={this.state.height}
-            // value={JSON.stringify(this.props.value)}
-            value='Show compiled vega spec'
+        <div style={{width: '100%', position: 'absolute', bottom: '0px'}}>
+          <div
+            style={toggleStyleUp}
+            onClick={this.handleClick.bind(this)}>Read only, click to hide spec </div>
+            <MonacoEditor 
+              mode='json'
+              theme='github'
+              showGutter={true}
+              key={JSON.stringify(this.state)}
+              width={'100%'}
+              height={this.state.height}      
+              // value={JSON.stringify(this.props.value)}
+              value='Show compiled vega spec'
             />
       </div>)
     } else {
       return (
-        <div style={{width: '100%'}} className='compiledSpecDisplay'>
-        <span onClick={this.handleClick.bind(this)}> Read only, click to show spec</span>
+        <div style={{width: '100%'}}>
+          <div  style={toggleStyle} onClick={this.handleClick.bind(this)}>
+          Read only, click to show spec
+          </div>
         </div>
       )
     }
