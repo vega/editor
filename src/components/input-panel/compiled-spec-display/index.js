@@ -23,6 +23,10 @@ class CompiledSpecDisplay extends React.Component {
 
   render () {
     return (
+      <div 
+        style={{height: '100%'}}
+      >
+      <CompiledSpecDisplayHeader />
       <MonacoEditor 
         options={{readOnly:true}}
         language='json'
@@ -32,6 +36,7 @@ class CompiledSpecDisplay extends React.Component {
         // value={JSON.stringify(this.props.value)}
         value={this.props.value} 
     />
+    </div>
     )
   };
 };
@@ -54,4 +59,4 @@ const mapDispatchToProps = function (dispatch) {
   };
 };
 
-export default connect(mapStateToProps)(CompiledSpecDisplay);
+export default connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplay);
