@@ -1,4 +1,4 @@
-// import vl from 'vega-lite';
+import vl from 'vega-lite';
 
 import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE, SHOW_COMPILED_VEGA_SPEC } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
@@ -42,10 +42,9 @@ export default (state = {
       });
     case SET_VEGA_LITE_EXAMPLE:
       try {
-        console.log('Temporarily disable VL');
-        // spec = JSON.parse(action.spec);
-        // vegaSpec = vl.compile(spec).spec;
-        // console.log('Generated Vega spec', JSON.stringify(vegaSpec))
+        spec = JSON.parse(action.spec);
+        vegaSpec = vl.compile(spec).spec;
+        console.log('Generated Vega spec', JSON.stringify(vegaSpec))
       } catch (e) {
         console.warn('Error parsing json string');
         return state;
@@ -60,10 +59,9 @@ export default (state = {
 
     case UPDATE_VEGA_LITE_SPEC:
       try {
-        console.log('Temporarily disable VL');
-        // spec = JSON.parse(action.spec);
-        // vegaSpec = vl.compile(spec).spec;
-        // console.log('Generated Vega spec', JSON.stringify(vegaSpec))
+        spec = JSON.parse(action.spec);
+        vegaSpec = vl.compile(spec).spec;
+        console.log('Generated Vega spec', JSON.stringify(vegaSpec))
       } catch (e) {
         console.warn('Error parsing json string');
         return state;
