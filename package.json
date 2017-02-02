@@ -64,9 +64,9 @@
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.0.11",
     "redux-thunk": "^2.1.0",
-    "vega": "^3.0.0-beta.1",
+    "vega": "^3.0.0-beta.20",
     "vega-datasets": "vega/vega-datasets#gh-pages",
-    "vega-lite": "vega/vega-lite#vg3"
+    "vega-lite": "^2.0.0-alpha.1"
   },
   "scripts": {
     "start": "node scripts/start.js",
