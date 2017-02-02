@@ -20,7 +20,7 @@ class InputPanel extends React.Component {
       if (this.props.compiledVegaSpec) {
         innerPanes.push(<CompiledSpecDisplay style={{height:'100%'}} key='compiled'/>);
       } else {
-        innerPanes.push(<CompiledSpecHeader/>)
+        innerPanes.push(<CompiledSpecHeader key='compiledSpecHeader'/>)
       }
     }
     if (debug) {
@@ -37,6 +37,7 @@ class InputPanel extends React.Component {
         outerComponent = React.createElement(SplitPane, 
         {
           split: 'horizontal',
+          defaultSize: 250
         }, 
         innerPanes);
     } else {

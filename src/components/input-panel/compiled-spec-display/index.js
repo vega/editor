@@ -31,7 +31,6 @@ class CompiledSpecDisplay extends React.Component {
         options={{readOnly:true}}
         language='json'
         width={'100%'}
-        // height={this.state.height}      
         key={JSON.stringify(this.state)}   
         // value={JSON.stringify(this.props.value)}
         value={this.props.value} 
