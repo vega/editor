@@ -8,10 +8,6 @@ import { MODES, LAYOUT } from '../../constants';
 import { connect } from 'react-redux';
 import './index.css'
 
-const height = () => {
-  return (window.innerHeight - LAYOUT.HeaderHeight)/2;
-};
-
 class InputPanel extends React.Component {
   getInnerPanes () {
     const { mode, debug } = this.props;
@@ -37,7 +33,7 @@ class InputPanel extends React.Component {
         outerComponent = React.createElement(SplitPane, 
         {
           split: 'horizontal',
-          defaultSize: 250
+          defaultSize: (window.innerHeight - LAYOUT.HeaderHeight) / innerPanes.length
         }, 
         innerPanes);
     } else {

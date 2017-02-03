@@ -32,8 +32,7 @@ class CompiledSpecDisplay extends React.Component {
         language='json'
         width={'100%'}
         key={JSON.stringify(this.state)}   
-        // value={JSON.stringify(this.props.value)}
-        value={this.props.value} 
+        value={JSON.stringify(this.props.value, null, 2)}
     />
     </div>
     )
@@ -44,8 +43,7 @@ class CompiledSpecDisplay extends React.Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    value: state.app.editorString,
-    // value: state.app.vegaSpec,
+    value: state.app.vegaSpec,
     compiledVegaSpec: state.app.compiledVegaSpec
   };
 }
