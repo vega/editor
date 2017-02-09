@@ -4,6 +4,7 @@ export const SET_VEGA_EXAMPLE = 'SET_VEGA_EXAMPLE';
 export const SET_VEGA_LITE_EXAMPLE = 'SET_VEGA_LITE_EXAMPLE';
 export const TOGGLE_DEBUG = 'TOGGLE_DEBUG';
 export const CYCLE_RENDERER = 'CYCLE_RENDERER';
+export const SHOW_COMPILED_VEGA_SPEC = 'SHOW_COMPILED_VEGA_SPEC'
 
 export function setVegaExample (example, spec) {
   return {
@@ -45,5 +46,11 @@ export function toggleDebug () {
 export function cycleRenderer () {
   return {
     type: CYCLE_RENDERER
+  };
+};
+
+export function showCompiledVegaSpec () {
+  return {
+    type: SHOW_COMPILED_VEGA_SPEC
   };
 };

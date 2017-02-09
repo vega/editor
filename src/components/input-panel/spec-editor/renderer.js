@@ -57,7 +57,7 @@ export default class Editor extends React.Component {
 
   render () {
     return (
-        <div style={{width: '100%'}}>
+      <div style={{width: '100%'}}> 
           <MonacoEditor
             width={'100%'}
             height={this.state.height}
@@ -67,8 +67,8 @@ export default class Editor extends React.Component {
             onChange={this.handleEditorChange.bind(this)}
             editorWillMount={this.editorWillMount.bind(this)}
           />
-          <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
-        </div>
+           <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
+      </div> 
     );
   };
 };
