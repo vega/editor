@@ -1,7 +1,7 @@
 import React from 'react';
 import SpecEditor from './spec-editor';
 import CompiledSpecDisplay from './compiled-spec-display';
-import CompiledSpecHeader from './complied-spec-header';
+import CompiledSpecHeader from './compiled-spec-header';
 import Debug from './debug';
 import SplitPane from 'react-split-pane';
 import { MODES, LAYOUT } from '../../constants';

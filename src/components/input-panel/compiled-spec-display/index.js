@@ -4,7 +4,7 @@ import { MODES, LAYOUT } from '../../../constants';
 import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 import * as EditorActions from '../../../actions/editor';
-import CompiledSpecDisplayHeader from '../complied-spec-header'
+import CompiledSpecDisplayHeader from '../compiled-spec-header'
 // import 'brace/mode/json';
 // import 'brace/theme/github';
 
