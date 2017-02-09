@@ -1,15 +1,17 @@
 import React from 'react';
-import AceEditor from 'react-ace';
 import ReactResizeDetector from 'react-resize-detector';
 import { MODES, LAYOUT } from '../../../constants';
 import { connect } from 'react-redux';
+import MonacoEditor from 'react-monaco-editor';
+import * as EditorActions from '../../../actions/editor';
+import CompiledSpecDisplayHeader from '../compiled-spec-header'
+// import 'brace/mode/json';
+// import 'brace/theme/github';
 
-import 'brace/mode/json';
-import 'brace/theme/github';
 
 class CompiledSpecDisplay extends React.Component {
   state = {
-    height: window.innerHeight - LAYOUT.HeaderHeight
+    height: (window.innerHeight - LAYOUT.HeaderHeight)/2,
   }
 
   setHeight (width, height) {
@@ -21,20 +23,19 @@ class CompiledSpecDisplay extends React.Component {
 
   render () {
     return (
-        <div style={{width: '100%'}}>
-          <AceEditor
-            mode='json'
-            theme='github'
-            showGutter={true}
-            key={JSON.stringify(this.state)}
-            width={'100%'}
-            height={this.state.height + 'px'}
-            value={JSON.stringify(this.props.value)}
-            />
-
-          <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
-        </div>
-    );
+      <div 
+        style={{height: '100%'}}
+      >
+      <CompiledSpecDisplayHeader />
+      <MonacoEditor 
+        options={{readOnly:true}}
+        language='json'
+        width={'100%'}
+        key={JSON.stringify(this.state)}   
+        value={JSON.stringify(this.props.value, null, 2)}
+    />
+    </div>
+    )
   };
 };
 
@@ -43,7 +44,16 @@ class CompiledSpecDisplay extends React.Component {
 function mapStateToProps (state, ownProps) {
   return {
     value: state.app.vegaSpec,
+    compiledVegaSpec: state.app.compiledVegaSpec
   };
 }
 
-export default connect(mapStateToProps)(CompiledSpecDisplay);
+const mapDispatchToProps = function (dispatch) {
+    return {
+      showCompiledVegaSpec: () => {
+        dispatch(EditorActions.showCompiledVegaSpec());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplay);

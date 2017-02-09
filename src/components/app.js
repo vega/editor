@@ -24,6 +24,16 @@ export default class App extends React.Component {
           </SplitPane>
         </div>
         <Toolbar />
+        <div>
+          {
+            (() => {
+              if (process.env.NODE_ENV !== 'production') {
+                const DevTools = require('./debug/dev-tools').default;
+                return <DevTools visibleOnLoad={false} />;
+              }
+            })()
+          }
+        </div>
       </div>
     );
   };

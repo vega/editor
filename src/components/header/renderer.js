@@ -27,12 +27,12 @@ export default class Header extends React.Component {
 
   onSelectVega (name) {
     const spec = require(`../../../spec/vega/${name}.vg.json`);
-    this.props.updateVegaSpec(JSON.stringify(spec, null, 2));
+    this.props.updateVegaSpec(name, JSON.stringify(spec, null, 2));
   }
 
   onSelectVegaLite (name) {
     const spec = require(`../../../spec/vega-lite/${name}.vl.json`);
-    this.props.updateVegaLiteSpec(JSON.stringify(spec, null, 2));
+    this.props.updateVegaLiteSpec(name, JSON.stringify(spec, null, 2));
   }
 
   onSelect (e) {

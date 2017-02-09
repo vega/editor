@@ -1,15 +1,17 @@
-// import vl from 'vega-lite';
+import vl from 'vega-lite';
 
-import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER } from '../../actions/editor';
+import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE, SHOW_COMPILED_VEGA_SPEC } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 
 export default (state = {
   editorString: JSON.stringify({}, null, 2),
   vegaSpec: {},
   vegaLiteSpec: null,
+  selectedExample: null,
   mode: MODES.Vega,
   debug: false,
-  renderer: RENDERERS.Canvas
+  renderer: RENDERERS.Canvas,
+  compiledVegaSpec: false
 }, action) => {
   let spec, vegaSpec;
   switch (action.type) {
@@ -25,12 +27,41 @@ export default (state = {
         mode: MODES.Vega,
         editorString: action.spec
       });
+    case SET_VEGA_EXAMPLE:
+      try {
+        spec = JSON.parse(action.spec);
+      } catch (e) {
+        console.warn('Error parsing json string');
+        return state;
+      }
+      return Object.assign({}, state, {
+        vegaSpec: spec,
+        mode: MODES.Vega,
+        editorString: action.spec,
+        selectedExample: action.example
+      });
+    case SET_VEGA_LITE_EXAMPLE:
+      try {
+        spec = JSON.parse(action.spec);
+        vegaSpec = vl.compile(spec).spec;
+        console.log('Generated Vega spec', JSON.stringify(vegaSpec))
+      } catch (e) {
+        console.warn('Error parsing json string');
+        return state;
+      }
+      return Object.assign({}, state, {
+        vegaLiteSpec: spec,
+        vegaSpec: vegaSpec,
+        mode: MODES.VegaLite,
+        editorString: action.spec,
+        selectedExample: action.example
+      });
+
     case UPDATE_VEGA_LITE_SPEC:
       try {
-        console.log('Temporarily disable VL');
-        // spec = JSON.parse(action.spec);
-        // vegaSpec = vl.compile(spec).spec;
-        // console.log('Generated Vega spec', JSON.stringify(vegaSpec))
+        spec = JSON.parse(action.spec);
+        vegaSpec = vl.compile(spec).spec;
+        console.log('Generated Vega spec', JSON.stringify(vegaSpec))
       } catch (e) {
         console.warn('Error parsing json string');
         return state;
@@ -51,6 +82,10 @@ export default (state = {
       const nextRenderer = rendererVals[(currentRenderer + 1) % rendererVals.length];
       return Object.assign({}, state, {
         renderer: nextRenderer
+      });
+    case SHOW_COMPILED_VEGA_SPEC:
+      return Object.assign({}, state, {
+        compiledVegaSpec: !state.compiledVegaSpec,
       });
     default:
       return state;
