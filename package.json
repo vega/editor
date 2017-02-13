@@ -55,6 +55,7 @@
     "react-dom": "^15.3.2",
     "react-grid-layout": "^0.13.7",
     "react-monaco-editor": "^0.7.0",
+    "react-portal": "^3.0.0",
     "react-redux": "^4.4.5",
     "react-resize-detector": "^0.3.3",
     "react-router-redux": "^4.0.6",
@@ -65,12 +66,13 @@
     "redux-devtools-log-monitor": "^1.0.11",
     "redux-thunk": "^2.1.0",
     "vega": "^3.0.0-beta.20",
-    "vega-datasets": "vega/vega-datasets#gh-pages",
+    "vega-datasets": "^1.8.0",
     "vega-lite": "^2.0.0-alpha.1"
   },
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
+    "generate-example-images": "./scripts/generate-example-images.sh",
     "test": "node scripts/test.js --env=jsdom",
     "postinstall": "npm run vendor",
     "vendor": "./scripts/vendor.sh"
