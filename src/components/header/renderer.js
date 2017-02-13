@@ -13,6 +13,10 @@ const formatExampleName = (name) => {
   return name.split('_').map(i => i[0].toUpperCase() + i.substring(1)).join(' ');
 }
 
+const titleCase = (str) => {
+  return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -66,7 +70,7 @@ export default class Header extends React.Component {
                         return (
                           <div onClick={() => this.onSelectVega(spec.name)} className='item'>
                             <div style={{backgroundImage: `url(images/examples/vega/${spec.name}.vg.png)` }} className='img' />
-                            <div className='name'>{spec.name}</div>
+                            <div className='name'>{spec.name.split('_').map(titleCase).join(' ')}</div>
                           </div>
                         )
                       })

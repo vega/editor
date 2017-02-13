@@ -1,7 +1,3 @@
-
-
-
-
 #!/bin/bash
 # requires https://www.gnu.org/software/parallel/
 
