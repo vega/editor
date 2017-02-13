@@ -6,7 +6,7 @@ const VegaLite = 'vega-lite';
 
 const MODES = { Vega, VegaLite };
 
-const LAYOUT = { HeaderHeight: 58 };
+const LAYOUT = { HeaderHeight: 59 };
 
 const RENDERERS = { SVG: 'svg', Canvas: 'canvas' };
 
