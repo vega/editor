@@ -1,13 +1,9 @@
 import React from 'react';
-import ReactResizeDetector from 'react-resize-detector';
-import { MODES, LAYOUT } from '../../../constants';
+import { LAYOUT } from '../../../constants';
 import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 import * as EditorActions from '../../../actions/editor';
 import CompiledSpecDisplayHeader from '../compiled-spec-header'
-// import 'brace/mode/json';
-// import 'brace/theme/github';
-
 
 class CompiledSpecDisplay extends React.Component {
   state = {
@@ -23,15 +19,15 @@ class CompiledSpecDisplay extends React.Component {
 
   render () {
     return (
-      <div 
+      <div
         style={{height: '100%'}}
       >
       <CompiledSpecDisplayHeader />
-      <MonacoEditor 
+      <MonacoEditor
         options={{readOnly:true}}
         language='json'
         width={'100%'}
-        key={JSON.stringify(this.state)}   
+        key={JSON.stringify(this.state)}
         value={JSON.stringify(this.props.value, null, 2)}
     />
     </div>

@@ -1,9 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Portal from 'react-portal';
-//import Menu, {SubMenu, MenuItem, ItemGroup} from 'rc-menu';
 import { MODES, SPECS } from '../../constants';
-import 'rc-menu/assets/index.css';
 import './index.css';
 
 var req = require.context('../../../spec', true, /^(.*\.(json$))[^.]*$/igm);
@@ -42,7 +39,6 @@ export default class Header extends React.Component {
     const button = (
       <div className='button'
         onClick={(e) => {
-          const bodyRect = document.body.getBoundingClientRect();
           this.setState({
             isOpened: true
           });
