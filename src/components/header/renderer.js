@@ -112,14 +112,18 @@ export default class Header extends React.Component {
           onClose={() => { this.setState({ isOpened: false });}}
         >
           <div className='modal-background'>
-            <div className='modal'>
+            <div className='modal-header'>
               <div className='button-groups'>
                 <button className={this.state.showVega ? 'selected' : ''} onClick={() => { this.setState({ showVega: true });}}>{'Vega'}</button>
                 <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({ showVega: false });}}>{'Vega Lite'}</button>
               </div>
 
               <button className='close-button' onClick={() => { this.setState({ isOpened: false });}}>✖</button>
-              { this.state.showVega ? vega : vegalite }
+            </div>
+            <div className='modal-area'>
+              <div className='modal'>
+                { this.state.showVega ? vega : vegalite }
+              </div>
             </div>
           </div>
         </Portal>

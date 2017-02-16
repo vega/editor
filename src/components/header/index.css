@@ -99,25 +99,45 @@ ul {
 
 .modal {
   position: relative;
-  top: 15%;
+  top: 0;
   left: 25%;
   width: 50%;
   background: white;
   margin: 10px;
-  padding: 10px;
+  margin-top: 0;
+  padding: 29px 30px;
   z-index: 90;
   border: solid 1px rgb(92, 64, 141);
 }
 
+
 .modal-background {
-  position: absolute;
+  position: fixed;
   background: rgba(0, 0, 0, 0.8);
   top: 59px;
   left: 0%;
   width: 100%;
   height: 100%;
   z-index: 80;
+}
+
+.modal-area {
+  position: absolute;
+  top: 70px;
+  left: 0%;
+  width: 100%;
+  bottom: 10%;
+  z-index: 90;
   overflow: scroll;
+}
+
+.modal-header {
+  position: absolute;
+  top: 70px;
+  left: 25%;
+  width: 50%;
+  background: white;
+  z-index: 95;
 }
 
 .close-button {
