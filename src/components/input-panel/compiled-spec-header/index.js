@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as EditorActions from '../../../actions/editor';
-import Renderer from '../../renderer';
 
 
 const toggleStyle = {

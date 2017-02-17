@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactResizeDetector from 'react-resize-detector';
-import { MODES, LAYOUT } from '../../../constants';
+import {LAYOUT } from '../../../constants';
 import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 import * as EditorActions from '../../../actions/editor';
@@ -12,6 +12,7 @@ import CompiledSpecDisplayHeader from '../compiled-spec-header'
 class CompiledSpecDisplay extends React.Component {
   state = {
     height: (window.innerHeight - LAYOUT.HeaderHeight)/2,
+    width: '100%'
   }
 
   setHeight (width, height) {
@@ -20,6 +21,15 @@ class CompiledSpecDisplay extends React.Component {
     }
     this.setState({height});
   }
+
+  setWidth (width, height) {
+    if (!width) {
+      return;
+    }
+    this.setState({width});
+  }
+
+  
 
   render () {
     return (
@@ -33,7 +43,10 @@ class CompiledSpecDisplay extends React.Component {
         width={'100%'}
         key={JSON.stringify(this.state)}   
         value={JSON.stringify(this.props.value, null, 2)}
-    />
+      />
+      <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
+      <ReactResizeDetector handleWidth onResize={this.setWidth.bind(this)} />
+
     </div>
     )
   };

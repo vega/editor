@@ -29,7 +29,7 @@ class InputPanel extends React.Component {
     const innerPanes = this.getInnerPanes();
     
     let outerComponent;
-    if ((this.props.mode == MODES.VegaLite && this.props.compiledVegaSpec) || this.props.debug) {
+    if ((this.props.mode === MODES.VegaLite && this.props.compiledVegaSpec) || this.props.debug) {
         outerComponent = React.createElement(SplitPane, 
         {
           split: 'horizontal',
