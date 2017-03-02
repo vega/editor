@@ -29,7 +29,8 @@ export default class Editor extends React.Component {
   }
 
   state = {
-    height: window.innerHeight - LAYOUT.HeaderHeight
+    height: window.innerHeight - LAYOUT.HeaderHeight,
+    width: '100%'
   }
 
   setHeight (width, height) {
@@ -37,6 +38,13 @@ export default class Editor extends React.Component {
       return;
     }
     this.setState({height});
+  }
+
+  setWidth (width, height) {
+    if (!width) {
+      return;
+    }
+    this.setState({width});
   }
 
   handleEditorChange (spec) {
@@ -62,13 +70,13 @@ export default class Editor extends React.Component {
             width={'100%'}
             height={this.state.height}
             language='json'
-            key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample}))}
+            key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: 'this.props.selectedExample'}))}
             defaultValue={this.props.value}
             onChange={this.handleEditorChange.bind(this)}
             editorWillMount={this.editorWillMount.bind(this)}
           />
            <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
-      </div> 
+           <ReactResizeDetector handleWidth onResize={this.setWidth.bind(this)} />      </div> 
     );
   };
 };
