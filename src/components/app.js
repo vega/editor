@@ -9,7 +9,6 @@ import { LAYOUT } from '../constants';
 import './app.css';
 
 export default class App extends React.Component {
-
   render () {
 
     const w = window.innerWidth;

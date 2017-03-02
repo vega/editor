@@ -27,14 +27,14 @@ class InputPanel extends React.Component {
 
   render () {
     const innerPanes = this.getInnerPanes();
-    
+
     let outerComponent;
     if ((this.props.mode === MODES.VegaLite && this.props.compiledVegaSpec) || this.props.debug) {
-        outerComponent = React.createElement(SplitPane, 
+        outerComponent = React.createElement(SplitPane,
         {
           split: 'horizontal',
           defaultSize: (window.innerHeight - LAYOUT.HeaderHeight) / innerPanes.length
-        }, 
+        },
         innerPanes);
     } else {
       outerComponent = React.createElement('div', {style: {width: '100%'}}, innerPanes);
@@ -42,13 +42,13 @@ class InputPanel extends React.Component {
     return outerComponent;
   };
 };
- 
+
 
 function mapStateToProps (state, ownProps) {
   return {
     mode: state.app.mode,
     debug: state.app.debug,
-    compiledVegaSpec: state.app.compiledVegaSpec 
+    compiledVegaSpec: state.app.compiledVegaSpec
   };
 }
 
