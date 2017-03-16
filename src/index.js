@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './components/app';
 import { Provider } from 'react-redux'
 import configureStore from './store/configure-store';
-import { hashHistory, Router, Route } from 'react-router'
+import { hashHistory, Router, Route } from 'react-router';
 
 
 // Create redux store and sync with react-router-redux. We have installed the
@@ -19,17 +19,17 @@ const store = configureStore(initialState);
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!
 ReactDOM.render(
-  (
-    <Provider store={store}>  
-      <App/>
-    {/*<Router history={hashHistory} >
-      <Route path='/' component={App} />
-      <Route path='/editor' component={App} />
-      <Route path='/editor/gist/:vega/:username/:id' component={App} />
-      <Route path='/editor/:examples/:vega/:example_name' component={App} />
-    </Router>*/}
+  ( 
+    <Provider store={store}>
+      <Router history={hashHistory} >
+        <Route path='/' component={App} />
+        <Route path='/editor' component={App} />
+        <Route path='/editor/gist/:vega/:username/:id' component={App} />
+        <Route path='/editor/:examples/:vega/:example_name' component={App} />
+      </Router>
     </Provider>
-
   ),
-  document.getElementById('root')
+  document.getElementById('root'),
 );
+
+

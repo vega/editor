@@ -10,12 +10,12 @@ const mapStateToProps = function (state, ownProps) {
 
 const mapDispatchToProps = function (dispatch) {
   return {
-    updateVegaSpec: (example, val) => {
-      dispatch(EditorActions.setVegaExample(example, val));
-    },
-    updateVegaLiteSpec: (example, val) => {
-      dispatch(EditorActions.setVegaLiteExample(example, val));
-    }
+    // updateVegaSpec: (example, val) => {
+    //   dispatch(EditorActions.setVegaExample(example, val));
+    // },
+    // updateVegaLiteSpec: (example, val) => {
+    //   dispatch(EditorActions.setVegaLiteExample(example, val));
+    // }
   };
 };
 

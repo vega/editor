@@ -39,24 +39,19 @@ class App extends React.Component {
   render () {
     setTimeout( () => {
       const parameter = this.props.params;
-      const name = parameter.example_name;
-      if (parameter.example_name) {
+      if (parameter && parameter.example_name) {
+        const name = parameter.example_name;
         if (parameter.vega === 'vega') {
           const spec = require(`../../spec/vega/${name}.vg.json`);
           this.props.setVegaExample(name, JSON.stringify(spec, null, 2));
-          console.log('dispatch vega example');
-          console.log(JSON.stringify(spec));
         } else if (parameter.vega === 'vega_lite') {
           const spec = require(`../../spec/vega-lite/${name}.vl.json`);
           this.props.setVegaLiteExample(name, JSON.stringify(spec, null, 2));
-          console.log("dispatch vega lite example");
-          console.log(JSON.stringify(spec));
         }
       }
      } , 1000); 
     
     const w = window.innerWidth;
-
     return (
       <div className="app-container">
         <Header />

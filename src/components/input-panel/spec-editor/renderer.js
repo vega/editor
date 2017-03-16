@@ -64,7 +64,6 @@ export default class Editor extends React.Component {
   }
 
   render () {
-    console.log(this.props.selectedExample);
     return (
       <div style={{width: '100%'}}> 
           <MonacoEditor

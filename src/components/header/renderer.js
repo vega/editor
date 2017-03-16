@@ -21,8 +21,6 @@ export default class Header extends React.Component {
   }
 
   onSelectVega (name) {
-    const spec = require(`../../../spec/vega/${name}.vg.json`);
-    this.props.updateVegaSpec(name, JSON.stringify(spec, null, 2));
     this.setState({
       isOpened: false
     });
@@ -30,8 +28,6 @@ export default class Header extends React.Component {
   }
 
   onSelectVegaLite (name) {
-    const spec = require(`../../../spec/vega-lite/${name}.vl.json`);
-    this.props.updateVegaLiteSpec(name, JSON.stringify(spec, null, 2));
     this.setState({
       isOpened: false
     });
