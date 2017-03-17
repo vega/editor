@@ -3,6 +3,7 @@ import Portal from 'react-portal';
 import { MODES, SPECS } from '../../constants';
 import './index.css';
 import { hashHistory } from 'react-router';
+import {GistHeader} from './gist';
 
 var req = require.context('../../../spec', true, /^(.*\.(json$))[^.]*$/igm);
 req.keys().forEach(req);
@@ -17,19 +18,20 @@ export default class Header extends React.Component {
     this.state = {
       showVega: props.mode === MODES.Vega
     };
+    console.log(this.state);
     this.onSelectVega = this.onSelectVega.bind(this);
   }
 
   onSelectVega (name) {
     this.setState({
-      isOpened: false
+      exampleIsOpened: false
     });
     hashHistory.push('/editor/examples/vega/' + name);
   }
 
   onSelectVegaLite (name) {
     this.setState({
-      isOpened: false
+      exampleIsOpened: false
     });
     hashHistory.push('/editor/examples/vega_lite/' + name);
   }
@@ -47,12 +49,28 @@ export default class Header extends React.Component {
     }
   }
 
+  // Ajax call: fetches data using the url.
+  fetchData(url, functionName) {
+    let ajax = new XMLHttpRequest();
+    ajax.onload = functionName;
+    ajax.open("GET", url, true);
+    ajax.send();
+  }
+
+  displayGistVega () {
+    
+  }
+
+  displayGistVegaLite () {
+    
+  }
+
   render () {
     const button = (
       <div className='button'
         onClick={(e) => {
           this.setState({
-            isOpened: true
+            exampleIsOpened: true
           });
         }}
       >
@@ -60,12 +78,24 @@ export default class Header extends React.Component {
       </div>
     );
 
+    const gistButton = (
+      <div className='button'
+        onClick={(e) => {
+          this.setState({
+            gistIsOpened: true
+          });
+        }}>
+        {'Gist'}
+      </div>
+    )
+
     const vega = (
       <div className="vega">
         {
             Object.keys(SPECS.Vega).map((specType) => {
               const specs = SPECS.Vega[specType];
               return (
+                
                 <div className='itemGroup'>
                   <div className='specType'>{specType}</div>
                   <div className='items'>
@@ -114,14 +144,29 @@ export default class Header extends React.Component {
       </div>
     );
 
+    const gist = (
+      <div>
+        <header className='header'>Example Gist URL: </header>
+        <br/>
+        <div className='gist-text'>For example</div>
+        <div className='gist-text gist-url'>https://gist.github.com/mathisonian/542616c4af5606784e97e59e3c65b7e5</div>
+
+        <textarea rows='1' placeholder='enter gist url here'></textarea>
+        <br/>
+        <button className='gist-button' onClick={(url, functionName) => this.fetchData}> Vega </button>
+        <button className='gist-button' onClick={(url, functionName) => this.fetchData}> Vega Lite </button>
+      </div> 
+    );
+
     return (
       <div className='header'>
         <img height={37} style={{margin: 10}} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
         {button}
-        <Portal className='portal'
+        {gistButton}
+        <Portal 
           closeOnOutsideClick={true}
-          isOpened={this.state.isOpened}
-          onClose={() => { this.setState({ isOpened: false });}}
+          isOpened={this.state.exampleIsOpened}
+          onClose={() => { this.setState({ exampleIsOpened: false});}}
         >
           <div className='modal-background'>
             <div className='modal-header'>
@@ -130,7 +175,7 @@ export default class Header extends React.Component {
                 <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({ showVega: false });}}>{'Vega Lite'}</button>
               </div>
 
-              <button className='close-button' onClick={() => { this.setState({ isOpened: false });}}>✖</button>
+              <button className='close-button' onClick={() => { this.setState({ exampleIsOpened: false });}}>✖</button>
             </div>
             <div className='modal-area'>
               <div className='modal'>
@@ -138,6 +183,24 @@ export default class Header extends React.Component {
               </div>
             </div>
           </div>
+        </Portal>
+
+        <Portal 
+          closeOnOutsideClick={true}
+          isOpened={this.state.gistIsOpened}
+          onClose={() => { this.setState({ gistIsOpened: false});}}
+        >
+        <div className='modal-background'>
+          <div className='modal-header'>
+            <button className='close-button' onClick={() => { this.setState({ gistIsOpened: false });}}>✖</button>
+          </div>
+          <div className='modal-area'>
+            <div className='modal'>
+              {gist}
+            </div>
+          </div>
+
+        </div>
         </Portal>
       </div>
     );

@@ -1,5 +1,4 @@
 import React from 'react';
-// import AceEditor from 'react-ace';
 import ReactResizeDetector from 'react-resize-detector';
 import { MODES, LAYOUT } from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
@@ -76,7 +75,8 @@ export default class Editor extends React.Component {
             editorWillMount={this.editorWillMount.bind(this)}
           />
            <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
-           <ReactResizeDetector handleWidth onResize={this.setWidth.bind(this)} />      </div> 
+           <ReactResizeDetector handleWidth onResize={this.setWidth.bind(this)} />      
+      </div> 
     );
   };
 };

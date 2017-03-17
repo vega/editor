@@ -108,6 +108,7 @@ ul {
   padding: 29px 30px;
   z-index: 90;
   border: solid 1px rgb(92, 64, 141);
+  overflow: hidden;
 }
 
 
@@ -234,4 +235,37 @@ ul {
 
 .item:hover {
   background: rgba(243, 240, 240, 0.63);
+}
+
+.gist-button {
+  background: lightgrey;
+  border: 0.5px solid grey;
+  cursor: pointer;
+  width: 150px;
+  height: 30px;
+  outline: none;
+}
+
+.gist-button:hover {
+  background: rgb(92, 64, 141);
+  color: white;
+}
+
+.gist-text {
+  font-size: 10px;
+  font-style: italic; 
+}
+
+.gist-url {
+  color: rgb(6,69,173);
+  margin-bottom: 10px;
+}
+
+textarea {
+  width: 300px;
+  height: 30px;
+  resize: none;
+  outline: none;
+  font-size: 15px;
+  margin-bottom: 30px;
 }
