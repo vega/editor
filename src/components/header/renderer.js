@@ -3,7 +3,6 @@ import Portal from 'react-portal';
 import { MODES, SPECS } from '../../constants';
 import './index.css';
 import { hashHistory } from 'react-router';
-import {GistHeader} from './gist';
 
 var req = require.context('../../../spec', true, /^(.*\.(json$))[^.]*$/igm);
 req.keys().forEach(req);
