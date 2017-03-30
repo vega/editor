@@ -15,10 +15,14 @@ export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showVega: props.mode === MODES.Vega
+      showVega: props.mode === MODES.Vega,
+      url: ''
     };
-    console.log(this.state);
     this.onSelectVega = this.onSelectVega.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({url: event.target.value});
   }
 
   onSelectVega (name) {
@@ -48,24 +52,41 @@ export default class Header extends React.Component {
     }
   }
 
-  // Ajax call: fetches data using the url.
-  fetchData(url, functionName) {
-    let ajax = new XMLHttpRequest();
-    ajax.onload = functionName;
-    ajax.open("GET", url, true);
-    ajax.send();
+  displayGistSpec (url, vegaVersion) {
+    let index = url.indexOf('com/');
+    if (index !== -1) {
+      index = url.indexOf('com/') + 5;
+    } else {
+      console.warn('invalid url');
+      return;
+    }
+    let username = url.substring(index).split('/')[0];
+    let id = url.substring(index).split('/')[1];  
+    //TODO
+    hashHistory.push('editor/gist/' + vegaVersion +'/' + username + '/' + id + '/');
   }
 
-  displayGistVega () {
-    
-  }
 
-  displayGistVegaLite () {
-    
+  fetchData(url, vegaVersion) {
+    fetch(url + '/raw')
+    .then((response) => {
+      this.displayGistSpec(url, vegaVersion);
+      return response.text();
+    })
+    .then((data) => {
+      if (vegaVersion === 'vega') {
+        this.props.updateVegaSpec(data);
+      } else if (vegaVersion === 'vega-lite') {
+        this.props.updateVegaLiteSpec(data);
+      }
+    })
+    .catch((ex) => {
+      console.warn('parsing failed', ex)
+    })
   }
 
   render () {
-    const button = (
+    const examplesButton = (
       <div className='button'
         onClick={(e) => {
           this.setState({
@@ -145,22 +166,31 @@ export default class Header extends React.Component {
 
     const gist = (
       <div>
-        <header className='header'>Example Gist URL: </header>
-        <br/>
-        <div className='gist-text'>For example</div>
-        <div className='gist-text gist-url'>https://gist.github.com/mathisonian/542616c4af5606784e97e59e3c65b7e5</div>
+        <header>Example Gist URL: </header>
+        <div className='gist-content'>
+          <div className='gist-text'>For example</div>
+          <div className='gist-url'>https://gist.github.com/mathisonian/542616c4af5606784e97e59e3c65b7e5</div>
+          
+          <input className='gist-input' type='text' placeholder='enter gist url here' value={this.state.url} 
+          onChange={this.handleChange.bind(this)}/> 
 
-        <textarea rows='1' placeholder='enter gist url here'></textarea>
-        <br/>
-        <button className='gist-button' onClick={(url, functionName) => this.fetchData}> Vega </button>
-        <button className='gist-button' onClick={(url, functionName) => this.fetchData}> Vega Lite </button>
+          <button className='gist-button' onClick={() => {
+            this.setState({ gistIsOpened: false}); 
+            this.fetchData(this.state.url, 'vega')}}> Vega 
+          </button>
+          <button className='gist-button' onClick={() => {
+            this.setState({ gistIsOpened: false}); 
+            this.fetchData(this.state.url, 'vega-lite')}}> Vega Lite 
+          </button>
+        </div>
       </div> 
     );
 
+     
     return (
       <div className='header'>
         <img height={37} style={{margin: 10}} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
-        {button}
+        {examplesButton}
         {gistButton}
         <Portal 
           closeOnOutsideClick={true}
@@ -174,7 +204,7 @@ export default class Header extends React.Component {
                 <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({ showVega: false });}}>{'Vega Lite'}</button>
               </div>
 
-              <button className='close-button' onClick={() => { this.setState({ exampleIsOpened: false });}}>✖</button>
+              <button className='close-button' onClick={() => {this.setState({ exampleIsOpened: false });}}>✖</button>
             </div>
             <div className='modal-area'>
               <div className='modal'>
@@ -191,7 +221,7 @@ export default class Header extends React.Component {
         >
         <div className='modal-background'>
           <div className='modal-header'>
-            <button className='close-button' onClick={() => { this.setState({ gistIsOpened: false });}}>✖</button>
+            <button className='close-button' onClick={() => {this.setState({ gistIsOpened: false });}}>✖</button>
           </div>
           <div className='modal-area'>
             <div className='modal'>
