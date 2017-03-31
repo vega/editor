@@ -62,22 +62,21 @@ export default class Header extends React.Component {
     }
     let username = url.substring(index).split('/')[0];
     let id = url.substring(index).split('/')[1];  
-    //TODO
-    hashHistory.push('editor/gist/' + vegaVersion +'/' + username + '/' + id + '/');
+    hashHistory.push('/editor/gist/' + vegaVersion +'/' + username + '/' + id);
   }
 
 
   fetchData(url, vegaVersion) {
-    fetch(url + '/raw')
+    fetch(url)
     .then((response) => {
       this.displayGistSpec(url, vegaVersion);
       return response.text();
     })
     .then((data) => {
       if (vegaVersion === 'vega') {
-        this.props.updateVegaSpec(data);
+        this.props.setGistVegaSpec(url, data);
       } else if (vegaVersion === 'vega-lite') {
-        this.props.updateVegaLiteSpec(data);
+        this.props.setGistVegaLiteSpec(url, data);
       }
     })
     .catch((ex) => {
