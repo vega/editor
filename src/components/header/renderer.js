@@ -52,35 +52,47 @@ export default class Header extends React.Component {
     }
   }
 
-  displayGistSpec (url, vegaVersion) {
-    let index = url.indexOf('com/');
-    if (index !== -1) {
-      index = url.indexOf('com/') + 5;
-    } else {
-      console.warn('invalid url');
-      return;
-    }
-    let username = url.substring(index).split('/')[0];
-    let id = url.substring(index).split('/')[1];  
-    hashHistory.push('/editor/gist/' + vegaVersion +'/' + username + '/' + id);
-  }
-
-
-  fetchData(url, vegaVersion) {
-    fetch(url)
+  fetchData(gistUrl, vegaVersion) {
+    let prefix = 'https://hook.io/tianyiii/vegaeditor/';
+    let hookUrl = prefix + vegaVersion + '/' 
+      + gistUrl.substring(gistUrl.indexOf('.com/') + '.com/'.length);
+    let suffix = hookUrl.substring(prefix.length);
+   
+    fetch(hookUrl, {
+      method: 'get',
+      mode: 'cors'
+    })
     .then((response) => {
-      this.displayGistSpec(url, vegaVersion);
-      return response.text();
+      if (response.status === 200) {
+        return Promise.resolve(response);
+      } else {
+        return Promise.reject(new Error(response.statusText));
+      }
+    })
+    .then((response) => {
+      let arrayNames = suffix.split('/');
+      if (arrayNames.length < 3) {
+        console.warn('invalid url');
+        return;
+      }
+      let username = arrayNames[1];
+      let id = arrayNames[2];
+      hashHistory.push('/editor/gist/' + vegaVersion +'/' + username + '/' + id);
+      return response.json();
     })
     .then((data) => {
-      if (vegaVersion === 'vega') {
-        this.props.setGistVegaSpec(url, data);
-      } else if (vegaVersion === 'vega-lite') {
-        this.props.setGistVegaLiteSpec(url, data);
+      if (data['message'] !== 'Not Found') {
+        if (vegaVersion === 'vega') {
+          this.props.setGistVegaSpec(hookUrl, JSON.stringify(data, null, 2));
+        } else if (vegaVersion === 'vega-lite') {
+          this.props.setGistVegaLiteSpec(hookUrl, JSON.stringify(data, null, 2));
+        }
+      } else {
+        console.warn('invalid url');
       }
     })
     .catch((ex) => {
-      console.warn('parsing failed', ex)
+      console.error(ex);
     })
   }
 
@@ -91,8 +103,7 @@ export default class Header extends React.Component {
           this.setState({
             exampleIsOpened: true
           });
-        }}
-      >
+        }}>
         {'Examples'}
       </div>
     );
@@ -165,7 +176,7 @@ export default class Header extends React.Component {
 
     const gist = (
       <div>
-        <header>Example Gist URL: </header>
+        <header>Enter Gist URL: </header>
         <div className='gist-content'>
           <div className='gist-text'>For example</div>
           <div className='gist-url'>https://gist.github.com/mathisonian/542616c4af5606784e97e59e3c65b7e5</div>
@@ -173,19 +184,26 @@ export default class Header extends React.Component {
           <input className='gist-input' type='text' placeholder='enter gist url here' value={this.state.url} 
           onChange={this.handleChange.bind(this)}/> 
 
-          <button className='gist-button' onClick={() => {
-            this.setState({ gistIsOpened: false}); 
-            this.fetchData(this.state.url, 'vega')}}> Vega 
+          <button className='gist-button' onClick={() => {            
+            this.fetchData(this.state.url, 'vega');
+            this.setState({
+              gistIsOpened: false, 
+              url: ''
+            })
+          }}> Vega 
           </button>
           <button className='gist-button' onClick={() => {
-            this.setState({ gistIsOpened: false}); 
-            this.fetchData(this.state.url, 'vega-lite')}}> Vega Lite 
+            this.fetchData(this.state.url, 'vega-lite');
+            this.setState({ 
+              gistIsOpened: false,
+              url: ''
+              }); 
+            }}> Vega Lite 
           </button>
         </div>
       </div> 
     );
 
-     
     return (
       <div className='header'>
         <img height={37} style={{margin: 10}} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
@@ -227,7 +245,6 @@ export default class Header extends React.Component {
               {gist}
             </div>
           </div>
-
         </div>
         </Portal>
       </div>
