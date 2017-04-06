@@ -6,7 +6,8 @@ const mapStateToProps = function (state, ownProps) {
   return {
     value: state.app.editorString,
     mode: state.app.mode,
-    selectedExample: state.app.selectedExample
+    selectedExample: state.app.selectedExample,
+    gist: state.app.gist
   };
 };
 

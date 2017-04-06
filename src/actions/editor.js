@@ -2,6 +2,8 @@ export const UPDATE_VEGA_SPEC = 'UPDATE_VEGA_SPEC';
 export const UPDATE_VEGA_LITE_SPEC = 'UPDATE_VEGA_LITE_SPEC';
 export const SET_VEGA_EXAMPLE = 'SET_VEGA_EXAMPLE';
 export const SET_VEGA_LITE_EXAMPLE = 'SET_VEGA_LITE_EXAMPLE';
+export const SET_GIST_VEGA_SPEC = 'SET_GIST_VEGA_SPEC';
+export const SET_GIST_VEGA_LITE_SPEC = 'SET_GIST_VEGA_LITE_SPEC';
 export const TOGGLE_DEBUG = 'TOGGLE_DEBUG';
 export const CYCLE_RENDERER = 'CYCLE_RENDERER';
 export const SHOW_COMPILED_VEGA_SPEC = 'SHOW_COMPILED_VEGA_SPEC'
@@ -36,6 +38,21 @@ export function updateVegaLiteSpec (spec) {
   };
 };
 
+export function setGistVegaSpec (gist, spec) {
+  return {
+    type: SET_GIST_VEGA_SPEC,
+    gist: gist,
+    spec: spec
+  };
+};
+
+export function setGistVegaLiteSpec (gist, spec) {
+  return {
+    type: SET_GIST_VEGA_LITE_SPEC,
+    gist: gist,
+    spec: spec
+  };
+};
 
 export function toggleDebug () {
   return {

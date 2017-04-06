@@ -1,5 +1,3 @@
-
-
 .header {
   border-bottom: solid 2px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -100,6 +98,7 @@ ul {
 .modal {
   position: relative;
   top: 0;
+  max-height: 75vh;
   left: 25%;
   width: 50%;
   background: white;
@@ -108,6 +107,7 @@ ul {
   padding: 29px 30px;
   z-index: 90;
   border: solid 1px rgb(92, 64, 141);
+  overflow-y: auto;
 }
 
 
@@ -128,7 +128,6 @@ ul {
   width: 100%;
   bottom: 10%;
   z-index: 90;
-  overflow: scroll;
 }
 
 .modal-header {
@@ -234,4 +233,45 @@ ul {
 
 .item:hover {
   background: rgba(243, 240, 240, 0.63);
+}
+
+.gist-content {
+  padding-left: 20px;
+}
+
+.gist-button {
+  background: white;
+  border: 1px solid #A9A9A9;
+  cursor: pointer;
+  width: 50%;
+  height: 30px;
+  outline: none;
+  font-size: 16px;
+}
+
+.gist-button:hover {
+  background: rgb(92, 64, 141);
+  color: white;
+}
+
+.gist-text {
+  margin-top: 25px;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.gist-url {
+  font-size: 12px;
+  font-style: italic;
+  color: rgb(6,69,173);
+}
+
+.gist-input {
+  display: block;
+  width: 100%;
+  resize: none;
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  padding: 5px;
 }

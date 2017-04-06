@@ -1,5 +1,4 @@
 import React from 'react';
-// import AceEditor from 'react-ace';
 import ReactResizeDetector from 'react-resize-detector';
 import { MODES, LAYOUT } from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
@@ -70,13 +69,16 @@ export default class Editor extends React.Component {
             width={'100%'}
             height={this.state.height}
             language='json'
-            key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: 'this.props.selectedExample'}))}
+            key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample,
+              gist: this.props.gist}))}
+            
             defaultValue={this.props.value}
             onChange={this.handleEditorChange.bind(this)}
             editorWillMount={this.editorWillMount.bind(this)}
           />
            <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
-           <ReactResizeDetector handleWidth onResize={this.setWidth.bind(this)} />      </div> 
+           <ReactResizeDetector handleWidth onResize={this.setWidth.bind(this)} />      
+      </div> 
     );
   };
 };
