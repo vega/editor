@@ -1,6 +1,7 @@
 {
   "name": "vega-editor-redux",
   "version": "0.1.0",
+  "homepage": "http://vega.github.io/new-editor",
   "devDependencies": {
     "chokidar": "^1.2.0",
     "copy-webpack-plugin": "^4.0.1",
@@ -67,9 +68,9 @@
     "redux-devtools-log-monitor": "^1.0.11",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.1.0",
-    "vega": "^3.0.0-beta.20",
+    "vega": "^3.0.0-beta.28",
     "vega-datasets": "^1.8.0",
-    "vega-lite": "^2.0.0-alpha.1"
+    "vega-lite": "^2.0.0-alpha.9"
   },
   "scripts": {
     "start": "node scripts/start.js",
