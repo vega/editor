@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-  "height": 500,
+  "width": 500,
   "padding": 5,
 
   "config": {
@@ -14,7 +14,7 @@
     { "name": "fields",
       "value": ["petalWidth", "petalLength", "sepalWidth", "sepalLength"] },
     { "name": "plotWidth", "value": 60 },
-    { "name": "width", "update": "(plotWidth + 10) * length(fields)"},
+    { "name": "height", "update": "(plotWidth + 10) * length(fields)"},
     { "name": "bandwidth", "value": 0,
       "bind": {"input": "range", "min": 0, "max": 0.5, "step": 0.005} },
     { "name": "steps", "value": 100,
@@ -39,13 +39,13 @@
     {
       "name": "layout",
       "type": "band",
-      "range": "width",
+      "range": "height",
       "domain": {"data": "iris", "field": "organ"}
     },
     {
-      "name": "yscale",
+      "name": "xscale",
       "type": "linear",
-      "range": "height", "round": true,
+      "range": "width", "round": true,
       "domain": {"data": "iris", "field": "value"},
       "zero": true, "nice": true
     },
@@ -57,8 +57,8 @@
   ],
 
   "axes": [
-    {"orient": "bottom", "scale": "layout", "zindex": 1},
-    {"orient": "left", "scale": "yscale", "tickCount": 5, "zindex": 1}
+    {"orient": "bottom", "scale": "xscale", "zindex": 1},
+    {"orient": "left", "scale": "layout", "tickCount": 5, "zindex": 1}
   ],
 
   "marks": [
@@ -74,9 +74,9 @@
 
       "encode": {
         "enter": {
-          "xc": {"scale": "layout", "field": "organ", "band": 0.5},
-          "width": {"signal": "plotWidth"},
-          "height": {"signal": "height"}
+          "yc": {"scale": "layout", "field": "organ", "band": 0.5},
+          "height": {"signal": "plotWidth"},
+          "width": {"signal": "width"}
         }
       },
 
@@ -99,7 +99,7 @@
               "groupby": ["value"],
               "field": "density",
               "offset": "center",
-              "as": ["x0", "x1"]
+              "as": ["y0", "y1"]
             }
           ]
         },
@@ -119,7 +119,7 @@
 
       "scales": [
         {
-          "name": "xscale",
+          "name": "yscale",
           "type": "linear",
           "range": [0, {"signal": "plotWidth"}],
           "domain": {"data": "density", "field": "density"}
@@ -132,13 +132,12 @@
           "from": {"data": "density"},
           "encode": {
             "enter": {
-              "orient": {"value": "horizontal"},
               "fill": {"scale": "color", "field": {"parent": "organ"}}
             },
             "update": {
-              "y": {"scale": "yscale", "field": "value"},
-              "x": {"scale": "xscale", "field": "x0"},
-              "x2": {"scale": "xscale", "field": "x1"}
+              "x": {"scale": "xscale", "field": "value"},
+              "y": {"scale": "yscale", "field": "y0"},
+              "y2": {"scale": "yscale", "field": "y1"}
             }
           }
         },
@@ -148,12 +147,12 @@
           "encode": {
             "enter": {
               "fill": {"value": "black"},
-              "width": {"value": 1}
+              "height": {"value": 1}
             },
             "update": {
-              "xc": {"signal": "plotWidth / 2", "offset": -0.5},
-              "y": {"scale": "yscale", "field": "q1"},
-              "y2": {"scale": "yscale", "field": "q3"}
+              "yc": {"signal": "plotWidth / 2", "offset": -0.5},
+              "x": {"scale": "xscale", "field": "q1"},
+              "x2": {"scale": "xscale", "field": "q3"}
             }
           }
         },
@@ -163,13 +162,12 @@
           "encode": {
             "enter": {
               "fill": {"value": "black"},
-
-              "height": {"value": 2}
+              "width": {"value": 2}
             },
             "update": {
-              "xc": {"signal": "plotWidth / 2"},
-              "width": {"value": 8},
-              "y": {"scale": "yscale", "field": "median"}
+              "yc": {"signal": "plotWidth / 2"},
+              "height": {"value": 8},
+              "x": {"scale": "xscale", "field": "median"}
             }
           }
         }

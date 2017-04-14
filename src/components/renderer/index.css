@@ -11,7 +11,8 @@
   overflow: scroll;
 }
 
-.chart svg, .chart canvas {
+.chart {
   background: white;
   padding: 10px;
+  display: inline-block;
 }

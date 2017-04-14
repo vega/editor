@@ -29,14 +29,14 @@ export default class Header extends React.Component {
     this.setState({
       exampleIsOpened: false
     });
-    hashHistory.push('/editor/examples/vega/' + name);
+    hashHistory.push('/examples/vega/' + name);
   }
 
   onSelectVegaLite (name) {
     this.setState({
       exampleIsOpened: false
     });
-    hashHistory.push('/editor/examples/vega_lite/' + name);
+    hashHistory.push('/examples/vega_lite/' + name);
   }
 
   onSelect (selection) {
@@ -77,7 +77,7 @@ export default class Header extends React.Component {
       }
       let username = arrayNames[1];
       let id = arrayNames[2];
-      hashHistory.push('/editor/gist/' + vegaVersion +'/' + username + '/' + id);
+      hashHistory.push('/gist/' + vegaVersion +'/' + username + '/' + id);
       return response.json();
     })
     .then((data) => {

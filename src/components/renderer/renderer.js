@@ -2,6 +2,7 @@ import React from 'react';
 import * as vega from 'vega';
 
 import './index.css';
+window.VEGA_DEBUG = window.VEGA_DEBUG || {};
 
 export default class Editor extends React.Component {
   static propTypes = {
@@ -9,13 +10,21 @@ export default class Editor extends React.Component {
   }
 
   renderVega (vegaSpec) {
+
+    this.refs.chart.style.width = this.refs.chart.getBoundingClientRect().width + 'px';
+    // console.log('refs')
+    console.log(this.refs.chart.getBoundingClientRect().width + 'px')
+    console.log(this.refs.chart.style);
     const runtime = vega.parse(vegaSpec);
-    new vega.View(runtime)
+    const view = new vega.View(runtime)
       .logLevel(vega.Warn)
       .initialize(this.refs.chart)
       .renderer(this.props.renderer)
       .hover()
       .run();
+
+    this.refs.chart.style.width = 'auto';
+    window.VEGA_DEBUG.view = view;
   }
 
   componentDidMount () {
@@ -30,7 +39,9 @@ export default class Editor extends React.Component {
   render () {
     return (
       <div className='chart-container'>
-        <div className='chart' ref='chart'>
+        <div className='chart'>
+          <div ref='chart'>
+          </div>
         </div>
       </div>
     );

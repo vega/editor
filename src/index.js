@@ -23,10 +23,11 @@ ReactDOM.render(
     <Provider store={store}>
       <Router history={hashHistory} >
         <Route path='/' component={App} />
-        <Route path='/editor' component={App} />
-        <Route path='/editor/gist/:vega/:username/:id' component={App} />
-        <Route path='/editor/examples/:vega/:example_name' component={App} />
-        <Route path='/editor/examples/:vega/:example_name/edited' component={App} />
+        <Route path='/:mode' component={App} />
+        <Route path='/:mode/edited' component={App} />
+        <Route path='/gist/:vega/:username/:id' component={App} />
+        <Route path='/examples/:vega/:example_name' component={App} />
+        <Route path='/examples/:vega/:example_name/edited' component={App} />
       </Router>
     </Provider>
   ),

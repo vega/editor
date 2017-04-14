@@ -8,3 +8,4 @@ coverage
 node_modules
 temp
 vendor
+build

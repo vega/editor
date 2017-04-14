@@ -27,14 +27,17 @@ class App extends React.Component {
         if (data.spec) {
           if (data.mode.toUpperCase() === 'VEGA') {
             this.props.updateVegaSpec(data.spec);
-            console.log("dispatch vega");
-          } else if (data.mode.toUpperCase() === 'VEGA_LITE') {
-            console.log("dispatch vega lite");
+          } else if (data.mode.toUpperCase() === 'VEGA-LITE') {
             this.props.updateVegaLiteSpec(data.spec);
           }
         }
       }, 500);
     }, false);
+
+    const parameter = this.props.params;
+    if (parameter.mode && hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
+       this.props.setMode(parameter.mode);
+    }
   }
 
   render () {
@@ -80,6 +83,9 @@ class App extends React.Component {
 
 const mapDispatchToProps = function (dispatch) {
   return {
+    setMode: (mode) => {
+      dispatch(EditorActions.setMode(mode));
+    },
     updateVegaSpec: (val) => {
       dispatch(EditorActions.updateVegaSpec(val));
     },

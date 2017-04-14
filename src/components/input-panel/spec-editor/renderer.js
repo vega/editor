@@ -14,9 +14,11 @@ const vegaLiteSchema = require('../../../../schema/vl.schema.json');
 
 const schemas = {
   [MODES.Vega]: {
+    uri: 'https://vega.github.io/schema/vega/v3.0.json',
     schema: vegaSchema,
     fileMatch: ['*']
   }, [MODES.VegaLite]: {
+    uri: 'https://vega.github.io/schema/vega-lite/v2.json',
     schema: vegaLiteSchema,
     fileMatch: ['*']
   }
@@ -48,17 +50,18 @@ export default class Editor extends React.Component {
   }
 
   handleEditorChange (spec) {
-    if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
-      hashHistory.push(hashHistory.getCurrentLocation().pathname + '/edited');
-    }
     if (this.props.mode === MODES.Vega) {
       this.props.updateVegaSpec(spec);
     } else if (this.props.mode === MODES.VegaLite) {
       this.props.updateVegaLiteSpec(spec);
     }
+    // if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
+    //   hashHistory.push(hashHistory.getCurrentLocation().pathname + '/edited');
+    // }
   }
 
   editorWillMount (monaco) {
+    console.log(schemas[this.props.mode]);
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
       allowComments: true,
