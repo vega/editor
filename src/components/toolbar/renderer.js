@@ -12,11 +12,11 @@ export default class Toolbar extends React.Component {
   render () {
     return (
       <div className='toolbar'>
-        <div className='debug-toggle' onClick={this.props.toggleDebug}>
+        {/*<div className='debug-toggle' onClick={this.props.toggleDebug}>
           {
             this.props.debug ? 'Hide debug tools' : 'Show debug tools'
           }
-        </div>
+        </div>*/}
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
           {
             `Renderer: ${this.props.renderer}`

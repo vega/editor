@@ -1,6 +1,6 @@
 import vl from 'vega-lite';
 
-import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE, 
+import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 
@@ -34,6 +34,7 @@ export default (state = {
         spec = JSON.parse(action.spec);
       } catch (e) {
         console.warn('Error parsing json string');
+        console.log(action.spec);
         return state;
       }
       return Object.assign({}, state, {
@@ -49,6 +50,7 @@ export default (state = {
         console.log('Generated Vega spec', JSON.stringify(vegaSpec))
       } catch (e) {
         console.warn('Error parsing json string');
+        console.log(action.spec);
         return state;
       }
       return Object.assign({}, state, {

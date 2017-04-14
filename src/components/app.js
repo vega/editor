@@ -8,6 +8,7 @@ import { LAYOUT } from '../constants';
 import * as EditorActions from '../actions/editor';
 import { connect } from 'react-redux';
 import './app.css';
+import { hashHistory } from 'react-router';
 
 class App extends React.Component {
 
@@ -37,8 +38,8 @@ class App extends React.Component {
   }
 
   render () {
-    setTimeout( () => {
-      const parameter = this.props.params;
+    const parameter = this.props.params;
+    if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
       if (parameter && parameter.example_name) {
         const name = parameter.example_name;
         if (parameter.vega === 'vega') {
@@ -49,8 +50,8 @@ class App extends React.Component {
           this.props.setVegaLiteExample(name, JSON.stringify(spec, null, 2));
         }
       }
-     } , 1000); 
-    
+    }
+
     const w = window.innerWidth;
     return (
       <div className="app-container">
@@ -62,7 +63,7 @@ class App extends React.Component {
           </SplitPane>
         </div>
         <Toolbar />
-        <div>
+        {/*<div>
           {
             (() => {
               if (process.env.NODE_ENV !== 'production') {
@@ -71,7 +72,7 @@ class App extends React.Component {
               }
             })()
           }
-        </div>
+        </div>*/}
       </div>
     );
   };

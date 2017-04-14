@@ -24,9 +24,9 @@ while getopts :l: FLAG; do
 done
 
 # delete old vendor, data, and spec directories to start with a clean slate.
-rm -rf $TARGET
-rm -rf $DATA
-rm -rf $SPEC
+# rm -rf $TARGET
+# rm -rf $DATA
+# rm -rf $SPEC
 
 echo "Copying dependencies to '$TARGET'."
 
@@ -52,8 +52,8 @@ if [ ! -d "$SPEC" ]; then
   mkdir $SPEC
 fi
 
-eval SCHEMA_OP "$CWD/node_modules/vega/build/vega-schema.json" "$SCHEMA/vega.schema.json" 
-eval SCHEMA_OP "$CWD/node_modules/vega-lite/build/vega-lite-schema.json" "$SCHEMA/vl.schema.json"
+eval $SCHEMA_OP "$CWD/node_modules/vega/build/vega-schema.json" "$SCHEMA/vega.schema.json"
+eval $SCHEMA_OP "$CWD/node_modules/vega-lite/build/vega-lite-schema.json" "$SCHEMA/vl.schema.json"
 
 # eval $VEGA_OP "$CWD/node_modules/vega/test/specs-valid/spec" "$SPEC/vega"
 eval $VEGA_LITE_OP "$CWD/node_modules/vega-lite/examples/specs" "$SPEC/vega-lite"

@@ -12,14 +12,15 @@ export default function configureStore (browserHistory, initialState = {}) {
   middleware = compose(middleware, applyMiddleware(routerMiddleware(browserHistory)));
 
 
-  if (process.env.NODE_ENV !== 'production') {
-    const devTools = require('../components/debug/dev-tools').default.instrument();
-    middleware = compose(middleware, devTools);
-  }
+  // if (process.env.NODE_ENV !== 'production') {
+  //   const devTools = require('../components/debug/dev-tools').default.instrument();
+  //   middleware = compose(middleware, devTools);
+  // }
+
 
   const enhancer = compose(
     middleware,
-    persistState(null, 'redux'),
+    persistState('app', 'redux'),
   )
 
   // Create final store and subscribe router in debug env ie. for devtools

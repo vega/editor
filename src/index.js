@@ -19,13 +19,14 @@ const store = configureStore(initialState);
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!
 ReactDOM.render(
-  ( 
+  (
     <Provider store={store}>
       <Router history={hashHistory} >
         <Route path='/' component={App} />
         <Route path='/editor' component={App} />
         <Route path='/editor/gist/:vega/:username/:id' component={App} />
-        <Route path='/editor/:examples/:vega/:example_name' component={App} />
+        <Route path='/editor/examples/:vega/:example_name' component={App} />
+        <Route path='/editor/examples/:vega/:example_name/edited' component={App} />
       </Router>
     </Provider>
   ),

@@ -17,6 +17,8 @@
                 "argmax",
                 "argmin",
                 "average",
+                "ci0",
+                "ci1",
                 "count",
                 "distinct",
                 "max",
@@ -37,94 +39,6 @@
             ],
             "type": "string"
         },
-        "AreaConfig": {
-            "additionalProperties": false,
-            "properties": {
-                "color": {
-                    "description": "Default color.",
-                    "type": "string"
-                },
-                "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "fillOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
-                    "type": "boolean"
-                },
-                "interpolate": {
-                    "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "opacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "orient": {
-                    "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "strokeDash": {
-                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
-                "strokeDashOffset": {
-                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-                    "type": "number"
-                },
-                "strokeOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "strokeWidth": {
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tension": {
-                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
         "AreaOverlay": {
             "enum": [
                 "line",
@@ -136,16 +50,8 @@
         "Axis": {
             "additionalProperties": false,
             "properties": {
-                "axisColor": {
-                    "description": "Color of axis line.",
-                    "type": "string"
-                },
-                "axisWidth": {
-                    "description": "Width of the axis line",
-                    "type": "number"
-                },
                 "domain": {
-                    "description": "Whether to include the axis domain line.",
+                    "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).",
                     "type": "boolean"
                 },
                 "encode": {
@@ -160,62 +66,26 @@
                     "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.",
                     "type": "boolean"
                 },
-                "gridColor": {
-                    "description": "Color of gridlines.",
-                    "type": "string"
-                },
-                "gridDash": {
-                    "description": "The offset (in pixels) into which to begin drawing with the grid dash array.",
-                    "items": {
-                        "type": "number"
-                    },
-                    "minimum": 0,
-                    "type": "array"
-                },
-                "gridOpacity": {
-                    "description": "The stroke opacity of grid (value between [0,1])",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "gridWidth": {
-                    "description": "The grid width, in pixels.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "labelAlign": {
-                    "description": "Text alignment for the Label.",
-                    "type": "string"
-                },
                 "labelAngle": {
                     "description": "The rotation angle of the axis labels.",
                     "maximum": 360,
                     "minimum": 0,
                     "type": "number"
                 },
-                "labelBaseline": {
-                    "description": "Text baseline for the label.",
-                    "type": "string"
-                },
-                "labelMaxLength": {
-                    "description": "Truncate labels that are too long.",
-                    "minimum": 1,
-                    "type": "integer"
-                },
                 "labelPadding": {
                     "description": "The padding, in pixels, between axis and text labels.",
                     "type": "number"
                 },
                 "labels": {
-                    "description": "Enable or disable labels.",
+                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).",
                     "type": "boolean"
                 },
                 "maxExtent": {
-                    "description": "Maximum extent, which determines the offset between axis ticks and labels.",
+                    "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.",
                     "type": "number"
                 },
                 "minExtent": {
-                    "description": "Minimum extent, which determines the offset between axis ticks and labels.",
+                    "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.",
                     "type": "number"
                 },
                 "offset": {
@@ -227,65 +97,16 @@
                     "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
                 },
                 "position": {
+                    "description": "The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
                     "type": "number"
-                },
-                "shortTimeLabels": {
-                    "description": "Whether month and day names should be abbreviated.",
-                    "type": "boolean"
-                },
-                "subdivide": {
-                    "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
-                    "minimum": 0,
-                    "type": "integer"
-                },
-                "tickColor": {
-                    "description": "The color of the axis's tick.",
-                    "type": "string"
                 },
                 "tickCount": {
                     "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                     "minimum": 0,
                     "type": "integer"
                 },
-                "tickLabelColor": {
-                    "description": "The color of the tick label, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "tickLabelFont": {
-                    "description": "The font of the tick label.",
-                    "type": "string"
-                },
-                "tickLabelFontSize": {
-                    "description": "The font size of label, in pixels.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickPadding": {
-                    "description": "The padding, in pixels, between ticks and text labels.",
-                    "type": "number"
-                },
                 "tickSize": {
                     "description": "The size, in pixels, of major, minor and end ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeEnd": {
-                    "description": "The size, in pixels, of end ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeMajor": {
-                    "description": "The size, in pixels, of major ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeMinor": {
-                    "description": "The size, in pixels, of minor ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickWidth": {
-                    "description": "The width, in pixels, of ticks.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -297,34 +118,10 @@
                     "description": "A title for the axis. Shows field name and its function by default.",
                     "type": "string"
                 },
-                "titleColor": {
-                    "description": "Color of the title, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "titleFont": {
-                    "description": "Font of the title.",
-                    "type": "string"
-                },
-                "titleFontSize": {
-                    "description": "Size of the title.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "titleFontWeight": {
-                    "description": "Weight of the title.",
-                    "type": [
-                        "string",
-                        "number"
-                    ]
-                },
                 "titleMaxLength": {
                     "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
                     "minimum": 0,
                     "type": "integer"
-                },
-                "titleOffset": {
-                    "description": "A title offset value for the axis.",
-                    "type": "number"
                 },
                 "titlePadding": {
                     "description": "The padding, in pixels, between title and axis.",
@@ -357,21 +154,17 @@
         "AxisConfig": {
             "additionalProperties": false,
             "properties": {
-                "axisColor": {
-                    "description": "Color of axis line.",
-                    "type": "string"
-                },
-                "axisWidth": {
-                    "description": "Width of the axis line",
-                    "type": "number"
-                },
                 "domain": {
-                    "description": "Whether to include the axis domain line.",
+                    "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).",
                     "type": "boolean"
                 },
-                "encode": {
-                    "$ref": "#/definitions/VgAxisEncode",
-                    "description": "Optional mark definitions for custom axis encoding."
+                "domainColor": {
+                    "description": "Color of axis domain line.",
+                    "type": "string"
+                },
+                "domainWidth": {
+                    "description": "Stroke width of axis domain line",
+                    "type": "number"
                 },
                 "grid": {
                     "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.",
@@ -400,99 +193,51 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "labelAlign": {
-                    "description": "Text alignment for the Label.",
-                    "type": "string"
-                },
                 "labelAngle": {
                     "description": "The rotation angle of the axis labels.",
-                    "minimum": 360,
+                    "maximum": 360,
+                    "minimum": 0,
                     "type": "number"
                 },
-                "labelBaseline": {
-                    "description": "Text baseline for the label.",
+                "labelColor": {
+                    "description": "The color of the tick label, can be in hex color code or regular color name.",
                     "type": "string"
                 },
-                "labelMaxLength": {
-                    "description": "Truncate labels that are too long.",
-                    "minimum": 1,
-                    "type": "integer"
+                "labelFont": {
+                    "description": "The font of the tick label.",
+                    "type": "string"
                 },
-                "labelPadding": {
-                    "description": "The padding, in pixels, between axis and text labels.",
+                "labelFontSize": {
+                    "description": "The font size of label, in pixels.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "labelLimit": {
+                    "description": "Maximum allowed pixel width of axis tick labels.",
                     "type": "number"
                 },
                 "labels": {
-                    "description": "Enable or disable labels.",
+                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).",
                     "type": "boolean"
                 },
                 "maxExtent": {
-                    "description": "Maximum extent, which determines the offset between axis ticks and labels.",
+                    "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.",
                     "type": "number"
                 },
                 "minExtent": {
-                    "description": "Minimum extent, which determines the offset between axis ticks and labels.",
-                    "type": "number"
-                },
-                "offset": {
-                    "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
-                    "type": "number"
-                },
-                "position": {
+                    "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.",
                     "type": "number"
                 },
                 "shortTimeLabels": {
-                    "description": "Whether month and day names should be abbreviated.",
+                    "description": "Whether month names and weekday names should be abbreviated.",
                     "type": "boolean"
-                },
-                "subdivide": {
-                    "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
-                    "minimum": 0,
-                    "type": "integer"
                 },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
                     "type": "string"
                 },
-                "tickCount": {
-                    "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
-                    "minimum": 0,
-                    "type": "integer"
-                },
-                "tickLabelColor": {
-                    "description": "The color of the tick label, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "tickLabelFont": {
-                    "description": "The font of the tick label.",
-                    "type": "string"
-                },
-                "tickLabelFontSize": {
-                    "description": "The font size of label, in pixels.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickPadding": {
-                    "description": "The padding, in pixels, between ticks and text labels.",
-                    "type": "number"
-                },
                 "tickSize": {
                     "description": "The size, in pixels, of major, minor and end ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeEnd": {
-                    "description": "The size, in pixels, of end ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeMajor": {
-                    "description": "The size, in pixels, of major ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeMinor": {
-                    "description": "The size, in pixels, of minor ticks.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -514,34 +259,29 @@
                     "type": "string"
                 },
                 "titleFontSize": {
-                    "description": "Size of the title.",
+                    "description": "Font size of the title.",
                     "minimum": 0,
                     "type": "number"
                 },
                 "titleFontWeight": {
-                    "description": "Weight of the title.",
+                    "description": "Font weight of the title.",
                     "type": [
                         "string",
                         "number"
                     ]
+                },
+                "titleLimit": {
+                    "description": "Maximum allowed pixel width of axis titles.",
+                    "type": "number"
                 },
                 "titleMaxLength": {
                     "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
                     "minimum": 0,
                     "type": "integer"
                 },
-                "titleOffset": {
-                    "description": "A title offset value for the axis.",
-                    "type": "number"
-                },
                 "titlePadding": {
                     "description": "The padding, in pixels, between title and axis.",
                     "type": "number"
-                },
-                "zindex": {
-                    "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
-                    "minimum": 0,
-                    "type": "integer"
                 }
             },
             "type": "object"
@@ -558,6 +298,20 @@
         "BarConfig": {
             "additionalProperties": false,
             "properties": {
+                "align": {
+                    "$ref": "#/definitions/HorizontalAlign",
+                    "description": "The horizontal alignment of the text. One of left, right, center."
+                },
+                "angle": {
+                    "description": "The rotation angle of the text, in degrees.",
+                    "maximum": 360,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "baseline": {
+                    "$ref": "#/definitions/VerticalAlign",
+                    "description": "The vertical alignment of the text. One of top, middle, bottom."
+                },
                 "binSpacing": {
                     "description": "Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).",
                     "minimum": 0,
@@ -577,6 +331,14 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "dx": {
+                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "type": "number"
+                },
+                "dy": {
+                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "type": "number"
+                },
                 "fill": {
                     "description": "Default Fill Color.  This has higher precedence than config.color",
                     "type": "string"
@@ -587,44 +349,41 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
                     "type": "boolean"
+                },
+                "font": {
+                    "description": "The typeface to set the text in (e.g., Helvetica Neue).",
+                    "minimum": 0,
+                    "type": "string"
+                },
+                "fontSize": {
+                    "description": "The font size, in pixels.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "fontStyle": {
+                    "$ref": "#/definitions/FontStyle",
+                    "description": "The font style (e.g., italic)."
+                },
+                "fontWeight": {
+                    "anyOf": [
+                        {
+                            "enum": [
+                                "bold",
+                                "normal"
+                            ],
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxBandSize": {
-                    "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minBandSize": {
-                    "description": "The default min value for mapping quantitative fields to bar's size/bandSize scale with zero=false\nIf undefined (default), we will use the `continuousBandSize` value.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
                 },
                 "opacity": {
                     "maximum": 1,
@@ -634,6 +393,20 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+                },
+                "radius": {
+                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "shape": {
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "minimum": 0,
+                    "type": "number"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -664,6 +437,292 @@
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
+                },
+                "text": {
+                    "description": "Placeholder Text",
+                    "type": "string"
+                },
+                "theta": {
+                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "BaseSelectionDef": {
+            "additionalProperties": false,
+            "properties": {
+                "bind": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "checkbox"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "radio"
+                                    ],
+                                    "type": "string"
+                                },
+                                "options": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "input",
+                                "options"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "select"
+                                    ],
+                                    "type": "string"
+                                },
+                                "options": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "input",
+                                "options"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "range"
+                                    ],
+                                    "type": "string"
+                                },
+                                "max": {
+                                    "type": "number"
+                                },
+                                "min": {
+                                    "type": "number"
+                                },
+                                "step": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": {
+                                "anyOf": [
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "checkbox"
+                                                ],
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "radio"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "options": {
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            }
+                                        },
+                                        "required": [
+                                            "input",
+                                            "options"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "select"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "options": {
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            }
+                                        },
+                                        "required": [
+                                            "input",
+                                            "options"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "range"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "max": {
+                                                "type": "number"
+                                            },
+                                            "min": {
+                                                "type": "number"
+                                            },
+                                            "step": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    }
+                                ]
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "enum": [
+                                "scales"
+                            ],
+                            "type": "string"
+                        }
+                    ]
+                },
+                "encodings": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "fields": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "nearest": {
+                    "type": "boolean"
+                },
+                "on": {
+                },
+                "toggle": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                },
+                "translate": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                },
+                "zoom": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
                 }
             },
             "type": "object"
@@ -763,16 +822,137 @@
             },
             "type": "object"
         },
+        "Condition<number>": {
+            "additionalProperties": false,
+            "properties": {
+                "selection": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "selection",
+                "value"
+            ],
+            "type": "object"
+        },
+        "Condition<string | number>": {
+            "additionalProperties": false,
+            "properties": {
+                "selection": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                }
+            },
+            "required": [
+                "selection",
+                "value"
+            ],
+            "type": "object"
+        },
+        "Condition<string>": {
+            "additionalProperties": false,
+            "properties": {
+                "selection": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "selection",
+                "value"
+            ],
+            "type": "object"
+        },
+        "ConditionalValueDef<number>": {
+            "additionalProperties": false,
+            "properties": {
+                "condition": {
+                    "$ref": "#/definitions/Condition<number>"
+                },
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "ConditionalValueDef<string | number>": {
+            "additionalProperties": false,
+            "properties": {
+                "condition": {
+                    "$ref": "#/definitions/Condition<string | number>"
+                },
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "ConditionalValueDef<string>": {
+            "additionalProperties": false,
+            "properties": {
+                "condition": {
+                    "$ref": "#/definitions/Condition<string>"
+                },
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "Config": {
             "additionalProperties": false,
             "properties": {
                 "area": {
-                    "$ref": "#/definitions/AreaConfig",
+                    "$ref": "#/definitions/MarkConfig",
                     "description": "Area-Specific Config"
                 },
                 "axis": {
                     "$ref": "#/definitions/AxisConfig",
-                    "description": "Axis Config"
+                    "description": "Generic axis config."
+                },
+                "axisBand": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Specific axis config for axes with \"band\" scales."
+                },
+                "axisLeft": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Specific axis config for y-axis along the left edge of the chart."
+                },
+                "axisRight": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Specific axis config for y-axis along the right edge of the chart."
+                },
+                "axisTop": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Specific axis config for x-axis along the top edge of the chart."
+                },
+                "axisX": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "X-axis specific config."
+                },
+                "axisY": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Y-axis specific config."
+                },
+                "axixBottom": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Specific axis config for x-axis along the bottom edge of the chart."
                 },
                 "background": {
                     "description": "CSS color property to use as background of visualization. Default is `\"transparent\"`.",
@@ -787,7 +967,7 @@
                     "description": "Cell Config"
                 },
                 "circle": {
-                    "$ref": "#/definitions/SymbolConfig",
+                    "$ref": "#/definitions/MarkConfig",
                     "description": "Circle-Specific Config"
                 },
                 "countTitle": {
@@ -803,7 +983,7 @@
                     "description": "Legend Config"
                 },
                 "line": {
-                    "$ref": "#/definitions/LineConfig",
+                    "$ref": "#/definitions/MarkConfig",
                     "description": "Line-Specific Config"
                 },
                 "mark": {
@@ -845,7 +1025,7 @@
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`\n\n* @minimum 0"
                 },
                 "point": {
-                    "$ref": "#/definitions/PointConfig",
+                    "$ref": "#/definitions/MarkConfig",
                     "description": "Point-Specific Config"
                 },
                 "range": {
@@ -899,19 +1079,23 @@
                     "type": "object"
                 },
                 "rect": {
-                    "$ref": "#/definitions/RectConfig",
+                    "$ref": "#/definitions/MarkConfig",
                     "description": "Rect-Specific Config"
                 },
                 "rule": {
-                    "$ref": "#/definitions/RuleConfig",
+                    "$ref": "#/definitions/MarkConfig",
                     "description": "Rule-Specific Config"
                 },
                 "scale": {
                     "$ref": "#/definitions/ScaleConfig",
                     "description": "Scale Config"
                 },
+                "selection": {
+                    "$ref": "#/definitions/SelectionConfig",
+                    "description": "Selection Config"
+                },
                 "square": {
-                    "$ref": "#/definitions/SymbolConfig",
+                    "$ref": "#/definitions/MarkConfig",
                     "description": "Square-Specific Config"
                 },
                 "stack": {
@@ -1038,10 +1222,10 @@
                 "color": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/LegendFieldDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         }
                     ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
@@ -1067,10 +1251,10 @@
                 "opacity": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/LegendFieldDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         }
                     ],
                     "description": "Opacity of the marks – either can be a value or in a range."
@@ -1096,10 +1280,10 @@
                 "shape": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/LegendFieldDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         }
                     ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -1107,10 +1291,10 @@
                 "size": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/LegendFieldDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         }
                     ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -1121,7 +1305,7 @@
                             "$ref": "#/definitions/TextFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<string | number>"
+                            "$ref": "#/definitions/ConditionalValueDef<string | number>"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -1201,8 +1385,8 @@
                 }
             },
             "required": [
-                "field",
-                "equal"
+                "equal",
+                "field"
             ],
             "type": "object"
         },
@@ -1358,6 +1542,9 @@
                         },
                         {
                             "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/NamedData"
                         }
                     ],
                     "description": "An object describing the data source"
@@ -1440,6 +1627,9 @@
                         },
                         {
                             "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/NamedData"
                         }
                     ],
                     "description": "An object describing the data source"
@@ -1528,6 +1718,9 @@
                         },
                         {
                             "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/NamedData"
                         }
                     ],
                     "description": "An object describing the data source"
@@ -1585,6 +1778,13 @@
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
                     "minimum": 0
                 },
+                "selection": {
+                    "additionalProperties": {
+                        "$ref": "#/definitions/SelectionDef"
+                    },
+                    "description": "A key-value mapping between selection names and definitions.",
+                    "type": "object"
+                },
                 "transform": {
                     "$ref": "#/definitions/Transform",
                     "description": "An object describing filter and new field calculation."
@@ -1594,8 +1794,8 @@
                 }
             },
             "required": [
-                "mark",
-                "encoding"
+                "encoding",
+                "mark"
             ],
             "type": "object"
         },
@@ -1656,50 +1856,6 @@
                     "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.",
                     "type": "string"
                 },
-                "gradientHeight": {
-                    "description": "The height of the gradient, in pixels.",
-                    "type": "number"
-                },
-                "gradientStrokeColor": {
-                    "description": "The color of the gradient stroke, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "gradientStrokeWidth": {
-                    "description": "The width of the gradient stroke, in pixels.",
-                    "type": "number"
-                },
-                "gradientWidth": {
-                    "description": "The width of the gradient, in pixels.",
-                    "type": "number"
-                },
-                "labelAlign": {
-                    "description": "The alignment of the legend label, can be left, middle or right.",
-                    "type": "string"
-                },
-                "labelBaseline": {
-                    "description": "The position of the baseline of legend label, can be top, middle or bottom.",
-                    "type": "string"
-                },
-                "labelColor": {
-                    "description": "The color of the legend label, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "labelFont": {
-                    "description": "The font of the legend label.",
-                    "type": "string"
-                },
-                "labelFontSize": {
-                    "description": "The font size of legend label.",
-                    "type": "number"
-                },
-                "labelOffset": {
-                    "description": "The offset of the legend label.",
-                    "type": "number"
-                },
-                "margin": {
-                    "description": "The margin around the legend, in pixels",
-                    "type": "number"
-                },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.",
                     "type": "number"
@@ -1713,59 +1869,16 @@
                     "type": "number"
                 },
                 "shape": {
+                    "description": "The name of a scale that maps to a shape value.",
                     "type": "string"
-                },
-                "shortTimeLabels": {
-                    "description": "Whether month names and weekday names should be abbreviated.",
-                    "type": "boolean"
-                },
-                "symbolColor": {
-                    "description": "The color of the legend symbol,",
-                    "type": "string"
-                },
-                "symbolShape": {
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
-                    "type": "string"
-                },
-                "symbolSize": {
-                    "description": "The size of the legend symbol, in pixels.",
-                    "type": "number"
-                },
-                "symbolStrokeWidth": {
-                    "description": "The width of the symbol's stroke.",
-                    "minimum": 0,
-                    "type": "number"
                 },
                 "tickCount": {
-                    "description": "The number of ticks for legend.",
+                    "description": "The desired number of tick values for quantitative legends.",
                     "type": "number"
                 },
                 "title": {
                     "description": "A title for the legend. (Shows field name and its function by default.)",
                     "type": "string"
-                },
-                "titleColor": {
-                    "description": "Optional mark property definitions for custom legend styling.\nThe color of the legend title, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "titleFont": {
-                    "description": "The font of the legend title.",
-                    "type": "string"
-                },
-                "titleFontSize": {
-                    "description": "The font size of the legend title.",
-                    "type": "number"
-                },
-                "titleFontWeight": {
-                    "description": "The font weight of the legend title.",
-                    "type": [
-                        "string",
-                        "number"
-                    ]
-                },
-                "titlePadding": {
-                    "description": "The padding, in pixels, between title and legend.",
-                    "type": "number"
                 },
                 "type": {
                     "description": "The type of the legend. Use `symbol` to create a discrete legend and `gradient` for a continuous color gradient.",
@@ -1809,16 +1922,13 @@
         "LegendConfig": {
             "additionalProperties": false,
             "properties": {
-                "encode": {
-                    "$ref": "#/definitions/VgLegendEncode",
-                    "description": "Optional mark definitions for custom legend encoding."
-                },
                 "entryPadding": {
                     "description": "Padding (in pixels) between legend entries in a symbol legend.",
                     "type": "number"
                 },
                 "gradientHeight": {
                     "description": "The height of the gradient, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "gradientStrokeColor": {
@@ -1827,10 +1937,12 @@
                 },
                 "gradientStrokeWidth": {
                     "description": "The width of the gradient stroke, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "gradientWidth": {
                     "description": "The width of the gradient, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "labelAlign": {
@@ -1851,14 +1963,16 @@
                 },
                 "labelFontSize": {
                     "description": "The font size of legend label.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "labelLimit": {
+                    "description": "Maximum allowed pixel width of axis tick labels.",
                     "type": "number"
                 },
                 "labelOffset": {
                     "description": "The offset of the legend label.",
-                    "type": "number"
-                },
-                "margin": {
-                    "description": "The margin around the legend, in pixels",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "offset": {
@@ -1881,12 +1995,9 @@
                     "description": "The color of the legend symbol,",
                     "type": "string"
                 },
-                "symbolShape": {
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
-                    "type": "string"
-                },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "symbolStrokeWidth": {
@@ -1894,9 +2005,9 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "tickCount": {
-                    "description": "The number of ticks for legend.",
-                    "type": "number"
+                "symbolType": {
+                    "description": "Default shape type (such as \"circle\") for legend symbols.",
+                    "type": "string"
                 },
                 "titleColor": {
                     "description": "Optional mark property definitions for custom legend styling.\nThe color of the legend title, can be in hex color code or regular color name.",
@@ -1917,19 +2028,18 @@
                         "number"
                     ]
                 },
+                "titleLimit": {
+                    "description": "Maximum allowed pixel width of axis titles.",
+                    "type": "number"
+                },
                 "titlePadding": {
                     "description": "The padding, in pixels, between title and legend.",
                     "type": "number"
-                },
-                "zindex": {
-                    "description": "A non-positive integer indicating z-index of the legend.\nIf zindex is 0, legend should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
-                    "minimum": 0,
-                    "type": "integer"
                 }
             },
             "type": "object"
         },
-        "LegendFieldDef": {
+        "LegendFieldDef<number>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -1946,6 +2056,9 @@
                         }
                     ],
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+                },
+                "condition": {
+                    "$ref": "#/definitions/Condition<number>"
                 },
                 "field": {
                     "description": "Name of the field from which to pull a data value.",
@@ -1993,90 +2106,69 @@
             },
             "type": "object"
         },
-        "LineConfig": {
+        "LegendFieldDef<string>": {
             "additionalProperties": false,
             "properties": {
-                "color": {
-                    "description": "Default color.",
+                "aggregate": {
+                    "$ref": "#/definitions/AggregateOp",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                },
+                "bin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Bin"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ],
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+                },
+                "condition": {
+                    "$ref": "#/definitions/Condition<string>"
+                },
+                "field": {
+                    "description": "Name of the field from which to pull a data value.",
                     "type": "string"
                 },
-                "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
+                "legend": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Legend"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "scale": {
+                    "$ref": "#/definitions/Scale"
+                },
+                "sort": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/SortField"
+                        },
+                        {
+                            "enum": [
+                                "ascending",
+                                "descending"
+                            ],
+                            "type": "string"
+                        }
+                    ]
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                },
+                "title": {
+                    "description": "Title for axis or legend.",
                     "type": "string"
                 },
-                "fillOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
-                    "type": "boolean"
-                },
-                "interpolate": {
-                    "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "opacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "orient": {
-                    "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "strokeDash": {
-                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
-                "strokeDashOffset": {
-                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-                    "type": "number"
-                },
-                "strokeOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "strokeWidth": {
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tension": {
-                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
+                "type": {
+                    "$ref": "#/definitions/Type",
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
                 }
             },
             "type": "object"
@@ -2100,9 +2192,31 @@
         "MarkConfig": {
             "additionalProperties": false,
             "properties": {
+                "align": {
+                    "$ref": "#/definitions/HorizontalAlign",
+                    "description": "The horizontal alignment of the text. One of left, right, center."
+                },
+                "angle": {
+                    "description": "The rotation angle of the text, in degrees.",
+                    "maximum": 360,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "baseline": {
+                    "$ref": "#/definitions/VerticalAlign",
+                    "description": "The vertical alignment of the text. One of top, middle, bottom."
+                },
                 "color": {
                     "description": "Default color.",
                     "type": "string"
+                },
+                "dx": {
+                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "type": "number"
+                },
+                "dy": {
+                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "type": "number"
                 },
                 "fill": {
                     "description": "Default Fill Color.  This has higher precedence than config.color",
@@ -2114,34 +2228,41 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
                     "type": "boolean"
+                },
+                "font": {
+                    "description": "The typeface to set the text in (e.g., Helvetica Neue).",
+                    "minimum": 0,
+                    "type": "string"
+                },
+                "fontSize": {
+                    "description": "The font size, in pixels.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "fontStyle": {
+                    "$ref": "#/definitions/FontStyle",
+                    "description": "The font style (e.g., italic)."
+                },
+                "fontWeight": {
+                    "anyOf": [
+                        {
+                            "enum": [
+                                "bold",
+                                "normal"
+                            ],
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
                 },
                 "opacity": {
                     "maximum": 1,
@@ -2151,6 +2272,20 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+                },
+                "radius": {
+                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "shape": {
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "minimum": 0,
+                    "type": "number"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -2181,6 +2316,14 @@
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
+                },
+                "text": {
+                    "description": "Placeholder Text",
+                    "type": "string"
+                },
+                "theta": {
+                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
+                    "type": "number"
                 }
             },
             "type": "object"
@@ -2196,6 +2339,10 @@
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
+                "role": {
+                    "description": "A metadata string indicating the role of the mark.\nThis allows users to use `config.<role-name>.*` to customize properties of marks with specific roles.\nIn addition, SVG renderers will add this role value (prepended with the prefix role-) as a CSS class name on the enclosing SVG group (g) element containing the mark instances.",
+                    "type": "string"
+                },
                 "tension": {
                     "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
                     "maximum": 1,
@@ -2209,6 +2356,19 @@
             },
             "required": [
                 "type"
+            ],
+            "type": "object"
+        },
+        "NamedData": {
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "description": "Provide a placeholder name and bind data at runtime.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name"
             ],
             "type": "object"
         },
@@ -2317,120 +2477,6 @@
             },
             "type": "object"
         },
-        "PointConfig": {
-            "additionalProperties": false,
-            "properties": {
-                "color": {
-                    "description": "Default color.",
-                    "type": "string"
-                },
-                "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "fillOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
-                    "type": "boolean"
-                },
-                "interpolate": {
-                    "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxSize": {
-                    "description": "Default max value for point size scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minSize": {
-                    "description": "Default minimum value for point size scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "opacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "orient": {
-                    "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "shape": {
-                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
-                    "type": "string"
-                },
-                "shapes": {
-                    "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                },
-                "size": {
-                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "strokeDash": {
-                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
-                "strokeDashOffset": {
-                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-                    "type": "number"
-                },
-                "strokeOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "strokeWidth": {
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tension": {
-                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
         "PositionFieldDef": {
             "additionalProperties": false,
             "properties": {
@@ -2533,182 +2579,6 @@
             ],
             "type": "object"
         },
-        "RectConfig": {
-            "additionalProperties": false,
-            "properties": {
-                "color": {
-                    "description": "Default color.",
-                    "type": "string"
-                },
-                "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "fillOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
-                    "type": "boolean"
-                },
-                "interpolate": {
-                    "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "opacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "orient": {
-                    "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "strokeDash": {
-                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
-                "strokeDashOffset": {
-                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-                    "type": "number"
-                },
-                "strokeOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "strokeWidth": {
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tension": {
-                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
-        "RuleConfig": {
-            "additionalProperties": false,
-            "properties": {
-                "color": {
-                    "description": "Default color.",
-                    "type": "string"
-                },
-                "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "fillOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
-                    "type": "boolean"
-                },
-                "interpolate": {
-                    "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "opacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "orient": {
-                    "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "strokeDash": {
-                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
-                "strokeDashOffset": {
-                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-                    "type": "number"
-                },
-                "strokeOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "strokeWidth": {
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tension": {
-                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
         "Scale": {
             "additionalProperties": false,
             "properties": {
@@ -2735,9 +2605,15 @@
                                 "$ref": "#/definitions/DateTime"
                             },
                             "type": "array"
+                        },
+                        {
+                            "enum": [
+                                "unaggregated"
+                            ],
+                            "type": "string"
                         }
                     ],
-                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values."
+                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.\n\nIf the domain is 'unaggregated', we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored."
                 },
                 "exponent": {
                     "description": "Sets the exponent of the scale transformation. For pow scale types only, otherwise ignored.",
@@ -2842,10 +2718,6 @@
                 "type": {
                     "$ref": "#/definitions/ScaleType"
                 },
-                "useRawDomain": {
-                    "description": "Uses the source data range as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"stdev\"`, `\"stdevp\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
-                    "type": "boolean"
-                },
                 "zero": {
                     "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\nDefault value: `true` for `x` and `y` channel if the quantitative field is not binned\nand no custom `domain` is provided; `false` otherwise.",
                     "type": "boolean"
@@ -2877,6 +2749,58 @@
                     "minimum": 0,
                     "type": "integer"
                 },
+                "maxBandSize": {
+                    "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxFontSize": {
+                    "description": "The default max value for mapping quantitative fields to text's size/fontSize.\nIf undefined (default), we will use bandSize - 1.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxOpacity": {
+                    "description": "Default max opacity for mapping a field to opacity.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxSize": {
+                    "description": "Default max value for point size scale.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxStrokeWidth": {
+                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minBandSize": {
+                    "description": "The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false\nIf undefined (default), we will use the `continuousBandSize` value for bar and 3 for ticks.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minFontSize": {
+                    "description": "The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minOpacity": {
+                    "description": "Default minimum opacity for mapping a field to opacity.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minSize": {
+                    "description": "Default minimum value for point size scale with zero=false.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minStrokeWidth": {
+                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
+                    "minimum": 0,
+                    "type": "number"
+                },
                 "pointPadding": {
                     "description": "Default outer padding for `x` and `y` point-ordinal scales.",
                     "maximum": 1,
@@ -2899,13 +2823,20 @@
                     "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
                     "type": "boolean"
                 },
+                "shapes": {
+                    "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "textXRangeStep": {
                     "description": "Default range step for `x` ordinal scale when is mark is `text`.",
                     "minimum": 0,
                     "type": "number"
                 },
-                "useRawDomain": {
-                    "description": "Uses the source data range as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"stdev\"`, `\"stdevp\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
+                "useUnaggregatedDomain": {
+                    "description": "Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
                     "type": "boolean"
                 }
             },
@@ -2914,6 +2845,8 @@
         "ScaleType": {
             "enum": [
                 "band",
+                "bin-linear",
+                "bin-ordinal",
                 "linear",
                 "log",
                 "ordinal",
@@ -2923,6 +2856,318 @@
                 "sqrt",
                 "time",
                 "utc"
+            ],
+            "type": "string"
+        },
+        "SelectionConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "interval": {
+                    "$ref": "#/definitions/BaseSelectionDef"
+                },
+                "multi": {
+                    "$ref": "#/definitions/BaseSelectionDef"
+                },
+                "single": {
+                    "$ref": "#/definitions/BaseSelectionDef"
+                }
+            },
+            "required": [
+                "interval",
+                "multi",
+                "single"
+            ],
+            "type": "object"
+        },
+        "SelectionDef": {
+            "additionalProperties": false,
+            "properties": {
+                "bind": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "checkbox"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "radio"
+                                    ],
+                                    "type": "string"
+                                },
+                                "options": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "input",
+                                "options"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "select"
+                                    ],
+                                    "type": "string"
+                                },
+                                "options": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "input",
+                                "options"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "range"
+                                    ],
+                                    "type": "string"
+                                },
+                                "max": {
+                                    "type": "number"
+                                },
+                                "min": {
+                                    "type": "number"
+                                },
+                                "step": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": {
+                                "anyOf": [
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "checkbox"
+                                                ],
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "radio"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "options": {
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            }
+                                        },
+                                        "required": [
+                                            "input",
+                                            "options"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "select"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "options": {
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            }
+                                        },
+                                        "required": [
+                                            "input",
+                                            "options"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "range"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "max": {
+                                                "type": "number"
+                                            },
+                                            "min": {
+                                                "type": "number"
+                                            },
+                                            "step": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    }
+                                ]
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "enum": [
+                                "scales"
+                            ],
+                            "type": "string"
+                        }
+                    ]
+                },
+                "encodings": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "fields": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "nearest": {
+                    "type": "boolean"
+                },
+                "on": {
+                },
+                "toggle": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                },
+                "translate": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                },
+                "type": {
+                    "$ref": "#/definitions/SelectionTypes"
+                },
+                "zoom": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "type": "object"
+        },
+        "SelectionTypes": {
+            "enum": [
+                "interval",
+                "multi",
+                "single"
             ],
             "type": "string"
         },
@@ -2963,109 +3208,6 @@
             ],
             "type": "string"
         },
-        "SymbolConfig": {
-            "additionalProperties": false,
-            "properties": {
-                "color": {
-                    "description": "Default color.",
-                    "type": "string"
-                },
-                "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "fillOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
-                    "type": "boolean"
-                },
-                "interpolate": {
-                    "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxSize": {
-                    "description": "Default max value for point size scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minSize": {
-                    "description": "Default minimum value for point size scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "opacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "orient": {
-                    "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "size": {
-                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "strokeDash": {
-                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
-                "strokeDashOffset": {
-                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-                    "type": "number"
-                },
-                "strokeOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "strokeWidth": {
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tension": {
-                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
         "TextConfig": {
             "additionalProperties": false,
             "properties": {
@@ -3105,7 +3247,7 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
                     "type": "boolean"
                 },
                 "font": {
@@ -3141,38 +3283,6 @@
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
-                "maxFontSize": {
-                    "description": "The default max value for mapping quantitative fields to text's size/fontSize.\nIf undefined (default), we will use bandSize - 1.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minFontSize": {
-                    "description": "The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -3187,9 +3297,18 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "shape": {
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "type": "string"
+                },
                 "shortTimeLabels": {
                     "description": "Whether month names and weekday names should be abbreviated.",
                     "type": "boolean"
+                },
+                "size": {
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "minimum": 0,
+                    "type": "number"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -3250,6 +3369,9 @@
                     ],
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
+                "condition": {
+                    "$ref": "#/definitions/Condition<string | number>"
+                },
                 "field": {
                     "description": "Name of the field from which to pull a data value.",
                     "type": "string"
@@ -3276,14 +3398,36 @@
         "TickConfig": {
             "additionalProperties": false,
             "properties": {
+                "align": {
+                    "$ref": "#/definitions/HorizontalAlign",
+                    "description": "The horizontal alignment of the text. One of left, right, center."
+                },
+                "angle": {
+                    "description": "The rotation angle of the text, in degrees.",
+                    "maximum": 360,
+                    "minimum": 0,
+                    "type": "number"
+                },
                 "bandSize": {
                     "description": "The width of the ticks.\nIf this value is undefined (by default,), we use 2/3 of rangeStep by default.",
                     "minimum": 0,
                     "type": "number"
                 },
+                "baseline": {
+                    "$ref": "#/definitions/VerticalAlign",
+                    "description": "The vertical alignment of the text. One of top, middle, bottom."
+                },
                 "color": {
                     "description": "Default color.",
                     "type": "string"
+                },
+                "dx": {
+                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "type": "number"
+                },
+                "dy": {
+                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "type": "number"
                 },
                 "fill": {
                     "description": "Default Fill Color.  This has higher precedence than config.color",
@@ -3295,44 +3439,41 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
                     "type": "boolean"
+                },
+                "font": {
+                    "description": "The typeface to set the text in (e.g., Helvetica Neue).",
+                    "minimum": 0,
+                    "type": "string"
+                },
+                "fontSize": {
+                    "description": "The font size, in pixels.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "fontStyle": {
+                    "$ref": "#/definitions/FontStyle",
+                    "description": "The font style (e.g., italic)."
+                },
+                "fontWeight": {
+                    "anyOf": [
+                        {
+                            "enum": [
+                                "bold",
+                                "normal"
+                            ],
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxBandSize": {
-                    "description": "The default max value for mapping quantitative fields to tick's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minBandSize": {
-                    "description": "The default min value for mapping quantitative fields to tick's size/bandSize scale with zero=false\nIf undefined (default), we will use the `continuousBandSize` value.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
                 },
                 "opacity": {
                     "maximum": 1,
@@ -3342,6 +3483,20 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+                },
+                "radius": {
+                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "shape": {
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "minimum": 0,
+                    "type": "number"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -3371,6 +3526,14 @@
                     "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
                     "maximum": 1,
                     "minimum": 0,
+                    "type": "number"
+                },
+                "text": {
+                    "description": "Placeholder Text",
+                    "type": "string"
+                },
+                "theta": {
+                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
                     "type": "number"
                 },
                 "thickness": {
@@ -3495,31 +3658,6 @@
                 "value": {
                     "description": "A constant value in visual domain.",
                     "type": "number"
-                }
-            },
-            "type": "object"
-        },
-        "ValueDef<string | number>": {
-            "additionalProperties": false,
-            "description": "Definition object for a constant value of an encoding channel.",
-            "properties": {
-                "value": {
-                    "description": "A constant value in visual domain.",
-                    "type": [
-                        "string",
-                        "number"
-                    ]
-                }
-            },
-            "type": "object"
-        },
-        "ValueDef<string>": {
-            "additionalProperties": false,
-            "description": "Definition object for a constant value of an encoding channel.",
-            "properties": {
-                "value": {
-                    "description": "A constant value in visual domain.",
-                    "type": "string"
                 }
             },
             "type": "object"
