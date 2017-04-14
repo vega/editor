@@ -8,5 +8,3 @@ coverage
 node_modules
 temp
 vendor
-spec
-data
