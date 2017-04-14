@@ -78,7 +78,10 @@ export default class Editor extends React.Component {
             language='json'
             key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample,
               gist: this.props.gist}))}
-
+            options={{
+              folding: true,
+              scrollBeyondLastLine: false
+            }}
             defaultValue={this.props.value}
             onChange={this.handleEditorChange.bind(this)}
             editorWillMount={this.editorWillMount.bind(this)}

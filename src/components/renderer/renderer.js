@@ -10,11 +10,7 @@ export default class Editor extends React.Component {
   }
 
   renderVega (vegaSpec) {
-
     this.refs.chart.style.width = this.refs.chart.getBoundingClientRect().width + 'px';
-    // console.log('refs')
-    console.log(this.refs.chart.getBoundingClientRect().width + 'px')
-    console.log(this.refs.chart.style);
     const runtime = vega.parse(vegaSpec);
     const view = new vega.View(runtime)
       .logLevel(vega.Warn)
