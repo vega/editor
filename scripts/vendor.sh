@@ -42,9 +42,9 @@ if [ ! -d "$DATA" ]; then
   mkdir $DATA
 fi
 
+eval $VEGA_DATASETS_OP "$CWD/data/*" $DATA
 eval $VEGA_DATASETS_OP "$CWD/node_modules/vega-datasets/data/*" $DATA
 # eval $VEGA_DATASETS_OP "$CWD/node_modules/vega/test/data/*" $DATA
-eval $VEGA_DATASETS_OP "$CWD/data/*" $DATA
 
 echo "Copy examples to '$SPEC'."
 

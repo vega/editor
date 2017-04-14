@@ -61,7 +61,6 @@ export default class Editor extends React.Component {
   }
 
   editorWillMount (monaco) {
-    console.log(schemas[this.props.mode]);
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
       allowComments: true,

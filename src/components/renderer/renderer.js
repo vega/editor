@@ -9,13 +9,13 @@ export default class Editor extends React.Component {
     vegaSpec: React.PropTypes.object
   }
 
-  renderVega (vegaSpec) {
+  renderVega (props) {
     this.refs.chart.style.width = this.refs.chart.getBoundingClientRect().width + 'px';
-    const runtime = vega.parse(vegaSpec);
+    const runtime = vega.parse(props.vegaSpec);
     const view = new vega.View(runtime)
       .logLevel(vega.Warn)
       .initialize(this.refs.chart)
-      .renderer(this.props.renderer)
+      .renderer(props.renderer)
       .hover()
       .run();
 
@@ -24,11 +24,11 @@ export default class Editor extends React.Component {
   }
 
   componentDidMount () {
-    this.renderVega(this.props.vegaSpec);
+    this.renderVega(this.props);
   }
 
   componentWillReceiveProps (nextProps) {
-    this.renderVega(nextProps.vegaSpec);
+    this.renderVega(nextProps);
     // visual.update(nextProps.vegaSpec);
   }
 
