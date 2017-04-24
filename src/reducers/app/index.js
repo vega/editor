@@ -4,6 +4,9 @@ import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER, 
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 
+const JSON3 = require('../../../lib/json3-compactstringify');
+console.log(JSON3);
+
 export default (state = {
   editorString: JSON.stringify({}, null, 2),
   vegaSpec: {},
@@ -24,7 +27,7 @@ export default (state = {
         vegaSpec: {},
         vegaLiteSpec: {},
         selectedExample: null,
-        editorString: JSON.stringify({}, null, 2),
+        editorString: JSON3.stringify({}, null, 2),
         compiledVegaSpec: {},
         gist: null
       });

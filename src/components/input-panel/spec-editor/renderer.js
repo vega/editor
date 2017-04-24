@@ -2,7 +2,7 @@ import React from 'react';
 import ReactResizeDetector from 'react-resize-detector';
 import { MODES, LAYOUT } from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
-import { hashHistory } from 'react-router';
+// import { hashHistory } from 'react-router';
 
 // import 'brace/mode/json';
 // import 'brace/theme/github';

@@ -35,9 +35,9 @@ class CompiledSpecDisplayHeader extends React.Component {
       return (
         <div style={toggleStyleUp}
              onClick={this.props.showCompiledVegaSpec}>
-          <span>
-              &nbsp;Vega compiled from Vega-Lite (read-only)
-          </span>
+            <span style={{marginLeft: 10}}>
+              Compiled Vega
+            </span>
           <svg
               style={svgStyle}>
               <polygon points="5,5 30,5 17.5,20" />
@@ -54,13 +54,16 @@ class CompiledSpecDisplayHeader extends React.Component {
         <div style={{width: '100%'}}
              onClick={this.props.showCompiledVegaSpec}>
           <div style={toggleStyle}>
-            <span>
-              &nbsp;Vega compiled from Vega-Lite (read-only)
+            <span style={{marginLeft: 10}}>
+              Compiled Vega
             </span>
             <svg
               style={svgStyle}>
               <polygon points="5,20 30,20 17.5,5" />
             </svg>
+            <span style={{marginRight: 10, position: 'absolute', right: 0}}>
+              Read Only
+            </span>
           </div>
         </div>
       );
