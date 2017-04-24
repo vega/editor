@@ -8,7 +8,7 @@ var req = require.context('../../../spec', true, /^(.*\.(json$))[^.]*$/igm);
 req.keys().forEach(req);
 
 const formatExampleName = (name) => {
-  return name.split('_').map(i => i[0].toUpperCase() + i.substring(1)).join(' ');
+  return name.split(/[_\-]/).map(i => i[0].toUpperCase() + i.substring(1)).join(' ');
 }
 
 export default class Header extends React.Component {
@@ -117,7 +117,13 @@ export default class Header extends React.Component {
         }}>
         {'Gist'}
       </div>
-    )
+    );
+
+    const docsLink = (
+      <a className='button right' href={this.props.mode === MODES.Vega ? 'https://vega.github.io/vega/' : 'https://vega.github.io/vega-lite/'} target="_blank">
+        {formatExampleName(this.props.mode)} Docs
+      </a>
+    );
 
     const vega = (
       <div className="vega">
@@ -208,6 +214,7 @@ export default class Header extends React.Component {
         <img height={37} style={{margin: 10}} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
         {examplesButton}
         {gistButton}
+        {docsLink}
         <Portal
           closeOnOutsideClick={true}
           isOpened={this.state.exampleIsOpened}
