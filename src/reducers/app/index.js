@@ -13,7 +13,8 @@ export default (state = {
   debug: false,
   renderer: RENDERERS.Canvas,
   compiledVegaSpec: false,
-  gist: null
+  gist: null,
+  error: null
 }, action) => {
   let spec, vegaSpec;
   switch (action.type) {
@@ -32,25 +33,33 @@ export default (state = {
         spec = JSON.parse(action.spec);
       } catch (e) {
         console.warn('Error parsing json string');
-        return state;
+        return Object.assign({}, state, {
+          error: e.message,
+          editorString: action.spec
+        });
       }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
-        editorString: action.spec
+        editorString: action.spec,
+        error: null
       });
     case SET_VEGA_EXAMPLE:
       try {
         spec = JSON.parse(action.spec);
       } catch (e) {
         console.warn('Error parsing json string');
-        return state;
+        return Object.assign({}, state, {
+          error: e.message,
+          editorString: action.spec
+        });
       }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
         editorString: action.spec,
-        selectedExample: action.example
+        selectedExample: action.example,
+        error: null
       });
     case SET_VEGA_LITE_EXAMPLE:
       try {
@@ -58,14 +67,18 @@ export default (state = {
         vegaSpec = vl.compile(spec).spec;
       } catch (e) {
         console.warn(e);
-        return state;
+        return Object.assign({}, state, {
+          error: e.message,
+          editorString: action.spec
+        });
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
         editorString: action.spec,
-        selectedExample: action.example
+        selectedExample: action.example,
+        error: null
       });
     case UPDATE_VEGA_LITE_SPEC:
       try {
@@ -73,26 +86,34 @@ export default (state = {
         vegaSpec = vl.compile(spec).spec;
       } catch (e) {
         console.warn(e);
-        return state;
+        return Object.assign({}, state, {
+          error: e.message,
+          editorString: action.spec
+        });
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
-        editorString: action.spec
+        editorString: action.spec,
+        error: null
       });
     case SET_GIST_VEGA_SPEC:
       try {
         spec = JSON.parse(action.spec);
       } catch(e) {
         console.warn('Error parsing json string');
-        return state;
+        return Object.assign({}, state, {
+          error: e.message,
+          editorString: action.spec
+        });
       }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
         editorString: action.spec,
-        gist: action.gist
+        gist: action.gist,
+        error: null
       });
     case SET_GIST_VEGA_LITE_SPEC:
       try {
@@ -100,14 +121,18 @@ export default (state = {
         vegaSpec = vl.compile(spec).spec;
       } catch(e) {
         console.warn(e);
-        return state;
+        return Object.assign({}, state, {
+          error: e.message,
+          editorString: action.spec
+        });
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
         editorString: action.spec,
-        gist: action.gist
+        gist: action.gist,
+        error: null
       });
     case TOGGLE_DEBUG:
       return Object.assign({}, state, {

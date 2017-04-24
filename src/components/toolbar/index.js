@@ -5,7 +5,8 @@ import * as EditorActions from '../../actions/editor';
 function mapStateToProps (state, ownProps) {
   return {
     debug: state.app.debug,
-    renderer: state.app.renderer
+    renderer: state.app.renderer,
+    error: state.app.error
   };
 }
 
