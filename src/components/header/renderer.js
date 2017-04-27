@@ -120,7 +120,7 @@ export default class Header extends React.Component {
     );
 
     const docsLink = (
-      <a className='button right' href={this.props.mode === MODES.Vega ? 'https://vega.github.io/vega/' : 'https://vega.github.io/vega-lite/'} target="_blank">
+      <a className='button right' href={this.props.mode === MODES.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'} target="_blank">
         {formatExampleName(this.props.mode)} Docs
       </a>
     );
