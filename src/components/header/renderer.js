@@ -1,6 +1,7 @@
 import React from 'react';
 import Portal from 'react-portal';
-import { MODES, SPECS } from '../../constants';
+import Menu, {SubMenu, MenuItem, ItemGroup} from 'rc-menu';
+import { MODES, SPECS, LAYOUT } from '../../constants';
 import './index.css';
 import { hashHistory } from 'react-router';
 
@@ -37,19 +38,6 @@ export default class Header extends React.Component {
       exampleIsOpened: false
     });
     hashHistory.push('/examples/vega_lite/' + name);
-  }
-
-  onSelect (selection) {
-    const key = selection.key;
-    if (key.startsWith('vega-lite-')) {
-      this.onSelectVegaLite(key.substr(10));
-    } else if (key.startsWith('vega-')) {
-      this.onSelectVega(key.substr(5));
-    } else if (key === 'custom-vega') {
-      this.props.updateVegaSpec('{}');
-    } else if (key === 'custom-vega-lite') {
-      this.props.updateVegaLiteSpec('{}');
-    }
   }
 
   fetchData(gistUrl, vegaVersion) {
@@ -116,6 +104,20 @@ export default class Header extends React.Component {
           });
         }}>
         {'Gist'}
+      </div>
+    )
+
+    const customButton = (
+      <div 
+        onMouseOver={(e) => {
+          const targetRect = e.target.getBoundingClientRect();
+          this.setState({
+            customIsOpened: true,
+            left: targetRect.left,
+            width: targetRect.width,
+          });
+        }}>
+        {'Custom'}
       </div>
     )
 
@@ -204,10 +206,39 @@ export default class Header extends React.Component {
     );
 
     return (
-      <div className='header'>
-        <img height={37} style={{margin: 10}} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
-        {examplesButton}
-        {gistButton}
+        <div className='header'>
+          <img height={37} style={{margin: 10}} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
+          {examplesButton}
+          {gistButton}
+          {customButton}
+
+        <Portal
+          closeOnEsc
+          closeOnOutsideClick
+          isOpened={this.state.customIsOpened}
+          onMouseLeave = {() => { this.setState({ customIsOpened: false});}}
+          onClose={() => { this.setState({ customIsOpened: false});}}
+        >
+        
+          <div className='customSubmenuGroup' onMouseOver={() => { this.setState({ customIsOpened: true});}} 
+            onMouseLeave={() => { this.setState({ customIsOpened: false});}} onClick={() => { this.setState({ customIsOpened: false});}}
+            style={{
+              left:this.state.left,
+              width:this.state.width,
+              position: 'absolute',
+              top: 0,
+              paddingTop: LAYOUT.HeaderHeight      
+            }} >
+            
+            <div className='customSubmenu' onClick={() => this.onSelectVega('custom')}>
+              {'Vega'}
+            </div>
+            <div className='customSubmenu' onClick={() => this.onSelectVegaLite('custom')}>
+              {'VegaLite'}
+            </div>
+          </div>
+        </Portal>
+
         <Portal
           closeOnOutsideClick={true}
           isOpened={this.state.exampleIsOpened}

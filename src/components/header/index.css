@@ -275,3 +275,16 @@ ul {
   margin-bottom: 30px;
   padding: 5px;
 }
+
+.customSubmenu {
+  font-size: 16px;
+  padding: 5px 10px;
+  background: white;
+  border: solid 1px black;
+  cursor: pointer;
+}
+
+.customSubmenu:hover {
+  background: rgb(92, 64, 141);
+  color: white;
+}
