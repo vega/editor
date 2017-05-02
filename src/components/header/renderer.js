@@ -1,6 +1,5 @@
 import React from 'react';
 import Portal from 'react-portal';
-import Menu, {SubMenu, MenuItem, ItemGroup} from 'rc-menu';
 import { MODES, SPECS, LAYOUT } from '../../constants';
 import './index.css';
 import { hashHistory } from 'react-router';
@@ -210,13 +209,13 @@ export default class Header extends React.Component {
           <img height={37} style={{margin: 10}} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
           {examplesButton}
           {gistButton}
+          
           {customButton}
 
         <Portal
           closeOnEsc
           closeOnOutsideClick
           isOpened={this.state.customIsOpened}
-          onMouseLeave = {() => { this.setState({ customIsOpened: false});}}
           onClose={() => { this.setState({ customIsOpened: false});}}
         >
         
@@ -226,10 +225,11 @@ export default class Header extends React.Component {
               left:this.state.left,
               width:this.state.width,
               position: 'absolute',
-              top: 0,
-              paddingTop: LAYOUT.HeaderHeight      
+              top: 0             
             }} >
-            
+
+            <div id="emptyButton" style={{height:LAYOUT.HeaderHeight}}></div>
+
             <div className='customSubmenu' onClick={() => this.onSelectVega('custom')}>
               {'Vega'}
             </div>
