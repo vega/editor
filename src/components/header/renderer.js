@@ -122,7 +122,7 @@ export default class Header extends React.Component {
             width: targetRect.width,
           });
         }}>
-        {'Custom'}
+        {'New'}
       </div>
     )
 
