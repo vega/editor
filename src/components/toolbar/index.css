@@ -25,3 +25,9 @@
   color: white;
   margin-left: 20px;
 }
+
+.toolbar .error-field {
+  background: #f0ad4e;
+  color: white;
+  cursor: text;
+}

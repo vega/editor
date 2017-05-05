@@ -26,7 +26,7 @@ class CompiledSpecDisplay extends React.Component {
     this.setState({width});
   }
 
-  
+
 
   render () {
     return (
@@ -35,7 +35,11 @@ class CompiledSpecDisplay extends React.Component {
       >
       <CompiledSpecDisplayHeader />
       <MonacoEditor
-        options={{readOnly:true}}
+        options={{
+          readOnly:true,
+          folding: true,
+          scrollBeyondLastLine: false
+        }}
         language='json'
         width={'100%'}
         key={JSON.stringify(this.state)}

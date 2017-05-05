@@ -68,9 +68,9 @@
     "redux-devtools-log-monitor": "^1.0.11",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.1.0",
-    "vega": "^3.0.0-beta.28",
+    "vega": "^3.0.0-beta.30",
     "vega-datasets": "^1.8.0",
-    "vega-lite": "^2.0.0-alpha.9"
+    "vega-lite": "^2.0.0-beta.1"
   },
   "scripts": {
     "start": "node scripts/start.js",

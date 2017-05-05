@@ -8,7 +8,7 @@
   height: 100%;
   background: rgba(243, 240, 240, 0.63);
   padding: 10px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .chart {

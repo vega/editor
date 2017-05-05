@@ -8,7 +8,7 @@ var req = require.context('../../../spec', true, /^(.*\.(json$))[^.]*$/igm);
 req.keys().forEach(req);
 
 const formatExampleName = (name) => {
-  return name.split('_').map(i => i[0].toUpperCase() + i.substring(1)).join(' ');
+  return name.split(/[_\-]/).map(i => i[0].toUpperCase() + i.substring(1)).join(' ');
 }
 
 export default class Header extends React.Component {
@@ -104,10 +104,16 @@ export default class Header extends React.Component {
         }}>
         {'Gist'}
       </div>
-    )
+    );
+
+    const docsLink = (
+      <a className='button right' href={this.props.mode === MODES.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'} target="_blank">
+        {formatExampleName(this.props.mode)} Docs
+      </a>
+    );
 
     const customButton = (
-      <div 
+      <div
         onMouseOver={(e) => {
           const targetRect = e.target.getBoundingClientRect();
           this.setState({
@@ -209,7 +215,7 @@ export default class Header extends React.Component {
           <img height={37} style={{margin: 10}} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
           {examplesButton}
           {gistButton}
-          
+          {docsLink}
           {customButton}
 
         <Portal
@@ -218,14 +224,16 @@ export default class Header extends React.Component {
           isOpened={this.state.customIsOpened}
           onClose={() => { this.setState({ customIsOpened: false});}}
         >
-        
-          <div className='customSubmenuGroup' onMouseOver={() => { this.setState({ customIsOpened: true});}} 
+
+          <div className='customSubmenuGroup' onMouseOver={() => { this.setState({ customIsOpened: true});}}
             onMouseLeave={() => { this.setState({ customIsOpened: false});}} onClick={() => { this.setState({ customIsOpened: false});}}
             style={{
               left:this.state.left,
               width:this.state.width,
               position: 'absolute',
-              top: 0             
+              cursor: 'pointer',
+              zIndex: 1000000000,
+              top: 0
             }} >
 
             <div id="emptyButton" style={{height:LAYOUT.HeaderHeight}}></div>
