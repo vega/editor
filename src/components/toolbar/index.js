@@ -6,7 +6,8 @@ function mapStateToProps (state, ownProps) {
   return {
     debug: state.app.debug,
     renderer: state.app.renderer,
-    error: state.app.error
+    error: state.app.error,
+    mode: state.app.mode
   };
 }
 

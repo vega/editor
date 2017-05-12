@@ -12,12 +12,18 @@
   padding: 5px 5px;
   border-radius: 5px;
   font-size: 12px;
-  cursor: pointer;
 }
 
 .renderer-toggle {
   background: #777;
   color: white;
+  cursor: pointer;
+}
+
+.status {
+  background: #399e39;
+  color: white;
+  cursor: ;
 }
 
 .toolbar .debug-toggle {

@@ -29,6 +29,11 @@ export default class Toolbar extends React.Component {
             this.props.debug ? 'Hide debug tools' : 'Show debug tools'
           }
         </div>*/}
+        <div className='status'>
+          {
+            `Mode: ${this.props.mode}`
+          }
+        </div>
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
           {
             `Renderer: ${this.props.renderer}`
