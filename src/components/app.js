@@ -46,11 +46,19 @@ class App extends React.Component {
       if (parameter && parameter.example_name) {
         const name = parameter.example_name;
         if (parameter.vega === 'vega') {
-          const spec = require(`../../spec/vega/${name}.vg.json`);
-          this.props.setVegaExample(name, JSON.stringify(spec, null, 2));
+          if (name === 'custom') {
+            this.props.setVegaExample(name, '{}');
+          } else {
+            const spec = require(`../../spec/vega/${name}.vg.json`);
+            this.props.setVegaExample(name, JSON.stringify(spec, null, 2));
+          }
         } else if (parameter.vega === 'vega_lite') {
-          const spec = require(`../../spec/vega-lite/${name}.vl.json`);
-          this.props.setVegaLiteExample(name, JSON.stringify(spec, null, 2));
+          if (name === 'custom') {
+            this.props.setVegaLiteExample(name, '{}');
+          } else {
+            const spec = require(`../../spec/vega-lite/${name}.vl.json`);
+            this.props.setVegaLiteExample(name, JSON.stringify(spec, null, 2));
+          }
         }
       }
     }

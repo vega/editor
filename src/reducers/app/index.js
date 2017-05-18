@@ -67,7 +67,10 @@ export default (state = {
     case SET_VEGA_LITE_EXAMPLE:
       try {
         spec = JSON.parse(action.spec);
-        vegaSpec = vl.compile(spec).spec;
+        vegaSpec = spec;
+        if (action.spec !== '{}') {
+          vegaSpec = vl.compile(spec).spec;
+        }
       } catch (e) {
         console.warn(e);
         return Object.assign({}, state, {

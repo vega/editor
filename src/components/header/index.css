@@ -7,7 +7,6 @@
   align-self: flex-end;
 }
 
-
 .header div, .header a {
   display: inline-block;
   /*margin-top: 10px;*/
@@ -31,74 +30,6 @@
 .header .button.right {
     position: absolute;
     right: 0;
-}
-
-
-ul {
-  margin-top: 0;
-}
-
-.rc-menu li {
-  cursor: pointer;
-}
-
-.rc-menu > li {
-  padding: 0;
-  margin: 0;
-}
-
-
-.rc-menu-item {
-  font-size: 12px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-.rc-menu-horizontal {
-  /*display: inline-block;
-  width: 75%;*/
-}
-
-.rc-menu .rc-menu {
-  max-height: 75vh;
-  overflow: scroll;
-}
-
-.rc-menu-horizontal {
-  background-color: white;
-  color: black;
-  border-bottom: none;
-}
-
-.options-menu {
-
-}
-
-.rc-menu-horizontal > .rc-menu-item, .rc-menu-horizontal > .rc-menu-submenu > .rc-menu-submenu-title {
-  padding: 15px 20px;
-  padding-top: 20px;
-}
-
-.rc-menu-horizontal > .rc-menu-submenu {
-  border-bottom: solid 5px white;
-}
-
-.rc-menu-horizontal > .rc-menu-submenu-selected {
-  background: white;
-  border-bottom: solid 5px rgb(92, 64, 141);
-  /*font-weight: bold;*/
-  /*color: rgb(92, 64, 141);*/
-}
-
-.rc-menu-horizontal > .rc-menu-submenu-active {
-  border-bottom: solid 5px rgb(92, 64, 141);
-  /*font-weight: bold;*/
-  /*color: rgb(92, 64, 141);*/
-}
-
-.rc-menu-submenu-active > .rc-menu-submenu-title {
-  background: white;
-  color: black;
 }
 
 .modal {
@@ -280,4 +211,23 @@ ul {
   margin-top: 20px;
   margin-bottom: 30px;
   padding: 5px;
+}
+
+.customSubmenu {
+  font-size: 16px;
+  padding: 5px 10px;
+  background: white;
+  border-left: solid 1px black;
+  border-right: solid 1px black;
+  border-bottom: solid 1px black;
+  cursor: pointer;
+}
+
+.customSubmenu:hover {
+  background: rgb(92, 64, 141);
+  color: white;
+}
+
+#emptyButton:hover {
+  border-bottom: solid 5px rgb(92, 64, 141);
 }
