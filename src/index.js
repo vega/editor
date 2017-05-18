@@ -5,6 +5,12 @@ import { Provider } from 'react-redux'
 import configureStore from './store/configure-store';
 import { hashHistory, Router, Route } from 'react-router';
 
+import * as vega from 'vega';
+import * as vl from 'vega-lite';
+
+window.VEGA_DEBUG = window.VEGA_DEBUG || {};
+window.VEGA_DEBUG.VEGA_VERSION = vega.version;
+window.VEGA_DEBUG.VEGA_LITE_VERSION = vl.version;
 
 // Create redux store and sync with react-router-redux. We have installed the
 // react-router-redux reducer under the key "router" in src/routes/index.js,
