@@ -4,11 +4,12 @@ import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER, 
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 
-const JSON3 = require('../../../lib/json3-compactstringify');
-console.log(JSON3);
+//const JSON3 = require('../../../lib/json3-compactstringify');
+const stringify = require("json-stringify-pretty-compact");
+//console.log(JSON3);
 
 export default (state = {
-  editorString: JSON.stringify({}, null, 2),
+  editorString: stringify({}, {maxLength: 60, indent: 2}),
   vegaSpec: {},
   vegaLiteSpec: null,
   selectedExample: null,
@@ -27,7 +28,7 @@ export default (state = {
         vegaSpec: {},
         vegaLiteSpec: {},
         selectedExample: null,
-        editorString: JSON3.stringify({}, null, 2),
+        editorString: stringify({}, {maxLength: 60, indent: 2}),
         compiledVegaSpec: {},
         gist: null
       });
@@ -38,13 +39,13 @@ export default (state = {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: stringify(spec, {maxLength: 60, indent: 2})
         });
       }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
-        editorString: action.spec,
+        editorString: stringify(spec, {maxLength: 60, indent: 2}),
         error: null
       });
     case SET_VEGA_EXAMPLE:
@@ -54,13 +55,13 @@ export default (state = {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: stringify(spec, {maxLength: 60, indent: 2})
         });
       }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
-        editorString: action.spec,
+        editorString: stringify(spec, {maxLength: 60, indent: 2}),
         selectedExample: action.example,
         error: null
       });
@@ -72,14 +73,14 @@ export default (state = {
         console.warn(e);
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: stringify(spec, {maxLength: 60, indent: 2})
         });
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
-        editorString: action.spec,
+        editorString: stringify(spec, {maxLength: 60, indent: 2}),
         selectedExample: action.example,
         error: null
       });
@@ -91,14 +92,14 @@ export default (state = {
         console.warn(e);
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: stringify(spec, {maxLength: 60, indent: 2})
         });
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
-        editorString: action.spec,
+        editorString: stringify(spec, {maxLength: 60, indent: 2}),
         error: null
       });
     case SET_GIST_VEGA_SPEC:
@@ -108,13 +109,13 @@ export default (state = {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: stringify(spec, {maxLength: 60, indent: 2})
         });
       }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
-        editorString: action.spec,
+        editorString: stringify(spec, {maxLength: 60, indent: 2}),
         gist: action.gist,
         error: null
       });
@@ -126,14 +127,14 @@ export default (state = {
         console.warn(e);
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: stringify(spec, {maxLength: 60, indent: 2})
         });
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
-        editorString: action.spec,
+        editorString: stringify(spec, {maxLength: 60, indent: 2}),
         gist: action.gist,
         error: null
       });
