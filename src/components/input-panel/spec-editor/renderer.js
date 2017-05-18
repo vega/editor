@@ -30,10 +30,16 @@ export default class Editor extends React.Component {
     onChange: React.PropTypes.func
   }
 
-  state = {
-    height: window.innerHeight - LAYOUT.HeaderHeight,
-    width: '100%'
+  constructor(props) {
+    super(props);
+
+    const h = window.innerHeight - LAYOUT.HeaderHeight;
+    this.state = {
+      height: props.compiledVegaSpec ? h / 2 : h - 25,
+      width: '100%'
+    }
   }
+
 
   setHeight (width, height) {
     if (!height) {
@@ -66,6 +72,20 @@ export default class Editor extends React.Component {
       allowComments: true,
       schemas: [schemas[this.props.mode]]
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.compiledVegaSpec !== this.props.compiledVegaSpec) {
+      if (!nextProps.compiledVegaSpec) {
+        this.setState({
+          height: (window.innerHeight - LAYOUT.HeaderHeight) - 25,
+        })
+      } else {
+        this.setState({
+          height: (window.innerHeight - LAYOUT.HeaderHeight) / 2,
+        })
+      }
+    }
   }
 
   render () {
