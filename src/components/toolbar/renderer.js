@@ -1,7 +1,6 @@
 import React from 'react';
 
 import './index.css';
-//const vega = require('vega');
 import * as vega from 'vega';
 
 export default class Toolbar extends React.Component {
