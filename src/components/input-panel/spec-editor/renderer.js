@@ -79,7 +79,9 @@ export default class Editor extends React.Component {
               gist: this.props.gist}))}
             options={{
               folding: true,
-              scrollBeyondLastLine: false
+              scrollBeyondLastLine: false,
+              wordWrap: true,
+              wrappingIndent: "same"
             }}
             defaultValue={this.props.value}
             onChange={this.handleEditorChange.bind(this)}

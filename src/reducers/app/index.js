@@ -5,10 +5,9 @@ import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, CYCLE_RENDERER, 
 import { MODES, RENDERERS } from '../../constants';
 
 const JSON3 = require('../../../lib/json3-compactstringify');
-console.log(JSON3);
 
 export default (state = {
-  editorString: JSON.stringify({}, null, 2),
+  editorString: JSON3.stringify({}, null, 2, 60),
   vegaSpec: {},
   vegaLiteSpec: null,
   selectedExample: null,
@@ -27,7 +26,7 @@ export default (state = {
         vegaSpec: {},
         vegaLiteSpec: {},
         selectedExample: null,
-        editorString: JSON3.stringify({}, null, 2),
+        editorString: JSON3.stringify({}, null, 2, 60),
         compiledVegaSpec: {},
         gist: null
       });
@@ -38,13 +37,13 @@ export default (state = {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: JSON3.stringify(spec, null, 2, 60)
         });
       }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
-        editorString: action.spec,
+        editorString: JSON3.stringify(spec, null, 2, 60),
         error: null
       });
     case SET_VEGA_EXAMPLE:
@@ -54,13 +53,13 @@ export default (state = {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: JSON3.stringify(spec, null, 2, 60)
         });
       }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
-        editorString: action.spec,
+        editorString: JSON3.stringify(spec, null, 2, 60),
         selectedExample: action.example,
         error: null
       });
@@ -75,14 +74,14 @@ export default (state = {
         console.warn(e);
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: JSON3.stringify(spec, null, 2, 60)
         });
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
-        editorString: action.spec,
+        editorString: JSON3.stringify(spec, null, 2, 60),
         selectedExample: action.example,
         error: null
       });
@@ -94,14 +93,14 @@ export default (state = {
         console.warn(e);
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: JSON3.stringify(spec, null, 2, 60)
         });
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
-        editorString: action.spec,
+        editorString: JSON3.stringify(spec, null, 2, 60),
         error: null
       });
     case SET_GIST_VEGA_SPEC:
@@ -111,13 +110,13 @@ export default (state = {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: JSON3.stringify(spec, null, 2, 60)
         });
       }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
-        editorString: action.spec,
+        editorString: JSON3.stringify(spec, null, 2, 60),
         gist: action.gist,
         error: null
       });
@@ -129,14 +128,14 @@ export default (state = {
         console.warn(e);
         return Object.assign({}, state, {
           error: e.message,
-          editorString: action.spec
+          editorString: JSON3.stringify(spec, null, 2, 60)
         });
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
-        editorString: action.spec,
+        editorString: JSON3.stringify(spec, null, 2, 60),
         gist: action.gist,
         error: null
       });

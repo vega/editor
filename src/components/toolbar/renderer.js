@@ -1,7 +1,7 @@
-
 import React from 'react';
 
 import './index.css';
+import * as vega from 'vega';
 
 export default class Toolbar extends React.Component {
   static propTypes = {
@@ -29,6 +29,12 @@ export default class Toolbar extends React.Component {
             this.props.debug ? 'Hide debug tools' : 'Show debug tools'
           }
         </div>*/}
+        <div className='status'>
+          {
+            `Mode: ${this.props.mode}  Version: ${vega.version}`
+
+          }
+        </div>
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
           {
             `Renderer: ${this.props.renderer}`
