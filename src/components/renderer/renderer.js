@@ -1,8 +1,7 @@
 import React from 'react';
 import * as vega from 'vega';
-
 import './index.css';
-window.VEGA_DEBUG = window.VEGA_DEBUG || {};
+
 
 export default class Editor extends React.Component {
   static propTypes = {
