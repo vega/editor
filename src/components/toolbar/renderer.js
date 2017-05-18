@@ -2,7 +2,7 @@ import React from 'react';
 
 import './index.css';
 //const vega = require('vega');
-//import * as vega from 'vega';
+import * as vega from 'vega';
 
 export default class Toolbar extends React.Component {
   static propTypes = {
@@ -32,7 +32,7 @@ export default class Toolbar extends React.Component {
         </div>*/}
         <div className='status'>
           {
-            `Mode: ${this.props.mode}`
+            `Mode: ${this.props.mode}  Version: ${vega.version}`
 
           }
         </div>
