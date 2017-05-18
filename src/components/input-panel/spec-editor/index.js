@@ -7,7 +7,8 @@ const mapStateToProps = function (state, ownProps) {
     value: state.app.editorString,
     mode: state.app.mode,
     selectedExample: state.app.selectedExample,
-    gist: state.app.gist
+    gist: state.app.gist,
+    compiledVegaSpec: state.app.compiledVegaSpec
   };
 };
 
