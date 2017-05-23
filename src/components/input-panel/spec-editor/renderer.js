@@ -2,7 +2,7 @@ import React from 'react';
 import ReactResizeDetector from 'react-resize-detector';
 import { MODES, LAYOUT } from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
-// import { hashHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 
 // import 'brace/mode/json';
 // import 'brace/theme/github';
@@ -61,9 +61,9 @@ export default class Editor extends React.Component {
     } else if (this.props.mode === MODES.VegaLite) {
       this.props.updateVegaLiteSpec(spec);
     }
-    // if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
-    //   hashHistory.push(hashHistory.getCurrentLocation().pathname + '/edited');
-    // }
+    if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
+      hashHistory.push(hashHistory.getCurrentLocation().pathname + '/edited');
+    }
   }
 
   editorWillMount (monaco) {

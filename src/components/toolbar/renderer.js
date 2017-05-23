@@ -2,6 +2,11 @@ import React from 'react';
 
 import './index.css';
 import * as vega from 'vega';
+import * as vl from 'vega-lite';
+
+const getVersion = (mode) => {
+  return mode === 'vega' ? vega.version : vl.version;
+}
 
 export default class Toolbar extends React.Component {
   static propTypes = {
@@ -31,8 +36,7 @@ export default class Toolbar extends React.Component {
         </div>*/}
         <div className='status'>
           {
-            `Mode: ${this.props.mode}  Version: ${vega.version}`
-
+            `Mode: ${this.props.mode}  Version: ${getVersion(this.props.mode)}`
           }
         </div>
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
