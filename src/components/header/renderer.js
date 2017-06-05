@@ -204,7 +204,7 @@ export default class Header extends React.Component {
               gistIsOpened: false,
               url: ''
               });
-            }}> Vega Lite
+            }}> Vega-Lite
           </button>
         </div>
       </div>
@@ -256,7 +256,7 @@ export default class Header extends React.Component {
             <div className='modal-header'>
               <div className='button-groups'>
                 <button className={this.state.showVega ? 'selected' : ''} onClick={() => { this.setState({ showVega: true });}}>{'Vega'}</button>
-                <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({ showVega: false });}}>{'Vega Lite'}</button>
+                <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({ showVega: false });}}>{'Vega-Lite'}</button>
               </div>
 
               <button className='close-button' onClick={() => {this.setState({ exampleIsOpened: false });}}>✖</button>
