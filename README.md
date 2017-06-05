@@ -31,3 +31,12 @@ npm link
 cd VEGA_EDITOR_DIR
 npm link vega
 ```
+
+### Creating a release
+
+* Install the latest versions of vega, vega-lite, and vega-datasets
+* `npm run vendor`
+* `npm run generate-example-images` (requires https://www.gnu.org/software/parallel/)
+* `npm run build`
+
+
