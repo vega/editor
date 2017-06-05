@@ -54,7 +54,7 @@ class App extends React.Component {
               this.props.setVegaExample(name, JSON.stringify(spec, null, 2));
             });
           }
-        } else if (parameter.vega === 'vega_lite') {
+        } else if (parameter.vega === 'vega-lite') {
           if (name === 'custom') {
             this.props.setVegaLiteExample(name, '{}');
           } else {

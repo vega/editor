@@ -33,7 +33,7 @@ export default class Header extends React.Component {
     this.setState({
       exampleIsOpened: false
     });
-    hashHistory.push('/examples/vega_lite/' + name);
+    hashHistory.push('/examples/vega-lite/' + name);
   }
 
   fetchData(gistUrl, vegaVersion) {
