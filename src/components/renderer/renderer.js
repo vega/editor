@@ -27,7 +27,8 @@ export default class Editor extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    this.renderVega(nextProps);
+    if(nextProps.autoParse || nextProps.render) this.renderVega(nextProps);
+    this.props.setNextRender(false);
     // visual.update(nextProps.vegaSpec);
   }
 

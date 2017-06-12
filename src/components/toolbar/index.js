@@ -7,7 +7,8 @@ function mapStateToProps (state, ownProps) {
     debug: state.app.debug,
     renderer: state.app.renderer,
     error: state.app.error,
-    mode: state.app.mode
+    mode: state.app.mode,
+    autoParse: state.app.autoParse
   };
 }
 
@@ -16,6 +17,14 @@ const mapDispatchToProps = function (dispatch) {
   return {
     toggleDebug: () => {
       dispatch(EditorActions.toggleDebug());
+    },
+
+    toggleAutoParse: () => {
+      dispatch(EditorActions.toggleAutoParse());
+    },
+
+    setNextRender: () => {
+      dispatch(EditorActions.setNextRender(true));
     },
 
     cycleRenderer: () => {
