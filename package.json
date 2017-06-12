@@ -66,9 +66,9 @@
     "redux": "^3.6.0",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.2.0",
-    "vega": "^3.0.0-beta.30",
-    "vega-datasets": "^1.8.0",
-    "vega-lite": "^2.0.0-beta.1"
+    "vega": "vega/vega#v3.0.0-beta.34",
+    "vega-datasets": "vega/vega-datasets#gh-pages",
+    "vega-lite": "vega/vega-lite#v2.0.0-beta.4"
   },
   "scripts": {
     "start": "node scripts/start.js",
