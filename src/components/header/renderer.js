@@ -4,9 +4,6 @@ import { MODES, SPECS, LAYOUT } from '../../constants';
 import './index.css';
 import { hashHistory } from 'react-router';
 
-var req = require.context('../../../spec', true, /^(.*\.(json$))[^.]*$/igm);
-req.keys().forEach(req);
-
 const formatExampleName = (name) => {
   return name.split(/[_\-]/).map(i => i[0].toUpperCase() + i.substring(1)).join(' ');
 }

@@ -9,6 +9,7 @@ import * as EditorActions from '../actions/editor';
 import { connect } from 'react-redux';
 import './app.css';
 import { hashHistory } from 'react-router';
+import { json } from 'd3-request';
 
 class App extends React.Component {
 
@@ -49,15 +50,17 @@ class App extends React.Component {
           if (name === 'custom') {
             this.props.setVegaExample(name, '{}');
           } else {
-            const spec = require(`../../spec/vega/${name}.vg.json`);
-            this.props.setVegaExample(name, JSON.stringify(spec, null, 2));
+            json(`./spec/vega/${name}.vg.json`, (spec) => {
+              this.props.setVegaExample(name, JSON.stringify(spec, null, 2));
+            });
           }
         } else if (parameter.vega === 'vega_lite') {
           if (name === 'custom') {
             this.props.setVegaLiteExample(name, '{}');
           } else {
-            const spec = require(`../../spec/vega-lite/${name}.vl.json`);
-            this.props.setVegaLiteExample(name, JSON.stringify(spec, null, 2));
+            json(`./spec/vega-lite/${name}.vl.json`, (spec) => {
+              this.props.setVegaLiteExample(name, JSON.stringify(spec, null, 2));
+            });
           }
         }
       }
@@ -74,16 +77,6 @@ class App extends React.Component {
           </SplitPane>
         </div>
         <Toolbar />
-        {/*<div>
-          {
-            (() => {
-              if (process.env.NODE_ENV !== 'production') {
-                const DevTools = require('./debug/dev-tools').default;
-                return <DevTools visibleOnLoad={false} />;
-              }
-            })()
-          }
-        </div>*/}
       </div>
     );
   };

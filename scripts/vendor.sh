@@ -1,7 +1,7 @@
 #!/bin/bash
 TARGET=public/vendor
 DATA=public/data
-SPEC=spec
+SPEC=public/spec
 SCHEMA=schema
 
 # Copy dependencies by default. Link if a -l flag is specified.
