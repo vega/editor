@@ -1,7 +1,7 @@
 {
   "name": "vega-editor-redux",
   "version": "0.1.0",
-  "homepage": "http://vega.github.io/new-editor",
+  "homepage": "http://vega.github.io/editor",
   "devDependencies": {
     "autoprefixer": "6.4.1",
     "awesome-typescript-loader": "^3.1.3",
