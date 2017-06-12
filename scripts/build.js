@@ -71,6 +71,9 @@ recursive(paths.appBuild, (err, fileNames) => {
 
   // Merge with the public folder
   copyPublicFolder();
+
+  // Copy Monaco loader
+  copyMonacoLoader();
 });
 
 // Print a detailed summary of build files.
@@ -182,4 +185,8 @@ function copyPublicFolder() {
     dereference: true,
     filter: file => file !== paths.appHtml
   });
+}
+
+function copyMonacoLoader() {
+  fs.copySync(paths.monacoLoader, paths.appMoncoLoader);
 }
