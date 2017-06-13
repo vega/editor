@@ -44,13 +44,16 @@ fi
 
 eval $VEGA_DATASETS_OP "$CWD/data/*" $DATA
 eval $VEGA_DATASETS_OP "$CWD/node_modules/vega-datasets/data/*" $DATA
-# eval $VEGA_DATASETS_OP "$CWD/node_modules/vega/test/data/*" $DATA
 
 echo "Copy examples to '$SPEC'."
 
 if [ ! -d "$SPEC" ]; then
   mkdir $SPEC
 fi
+
+cd node_modules/vega
+npm install
+cd ../..
 
 eval $SCHEMA_OP "$CWD/node_modules/vega/build/vega-schema.json" "$SCHEMA/vega.schema.json"
 eval $SCHEMA_OP "$CWD/node_modules/vega-lite/build/vega-lite-schema.json" "$SCHEMA/vl.schema.json"
