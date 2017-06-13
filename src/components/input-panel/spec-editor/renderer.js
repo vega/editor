@@ -107,8 +107,8 @@ export default class Editor extends React.Component {
             onChange={this.handleEditorChange.bind(this)}
             editorWillMount={this.editorWillMount.bind(this)}
           />
-           <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
-           <ReactResizeDetector handleWidth onResize={this.setWidth.bind(this)} />
+          <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
+          <ReactResizeDetector handleWidth onResize={this.setWidth.bind(this)} />
       </div>
     );
   };

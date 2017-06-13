@@ -38,7 +38,8 @@ class CompiledSpecDisplay extends React.Component {
         options={{
           readOnly:true,
           folding: true,
-          scrollBeyondLastLine: false
+          scrollBeyondLastLine: false,
+          wordWrap: true
         }}
         language='json'
         width={'100%'}
