@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as vega from 'vega';
 import './index.css';
 
 
 export default class Editor extends React.Component {
   static propTypes = {
-    vegaSpec: React.PropTypes.object
+    vegaSpec: PropTypes.object
   }
 
   renderVega (props) {
@@ -28,7 +29,6 @@ export default class Editor extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     this.renderVega(nextProps);
-    // visual.update(nextProps.vegaSpec);
   }
 
   render () {
