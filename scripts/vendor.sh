@@ -58,6 +58,6 @@ cd ../..
 eval $SCHEMA_OP "$CWD/node_modules/vega/build/vega-schema.json" "$SCHEMA/vega.schema.json"
 eval $SCHEMA_OP "$CWD/node_modules/vega-lite/build/vega-lite-schema.json" "$SCHEMA/vl.schema.json"
 
-# eval $VEGA_OP "$CWD/node_modules/vega/test/specs-valid/spec" "$SPEC/vega"
+eval $VEGA_OP "$CWD/node_modules/vega/docs/examples/*.vg.json" "$SPEC/vega"
 eval $VEGA_LITE_OP "$CWD/node_modules/vega-lite/examples/specs/" "$SPEC/vega-lite/"
 echo "var VL_SPECS = "`cat $CWD/node_modules/vega-lite/examples/vl-examples.json` > public/js/vl-specs.js
