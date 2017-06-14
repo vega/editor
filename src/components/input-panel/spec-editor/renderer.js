@@ -56,11 +56,14 @@ export default class Editor extends React.Component {
   }
 
   handleEditorChange (spec) {
-    if (this.props.mode === MODES.Vega) {
-      this.props.updateVegaSpec(spec);
-    } else if (this.props.mode === MODES.VegaLite) {
-      this.props.updateVegaLiteSpec(spec);
+    if(this.props.autoParse) {
+      if (this.props.mode === MODES.Vega) {
+        this.props.updateVegaSpec(spec);
+      } else if (this.props.mode === MODES.VegaLite) {
+        this.props.updateVegaLiteSpec(spec);
+      }
     }
+    this.spec = spec;
     if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
       hashHistory.push(hashHistory.getCurrentLocation().pathname + '/edited');
     }
@@ -85,6 +88,15 @@ export default class Editor extends React.Component {
           height: (window.innerHeight - LAYOUT.HeaderHeight) / 2,
         })
       }
+    }
+
+    if(nextProps.parse) {
+      if (this.props.mode === MODES.Vega) {
+        this.props.updateVegaSpec(this.spec);
+      } else if (this.props.mode === MODES.VegaLite) {
+        this.props.updateVegaLiteSpec(this.spec);
+      }
+      this.props.parseSpec(false);
     }
   }
 

@@ -1,6 +1,6 @@
 import * as vl from 'vega-lite';
 
-import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, TOGGLE_DEBUG, TOGGLE_AUTO_PARSE, SET_NEXT_RENDER, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
+import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_DEBUG, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 
@@ -14,8 +14,8 @@ export default (state = {
   mode: MODES.Vega,
   debug: false,
   renderer: RENDERERS.Canvas,
-  render: false,
   autoParse: true,
+  parse: false,
   compiledVegaSpec: false,
   gist: null,
   error: null
@@ -30,7 +30,12 @@ export default (state = {
         selectedExample: null,
         editorString: JSON3.stringify({}, null, 2, 60),
         compiledVegaSpec: {},
-        gist: null
+        gist: null,
+        parse: false
+      });
+    case PARSE_SPEC:
+      return Object.assign({}, state, {
+        parse: action.parse
       });
     case UPDATE_VEGA_SPEC:
       try {
@@ -147,11 +152,8 @@ export default (state = {
       });
     case TOGGLE_AUTO_PARSE:
       return Object.assign({}, state, {
-        autoParse: !state.autoParse
-      });
-    case SET_NEXT_RENDER:
-      return Object.assign({}, state, {
-        render: action.render
+        autoParse: !state.autoParse,
+        parse: !state.autoParse
       });
     case CYCLE_RENDERER:
       const rendererVals = Object.values(RENDERERS);

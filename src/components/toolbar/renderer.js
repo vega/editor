@@ -29,7 +29,7 @@ export default class Toolbar extends React.Component {
   manualParseSpec() {
     if(!this.props.autoParse) {
       return (
-        <div className='autoParse' onClick={this.props.setNextRender}>
+        <div className='autoParse' onClick={this.props.parseSpec}>
           {`Parse`}
         </div>
       )

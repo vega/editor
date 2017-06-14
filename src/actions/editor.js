@@ -1,12 +1,12 @@
 export const UPDATE_VEGA_SPEC = 'UPDATE_VEGA_SPEC';
 export const UPDATE_VEGA_LITE_SPEC = 'UPDATE_VEGA_LITE_SPEC';
+export const PARSE_SPEC = 'PARSE_SPEC';
 export const SET_VEGA_EXAMPLE = 'SET_VEGA_EXAMPLE';
 export const SET_VEGA_LITE_EXAMPLE = 'SET_VEGA_LITE_EXAMPLE';
 export const SET_GIST_VEGA_SPEC = 'SET_GIST_VEGA_SPEC';
 export const SET_GIST_VEGA_LITE_SPEC = 'SET_GIST_VEGA_LITE_SPEC';
 export const TOGGLE_DEBUG = 'TOGGLE_DEBUG';
 export const TOGGLE_AUTO_PARSE = 'TOGGLE_AUTO_PARSE';
-export const SET_NEXT_RENDER = "SET_NEXT_RENDER";
 export const CYCLE_RENDERER = 'CYCLE_RENDERER';
 export const SHOW_COMPILED_VEGA_SPEC = 'SHOW_COMPILED_VEGA_SPEC'
 export const SET_MODE = 'SET_MODE'
@@ -17,6 +17,13 @@ export function setMode (mode) {
     mode: mode
   }
 }
+
+export function parseSpec (value) {
+  return {
+    type: PARSE_SPEC,
+    parse: value
+  }
+};
 
 export function setVegaExample (example, spec) {
   return {
@@ -73,13 +80,6 @@ export function toggleDebug () {
 export function toggleAutoParse () {
   return {
     type: TOGGLE_AUTO_PARSE
-  };
-};
-
-export function setNextRender (value) {
-  return {
-    type: SET_NEXT_RENDER,
-    render: value
   };
 };
 

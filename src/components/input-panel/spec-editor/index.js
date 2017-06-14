@@ -8,7 +8,9 @@ const mapStateToProps = function (state, ownProps) {
     mode: state.app.mode,
     selectedExample: state.app.selectedExample,
     gist: state.app.gist,
-    compiledVegaSpec: state.app.compiledVegaSpec
+    compiledVegaSpec: state.app.compiledVegaSpec,
+    autoParse: state.app.autoParse,
+    parse: state.app.parse
   };
 };
 
@@ -20,6 +22,10 @@ const mapDispatchToProps = function (dispatch) {
 
     updateVegaLiteSpec: (val) => {
       dispatch(EditorActions.updateVegaLiteSpec(val));
+    },
+
+    parseSpec: (val) => {
+      dispatch(EditorActions.parseSpec(val));
     }
   };
 };
