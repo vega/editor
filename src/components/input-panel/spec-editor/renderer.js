@@ -1,11 +1,7 @@
 import React from 'react';
-import ReactResizeDetector from 'react-resize-detector';
-import { MODES, LAYOUT } from '../../../constants';
+import { MODES } from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
 import { hashHistory } from 'react-router';
-
-// import 'brace/mode/json';
-// import 'brace/theme/github';
 
 import './index.css'
 
@@ -24,35 +20,25 @@ const schemas = {
   }
 };
 
+function debounce(func, wait, immediate) {
+	let timeout;
+	return function() {
+		const context = this, args = arguments;
+		const later = () => {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		const callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
 export default class Editor extends React.Component {
   static propTypes = {
     value: React.PropTypes.string,
     onChange: React.PropTypes.func
-  }
-
-  constructor(props) {
-    super(props);
-
-    const h = window.innerHeight - LAYOUT.HeaderHeight;
-    this.state = {
-      height: props.compiledVegaSpec ? h / 2 : h - 25,
-      width: '100%'
-    }
-  }
-
-
-  setHeight (width, height) {
-    if (!height) {
-      return;
-    }
-    this.setState({height});
-  }
-
-  setWidth (width, height) {
-    if (!width) {
-      return;
-    }
-    this.setState({width});
   }
 
   handleEditorChange (spec) {
@@ -65,7 +51,7 @@ export default class Editor extends React.Component {
     }
     this.spec = spec;
     if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
-      hashHistory.push(hashHistory.getCurrentLocation().pathname + '/edited');
+      hashHistory.push(`${this.props.mode}/edited`);
     }
   }
 
@@ -78,17 +64,6 @@ export default class Editor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.compiledVegaSpec !== this.props.compiledVegaSpec) {
-      if (!nextProps.compiledVegaSpec) {
-        this.setState({
-          height: (window.innerHeight - LAYOUT.HeaderHeight) - 25,
-        })
-      } else {
-        this.setState({
-          height: (window.innerHeight - LAYOUT.HeaderHeight) / 2,
-        })
-      }
-    }
 
     if(nextProps.parse) {
       if (this.props.mode === MODES.Vega) {
@@ -102,26 +77,21 @@ export default class Editor extends React.Component {
 
   render () {
     return (
-      <div style={{width: '100%'}}>
-          <MonacoEditor
-            width={'100%'}
-            height={this.state.height}
-            language='json'
-            key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample,
-              gist: this.props.gist}))}
-            options={{
-              folding: true,
-              scrollBeyondLastLine: false,
-              wordWrap: true,
-              wrappingIndent: "same"
-            }}
-            defaultValue={this.props.value}
-            onChange={this.handleEditorChange.bind(this)}
-            editorWillMount={this.editorWillMount.bind(this)}
-          />
-           <ReactResizeDetector handleHeight onResize={this.setHeight.bind(this)} />
-           <ReactResizeDetector handleWidth onResize={this.setWidth.bind(this)} />
-      </div>
+      <MonacoEditor
+        language='json'
+        key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample,
+          gist: this.props.gist}))}
+        options={{
+          folding: true,
+          scrollBeyondLastLine: false,
+          wordWrap: true,
+          wrappingIndent: "same",
+          automaticLayout: true
+        }}
+        defaultValue={this.props.value}
+        onChange={debounce(this.handleEditorChange, 500).bind(this)}
+        editorWillMount={this.editorWillMount.bind(this)}
+      />
     );
   };
 };

@@ -60,7 +60,6 @@ module.exports = {
       'react-grid-layout',
       'react-monaco-editor',
       'react-portal',
-      'react-resize-detector',
       'react-redux',
       'react-router',
       'react-router-redux',

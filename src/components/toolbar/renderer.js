@@ -11,7 +11,6 @@ const getVersion = (mode) => {
 export default class Toolbar extends React.Component {
   static propTypes = {
     error: React.PropTypes.string,
-    debug: React.PropTypes.bool,
     renderer: React.PropTypes.string,
     autoParse: React.PropTypes.bool
   }
@@ -40,11 +39,6 @@ export default class Toolbar extends React.Component {
     return (
       <div className='toolbar'>
         {this.renderWarningsAndErrors()}
-        {/*<div className='debug-toggle' onClick={this.props.toggleDebug}>
-          {
-            this.props.debug ? 'Hide debug tools' : 'Show debug tools'
-          }
-        </div>*/}
         <div className='status'>
           {
             `Mode: ${this.props.mode}  Version: ${getVersion(this.props.mode)}`

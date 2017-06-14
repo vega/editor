@@ -1,18 +1,17 @@
 import * as vl from 'vega-lite';
 
-import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_DEBUG, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
+import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 
 const JSON3 = require('../../../lib/json3-compactstringify');
 
 export default (state = {
-  editorString: JSON3.stringify({}, null, 2, 60),
+  editorString: '{}',
   vegaSpec: {},
   vegaLiteSpec: null,
   selectedExample: null,
   mode: MODES.Vega,
-  debug: false,
   renderer: RENDERERS.Canvas,
   autoParse: true,
   parse: false,
@@ -28,7 +27,7 @@ export default (state = {
         vegaSpec: {},
         vegaLiteSpec: {},
         selectedExample: null,
-        editorString: JSON3.stringify({}, null, 2, 60),
+        editorString: '{}',
         compiledVegaSpec: {},
         gist: null,
         parse: false
@@ -50,7 +49,7 @@ export default (state = {
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
-        editorString: JSON3.stringify(spec, null, 2, 60),
+        editorString: action.spec,
         error: null
       });
     case SET_VEGA_EXAMPLE:
@@ -66,7 +65,7 @@ export default (state = {
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
-        editorString: JSON3.stringify(spec, null, 2, 60),
+        editorString: action.spec,
         selectedExample: action.example,
         error: null
       });
@@ -88,7 +87,7 @@ export default (state = {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
-        editorString: JSON3.stringify(spec, null, 2, 60),
+        editorString: action.spec,
         selectedExample: action.example,
         error: null
       });
@@ -107,7 +106,7 @@ export default (state = {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
-        editorString: JSON3.stringify(spec, null, 2, 60),
+        editorString: action.spec,
         error: null
       });
     case SET_GIST_VEGA_SPEC:
@@ -123,7 +122,7 @@ export default (state = {
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
-        editorString: JSON3.stringify(spec, null, 2, 60),
+        editorString: action.spec,
         gist: action.gist,
         error: null
       });
@@ -142,13 +141,9 @@ export default (state = {
         vegaLiteSpec: spec,
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
-        editorString: JSON3.stringify(spec, null, 2, 60),
+        editorString: action.spec,
         gist: action.gist,
         error: null
-      });
-    case TOGGLE_DEBUG:
-      return Object.assign({}, state, {
-        debug: !state.debug,
       });
     case TOGGLE_AUTO_PARSE:
       return Object.assign({}, state, {

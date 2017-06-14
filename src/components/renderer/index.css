@@ -1,8 +1,3 @@
-
-.vega {
-  /*background: #ccc;*/
-}
-
 .chart-container {
   width: 100%;
   height: 100%;
@@ -15,4 +10,26 @@
   background: white;
   padding: 10px;
   display: inline-block;
+}
+
+.chart .vega-bindings {
+  line-height: 20px;
+}
+.chart .vega-bind-name {
+  display: inline-block;
+  width: 105px;
+}
+.chart .vega-bind input[type="range"] {
+  padding: 0;
+  width: 100px;
+}
+.chart .vega-bind select {
+  max-width: 200px;
+}
+.chart .vega-bind label {
+  margin-left: 4px;
+}
+.chart .vega-bind-radio label {
+  margin-left: 0;
+  margin-right: 4px;
 }

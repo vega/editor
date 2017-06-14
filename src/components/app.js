@@ -9,7 +9,7 @@ import * as EditorActions from '../actions/editor';
 import { connect } from 'react-redux';
 import './app.css';
 import { hashHistory } from 'react-router';
-import { json } from 'd3-request';
+import { text } from 'd3-request';
 
 class App extends React.Component {
 
@@ -50,16 +50,16 @@ class App extends React.Component {
           if (name === 'custom') {
             this.props.setVegaExample(name, '{}');
           } else {
-            json(`./spec/vega/${name}.vg.json`, (spec) => {
-              this.props.setVegaExample(name, JSON.stringify(spec, null, 2));
+            text(`./spec/vega/${name}.vg.json`, spec => {
+              this.props.setVegaExample(name, spec);
             });
           }
-        } else if (parameter.vega === 'vega_lite') {
+        } else if (parameter.vega === 'vega-lite') {
           if (name === 'custom') {
             this.props.setVegaLiteExample(name, '{}');
           } else {
-            json(`./spec/vega-lite/${name}.vl.json`, (spec) => {
-              this.props.setVegaLiteExample(name, JSON.stringify(spec, null, 2));
+            text(`./spec/vega-lite/${name}.vl.json`, spec => {
+              this.props.setVegaLiteExample(name, spec);
             });
           }
         }

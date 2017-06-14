@@ -1,15 +1,10 @@
 .header {
   border-bottom: solid 2px rgba(0, 0, 0, 0.2);
   display: flex;
-  /*align-items: center;*/
-}
-.header img {
-  align-self: flex-end;
 }
 
 .header div, .header a {
   display: inline-block;
-  /*margin-top: 10px;*/
   font-size: 18px;
   align-self: flex-end;
   background: white;
@@ -21,6 +16,12 @@
   padding-right: 20px;
   color: black;
   text-decoration: none;
+}
+
+.header a.idl-logo {
+  padding: 10px 10px 5px 10px;
+  margin: 0;
+  border: none;
 }
 
 .header .button:hover {
@@ -35,9 +36,9 @@
 .modal {
   position: relative;
   top: 0;
-  max-height: 75vh;
-  left: 25%;
-  width: 50%;
+  max-height: 90vh;
+  left: 10%;
+  width: 80%;
   background: white;
   margin: 10px;
   margin-top: 0;
@@ -51,8 +52,8 @@
 .modal-background {
   position: fixed;
   background: rgba(0, 0, 0, 0.8);
-  top: 59px;
-  left: 0%;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   z-index: 80;
@@ -70,8 +71,8 @@
 .modal-header {
   position: absolute;
   top: 70px;
-  left: 25%;
-  width: 50%;
+  left: 10%;
+  width: 80%;
   background: white;
   z-index: 95;
 }
@@ -131,7 +132,7 @@
 }
 
 .specType {
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px #666;
   clear: left;
 }
 
@@ -164,7 +165,7 @@
 .item .name {
   margin-top: 3px;
   padding-top: 5px;
-  border-top: solid 1px #000;
+  border-top: solid 1px #666;
   font-size: 12px;
 }
 
@@ -214,13 +215,14 @@
 }
 
 .customSubmenu {
+  border-left: solid 1px #666;
+  border-right: solid 1px #666;
+  border-bottom: solid 1px #666;
   font-size: 16px;
-  padding: 5px 10px;
+  padding: 10px 10px;
   background: white;
-  border-left: solid 1px black;
-  border-right: solid 1px black;
-  border-bottom: solid 1px black;
   cursor: pointer;
+  width: 160px;
 }
 
 .customSubmenu:hover {

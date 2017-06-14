@@ -7,15 +7,9 @@ import persistState from 'redux-localstorage';
 
 
 export default function configureStore (browserHistory, initialState = {}) {
-  // Compose final middleware and use devtools in debug environment
+  // Compose final middleware
   let middleware = applyMiddleware(thunk);
   middleware = compose(middleware, applyMiddleware(routerMiddleware(browserHistory)));
-
-
-  // if (process.env.NODE_ENV !== 'production') {
-  //   const devTools = require('../components/debug/dev-tools').default.instrument();
-  //   middleware = compose(middleware, devTools);
-  // }
 
 
   const enhancer = compose(
@@ -23,7 +17,7 @@ export default function configureStore (browserHistory, initialState = {}) {
     persistState('app', 'redux'),
   )
 
-  // Create final store and subscribe router in debug env ie. for devtools
+  // Create final store
   const store = createStore(rootReducer, initialState, enhancer);
 
   if (module.hot) {

@@ -6,7 +6,7 @@ body, html {
     overflow: hidden;
 }
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .Resizer {
@@ -21,12 +21,12 @@ body, html {
     background-clip: padding-box;
 }
 
- .Resizer:hover {
+.Resizer:hover {
     -webkit-transition: all 2s ease;
     transition: all 2s ease;
 }
 
- .Resizer.horizontal {
+.Resizer.horizontal {
     height: 11px;
     margin: -5px 0;
     border-top: 5px solid rgba(255, 255, 255, 0);
@@ -53,12 +53,13 @@ body, html {
     border-right: 5px solid rgba(0, 0, 0, 0.5);
 }
 .Resizer.disabled {
-  cursor: not-allowed;
+    cursor: not-allowed;
 }
 .Resizer.disabled:hover {
-  border-color: transparent;
+    border-color: transparent;
 }
 
-.Pane.vertical {
-  overflow-x: auto;
+.Pane, .SplitPane {
+    /* Need to override overflow because we can't set it on the pane. */
+    overflow: visible !important;
 }

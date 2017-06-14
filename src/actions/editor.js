@@ -5,7 +5,6 @@ export const SET_VEGA_EXAMPLE = 'SET_VEGA_EXAMPLE';
 export const SET_VEGA_LITE_EXAMPLE = 'SET_VEGA_LITE_EXAMPLE';
 export const SET_GIST_VEGA_SPEC = 'SET_GIST_VEGA_SPEC';
 export const SET_GIST_VEGA_LITE_SPEC = 'SET_GIST_VEGA_LITE_SPEC';
-export const TOGGLE_DEBUG = 'TOGGLE_DEBUG';
 export const TOGGLE_AUTO_PARSE = 'TOGGLE_AUTO_PARSE';
 export const CYCLE_RENDERER = 'CYCLE_RENDERER';
 export const SHOW_COMPILED_VEGA_SPEC = 'SHOW_COMPILED_VEGA_SPEC'
@@ -68,12 +67,6 @@ export function setGistVegaLiteSpec (gist, spec) {
     type: SET_GIST_VEGA_LITE_SPEC,
     gist: gist,
     spec: spec
-  };
-};
-
-export function toggleDebug () {
-  return {
-    type: TOGGLE_DEBUG
   };
 };
 
