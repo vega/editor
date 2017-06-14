@@ -247,7 +247,7 @@ export default class Header extends React.Component {
         </Portal>
 
         <Portal
-          closeOnOutsideClick={true}
+          closeOnEsc
           isOpened={this.state.exampleIsOpened}
           onClose={() => { this.setState({ exampleIsOpened: false});}}
         >
@@ -269,7 +269,7 @@ export default class Header extends React.Component {
         </Portal>
 
         <Portal
-          closeOnOutsideClick={true}
+          closeOnEsc
           isOpened={this.state.gistIsOpened}
           onClose={() => { this.setState({ gistIsOpened: false});}}
         >
