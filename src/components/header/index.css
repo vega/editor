@@ -35,9 +35,9 @@
 .modal {
   position: relative;
   top: 0;
-  max-height: 75vh;
-  left: 25%;
-  width: 50%;
+  max-height: 85vh;
+  left: 10%;
+  width: 80%;
   background: white;
   margin: 10px;
   margin-top: 0;
@@ -70,8 +70,8 @@
 .modal-header {
   position: absolute;
   top: 70px;
-  left: 25%;
-  width: 50%;
+  left: 10%;
+  width: 80%;
   background: white;
   z-index: 95;
 }
@@ -131,7 +131,7 @@
 }
 
 .specType {
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px #666;
   clear: left;
 }
 
@@ -164,7 +164,7 @@
 .item .name {
   margin-top: 3px;
   padding-top: 5px;
-  border-top: solid 1px #000;
+  border-top: solid 1px #666;
   font-size: 12px;
 }
 
