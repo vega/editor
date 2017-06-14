@@ -13,7 +13,7 @@ class InputPanel extends React.Component {
     const innerPanes = [<SpecEditor key='editor' />];
     if (mode === MODES.VegaLite) {
       if (this.props.compiledVegaSpec) {
-        innerPanes.push(<CompiledSpecDisplay style={{height:'100%'}} key='compiled'/>);
+        innerPanes.push(<CompiledSpecDisplay key='compiled'/>);
       } else {
         innerPanes.push(<CompiledSpecHeader key='compiledSpecHeader'/>)
       }
@@ -29,11 +29,12 @@ class InputPanel extends React.Component {
         outerComponent = React.createElement(SplitPane,
         {
           split: 'horizontal',
-          defaultSize: (window.innerHeight - LAYOUT.HeaderHeight) / innerPanes.length
+          defaultSize: (window.innerHeight - LAYOUT.HeaderHeight) / innerPanes.length,
+          pane2Style: {display: 'flex'}
         },
         innerPanes);
     } else {
-      outerComponent = React.createElement('div', {style: {width: '100%'}}, innerPanes);
+      outerComponent = React.createElement('div', {style: {width: '100%', height: '100%'}}, innerPanes);
     }
     return outerComponent;
   };

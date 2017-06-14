@@ -10,6 +10,7 @@ const toggleStyle = {
   fontSize: '12px',
   width: '100%',
   height: 25,
+  flexShrink: 0,
   backgroundColor: '#e6e6e6',
   alignItems: 'center',
   fontFamily: 'Helvetica',
