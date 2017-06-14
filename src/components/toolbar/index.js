@@ -4,7 +4,6 @@ import * as EditorActions from '../../actions/editor';
 
 function mapStateToProps (state, ownProps) {
   return {
-    debug: state.app.debug,
     renderer: state.app.renderer,
     error: state.app.error,
     mode: state.app.mode
@@ -14,10 +13,6 @@ function mapStateToProps (state, ownProps) {
 
 const mapDispatchToProps = function (dispatch) {
   return {
-    toggleDebug: () => {
-      dispatch(EditorActions.toggleDebug());
-    },
-
     cycleRenderer: () => {
       dispatch(EditorActions.cycleRenderer());
     }
