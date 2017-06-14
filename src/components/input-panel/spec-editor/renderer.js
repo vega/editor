@@ -3,9 +3,6 @@ import { MODES } from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
 import { hashHistory } from 'react-router';
 
-// import 'brace/mode/json';
-// import 'brace/theme/github';
-
 import './index.css'
 
 const vegaSchema = require('../../../../schema/vega.schema.json');
