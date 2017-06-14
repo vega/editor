@@ -633,12 +633,7 @@
                               },
                               {
                                 "properties": {
-                                  "value": {
-                                    "enum": [
-                                      "horizontal",
-                                      "vertical"
-                                    ]
-                                  }
+                                  "value": {}
                                 },
                                 "required": [
                                   "value"
@@ -671,13 +666,6 @@
                           },
                           {
                             "required": [
-                              "scale",
-                              "value"
-                            ]
-                          },
-                          {
-                            "required": [
-                              "scale",
                               "band"
                             ]
                           },
@@ -708,12 +696,7 @@
                         },
                         {
                           "properties": {
-                            "value": {
-                              "enum": [
-                                "horizontal",
-                                "vertical"
-                              ]
-                            }
+                            "value": {}
                           },
                           "required": [
                             "value"
@@ -746,13 +729,6 @@
                     },
                     {
                       "required": [
-                        "scale",
-                        "value"
-                      ]
-                    },
-                    {
-                      "required": [
-                        "scale",
                         "band"
                       ]
                     },
@@ -794,13 +770,7 @@
                               },
                               {
                                 "properties": {
-                                  "value": {
-                                    "enum": [
-                                      "left",
-                                      "right",
-                                      "center"
-                                    ]
-                                  }
+                                  "value": {}
                                 },
                                 "required": [
                                   "value"
@@ -833,13 +803,6 @@
                           },
                           {
                             "required": [
-                              "scale",
-                              "value"
-                            ]
-                          },
-                          {
-                            "required": [
-                              "scale",
                               "band"
                             ]
                           },
@@ -870,13 +833,7 @@
                         },
                         {
                           "properties": {
-                            "value": {
-                              "enum": [
-                                "left",
-                                "right",
-                                "center"
-                              ]
-                            }
+                            "value": {}
                           },
                           "required": [
                             "value"
@@ -909,13 +866,6 @@
                     },
                     {
                       "required": [
-                        "scale",
-                        "value"
-                      ]
-                    },
-                    {
-                      "required": [
-                        "scale",
                         "band"
                       ]
                     },
@@ -954,14 +904,7 @@
                               },
                               {
                                 "properties": {
-                                  "value": {
-                                    "enum": [
-                                      "top",
-                                      "middle",
-                                      "bottom",
-                                      "alphabetic"
-                                    ]
-                                  }
+                                  "value": {}
                                 },
                                 "required": [
                                   "value"
@@ -994,13 +937,6 @@
                           },
                           {
                             "required": [
-                              "scale",
-                              "value"
-                            ]
-                          },
-                          {
-                            "required": [
-                              "scale",
                               "band"
                             ]
                           },
@@ -1031,14 +967,7 @@
                         },
                         {
                           "properties": {
-                            "value": {
-                              "enum": [
-                                "top",
-                                "middle",
-                                "bottom",
-                                "alphabetic"
-                              ]
-                            }
+                            "value": {}
                           },
                           "required": [
                             "value"
@@ -1071,13 +1000,6 @@
                     },
                     {
                       "required": [
-                        "scale",
-                        "value"
-                      ]
-                    },
-                    {
-                      "required": [
-                        "scale",
                         "band"
                       ]
                     },
@@ -1126,7 +1048,7 @@
           "$ref": "#/refs/numberValue"
         },
         "fontWeight": {
-          "$ref": "#/refs/nullableStringValue"
+          "$ref": "#/refs/stringValue"
         },
         "fontStyle": {
           "$ref": "#/refs/stringValue"
@@ -7201,16 +7123,7 @@
                           },
                           {
                             "properties": {
-                              "value": {
-                                "oneOf": [
-                                  {
-                                    "type": {}
-                                  },
-                                  {
-                                    "type": "null"
-                                  }
-                                ]
-                              }
+                              "value": {}
                             },
                             "required": [
                               "value"
@@ -7243,13 +7156,6 @@
                       },
                       {
                         "required": [
-                          "scale",
-                          "value"
-                        ]
-                      },
-                      {
-                        "required": [
-                          "scale",
                           "band"
                         ]
                       },
@@ -7280,16 +7186,7 @@
                     },
                     {
                       "properties": {
-                        "value": {
-                          "oneOf": [
-                            {
-                              "type": {}
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        }
+                        "value": {}
                       },
                       "required": [
                         "value"
@@ -7322,13 +7219,6 @@
                 },
                 {
                   "required": [
-                    "scale",
-                    "value"
-                  ]
-                },
-                {
-                  "required": [
-                    "scale",
                     "band"
                   ]
                 },
@@ -7367,9 +7257,7 @@
                           },
                           {
                             "properties": {
-                              "value": {
-                                "type": "number"
-                              }
+                              "value": {}
                             },
                             "required": [
                               "value"
@@ -7402,13 +7290,6 @@
                       },
                       {
                         "required": [
-                          "scale",
-                          "value"
-                        ]
-                      },
-                      {
-                        "required": [
-                          "scale",
                           "band"
                         ]
                       },
@@ -7439,9 +7320,7 @@
                     },
                     {
                       "properties": {
-                        "value": {
-                          "type": "number"
-                        }
+                        "value": {}
                       },
                       "required": [
                         "value"
@@ -7474,13 +7353,6 @@
                 },
                 {
                   "required": [
-                    "scale",
-                    "value"
-                  ]
-                },
-                {
-                  "required": [
-                    "scale",
                     "band"
                   ]
                 },
@@ -7519,9 +7391,7 @@
                           },
                           {
                             "properties": {
-                              "value": {
-                                "type": "string"
-                              }
+                              "value": {}
                             },
                             "required": [
                               "value"
@@ -7554,13 +7424,6 @@
                       },
                       {
                         "required": [
-                          "scale",
-                          "value"
-                        ]
-                      },
-                      {
-                        "required": [
-                          "scale",
                           "band"
                         ]
                       },
@@ -7591,9 +7454,7 @@
                     },
                     {
                       "properties": {
-                        "value": {
-                          "type": "string"
-                        }
+                        "value": {}
                       },
                       "required": [
                         "value"
@@ -7626,13 +7487,6 @@
                 },
                 {
                   "required": [
-                    "scale",
-                    "value"
-                  ]
-                },
-                {
-                  "required": [
-                    "scale",
                     "band"
                   ]
                 },
@@ -7671,9 +7525,7 @@
                           },
                           {
                             "properties": {
-                              "value": {
-                                "type": "boolean"
-                              }
+                              "value": {}
                             },
                             "required": [
                               "value"
@@ -7706,13 +7558,6 @@
                       },
                       {
                         "required": [
-                          "scale",
-                          "value"
-                        ]
-                      },
-                      {
-                        "required": [
-                          "scale",
                           "band"
                         ]
                       },
@@ -7743,9 +7588,7 @@
                     },
                     {
                       "properties": {
-                        "value": {
-                          "type": "boolean"
-                        }
+                        "value": {}
                       },
                       "required": [
                         "value"
@@ -7778,13 +7621,6 @@
                 },
                 {
                   "required": [
-                    "scale",
-                    "value"
-                  ]
-                },
-                {
-                  "required": [
-                    "scale",
                     "band"
                   ]
                 },
@@ -7823,9 +7659,7 @@
                           },
                           {
                             "properties": {
-                              "value": {
-                                "type": "array"
-                              }
+                              "value": {}
                             },
                             "required": [
                               "value"
@@ -7858,13 +7692,6 @@
                       },
                       {
                         "required": [
-                          "scale",
-                          "value"
-                        ]
-                      },
-                      {
-                        "required": [
-                          "scale",
                           "band"
                         ]
                       },
@@ -7895,9 +7722,7 @@
                     },
                     {
                       "properties": {
-                        "value": {
-                          "type": "array"
-                        }
+                        "value": {}
                       },
                       "required": [
                         "value"
@@ -7930,179 +7755,6 @@
                 },
                 {
                   "required": [
-                    "scale",
-                    "value"
-                  ]
-                },
-                {
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
-                },
-                {
-                  "required": [
-                    "offset"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "nullableStringValue": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "allOf": [
-              {
-                "$ref": "#/defs/rule"
-              },
-              {
-                "type": "object",
-                "allOf": [
-                  {
-                    "$ref": "#/refs/stringModifiers"
-                  },
-                  {
-                    "anyOf": [
-                      {
-                        "oneOf": [
-                          {
-                            "$ref": "#/refs/signal"
-                          },
-                          {
-                            "properties": {
-                              "value": {
-                                "oneOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "null"
-                                  }
-                                ]
-                              }
-                            },
-                            "required": [
-                              "value"
-                            ]
-                          },
-                          {
-                            "properties": {
-                              "field": {
-                                "$ref": "#/refs/field"
-                              }
-                            },
-                            "required": [
-                              "field"
-                            ]
-                          },
-                          {
-                            "properties": {
-                              "range": {
-                                "type": [
-                                  "number",
-                                  "boolean"
-                                ]
-                              }
-                            },
-                            "required": [
-                              "range"
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
-                      },
-                      {
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
-                      },
-                      {
-                        "required": [
-                          "offset"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "type": "object",
-          "allOf": [
-            {
-              "$ref": "#/refs/stringModifiers"
-            },
-            {
-              "anyOf": [
-                {
-                  "oneOf": [
-                    {
-                      "$ref": "#/refs/signal"
-                    },
-                    {
-                      "properties": {
-                        "value": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        }
-                      },
-                      "required": [
-                        "value"
-                      ]
-                    },
-                    {
-                      "properties": {
-                        "field": {
-                          "$ref": "#/refs/field"
-                        }
-                      },
-                      "required": [
-                        "field"
-                      ]
-                    },
-                    {
-                      "properties": {
-                        "range": {
-                          "type": [
-                            "number",
-                            "boolean"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "range"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
-                },
-                {
-                  "required": [
-                    "scale",
                     "band"
                   ]
                 },
@@ -8197,7 +7849,7 @@
       "title": "ColorRef",
       "oneOf": [
         {
-          "$ref": "#/refs/nullableStringValue"
+          "$ref": "#/refs/stringValue"
         },
         {
           "type": "object",
