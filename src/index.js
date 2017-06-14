@@ -31,8 +31,9 @@ ReactDOM.render(
         <Route path='/' component={App} />
         <Route path='/:mode' component={App} />
         <Route path='/:mode/edited' component={App} />
-        <Route path='/gist/:vega/:username/:id' component={App} />
-        <Route path='/examples/:vega/:example_name' component={App} />
+        <Route path='/gist/:mode/:username/:id' component={App} />
+        <Route path='/examples/:mode/:example_name' component={App} />
+        <Route path='/examples/:mode/:example_name/edited' component={App} />
       </Router>
     </Provider>
   ),
