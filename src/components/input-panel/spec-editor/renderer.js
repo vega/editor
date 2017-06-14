@@ -20,6 +20,21 @@ const schemas = {
   }
 };
 
+function debounce(func, wait, immediate) {
+	let timeout;
+	return function() {
+		const context = this, args = arguments;
+		const later = () => {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		const callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
 export default class Editor extends React.Component {
   static propTypes = {
     value: React.PropTypes.string,
@@ -59,7 +74,7 @@ export default class Editor extends React.Component {
           automaticLayout: true
         }}
         defaultValue={this.props.value}
-        onChange={this.handleEditorChange.bind(this)}
+        onChange={debounce(this.handleEditorChange, 500).bind(this)}
         editorWillMount={this.editorWillMount.bind(this)}
       />
     );
