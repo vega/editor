@@ -33,7 +33,6 @@ ReactDOM.render(
         <Route path='/:mode/edited' component={App} />
         <Route path='/gist/:vega/:username/:id' component={App} />
         <Route path='/examples/:vega/:example_name' component={App} />
-        <Route path='/examples/:vega/:example_name/edited' component={App} />
       </Router>
     </Provider>
   ),

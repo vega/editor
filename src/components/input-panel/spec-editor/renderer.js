@@ -48,7 +48,7 @@ export default class Editor extends React.Component {
       this.props.updateVegaLiteSpec(spec);
     }
     if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
-      hashHistory.push('/edited');
+      hashHistory.push(`${this.props.mode}/edited`);
     }
   }
 
