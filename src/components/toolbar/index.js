@@ -6,13 +6,22 @@ function mapStateToProps (state, ownProps) {
   return {
     renderer: state.app.renderer,
     error: state.app.error,
-    mode: state.app.mode
+    mode: state.app.mode,
+    autoParse: state.app.autoParse
   };
 }
 
 
 const mapDispatchToProps = function (dispatch) {
   return {
+    toggleAutoParse: () => {
+      dispatch(EditorActions.toggleAutoParse());
+    },
+
+    parseSpec: () => {
+      dispatch(EditorActions.parseSpec(true));
+    },
+
     cycleRenderer: () => {
       dispatch(EditorActions.cycleRenderer());
     }

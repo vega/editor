@@ -11,7 +11,8 @@ const getVersion = (mode) => {
 export default class Toolbar extends React.Component {
   static propTypes = {
     error: React.PropTypes.string,
-    renderer: React.PropTypes.string
+    renderer: React.PropTypes.string,
+    autoParse: React.PropTypes.bool
   }
 
   renderWarningsAndErrors() {
@@ -19,6 +20,16 @@ export default class Toolbar extends React.Component {
       return (
         <div className='error-field'>
           {this.props.error}
+        </div>
+      )
+    }
+  }
+
+  manualParseSpec() {
+    if(!this.props.autoParse) {
+      return (
+        <div className='autoParse' onClick={this.props.parseSpec}>
+          {`Parse`}
         </div>
       )
     }
@@ -33,6 +44,12 @@ export default class Toolbar extends React.Component {
             `Mode: ${this.props.mode}  Version: ${getVersion(this.props.mode)}`
           }
         </div>
+        <div className='autoParse' onClick={this.props.toggleAutoParse}>
+          {
+            this.props.autoParse ? `Parse: auto` : `Parse: manual`
+          }
+        </div>
+        {this.manualParseSpec()}
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
           {
             `Renderer: ${this.props.renderer}`

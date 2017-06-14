@@ -1,6 +1,6 @@
 import * as vl from 'vega-lite';
 
-import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
+import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 
@@ -13,6 +13,8 @@ export default (state = {
   selectedExample: null,
   mode: MODES.Vega,
   renderer: RENDERERS.Canvas,
+  autoParse: true,
+  parse: false,
   compiledVegaSpec: false,
   gist: null,
   error: null
@@ -27,7 +29,12 @@ export default (state = {
         selectedExample: null,
         editorString: '{}',
         compiledVegaSpec: {},
-        gist: null
+        gist: null,
+        parse: false
+      });
+    case PARSE_SPEC:
+      return Object.assign({}, state, {
+        parse: action.parse
       });
     case UPDATE_VEGA_SPEC:
       try {
@@ -137,6 +144,11 @@ export default (state = {
         editorString: action.spec,
         gist: action.gist,
         error: null
+      });
+    case TOGGLE_AUTO_PARSE:
+      return Object.assign({}, state, {
+        autoParse: !state.autoParse,
+        parse: !state.autoParse
       });
     case CYCLE_RENDERER:
       const rendererVals = Object.values(RENDERERS);

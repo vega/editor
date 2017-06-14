@@ -20,6 +20,12 @@
   cursor: pointer;
 }
 
+.autoParse {
+  background: #777;
+  color: white;
+  cursor: pointer;
+}
+
 .status {
   background: #399e39;
   color: white;
