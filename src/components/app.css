@@ -59,6 +59,7 @@ body, html {
     border-color: transparent;
 }
 
-.Pane.vertical {
-    overflow-x: auto;
+.Pane, .SplitPane {
+    /* Need to override overflow because we can't set it on the pane. */
+    overflow: visible !important;
 }
