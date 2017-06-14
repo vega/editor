@@ -209,7 +209,9 @@ export default class Header extends React.Component {
 
     return (
         <div className='header'>
-          <img height={37} style={{margin: 10}} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
+          <a className="idl-logo" href="https://idl.cs.washington.edu/">
+            <img height={37} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
+          </a>
           {examplesButton}
           {gistButton}
           {docsLink}
@@ -239,7 +241,7 @@ export default class Header extends React.Component {
               {'Vega'}
             </div>
             <div className='customSubmenu' onClick={() => this.onSelectVegaLite('custom')}>
-              {'VegaLite'}
+              {'Vega-Lite'}
             </div>
           </div>
         </Portal>

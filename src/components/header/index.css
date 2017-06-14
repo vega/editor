@@ -1,15 +1,10 @@
 .header {
   border-bottom: solid 2px rgba(0, 0, 0, 0.2);
   display: flex;
-  /*align-items: center;*/
-}
-.header img {
-  align-self: flex-end;
 }
 
 .header div, .header a {
   display: inline-block;
-  /*margin-top: 10px;*/
   font-size: 18px;
   align-self: flex-end;
   background: white;
@@ -21,6 +16,12 @@
   padding-right: 20px;
   color: black;
   text-decoration: none;
+}
+
+.header a.idl-logo {
+  padding: 10px 10px 5px 10px;
+  margin: 0;
+  border: none;
 }
 
 .header .button:hover {
@@ -214,13 +215,14 @@
 }
 
 .customSubmenu {
+  border-left: solid 1px #666;
+  border-right: solid 1px #666;
+  border-bottom: solid 1px #666;
   font-size: 16px;
-  padding: 5px 10px;
+  padding: 10px 10px;
   background: white;
-  border-left: solid 1px black;
-  border-right: solid 1px black;
-  border-bottom: solid 1px black;
   cursor: pointer;
+  width: 160px;
 }
 
 .customSubmenu:hover {
