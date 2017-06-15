@@ -115,8 +115,7 @@ export default class Header extends React.Component {
           const targetRect = e.target.getBoundingClientRect();
           this.setState({
             customIsOpened: true,
-            left: targetRect.left,
-            width: targetRect.width,
+            left: targetRect.left
           });
         }}>
         {'New'}
