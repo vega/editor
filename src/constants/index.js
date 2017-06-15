@@ -1,4 +1,3 @@
-
 import * as SPECS from './specs';
 
 const Vega = 'vega';
