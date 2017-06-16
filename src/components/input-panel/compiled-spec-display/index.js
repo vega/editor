@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 import * as EditorActions from '../../../actions/editor';
 import CompiledSpecDisplayHeader from '../compiled-spec-header'
+const JSON3 = require('../../../../lib/json3-compactstringify');
 
 class CompiledSpecDisplay extends React.Component {
   render () {
@@ -22,7 +23,7 @@ class CompiledSpecDisplay extends React.Component {
         }}
         language='json'
         key={JSON.stringify(this.state)}
-        value={JSON.stringify(this.props.value, null, 2)}
+        value={JSON3.stringify(this.props.value, null, 2, 60)}
       />
     </div>
     )
