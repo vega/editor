@@ -25,16 +25,6 @@ export default class Toolbar extends React.Component {
     }
   }
 
-  manualParseSpec() {
-    if(!this.props.autoParse) {
-      return (
-        <div className='autoParse' onClick={this.props.parseSpec}>
-          {`Parse`}
-        </div>
-      )
-    }
-  }
-
   render () {
     return (
       <div className='toolbar'>
@@ -49,7 +39,6 @@ export default class Toolbar extends React.Component {
             this.props.autoParse ? `Parse: auto` : `Parse: manual`
           }
         </div>
-        {this.manualParseSpec()}
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
           {
             `Renderer: ${this.props.renderer}`

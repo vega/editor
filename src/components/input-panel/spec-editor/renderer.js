@@ -75,23 +75,36 @@ export default class Editor extends React.Component {
     }
   }
 
+   manualParseSpec() {
+    if(!this.props.autoParse) {
+      return (
+        <button id='parse-button' onClick={this.props.parseSpec}>Parse</button>
+      )
+    } else {
+      return null;
+    }
+  }
+
   render () {
     return (
-      <MonacoEditor
-        language='json'
-        key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample,
-          gist: this.props.gist}))}
-        options={{
-          folding: true,
-          scrollBeyondLastLine: false,
-          wordWrap: true,
-          wrappingIndent: "same",
-          automaticLayout: true
-        }}
-        defaultValue={this.props.value}
-        onChange={debounce(this.handleEditorChange, 500).bind(this)}
-        editorWillMount={this.editorWillMount.bind(this)}
-      />
+      <div style={{height: '100%', width: '100%'}}>
+        {this.manualParseSpec()}
+        <MonacoEditor
+          language='json'
+          key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample,
+            gist: this.props.gist}))}
+          options={{
+            folding: true,
+            scrollBeyondLastLine: false,
+            wordWrap: true,
+            wrappingIndent: "same",
+            automaticLayout: true
+          }}
+          defaultValue={this.props.value}
+          onChange={debounce(this.handleEditorChange, 500).bind(this)}
+          editorWillMount={this.editorWillMount.bind(this)}
+        />
+      </div>
     );
   };
 };

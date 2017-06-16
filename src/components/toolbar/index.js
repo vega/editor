@@ -18,10 +18,6 @@ const mapDispatchToProps = function (dispatch) {
       dispatch(EditorActions.toggleAutoParse());
     },
 
-    parseSpec: () => {
-      dispatch(EditorActions.parseSpec(true));
-    },
-
     cycleRenderer: () => {
       dispatch(EditorActions.cycleRenderer());
     }
