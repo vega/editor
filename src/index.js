@@ -29,7 +29,7 @@ ReactDOM.render(
     <Provider store={store}>
       <Router history={hashHistory} >
         <Route path='/' component={App} />
-        <Route path='/:mode/edited' component={App} />
+        <Route path='/edited' component={App} />
         <Route path='/gist/:mode/:username/:id' component={App} />
         <Route path='/examples/:mode/:example_name' component={App} />
       </Router>
