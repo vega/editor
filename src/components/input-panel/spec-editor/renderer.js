@@ -78,7 +78,9 @@ export default class Editor extends React.Component {
    manualParseSpec() {
     if(!this.props.autoParse) {
       return (
-        <button id='parse-button' onClick={this.props.parseSpec}>Parse</button>
+        <div className="editor-header"> 
+          <button id='parse-button' onClick={this.props.parseSpec}>Parse</button>
+        </div>
       )
     } else {
       return null;
@@ -87,7 +89,10 @@ export default class Editor extends React.Component {
 
   render () {
     return (
-      <div style={{height: '100%', width: '100%'}}>
+      <div
+        style={{width: '100%', height: '100%'}}
+        className={'sizeFixEditorParent'}
+      >
         {this.manualParseSpec()}
         <MonacoEditor
           language='json'

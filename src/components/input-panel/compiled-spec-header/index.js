@@ -6,14 +6,6 @@ const toggleStyle = {
   cursor:'pointer',
   position: 'absolute',
   bottom: 0,
-  display: 'flex',
-  fontSize: '12px',
-  width: '100%',
-  height: 25,
-  flexShrink: 0,
-  backgroundColor: '#e6e6e6',
-  alignItems: 'center',
-  fontFamily: 'Helvetica',
 };
 
 const svgStyle = {
@@ -34,7 +26,8 @@ class CompiledSpecDisplayHeader extends React.Component {
         position: 'static'
       });
       return (
-        <div style={toggleStyleUp}
+        <div  className="editor-header"
+             style={toggleStyleUp}
              onClick={this.props.showCompiledVegaSpec}>
             <span style={{marginLeft: 10}}>
               Compiled Vega
@@ -54,7 +47,7 @@ class CompiledSpecDisplayHeader extends React.Component {
       return (
         <div style={{width: '100%'}}
              onClick={this.props.showCompiledVegaSpec}>
-          <div style={toggleStyle}>
+          <div className="editor-header" style={toggleStyle}>
             <span style={{marginLeft: 10}}>
               Compiled Vega
             </span>
