@@ -8,7 +8,6 @@ const mapStateToProps = function (state, ownProps) {
     mode: state.app.mode,
     selectedExample: state.app.selectedExample,
     gist: state.app.gist,
-    compiledVegaSpec: state.app.compiledVegaSpec,
     autoParse: state.app.autoParse,
     parse: state.app.parse
   };
