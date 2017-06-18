@@ -8,24 +8,21 @@ const JSON3 = require('../../../../lib/json3-compactstringify');
 class CompiledSpecDisplay extends React.Component {
   render () {
     return (
-      <div
-        style={{width: '100%', flex: 1, display: 'flex', flexDirection: 'column'}}
-        className={'sizeFixEditorParent'}
-      >
-      <CompiledSpecDisplayHeader />
-      <MonacoEditor
-        options={{
-          readOnly:true,
-          folding: true,
-          scrollBeyondLastLine: false,
-          wordWrap: true,
-          automaticLayout: true
-        }}
-        language='json'
-        key={JSON.stringify(this.state)}
-        value={JSON3.stringify(this.props.value, null, 2, 60)}
-      />
-    </div>
+      <div className={'sizeFixEditorParent full-height-wrapper'}>
+        <CompiledSpecDisplayHeader />
+        <MonacoEditor
+          options={{
+            readOnly:true,
+            folding: true,
+            scrollBeyondLastLine: false,
+            wordWrap: true,
+            automaticLayout: true
+          }}
+          language='json'
+          key={JSON.stringify(this.state)}
+          value={JSON3.stringify(this.props.value, null, 2, 60)}
+        />
+      </div>
     )
   };
 };

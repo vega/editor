@@ -1,0 +1,14 @@
+.full-height-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+}
+
+.full-height-wrapper > .full-height-wrapper {
+    flex: 1;
+}
+
+.full-height-wrapper .react-monaco-editor-container {
+    flex: 1;
+}

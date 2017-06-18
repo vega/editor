@@ -86,12 +86,10 @@ export default class Editor extends React.Component {
       return null;
     }
   }
-
+ 
   render () {
     return (
-      <div
-        style={{width: '100%', height: '100%'}}
-      >
+      <div className={'full-height-wrapper'}>
         {this.manualParseSpec()}
         <MonacoEditor
           language='json'
@@ -101,7 +99,7 @@ export default class Editor extends React.Component {
             folding: true,
             scrollBeyondLastLine: false,
             wordWrap: true,
-            wrappingIndent: "same",
+            wrappingIndent: 'same',
             automaticLayout: true
           }}
           defaultValue={this.props.value}

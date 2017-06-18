@@ -34,7 +34,9 @@ class InputPanel extends React.Component {
         },
         innerPanes);
     } else {
-      outerComponent = React.createElement('div', {style: {width: '100%', height: '100%'}}, innerPanes);
+      outerComponent = <div className={'full-height-wrapper'}>
+        {innerPanes}
+      </div>
     }
     return outerComponent;
   };

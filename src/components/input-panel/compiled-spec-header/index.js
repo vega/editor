@@ -45,8 +45,8 @@ class CompiledSpecDisplayHeader extends React.Component {
       );
     } else {
       return (
-        <div style={{width: '100%'}}
-             onClick={this.props.showCompiledVegaSpec}>
+        <div className={'full-height-wrapper'}
+            onClick={this.props.showCompiledVegaSpec}>
           <div className="editor-header" style={toggleStyle}>
             <span style={{marginLeft: 10}}>
               Compiled Vega
