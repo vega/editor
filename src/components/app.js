@@ -17,6 +17,9 @@ class App extends React.Component {
   componentDidMount() {
     window.addEventListener("message", (evt) => {
       var data = evt.data;
+      if (!data.spec) {
+        return;
+      }
       console.log('[Vega-Editor] Received Message', evt.origin, data);
       // send acknowledgement
       var parsed = JSON.parse(data.spec);
@@ -25,25 +28,20 @@ class App extends React.Component {
         evt.source.postMessage(true, '*');
       }
 
-      setTimeout(() => {
-        if (data.spec) {
-          if (data.mode.toUpperCase() === 'VEGA') {
-            this.props.updateVegaSpec(data.spec);
-          } else if (data.mode.toUpperCase() === 'VEGA-LITE') {
-            this.props.updateVegaLiteSpec(data.spec);
-          }
+      if (data.spec) {
+        if (data.mode.toUpperCase() === 'VEGA') {
+          this.props.updateVegaSpec(data.spec);
+        } else if (data.mode.toUpperCase() === 'VEGA-LITE') {
+          this.props.updateVegaLiteSpec(data.spec);
         }
-      }, 500);
+      }
     }, false);
 
     const parameter = this.props.params;
     if (parameter.mode && hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
        this.props.setMode(parameter.mode);
     }
-
-    setTimeout(() => {
-      this.setExample(this.props.params);
-    }, 500);
+    this.setExample(this.props.params);
   }
 
   componentWillReceiveProps(nextProps) {
