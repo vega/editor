@@ -56,7 +56,6 @@ module.exports = {
     vendor: [
       'react',
       'react-dom',
-      'react-grid-layout',
       'react-monaco-editor',
       'react-portal',
       'react-redux',
