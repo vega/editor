@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import './app.css';
 import { hashHistory } from 'react-router';
 import { text } from 'd3-request';
+import equal from 'deep-equal';
 
 class App extends React.Component {
 
@@ -46,7 +47,7 @@ class App extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.params !== nextProps.params) {
+    if (!equal(this.props.params, nextProps.params)) {
       this.setExample(nextProps.params);
     }
   }
