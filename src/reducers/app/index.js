@@ -28,7 +28,7 @@ export default (state = {
         vegaLiteSpec: {},
         selectedExample: null,
         editorString: '{}',
-        compiledVegaSpec: {},
+        compiledVegaSpec: false,
         gist: null,
         parse: false
       });
