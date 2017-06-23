@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as vega from 'vega';
 import './index.css';
+import Vega from '../../constants'
 
 
 export default class Editor extends React.Component {
   static propTypes = {
-    vegaSpec: PropTypes.object
+    vegaSpec: PropTypes.object,
+    renderer: PropTypes.string,
+    mode: PropTypes.string
   }
 
   renderVega (props) {
@@ -16,8 +19,12 @@ export default class Editor extends React.Component {
       .logLevel(vega.Warn)
       .initialize(this.refs.chart)
       .renderer(props.renderer)
-      .hover()
-      .run();
+    
+    if (props.mode === Vega) {
+      view.hover()
+    }
+
+    view.run();
 
     this.refs.chart.style.width = 'auto';
     window.VEGA_DEBUG.view = view;
