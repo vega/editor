@@ -1,6 +1,4 @@
-const Vega = { 'Static': [ { "name": "bar" } ]};
-
-
+const Vega = require('../../public/spec/vega/index.json');
 const VegaLite = require('../../public/spec/vega-lite/index.json');
 
 export {
