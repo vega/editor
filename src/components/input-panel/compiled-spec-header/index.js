@@ -26,7 +26,7 @@ class CompiledSpecDisplayHeader extends React.Component {
         position: 'static'
       });
       return (
-        <div  className="editor-header"
+        <div className="editor-header"
              style={toggleStyleUp}
              onClick={this.props.showCompiledVegaSpec}>
             <span style={{marginLeft: 10}}>
@@ -45,8 +45,7 @@ class CompiledSpecDisplayHeader extends React.Component {
       );
     } else {
       return (
-        <div className={'full-height-wrapper'}
-            onClick={this.props.showCompiledVegaSpec}>
+        <div onClick={this.props.showCompiledVegaSpec}>
           <div className="editor-header" style={toggleStyle}>
             <span style={{marginLeft: 10}}>
               Compiled Vega
@@ -55,9 +54,6 @@ class CompiledSpecDisplayHeader extends React.Component {
               style={svgStyle}>
               <polygon points="5,20 30,20 17.5,5" />
             </svg>
-            <span style={{marginRight: 10, position: 'absolute', right: 0}}>
-              Read Only
-            </span>
           </div>
         </div>
       );
