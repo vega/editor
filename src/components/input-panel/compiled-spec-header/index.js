@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import * as EditorActions from '../../../actions/editor';
 
 const toggleStyle = {
-  cursor:'pointer',
-  position: 'absolute',
-  bottom: 0,
+  cursor:'pointer'
 };
 
 const svgStyle = {
@@ -45,16 +43,14 @@ class CompiledSpecDisplayHeader extends React.Component {
       );
     } else {
       return (
-        <div onClick={this.props.showCompiledVegaSpec}>
-          <div className="editor-header" style={toggleStyle}>
-            <span style={{marginLeft: 10}}>
-              Compiled Vega
-            </span>
-            <svg
-              style={svgStyle}>
-              <polygon points="5,20 30,20 17.5,5" />
-            </svg>
-          </div>
+        <div onClick={this.props.showCompiledVegaSpec} className="editor-header" style={toggleStyle}>
+          <span style={{marginLeft: 10}}>
+            Compiled Vega
+          </span>
+          <svg
+            style={svgStyle}>
+            <polygon points="5,20 30,20 17.5,5" />
+          </svg>
         </div>
       );
     }
