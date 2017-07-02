@@ -41,6 +41,10 @@ export default class Editor extends React.Component {
     onChange: React.PropTypes.func
   }
 
+  componentDidMount() {
+    this.spec = this.props.value;
+  }
+
   handleEditorChange (spec) {
     if(this.props.autoParse) {
       if (this.props.mode === MODES.Vega) {
@@ -79,7 +83,7 @@ export default class Editor extends React.Component {
     if(!this.props.autoParse) {
       return (
         <div className="editor-header"> 
-          <button id='parse-button' onClick={this.props.parseSpec}>Parse</button>
+          <button id='parse-button' onClick={() => this.props.parseSpec(true)}>Parse</button>
         </div>
       )
     } else {
