@@ -32,6 +32,7 @@ ReactDOM.render(
         <Route path='/edited' component={App} />
         <Route path='/gist/:mode/:username/:id' component={App} />
         <Route path='/examples/:mode/:example_name' component={App} />
+        <Route path='/custom/:mode' component={App} />
       </Router>
     </Provider>
   ),

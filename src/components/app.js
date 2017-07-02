@@ -53,23 +53,24 @@ class App extends React.Component {
   setExample(parameter) {
     if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
       if (parameter && parameter.example_name) {
+        // open example
+
         const name = parameter.example_name;
         if (parameter.mode === 'vega') {
-          if (name === 'custom') {
-            this.props.setVegaExample(name, '{}');
-          } else {
-            text(`./spec/vega/${name}.vg.json`, spec => {
-              this.props.setVegaExample(name, spec);
-            });
-          }
+          text(`./spec/vega/${name}.vg.json`, spec => {
+            this.props.setVegaExample(name, spec);
+          });
         } else if (parameter.mode === 'vega-lite') {
-          if (name === 'custom') {
-            this.props.setVegaLiteExample(name, '{}');
-          } else {
-            text(`./spec/vega-lite/${name}.vl.json`, spec => {
-              this.props.setVegaLiteExample(name, spec);
-            });
-          }
+          text(`./spec/vega-lite/${name}.vl.json`, spec => {
+            this.props.setVegaLiteExample(name, spec);
+          });
+        }
+      } else if (parameter && parameter.mode) {
+        // new spec
+        if (parameter.mode === 'vega') {
+          this.props.setVegaExample(name, '{}');
+        } else if (parameter.mode === 'vega-lite') {
+          this.props.setVegaLiteExample(name, '{}');
         }
       }
     }

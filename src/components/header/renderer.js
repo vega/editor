@@ -29,11 +29,19 @@ export default class Header extends React.Component {
     hashHistory.push('/examples/vega/' + name);
   }
 
+  onSelectNewVega() {
+    hashHistory.push('/custom/vega');
+  }
+
   onSelectVegaLite (name) {
     this.setState({
       exampleIsOpened: false
     });
     hashHistory.push('/examples/vega-lite/' + name);
+  }
+
+  onSelectNewVegaLite() {
+    hashHistory.push('/custom/vega-lite');
   }
 
   fetchData(gistUrl, vegaVersion) {
@@ -236,10 +244,10 @@ export default class Header extends React.Component {
 
             <div id="emptyButton" style={{height:LAYOUT.HeaderHeight}}></div>
 
-            <div className='customSubmenu' onClick={() => this.onSelectVega('custom')}>
+            <div className='customSubmenu' onClick={() => this.onSelectNewVega()}>
               {'Vega'}
             </div>
-            <div className='customSubmenu' onClick={() => this.onSelectVegaLite('custom')}>
+            <div className='customSubmenu' onClick={() => this.onSelectNewVegaLite()}>
               {'Vega-Lite'}
             </div>
           </div>
