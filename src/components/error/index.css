@@ -1,0 +1,11 @@
+#error-indicator {
+    background-color: red;
+    color: white;
+    display: inline-block;
+    position: fixed;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 5px 5px;
+    cursor: pointer;
+    margin: auto;
+}

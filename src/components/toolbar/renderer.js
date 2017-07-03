@@ -15,20 +15,26 @@ export default class Toolbar extends React.Component {
     autoParse: React.PropTypes.bool
   }
 
-  renderWarningsAndErrors() {
+  showErrorAndWarnings() {
     if (this.props.error) {
       return (
-        <div className='error-field'>
-          {this.props.error}
+        <div className='error-indicator' onClick={(e) => this.props.showErrorPane()}>
+          Error
         </div>
-      )
+      );
+    } else if (this.props.warningsLogger.warns.length > 0) {
+      return (
+        <div className='warning-indicator' onClick={(e) => this.props.showErrorPane()}>
+          Warning
+        </div>
+      );
     }
   }
 
   render () {
     return (
       <div className='toolbar'>
-        {this.renderWarningsAndErrors()}
+        {this.showErrorAndWarnings()}
         <div className='status'>
           {
             `Mode: ${this.props.mode}  Version: ${getVersion(this.props.mode)}`

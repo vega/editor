@@ -1,10 +1,38 @@
 import * as vl from 'vega-lite';
 
 import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
-  SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE } from '../../actions/editor';
+  SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE, SHOW_ERROR_PANE, LOG_ERROR } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 
 const JSON3 = require('../../../lib/json3-compactstringify');
+
+class LocalLogger {
+  warns = [];
+  infos = [];
+  debugs = [];
+
+  level() {
+    return this;
+  }
+
+  warn(...args) {
+    this.warns.push(...args);
+    return this;
+  }
+
+  info(...args) {
+    this.infos.push(...args);
+    return this;
+  }
+
+  debug(...args) {
+    this.debugs.push(...args);
+    return this;
+  }
+}
+
+// singleton new LocalLogger
+var newLogger = new LocalLogger();
 
 export default (state = {
   editorString: '{}',
@@ -17,7 +45,9 @@ export default (state = {
   parse: false,
   compiledVegaSpec: false,
   gist: null,
-  error: null
+  error: null,
+  errorPane: false,
+  warningsLogger: newLogger
 }, action) => {
   let spec, vegaSpec;
   switch (action.type) {
@@ -30,7 +60,8 @@ export default (state = {
         editorString: '{}',
         compiledVegaSpec: false,
         gist: null,
-        parse: false
+        parse: false,
+        warningsLogger: newLogger
       });
     case PARSE_SPEC:
       return Object.assign({}, state, {
@@ -43,14 +74,16 @@ export default (state = {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
           error: e.message,
-          editorString: JSON3.stringify(spec, null, 2, 60)
+          editorString: JSON3.stringify(spec, null, 2, 60),
+          warningsLogger: newLogger
         });
       }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
         editorString: action.spec,
-        error: null
+        error: null,
+        warningsLogger: newLogger
       });
     case SET_VEGA_EXAMPLE:
       try {
@@ -58,6 +91,7 @@ export default (state = {
       } catch (e) {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
+          warningsLogger: newLogger,
           error: e.message,
           editorString: JSON3.stringify(spec, null, 2, 60)
         });
@@ -67,7 +101,8 @@ export default (state = {
         mode: MODES.Vega,
         editorString: action.spec,
         selectedExample: action.example,
-        error: null
+        error: null,
+        warningsLogger: newLogger,
       });
     case SET_VEGA_LITE_EXAMPLE:
       try {
@@ -79,6 +114,7 @@ export default (state = {
       } catch (e) {
         console.warn(e);
         return Object.assign({}, state, {
+          warningsLogger: newLogger,
           error: e.message,
           editorString: JSON3.stringify(spec, null, 2, 60)
         });
@@ -89,17 +125,20 @@ export default (state = {
         mode: MODES.VegaLite,
         editorString: action.spec,
         selectedExample: action.example,
-        error: null
+        error: null,
+        warningsLogger: newLogger
       });
     case UPDATE_VEGA_LITE_SPEC:
+      let currLogger = new LocalLogger();
       try {
         spec = JSON.parse(action.spec);
-        vegaSpec = vl.compile(spec).spec;
+        vegaSpec = vl.compile(spec, currLogger).spec;
       } catch (e) {
         console.warn(e);
         return Object.assign({}, state, {
           error: e.message,
-          editorString: JSON3.stringify(spec, null, 2, 60)
+          editorString: JSON3.stringify(spec, null, 2, 60),
+          warningsLogger: currLogger
         });
       }
       return Object.assign({}, state, {
@@ -107,7 +146,8 @@ export default (state = {
         vegaSpec: vegaSpec,
         mode: MODES.VegaLite,
         editorString: action.spec,
-        error: null
+        error: null,
+        warningsLogger: currLogger
       });
     case SET_GIST_VEGA_SPEC:
       try {
@@ -115,6 +155,7 @@ export default (state = {
       } catch(e) {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
+          warningsLogger: newLogger,
           error: e.message,
           editorString: JSON3.stringify(spec, null, 2, 60)
         });
@@ -124,15 +165,18 @@ export default (state = {
         mode: MODES.Vega,
         editorString: action.spec,
         gist: action.gist,
-        error: null
+        error: null,
+        warningsLogger: newLogger
       });
     case SET_GIST_VEGA_LITE_SPEC:
       try {
+        currLogger = new LocalLogger();
         spec = JSON.parse(action.spec);
-        vegaSpec = vl.compile(spec).spec;
+        vegaSpec = vl.compile(spec, currLogger).spec;
       } catch(e) {
         console.warn(e);
         return Object.assign({}, state, {
+          warningsLogger: currLogger,
           error: e.message,
           editorString: JSON3.stringify(spec, null, 2, 60)
         });
@@ -143,7 +187,8 @@ export default (state = {
         mode: MODES.VegaLite,
         editorString: action.spec,
         gist: action.gist,
-        error: null
+        error: null,
+        warningsLogger: currLogger
       });
     case TOGGLE_AUTO_PARSE:
       return Object.assign({}, state, {
@@ -160,6 +205,14 @@ export default (state = {
     case SHOW_COMPILED_VEGA_SPEC:
       return Object.assign({}, state, {
         compiledVegaSpec: !state.compiledVegaSpec,
+      });
+    case SHOW_ERROR_PANE: 
+      return Object.assign({}, state, {
+        errorPane: !state.errorPane
+      });
+    case LOG_ERROR:
+      return Object.assign({}, state, {
+        error: action.error
       });
     default:
       return state;

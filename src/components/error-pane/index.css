@@ -1,0 +1,21 @@
+li {
+  list-style-type: none;
+}
+.error {
+  color: red;
+}
+
+.warning {
+  color: #f0ad4e;
+}
+
+.info {
+  color: #399e39;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+}

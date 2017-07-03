@@ -1,6 +1,6 @@
 
 .toolbar {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   right: 0;
 }
@@ -29,7 +29,7 @@
 .status {
   background: #399e39;
   color: white;
-  cursor: ;
+  cursor: default;
 }
 
 .toolbar .debug-toggle {
@@ -38,8 +38,14 @@
   margin-left: 20px;
 }
 
-.toolbar .error-field {
+.toolbar .warning-indicator {
   background: #f0ad4e;
   color: white;
-  cursor: text;
+  cursor: pointer;
+}
+
+.toolbar .error-indicator {
+  background:red;
+  color: white;
+  cursor: pointer;
 }

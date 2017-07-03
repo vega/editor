@@ -3,7 +3,6 @@ import Renderer from './renderer';
 import Header from './header';
 import SplitPane from 'react-split-pane';
 import InputPanel from './input-panel';
-import Toolbar from './toolbar';
 import { LAYOUT } from '../constants';
 import * as EditorActions from '../actions/editor';
 import { connect } from 'react-redux';
@@ -87,7 +86,6 @@ class App extends React.Component {
             <Renderer />
           </SplitPane>
         </div>
-        <Toolbar />
       </div>
     );
   };

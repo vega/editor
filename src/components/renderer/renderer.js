@@ -5,6 +5,10 @@ import 'vega-tooltip/build/vega-tooltip.css';
 import './index.css';
 import Vega from '../../constants'
 import * as vegaTooltip from 'vega-tooltip';
+import Error from '../error';
+import ErrorPane from '../error-pane';
+import Toolbar from '../toolbar';
+import SplitPane from 'react-split-pane';
 
 export default class Editor extends React.Component {
   static propTypes = {
@@ -15,18 +19,22 @@ export default class Editor extends React.Component {
 
   renderVega (props) {
     this.refs.chart.style.width = this.refs.chart.getBoundingClientRect().width + 'px';
-    const runtime = vega.parse(props.vegaSpec);
-    const view = new vega.View(runtime)
+    let runtime;
+    let view;
+    try {
+      runtime = vega.parse(props.vegaSpec);
+      view = new vega.View(runtime)
       .logLevel(vega.Warn)
       .initialize(this.refs.chart)
       .renderer(props.renderer)
     
-    if (props.mode === Vega) {
-      view.hover()
+      if (props.mode === Vega) {
+        view.hover()
+      }
+      view.run();
+    } catch (err) {
+      this.props.logError(err.toString());
     }
-
-    view.run();
-
     this.refs.chart.style.width = 'auto';
     vegaTooltip.vega(view);
     window.VEGA_DEBUG.view = view;
@@ -36,20 +44,37 @@ export default class Editor extends React.Component {
     this.renderVega(this.props);
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.renderVega(nextProps);
+  componentDidUpdate () {
+    this.renderVega(this.props);
   }
 
-  render () {
+  renderChart() {
     return (
       <div className='chart-container'>
+        <Error />
         <div className='chart'>
           <div ref='chart'>
           </div>
-          <div id="vis-tooltip" className="vg-tooltip">
+          <div id='vis-tooltip' className='vg-tooltip'>
           </div>
         </div>
+        <Toolbar />
       </div>
     );
-  };
-};
+  }
+
+  render () {
+    if (this.props.errorPane) {
+      return ( 
+        <SplitPane split='horizontal' defaultSize={window.innerHeight * 0.6}>
+          {this.renderChart()}
+          <ErrorPane />
+        </SplitPane>
+      );
+    } else {
+      return (
+        this.renderChart()
+      );
+    }
+  }
+}
