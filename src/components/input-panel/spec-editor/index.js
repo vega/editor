@@ -25,6 +25,10 @@ const mapDispatchToProps = function (dispatch) {
 
     parseSpec: (val) => {
       dispatch(EditorActions.parseSpec(val));
+    },
+
+    updateEditorString: (val) => {
+      dispatch(EditorActions.updateEditorString(val));
     }
   };
 };

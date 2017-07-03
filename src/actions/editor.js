@@ -11,6 +11,7 @@ export const SHOW_COMPILED_VEGA_SPEC = 'SHOW_COMPILED_VEGA_SPEC';
 export const SET_MODE = 'SET_MODE';
 export const SHOW_ERROR_PANE = 'SHOW_ERROR_PANE';
 export const LOG_ERROR = 'LOG_ERROR';
+export const UPDATE_EDITOR_STRING = 'UPDATE_EDITOR_STRING';
 
 export function setMode (mode) {
   return {
@@ -100,5 +101,12 @@ export function logError (err) {
   return {
     type: LOG_ERROR,
     error: err
+  }
+}
+
+export function updateEditorString (editorString) {
+  return {
+    type: UPDATE_EDITOR_STRING,
+    editorString: editorString
   }
 }

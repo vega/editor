@@ -1,7 +1,8 @@
 import * as vl from 'vega-lite';
 
 import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
-  SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE, SHOW_ERROR_PANE, LOG_ERROR } from '../../actions/editor';
+  SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE, SHOW_ERROR_PANE, LOG_ERROR,
+  UPDATE_EDITOR_STRING } from '../../actions/editor';
 import { MODES, RENDERERS } from '../../constants';
 import {validateVegaLite} from './validate';
 
@@ -218,6 +219,10 @@ export default (state = {
     case LOG_ERROR:
       return Object.assign({}, state, {
         error: action.error
+      });
+    case UPDATE_EDITOR_STRING: 
+      return Object.assign({}, state, {
+        editorString: action.editorString
       });
     default:
       return state;
