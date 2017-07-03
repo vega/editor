@@ -74,7 +74,7 @@ export default (state = {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
           error: e.message,
-          editorString: JSON3.stringify(spec, null, 2, 60),
+          editorString: action.spec,
           warningsLogger: logger
         });
       }
@@ -93,7 +93,7 @@ export default (state = {
         return Object.assign({}, state, {
           warningsLogger: logger,
           error: e.message,
-          editorString: JSON3.stringify(spec, null, 2, 60)
+          editorString: action.spec
         });
       }
       return Object.assign({}, state, {
@@ -116,7 +116,7 @@ export default (state = {
         return Object.assign({}, state, {
           warningsLogger: logger,
           error: e.message,
-          editorString: JSON3.stringify(spec, null, 2, 60)
+          editorString: action.spec
         });
       }
       return Object.assign({}, state, {
@@ -138,7 +138,7 @@ export default (state = {
         console.warn(e);
         return Object.assign({}, state, {
           error: e.message,
-          editorString: JSON3.stringify(spec, null, 2, 60),
+          editorString: action.spec,
           warningsLogger: currLogger
         });
       }
@@ -159,7 +159,7 @@ export default (state = {
         return Object.assign({}, state, {
           warningsLogger: logger,
           error: e.message,
-          editorString: JSON3.stringify(spec, null, 2, 60)
+          editorString: action.spec
         });
       }
       return Object.assign({}, state, {
@@ -180,7 +180,7 @@ export default (state = {
         return Object.assign({}, state, {
           warningsLogger: currLogger,
           error: e.message,
-          editorString: JSON3.stringify(spec, null, 2, 60)
+          editorString: action.spec
         });
       }
       return Object.assign({}, state, {
