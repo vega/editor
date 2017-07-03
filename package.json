@@ -52,6 +52,7 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "ajv": "^5.2.0",
     "d3-request": "^1.0.5",
     "deep-equal": "^1.0.1",
     "prop-types": "^15.5.10",
