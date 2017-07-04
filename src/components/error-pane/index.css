@@ -22,4 +22,5 @@ li {
 
 .error-pane {
   overflow: auto;
+  width: 100%;
 }
