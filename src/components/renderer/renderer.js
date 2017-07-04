@@ -66,7 +66,8 @@ export default class Editor extends React.Component {
   render () {
     if (this.props.errorPane) {
       return ( 
-        <SplitPane split='horizontal' defaultSize={window.innerHeight * 0.6}>
+        <SplitPane split='horizontal' defaultSize={window.innerHeight * 0.6}
+          paneStyle={{display: 'flex'}}>
           {this.renderChart()}
           <ErrorPane />
         </SplitPane>

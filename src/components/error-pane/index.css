@@ -19,3 +19,7 @@ li {
   right: 15px;
   cursor: pointer;
 }
+
+.error-pane {
+  overflow: auto;
+}
