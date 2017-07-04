@@ -14,7 +14,6 @@ export function validateVegaLite(spec, logger) {
   const valid = vegaLiteValidator(spec);
   if (!valid) {
     for (const error of vegaLiteValidator.errors) {
-      console.log(error);
       logger.warn(`${error.dataPath} ${error.message}`);
     }
   }
