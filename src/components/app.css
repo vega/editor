@@ -59,7 +59,7 @@ body, html {
     border-color: transparent;
 }
 
-.Pane, .SplitPane {
+.main-pane > .Pane1 .Pane, .main-pane > .Pane1 .SplitPane, .react-monaco-editor-container {
     /* Need to override overflow because we can't set it on the pane. */
     overflow: visible !important;
 }
