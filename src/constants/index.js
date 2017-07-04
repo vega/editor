@@ -1,12 +1,5 @@
 import * as SPECS from './specs';
 
-const Vega = 'vega';
-const VegaLite = 'vega-lite';
-
-const MODES = { Vega, VegaLite };
-
-const LAYOUT = { HeaderHeight: 56 };
-
-const RENDERERS = { SVG: 'svg', Canvas: 'canvas' };
-
-export { MODES, SPECS, LAYOUT, RENDERERS };
+export { MODES, LAYOUT, RENDERERS } from './consts';
+export {SPECS};
+export {DEFAULT_STATE, logger} from './default-state';

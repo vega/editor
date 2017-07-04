@@ -12,15 +12,8 @@ window.VEGA_DEBUG = window.VEGA_DEBUG || {};
 window.VEGA_DEBUG.VEGA_VERSION = vega.version;
 window.VEGA_DEBUG.VEGA_LITE_VERSION = vl.version;
 
-// Create redux store and sync with react-router-redux. We have installed the
-// react-router-redux reducer under the key "router" in src/routes/index.js,
-// so we need to provide a custom `selectLocationState` to inform
-// react-router-redux of its location.
-const initialState = window.__INITIAL_STATE__;
-
 // Configure history for react-router
-
-const store = configureStore(initialState);
+const store = configureStore(hashHistory);
 
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!

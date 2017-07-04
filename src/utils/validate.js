@@ -7,8 +7,8 @@ const ajv = new Ajv({
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
 
-const vegaValidator = ajv.compile(require('../../../schema/vega.schema.json'));
-const vegaLiteValidator = ajv.compile(require('../../../schema/vl.schema.json'));
+const vegaValidator = ajv.compile(require('../../schema/vega.schema.json'));
+const vegaLiteValidator = ajv.compile(require('../../schema/vl.schema.json'));
 
 export function validateVegaLite(spec, logger) {
   const valid = vegaLiteValidator(spec);

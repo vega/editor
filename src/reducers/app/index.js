@@ -3,51 +3,13 @@ import * as vl from 'vega-lite';
 import { UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE, SHOW_ERROR_PANE, LOG_ERROR,
   UPDATE_EDITOR_STRING } from '../../actions/editor';
-import { MODES, RENDERERS } from '../../constants';
-import {validateVegaLite} from './validate';
-
-class LocalLogger {
-  warns = [];
-  infos = [];
-  debugs = [];
-
-  level() {
-    return this;
-  }
-
-  warn(...args) {
-    this.warns.push(...args);
-    return this;
-  }
-
-  info(...args) {
-    this.infos.push(...args);
-    return this;
-  }
-
-  debug(...args) {
-    this.debugs.push(...args);
-    return this;
-  }
-}
+import { MODES, RENDERERS, DEFAULT_STATE } from '../../constants';
+import {validateVegaLite} from '../../utils/validate';
+import {LocalLogger} from '../../utils/logger'
 
 const logger = new LocalLogger();
 
-export default (state = {
-  editorString: '{}',
-  vegaSpec: {},
-  vegaLiteSpec: null,
-  selectedExample: null,
-  mode: MODES.Vega,
-  renderer: RENDERERS.Canvas,
-  autoParse: true,
-  parse: false,
-  compiledVegaSpec: false,
-  gist: null,
-  error: null,
-  errorPane: false,
-  warningsLogger: logger
-}, action) => {
+export default (state = DEFAULT_STATE, action) => {
   let spec, vegaSpec;
   switch (action.type) {
     case SET_MODE:
