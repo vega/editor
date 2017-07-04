@@ -45,8 +45,8 @@ class InputPanel extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    mode: state.app.mode,
-    compiledVegaSpec: state.app.compiledVegaSpec
+    mode: state.mode,
+    compiledVegaSpec: state.compiledVegaSpec
   };
 }
 

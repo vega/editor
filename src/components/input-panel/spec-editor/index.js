@@ -4,12 +4,12 @@ import * as EditorActions from '../../../actions/editor';
 
 const mapStateToProps = function(state, ownProps) {
   return {
-    value: state.app.editorString,
-    mode: state.app.mode,
-    selectedExample: state.app.selectedExample,
-    gist: state.app.gist,
-    autoParse: state.app.autoParse,
-    parse: state.app.parse
+    value: state.editorString,
+    mode: state.mode,
+    selectedExample: state.selectedExample,
+    gist: state.gist,
+    autoParse: state.autoParse,
+    parse: state.parse
   };
 };
 

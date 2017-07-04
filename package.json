@@ -110,7 +110,8 @@
     "rules": {
       "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
       "space-before-function-paren": ["warn", "never"],
-      "object-curly-spacing": ["warn", "never"]
+      "object-curly-spacing": ["warn", "never"],
+      "sort-imports": "warn"
     }
   }
 }

@@ -4,12 +4,12 @@ import * as EditorActions from '../../actions/editor';
 
 function mapStateToProps(state, ownProps) {
   return {
-    vegaSpec: state.app.vegaSpec,
-    renderer: state.app.renderer,
-    mode: state.app.mode,
-    errorPane: state.app.errorPane,
-    warningsLogger: state.app.warningsLogger,
-    error: state.app.error
+    vegaSpec: state.vegaSpec,
+    renderer: state.renderer,
+    mode: state.mode,
+    errorPane: state.errorPane,
+    warningsLogger: state.warningsLogger,
+    error: state.error
   };
 }
 

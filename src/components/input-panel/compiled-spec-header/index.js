@@ -59,9 +59,9 @@ class CompiledSpecDisplayHeader extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    value: state.app.vegaSpec,
-    compiledVegaSpec: state.app.compiledVegaSpec,
-    mode: state.app.mode,
+    value: state.vegaSpec,
+    compiledVegaSpec: state.compiledVegaSpec,
+    mode: state.mode,
   };
 }
 

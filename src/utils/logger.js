@@ -22,3 +22,5 @@ export class LocalLogger {
     return this;
   }
 }
+
+export const logger = new LocalLogger();

@@ -4,11 +4,11 @@ import * as EditorActions from '../../actions/editor';
 
 function mapStateToProps(state, ownProps) {
   return {
-    renderer: state.app.renderer,
-    error: state.app.error,
-    mode: state.app.mode,
-    autoParse: state.app.autoParse,
-    warningsLogger: state.app.warningsLogger
+    renderer: state.renderer,
+    error: state.error,
+    mode: state.mode,
+    autoParse: state.autoParse,
+    warningsLogger: state.warningsLogger
   };
 }
 

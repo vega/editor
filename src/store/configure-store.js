@@ -7,7 +7,7 @@ import {DEFAULT_STATE} from './../constants/default-state'
 import persistState from 'redux-localstorage';
 
 
-export default function configureStore(browserHistory, initialState = {app: DEFAULT_STATE}) {
+export default function configureStore(browserHistory, initialState = DEFAULT_STATE) {
   // Compose final middleware
   let middleware = applyMiddleware(thunk);
   middleware = compose(middleware, applyMiddleware(routerMiddleware(browserHistory)));
@@ -15,7 +15,7 @@ export default function configureStore(browserHistory, initialState = {app: DEFA
 
   const enhancer = compose(
     middleware,
-    persistState('app', 'redux'),
+    persistState(),
   )
 
   // Create final store

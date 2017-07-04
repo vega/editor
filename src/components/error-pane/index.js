@@ -4,9 +4,9 @@ import * as EditorActions from '../../actions/editor';
 
 function mapStateToProps(state, ownProps) {
   return {
-    error: state.app.error,
-    warningsLogger: state.app.warningsLogger,
-    errorPane: state.app.errorPane
+    error: state.error,
+    warningsLogger: state.warningsLogger,
+    errorPane: state.errorPane
   };
 }
 

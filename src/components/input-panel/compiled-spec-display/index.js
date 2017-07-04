@@ -31,8 +31,8 @@ class CompiledSpecDisplay extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    value: state.app.vegaSpec,
-    compiledVegaSpec: state.app.compiledVegaSpec
+    value: state.vegaSpec,
+    compiledVegaSpec: state.compiledVegaSpec
   };
 }
 

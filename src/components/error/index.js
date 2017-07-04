@@ -4,7 +4,7 @@ import * as EditorActions from '../../actions/editor';
 
 function mapStateToProps(state, ownProps) {
   return {
-    error: state.app.error
+    error: state.error
   };
 }
 
