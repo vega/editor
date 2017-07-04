@@ -14,7 +14,7 @@ import equal from 'deep-equal';
 class App extends React.Component {
 
   componentDidMount() {
-    window.addEventListener("message", (evt) => {
+    window.addEventListener('message', (evt) => {
       var data = evt.data;
       if (!data.spec) {
         return;

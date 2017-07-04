@@ -57,7 +57,7 @@ export default class Editor extends React.Component {
     }
     this.spec = spec;
     if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
-      hashHistory.push(`/edited`);
+      hashHistory.push('/edited');
     }
   }
 

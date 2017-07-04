@@ -42,7 +42,7 @@ export default class Toolbar extends React.Component {
         </div>
         <div className='autoParse' onClick={this.props.toggleAutoParse}>
           {
-            this.props.autoParse ? `Parse: auto` : `Parse: manual`
+            this.props.autoParse ? 'Parse: auto' : 'Parse: manual'
           }
         </div>
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
