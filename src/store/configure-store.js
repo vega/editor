@@ -1,9 +1,8 @@
-import { applyMiddleware, compose, createStore } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
+import {applyMiddleware, compose, createStore} from 'redux';
+import {routerMiddleware} from 'react-router-redux';
 import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
 import {DEFAULT_STATE} from './../constants/default-state'
-
 import persistState from 'redux-localstorage';
 
 

@@ -1,5 +1,5 @@
-import { MODES, RENDERERS } from './consts';
-import {LocalLogger, logger} from '../utils/logger'
+import {MODES, RENDERERS} from './consts';
+import {logger} from '../utils/logger'
 
 export const DEFAULT_STATE = {
   editorString: '{}',

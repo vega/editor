@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 import * as EditorActions from '../../../actions/editor';
 import CompiledSpecDisplayHeader from '../compiled-spec-header'

@@ -3,12 +3,12 @@ import Renderer from './renderer';
 import Header from './header';
 import SplitPane from 'react-split-pane';
 import InputPanel from './input-panel';
-import { LAYOUT } from '../constants';
+import {LAYOUT} from '../constants';
 import * as EditorActions from '../actions/editor';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import './app.css';
-import { hashHistory } from 'react-router';
-import { text } from 'd3-request';
+import {hashHistory} from 'react-router';
+import {text} from 'd3-request';
 import equal from 'deep-equal';
 
 class App extends React.Component {

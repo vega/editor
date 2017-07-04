@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app';
-import { Provider } from 'react-redux'
+import {Provider} from 'react-redux'
 import configureStore from './store/configure-store';
-import { hashHistory, Router, Route } from 'react-router';
+import {hashHistory, Router, Route} from 'react-router';
 
 import * as vega from 'vega';
 import * as vl from 'vega-lite';

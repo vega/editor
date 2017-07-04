@@ -1,8 +1,8 @@
 import React from 'react';
 import Portal from 'react-portal';
-import { MODES, SPECS, LAYOUT } from '../../constants';
+import {MODES, SPECS, LAYOUT} from '../../constants';
 import './index.css';
-import { hashHistory } from 'react-router';
+import {hashHistory} from 'react-router';
 
 const formatExampleName = (name) => {
   return name.split(/[_\-]/).map(i => i[0].toUpperCase() + i.substring(1)).join(' ');
@@ -143,7 +143,7 @@ export default class Header extends React.Component {
                       specs.map((spec, j) => {
                         return (
                           <div key={j} onClick={() => this.onSelectVega(spec.name)} className='item'>
-                            <div style={{backgroundImage: `url(images/examples/vg/${spec.name}.vg.png)` }} className='img' />
+                            <div style={{backgroundImage: `url(images/examples/vg/${spec.name}.vg.png)`}} className='img' />
                             <div className='name'>{formatExampleName(spec.name)}</div>
                           </div>
                         )
@@ -170,7 +170,7 @@ export default class Header extends React.Component {
                     specs.map((spec, j) => {
                       return (
                         <div key={j} onClick={() => this.onSelectVegaLite(spec.name)} className='item'>
-                          <div style={{backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)` }} className='img' />
+                          <div style={{backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`}} className='img' />
                           <div className='name'>{spec.title}</div>
                         </div>
                       )
@@ -228,11 +228,11 @@ export default class Header extends React.Component {
           closeOnEsc
           closeOnOutsideClick
           isOpened={this.state.customIsOpened}
-          onClose={() => { this.setState({ customIsOpened: false});}}
+          onClose={() => { this.setState({customIsOpened: false});}}
         >
 
-          <div className='customSubmenuGroup' onMouseOver={() => { this.setState({ customIsOpened: true});}}
-            onMouseLeave={() => { this.setState({ customIsOpened: false});}} onClick={() => { this.setState({ customIsOpened: false});}}
+          <div className='customSubmenuGroup' onMouseOver={() => { this.setState({customIsOpened: true});}}
+            onMouseLeave={() => { this.setState({customIsOpened: false});}} onClick={() => { this.setState({customIsOpened: false});}}
             style={{
               left:this.state.left,
               width:this.state.width,
@@ -256,16 +256,16 @@ export default class Header extends React.Component {
         <Portal
           closeOnEsc
           isOpened={this.state.exampleIsOpened}
-          onClose={() => { this.setState({ exampleIsOpened: false});}}
+          onClose={() => { this.setState({exampleIsOpened: false});}}
         >
           <div className='modal-background'>
             <div className='modal-header'>
               <div className='button-groups'>
-                <button className={this.state.showVega ? 'selected' : ''} onClick={() => { this.setState({ showVega: true });}}>{'Vega'}</button>
-                <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({ showVega: false });}}>{'Vega-Lite'}</button>
+                <button className={this.state.showVega ? 'selected' : ''} onClick={() => { this.setState({showVega: true});}}>{'Vega'}</button>
+                <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({showVega: false});}}>{'Vega-Lite'}</button>
               </div>
 
-              <button className='close-button' onClick={() => {this.setState({ exampleIsOpened: false });}}>✖</button>
+              <button className='close-button' onClick={() => {this.setState({exampleIsOpened: false});}}>✖</button>
             </div>
             <div className='modal-area'>
               <div className='modal'>
@@ -278,11 +278,11 @@ export default class Header extends React.Component {
         <Portal
           closeOnEsc
           isOpened={this.state.gistIsOpened}
-          onClose={() => { this.setState({ gistIsOpened: false});}}
+          onClose={() => { this.setState({gistIsOpened: false});}}
         >
         <div className='modal-background'>
           <div className='modal-header'>
-            <button className='close-button' onClick={() => {this.setState({ gistIsOpened: false });}}>✖</button>
+            <button className='close-button' onClick={() => {this.setState({gistIsOpened: false});}}>✖</button>
           </div>
           <div className='modal-area'>
             <div className='modal'>

@@ -1,7 +1,7 @@
 import React from 'react';
-import { MODES } from '../../../constants';
+import {MODES} from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
-import { hashHistory } from 'react-router';
+import {hashHistory} from 'react-router';
 
 import './index.css'
 
