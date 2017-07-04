@@ -4,8 +4,8 @@ import {UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_AUTO_PARSE, 
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE, SHOW_ERROR_PANE, LOG_ERROR,
   UPDATE_EDITOR_STRING} from '../actions/editor';
 import {MODES, RENDERERS, DEFAULT_STATE} from '../constants';
-import {validateVegaLite} from '../utils/validate';
-import {LocalLogger, logger} from '../utils/logger'
+import {validateVegaLite, validateVega} from '../utils/validate';
+import {LocalLogger} from '../utils/logger'
 
 export default (state = DEFAULT_STATE, action) => {
   let spec, vegaSpec;
@@ -20,21 +20,23 @@ export default (state = DEFAULT_STATE, action) => {
         compiledVegaSpec: false,
         gist: null,
         parse: false,
-        warningsLogger: logger
+        warningsLogger: new LocalLogger()
       });
     case PARSE_SPEC:
       return Object.assign({}, state, {
         parse: action.parse
       });
-    case UPDATE_VEGA_SPEC:
+    case UPDATE_VEGA_SPEC: {
+      const currLogger = new LocalLogger();
       try {
         spec = JSON.parse(action.spec);
+        validateVega(spec, currLogger);
       } catch (e) {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
           error: e.message,
           editorString: action.spec,
-          warningsLogger: logger,
+          warningsLogger: currLogger,
           selectedExample: null
         });
       }
@@ -43,16 +45,16 @@ export default (state = DEFAULT_STATE, action) => {
         mode: MODES.Vega,
         editorString: action.spec,
         error: null,
-        warningsLogger: logger,
+        warningsLogger: currLogger,
         selectedExample: null
       });
+    }
     case SET_VEGA_EXAMPLE:
       try {
         spec = JSON.parse(action.spec);
       } catch (e) {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
-          warningsLogger: logger,
           error: e.message,
           editorString: action.spec
         });
@@ -63,7 +65,6 @@ export default (state = DEFAULT_STATE, action) => {
         editorString: action.spec,
         selectedExample: action.example,
         error: null,
-        warningsLogger: logger,
       });
     case SET_VEGA_LITE_EXAMPLE:
       try {
@@ -75,7 +76,6 @@ export default (state = DEFAULT_STATE, action) => {
       } catch (e) {
         console.warn(e);
         return Object.assign({}, state, {
-          warningsLogger: logger,
           error: e.message,
           editorString: action.spec
         });
@@ -86,8 +86,7 @@ export default (state = DEFAULT_STATE, action) => {
         mode: MODES.VegaLite,
         editorString: action.spec,
         selectedExample: action.example,
-        error: null,
-        warningsLogger: logger
+        error: null
       });
     case UPDATE_VEGA_LITE_SPEC: {
       const currLogger = new LocalLogger();
@@ -114,13 +113,15 @@ export default (state = DEFAULT_STATE, action) => {
         selectedExample: null
       });
     }
-    case SET_GIST_VEGA_SPEC:
+    case SET_GIST_VEGA_SPEC: {
+      const currLogger = new LocalLogger();
       try {
         spec = JSON.parse(action.spec);
+        validateVega(spec, currLogger);
       } catch(e) {
         console.warn('Error parsing json string');
         return Object.assign({}, state, {
-          warningsLogger: logger,
+          warningsLogger: currLogger,
           error: e.message,
           editorString: action.spec
         });
@@ -130,13 +131,14 @@ export default (state = DEFAULT_STATE, action) => {
         mode: MODES.Vega,
         editorString: action.spec,
         gist: action.gist,
-        error: null,
-        warningsLogger: logger
+        error: null
       });
+    }
     case SET_GIST_VEGA_LITE_SPEC: {
       const currLogger = new LocalLogger();
       try {
         spec = JSON.parse(action.spec);
+        validateVegaLite(spec, currLogger);
         vegaSpec = vl.compile(spec, currLogger).spec;
       } catch(e) {
         console.warn(e);
@@ -162,13 +164,13 @@ export default (state = DEFAULT_STATE, action) => {
         parse: !state.autoParse
       });
     case CYCLE_RENDERER: {
-        const rendererVals = Object.values(RENDERERS);
-        const currentRenderer = rendererVals.indexOf(state.renderer);
-        const nextRenderer = rendererVals[(currentRenderer + 1) % rendererVals.length];
-        return Object.assign({}, state, {
-          renderer: nextRenderer
-        });
-      }
+      const rendererVals = Object.values(RENDERERS);
+      const currentRenderer = rendererVals.indexOf(state.renderer);
+      const nextRenderer = rendererVals[(currentRenderer + 1) % rendererVals.length];
+      return Object.assign({}, state, {
+        renderer: nextRenderer
+      });
+    }
     case SHOW_COMPILED_VEGA_SPEC:
       return Object.assign({}, state, {
         compiledVegaSpec: !state.compiledVegaSpec,
