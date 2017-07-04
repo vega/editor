@@ -12,9 +12,9 @@ class CompiledSpecDisplay extends React.Component {
         <CompiledSpecDisplayHeader />
         <MonacoEditor
           options={{
-            readOnly:true,
+            readOnly: true,
             folding: true,
-            scrollBeyondLastLine: false,
+            scrollBeyondLastLine: true,
             wordWrap: true,
             automaticLayout: true
           }}

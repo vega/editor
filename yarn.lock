@@ -1437,10 +1437,8 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
     delayed-stream "~1.0.0"
 
 commander@2:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.10.0.tgz#e1f5d3245de246d1a5ca04702fa1ad1bd7e405fe"
-  dependencies:
-    graceful-readlink ">= 1.0.0"
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
 
 commander@2.8.x, commander@~2.8.1:
   version "2.8.1"
@@ -4273,9 +4271,9 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
   dependencies:
     minimist "0.0.8"
 
-monaco-editor@~0.8.x:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.8.3.tgz#523bdf2d1524db2c2dfc3cae0a7b6edc48d6dea6"
+monaco-editor@~0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.9.0.tgz#c50c53251c47b7ff12e09f0f83cfd32a44dfe6ec"
 
 ms@0.7.1:
   version "0.7.1"
@@ -5082,12 +5080,12 @@ postcss@^5.0.10, postcss@^5.0.11, postcss@^5.0.12, postcss@^5.0.13, postcss@^5.0
     supports-color "^3.2.3"
 
 postcss@^6.0.1:
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.4.tgz#573acddf73f42ecb24aa618d40ee3d5a7c04a654"
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.5.tgz#efa34f745ca25bd3b3cbd15aa4e03112b8237f3c"
   dependencies:
     chalk "^2.0.1"
     source-map "^0.5.6"
-    supports-color "^4.0.0"
+    supports-color "^4.1.0"
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -5259,9 +5257,9 @@ react-dom@^15.6.1:
 
 "react-monaco-editor@github:vega/react-monaco-editor":
   version "0.8.1"
-  resolved "https://codeload.github.com/vega/react-monaco-editor/tar.gz/71ff62afea27ffe9960e3d7e8965f789136512c5"
+  resolved "https://codeload.github.com/vega/react-monaco-editor/tar.gz/8ba17e6e53c94aa26e9f3f68dfb66892f9036f7d"
   dependencies:
-    monaco-editor "~0.8.x"
+    monaco-editor "~0.9.0"
 
 react-portal@^3.1.0:
   version "3.1.0"
@@ -6090,7 +6088,7 @@ supports-color@^3.1.0, supports-color@^3.1.1, supports-color@^3.1.2, supports-co
   dependencies:
     has-flag "^1.0.0"
 
-supports-color@^4.0.0:
+supports-color@^4.0.0, supports-color@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-4.1.0.tgz#92cc14bb3dad8928ca5656c33e19a19f20af5c7a"
   dependencies:
@@ -6592,8 +6590,8 @@ vega-loader@2, vega-loader@>=2.0.0-beta.5:
     vega-util "1"
 
 vega-parser@>=1.0.0-beta:
-  version "1.0.0-beta.69"
-  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-1.0.0-beta.69.tgz#2ed360e03a577a7366997a9b4c8367605059e370"
+  version "1.0.0-beta.71"
+  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-1.0.0-beta.71.tgz#256e898e75332f1b3f84308b1d9b20939ea18c26"
   dependencies:
     d3-array "1"
     d3-color "1"
@@ -6607,8 +6605,8 @@ vega-parser@>=1.0.0-beta:
     vega-util "^1.1"
 
 vega-runtime@1, vega-runtime@>=1.0.0-beta:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/vega-runtime/-/vega-runtime-1.0.0.tgz#072ca82925f684fc4ee40bcfb9e0175a068004e6"
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vega-runtime/-/vega-runtime-1.0.1.tgz#9c493c1668be5ad7a61917688051e796bc7f558b"
   dependencies:
     vega-util "1"
 
@@ -6654,8 +6652,8 @@ vega-util@1, vega-util@^1.1, vega-util@^1.2, vega-util@^1.3.0:
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.3.1.tgz#6e65fe37c341ea10e322378421d0dbd9728f9d5e"
 
 vega-view@>=1.0.0-beta:
-  version "1.0.0-beta.38"
-  resolved "https://registry.yarnpkg.com/vega-view/-/vega-view-1.0.0-beta.38.tgz#3aee298292390a9fb2614472b17fa6c2797505f0"
+  version "1.0.0-beta.39"
+  resolved "https://registry.yarnpkg.com/vega-view/-/vega-view-1.0.0-beta.39.tgz#784001b51f66861578a7ed9231fee66c7885eea5"
   dependencies:
     d3-array "1"
     vega-dataflow "2"

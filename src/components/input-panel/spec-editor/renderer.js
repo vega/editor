@@ -103,10 +103,13 @@ export default class Editor extends React.Component {
             gist: this.props.gist}))}
           options={{
             folding: true,
-            scrollBeyondLastLine: false,
+            scrollBeyondLastLine: true,
             wordWrap: true,
             wrappingIndent: 'same',
-            automaticLayout: true
+            automaticLayout: true,
+            autoIndent: true,
+            cursorBlinking: 'smooth',
+            lineNumbersMinChars: 4
           }}
           defaultValue={this.props.value}
           onChange={debounce(this.handleEditorChange, 500).bind(this)}
