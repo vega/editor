@@ -19,7 +19,7 @@ class App extends React.Component {
       if (!data.spec) {
         return;
       }
-      console.log('[Vega-Editor] Received Message', evt.origin, data);
+      console.info('[Vega-Editor] Received Message', evt.origin, data);
       // send acknowledgement
       var parsed = JSON.parse(data.spec);
       data.spec = JSON.stringify(parsed, null, 2);
@@ -75,7 +75,7 @@ class App extends React.Component {
     }
   }
 
-  render () {
+  render() {
     const w = window.innerWidth;
     return (
       <div className="app-container">
@@ -88,10 +88,10 @@ class App extends React.Component {
         </div>
       </div>
     );
-  };
-};
+  }
+}
 
-const mapDispatchToProps = function (dispatch) {
+const mapDispatchToProps = function(dispatch) {
   return {
     setMode: (mode) => {
       dispatch(EditorActions.setMode(mode));

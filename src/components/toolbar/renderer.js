@@ -31,7 +31,7 @@ export default class Toolbar extends React.Component {
     }
   }
 
-  render () {
+  render() {
     return (
       <div className='toolbar'>
         {this.showErrorAndWarnings()}
@@ -52,5 +52,5 @@ export default class Toolbar extends React.Component {
         </div>
       </div>
     );
-  };
-};
+  }
+}

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Renderer from './renderer';
 import * as EditorActions from '../../actions/editor';
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     renderer: state.app.renderer,
     error: state.app.error,
@@ -13,7 +13,7 @@ function mapStateToProps (state, ownProps) {
 }
 
 
-const mapDispatchToProps = function (dispatch) {
+const mapDispatchToProps = function(dispatch) {
   return {
     toggleAutoParse: () => {
       dispatch(EditorActions.toggleAutoParse());

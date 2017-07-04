@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import './index.css'
 
 class InputPanel extends React.Component {
-  getInnerPanes () {
+  getInnerPanes() {
     const { mode } = this.props;
     const innerPanes = [<SpecEditor key='editor' />];
     if (mode === MODES.VegaLite) {
@@ -21,7 +21,7 @@ class InputPanel extends React.Component {
     return innerPanes;
   }
 
-  render () {
+  render() {
     const innerPanes = this.getInnerPanes();
 
     let outerComponent;
@@ -39,11 +39,11 @@ class InputPanel extends React.Component {
       </div>
     }
     return outerComponent;
-  };
-};
+  }
+}
 
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     mode: state.app.mode,
     compiledVegaSpec: state.app.compiledVegaSpec

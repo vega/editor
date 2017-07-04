@@ -13,98 +13,98 @@ export const SHOW_ERROR_PANE = 'SHOW_ERROR_PANE';
 export const LOG_ERROR = 'LOG_ERROR';
 export const UPDATE_EDITOR_STRING = 'UPDATE_EDITOR_STRING';
 
-export function setMode (mode) {
+export function setMode(mode) {
   return {
     type: SET_MODE,
     mode: mode
   }
 }
 
-export function parseSpec (value) {
+export function parseSpec(value) {
   return {
     type: PARSE_SPEC,
     parse: value
   }
-};
+}
 
-export function setVegaExample (example, spec) {
+export function setVegaExample(example, spec) {
   return {
     type: SET_VEGA_EXAMPLE,
     spec: spec,
     example: example
   };
-};
+}
 
-export function setVegaLiteExample (example, spec) {
+export function setVegaLiteExample(example, spec) {
   return {
     type: SET_VEGA_LITE_EXAMPLE,
     spec: spec,
     example: example
   };
-};
+}
 
-export function updateVegaSpec (spec) {
+export function updateVegaSpec(spec) {
   return {
     type: UPDATE_VEGA_SPEC,
     spec: spec
   };
-};
+}
 
-export function updateVegaLiteSpec (spec) {
+export function updateVegaLiteSpec(spec) {
   return {
     type: UPDATE_VEGA_LITE_SPEC,
     spec: spec
   };
-};
+}
 
-export function setGistVegaSpec (gist, spec) {
+export function setGistVegaSpec(gist, spec) {
   return {
     type: SET_GIST_VEGA_SPEC,
     gist: gist,
     spec: spec
   };
-};
+}
 
-export function setGistVegaLiteSpec (gist, spec) {
+export function setGistVegaLiteSpec(gist, spec) {
   return {
     type: SET_GIST_VEGA_LITE_SPEC,
     gist: gist,
     spec: spec
   };
-};
+}
 
-export function toggleAutoParse () {
+export function toggleAutoParse() {
   return {
     type: TOGGLE_AUTO_PARSE
   };
-};
+}
 
-export function cycleRenderer () {
+export function cycleRenderer() {
   return {
     type: CYCLE_RENDERER
   };
-};
+}
 
-export function showCompiledVegaSpec () {
+export function showCompiledVegaSpec() {
   return {
     type: SHOW_COMPILED_VEGA_SPEC
   };
-};
+}
 
-export function showErrorPane () {
+export function showErrorPane() {
   return {
     type: SHOW_ERROR_PANE
   }
 }
 
-export function logError (err) {
+export function logError(err) {
   return {
     type: LOG_ERROR,
     error: err
   }
 }
 
-export function updateEditorString (editorString) {
+export function updateEditorString(editorString) {
   return {
     type: UPDATE_EDITOR_STRING,
     editorString: editorString

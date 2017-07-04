@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Renderer from './renderer';
 import * as EditorActions from '../../../actions/editor';
 
-const mapStateToProps = function (state, ownProps) {
+const mapStateToProps = function(state, ownProps) {
   return {
     value: state.app.editorString,
     mode: state.app.mode,
@@ -13,7 +13,7 @@ const mapStateToProps = function (state, ownProps) {
   };
 };
 
-const mapDispatchToProps = function (dispatch) {
+const mapDispatchToProps = function(dispatch) {
   return {
     updateVegaSpec: (val) => {
       dispatch(EditorActions.updateVegaSpec(val));

@@ -17,7 +17,7 @@ export default class Editor extends React.Component {
     mode: PropTypes.string
   }
 
-  renderVega (props) {
+  renderVega(props) {
     this.refs.chart.style.width = this.refs.chart.getBoundingClientRect().width + 'px';
     let runtime;
     let view;
@@ -40,11 +40,11 @@ export default class Editor extends React.Component {
     window.VEGA_DEBUG.view = view;
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.renderVega(this.props);
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     this.renderVega(this.props);
   }
 
@@ -63,7 +63,7 @@ export default class Editor extends React.Component {
     );
   }
 
-  render () {
+  render() {
     if (this.props.errorPane) {
       return ( 
         <SplitPane split='horizontal' defaultSize={window.innerHeight * 0.6}

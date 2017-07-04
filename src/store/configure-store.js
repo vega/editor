@@ -6,7 +6,7 @@ import rootReducer from '../reducers';
 import persistState from 'redux-localstorage';
 
 
-export default function configureStore (browserHistory, initialState = {}) {
+export default function configureStore(browserHistory, initialState = {}) {
   // Compose final middleware
   let middleware = applyMiddleware(thunk);
   middleware = compose(middleware, applyMiddleware(routerMiddleware(browserHistory)));

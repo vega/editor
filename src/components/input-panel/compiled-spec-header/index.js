@@ -14,11 +14,11 @@ const svgStyle = {
 }
 
 class CompiledSpecDisplayHeader extends React.Component {
-  editVegaSpec () {
+  editVegaSpec() {
     this.props.updateVegaSpec(JSON.stringify(this.props.value, null, 2));
   }
 
-  render () {
+  render() {
     if (this.props.compiledVegaSpec) {
       const toggleStyleUp = Object.assign({}, toggleStyle, {
         position: 'static'
@@ -55,9 +55,9 @@ class CompiledSpecDisplayHeader extends React.Component {
       );
     }
   }
-};
+}
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     value: state.app.vegaSpec,
     compiledVegaSpec: state.app.compiledVegaSpec,
@@ -65,7 +65,7 @@ function mapStateToProps (state, ownProps) {
   };
 }
 
-const mapDispatchToProps = function (dispatch) {
+const mapDispatchToProps = function(dispatch) {
   return {
     updateVegaSpec: (val) => {
       dispatch(EditorActions.updateVegaSpec(val));

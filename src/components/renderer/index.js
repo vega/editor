@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Renderer from './renderer';
 import * as EditorActions from '../../actions/editor';
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     vegaSpec: state.app.vegaSpec,
     renderer: state.app.renderer,
@@ -13,7 +13,7 @@ function mapStateToProps (state, ownProps) {
   };
 }
 
-const mapDispatchToProps = function (dispatch) {
+const mapDispatchToProps = function(dispatch) {
   return {
     logError: (err) => {
       dispatch(EditorActions.logError(err));

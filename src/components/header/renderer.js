@@ -22,7 +22,7 @@ export default class Header extends React.Component {
     this.setState({url: event.target.value});
   }
 
-  onSelectVega (name) {
+  onSelectVega(name) {
     this.setState({
       exampleIsOpened: false
     });
@@ -33,7 +33,7 @@ export default class Header extends React.Component {
     hashHistory.push('/custom/vega');
   }
 
-  onSelectVegaLite (name) {
+  onSelectVegaLite(name) {
     this.setState({
       exampleIsOpened: false
     });
@@ -88,7 +88,7 @@ export default class Header extends React.Component {
     })
   }
 
-  render () {
+  render() {
     const examplesButton = (
       <div className='button'
         onClick={(e) => {
@@ -293,5 +293,5 @@ export default class Header extends React.Component {
         </Portal>
       </div>
     );
-  };
-};
+  }
+}

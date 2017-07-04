@@ -6,7 +6,7 @@ import CompiledSpecDisplayHeader from '../compiled-spec-header'
 const JSON3 = require('../../../../lib/json3-compactstringify');
 
 class CompiledSpecDisplay extends React.Component {
-  render () {
+  render() {
     return (
       <div className={'sizeFixEditorParent full-height-wrapper'}>
         <CompiledSpecDisplayHeader />
@@ -24,19 +24,19 @@ class CompiledSpecDisplay extends React.Component {
         />
       </div>
     )
-  };
-};
+  }
+}
 
 
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     value: state.app.vegaSpec,
     compiledVegaSpec: state.app.compiledVegaSpec
   };
 }
 
-const mapDispatchToProps = function (dispatch) {
+const mapDispatchToProps = function(dispatch) {
     return {
       showCompiledVegaSpec: () => {
         dispatch(EditorActions.showCompiledVegaSpec());

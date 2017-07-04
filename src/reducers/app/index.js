@@ -201,13 +201,14 @@ export default (state = {
         autoParse: !state.autoParse,
         parse: !state.autoParse
       });
-    case CYCLE_RENDERER:
-      const rendererVals = Object.values(RENDERERS);
-      const currentRenderer = rendererVals.indexOf(state.renderer);
-      const nextRenderer = rendererVals[(currentRenderer + 1) % rendererVals.length];
-      return Object.assign({}, state, {
-        renderer: nextRenderer
-      });
+    case CYCLE_RENDERER: {
+        const rendererVals = Object.values(RENDERERS);
+        const currentRenderer = rendererVals.indexOf(state.renderer);
+        const nextRenderer = rendererVals[(currentRenderer + 1) % rendererVals.length];
+        return Object.assign({}, state, {
+          renderer: nextRenderer
+        });
+      }
     case SHOW_COMPILED_VEGA_SPEC:
       return Object.assign({}, state, {
         compiledVegaSpec: !state.compiledVegaSpec,

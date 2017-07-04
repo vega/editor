@@ -33,7 +33,7 @@ function debounce(func, wait, immediate) {
 		timeout = setTimeout(later, wait);
 		if (callNow) func.apply(context, args);
 	};
-};
+}
 
 export default class Editor extends React.Component {
   static propTypes = {
@@ -45,7 +45,7 @@ export default class Editor extends React.Component {
     this.spec = this.props.value;
   }
 
-  handleEditorChange (spec) {
+  handleEditorChange(spec) {
     if (this.props.autoParse) {
       if (this.props.mode === MODES.Vega) {
         this.props.updateVegaSpec(spec);
@@ -61,7 +61,7 @@ export default class Editor extends React.Component {
     }
   }
 
-  editorWillMount (monaco) {
+  editorWillMount(monaco) {
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
       allowComments: true,
@@ -93,7 +93,7 @@ export default class Editor extends React.Component {
     }
   }
  
-  render () {
+  render() {
     return (
       <div className={'full-height-wrapper'}>
         {this.manualParseSpec()}
@@ -117,5 +117,5 @@ export default class Editor extends React.Component {
         />
       </div>
     );
-  };
-};
+  }
+}

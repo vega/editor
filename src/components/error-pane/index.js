@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Renderer from './renderer';
 import * as EditorActions from '../../actions/editor';
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     error: state.app.error,
     warningsLogger: state.app.warningsLogger,
