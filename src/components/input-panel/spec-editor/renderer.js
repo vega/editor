@@ -2,6 +2,7 @@ import React from 'react';
 import {MODES} from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
 import {hashHistory} from 'react-router';
+import parser from 'vega-schema-url-parser';
 
 import './index.css'
 
@@ -43,11 +44,7 @@ export default class Editor extends React.Component {
 
   handleEditorChange(spec) {
     if (this.props.autoParse) {
-      if (this.props.mode === MODES.Vega) {
-        this.props.updateVegaSpec(spec);
-      } else if (this.props.mode === MODES.VegaLite) {
-        this.props.updateVegaLiteSpec(spec);
-      }
+      this.updateSpec(spec);
     } else {
       this.props.updateEditorString(spec);
     }
@@ -66,11 +63,7 @@ export default class Editor extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.autoParse && nextProps.parse) {
-      if (this.props.mode === MODES.Vega) {
-        this.props.updateVegaSpec(this.props.value);
-      } else if (this.props.mode === MODES.VegaLite) {
-        this.props.updateVegaLiteSpec(this.props.value);
-      }
+      this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
     }
   }
@@ -84,6 +77,39 @@ export default class Editor extends React.Component {
       )
     } else {
       return null;
+    }
+  }
+
+  updateSpec(spec) {
+    let schema;
+    try {
+      schema = JSON.parse(spec).$schema;
+    } catch (err) {
+      console.warn('Error parsing json string');
+    }  
+    if (schema) {
+      const parsedMode = parser(schema).library;
+      if (this.props.mode !== parsedMode) {
+        this.updateSpecInParsedMode(spec, parsedMode);
+        return;
+      }
+    }
+    this.updateSpecInCurrMode(spec);
+  }
+
+  updateSpecInParsedMode(spec, parsedMode) {
+    if (parsedMode === MODES.Vega) {
+      this.props.updateVegaSpecInVegaLite(spec);
+    } else if (parsedMode === MODES.VegaLite) {
+      this.props.updateVegaLiteSpecInVega(spec);
+    }
+  }
+
+  updateSpecInCurrMode(spec) {
+    if (this.props.mode === MODES.Vega) {
+      this.props.updateVegaSpec(spec);
+    } else if (this.props.mode === MODES.VegaLite) {
+      this.props.updateVegaLiteSpec(spec);
     }
   }
  

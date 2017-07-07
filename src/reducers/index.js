@@ -2,7 +2,8 @@ import * as vl from 'vega-lite';
 
 import {UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE, SHOW_ERROR_PANE, LOG_ERROR,
-  UPDATE_EDITOR_STRING, SHOW_TOOLTIP} from '../actions/editor';
+  UPDATE_EDITOR_STRING, SHOW_TOOLTIP, CHANGE_MODE} from '../actions/editor';
+  
 import {MODES, RENDERERS, DEFAULT_STATE} from '../constants';
 import {validateVegaLite, validateVega} from '../utils/validate';
 import {LocalLogger} from '../utils/logger'
@@ -27,6 +28,10 @@ export default (state = DEFAULT_STATE, action) => {
       return Object.assign({}, state, {
         parse: action.parse
       });
+    case CHANGE_MODE: 
+      return Object.assign({}, state, {
+        mode: action.mode
+      })
     case UPDATE_VEGA_SPEC: {
       const currLogger = new LocalLogger();
       try {

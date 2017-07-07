@@ -70,6 +70,7 @@
     "vega": "github:vega/vega#v3.0.0-rc3",
     "vega-datasets": "github:vega/vega-datasets#gh-pages",
     "vega-lite": "github:vega/vega-lite#v2.0.0-beta.8",
+    "vega-schema-url-parser": "^1.0.0-beta.2",
     "vega-tooltip": "^0.4.2"
   },
   "scripts": {
@@ -106,12 +107,33 @@
     ]
   },
   "eslintConfig": {
-    "extends": ["eslint:recommended", "react-app"],
+    "extends": [
+      "eslint:recommended",
+      "react-app"
+    ],
     "rules": {
-      "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
-      "space-before-function-paren": ["warn", "never"],
-      "object-curly-spacing": ["warn", "never"],
-      "quotes": ["error", "single"]
+      "no-console": [
+        "warn",
+        {
+          "allow": [
+            "warn",
+            "error",
+            "info"
+          ]
+        }
+      ],
+      "space-before-function-paren": [
+        "warn",
+        "never"
+      ],
+      "object-curly-spacing": [
+        "warn",
+        "never"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ]
     }
   }
 }

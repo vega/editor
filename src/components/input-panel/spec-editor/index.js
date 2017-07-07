@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
 import Renderer from './renderer';
 import * as EditorActions from '../../../actions/editor';
+import {MODES} from '../../../constants';
 
 const mapStateToProps = function(state, ownProps) {
   return {
@@ -29,6 +30,16 @@ const mapDispatchToProps = function(dispatch) {
 
     updateEditorString: (val) => {
       dispatch(EditorActions.updateEditorString(val));
+    },
+
+    updateVegaSpecInVegaLite: (spec) => {
+      dispatch(EditorActions.changeMode(MODES.Vega));
+      dispatch(EditorActions.updateVegaSpec(spec));
+    },
+
+    updateVegaLiteSpecInVega: (spec) => {
+      dispatch(EditorActions.changeMode(MODES.VegaLite));
+      dispatch(EditorActions.updateVegaLiteSpec(spec));
     }
   };
 };
