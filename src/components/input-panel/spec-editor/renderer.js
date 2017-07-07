@@ -41,10 +41,6 @@ export default class Editor extends React.Component {
     onChange: React.PropTypes.func
   }
 
-  componentDidMount() {
-    this.spec = this.props.value;
-  }
-
   handleEditorChange(spec) {
     if (this.props.autoParse) {
       if (this.props.mode === MODES.Vega) {
@@ -55,7 +51,6 @@ export default class Editor extends React.Component {
     } else {
       this.props.updateEditorString(spec);
     }
-    this.spec = spec;
     if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
       hashHistory.push('/edited');
     }
@@ -73,9 +68,9 @@ export default class Editor extends React.Component {
 
     if (nextProps.parse) {
       if (this.props.mode === MODES.Vega) {
-        this.props.updateVegaSpec(this.spec);
+        this.props.updateVegaSpec(this.props.value);
       } else if (this.props.mode === MODES.VegaLite) {
-        this.props.updateVegaLiteSpec(this.spec);
+        this.props.updateVegaLiteSpec(this.props.value);
       }
       this.props.parseSpec(false);
     }
