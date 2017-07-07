@@ -1,5 +1,5 @@
 import {MODES, RENDERERS} from './consts';
-import {logger} from '../utils/logger'
+import {LocalLogger} from '../utils/logger';
 
 export const DEFAULT_STATE = {
   editorString: '{}',
@@ -14,5 +14,5 @@ export const DEFAULT_STATE = {
   gist: null,
   error: null,
   errorPane: false,
-  warningsLogger: logger
+  warningsLogger: new LocalLogger()
 }
