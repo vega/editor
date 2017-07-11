@@ -14,5 +14,6 @@ export const DEFAULT_STATE = {
   gist: null,
   error: null,
   errorPane: false,
-  warningsLogger: new LocalLogger()
+  warningsLogger: new LocalLogger(),
+  tooltip: true
 }

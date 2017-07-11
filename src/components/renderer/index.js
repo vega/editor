@@ -9,7 +9,8 @@ function mapStateToProps(state, ownProps) {
     mode: state.mode,
     errorPane: state.errorPane,
     warningsLogger: state.warningsLogger,
-    error: state.error
+    error: state.error,
+    tooltip: state.tooltip
   };
 }
 

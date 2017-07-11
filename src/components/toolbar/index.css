@@ -14,13 +14,7 @@
   font-size: 12px;
 }
 
-.renderer-toggle {
-  background: #777;
-  color: white;
-  cursor: pointer;
-}
-
-.autoParse {
+.renderer-toggle, .autoParse, .tooltip-toggle {
   background: #777;
   color: white;
   cursor: pointer;

@@ -2,7 +2,7 @@ import * as vl from 'vega-lite';
 
 import {UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE, SHOW_ERROR_PANE, LOG_ERROR,
-  UPDATE_EDITOR_STRING} from '../actions/editor';
+  UPDATE_EDITOR_STRING, SHOW_TOOLTIP} from '../actions/editor';
 import {MODES, RENDERERS, DEFAULT_STATE} from '../constants';
 import {validateVegaLite, validateVega} from '../utils/validate';
 import {LocalLogger} from '../utils/logger'
@@ -20,7 +20,8 @@ export default (state = DEFAULT_STATE, action) => {
         compiledVegaSpec: false,
         gist: null,
         parse: false,
-        warningsLogger: new LocalLogger()
+        warningsLogger: new LocalLogger(),
+        tooltip: true
       });
     case PARSE_SPEC:
       return Object.assign({}, state, {
@@ -186,6 +187,10 @@ export default (state = DEFAULT_STATE, action) => {
     case UPDATE_EDITOR_STRING: 
       return Object.assign({}, state, {
         editorString: action.editorString
+      });
+    case SHOW_TOOLTIP: 
+      return Object.assign({}, state, {
+        tooltip: !state.tooltip
       });
     default:
       return state;

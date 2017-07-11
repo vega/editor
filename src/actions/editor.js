@@ -12,6 +12,7 @@ export const SET_MODE = 'SET_MODE';
 export const SHOW_ERROR_PANE = 'SHOW_ERROR_PANE';
 export const LOG_ERROR = 'LOG_ERROR';
 export const UPDATE_EDITOR_STRING = 'UPDATE_EDITOR_STRING';
+export const SHOW_TOOLTIP = 'SHOW_TOOLTIP';
 
 export function setMode(mode) {
   return {
@@ -108,5 +109,11 @@ export function updateEditorString(editorString) {
   return {
     type: UPDATE_EDITOR_STRING,
     editorString: editorString
+  }
+}
+
+export function showTooltip() {
+  return {
+    type: SHOW_TOOLTIP
   }
 }

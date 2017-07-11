@@ -12,7 +12,8 @@ export default class Toolbar extends React.Component {
   static propTypes = {
     error: React.PropTypes.string,
     renderer: React.PropTypes.string,
-    autoParse: React.PropTypes.bool
+    autoParse: React.PropTypes.bool,
+    tooltip: React.PropTypes.bool
   }
 
   showErrorAndWarnings() {
@@ -44,6 +45,9 @@ export default class Toolbar extends React.Component {
           {
             this.props.autoParse ? 'Parse: auto' : 'Parse: manual'
           }
+        </div>
+        <div className='tooltip-toggle' onClick={this.props.showTooltip}>
+           Tooltip: {this.props.tooltip ? 'visible' : 'hidden'}
         </div>
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
           {

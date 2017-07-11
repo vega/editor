@@ -37,7 +37,9 @@ export default class Editor extends React.Component {
       throw err;
     }
     this.refs.chart.style.width = 'auto';
-    vegaTooltip.vega(view);
+    if (this.props.tooltip) {
+      vegaTooltip.vega(view);
+    }
     window.VEGA_DEBUG.view = view;
   }
 
@@ -56,8 +58,7 @@ export default class Editor extends React.Component {
         <div className='chart'>
           <div ref='chart'>
           </div>
-          <div id='vis-tooltip' className='vg-tooltip'>
-          </div>
+          {this.props.tooltip ? <div id='vis-tooltip' className='vg-tooltip'></div> : null}
         </div>
         <Toolbar />
       </div>

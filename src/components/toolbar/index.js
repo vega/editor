@@ -8,7 +8,8 @@ function mapStateToProps(state, ownProps) {
     error: state.error,
     mode: state.mode,
     autoParse: state.autoParse,
-    warningsLogger: state.warningsLogger
+    warningsLogger: state.warningsLogger,
+    tooltip: state.tooltip
   };
 }
 
@@ -25,6 +26,10 @@ const mapDispatchToProps = function(dispatch) {
 
     showErrorPane: () => {
       dispatch(EditorActions.showErrorPane());
+    },
+
+    showTooltip: () => {
+      dispatch(EditorActions.showTooltip());
     }
   };
 };
