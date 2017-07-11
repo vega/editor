@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import * as vega from 'vega';
 import 'vega-tooltip/build/vega-tooltip.css';
 import './index.css';
-import Vega from '../../constants'
+import {MODES} from '../../constants'
 import * as vegaTooltip from 'vega-tooltip';
 import Error from '../error';
 import ErrorPane from '../error-pane';
@@ -27,13 +27,14 @@ export default class Editor extends React.Component {
       .logLevel(vega.Warn)
       .initialize(this.refs.chart)
       .renderer(props.renderer)
-    
-      if (props.mode === Vega) {
+
+      if (props.mode === MODES.Vega) {
         view.hover()
       }
       view.run();
     } catch (err) {
       this.props.logError(err.toString());
+      throw err;
     }
     this.refs.chart.style.width = 'auto';
     vegaTooltip.vega(view);
