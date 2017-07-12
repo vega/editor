@@ -38,7 +38,7 @@ export default class Toolbar extends React.Component {
         {this.showErrorAndWarnings()}
         <div className='status'>
           {
-            `Mode: ${this.props.mode}  Version: ${getVersion(this.props.mode)}`
+            `${this.props.mode} version ${getVersion(this.props.mode)}`
           }
         </div>
         <div className='autoParse' onClick={this.props.toggleAutoParse}>
@@ -47,7 +47,7 @@ export default class Toolbar extends React.Component {
           }
         </div>
         <div className='tooltip-toggle' onClick={this.props.showTooltip}>
-           Tooltip: {this.props.tooltip ? 'visible' : 'hidden'}
+           {this.props.tooltip ? 'Tooltips' : 'No Tooltips'}
         </div>
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
           {
