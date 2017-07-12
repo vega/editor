@@ -58,5 +58,5 @@ eval $SCHEMA_OP "$CWD/node_modules/vega-lite/build/vega-lite-schema.json" "$SCHE
 eval $VEGA_OP "$CWD/node_modules/vega/docs/examples/*.vg.json" "$SPEC/vega"
 eval $VEGA_LITE_OP "$CWD/node_modules/vega-lite/examples/specs/" "$SPEC/vega-lite/"
 
-cp "$CWD/node_modules/vega-lite/examples/vl-examples.json" "$SPEC/vega-lite/index.json"
+cp "$CWD/node_modules/vega-lite/_data/examples.json" "$SPEC/vega-lite/index.json"
 cp "$CWD/node_modules/vega/docs/_data/examples.json" "$SPEC/vega/index.json"
