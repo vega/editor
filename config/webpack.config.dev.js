@@ -215,7 +215,7 @@ module.exports = {
     // See https://github.com/facebookincubator/create-react-app/issues/186
     new WatchMissingNodeModulesPlugin(paths.appNodeModules),
     new CopyWebpackPlugin([{
-      from: 'node_modules/monaco-editor/min/vs',
+      from: 'node_modules/monaco-editor/dev/vs',
       to: 'vs',
     }]),
     new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
