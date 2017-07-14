@@ -51,35 +51,20 @@ export default (state = DEFAULT_STATE, action) => {
       });
     }
     case SET_VEGA_EXAMPLE:
-      try {
-        spec = JSON.parse(action.spec);
-      } catch (e) {
-        console.warn('Error parsing json string');
-        return Object.assign({}, state, {
-          error: e.message,
-          editorString: action.spec
-        });
-      }
+      spec = JSON.parse(action.spec);
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
         editorString: action.spec,
         selectedExample: action.example,
         error: null,
+        warningsLogger: new LocalLogger()
       });
     case SET_VEGA_LITE_EXAMPLE:
-      try {
-        spec = JSON.parse(action.spec);
-        vegaSpec = spec;
-        if (action.spec !== '{}') {
-          vegaSpec = vl.compile(spec).spec;
-        }
-      } catch (e) {
-        console.warn(e);
-        return Object.assign({}, state, {
-          error: e.message,
-          editorString: action.spec
-        });
+      spec = JSON.parse(action.spec);
+      vegaSpec = spec;
+      if (action.spec !== '{}') {
+        vegaSpec = vl.compile(spec).spec;
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
@@ -87,7 +72,8 @@ export default (state = DEFAULT_STATE, action) => {
         mode: MODES.VegaLite,
         editorString: action.spec,
         selectedExample: action.example,
-        error: null
+        error: null,
+        warningsLogger: new LocalLogger()
       });
     case UPDATE_VEGA_LITE_SPEC: {
       const currLogger = new LocalLogger();
