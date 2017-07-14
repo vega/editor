@@ -65,8 +65,7 @@ export default class Editor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
-    if (nextProps.parse) {
+    if (!nextProps.autoParse && nextProps.parse) {
       if (this.props.mode === MODES.Vega) {
         this.props.updateVegaSpec(this.props.value);
       } else if (this.props.mode === MODES.VegaLite) {
@@ -107,7 +106,7 @@ export default class Editor extends React.Component {
             lineNumbersMinChars: 4
           }}
           defaultValue={this.props.value}
-          onChange={debounce(this.handleEditorChange, 500).bind(this)}
+          onChange={debounce(this.handleEditorChange, 700).bind(this)}
           editorWillMount={this.editorWillMount.bind(this)}
         />
       </div>
