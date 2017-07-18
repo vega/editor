@@ -69,7 +69,7 @@
     "redux-thunk": "^2.2.0",
     "vega": "github:vega/vega#v3.0.0-rc3",
     "vega-datasets": "github:vega/vega-datasets#gh-pages",
-    "vega-lite": "github:vega/vega-lite#v2.0.0-beta.8",
+    "vega-lite": "github:vega/vega-lite#v2.0.0-beta.9",
     "vega-schema-url-parser": "^1.0.0-beta.2",
     "vega-tooltip": "^0.4.2"
   },

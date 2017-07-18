@@ -5123,7 +5123,7 @@ react-dom@^15.6.1:
   version "0.8.1"
   resolved "https://codeload.github.com/vega/react-monaco-editor/tar.gz/8ba17e6e53c94aa26e9f3f68dfb66892f9036f7d"
   dependencies:
-    monaco-editor "~0.9.0"
+    monaco-editor "~0.8.x"
 
 react-portal@^3.1.0:
   version "3.1.0"
@@ -6383,7 +6383,7 @@ vega-hierarchy@1:
     vega-dataflow "2"
     vega-util "1"
 
-vega-lite@^2.0.0-beta.3, "vega-lite@github:vega/vega-lite#v2.0.0-beta.8":
+vega-lite@^2.0.0-beta.3:
   version "2.0.0-beta.8"
   resolved "https://codeload.github.com/vega/vega-lite/tar.gz/8b25b646e81993e1a7a54c69f90c7ffcbb89588a"
   dependencies:
@@ -6391,6 +6391,16 @@ vega-lite@^2.0.0-beta.3, "vega-lite@github:vega/vega-lite#v2.0.0-beta.8":
     tslib "^1.7.1"
     vega-event-selector "^2.0.0"
     vega-util "^1.3.1"
+    yargs "^8.0.2"
+
+"vega-lite@github:vega/vega-lite#v2.0.0-beta.9":
+  version "2.0.0-beta.9"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/81be0548df37dc9b93ce69be5708c13a92e44403"
+  dependencies:
+    json-stable-stringify "^1.0.1"
+    tslib "^1.7.1"
+    vega-event-selector "^2.0.0"
+    vega-util "^1.4.1"
     yargs "^8.0.2"
 
 vega-loader@2:
@@ -6468,6 +6478,10 @@ vega-tooltip@^0.4.2:
 vega-util@1, vega-util@^1.1, vega-util@^1.2, vega-util@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.3.1.tgz#6e65fe37c341ea10e322378421d0dbd9728f9d5e"
+
+vega-util@^1.4, vega-util@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.4.1.tgz#3c5bea971aecec552786c190421f87e42165d666"
 
 vega-view@1:
   version "1.1.0"
