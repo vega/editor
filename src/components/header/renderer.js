@@ -44,48 +44,34 @@ export default class Header extends React.Component {
     hashHistory.push('/custom/vega-lite');
   }
 
-  fetchData(gistUrl, vegaVersion) {
-    let prefix = 'https://hook.io/tianyiii/vegaeditor/';
-    let hookUrl = prefix + vegaVersion + '/'
-      + gistUrl.substring(gistUrl.indexOf('.com/') + '.com/'.length);
-    let suffix = hookUrl.substring(prefix.length);
+  onSelectVegaGist(gistUrl) {
+    this.setState({
+      gistIsOpened: false,
+      url: ''
+    });
+    const username = this.getGistNameAndId(gistUrl)[0];
+    const id = this.getGistNameAndId(gistUrl)[1];
+    hashHistory.push('/gist/vega/' + username + '/' + id);
+  }
 
-    fetch(hookUrl, {
-      method: 'get',
-      mode: 'cors'
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        return Promise.resolve(response);
-      } else {
-        return Promise.reject(new Error(response.statusText));
-      }
-    })
-    .then((response) => {
-      let arrayNames = suffix.split('/');
-      if (arrayNames.length < 3) {
-        console.warn('invalid url');
-        return;
-      }
-      let username = arrayNames[1];
-      let id = arrayNames[2];
-      hashHistory.push('/gist/' + vegaVersion +'/' + username + '/' + id);
-      return response.json();
-    })
-    .then((data) => {
-      if (data['message'] !== 'Not Found') {
-        if (vegaVersion === 'vega') {
-          this.props.setGistVegaSpec(hookUrl, JSON.stringify(data, null, 2));
-        } else if (vegaVersion === 'vega-lite') {
-          this.props.setGistVegaLiteSpec(hookUrl, JSON.stringify(data, null, 2));
-        }
-      } else {
-        console.warn('invalid url');
-      }
-    })
-    .catch((ex) => {
-      console.error(ex);
-    })
+  onSelectVegaLiteGist(gistUrl) { 
+    this.setState({
+      gistIsOpened: false,
+      url: ''
+    });
+    const username = this.getGistNameAndId(gistUrl)[0];
+    const id = this.getGistNameAndId(gistUrl)[1];
+    hashHistory.push('/gist/vega-lite/' + username + '/' + id);
+  }
+
+  getGistNameAndId(gistUrl) {
+    const suffix = gistUrl.substring(gistUrl.indexOf('.com/') + './com'.length);
+    let arrayNames = suffix.split('/');
+    if (arrayNames.length < 2) {
+      console.warn('invalid url');
+      return;
+    }
+    return arrayNames;
   }
 
   render() {
@@ -194,21 +180,11 @@ export default class Header extends React.Component {
           <input className='gist-input' type='text' placeholder='enter gist url here' value={this.state.url}
           onChange={this.handleChange.bind(this)}/>
 
-          <button className='gist-button' onClick={() => {
-            this.fetchData(this.state.url, 'vega');
-            this.setState({
-              gistIsOpened: false,
-              url: ''
-            })
-          }}> Vega
+          <button className='gist-button' onClick={this.onSelectVegaGist.bind(this, this.state.url)}> 
+            Vega
           </button>
-          <button className='gist-button' onClick={() => {
-            this.fetchData(this.state.url, 'vega-lite');
-            this.setState({
-              gistIsOpened: false,
-              url: ''
-              });
-            }}> Vega-Lite
+          <button className='gist-button' onClick={this.onSelectVegaLiteGist.bind(this, this.state.url)}> 
+            Vega-Lite
           </button>
         </div>
       </div>

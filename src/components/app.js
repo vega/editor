@@ -10,6 +10,7 @@ import './app.css';
 import {hashHistory} from 'react-router';
 import {text} from 'd3-request';
 import equal from 'deep-equal';
+import {MODES} from '../constants';
 
 class App extends React.Component {
 
@@ -37,41 +38,80 @@ class App extends React.Component {
     }, false);
 
     const parameter = this.props.params;
-    if (parameter.mode && hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
-       this.props.setMode(parameter.mode);
-    }
-    this.setExample(this.props.params);
+    this.setSpecInUrl(parameter);
   }
 
   componentWillReceiveProps(nextProps) {
     if (!equal(this.props.params, nextProps.params)) {
-      this.setExample(nextProps.params);
+      this.setSpecInUrl(nextProps.params);
     }
   }
 
-  setExample(parameter) {
-    if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
-      if (parameter && parameter.example_name) {
-        // open example
-
-        const name = parameter.example_name;
-        if (parameter.mode === 'vega') {
-          text(`./spec/vega/${name}.vg.json`, spec => {
-            this.props.setVegaExample(name, spec);
-          });
-        } else if (parameter.mode === 'vega-lite') {
-          text(`./spec/vega-lite/${name}.vl.json`, spec => {
-            this.props.setVegaLiteExample(name, spec);
-          });
-        }
-      } else if (parameter && parameter.mode) {
-        // new spec
-        if (parameter.mode === 'vega') {
-          this.props.setVegaExample(name, '{}');
-        } else if (parameter.mode === 'vega-lite') {
-          this.props.setVegaLiteExample(name, '{}');
-        }
+  setSpecInUrl(parameter) {
+    if (parameter && parameter.mode && hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
+      if (parameter.example_name) {
+        this.setExample(parameter);
+      } else if (parameter.username && parameter.id) {
+        this.setGist(parameter);
+      } else {
+        this.props.setMode(parameter.mode);
       }
+    }
+  }
+
+  setGist(parameter) {
+    const prefix = 'https://hook.io/tianyiii/vegaeditor';
+    const vegaVersion = parameter.mode;
+    const hookUrl = `${prefix}/${vegaVersion}/${parameter.username}/${parameter.id}`;
+
+    fetch(hookUrl, {
+      method: 'get',
+      mode: 'cors'
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        return Promise.resolve(response);
+      } else {
+        return Promise.reject(new Error(response.statusText));
+      }
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      if (data['message'] !== 'Not Found') {
+        if (vegaVersion === 'vega') {
+          this.props.setGistVegaSpec(hookUrl, JSON.stringify(data, null, 2));
+        } else if (vegaVersion === 'vega-lite') {
+          this.props.setGistVegaLiteSpec(hookUrl, JSON.stringify(data, null, 2));
+        }
+      } else {
+        console.warn('invalid url');
+      }
+    })
+    .catch((ex) => {
+      console.error(ex);
+    })
+  }
+
+  setExample(parameter) {
+    const name = parameter.example_name;
+    if (parameter.mode === 'vega') {
+      text(`./spec/vega/${name}.vg.json`, spec => {
+        this.props.setVegaExample(name, spec);
+      });
+    } else if (parameter.mode === 'vega-lite') {
+      text(`./spec/vega-lite/${name}.vl.json`, spec => {
+        this.props.setVegaLiteExample(name, spec);
+      });
+    }
+  }
+
+  setEmptySpec(parameter) {
+    if (parameter.mode === MODES.Vega) {
+      this.props.updateVegaSpec('{}');
+    } else if (parameter.mode === MODES.VegaLite) {
+      this.props.updateVegaLiteSpec('{}');
     }
   }
 
@@ -107,6 +147,12 @@ const mapDispatchToProps = function(dispatch) {
     },
     setVegaLiteExample: (example, val) => {
       dispatch(EditorActions.setVegaLiteExample(example, val));
+    },
+    setGistVegaSpec: (gist, spec) => {
+      dispatch(EditorActions.setGistVegaSpec(gist, spec));
+    },
+    setGistVegaLiteSpec: (gist, spec) => {
+      dispatch(EditorActions.setGistVegaLiteSpec(gist, spec));
     }
   };
 };
