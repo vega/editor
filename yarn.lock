@@ -4195,7 +4195,7 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
   dependencies:
     minimist "0.0.8"
 
-monaco-editor@~0.9.0:
+monaco-editor@^0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.9.0.tgz#c50c53251c47b7ff12e09f0f83cfd32a44dfe6ec"
 
@@ -5164,11 +5164,11 @@ react-dom@^15.6.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-"react-monaco-editor@github:vega/react-monaco-editor":
-  version "0.8.1"
-  resolved "https://codeload.github.com/vega/react-monaco-editor/tar.gz/8ba17e6e53c94aa26e9f3f68dfb66892f9036f7d"
+react-monaco-editor@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.9.0.tgz#07cbbf0d60747958c52757d656b4a6b32c4d6cf7"
   dependencies:
-    monaco-editor "~0.9.0"
+    prop-types "^15.5.10"
 
 react-portal@^3.1.0:
   version "3.1.0"
@@ -6407,9 +6407,9 @@ vega-dataflow@2:
     vega-statistics "1"
     vega-util "^1.4"
 
-"vega-datasets@github:vega/vega-datasets#gh-pages":
+vega-datasets@^1.10.0:
   version "1.10.0"
-  resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/7080ba8297825d27495bdfb8386d10cff83cbacf"
+  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.10.0.tgz#fe923df5aa3828eeb350b5e710a79936a25f29f0"
 
 vega-datasets@vega/vega-datasets#gh-pages:
   version "1.8.0"
