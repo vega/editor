@@ -271,12 +271,12 @@ autoprefixer@^6.3.1:
     postcss "^5.2.16"
     postcss-value-parser "^3.2.3"
 
-awesome-typescript-loader@3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/awesome-typescript-loader/-/awesome-typescript-loader-3.2.1.tgz#600f5d552da3e5501e3e5c19aa3e8986059f8947"
+awesome-typescript-loader@3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/awesome-typescript-loader/-/awesome-typescript-loader-3.2.2.tgz#f2e247cd8c129eef17c0c073d7d3a67d74a90684"
   dependencies:
     colors "^1.1.2"
-    enhanced-resolve "^3.1.0"
+    enhanced-resolve "3.3.0"
     loader-utils "^1.1.0"
     lodash "^4.17.4"
     micromatch "^3.0.3"
@@ -2075,14 +2075,14 @@ encoding@^0.1.11:
   dependencies:
     iconv-lite "~0.4.13"
 
-enhanced-resolve@^3.1.0:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-3.4.1.tgz#0421e339fd71419b3da13d129b3979040230476e"
+enhanced-resolve@3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-3.3.0.tgz#950964ecc7f0332a42321b673b38dc8ff15535b3"
   dependencies:
     graceful-fs "^4.1.2"
     memory-fs "^0.4.0"
     object-assign "^4.0.1"
-    tapable "^0.2.7"
+    tapable "^0.2.5"
 
 enhanced-resolve@~0.9.0:
   version "0.9.1"
@@ -2598,9 +2598,9 @@ fileset@^2.0.2:
     glob "^7.0.3"
     minimatch "^3.0.3"
 
-filesize@3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/filesize/-/filesize-3.3.0.tgz#53149ea3460e3b2e024962a51648aa572cf98122"
+filesize@3.5.10:
+  version "3.5.10"
+  resolved "https://registry.yarnpkg.com/filesize/-/filesize-3.5.10.tgz#fc8fa23ddb4ef9e5e0ab6e1e64f679a24a56761f"
 
 fill-range@^2.1.0:
   version "2.2.3"
@@ -3733,9 +3733,9 @@ jsesc@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
 
-json-loader@0.5.4:
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/json-loader/-/json-loader-0.5.4.tgz#8baa1365a632f58a3c46d20175fc6002c96e37de"
+json-loader@0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/json-loader/-/json-loader-0.5.7.tgz#dca14a70235ff82f0ac9a3abeb60d337a365185d"
 
 json-schema-traverse@^0.3.0:
   version "0.3.1"
@@ -4164,9 +4164,9 @@ mimic-fn@^1.0.0:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimatch@3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.2.tgz#0f398a7300ea441e9c348c83d98ab8c9dbf9c40a"
+minimatch@3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.3.tgz#2a4e4090b96b2db06a9d7df01055a62a77c9b774"
   dependencies:
     brace-expansion "^1.0.0"
 
@@ -5035,9 +5035,9 @@ progress@^1.1.8:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/progress/-/progress-1.1.8.tgz#e260c78f6161cdd9b0e56cc3e0a85de17c7a57be"
 
-promise@7.1.1:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/promise/-/promise-7.1.1.tgz#489654c692616b8aa55b0724fa809bb7db49c5bf"
+promise@8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/promise/-/promise-8.0.1.tgz#e45d68b00a17647b6da711bf85ed6ed47208f450"
   dependencies:
     asap "~2.0.3"
 
@@ -5305,11 +5305,11 @@ readline2@^1.0.1:
     is-fullwidth-code-point "^1.0.0"
     mute-stream "0.0.5"
 
-recursive-readdir@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/recursive-readdir/-/recursive-readdir-2.1.0.tgz#78b7bfd79582d3d7596b8ff1bd29fbd50229f6aa"
+recursive-readdir@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/recursive-readdir/-/recursive-readdir-2.2.1.tgz#90ef231d0778c5ce093c9a48d74e5c5422d13a99"
   dependencies:
-    minimatch "3.0.2"
+    minimatch "3.0.3"
 
 redeyed@~1.0.0:
   version "1.0.1"
@@ -5524,15 +5524,9 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.6.1:
+rimraf@2, rimraf@2.6.1, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
-  dependencies:
-    glob "^7.0.5"
-
-rimraf@2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
   dependencies:
     glob "^7.0.5"
 
@@ -6027,9 +6021,9 @@ tapable@^0.1.8, tapable@~0.1.8:
   version "0.1.10"
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-0.1.10.tgz#29c35707c2b70e50d07482b5d202e8ed446dafd4"
 
-tapable@^0.2.7:
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/tapable/-/tapable-0.2.7.tgz#e46c0daacbb2b8a98b9b0cea0f4052105817ed5c"
+tapable@^0.2.5:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/tapable/-/tapable-0.2.8.tgz#99372a5c999bf2df160afc0d74bed4f47948cd22"
 
 tar-pack@^3.4.0:
   version "3.4.0"
