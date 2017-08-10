@@ -493,7 +493,18 @@
                 {
                   "properties": {
                     "source": {
-                      "type": "string"
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "minItems": 1
+                        }
+                      ]
                     }
                   },
                   "required": [
@@ -1365,10 +1376,13 @@
         "interactive": {
           "type": "boolean",
           "default": false
+        },
+        "style": {
+          "$ref": "#/refs/style"
         }
       },
       "patternProperties": {
-        "^(?!interactive|name).+$": {
+        "^(?!interactive|name|style).+$": {
           "$ref": "#/defs/encodeEntry"
         }
       },
@@ -1545,6 +1559,9 @@
         },
         "name": {
           "type": "string"
+        },
+        "style": {
+          "$ref": "#/refs/style"
         },
         "key": {
           "type": "string"
@@ -3278,7 +3295,7 @@
     "titleEncode": {
       "type": "object",
       "patternProperties": {
-        "^(?!interactive|name).+$": {
+        "^(?!interactive|name|style).+$": {
           "$ref": "#/defs/encodeEntry"
         }
       },
@@ -3312,6 +3329,9 @@
                 "end"
               ],
               "default": "middle"
+            },
+            "style": {
+              "$ref": "#/refs/style"
             },
             "text": {
               "$ref": "#/refs/stringOrSignal"
@@ -3385,9 +3405,6 @@
           "$ref": "#/defs/lookupTransform"
         },
         {
-          "$ref": "#/defs/rankTransform"
-        },
-        {
           "$ref": "#/defs/sampleTransform"
         },
         {
@@ -3397,7 +3414,22 @@
           "$ref": "#/defs/windowTransform"
         },
         {
+          "$ref": "#/defs/identifierTransform"
+        },
+        {
+          "$ref": "#/defs/linkpathTransform"
+        },
+        {
+          "$ref": "#/defs/pieTransform"
+        },
+        {
+          "$ref": "#/defs/stackTransform"
+        },
+        {
           "$ref": "#/defs/contourTransform"
+        },
+        {
+          "$ref": "#/defs/geojsonTransform"
         },
         {
           "$ref": "#/defs/geopathTransform"
@@ -3412,25 +3444,10 @@
           "$ref": "#/defs/graticuleTransform"
         },
         {
-          "$ref": "#/defs/linkpathTransform"
-        },
-        {
-          "$ref": "#/defs/pieTransform"
-        },
-        {
-          "$ref": "#/defs/stackTransform"
-        },
-        {
           "$ref": "#/defs/forceTransform"
         },
         {
           "$ref": "#/defs/nestTransform"
-        },
-        {
-          "$ref": "#/defs/stratifyTransform"
-        },
-        {
-          "$ref": "#/defs/treelinksTransform"
         },
         {
           "$ref": "#/defs/packTransform"
@@ -3439,7 +3456,13 @@
           "$ref": "#/defs/partitionTransform"
         },
         {
+          "$ref": "#/defs/stratifyTransform"
+        },
+        {
           "$ref": "#/defs/treeTransform"
+        },
+        {
+          "$ref": "#/defs/treelinksTransform"
         },
         {
           "$ref": "#/defs/treemapTransform"
@@ -3455,9 +3478,6 @@
         },
         {
           "$ref": "#/defs/resolvefilterTransform"
-        },
-        {
-          "$ref": "#/defs/identifierTransform"
         }
       ]
     },
@@ -3482,19 +3502,10 @@
           "$ref": "#/defs/lookupTransform"
         },
         {
-          "$ref": "#/defs/rankTransform"
-        },
-        {
           "$ref": "#/defs/windowTransform"
         },
         {
-          "$ref": "#/defs/geopathTransform"
-        },
-        {
-          "$ref": "#/defs/geopointTransform"
-        },
-        {
-          "$ref": "#/defs/geoshapeTransform"
+          "$ref": "#/defs/identifierTransform"
         },
         {
           "$ref": "#/defs/linkpathTransform"
@@ -3506,19 +3517,31 @@
           "$ref": "#/defs/stackTransform"
         },
         {
+          "$ref": "#/defs/geojsonTransform"
+        },
+        {
+          "$ref": "#/defs/geopathTransform"
+        },
+        {
+          "$ref": "#/defs/geopointTransform"
+        },
+        {
+          "$ref": "#/defs/geoshapeTransform"
+        },
+        {
           "$ref": "#/defs/forceTransform"
         },
         {
           "$ref": "#/defs/nestTransform"
         },
         {
-          "$ref": "#/defs/stratifyTransform"
-        },
-        {
           "$ref": "#/defs/packTransform"
         },
         {
           "$ref": "#/defs/partitionTransform"
+        },
+        {
+          "$ref": "#/defs/stratifyTransform"
         },
         {
           "$ref": "#/defs/treeTransform"
@@ -3537,9 +3560,6 @@
         },
         {
           "$ref": "#/defs/resolvefilterTransform"
-        },
-        {
-          "$ref": "#/defs/identifierTransform"
         }
       ]
     },
@@ -3577,6 +3597,49 @@
             }
           ]
         },
+        "ops": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "values",
+                      "count",
+                      "missing",
+                      "valid",
+                      "sum",
+                      "mean",
+                      "average",
+                      "variance",
+                      "variancep",
+                      "stdev",
+                      "stdevp",
+                      "stderr",
+                      "distinct",
+                      "ci0",
+                      "ci1",
+                      "median",
+                      "q1",
+                      "q3",
+                      "argmin",
+                      "argmax",
+                      "min",
+                      "max"
+                    ]
+                  },
+                  {
+                    "$ref": "#/refs/signal"
+                  }
+                ]
+              }
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ]
+        },
         "fields": {
           "oneOf": [
             {
@@ -3591,49 +3654,9 @@
                   },
                   {
                     "$ref": "#/refs/expr"
-                  }
-                ]
-              }
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ]
-        },
-        "ops": {
-          "oneOf": [
-            {
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "enum": [
-                      "values",
-                      "count",
-                      "valid",
-                      "missing",
-                      "distinct",
-                      "min",
-                      "max",
-                      "argmin",
-                      "argmax",
-                      "sum",
-                      "mean",
-                      "average",
-                      "variance",
-                      "variancep",
-                      "stdev",
-                      "stdevp",
-                      "stderr",
-                      "median",
-                      "q1",
-                      "q3",
-                      "ci0",
-                      "ci1"
-                    ]
                   },
                   {
-                    "$ref": "#/refs/signal"
+                    "type": "null"
                   }
                 ]
               }
@@ -3654,6 +3677,9 @@
                   },
                   {
                     "$ref": "#/refs/signal"
+                  },
+                  {
+                    "type": "null"
                   }
                 ]
               }
@@ -4610,6 +4636,9 @@
                   },
                   {
                     "$ref": "#/refs/expr"
+                  },
+                  {
+                    "type": "null"
                   }
                 ]
               }
@@ -4627,10 +4656,10 @@
                 "anyOf": [
                   {
                     "enum": [
+                      "values",
                       "count",
-                      "valid",
                       "missing",
-                      "distinct",
+                      "valid",
                       "sum",
                       "mean",
                       "average",
@@ -4639,15 +4668,16 @@
                       "stdev",
                       "stdevp",
                       "stderr",
+                      "distinct",
+                      "ci0",
+                      "ci1",
                       "median",
                       "q1",
                       "q3",
-                      "ci0",
-                      "ci1",
-                      "min",
-                      "max",
                       "argmin",
-                      "argmax"
+                      "argmax",
+                      "min",
+                      "max"
                     ]
                   },
                   {
@@ -4672,6 +4702,9 @@
                   },
                   {
                     "$ref": "#/refs/signal"
+                  },
+                  {
+                    "type": "null"
                   }
                 ]
               }
@@ -4803,57 +4836,6 @@
         "fields"
       ]
     },
-    "rankTransform": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "rank"
-          ]
-        },
-        "signal": {
-          "type": "string"
-        },
-        "field": {
-          "oneOf": [
-            {
-              "$ref": "#/refs/scaleField"
-            },
-            {
-              "$ref": "#/refs/paramField"
-            },
-            {
-              "$ref": "#/refs/expr"
-            }
-          ]
-        },
-        "normalize": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ]
-        },
-        "as": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ],
-          "default": "rank"
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "type"
-      ]
-    },
     "sampleTransform": {
       "type": "object",
       "properties": {
@@ -4946,46 +4928,6 @@
         "sort": {
           "$ref": "#/refs/compare"
         },
-        "frame": {
-          "oneOf": [
-            {
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "$ref": "#/refs/signal"
-                  }
-                ]
-              }
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "default": [
-            null,
-            0
-          ]
-        },
-        "frameType": {
-          "anyOf": [
-            {
-              "enum": [
-                "range",
-                "rows"
-              ]
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ],
-          "default": "range"
-        },
         "groupby": {
           "oneOf": [
             {
@@ -5030,13 +4972,8 @@
                       "nth_value",
                       "values",
                       "count",
-                      "valid",
                       "missing",
-                      "distinct",
-                      "min",
-                      "max",
-                      "argmin",
-                      "argmax",
+                      "valid",
                       "sum",
                       "mean",
                       "average",
@@ -5045,11 +4982,16 @@
                       "stdev",
                       "stdevp",
                       "stderr",
+                      "distinct",
+                      "ci0",
+                      "ci1",
                       "median",
                       "q1",
                       "q3",
-                      "ci0",
-                      "ci1"
+                      "argmin",
+                      "argmax",
+                      "min",
+                      "max"
                     ]
                   },
                   {
@@ -5074,6 +5016,9 @@
                   },
                   {
                     "$ref": "#/refs/signal"
+                  },
+                  {
+                    "type": "null"
                   }
                 ]
               }
@@ -5097,9 +5042,279 @@
                   },
                   {
                     "$ref": "#/refs/expr"
+                  },
+                  {
+                    "type": "null"
                   }
                 ]
               }
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ]
+        },
+        "as": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/refs/signal"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ]
+        },
+        "frame": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "$ref": "#/refs/signal"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
+          "default": [
+            null,
+            0
+          ]
+        },
+        "ignorePeers": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "identifierTransform": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "identifier"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "as": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "as"
+      ]
+    },
+    "linkpathTransform": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "linkpath"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "sourceX": {
+          "oneOf": [
+            {
+              "$ref": "#/refs/scaleField"
+            },
+            {
+              "$ref": "#/refs/paramField"
+            },
+            {
+              "$ref": "#/refs/expr"
+            }
+          ],
+          "default": "source.x"
+        },
+        "sourceY": {
+          "oneOf": [
+            {
+              "$ref": "#/refs/scaleField"
+            },
+            {
+              "$ref": "#/refs/paramField"
+            },
+            {
+              "$ref": "#/refs/expr"
+            }
+          ],
+          "default": "source.y"
+        },
+        "targetX": {
+          "oneOf": [
+            {
+              "$ref": "#/refs/scaleField"
+            },
+            {
+              "$ref": "#/refs/paramField"
+            },
+            {
+              "$ref": "#/refs/expr"
+            }
+          ],
+          "default": "target.x"
+        },
+        "targetY": {
+          "oneOf": [
+            {
+              "$ref": "#/refs/scaleField"
+            },
+            {
+              "$ref": "#/refs/paramField"
+            },
+            {
+              "$ref": "#/refs/expr"
+            }
+          ],
+          "default": "target.y"
+        },
+        "orient": {
+          "anyOf": [
+            {
+              "enum": [
+                "horizontal",
+                "vertical",
+                "radial"
+              ]
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ],
+          "default": "vertical"
+        },
+        "shape": {
+          "anyOf": [
+            {
+              "enum": [
+                "line",
+                "arc",
+                "curve",
+                "diagonal",
+                "orthogonal"
+              ]
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ],
+          "default": "line"
+        },
+        "as": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ],
+          "default": "path"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "pieTransform": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "pie"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "field": {
+          "oneOf": [
+            {
+              "$ref": "#/refs/scaleField"
+            },
+            {
+              "$ref": "#/refs/paramField"
+            },
+            {
+              "$ref": "#/refs/expr"
+            }
+          ]
+        },
+        "startAngle": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ]
+        },
+        "endAngle": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ],
+          "default": 6.283185307179586
+        },
+        "sort": {
+          "anyOf": [
+            {
+              "type": "boolean"
             },
             {
               "$ref": "#/refs/signal"
@@ -5124,6 +5339,109 @@
             {
               "$ref": "#/refs/signal"
             }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
+          "default": [
+            "startAngle",
+            "endAngle"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "stackTransform": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "stack"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "field": {
+          "oneOf": [
+            {
+              "$ref": "#/refs/scaleField"
+            },
+            {
+              "$ref": "#/refs/paramField"
+            },
+            {
+              "$ref": "#/refs/expr"
+            }
+          ]
+        },
+        "groupby": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "#/refs/scaleField"
+                  },
+                  {
+                    "$ref": "#/refs/paramField"
+                  },
+                  {
+                    "$ref": "#/refs/expr"
+                  }
+                ]
+              }
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ]
+        },
+        "sort": {
+          "$ref": "#/refs/compare"
+        },
+        "offset": {
+          "anyOf": [
+            {
+              "enum": [
+                "zero",
+                "center",
+                "normalize"
+              ]
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ],
+          "default": "zero"
+        },
+        "as": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/refs/signal"
+                  }
+                ]
+              }
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
+          "default": [
+            "y0",
+            "y1"
           ]
         }
       },
@@ -5276,6 +5594,61 @@
       "required": [
         "type",
         "size"
+      ]
+    },
+    "geojsonTransform": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "geojson"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "fields": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "$ref": "#/refs/scaleField"
+                  },
+                  {
+                    "$ref": "#/refs/paramField"
+                  },
+                  {
+                    "$ref": "#/refs/expr"
+                  }
+                ]
+              }
+            },
+            {
+              "$ref": "#/refs/signal"
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2
+        },
+        "geojson": {
+          "oneOf": [
+            {
+              "$ref": "#/refs/scaleField"
+            },
+            {
+              "$ref": "#/refs/paramField"
+            },
+            {
+              "$ref": "#/refs/expr"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
       ]
     },
     "geopathTransform": {
@@ -5574,306 +5947,6 @@
             }
           ],
           "default": 2.5
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "type"
-      ]
-    },
-    "linkpathTransform": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "linkpath"
-          ]
-        },
-        "signal": {
-          "type": "string"
-        },
-        "sourceX": {
-          "oneOf": [
-            {
-              "$ref": "#/refs/scaleField"
-            },
-            {
-              "$ref": "#/refs/paramField"
-            },
-            {
-              "$ref": "#/refs/expr"
-            }
-          ],
-          "default": "source.x"
-        },
-        "sourceY": {
-          "oneOf": [
-            {
-              "$ref": "#/refs/scaleField"
-            },
-            {
-              "$ref": "#/refs/paramField"
-            },
-            {
-              "$ref": "#/refs/expr"
-            }
-          ],
-          "default": "source.y"
-        },
-        "targetX": {
-          "oneOf": [
-            {
-              "$ref": "#/refs/scaleField"
-            },
-            {
-              "$ref": "#/refs/paramField"
-            },
-            {
-              "$ref": "#/refs/expr"
-            }
-          ],
-          "default": "target.x"
-        },
-        "targetY": {
-          "oneOf": [
-            {
-              "$ref": "#/refs/scaleField"
-            },
-            {
-              "$ref": "#/refs/paramField"
-            },
-            {
-              "$ref": "#/refs/expr"
-            }
-          ],
-          "default": "target.y"
-        },
-        "orient": {
-          "anyOf": [
-            {
-              "enum": [
-                "horizontal",
-                "vertical",
-                "radial"
-              ]
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ],
-          "default": "vertical"
-        },
-        "shape": {
-          "anyOf": [
-            {
-              "enum": [
-                "line",
-                "arc",
-                "curve",
-                "diagonal",
-                "orthogonal"
-              ]
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ],
-          "default": "line"
-        },
-        "as": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ],
-          "default": "path"
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "type"
-      ]
-    },
-    "pieTransform": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "pie"
-          ]
-        },
-        "signal": {
-          "type": "string"
-        },
-        "field": {
-          "oneOf": [
-            {
-              "$ref": "#/refs/scaleField"
-            },
-            {
-              "$ref": "#/refs/paramField"
-            },
-            {
-              "$ref": "#/refs/expr"
-            }
-          ]
-        },
-        "startAngle": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ]
-        },
-        "endAngle": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ],
-          "default": 6.283185307179586
-        },
-        "sort": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ]
-        },
-        "as": {
-          "oneOf": [
-            {
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "#/refs/signal"
-                  }
-                ]
-              }
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "default": [
-            "startAngle",
-            "endAngle"
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "type"
-      ]
-    },
-    "stackTransform": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "stack"
-          ]
-        },
-        "signal": {
-          "type": "string"
-        },
-        "field": {
-          "oneOf": [
-            {
-              "$ref": "#/refs/scaleField"
-            },
-            {
-              "$ref": "#/refs/paramField"
-            },
-            {
-              "$ref": "#/refs/expr"
-            }
-          ]
-        },
-        "groupby": {
-          "oneOf": [
-            {
-              "type": "array",
-              "items": {
-                "oneOf": [
-                  {
-                    "$ref": "#/refs/scaleField"
-                  },
-                  {
-                    "$ref": "#/refs/paramField"
-                  },
-                  {
-                    "$ref": "#/refs/expr"
-                  }
-                ]
-              }
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ]
-        },
-        "sort": {
-          "$ref": "#/refs/compare"
-        },
-        "offset": {
-          "anyOf": [
-            {
-              "enum": [
-                "zero",
-                "center",
-                "normalize"
-              ]
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ],
-          "default": "zero"
-        },
-        "as": {
-          "oneOf": [
-            {
-              "type": "array",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "$ref": "#/refs/signal"
-                  }
-                ]
-              }
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "default": [
-            "y0",
-            "y1"
-          ]
         }
       },
       "additionalProperties": false,
@@ -6351,81 +6424,6 @@
         "type"
       ]
     },
-    "stratifyTransform": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "stratify"
-          ]
-        },
-        "signal": {
-          "type": "string"
-        },
-        "key": {
-          "oneOf": [
-            {
-              "$ref": "#/refs/scaleField"
-            },
-            {
-              "$ref": "#/refs/paramField"
-            },
-            {
-              "$ref": "#/refs/expr"
-            }
-          ]
-        },
-        "parentKey": {
-          "oneOf": [
-            {
-              "$ref": "#/refs/scaleField"
-            },
-            {
-              "$ref": "#/refs/paramField"
-            },
-            {
-              "$ref": "#/refs/expr"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "type",
-        "key",
-        "parentKey"
-      ]
-    },
-    "treelinksTransform": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "treelinks"
-          ]
-        },
-        "signal": {
-          "type": "string"
-        },
-        "key": {
-          "oneOf": [
-            {
-              "$ref": "#/refs/scaleField"
-            },
-            {
-              "$ref": "#/refs/paramField"
-            },
-            {
-              "$ref": "#/refs/expr"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "type"
-      ]
-    },
     "packTransform": {
       "type": "object",
       "properties": {
@@ -6638,6 +6636,51 @@
         "type"
       ]
     },
+    "stratifyTransform": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "stratify"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "key": {
+          "oneOf": [
+            {
+              "$ref": "#/refs/scaleField"
+            },
+            {
+              "$ref": "#/refs/paramField"
+            },
+            {
+              "$ref": "#/refs/expr"
+            }
+          ]
+        },
+        "parentKey": {
+          "oneOf": [
+            {
+              "$ref": "#/refs/scaleField"
+            },
+            {
+              "$ref": "#/refs/paramField"
+            },
+            {
+              "$ref": "#/refs/expr"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "key",
+        "parentKey"
+      ]
+    },
     "treeTransform": {
       "type": "object",
       "properties": {
@@ -6749,6 +6792,36 @@
             "y",
             "depth",
             "children"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "treelinksTransform": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "treelinks"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "key": {
+          "oneOf": [
+            {
+              "$ref": "#/refs/scaleField"
+            },
+            {
+              "$ref": "#/refs/paramField"
+            },
+            {
+              "$ref": "#/refs/expr"
+            }
           ]
         }
       },
@@ -7353,34 +7426,6 @@
         "type",
         "ignore",
         "filter"
-      ]
-    },
-    "identifierTransform": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "identifier"
-          ]
-        },
-        "signal": {
-          "type": "string"
-        },
-        "as": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/refs/signal"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "type",
-        "as"
       ]
     }
   },
@@ -8739,6 +8784,19 @@
       "additionalProperties": false,
       "required": [
         "facet"
+      ]
+    },
+    "style": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       ]
     },
     "marktype": {
