@@ -6525,9 +6525,9 @@ vega-lite@^2.0.0-beta.3:
     vega-util "^1.4.1"
     yargs "^8.0.2"
 
-"vega-lite@github:vega/vega-lite#v2.0.0-beta.13":
-  version "2.0.0-beta.13"
-  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/d88877a1fe9e2e4d7b30e2f23362eefd0f1217ae"
+"vega-lite@github:vega/vega-lite#v2.0.0-beta.14":
+  version "2.0.0-beta.14"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/cf3f836fd806a174a4917a560a4c4d3925cdbc9c"
   dependencies:
     json-stable-stringify "^1.0.1"
     tslib "^1.7.1"
@@ -6740,9 +6740,9 @@ vega@^3.0.0-beta.31:
     vega-wordcloud "1"
     yargs "4"
 
-"vega@github:vega/vega#v3.0.0":
-  version "3.0.0"
-  resolved "https://codeload.github.com/vega/vega/tar.gz/127ce3dd3a347fc5f99477529ea04cb6872aadb5"
+"vega@github:vega/vega#v3.0.1":
+  version "3.0.1"
+  resolved "https://codeload.github.com/vega/vega/tar.gz/6c692eef8ff5590897caabc3c8f709bc5e41cbc4"
   dependencies:
     vega-crossfilter "2"
     vega-dataflow "3"
