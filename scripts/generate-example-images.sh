@@ -10,6 +10,11 @@ mkdir -p public/images/examples/vg
 # require it without needing it to be installed globally.
 export NODE_PATH=.
 
+echo "Building Vega"
+cd node_modules/vega
+npm run build
+cd ../..
+
 echo "Generating SVGs..."
 cd public;
 
