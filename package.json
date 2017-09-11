@@ -63,15 +63,15 @@
     "react-redux": "^5.0.6",
     "react-router": "^3.0.5",
     "react-router-redux": "^4.0.8",
-    "react-split-pane": "^0.1.65",
+    "react-split-pane": "^0.1.66",
     "redux": "^3.7.2",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.2.0",
     "vega": "github:vega/vega#v3.0.2",
     "vega-datasets": "^1.10.0",
-    "vega-lite": "github:vega/vega-lite#v2.0.0-beta.19",
+    "vega-lite": "github:vega/vega-lite#v2.0.0-rc1",
     "vega-schema-url-parser": "^1.0.0-beta.2",
-    "vega-tooltip": "^0.4.2"
+    "vega-tooltip": "^0.4.4"
   },
   "scripts": {
     "start": "node scripts/start.js",
