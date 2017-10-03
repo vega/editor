@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {MODES} from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
 import {hashHistory} from 'react-router';
@@ -38,8 +39,8 @@ function debounce(func, wait, immediate) {
 
 export default class Editor extends React.Component {
   static propTypes = {
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func
+    value: PropTypes.string,
+    onChange: PropTypes.func
   }
 
   handleEditorChange(spec) {

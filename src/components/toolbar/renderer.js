@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './index.css';
 import * as vega from 'vega';
@@ -10,10 +11,10 @@ const getVersion = (mode) => {
 
 export default class Toolbar extends React.Component {
   static propTypes = {
-    error: React.PropTypes.string,
-    renderer: React.PropTypes.string,
-    autoParse: React.PropTypes.bool,
-    tooltip: React.PropTypes.bool
+    error: PropTypes.string,
+    renderer: PropTypes.string,
+    autoParse: PropTypes.bool,
+    tooltip: PropTypes.bool
   }
 
   showErrorAndWarnings() {

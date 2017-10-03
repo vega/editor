@@ -60,9 +60,18 @@ ajv@^4.7.0, ajv@^4.9.1:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
 
-ajv@^5.0.0, ajv@^5.2.2:
+ajv@^5.0.0:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.2.2.tgz#47c68d69e86f5d953103b0074a9430dc63da5e39"
+  dependencies:
+    co "^4.6.0"
+    fast-deep-equal "^1.0.0"
+    json-schema-traverse "^0.3.0"
+    json-stable-stringify "^1.0.1"
+
+ajv@^5.2.3:
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.2.3.tgz#c06f598778c44c6b161abafe3466b81ad1814ed2"
   dependencies:
     co "^4.6.0"
     fast-deep-equal "^1.0.0"
@@ -1222,9 +1231,9 @@ cardinal@^1.0.0:
     ansicolors "~0.2.1"
     redeyed "~1.0.0"
 
-case-sensitive-paths-webpack-plugin@1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-1.1.4.tgz#8aaedd5699a86cac2b34cf40d9b4145758978472"
+case-sensitive-paths-webpack-plugin@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.1.1.tgz#3d29ced8c1f124bf6f53846fb3f5894731fdc909"
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -1542,7 +1551,7 @@ cosmiconfig@^2.1.0, cosmiconfig@^2.1.1:
     parse-json "^2.2.0"
     require-from-string "^1.1.0"
 
-create-react-class@^15.5.1, create-react-class@^15.6.0:
+create-react-class@^15.5.1:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.0.tgz#ab448497c26566e1e29413e883207d57cfe7bed4"
   dependencies:
@@ -1798,7 +1807,7 @@ d3-queue@2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/d3-queue/-/d3-queue-2.0.3.tgz#07fbda3acae5358a9c5299aaf880adf0953ed2c2"
 
-d3-request@1, d3-request@^1.0.5:
+d3-request@1, d3-request@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/d3-request/-/d3-request-1.0.5.tgz#4daae946d1dd0d57dfe01f022956354958d51f23"
   dependencies:
@@ -2554,6 +2563,18 @@ fb-watchman@^1.8.0, fb-watchman@^1.9.0:
   resolved "https://registry.yarnpkg.com/fb-watchman/-/fb-watchman-1.9.2.tgz#a24cf47827f82d38fb59a69ad70b76e3b6ae7383"
   dependencies:
     bser "1.0.2"
+
+fbjs@^0.8.16:
+  version "0.8.16"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
+  dependencies:
+    core-js "^1.0.0"
+    isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.9"
 
 fbjs@^0.8.9:
   version "0.8.14"
@@ -4199,9 +4220,9 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
   dependencies:
     minimist "0.0.8"
 
-monaco-editor@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.9.0.tgz#c50c53251c47b7ff12e09f0f83cfd32a44dfe6ec"
+monaco-editor@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.10.0.tgz#6604932585fe9c1f993f000a503d0d20fbe5896a"
 
 ms@2.0.0:
   version "2.0.0"
@@ -5058,6 +5079,14 @@ prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8:
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
 
+prop-types@^15.6.0:
+  version "15.6.0"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
+  dependencies:
+    fbjs "^0.8.16"
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
+
 proxy-addr@~1.1.4:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-1.1.5.tgz#71c0ee3b102de3f202f3b64f608d173fcba1a918"
@@ -5159,20 +5188,20 @@ react-dev-utils@0.2.1:
     sockjs-client "1.0.3"
     strip-ansi "3.0.1"
 
-react-dom@^15.6.1:
-  version "15.6.1"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
+react-dom@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.0.0.tgz#9cc3079c3dcd70d4c6e01b84aab2a7e34c303f58"
   dependencies:
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
-react-monaco-editor@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.10.0.tgz#6f348342c2cfb22167fd2560a8ac3c7b826e0baf"
+react-monaco-editor@^0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.10.1.tgz#eb67415e4a7d907b0160ab0669f0d05631ce5615"
   dependencies:
-    monaco-editor "^0.9.0"
+    monaco-editor "^0.10.0"
     prop-types "^15.5.10"
 
 react-portal@^3.1.0:
@@ -5222,15 +5251,14 @@ react-style-proptype@^3.0.0:
   dependencies:
     prop-types "^15.5.4"
 
-react@^15.6.1:
-  version "15.6.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
+react@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.0.0.tgz#ce7df8f1941b036f02b2cca9dbd0cb1f0e855e2d"
   dependencies:
-    create-react-class "^15.6.0"
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -6440,7 +6468,7 @@ vega-force@2:
     vega-dataflow "3"
     vega-util "1"
 
-vega-geo@2:
+vega-geo@2, vega-geo@^2.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/vega-geo/-/vega-geo-2.1.1.tgz#eaf128927cd146e1c0843d15f25a0a08d5dbf524"
   dependencies:
@@ -6460,6 +6488,15 @@ vega-hierarchy@2:
     vega-dataflow "3"
     vega-util "1"
 
+vega-hierarchy@^2.1:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vega-hierarchy/-/vega-hierarchy-2.1.0.tgz#92119c43a9dc8f534c1836446661161dc9e42196"
+  dependencies:
+    d3-collection "1"
+    d3-hierarchy "1"
+    vega-dataflow "3"
+    vega-util "1"
+
 vega-lite@^2.0.0-beta.14:
   version "2.0.0-rc1"
   resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.0.0-rc1.tgz#d3251ba9426d24b2a7b1cd59b1880302628700e6"
@@ -6470,9 +6507,9 @@ vega-lite@^2.0.0-beta.14:
     vega-util "^1.5.0"
     yargs "^8.0.2"
 
-"vega-lite@github:vega/vega-lite#v2.0.0-rc1":
-  version "2.0.0-rc1"
-  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/ec60b22a481266582f65eed2fcd60e7907bb15d9"
+"vega-lite@github:vega/vega-lite#v2.0.0-rc3":
+  version "2.0.0-rc3"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/a878f54b5a39d24b16242293b48048c45abbe54e"
   dependencies:
     json-stable-stringify "^1.0.1"
     tslib "^1.7.1"
@@ -6505,6 +6542,22 @@ vega-parser@2:
     vega-scenegraph "2"
     vega-util "1"
 
+vega-parser@^2.2:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-2.2.0.tgz#363b486dd58060b8df3316db26f97f6cecbdba5d"
+  dependencies:
+    d3-array "1"
+    d3-color "1"
+    d3-format "1"
+    d3-time-format "2"
+    vega-dataflow "3"
+    vega-event-selector "2"
+    vega-expression "2"
+    vega-scale "2"
+    vega-scenegraph "2"
+    vega-statistics "^1.2"
+    vega-util "^1.6"
+
 vega-projection@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/vega-projection/-/vega-projection-1.0.0.tgz#8875aefe9bc0b7b215ff2fa3358626efffa5c664"
@@ -6528,6 +6581,17 @@ vega-scale@2:
     d3-scale-chromatic "^1.1"
     vega-util "1"
 
+vega-scale@^2.1:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vega-scale/-/vega-scale-2.1.0.tgz#2b992cbb652a64d64b66015bf3a329ecaa7a3d32"
+  dependencies:
+    d3-array "1"
+    d3-interpolate "1"
+    d3-scale "1"
+    d3-scale-chromatic "^1.1"
+    d3-time "1"
+    vega-util "1"
+
 vega-scenegraph@2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/vega-scenegraph/-/vega-scenegraph-2.0.2.tgz#392b0c10a14e34d2587829d33b162c5a1b01e25f"
@@ -6546,6 +6610,12 @@ vega-schema-url-parser@^1.0.0-beta.2:
 vega-statistics@1:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/vega-statistics/-/vega-statistics-1.1.4.tgz#ed2cd879a45fff0f5756628d677f358d4fca09a7"
+  dependencies:
+    d3-array "1"
+
+vega-statistics@^1.2:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/vega-statistics/-/vega-statistics-1.2.1.tgz#a35b3fc3d0039f8bb0a8ba1381d42a1df79ecb34"
   dependencies:
     d3-array "1"
 
@@ -6568,13 +6638,34 @@ vega-transforms@1:
     vega-statistics "1"
     vega-util "1"
 
+vega-transforms@^1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vega-transforms/-/vega-transforms-1.1.1.tgz#65ea98708f1218a21c7f56fd2857a7ab62362972"
+  dependencies:
+    d3-array "1"
+    vega-dataflow "3"
+    vega-statistics "^1.2"
+    vega-util "1"
+
 vega-util@1, vega-util@^1.1, vega-util@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.5.0.tgz#05fcec83557be38de5328b54ad2a7a0597740cc0"
 
+vega-util@^1.6:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.6.0.tgz#9be8b1f297cbc6e078a50f8ecd231450f2b4f7ef"
+
 vega-view-transforms@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/vega-view-transforms/-/vega-view-transforms-1.0.0.tgz#c8a65b5cbc05c618f75072054c04ac8c8b31f7f5"
+  dependencies:
+    vega-dataflow "3"
+    vega-scenegraph "2"
+    vega-util "1"
+
+vega-view-transforms@^1.1:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vega-view-transforms/-/vega-view-transforms-1.1.0.tgz#bc7f61d653622cb676100b11ae1284ead73f9bd6"
   dependencies:
     vega-dataflow "3"
     vega-scenegraph "2"
@@ -6609,7 +6700,7 @@ vega-wordcloud@2:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@^3.0.0, "vega@github:vega/vega#v3.0.2":
+vega@^3.0.0:
   version "3.0.2"
   resolved "https://codeload.github.com/vega/vega/tar.gz/a54b3da173762f7055ad070b36ee0f6b8a0433c6"
   dependencies:
@@ -6632,6 +6723,33 @@ vega@^3.0.0, "vega@github:vega/vega#v3.0.2":
     vega-util "1"
     vega-view "2"
     vega-view-transforms "1"
+    vega-voronoi "2"
+    vega-wordcloud "2"
+    yargs "4"
+
+"vega@github:vega/vega#v3.0.5":
+  version "3.0.5"
+  resolved "https://codeload.github.com/vega/vega/tar.gz/18890df48d6499b5d591f64a1567707881e4502c"
+  dependencies:
+    vega-crossfilter "2"
+    vega-dataflow "3"
+    vega-datasets vega/vega-datasets#gh-pages
+    vega-encode "2"
+    vega-expression "2"
+    vega-force "2"
+    vega-geo "^2.1"
+    vega-hierarchy "^2.1"
+    vega-loader "2"
+    vega-parser "^2.2"
+    vega-projection "1"
+    vega-runtime "2"
+    vega-scale "^2.1"
+    vega-scenegraph "2"
+    vega-statistics "^1.2"
+    vega-transforms "^1.1"
+    vega-util "^1.6"
+    vega-view "2"
+    vega-view-transforms "^1.1"
     vega-voronoi "2"
     vega-wordcloud "2"
     yargs "4"
