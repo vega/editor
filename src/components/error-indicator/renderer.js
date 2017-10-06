@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css';
 
-export default class Error extends React.Component {
+export default class ErrorIndicator extends React.Component {
   render() {
     if (this.props.error) {
       return (

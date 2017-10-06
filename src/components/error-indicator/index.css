@@ -1,0 +1,5 @@
+#error-indicator {
+    color: red;
+    cursor: pointer;
+    margin: 1em;
+}

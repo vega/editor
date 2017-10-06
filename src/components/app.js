@@ -1,6 +1,10 @@
 import React from 'react';
+import ErrorBoundary from './error-boundary'
 import Renderer from './renderer';
 import Header from './header';
+import Toolbar from './toolbar';
+import ErrorIndicator from './error-indicator';
+import ErrorPane from './error-pane';
 import SplitPane from 'react-split-pane';
 import InputPanel from './input-panel';
 import {LAYOUT} from '../constants';
@@ -123,7 +127,16 @@ class App extends React.Component {
         <div style={{position: 'relative', height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`}}>
           <SplitPane split="vertical" minSize={300} defaultSize={w * 0.4} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
             <InputPanel />
-            <Renderer />
+            <div className='chart-container'>
+              <SplitPane split='horizontal' defaultSize={window.innerHeight * 0.6}
+                paneStyle={{display: 'flex'}}>
+                <ErrorBoundary>
+                  <Renderer />
+                </ErrorBoundary>
+                <Toolbar />
+                <ErrorPane />
+              </SplitPane>
+            </div>
           </SplitPane>
         </div>
       </div>
