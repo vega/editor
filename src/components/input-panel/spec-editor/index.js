@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
-import Renderer from './renderer';
+
 import * as EditorActions from '../../../actions/editor';
+import Renderer from './renderer';
 
 const mapStateToProps = function(state, ownProps) {
   return {

@@ -72,7 +72,7 @@ export default class Editor extends React.Component {
    manualParseSpec() {
     if (!this.props.autoParse) {
       return (
-        <div className="editor-header"> 
+        <div className="editor-header">
           <button id='parse-button' onClick={() => this.props.parseSpec(true)}>Parse</button>
         </div>
       )
@@ -87,17 +87,17 @@ export default class Editor extends React.Component {
       schema = JSON.parse(spec).$schema;
     } catch (err) {
       console.warn('Error parsing json string');
-    } 
+    }
     if (schema) {
       parsedMode = parser(schema).library;
-    }  
+    }
     if (parsedMode === MODES.Vega || (!parsedMode && this.props.mode === MODES.Vega)) {
       this.props.updateVegaSpec(spec);
     } else if (parsedMode === MODES.VegaLite || (!parsedMode && this.props.mode === MODES.VegaLite)) {
       this.props.updateVegaLiteSpec(spec);
     }
   }
- 
+
   render() {
     return (
       <div className={'full-height-wrapper'}>
