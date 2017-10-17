@@ -1,10 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import * as vega from 'vega';
-import 'vega-tooltip/build/vega-tooltip.css';
 import './index.css';
-import {MODES} from '../../constants'
+import 'vega-tooltip/build/vega-tooltip.css';
+
+import PropTypes from 'prop-types';
+import React from 'react';
+import * as vega from 'vega';
 import * as vegaTooltip from 'vega-tooltip';
+
+import {MODES} from '../../constants';
 
 export default class Editor extends React.Component {
   static propTypes = {
@@ -29,13 +31,13 @@ export default class Editor extends React.Component {
       view.hover()
     }
     view.run();
-    
+
     this.refs.chart.style.width = 'auto';
-  
+
     if (this.props.tooltip) {
       vegaTooltip.vega(view);
     }
-  
+
     window.VEGA_DEBUG.view = view;
   }
 
