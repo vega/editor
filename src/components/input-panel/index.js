@@ -25,13 +25,9 @@ class InputPanel extends React.Component {
     const innerPanes = this.getInnerPanes();
 
     if (this.props.mode === MODES.VegaLite && this.props.compiledVegaSpec) {
-        return React.createElement(SplitPane,
-        {
-          split: 'horizontal',
-          defaultSize: (window.innerHeight - LAYOUT.HeaderHeight) / innerPanes.length,
-          pane2Style: {display: 'flex'}
-        },
-        innerPanes);
+        return <SplitPane split="horizontal" defaultSize={(window.innerHeight - LAYOUT.HeaderHeight) / innerPanes.length} pane2Style={{display: 'flex'}}>
+          {innerPanes}
+        </SplitPane>;
     } else {
       return <div className={'full-height-wrapper'}>
         {innerPanes}
