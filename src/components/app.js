@@ -1,20 +1,18 @@
-import React from 'react';
-import ErrorBoundary from './error-boundary'
-import Renderer from './renderer';
-import Header from './header';
-import Toolbar from './toolbar';
-import ErrorIndicator from './error-indicator';
-import ErrorPane from './error-pane';
-import SplitPane from 'react-split-pane';
-import InputPanel from './input-panel';
-import {LAYOUT} from '../constants';
-import * as EditorActions from '../actions/editor';
-import {connect} from 'react-redux';
 import './app.css';
-import {hashHistory} from 'react-router';
+
 import {text} from 'd3-request';
 import equal from 'deep-equal';
+import React from 'react';
+import {connect} from 'react-redux';
+import {hashHistory} from 'react-router';
+import SplitPane from 'react-split-pane';
+
+import * as EditorActions from '../actions/editor';
 import {MODES} from '../constants';
+import {LAYOUT} from '../constants';
+import Header from './header';
+import InputPanel from './input-panel';
+import VizPane from './viz-pane';
 
 class App extends React.Component {
 
@@ -121,22 +119,14 @@ class App extends React.Component {
 
   render() {
     const w = window.innerWidth;
+
     return (
       <div className="app-container">
         <Header />
         <div style={{position: 'relative', height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`}}>
           <SplitPane split="vertical" minSize={300} defaultSize={w * 0.4} pane1Style={{display: 'flex'}} className='main-pane' pane2Style={{overflow: 'scroll'}}>
             <InputPanel />
-            <div className='chart-container'>
-              <SplitPane split='horizontal' defaultSize={window.innerHeight * 0.6}
-                paneStyle={{display: 'flex'}}>
-                <ErrorBoundary>
-                  <Renderer />
-                </ErrorBoundary>
-                <Toolbar />
-                <ErrorPane />
-              </SplitPane>
-            </div>
+            <VizPane />
           </SplitPane>
         </div>
       </div>
