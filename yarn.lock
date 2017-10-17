@@ -5201,9 +5201,9 @@ react-dom@^16.0.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-monaco-editor@^0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.10.1.tgz#eb67415e4a7d907b0160ab0669f0d05631ce5615"
+react-monaco-editor@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.11.0.tgz#d51e293411dbac5a11a989f6664f6ec623a9ed22"
   dependencies:
     monaco-editor "^0.10.0"
     prop-types "^15.5.10"
