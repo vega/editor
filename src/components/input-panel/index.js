@@ -1,17 +1,24 @@
+import './index.css';
+
+import PropTypes from 'prop-types';
 import React from 'react';
-import SpecEditor from './spec-editor';
+import {connect} from 'react-redux';
+import SplitPane from 'react-split-pane';
+
+import {LAYOUT, MODES} from '../../constants';
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
-import SplitPane from 'react-split-pane';
-import {MODES, LAYOUT} from '../../constants';
-import {connect} from 'react-redux';
-import './index.css'
+import SpecEditor from './spec-editor';
 
 class InputPanel extends React.Component {
+  static propTypes = {
+    compiledVegaSpec: PropTypes.bool,
+    mode: PropTypes.string
+  }
+
   getInnerPanes() {
-    const {mode} = this.props;
     const innerPanes = [<SpecEditor key='editor' />];
-    if (mode === MODES.VegaLite) {
+    if (this.props.mode === MODES.VegaLite) {
       if (this.props.compiledVegaSpec) {
         innerPanes.push(<CompiledSpecDisplay key='compiled' />);
       } else {

@@ -43,6 +43,17 @@ export default class Editor extends React.Component {
     onChange: PropTypes.func
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      code: this.props.value,
+    }
+  }
+
+  editorDidMount(editor) {
+    editor.focus();
+  }
+
   handleEditorChange(spec) {
     if (this.props.autoParse) {
       this.updateSpec(spec);
@@ -63,6 +74,8 @@ export default class Editor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.setState({code: nextProps.value});
+
     if (!nextProps.autoParse && nextProps.parse) {
       this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
@@ -76,8 +89,6 @@ export default class Editor extends React.Component {
           <button id='parse-button' onClick={() => this.props.parseSpec(true)}>Parse</button>
         </div>
       )
-    } else {
-      return null;
     }
   }
 
@@ -99,13 +110,13 @@ export default class Editor extends React.Component {
   }
 
   render() {
+    const code = this.state.code;
+
     return (
       <div className={'full-height-wrapper'}>
         {this.manualParseSpec()}
         <MonacoEditor
           language='json'
-          key={JSON.stringify(Object.assign({}, this.state, {mode: this.props.mode, selectedExample: this.props.selectedExample,
-            gist: this.props.gist}))}
           options={{
             folding: true,
             scrollBeyondLastLine: true,
@@ -116,9 +127,10 @@ export default class Editor extends React.Component {
             cursorBlinking: 'smooth',
             lineNumbersMinChars: 4
           }}
-          defaultValue={this.props.value}
+          value={code}
           onChange={debounce(this.handleEditorChange, 700).bind(this)}
           editorWillMount={this.editorWillMount.bind(this)}
+          editorDidMount={this.editorDidMount}
         />
       </div>
     );
