@@ -6706,8 +6706,8 @@ vega-loader@2:
     vega-util "1"
 
 vega-parser@2, vega-parser@^2.2:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-2.2.0.tgz#363b486dd58060b8df3316db26f97f6cecbdba5d"
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-2.3.0.tgz#48771eb8d52511611a10982d0d10f28b06f70300"
   dependencies:
     d3-array "1"
     d3-color "1"
@@ -6746,8 +6746,8 @@ vega-scale@2, vega-scale@^2.1:
     vega-util "1"
 
 vega-scenegraph@2:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/vega-scenegraph/-/vega-scenegraph-2.0.3.tgz#6aaf34cf1c3a595bd53c0f8e54ca2db55ef18681"
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/vega-scenegraph/-/vega-scenegraph-2.0.4.tgz#891afdfce9964a434e640712ee8a135ea528becc"
   dependencies:
     d3-path "1"
     d3-shape "1"
@@ -6829,9 +6829,36 @@ vega-wordcloud@2:
     canvas "^1.6"
     canvas-prebuilt "^1.6"
 
-vega@^3.0.0, "vega@github:vega/vega#v3.0.5":
+vega@^3.0.0:
   version "3.0.5"
   resolved "https://codeload.github.com/vega/vega/tar.gz/18890df48d6499b5d591f64a1567707881e4502c"
+  dependencies:
+    vega-crossfilter "2"
+    vega-dataflow "3"
+    vega-datasets vega/vega-datasets#gh-pages
+    vega-encode "2"
+    vega-expression "2"
+    vega-force "2"
+    vega-geo "^2.1"
+    vega-hierarchy "^2.1"
+    vega-loader "2"
+    vega-parser "^2.2"
+    vega-projection "1"
+    vega-runtime "2"
+    vega-scale "^2.1"
+    vega-scenegraph "2"
+    vega-statistics "^1.2"
+    vega-transforms "^1.1"
+    vega-util "^1.6"
+    vega-view "2"
+    vega-view-transforms "^1.1"
+    vega-voronoi "2"
+    vega-wordcloud "2"
+    yargs "4"
+
+"vega@github:vega/vega#v3.0.6":
+  version "3.0.6"
+  resolved "https://codeload.github.com/vega/vega/tar.gz/dd6ded0ca75ef0f1c691ca003cf4dc5e33494948"
   dependencies:
     vega-crossfilter "2"
     vega-dataflow "3"
