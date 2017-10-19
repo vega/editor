@@ -9,6 +9,8 @@ import * as vega from 'vega';
 import * as vl from 'vega-lite';
 
 window.VEGA_DEBUG = window.VEGA_DEBUG || {};
+window.VEGA_DEBUG.vega = vega;
+window.VEGA_DEBUG.vl = vl;
 window.VEGA_DEBUG.VEGA_VERSION = vega.version;
 window.VEGA_DEBUG.VEGA_LITE_VERSION = vl.version;
 
