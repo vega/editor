@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/app';
-import {Provider} from 'react-redux'
-import configureStore from './store/configure-store';
-import {hashHistory, Router, Route} from 'react-router';
-
+import * as ReactGA from 'react-ga';
+import {Provider} from 'react-redux';
+import {hashHistory, Route, Router} from 'react-router';
 import * as vega from 'vega';
 import * as vl from 'vega-lite';
+
+import App from './components/app';
+import configureStore from './store/configure-store';
 
 window.VEGA_DEBUG = window.VEGA_DEBUG || {};
 window.VEGA_DEBUG.vega = vega;
@@ -17,12 +18,20 @@ window.VEGA_DEBUG.VEGA_LITE_VERSION = vl.version;
 // Configure history for react-router
 const store = configureStore(hashHistory);
 
+// Google analytics
+ReactGA.initialize('UA-44428446-7');
+
+function logPageView() {
+  ReactGA.set({page: window.location.pathname + window.location.search});
+  ReactGA.pageview(window.location.pathname + window.location.search);
+}
+
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!
 ReactDOM.render(
   (
     <Provider store={store}>
-      <Router history={hashHistory} >
+      <Router history={hashHistory} onUpdate={logPageView}>
         <Route path='/' component={App} />
         <Route path='/edited' component={App} />
         <Route path='/gist/:mode/:username/:id' component={App} />
