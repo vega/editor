@@ -18,6 +18,7 @@ export default class Editor extends React.Component {
 
   renderVega(props) {
     this.refs.chart.style.width = this.refs.chart.getBoundingClientRect().width + 'px';
+
     let runtime;
     let view;
 
@@ -30,6 +31,7 @@ export default class Editor extends React.Component {
     if (props.mode === MODES.Vega) {
       view.hover()
     }
+
     view.run();
 
     this.refs.chart.style.width = 'auto';

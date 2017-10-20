@@ -93,19 +93,25 @@ export default class Editor extends React.Component {
   }
 
   updateSpec(spec) {
-    let schema, parsedMode;
+    let parsedMode = this.props.mode;
+
     try {
-      schema = JSON.parse(spec).$schema;
-    } catch (err) {
-      console.warn('Error parsing json string');
-    }
-    if (schema) {
+      const schema = JSON.parse(spec).$schema;
       parsedMode = parser(schema).library;
+    } catch (err) {
+      console.warn('Error parsing JSON string', err);
     }
-    if (parsedMode === MODES.Vega || (!parsedMode && this.props.mode === MODES.Vega)) {
-      this.props.updateVegaSpec(spec);
-    } else if (parsedMode === MODES.VegaLite || (!parsedMode && this.props.mode === MODES.VegaLite)) {
-      this.props.updateVegaLiteSpec(spec);
+
+    switch (parsedMode) {
+      case MODES.Vega:
+        this.props.updateVegaSpec(spec);
+        break;
+      case MODES.VegaLite:
+        this.props.updateVegaLiteSpec(spec);
+        break;
+    default:
+        console.error(`Unknown mode:  ${parsedMode}`);
+        break;
     }
   }
 

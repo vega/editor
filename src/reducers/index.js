@@ -3,7 +3,7 @@ import * as vl from 'vega-lite';
 import {UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
   SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE, SHOW_ERROR_PANE, LOG_ERROR,
   UPDATE_EDITOR_STRING, SHOW_TOOLTIP} from '../actions/editor';
-  
+
 import {MODES, RENDERERS, DEFAULT_STATE} from '../constants';
 import {validateVegaLite, validateVega} from '../utils/validate';
 import {LocalLogger} from '../utils/logger'
@@ -35,7 +35,7 @@ export default (state = DEFAULT_STATE, action) => {
         spec = JSON.parse(action.spec);
         validateVega(spec, currLogger);
       } catch (e) {
-        console.warn('Error parsing json string');
+        console.warn(e);
         return Object.assign({}, state, {
           error: e.message,
           editorString: action.spec,
@@ -83,7 +83,7 @@ export default (state = DEFAULT_STATE, action) => {
       try {
         spec = JSON.parse(action.spec);
         validateVegaLite(spec, currLogger);
-        vegaSpec = vl.compile(spec, currLogger).spec;
+        vegaSpec = vl.compile(spec, {logger: currLogger}).spec;
       } catch (e) {
         console.warn(e);
         return Object.assign({}, state, {
@@ -110,7 +110,7 @@ export default (state = DEFAULT_STATE, action) => {
         spec = JSON.parse(action.spec);
         validateVega(spec, currLogger);
       } catch(e) {
-        console.warn('Error parsing json string');
+        console.warn(e);
         return Object.assign({}, state, {
           warningsLogger: currLogger,
           error: e.message,
@@ -130,7 +130,7 @@ export default (state = DEFAULT_STATE, action) => {
       try {
         spec = JSON.parse(action.spec);
         validateVegaLite(spec, currLogger);
-        vegaSpec = vl.compile(spec, currLogger).spec;
+        vegaSpec = vl.compile(spec, {logger: currLogger}).spec;
       } catch(e) {
         console.warn(e);
         return Object.assign({}, state, {
@@ -166,7 +166,7 @@ export default (state = DEFAULT_STATE, action) => {
       return Object.assign({}, state, {
         compiledVegaSpec: !state.compiledVegaSpec,
       });
-    case SHOW_ERROR_PANE: 
+    case SHOW_ERROR_PANE:
       return Object.assign({}, state, {
         errorPane: !state.errorPane
       });
@@ -174,11 +174,11 @@ export default (state = DEFAULT_STATE, action) => {
       return Object.assign({}, state, {
         error: action.error
       });
-    case UPDATE_EDITOR_STRING: 
+    case UPDATE_EDITOR_STRING:
       return Object.assign({}, state, {
         editorString: action.editorString
       });
-    case SHOW_TOOLTIP: 
+    case SHOW_TOOLTIP:
       return Object.assign({}, state, {
         tooltip: !state.tooltip
       });

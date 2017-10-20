@@ -18,7 +18,7 @@ export default class VizPane extends React.Component {
     const container =
       <div className="chart-container">
         <ErrorBoundary>
-            <Renderer />
+          <Renderer />
         </ErrorBoundary>
         <Toolbar />
       </div>;
