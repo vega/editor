@@ -6691,9 +6691,19 @@ vega-hierarchy@^2.1:
     vega-dataflow "3"
     vega-util "1"
 
-vega-lite@^2.0.0-beta.14, "vega-lite@github:vega/vega-lite#v2.0.0-rc4":
+vega-lite@^2.0.0-beta.14:
   version "2.0.0-rc4"
   resolved "https://codeload.github.com/vega/vega-lite/tar.gz/48555f76530b7ce11974aa7e24de379eac6d06bd"
+  dependencies:
+    json-stable-stringify "^1.0.1"
+    tslib "^1.8.0"
+    vega-event-selector "^2.0.0"
+    vega-util "^1.5.0"
+    yargs "^9.0.1"
+
+"vega-lite@github:vega/vega-lite#v2.0.0-rc5":
+  version "2.0.0-rc5"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/3a9378d7ebb22ac7c9853b488b04d11676057ae0"
   dependencies:
     json-stable-stringify "^1.0.1"
     tslib "^1.8.0"
