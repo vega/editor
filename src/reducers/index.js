@@ -53,21 +53,48 @@ export default (state = DEFAULT_STATE, action) => {
         selectedExample: null
       });
     }
-    case SET_VEGA_EXAMPLE:
-      spec = JSON.parse(action.spec);
+    case SET_VEGA_EXAMPLE: {
+      const currLogger = new LocalLogger();
+      try {
+        spec = JSON.parse(action.spec);
+        validateVega(spec, currLogger);
+      } catch (e) {
+        console.warn(e);
+        return Object.assign({}, state, {
+          mode: MODES.Vega,
+          editorString: action.spec,
+          selectedExample: action.example,
+          error: e.message,
+          warningsLogger: currLogger
+        });
+      }
       return Object.assign({}, state, {
         vegaSpec: spec,
         mode: MODES.Vega,
         editorString: action.spec,
         selectedExample: action.example,
         error: null,
-        warningsLogger: new LocalLogger()
+        warningsLogger: currLogger
       });
-    case SET_VEGA_LITE_EXAMPLE:
-      spec = JSON.parse(action.spec);
-      vegaSpec = spec;
-      if (action.spec !== '{}') {
-        vegaSpec = vl.compile(spec).spec;
+    }
+    case SET_VEGA_LITE_EXAMPLE: {
+      const currLogger = new LocalLogger();
+      try {
+        spec = JSON.parse(action.spec);
+        validateVegaLite(spec, currLogger);
+        vegaSpec = spec;
+        if (action.spec !== '{}') {
+          vegaSpec = vl.compile(spec, {logger: currLogger}).spec;
+        }
+      } catch (e) {
+        console.warn(e);
+        return Object.assign({}, state, {
+          mode: MODES.VegaLite,
+          editorString: action.spec,
+          selectedExample: action.example,
+          error: e.message,
+          warningsLogger: currLogger
+        });
       }
       return Object.assign({}, state, {
         vegaLiteSpec: spec,
@@ -76,8 +103,9 @@ export default (state = DEFAULT_STATE, action) => {
         editorString: action.spec,
         selectedExample: action.example,
         error: null,
-        warningsLogger: new LocalLogger()
+        warningsLogger: currLogger
       });
+    }
     case UPDATE_VEGA_LITE_SPEC: {
       const currLogger = new LocalLogger();
       try {
