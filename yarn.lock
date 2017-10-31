@@ -6780,15 +6780,15 @@ vega-lite@^2.0.0-beta.14:
     vega-util "^1.5.0"
     yargs "^9.0.1"
 
-"vega-lite@github:vega/vega-lite#v2.0.0-rc5":
-  version "2.0.0-rc5"
-  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/3a9378d7ebb22ac7c9853b488b04d11676057ae0"
+"vega-lite@github:vega/vega-lite#v2.0.0":
+  version "2.0.0"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/471da9746735262d4995c980984c6051723e2271"
   dependencies:
     json-stable-stringify "^1.0.1"
     tslib "^1.8.0"
     vega-event-selector "^2.0.0"
-    vega-util "^1.5.0"
-    yargs "^9.0.1"
+    vega-util "^1.6.2"
+    yargs "^10.0.3"
 
 vega-loader@2:
   version "2.0.2"
@@ -6884,6 +6884,10 @@ vega-transforms@^1.1:
 vega-util@1, vega-util@^1.1, vega-util@^1.5.0, vega-util@^1.6:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.6.0.tgz#9be8b1f297cbc6e078a50f8ecd231450f2b4f7ef"
+
+vega-util@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.6.2.tgz#9d9d7cc65dfc9cd70eeb8dba8bb5c9924be5dacc"
 
 vega-view-transforms@^1.1:
   version "1.1.0"
@@ -7244,6 +7248,12 @@ yargs-parser@^7.0.0:
   dependencies:
     camelcase "^4.1.0"
 
+yargs-parser@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-8.0.0.tgz#21d476330e5a82279a4b881345bf066102e219c6"
+  dependencies:
+    camelcase "^4.1.0"
+
 yargs@4:
   version "4.8.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-4.8.1.tgz#c0c42924ca4aaa6b0e6da1739dfb216439f9ddc0"
@@ -7262,6 +7272,23 @@ yargs@4:
     window-size "^0.2.0"
     y18n "^3.2.1"
     yargs-parser "^2.4.1"
+
+yargs@^10.0.3:
+  version "10.0.3"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-10.0.3.tgz#6542debd9080ad517ec5048fb454efe9e4d4aaae"
+  dependencies:
+    cliui "^3.2.0"
+    decamelize "^1.1.1"
+    find-up "^2.1.0"
+    get-caller-file "^1.0.1"
+    os-locale "^2.0.0"
+    require-directory "^2.1.1"
+    require-main-filename "^1.0.1"
+    set-blocking "^2.0.0"
+    string-width "^2.0.0"
+    which-module "^2.0.0"
+    y18n "^3.2.1"
+    yargs-parser "^8.0.0"
 
 yargs@^5.0.0:
   version "5.0.0"
