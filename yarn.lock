@@ -6955,9 +6955,9 @@ vega@^3.0.0:
     vega-wordcloud "2"
     yargs "4"
 
-"vega@github:vega/vega#v3.0.6":
-  version "3.0.6"
-  resolved "https://codeload.github.com/vega/vega/tar.gz/dd6ded0ca75ef0f1c691ca003cf4dc5e33494948"
+"vega@github:vega/vega#v3.0.7":
+  version "3.0.7"
+  resolved "https://codeload.github.com/vega/vega/tar.gz/9f915b467987acefeca8df1dacf011c6847cde0d"
   dependencies:
     vega-crossfilter "2"
     vega-dataflow "3"
