@@ -77,9 +77,9 @@ ajv@^5.0.0, ajv@^5.1.0:
     json-schema-traverse "^0.3.0"
     json-stable-stringify "^1.0.1"
 
-ajv@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.3.0.tgz#4414ff74a50879c208ee5fdc826e32c303549eda"
+ajv@^5.5.1:
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.1.tgz#b38bb8876d9e86bee994956a04e721e88b248eb2"
   dependencies:
     co "^4.6.0"
     fast-deep-equal "^1.0.0"
@@ -5414,9 +5414,9 @@ react-dev-utils@0.2.1:
     sockjs-client "1.0.3"
     strip-ansi "3.0.1"
 
-react-dom@^16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.0.0.tgz#9cc3079c3dcd70d4c6e01b84aab2a7e34c303f58"
+react-dom@^16.2.0:
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -5429,9 +5429,9 @@ react-ga@^2.3.5:
   dependencies:
     object-assign "^4.1.1"
 
-react-monaco-editor@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.11.0.tgz#d51e293411dbac5a11a989f6664f6ec623a9ed22"
+react-monaco-editor@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.12.0.tgz#d96fbb07eb743eb4ad10b69d80f9985416f1a266"
   dependencies:
     monaco-editor "^0.10.0"
     prop-types "^15.5.10"
@@ -5485,9 +5485,9 @@ react-style-proptype@^3.0.0:
   dependencies:
     prop-types "^15.5.4"
 
-react@^16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.0.0.tgz#ce7df8f1941b036f02b2cca9dbd0cb1f0e855e2d"
+react@^16.2.0:
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -6717,7 +6717,7 @@ vega-dataflow@3:
     vega-loader "2"
     vega-util "1"
 
-vega-datasets@^1.10.0:
+vega-datasets@^1.11.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.11.0.tgz#45fba548806d5b4a11ad4e2efe39ecdae46d3a7a"
 
@@ -6784,9 +6784,9 @@ vega-lite@^2.0.0-beta.14:
     vega-util "^1.5.0"
     yargs "^9.0.1"
 
-"vega-lite@github:vega/vega-lite#v2.0.0":
-  version "2.0.0"
-  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/471da9746735262d4995c980984c6051723e2271"
+"vega-lite@github:vega/vega-lite#v2.0.3":
+  version "2.0.3"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/3a125cf4b4adcb3b03addcb0711f882c3196484d"
   dependencies:
     json-stable-stringify "^1.0.1"
     tslib "^1.8.0"
@@ -6959,13 +6959,12 @@ vega@^3.0.0:
     vega-wordcloud "2"
     yargs "4"
 
-"vega@github:vega/vega#v3.0.7":
-  version "3.0.7"
-  resolved "https://codeload.github.com/vega/vega/tar.gz/9f915b467987acefeca8df1dacf011c6847cde0d"
+"vega@github:vega/vega#v3.0.8":
+  version "3.0.8"
+  resolved "https://codeload.github.com/vega/vega/tar.gz/3fbc1001e1368f7d1bdeebd6ee247a13258faf65"
   dependencies:
     vega-crossfilter "2"
     vega-dataflow "3"
-    vega-datasets vega/vega-datasets#gh-pages
     vega-encode "2"
     vega-expression "2"
     vega-force "2"
