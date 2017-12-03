@@ -6,8 +6,6 @@ function mapStateToProps(state, ownProps) {
     vegaSpec: state.vegaSpec,
     renderer: state.renderer,
     mode: state.mode,
-    warningsLogger: state.warningsLogger,
-    error: state.error,
     tooltip: state.tooltip
   };
 }

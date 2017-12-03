@@ -1,26 +1,24 @@
+import './index.css';
+
 import React from 'react';
 import PropTypes from 'prop-types';
-import ErrorIndicator from '../error-indicator';
 
 export default class ErrorBoundary extends React.Component {
   static propTypes = {
-    logError: PropTypes.func
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {hasError: false};
+    logError: PropTypes.func,
+    showErrorPane: PropTypes.func,
+    error: PropTypes.string
   }
 
   componentDidCatch(error, info) {
-    this.setState({hasError: true});
-
     this.props.logError(error.toString());
   }
 
   render() {
-    if (this.state.hasError) {
-      return <ErrorIndicator />;
+    if (this.props.error) {
+      return <div id='error-indicator' onClick={(e) => this.props.showErrorPane()}>
+        {this.props.error}
+      </div>
     }
     return this.props.children;
   }
