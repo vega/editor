@@ -1,5 +1,5 @@
 {
-  "name": "vega-editor-redux",
+  "name": "vega-editor",
   "version": "0.1.0",
   "homepage": "http://vega.github.io/editor",
   "devDependencies": {
