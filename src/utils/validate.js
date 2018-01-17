@@ -2,7 +2,8 @@ import Ajv from 'ajv';
 
 const ajv = new Ajv({
   jsonPointers: true,
-  allErrors: false
+  allErrors: false,
+  schemaId: 'id'
 });
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
