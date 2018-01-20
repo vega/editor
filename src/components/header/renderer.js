@@ -54,7 +54,7 @@ export default class Header extends React.Component {
     hashHistory.push('/gist/vega/' + username + '/' + id);
   }
 
-  onSelectVegaLiteGist(gistUrl) { 
+  onSelectVegaLiteGist(gistUrl) {
     this.setState({
       gistIsOpened: false,
       url: ''
@@ -99,7 +99,7 @@ export default class Header extends React.Component {
 
     const docsLink = (
       <a className='button right' href={this.props.mode === MODES.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'} target="_blank">
-        {formatExampleName(this.props.mode)} Docs
+        {this.props.mode === MODES.Vega ? 'Vega' : 'Vega-Lite'} Docs
       </a>
     );
 
@@ -180,10 +180,10 @@ export default class Header extends React.Component {
           <input className='gist-input' type='text' placeholder='enter gist url here' value={this.state.url}
           onChange={this.handleChange.bind(this)}/>
 
-          <button className='gist-button' onClick={this.onSelectVegaGist.bind(this, this.state.url)}> 
+          <button className='gist-button' onClick={this.onSelectVegaGist.bind(this, this.state.url)}>
             Vega
           </button>
-          <button className='gist-button' onClick={this.onSelectVegaLiteGist.bind(this, this.state.url)}> 
+          <button className='gist-button' onClick={this.onSelectVegaLiteGist.bind(this, this.state.url)}>
             Vega-Lite
           </button>
         </div>
@@ -207,8 +207,10 @@ export default class Header extends React.Component {
           onClose={() => { this.setState({customIsOpened: false});}}
         >
 
-          <div className='customSubmenuGroup' onMouseOver={() => { this.setState({customIsOpened: true});}}
-            onMouseLeave={() => { this.setState({customIsOpened: false});}} onClick={() => { this.setState({customIsOpened: false});}}
+          <div className='customSubmenuGroup'
+            onMouseOver={() => { this.setState({customIsOpened: true});}}
+            onMouseLeave={() => { this.setState({customIsOpened: false});}}
+            onClick={() => { this.setState({customIsOpened: false});}}
             style={{
               left:this.state.left,
               width:this.state.width,
