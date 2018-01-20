@@ -6,7 +6,7 @@ export const DEFAULT_STATE = {
   vegaSpec: {},
   vegaLiteSpec: null,
   selectedExample: null,
-  mode: MODES.Vega,
+  mode: MODES.VegaLite,
   renderer: RENDERERS.Canvas,
   autoParse: true,
   parse: false,
