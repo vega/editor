@@ -7004,9 +7004,9 @@ vega-lite@^2.0.0-beta.14:
     vega-util "^1.5.0"
     yargs "^9.0.1"
 
-"vega-lite@github:vega/vega-lite#v2.1.0-beta1":
-  version "2.1.0-beta1"
-  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/678efeed7f2bc2305367f716d96d855e07f4d9fd"
+"vega-lite@github:vega/vega-lite#v2.1.0":
+  version "2.1.0"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/dc67e2b1e9985d0dd788c960f2e0a78a3a2eb6d0"
   dependencies:
     json-stable-stringify "^1.0.1"
     tslib "^1.9.0"
