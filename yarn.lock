@@ -6917,13 +6917,9 @@ vega-dataflow@3:
     vega-loader "2"
     vega-util "1"
 
-vega-datasets@^1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.11.0.tgz#45fba548806d5b4a11ad4e2efe39ecdae46d3a7a"
-
-vega-datasets@vega/vega-datasets#gh-pages:
-  version "1.10.0"
-  resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/7080ba8297825d27495bdfb8386d10cff83cbacf"
+vega-datasets@^1.13.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.13.0.tgz#4eda36ebb432e832a332430541204bb52e8f0ed6"
 
 vega-encode@2:
   version "2.0.4"
@@ -6995,7 +6991,7 @@ vega-loader@2:
     topojson "1"
     vega-util "1"
 
-vega-parser@2, vega-parser@^2.2:
+vega-parser@2:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-2.3.0.tgz#48771eb8d52511611a10982d0d10f28b06f70300"
   dependencies:
@@ -7083,14 +7079,14 @@ vega-statistics@^1.2:
   dependencies:
     d3-array "1"
 
-vega-tooltip@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.5.0.tgz#af79bdf89ec06b00927eae652eb3628a6130120e"
+vega-tooltip@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.5.1.tgz#8ec54177cf9444470c445e9f9433366f922a4b9c"
   dependencies:
     d3-format "^1.2.2"
     d3-selection "^1.2.0"
     d3-time-format "^2.1.1"
-    vega "^3.0.0"
+    vega "^3.0.10"
     vega-lite "^2.1.1"
 
 vega-transforms@^1.1:
@@ -7118,17 +7114,6 @@ vega-view-transforms@^1.1:
     vega-scenegraph "2"
     vega-util "1"
 
-vega-view@2:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/vega-view/-/vega-view-2.0.3.tgz#8c3498f48e34f079c999b047fe5bf3731c641654"
-  dependencies:
-    d3-array "1"
-    vega-dataflow "3"
-    vega-parser "2"
-    vega-runtime "2"
-    vega-scenegraph "2"
-    vega-util "1"
-
 vega-view@^2.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vega-view/-/vega-view-2.1.0.tgz#578e862ad502b24680eac7e93230e972ce7c8fb5"
@@ -7148,18 +7133,6 @@ vega-voronoi@2:
     vega-dataflow "3"
     vega-util "1"
 
-vega-wordcloud@2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/vega-wordcloud/-/vega-wordcloud-2.0.2.tgz#853be1b1492ba749001e5483be30380662ff2c59"
-  dependencies:
-    vega-dataflow "3"
-    vega-scale "2"
-    vega-statistics "^1.2"
-    vega-util "1"
-  optionalDependencies:
-    canvas "^1.6"
-    canvas-prebuilt "^1.6"
-
 vega-wordcloud@^2.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vega-wordcloud/-/vega-wordcloud-2.1.0.tgz#fb3187ab667ada14daffb7f175082a9a9736cab1"
@@ -7170,34 +7143,7 @@ vega-wordcloud@^2.1:
     vega-statistics "^1.2"
     vega-util "1"
 
-vega@^3.0.0:
-  version "3.0.5"
-  resolved "https://codeload.github.com/vega/vega/tar.gz/18890df48d6499b5d591f64a1567707881e4502c"
-  dependencies:
-    vega-crossfilter "2"
-    vega-dataflow "3"
-    vega-datasets vega/vega-datasets#gh-pages
-    vega-encode "2"
-    vega-expression "2"
-    vega-force "2"
-    vega-geo "^2.1"
-    vega-hierarchy "^2.1"
-    vega-loader "2"
-    vega-parser "^2.2"
-    vega-projection "1"
-    vega-runtime "2"
-    vega-scale "^2.1"
-    vega-scenegraph "2"
-    vega-statistics "^1.2"
-    vega-transforms "^1.1"
-    vega-util "^1.6"
-    vega-view "2"
-    vega-view-transforms "^1.1"
-    vega-voronoi "2"
-    vega-wordcloud "2"
-    yargs "4"
-
-"vega@github:vega/vega#v3.0.10":
+vega@^3.0.10, "vega@github:vega/vega#v3.0.10":
   version "3.0.10"
   resolved "https://codeload.github.com/vega/vega/tar.gz/d4270499b112a072d9869bbdebddbbb10ac9e70d"
   dependencies:
