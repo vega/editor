@@ -11,6 +11,7 @@ import {MODES} from '../../constants';
 export default class Editor extends React.Component {
   static propTypes = {
     vegaSpec: PropTypes.object,
+    vegaLiteSpec: PropTypes.object,
     renderer: PropTypes.string,
     mode: PropTypes.string,
     tooltip: PropTypes.bool
@@ -37,7 +38,11 @@ export default class Editor extends React.Component {
     this.refs.chart.style.width = 'auto';
 
     if (this.props.tooltip) {
-      vegaTooltip.vega(view);
+      if (props.mode === MODES.VegaLite) {
+        vegaTooltip.vegaLite(view, props.vegaLiteSpec)
+      } else {
+        vegaTooltip.vega(view);
+      }
     }
 
     window.VEGA_DEBUG.view = view;
