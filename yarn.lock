@@ -6970,7 +6970,7 @@ vega-hierarchy@^2.1:
     vega-dataflow "3"
     vega-util "1"
 
-vega-lite@^2.1.1, "vega-lite@github:vega/vega-lite#v2.1.1":
+vega-lite@^2.1.1:
   version "2.1.1"
   resolved "https://codeload.github.com/vega/vega-lite/tar.gz/2a03a38f75c9c1fa3345eae419ee700026362078"
   dependencies:
@@ -6979,6 +6979,17 @@ vega-lite@^2.1.1, "vega-lite@github:vega/vega-lite#v2.1.1":
     tslib "^1.9.0"
     vega-event-selector "^2.0.0"
     vega-util "^1.6.2"
+    yargs "^11.0.0"
+
+"vega-lite@github:vega/vega-lite#v2.1.3":
+  version "2.1.3"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/d7d06dd8d629bf1152172277c07ece92e9198247"
+  dependencies:
+    "@types/json-stable-stringify" "^1.0.32"
+    json-stable-stringify "^1.0.1"
+    tslib "^1.9.0"
+    vega-event-selector "^2.0.0"
+    vega-util "^1.7.0"
     yargs "^11.0.0"
 
 vega-loader@2:
@@ -7105,6 +7116,10 @@ vega-util@1, vega-util@^1.1, vega-util@^1.6:
 vega-util@^1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.6.2.tgz#9d9d7cc65dfc9cd70eeb8dba8bb5c9924be5dacc"
+
+vega-util@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.7.0.tgz#0ca0512bb8dcc6541165c34663d115d0712e0cf1"
 
 vega-view-transforms@^1.1:
   version "1.1.0"
