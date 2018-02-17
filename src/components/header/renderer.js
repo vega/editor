@@ -2,13 +2,13 @@ import React from 'react';
 import {Portal} from 'react-portal';
 import {MODES, SPECS, LAYOUT} from '../../constants';
 import './index.css';
-import {hashHistory} from 'react-router';
+import {withRouter} from 'react-router-dom';
 
 const formatExampleName = (name) => {
   return name.split(/[_-]/).map(i => i[0].toUpperCase() + i.substring(1)).join(' ');
 }
 
-export default class Header extends React.Component {
+class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,22 +26,22 @@ export default class Header extends React.Component {
     this.setState({
       exampleIsOpened: false
     });
-    hashHistory.push('/examples/vega/' + name);
+    this.props.history.push('/examples/vega/' + name);
   }
 
   onSelectNewVega() {
-    hashHistory.push('/custom/vega');
+    this.props.history.push('/custom/vega');
   }
 
   onSelectVegaLite(name) {
     this.setState({
       exampleIsOpened: false
     });
-    hashHistory.push('/examples/vega-lite/' + name);
+    this.props.history.push('/examples/vega-lite/' + name);
   }
 
   onSelectNewVegaLite() {
-    hashHistory.push('/custom/vega-lite');
+    this.props.history.push('/custom/vega-lite');
   }
 
   onSelectVegaGist(gistUrl) {
@@ -51,7 +51,7 @@ export default class Header extends React.Component {
     });
     const username = this.getGistNameAndId(gistUrl)[0];
     const id = this.getGistNameAndId(gistUrl)[1];
-    hashHistory.push('/gist/vega/' + username + '/' + id);
+    this.props.history.push('/gist/vega/' + username + '/' + id);
   }
 
   onSelectVegaLiteGist(gistUrl) {
@@ -61,7 +61,7 @@ export default class Header extends React.Component {
     });
     const username = this.getGistNameAndId(gistUrl)[0];
     const id = this.getGistNameAndId(gistUrl)[1];
-    hashHistory.push('/gist/vega-lite/' + username + '/' + id);
+    this.props.history.push('/gist/vega-lite/' + username + '/' + id);
   }
 
   getGistNameAndId(gistUrl) {
@@ -259,3 +259,5 @@ export default class Header extends React.Component {
     );
   }
 }
+
+export default withRouter(Header);
