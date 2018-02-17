@@ -1,5 +1,5 @@
 import React from 'react';
-import Portal from 'react-portal';
+import {Portal} from 'react-portal';
 import {MODES, SPECS, LAYOUT} from '../../constants';
 import './index.css';
 import {hashHistory} from 'react-router';
@@ -200,13 +200,7 @@ export default class Header extends React.Component {
           {docsLink}
           {customButton}
 
-        <Portal
-          closeOnEsc
-          closeOnOutsideClick
-          isOpened={this.state.customIsOpened}
-          onClose={() => { this.setState({customIsOpened: false});}}
-        >
-
+        { this.state.customIsOpened && <Portal>
           <div className='customSubmenuGroup'
             onMouseOver={() => { this.setState({customIsOpened: true});}}
             onMouseLeave={() => { this.setState({customIsOpened: false});}}
@@ -229,13 +223,9 @@ export default class Header extends React.Component {
               {'Vega-Lite'}
             </div>
           </div>
-        </Portal>
+        </Portal>}
 
-        <Portal
-          closeOnEsc
-          isOpened={this.state.exampleIsOpened}
-          onClose={() => { this.setState({exampleIsOpened: false});}}
-        >
+        { this.state.exampleIsOpened && <Portal>
           <div className='modal-background'>
             <div className='modal-header'>
               <div className='button-groups'>
@@ -251,24 +241,20 @@ export default class Header extends React.Component {
               </div>
             </div>
           </div>
-        </Portal>
+        </Portal>}
 
-        <Portal
-          closeOnEsc
-          isOpened={this.state.gistIsOpened}
-          onClose={() => { this.setState({gistIsOpened: false});}}
-        >
-        <div className='modal-background'>
-          <div className='modal-header'>
-            <button className='close-button' onClick={() => {this.setState({gistIsOpened: false});}}>✖</button>
-          </div>
-          <div className='modal-area'>
-            <div className='modal'>
-              {gist}
+        { this.state.gistIsOpened && <Portal>
+          <div className='modal-background'>
+            <div className='modal-header'>
+              <button className='close-button' onClick={() => {this.setState({gistIsOpened: false});}}>✖</button>
+            </div>
+            <div className='modal-area'>
+              <div className='modal'>
+                {gist}
+              </div>
             </div>
           </div>
-        </div>
-        </Portal>
+        </Portal>}
       </div>
     );
   }
