@@ -34,7 +34,7 @@ function logPageView() {
 ReactDOM.render(
   (
     <Provider store={store}>
-      <ConnectedRouter history={hashHistory} onUpdate={logPageView}>
+      <ConnectedRouter history={hashHistory}>
         <AppShell logPageView={logPageView} />
       </ConnectedRouter>
     </Provider>
