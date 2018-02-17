@@ -61,7 +61,6 @@ module.exports = {
       'react-portal',
       'react-redux',
       'react-router',
-      'react-router-redux',
       'react-split-pane',
       'redux',
       'redux-localstorage',
