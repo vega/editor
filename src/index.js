@@ -9,6 +9,8 @@ import * as vl from 'vega-lite';
 import App from './components/app';
 import configureStore from './store/configure-store';
 
+import registerServiceWorker from './registerServiceWorker';
+
 window.VEGA_DEBUG = window.VEGA_DEBUG || {};
 window.VEGA_DEBUG.vega = vega;
 window.VEGA_DEBUG.vl = vl;
@@ -43,6 +45,9 @@ ReactDOM.render(
   document.getElementById('root'),
 );
 
-/*eslint-disable */
+// Make the editor available as offline app.
+registerServiceWorker();
+
+/* eslint-disable */
 console.log('%cWelcome to the Vega-Editor!', 'font-size: 16px; font-weight: bold;');
 console.log('You can access the Vega view with VEGA_DEBUG. Learn more at https://vega.github.io/vega/docs/api/debugging/.');
