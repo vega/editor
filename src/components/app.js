@@ -40,13 +40,13 @@ class App extends React.Component {
       }
     }, false);
 
-    const parameter = this.props.params;
+    const parameter = this.props.match.params;
     this.setSpecInUrl(parameter);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!equal(this.props.params, nextProps.params)) {
-      this.setSpecInUrl(nextProps.params);
+    if (!equal(this.props.match.params, nextProps.match.params)) {
+      this.setSpecInUrl(nextProps.match.params);
     }
   }
 
