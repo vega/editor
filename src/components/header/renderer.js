@@ -5,7 +5,7 @@ import './index.css';
 import {hashHistory} from 'react-router';
 
 const formatExampleName = (name) => {
-  return name.split(/[_\-]/).map(i => i[0].toUpperCase() + i.substring(1)).join(' ');
+  return name.split(/[_-]/).map(i => i[0].toUpperCase() + i.substring(1)).join(' ');
 }
 
 export default class Header extends React.Component {
@@ -98,7 +98,7 @@ export default class Header extends React.Component {
     );
 
     const docsLink = (
-      <a className='button right' href={this.props.mode === MODES.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'} target="_blank">
+      <a className='button right' href={this.props.mode === MODES.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'} target="_blank" rel="noopener noreferrer">
         {this.props.mode === MODES.Vega ? 'Vega' : 'Vega-Lite'} Docs
       </a>
     );
@@ -192,7 +192,7 @@ export default class Header extends React.Component {
 
     return (
         <div className='header'>
-          <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank">
+          <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
             <img height={37} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
           </a>
           {examplesButton}
