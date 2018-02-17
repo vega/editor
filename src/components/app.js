@@ -4,7 +4,7 @@ import {text} from 'd3-request';
 import equal from 'deep-equal';
 import React from 'react';
 import {connect} from 'react-redux';
-import {hashHistory} from 'react-router';
+import {withRouter} from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 
 import * as EditorActions from '../actions/editor';
@@ -51,7 +51,7 @@ class App extends React.Component {
   }
 
   setSpecInUrl(parameter) {
-    if (parameter && parameter.mode && hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
+    if (parameter && parameter.mode && this.props.history.location.pathname.indexOf('/edited') === -1) {
       if (parameter.example_name) {
         this.setExample(parameter);
       } else if (parameter.username && parameter.id) {
@@ -162,4 +162,4 @@ const mapDispatchToProps = function(dispatch) {
   };
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default withRouter(connect(null, mapDispatchToProps)(App));

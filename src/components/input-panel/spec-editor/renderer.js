@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {MODES} from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
-import {hashHistory} from 'react-router';
+import {withRouter} from 'react-router-dom';
 import parser from 'vega-schema-url-parser';
 
 import './index.css'
@@ -37,7 +37,7 @@ function debounce(func, wait, immediate) {
 	};
 }
 
-export default class Editor extends React.Component {
+class Editor extends React.Component {
   static propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func
@@ -60,8 +60,8 @@ export default class Editor extends React.Component {
     } else {
       this.props.updateEditorString(spec);
     }
-    if (hashHistory.getCurrentLocation().pathname.indexOf('/edited') === -1) {
-      hashHistory.push('/edited');
+    if (this.props.history.location.pathname.indexOf('/edited') === -1) {
+      this.props.history.push('/edited');
     }
   }
 
@@ -142,3 +142,5 @@ export default class Editor extends React.Component {
     );
   }
 }
+
+export default withRouter(Editor);
