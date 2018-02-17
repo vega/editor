@@ -2,13 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as ReactGA from 'react-ga';
 import {Provider} from 'react-redux';
-import {Route} from 'react-router-dom';
 import {ConnectedRouter} from 'react-router-redux';
 import createHashHistory from 'history/createHashHistory';
 import * as vega from 'vega';
 import * as vl from 'vega-lite';
 
-import App from './components/app';
+import AppShell from './components/app-shell';
 import configureStore from './store/configure-store';
 
 window.VEGA_DEBUG = window.VEGA_DEBUG || {};
@@ -36,13 +35,7 @@ ReactDOM.render(
   (
     <Provider store={store}>
       <ConnectedRouter history={hashHistory} onUpdate={logPageView}>
-        <div>
-          <Route path='/' component={App} />
-          <Route path='/edited' component={App} />
-          <Route path='/gist/:mode/:username/:id' component={App} />
-          <Route path='/examples/:mode/:example_name' component={App} />
-          <Route path='/custom/:mode' component={App} />
-        </div>
+        <AppShell logPageView={logPageView} />
       </ConnectedRouter>
     </Provider>
   ),
