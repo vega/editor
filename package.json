@@ -34,6 +34,7 @@
     "filesize": "3.5.11",
     "find-cache-dir": "1.0.0",
     "fs-extra": "3.0.1",
+    "gh-pages": "^1.1.0",
     "gzip-size": "3.0.0",
     "html-webpack-plugin": "2.29.0",
     "http-proxy-middleware": "0.17.4",
@@ -88,7 +89,9 @@
     "test": "node scripts/test.js --env=jsdom",
     "postinstall": "npm run vendor",
     "vendor": "./scripts/vendor.sh",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "jest": {
     "moduleFileExtensions": [
