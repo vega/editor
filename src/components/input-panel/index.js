@@ -39,9 +39,15 @@ class InputPanel extends React.Component {
           {innerPanes}
         </SplitPane>;
     } else {
-      return <SplitPane split="horizontal" primary="second" defaultSize={25} pane1Style={{display: 'flex'}}>
+      if(this.props.mode === MODES.Vega){
+        return <div className={'full-height-wrapper'}>
+          {innerPanes}
+        </div>
+      } else {
+        return <SplitPane split="horizontal" primary="second" defaultSize={25} pane1Style={{display: 'flex'}}>
           {innerPanes}
         </SplitPane>;
+      }
     }
   }
 }
