@@ -1,4 +1,4 @@
-/** @prettier */
+/** @format */
 
 import * as React from 'react';
 import * as vl from 'vega-lite';

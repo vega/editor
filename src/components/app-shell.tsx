@@ -1,4 +1,4 @@
-/** @prettier */
+/** @format */
 
 import {Route} from 'react-router-dom';
 

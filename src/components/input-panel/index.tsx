@@ -1,4 +1,4 @@
-/** @prettier */
+/** @format */
 
 import SplitPane from 'react-split-pane';
 

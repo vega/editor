@@ -1,4 +1,4 @@
-/** @prettier */
+/** @format */
 
 import {Portal} from 'react-portal';
 import {withRouter} from 'react-router-dom';

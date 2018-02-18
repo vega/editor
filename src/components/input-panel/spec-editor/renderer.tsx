@@ -1,4 +1,4 @@
-/** @prettier */
+/** @format */
 
 import MonacoEditor from 'react-monaco-editor';
 import parser from 'vega-schema-url-parser';
