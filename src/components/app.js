@@ -99,7 +99,7 @@ class App extends React.Component {
 
   setExample(parameter) {
     const name = parameter.example_name;
-    if (parameter.mode === MODES.vega) {
+    if (parameter.mode === MODES.Vega) {
       text(`./spec/vega/${name}.vg.json`, spec => {
         this.props.setVegaExample(name, spec);
       });
