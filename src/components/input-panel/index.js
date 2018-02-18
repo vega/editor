@@ -31,14 +31,17 @@ class InputPanel extends React.Component {
   render() {
     const innerPanes = this.getInnerPanes();
 
+
+    // In the else case, using the same SplitPane configuration as the if case causes the 'compiled vega' button
+    // to get hidden on browser resize!
     if (this.props.mode === MODES.VegaLite && this.props.compiledVegaSpec) {
         return <SplitPane split="horizontal" defaultSize={(window.innerHeight - LAYOUT.HeaderHeight) / innerPanes.length} pane2Style={{display: 'flex'}}>
           {innerPanes}
         </SplitPane>;
     } else {
-      return <div className={'full-height-wrapper'}>
-        {innerPanes}
-      </div>
+      return <SplitPane split="horizontal" primary="second" defaultSize={25} pane1Style={{display: 'flex'}}>
+          {innerPanes}
+        </SplitPane>;
     }
   }
 }
