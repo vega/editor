@@ -1,21 +1,23 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import * as EditorActions from "../../../actions/editor";
+/** @prettier */
+
+import * as React from 'react';
+import {connect} from 'react-redux';
+import * as EditorActions from '../../../actions/editor';
 const toggleStyle = {
-  cursor: "pointer"
+  cursor: 'pointer',
 };
 const svgStyle = {
-  position: "absolute" as "absolute", // $FixMe
-  right: "50%",
+  position: 'absolute' as 'absolute', // $FixMe
+  right: '50%',
   height: 25,
-  width: 35
+  width: 35,
 };
 
 type Props = {
-  value
-  compiledVegaSpec
-  showCompiledVegaSpec // $FixMe - function
-  updateVegaSpec: Function
+  value;
+  compiledVegaSpec;
+  showCompiledVegaSpec; // $FixMe - function
+  updateVegaSpec: Function;
 };
 
 class CompiledSpecDisplayHeader extends React.Component<Props> {
@@ -25,7 +27,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
   render() {
     if (this.props.compiledVegaSpec) {
       const toggleStyleUp = Object.assign({}, toggleStyle, {
-        position: "static"
+        position: 'static',
       });
       return (
         <div
@@ -33,13 +35,13 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
           style={toggleStyleUp}
           onClick={this.props.showCompiledVegaSpec}
         >
-          <span style={{ marginLeft: 10 }}>Compiled Vega</span>
+          <span style={{marginLeft: 10}}>Compiled Vega</span>
           <svg style={svgStyle}>
             <polygon points="5,5 30,5 17.5,20" />
           </svg>
           <button
             onClick={this.editVegaSpec.bind(this)}
-            style={{ position: "absolute", right: "3%", cursor: "pointer" }}
+            style={{position: 'absolute', right: '3%', cursor: 'pointer'}}
           >
             Edit Vega spec
           </button>
@@ -52,7 +54,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
           className="editor-header"
           style={toggleStyle}
         >
-          <span style={{ marginLeft: 10 }}>Compiled Vega</span>
+          <span style={{marginLeft: 10}}>Compiled Vega</span>
           <svg style={svgStyle}>
             <polygon points="5,20 30,20 17.5,5" />
           </svg>
@@ -65,19 +67,19 @@ function mapStateToProps(state, ownProps) {
   return {
     value: state.vegaSpec,
     compiledVegaSpec: state.compiledVegaSpec,
-    mode: state.mode
+    mode: state.mode,
   };
 }
-const mapDispatchToProps = function (dispatch) {
+const mapDispatchToProps = function(dispatch) {
   return {
-    updateVegaSpec: val => {
+    updateVegaSpec: (val) => {
       dispatch(EditorActions.updateVegaSpec(val));
     },
     showCompiledVegaSpec: () => {
       dispatch(EditorActions.showCompiledVegaSpec());
-    }
+    },
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(
-  CompiledSpecDisplayHeader
+  CompiledSpecDisplayHeader,
 );

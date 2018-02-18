@@ -1,14 +1,16 @@
-import "./index.css";
-import * as React from "react";
-import { connect } from "react-redux";
-import SplitPane from "react-split-pane";
-import { LAYOUT, MODES } from "../../constants";
-import CompiledSpecDisplay from "./compiled-spec-display";
-import CompiledSpecHeader from "./compiled-spec-header";
-import SpecEditor from "./spec-editor";
+/** @prettier */
+
+import './index.css';
+import * as React from 'react';
+import {connect} from 'react-redux';
+import SplitPane from 'react-split-pane';
+import {LAYOUT, MODES} from '../../constants';
+import CompiledSpecDisplay from './compiled-spec-display';
+import CompiledSpecHeader from './compiled-spec-header';
+import SpecEditor from './spec-editor';
 type Props = {
-  compiledVegaSpec?: boolean,
-  mode?: string
+  compiledVegaSpec?: boolean;
+  mode?: string;
 };
 class InputPanel extends React.Component<Props> {
   getInnerPanes() {
@@ -31,20 +33,20 @@ class InputPanel extends React.Component<Props> {
           defaultSize={
             (window.innerHeight - LAYOUT.HeaderHeight) / innerPanes.length
           }
-          pane2Style={{ display: "flex" }}
+          pane2Style={{display: 'flex'}}
         >
           {innerPanes}
         </SplitPane>
       );
     } else {
-      return <div className={"full-height-wrapper"}>{innerPanes}</div>;
+      return <div className={'full-height-wrapper'}>{innerPanes}</div>;
     }
   }
 }
 function mapStateToProps(state, ownProps) {
   return {
     mode: state.mode,
-    compiledVegaSpec: state.compiledVegaSpec
+    compiledVegaSpec: state.compiledVegaSpec,
   };
 }
 export default connect(mapStateToProps)(InputPanel);

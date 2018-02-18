@@ -1,20 +1,22 @@
-import "./index.css";
-import "vega-tooltip/build/vega-tooltip.css";
-import * as React from "react";
-import * as vega from "vega";
-import * as vegaTooltip from "vega-tooltip";
-import { MODES } from "../../constants";
+/** @prettier */
+
+import './index.css';
+import 'vega-tooltip/build/vega-tooltip.css';
+import * as React from 'react';
+import * as vega from 'vega';
+import * as vegaTooltip from 'vega-tooltip';
+import {MODES} from '../../constants';
 type Props = {
-  vegaSpec?: object,
-  vegaLiteSpec?: object,
-  renderer?: string,
-  mode?: string,
-  tooltip?: boolean
+  vegaSpec?: object;
+  vegaLiteSpec?: object;
+  renderer?: string;
+  mode?: string;
+  tooltip?: boolean;
 };
 export default class Editor extends React.Component<Props> {
   renderVega(props) {
     (this.refs.chart as any).style.width = // $FixMe
-      (this.refs.chart as any).getBoundingClientRect().width + "px"; // $FixMe
+      (this.refs.chart as any).getBoundingClientRect().width + 'px'; // $FixMe
     let runtime;
     let view;
     runtime = vega.parse(props.vegaSpec);
@@ -26,7 +28,7 @@ export default class Editor extends React.Component<Props> {
       view.hover();
     }
     view.run();
-    (this.refs.chart as any).style.width = "auto"; // $FixMe
+    (this.refs.chart as any).style.width = 'auto'; // $FixMe
     if (this.props.tooltip) {
       if (props.mode === MODES.VegaLite) {
         vegaTooltip.vegaLite(view, props.vegaLiteSpec);

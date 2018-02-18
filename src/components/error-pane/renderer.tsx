@@ -1,10 +1,12 @@
-import * as React from "react";
-import "./index.css";
+/** @prettier */
+
+import * as React from 'react';
+import './index.css';
 
 type Props = {
-  error
-  warningsLogger
-  showErrorPane: Function
+  error;
+  warningsLogger;
+  showErrorPane: Function;
 };
 
 export default class ErrorPane extends React.Component<Props> {
@@ -15,7 +17,7 @@ export default class ErrorPane extends React.Component<Props> {
         <li key={0}>
           <span className="error">[Error] </span>
           {this.props.error}
-        </li>
+        </li>,
       );
     }
     this.props.warningsLogger.warns.forEach((warning, i) => {
@@ -23,19 +25,19 @@ export default class ErrorPane extends React.Component<Props> {
         <li key={i + 1}>
           <span className="warning">[Warning] </span>
           {warning}
-        </li>
+        </li>,
       );
     });
     if (list.length === 0) {
       list.push(
-        <li key={"no error"}>
+        <li key={'no error'}>
           <span className="info">[Info] </span>No error or warnings
-        </li>
+        </li>,
       );
     }
     return (
       <div className="error-pane">
-        <span onClick={e => this.props.showErrorPane()} className="close">
+        <span onClick={(e) => this.props.showErrorPane()} className="close">
           &#10006;
         </span>
         <ul>{list}</ul>

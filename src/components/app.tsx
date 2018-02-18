@@ -1,55 +1,57 @@
-import "./app.css";
-import { text } from "d3-request";
-import equal from "deep-equal";
-import * as React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import SplitPane from "react-split-pane";
-import * as EditorActions from "../actions/editor";
-import { MODES } from "../constants";
-import { LAYOUT } from "../constants";
-import Header from "./header";
-import InputPanel from "./input-panel";
-import VizPane from "./viz-pane";
-import { VEGA_START_SPEC, VEGA_LITE_START_SPEC } from "../constants/consts";
+/** @prettier */
+
+import './app.css';
+import {text} from 'd3-request';
+import equal from 'deep-equal';
+import * as React from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+import SplitPane from 'react-split-pane';
+import * as EditorActions from '../actions/editor';
+import {MODES} from '../constants';
+import {LAYOUT} from '../constants';
+import Header from './header';
+import InputPanel from './input-panel';
+import VizPane from './viz-pane';
+import {VEGA_START_SPEC, VEGA_LITE_START_SPEC} from '../constants/consts';
 
 type Props = {
-  history
-  match
-  setGistVegaLiteSpec: Function
-  setGistVegaSpec: Function
-  setMode: Function
-  setVegaExample: Function
-  setVegaLiteExample: Function
-  updateVegaLiteSpec: Function
-  updateVegaSpec: Function
+  history;
+  match;
+  setGistVegaLiteSpec: Function;
+  setGistVegaSpec: Function;
+  setMode: Function;
+  setVegaExample: Function;
+  setVegaLiteExample: Function;
+  updateVegaLiteSpec: Function;
+  updateVegaSpec: Function;
 };
 
 class App extends React.Component<Props> {
   componentDidMount() {
     window.addEventListener(
-      "message",
-      evt => {
+      'message',
+      (evt) => {
         var data = evt.data;
         if (!data.spec) {
           return;
         }
-        console.info("[Vega-Editor] Received Message", evt.origin, data);
+        console.info('[Vega-Editor] Received Message', evt.origin, data);
         // send acknowledgement
         var parsed = JSON.parse(data.spec);
         data.spec = JSON.stringify(parsed, null, 2);
         if (data.spec || data.file) {
-          evt.source.postMessage(true, "*");
+          evt.source.postMessage(true, '*');
         }
         if (data.spec) {
-          if (data.mode.toUpperCase() === "VEGA") {
+          if (data.mode.toUpperCase() === 'VEGA') {
             this.props.updateVegaSpec(data.spec);
-          } else if (data.mode.toUpperCase() === "VEGA-LITE") {
+          } else if (data.mode.toUpperCase() === 'VEGA-LITE') {
             this.props.updateVegaLiteSpec(data.spec);
           }
         }
       },
-      false
+      false,
     );
     const parameter = this.props.match.params;
     this.setSpecInUrl(parameter);
@@ -63,7 +65,7 @@ class App extends React.Component<Props> {
     if (
       parameter &&
       parameter.mode &&
-      this.props.history.location.pathname.indexOf("/edited") === -1
+      this.props.history.location.pathname.indexOf('/edited') === -1
     ) {
       if (parameter.example_name) {
         this.setExample(parameter);
@@ -75,51 +77,51 @@ class App extends React.Component<Props> {
     }
   }
   setGist(parameter) {
-    const prefix = "https://hook.io/tianyiii/vegaeditor";
+    const prefix = 'https://hook.io/tianyiii/vegaeditor';
     const vegaVersion = parameter.mode;
     const hookUrl = `${prefix}/${vegaVersion}/${parameter.username}/${
       parameter.id
-      }`;
+    }`;
     fetch(hookUrl, {
-      method: "get",
-      mode: "cors"
+      method: 'get',
+      mode: 'cors',
     })
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
           return Promise.resolve(response);
         } else {
           return Promise.reject(new Error(response.statusText));
         }
       })
-      .then(response => {
+      .then((response) => {
         return response.json();
       })
-      .then(data => {
-        if (data["message"] !== "Not Found") {
-          if (vegaVersion === "vega") {
+      .then((data) => {
+        if (data['message'] !== 'Not Found') {
+          if (vegaVersion === 'vega') {
             this.props.setGistVegaSpec(hookUrl, JSON.stringify(data, null, 2));
-          } else if (vegaVersion === "vega-lite") {
+          } else if (vegaVersion === 'vega-lite') {
             this.props.setGistVegaLiteSpec(
               hookUrl,
-              JSON.stringify(data, null, 2)
+              JSON.stringify(data, null, 2),
             );
           }
         } else {
-          console.warn("invalid url");
+          console.warn('invalid url');
         }
       })
-      .catch(ex => {
+      .catch((ex) => {
         console.error(ex);
       });
   }
   setExample(parameter) {
     const name = parameter.example_name;
     if (parameter.mode === MODES.Vega) {
-      text(`./spec/vega/${name}.vg.json`, spec => {
+      text(`./spec/vega/${name}.vg.json`, (spec) => {
         this.props.setVegaExample(name, spec);
       });
     } else if (parameter.mode === MODES.VegaLite) {
-      text(`./spec/vega-lite/${name}.vl.json`, spec => {
+      text(`./spec/vega-lite/${name}.vl.json`, (spec) => {
         this.props.setVegaLiteExample(name, spec);
       });
     }
@@ -139,17 +141,17 @@ class App extends React.Component<Props> {
         <Header />
         <div
           style={{
-            position: "relative",
-            height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`
+            position: 'relative',
+            height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,
           }}
         >
           <SplitPane
             split="vertical"
             minSize={300}
             defaultSize={w * 0.4}
-            pane1Style={{ display: "flex" }}
+            pane1Style={{display: 'flex'}}
             className="main-pane"
-            pane2Style={{ overflow: "scroll" }}
+            pane2Style={{overflow: 'scroll'}}
           >
             <InputPanel />
             <VizPane />
@@ -159,15 +161,15 @@ class App extends React.Component<Props> {
     );
   }
 }
-const mapDispatchToProps = function (dispatch) {
+const mapDispatchToProps = function(dispatch) {
   return {
-    setMode: mode => {
+    setMode: (mode) => {
       dispatch(EditorActions.setMode(mode));
     },
-    updateVegaSpec: val => {
+    updateVegaSpec: (val) => {
       dispatch(EditorActions.updateVegaSpec(val));
     },
-    updateVegaLiteSpec: val => {
+    updateVegaLiteSpec: (val) => {
       dispatch(EditorActions.updateVegaLiteSpec(val));
     },
     setVegaExample: (example, val) => {
@@ -181,7 +183,7 @@ const mapDispatchToProps = function (dispatch) {
     },
     setGistVegaLiteSpec: (gist, spec) => {
       dispatch(EditorActions.setGistVegaLiteSpec(gist, spec));
-    }
+    },
   };
 };
 export default withRouter(connect(null, mapDispatchToProps)(App));

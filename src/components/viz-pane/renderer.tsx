@@ -1,12 +1,14 @@
-import "./index.css";
-import * as React from "react";
-import SplitPane from "react-split-pane";
-import ErrorBoundary from "../error-boundary";
-import ErrorPane from "../error-pane";
-import Renderer from "../renderer";
-import Toolbar from "../toolbar";
+/** @prettier */
+
+import './index.css';
+import * as React from 'react';
+import SplitPane from 'react-split-pane';
+import ErrorBoundary from '../error-boundary';
+import ErrorPane from '../error-pane';
+import Renderer from '../renderer';
+import Toolbar from '../toolbar';
 type Props = {
-  errorPane?: boolean
+  errorPane?: boolean;
 };
 export default class VizPane extends React.Component<Props> {
   render() {
@@ -23,7 +25,7 @@ export default class VizPane extends React.Component<Props> {
         <SplitPane
           split="horizontal"
           defaultSize={window.innerHeight * 0.6}
-          paneStyle={{ display: "flex" }}
+          paneStyle={{display: 'flex'}}
         >
           {container}
           <ErrorPane />

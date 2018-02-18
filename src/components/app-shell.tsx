@@ -1,10 +1,12 @@
-import * as React from "react";
-import { Route } from "react-router-dom";
-import App from "./app";
+/** @prettier */
+
+import * as React from 'react';
+import {Route} from 'react-router-dom';
+import App from './app';
 
 type Props = {
-  logPageView: Function
-}
+  logPageView: Function;
+};
 
 export default class AppShell extends React.Component<Props> {
   componentDidUpdate() {

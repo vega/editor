@@ -1,6 +1,8 @@
-import { connect } from "react-redux";
-import Renderer from "./renderer";
-import * as EditorActions from "../../actions/editor";
+/** @prettier */
+
+import {connect} from 'react-redux';
+import Renderer from './renderer';
+import * as EditorActions from '../../actions/editor';
 function mapStateToProps(state, ownProps) {
   return {
     renderer: state.renderer,
@@ -8,7 +10,7 @@ function mapStateToProps(state, ownProps) {
     mode: state.mode,
     autoParse: state.autoParse,
     warningsLogger: state.warningsLogger,
-    tooltip: state.tooltip
+    tooltip: state.tooltip,
   };
 }
 const mapDispatchToProps = function(dispatch) {
@@ -24,7 +26,7 @@ const mapDispatchToProps = function(dispatch) {
     },
     showTooltip: () => {
       dispatch(EditorActions.showTooltip());
-    }
+    },
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Renderer);

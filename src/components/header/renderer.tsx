@@ -1,28 +1,30 @@
-import * as React from "react";
-import { Portal } from "react-portal";
-import { MODES, SPECS, LAYOUT } from "../../constants";
-import "./index.css";
-import { withRouter } from "react-router-dom";
-const formatExampleName = name => {
+/** @prettier */
+
+import * as React from 'react';
+import {Portal} from 'react-portal';
+import {MODES, SPECS, LAYOUT} from '../../constants';
+import './index.css';
+import {withRouter} from 'react-router-dom';
+const formatExampleName = (name) => {
   return name
     .split(/[_-]/)
-    .map(i => i[0].toUpperCase() + i.substring(1))
-    .join(" ");
+    .map((i) => i[0].toUpperCase() + i.substring(1))
+    .join(' ');
 };
 
 type Props = {
-  mode
-  history
+  mode;
+  history;
 };
 
 type State = {
-  customIsOpened?: boolean,
-  exampleIsOpened?: boolean,
-  gistIsOpened?: boolean,
-  left?: any,
-  showVega: boolean,
-  url: string,
-  width?: number,
+  customIsOpened?: boolean;
+  exampleIsOpened?: boolean;
+  gistIsOpened?: boolean;
+  left?: any;
+  showVega: boolean;
+  url: string;
+  width?: number;
 };
 
 class Header extends React.Component<Props, State> {
@@ -31,54 +33,54 @@ class Header extends React.Component<Props, State> {
     // $FixMe - default state?
     this.state = {
       showVega: props.mode === MODES.Vega,
-      url: ""
+      url: '',
     };
     this.onSelectVega = this.onSelectVega.bind(this);
   }
   handleChange(event) {
-    this.setState({ url: event.target.value });
+    this.setState({url: event.target.value});
   }
   onSelectVega(name) {
     this.setState({
-      exampleIsOpened: false
+      exampleIsOpened: false,
     });
-    this.props.history.push("/examples/vega/" + name);
+    this.props.history.push('/examples/vega/' + name);
   }
   onSelectNewVega() {
-    this.props.history.push("/custom/vega");
+    this.props.history.push('/custom/vega');
   }
   onSelectVegaLite(name) {
     this.setState({
-      exampleIsOpened: false
+      exampleIsOpened: false,
     });
-    this.props.history.push("/examples/vega-lite/" + name);
+    this.props.history.push('/examples/vega-lite/' + name);
   }
   onSelectNewVegaLite() {
-    this.props.history.push("/custom/vega-lite");
+    this.props.history.push('/custom/vega-lite');
   }
   onSelectVegaGist(gistUrl) {
     this.setState({
       gistIsOpened: false,
-      url: ""
+      url: '',
     });
     const username = this.getGistNameAndId(gistUrl)[0];
     const id = this.getGistNameAndId(gistUrl)[1];
-    this.props.history.push("/gist/vega/" + username + "/" + id);
+    this.props.history.push('/gist/vega/' + username + '/' + id);
   }
   onSelectVegaLiteGist(gistUrl) {
     this.setState({
       gistIsOpened: false,
-      url: ""
+      url: '',
     });
     const username = this.getGistNameAndId(gistUrl)[0];
     const id = this.getGistNameAndId(gistUrl)[1];
-    this.props.history.push("/gist/vega-lite/" + username + "/" + id);
+    this.props.history.push('/gist/vega-lite/' + username + '/' + id);
   }
   getGistNameAndId(gistUrl) {
-    const suffix = gistUrl.substring(gistUrl.indexOf(".com/") + "./com".length);
-    let arrayNames = suffix.split("/");
+    const suffix = gistUrl.substring(gistUrl.indexOf('.com/') + './com'.length);
+    let arrayNames = suffix.split('/');
     if (arrayNames.length < 2) {
-      console.warn("invalid url");
+      console.warn('invalid url');
       return;
     }
     return arrayNames;
@@ -87,25 +89,25 @@ class Header extends React.Component<Props, State> {
     const examplesButton = (
       <div
         className="button"
-        onClick={e => {
+        onClick={(e) => {
           this.setState({
-            exampleIsOpened: true
+            exampleIsOpened: true,
           });
         }}
       >
-        {"Examples"}
+        {'Examples'}
       </div>
     );
     const gistButton = (
       <div
         className="button"
-        onClick={e => {
+        onClick={(e) => {
           this.setState({
-            gistIsOpened: true
+            gistIsOpened: true,
           });
         }}
       >
-        {"Gist"}
+        {'Gist'}
       </div>
     );
     const docsLink = (
@@ -113,26 +115,26 @@ class Header extends React.Component<Props, State> {
         className="button right"
         href={
           this.props.mode === MODES.Vega
-            ? "https://vega.github.io/vega/docs/"
-            : "https://vega.github.io/vega-lite/docs/"
+            ? 'https://vega.github.io/vega/docs/'
+            : 'https://vega.github.io/vega-lite/docs/'
         }
         target="_blank"
         rel="noopener noreferrer"
       >
-        {this.props.mode === MODES.Vega ? "Vega" : "Vega-Lite"} Docs
+        {this.props.mode === MODES.Vega ? 'Vega' : 'Vega-Lite'} Docs
       </a>
     );
     const customButton = (
       <div
-        onMouseOver={e => {
+        onMouseOver={(e) => {
           const targetRect = (e.target as any).getBoundingClientRect();
           this.setState({
             customIsOpened: true,
-            left: targetRect.left
+            left: targetRect.left,
           });
         }}
       >
-        {"New"}
+        {'New'}
       </div>
     );
     const vega = (
@@ -154,7 +156,7 @@ class Header extends React.Component<Props, State> {
                         style={{
                           backgroundImage: `url(images/examples/vg/${
                             spec.name
-                            }.vg.png)`
+                          }.vg.png)`,
                         }}
                         className="img"
                       />
@@ -187,7 +189,7 @@ class Header extends React.Component<Props, State> {
                         style={{
                           backgroundImage: `url(images/examples/vl/${
                             spec.name
-                            }.vl.png)`
+                          }.vl.png)`,
                         }}
                         className="img"
                       />
@@ -257,36 +259,36 @@ class Header extends React.Component<Props, State> {
             <div
               className="customSubmenuGroup"
               onMouseOver={() => {
-                this.setState({ customIsOpened: true });
+                this.setState({customIsOpened: true});
               }}
               onMouseLeave={() => {
-                this.setState({ customIsOpened: false });
+                this.setState({customIsOpened: false});
               }}
               onClick={() => {
-                this.setState({ customIsOpened: false });
+                this.setState({customIsOpened: false});
               }}
               style={{
                 left: this.state.left,
                 width: this.state.width, // $FixMe
-                position: "absolute",
-                cursor: "pointer",
+                position: 'absolute',
+                cursor: 'pointer',
                 zIndex: 1000000000,
-                top: 0
+                top: 0,
               }}
             >
-              <div id="emptyButton" style={{ height: LAYOUT.HeaderHeight }} />
+              <div id="emptyButton" style={{height: LAYOUT.HeaderHeight}} />
 
               <div
                 className="customSubmenu"
                 onClick={() => this.onSelectNewVega()}
               >
-                {"Vega"}
+                {'Vega'}
               </div>
               <div
                 className="customSubmenu"
                 onClick={() => this.onSelectNewVegaLite()}
               >
-                {"Vega-Lite"}
+                {'Vega-Lite'}
               </div>
             </div>
           </Portal>
@@ -298,27 +300,27 @@ class Header extends React.Component<Props, State> {
               <div className="modal-header">
                 <div className="button-groups">
                   <button
-                    className={this.state.showVega ? "selected" : ""}
+                    className={this.state.showVega ? 'selected' : ''}
                     onClick={() => {
-                      this.setState({ showVega: true });
+                      this.setState({showVega: true});
                     }}
                   >
-                    {"Vega"}
+                    {'Vega'}
                   </button>
                   <button
-                    className={this.state.showVega ? "" : "selected"}
+                    className={this.state.showVega ? '' : 'selected'}
                     onClick={() => {
-                      this.setState({ showVega: false });
+                      this.setState({showVega: false});
                     }}
                   >
-                    {"Vega-Lite"}
+                    {'Vega-Lite'}
                   </button>
                 </div>
 
                 <button
                   className="close-button"
                   onClick={() => {
-                    this.setState({ exampleIsOpened: false });
+                    this.setState({exampleIsOpened: false});
                   }}
                 >
                   ✖
@@ -340,7 +342,7 @@ class Header extends React.Component<Props, State> {
                 <button
                   className="close-button"
                   onClick={() => {
-                    this.setState({ gistIsOpened: false });
+                    this.setState({gistIsOpened: false});
                   }}
                 >
                   ✖

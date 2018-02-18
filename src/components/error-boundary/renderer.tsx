@@ -1,9 +1,11 @@
-import "./index.css";
-import * as React from "react";
+/** @prettier */
+
+import './index.css';
+import * as React from 'react';
 type Props = {
-  logError?: (...args: any[]) => any,
-  showErrorPane?: (...args: any[]) => any,
-  error?: string
+  logError?: (...args: any[]) => any;
+  showErrorPane?: (...args: any[]) => any;
+  error?: string;
 };
 export default class ErrorBoundary extends React.Component<Props> {
   componentDidCatch(error, info) {
@@ -12,7 +14,7 @@ export default class ErrorBoundary extends React.Component<Props> {
   render() {
     if (this.props.error) {
       return (
-        <div id="error-indicator" onClick={e => this.props.showErrorPane()}>
+        <div id="error-indicator" onClick={(e) => this.props.showErrorPane()}>
           {this.props.error}
         </div>
       );

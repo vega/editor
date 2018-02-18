@@ -163,6 +163,7 @@
     "bracketSpacing": false,
     "insertPragma": true,
     "parser": "typescript",
+    "requirePragma": true,
     "singleQuote": true,
     "trailingComma": "all"
   }

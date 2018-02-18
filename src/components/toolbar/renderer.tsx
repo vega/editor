@@ -1,22 +1,24 @@
-import * as React from "react";
-import "./index.css";
-import * as vega from "vega";
-import * as vl from "vega-lite";
-const getVersion = mode => {
-  return mode === "vega" ? vega.version : vl.version;
+/** @prettier */
+
+import * as React from 'react';
+import './index.css';
+import * as vega from 'vega';
+import * as vl from 'vega-lite';
+const getVersion = (mode) => {
+  return mode === 'vega' ? vega.version : vl.version;
 };
 type Props = {
-  cycleRenderer
-  mode
-  showTooltip
-  toggleAutoParse
-  warningsLogger
-  error?: string,
-  renderer?: string,
-  autoParse?: boolean,
-  tooltip?: boolean
+  cycleRenderer;
+  mode;
+  showTooltip;
+  toggleAutoParse;
+  warningsLogger;
+  error?: string;
+  renderer?: string;
+  autoParse?: boolean;
+  tooltip?: boolean;
 
-  showErrorPane: Function
+  showErrorPane: Function;
 };
 export default class Toolbar extends React.Component<Props> {
   showErrorAndWarnings() {
@@ -24,7 +26,7 @@ export default class Toolbar extends React.Component<Props> {
       return (
         <div
           className="error-indicator"
-          onClick={e => this.props.showErrorPane()}
+          onClick={(e) => this.props.showErrorPane()}
         >
           Error
         </div>
@@ -33,7 +35,7 @@ export default class Toolbar extends React.Component<Props> {
       return (
         <div
           className="warning-indicator"
-          onClick={e => this.props.showErrorPane()}
+          onClick={(e) => this.props.showErrorPane()}
         >
           Warning
         </div>
@@ -48,10 +50,10 @@ export default class Toolbar extends React.Component<Props> {
           {`${this.props.mode} version ${getVersion(this.props.mode)}`}
         </div>
         <div className="autoParse" onClick={this.props.toggleAutoParse}>
-          {this.props.autoParse ? "Parse: auto" : "Parse: manual"}
+          {this.props.autoParse ? 'Parse: auto' : 'Parse: manual'}
         </div>
         <div className="tooltip-toggle" onClick={this.props.showTooltip}>
-          {this.props.tooltip ? "Tooltips" : "No Tooltips"}
+          {this.props.tooltip ? 'Tooltips' : 'No Tooltips'}
         </div>
         <div className="renderer-toggle" onClick={this.props.cycleRenderer}>
           {`Renderer: ${this.props.renderer}`}
