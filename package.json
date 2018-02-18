@@ -46,6 +46,7 @@
     "path-exists": "3.0.0",
     "postcss-flexbugs-fixes": "3.3.0",
     "postcss-loader": "2.1.0",
+    "prettier": "1.10.2",
     "promise": "8.0.1",
     "raf": "3.4.0",
     "react-dev-utils": "^5.0.0",
@@ -156,5 +157,13 @@
         "single"
       ]
     }
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": false,
+    "insertPragma": true,
+    "parser": "typescript",
+    "singleQuote": true,
+    "trailingComma": "all"
   }
 }
