@@ -1,6 +1,7 @@
 /** @prettier */
 
 import * as React from 'react';
+
 import './index.css';
 
 type Props = {

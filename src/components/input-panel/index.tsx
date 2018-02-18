@@ -1,13 +1,19 @@
 /** @prettier */
 
-import './index.css';
-import * as React from 'react';
-import {connect} from 'react-redux';
 import SplitPane from 'react-split-pane';
-import {LAYOUT, MODES} from '../../constants';
+
+import {connect} from 'react-redux';
+
+import * as React from 'react';
+
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
 import SpecEditor from './spec-editor';
+
+import {LAYOUT, MODES} from '../../constants';
+
+import './index.css';
+
 type Props = {
   compiledVegaSpec?: boolean;
   mode?: string;

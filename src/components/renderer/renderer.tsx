@@ -1,11 +1,15 @@
 /** @prettier */
 
-import './index.css';
-import 'vega-tooltip/build/vega-tooltip.css';
 import * as React from 'react';
-import * as vega from 'vega';
 import * as vegaTooltip from 'vega-tooltip';
+import * as vega from 'vega';
+
 import {MODES} from '../../constants';
+
+import 'vega-tooltip/build/vega-tooltip.css';
+
+import './index.css';
+
 type Props = {
   vegaSpec?: object;
   vegaLiteSpec?: object;

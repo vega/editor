@@ -1,16 +1,12 @@
 /** @prettier */
 
 import ReactDOM from 'react-dom';
-
-import * as React from 'react';
-
 import {Provider} from 'react-redux';
 import {HashRouter, Route} from 'react-router-dom';
-
 import * as ReactGA from 'react-ga';
-import * as vega from 'vega';
+import * as React from 'react';
 import * as vl from 'vega-lite';
-
+import * as vega from 'vega';
 import AppShell from './components/app-shell';
 import configureStore from './store/configure-store';
 

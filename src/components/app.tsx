@@ -1,19 +1,25 @@
 /** @prettier */
 
-import './app.css';
-import {text} from 'd3-request';
 import equal from 'deep-equal';
-import * as React from 'react';
+import SplitPane from 'react-split-pane';
+
+import {text} from 'd3-request';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import SplitPane from 'react-split-pane';
-import * as EditorActions from '../actions/editor';
-import {MODES} from '../constants';
-import {LAYOUT} from '../constants';
+
+import * as React from 'react';
+
 import Header from './header';
 import InputPanel from './input-panel';
 import VizPane from './viz-pane';
+
 import {VEGA_START_SPEC, VEGA_LITE_START_SPEC} from '../constants/consts';
+import {LAYOUT} from '../constants';
+import {MODES} from '../constants';
+
+import * as EditorActions from '../actions/editor';
+
+import './app.css';
 
 type Props = {
   history;

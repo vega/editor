@@ -1,13 +1,19 @@
 /** @prettier */
 
-import * as React from 'react';
-import {MODES} from '../../../constants';
 import MonacoEditor from 'react-monaco-editor';
-import {withRouter} from 'react-router-dom';
 import parser from 'vega-schema-url-parser';
+
+import {withRouter} from 'react-router-dom';
+
+import * as React from 'react';
+
+import {MODES} from '../../../constants';
+
 import './index.css';
+
 const vegaSchema = require('../../../../schema/vega.schema.json');
 const vegaLiteSchema = require('../../../../schema/vl.schema.json');
+
 const schemas = {
   [MODES.Vega]: {
     uri: 'https://vega.github.io/schema/vega/v3.0.json',

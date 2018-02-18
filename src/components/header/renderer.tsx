@@ -1,10 +1,14 @@
 /** @prettier */
 
-import * as React from 'react';
 import {Portal} from 'react-portal';
-import {MODES, SPECS, LAYOUT} from '../../constants';
-import './index.css';
 import {withRouter} from 'react-router-dom';
+
+import * as React from 'react';
+
+import {MODES, SPECS, LAYOUT} from '../../constants';
+
+import './index.css';
+
 const formatExampleName = (name) => {
   return name
     .split(/[_-]/)

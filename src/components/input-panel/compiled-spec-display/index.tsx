@@ -1,10 +1,15 @@
 /** @prettier */
 
-import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
+
 import {connect} from 'react-redux';
-import * as EditorActions from '../../../actions/editor';
+
+import * as React from 'react';
+
 import CompiledSpecDisplayHeader from '../compiled-spec-header';
+
+import * as EditorActions from '../../../actions/editor';
+
 const JSON3 = require('../../../../lib/json3-compactstringify');
 
 type Props = {

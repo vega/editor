@@ -1,12 +1,16 @@
 /** @prettier */
 
-import './index.css';
-import * as React from 'react';
 import SplitPane from 'react-split-pane';
+
+import * as React from 'react';
+
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
 import Toolbar from '../toolbar';
+
+import './index.css';
+
 type Props = {
   errorPane?: boolean;
 };

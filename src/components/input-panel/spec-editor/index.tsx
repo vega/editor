@@ -1,8 +1,11 @@
 /** @prettier */
 
 import {connect} from 'react-redux';
-import * as EditorActions from '../../../actions/editor';
+
 import Renderer from './renderer';
+
+import * as EditorActions from '../../../actions/editor';
+
 const mapStateToProps = function(state, ownProps) {
   return {
     value: state.editorString,

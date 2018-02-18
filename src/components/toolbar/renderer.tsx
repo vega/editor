@@ -1,9 +1,11 @@
 /** @prettier */
 
 import * as React from 'react';
-import './index.css';
-import * as vega from 'vega';
 import * as vl from 'vega-lite';
+import * as vega from 'vega';
+
+import './index.css';
+
 const getVersion = (mode) => {
   return mode === 'vega' ? vega.version : vl.version;
 };

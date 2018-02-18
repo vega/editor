@@ -1,7 +1,9 @@
 /** @prettier */
 
-import './index.css';
 import * as React from 'react';
+
+import './index.css';
+
 type Props = {
   logError?: (...args: any[]) => any;
   showErrorPane?: (...args: any[]) => any;
