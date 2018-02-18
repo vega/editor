@@ -1,6 +1,5 @@
-import {connect} from 'react-redux';
-import Renderer from './renderer';
-
+import { connect } from "react-redux";
+import Renderer from "./renderer";
 function mapStateToProps(state, ownProps) {
   return {
     vegaSpec: state.vegaSpec,
@@ -10,5 +9,4 @@ function mapStateToProps(state, ownProps) {
     tooltip: state.tooltip
   };
 }
-
 export default connect(mapStateToProps)(Renderer);
