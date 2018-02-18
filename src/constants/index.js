@@ -1,5 +1,7 @@
+/** @format */
+
 import * as SPECS from './specs';
 
-export {MODES, LAYOUT, RENDERERS} from './consts';
 export {SPECS};
-export {DEFAULT_STATE, logger} from './default-state';
+export {MODES, LAYOUT, RENDERERS} from './consts';
+export {logger, DEFAULT_STATE} from './default-state';
