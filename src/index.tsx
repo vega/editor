@@ -16,6 +16,7 @@ declare global{
   interface Window {
     VEGA_DEBUG: {
       vega?: {};
+      view?: any; // $FixMe
       vl?: {};
       VEGA_VERSION?: string;
       VEGA_LITE_VERSION?: string;

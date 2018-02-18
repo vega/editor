@@ -1,14 +1,11 @@
 import "./index.css";
-import React from "react";
-type ErrorBoundaryProps = {
+import * as React from "react";
+type Props = {
   logError?: (...args: any[]) => any,
   showErrorPane?: (...args: any[]) => any,
   error?: string
 };
-export default class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
-  {}
-> {
+export default class ErrorBoundary extends React.Component<Props> {
   componentDidCatch(error, info) {
     this.props.logError(error.toString());
   }

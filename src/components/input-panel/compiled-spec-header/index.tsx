@@ -1,16 +1,24 @@
-import React from "react";
+import * as React from "react";
 import { connect } from "react-redux";
 import * as EditorActions from "../../../actions/editor";
 const toggleStyle = {
   cursor: "pointer"
 };
 const svgStyle = {
-  position: "absolute",
+  position: "absolute" as "absolute", // $FixMe
   right: "50%",
   height: 25,
   width: 35
 };
-class CompiledSpecDisplayHeader extends React.Component<{}, {}> {
+
+type Props = {
+  value
+  compiledVegaSpec
+  showCompiledVegaSpec // $FixMe - function
+  updateVegaSpec: Function
+};
+
+class CompiledSpecDisplayHeader extends React.Component<Props> {
   editVegaSpec() {
     this.props.updateVegaSpec(JSON.stringify(this.props.value, null, 2));
   }
@@ -60,7 +68,7 @@ function mapStateToProps(state, ownProps) {
     mode: state.mode
   };
 }
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function (dispatch) {
   return {
     updateVegaSpec: val => {
       dispatch(EditorActions.updateVegaSpec(val));

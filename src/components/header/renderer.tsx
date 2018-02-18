@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Portal } from "react-portal";
 import { MODES, SPECS, LAYOUT } from "../../constants";
 import "./index.css";
@@ -9,31 +9,26 @@ const formatExampleName = name => {
     .map(i => i[0].toUpperCase() + i.substring(1))
     .join(" ");
 };
-type HeaderState = {
-  url: any,
-  exampleIsOpened: boolean,
-  exampleIsOpened: boolean,
-  gistIsOpened: boolean,
-  url: string,
-  gistIsOpened: boolean,
-  url: string,
-  exampleIsOpened: boolean,
-  gistIsOpened: boolean,
-  customIsOpened: boolean,
-  left: any,
-  customIsOpened: boolean,
-  customIsOpened: boolean,
-  customIsOpened: boolean,
-  showVega: boolean,
-  showVega: boolean,
-  exampleIsOpened: boolean,
-  gistIsOpened: boolean,
-  showVega: boolean,
-  url: string
+
+type Props = {
+  mode
+  history
 };
-class Header extends React.Component<{}, HeaderState> {
+
+type State = {
+  customIsOpened?: boolean,
+  exampleIsOpened?: boolean,
+  gistIsOpened?: boolean,
+  left?: any,
+  showVega: boolean,
+  url: string,
+  width?: number,
+};
+
+class Header extends React.Component<Props, State> {
   constructor(props) {
     super(props);
+    // $FixMe - default state?
     this.state = {
       showVega: props.mode === MODES.Vega,
       url: ""
@@ -130,7 +125,7 @@ class Header extends React.Component<{}, HeaderState> {
     const customButton = (
       <div
         onMouseOver={e => {
-          const targetRect = e.target.getBoundingClientRect();
+          const targetRect = (e.target as any).getBoundingClientRect();
           this.setState({
             customIsOpened: true,
             left: targetRect.left
@@ -159,7 +154,7 @@ class Header extends React.Component<{}, HeaderState> {
                         style={{
                           backgroundImage: `url(images/examples/vg/${
                             spec.name
-                          }.vg.png)`
+                            }.vg.png)`
                         }}
                         className="img"
                       />
@@ -192,7 +187,7 @@ class Header extends React.Component<{}, HeaderState> {
                         style={{
                           backgroundImage: `url(images/examples/vl/${
                             spec.name
-                          }.vl.png)`
+                            }.vl.png)`
                         }}
                         className="img"
                       />
@@ -272,7 +267,7 @@ class Header extends React.Component<{}, HeaderState> {
               }}
               style={{
                 left: this.state.left,
-                width: this.state.width,
+                width: this.state.width, // $FixMe
                 position: "absolute",
                 cursor: "pointer",
                 zIndex: 1000000000,

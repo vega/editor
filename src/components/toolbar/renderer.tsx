@@ -1,17 +1,24 @@
-import React from "react";
+import * as React from "react";
 import "./index.css";
 import * as vega from "vega";
 import * as vl from "vega-lite";
 const getVersion = mode => {
   return mode === "vega" ? vega.version : vl.version;
 };
-type ToolbarProps = {
+type Props = {
+  cycleRenderer
+  mode
+  showTooltip
+  toggleAutoParse
+  warningsLogger
   error?: string,
   renderer?: string,
   autoParse?: boolean,
   tooltip?: boolean
+
+  showErrorPane: Function
 };
-export default class Toolbar extends React.Component<ToolbarProps, {}> {
+export default class Toolbar extends React.Component<Props> {
   showErrorAndWarnings() {
     if (this.props.error) {
       return (

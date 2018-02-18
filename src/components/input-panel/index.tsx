@@ -1,16 +1,16 @@
 import "./index.css";
-import React from "react";
+import * as React from "react";
 import { connect } from "react-redux";
 import SplitPane from "react-split-pane";
 import { LAYOUT, MODES } from "../../constants";
 import CompiledSpecDisplay from "./compiled-spec-display";
 import CompiledSpecHeader from "./compiled-spec-header";
 import SpecEditor from "./spec-editor";
-type InputPanelProps = {
+type Props = {
   compiledVegaSpec?: boolean,
   mode?: string
 };
-class InputPanel extends React.Component<InputPanelProps, {}> {
+class InputPanel extends React.Component<Props> {
   getInnerPanes() {
     const innerPanes = [<SpecEditor key="editor" />];
     if (this.props.mode === MODES.VegaLite) {

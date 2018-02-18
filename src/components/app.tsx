@@ -1,7 +1,7 @@
 import "./app.css";
 import { text } from "d3-request";
 import equal from "deep-equal";
-import React from "react";
+import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SplitPane from "react-split-pane";
@@ -12,7 +12,20 @@ import Header from "./header";
 import InputPanel from "./input-panel";
 import VizPane from "./viz-pane";
 import { VEGA_START_SPEC, VEGA_LITE_START_SPEC } from "../constants/consts";
-class App extends React.Component<{}, {}> {
+
+type Props = {
+  history
+  match
+  setGistVegaLiteSpec: Function
+  setGistVegaSpec: Function
+  setMode: Function
+  setVegaExample: Function
+  setVegaLiteExample: Function
+  updateVegaLiteSpec: Function
+  updateVegaSpec: Function
+};
+
+class App extends React.Component<Props> {
   componentDidMount() {
     window.addEventListener(
       "message",
@@ -66,7 +79,7 @@ class App extends React.Component<{}, {}> {
     const vegaVersion = parameter.mode;
     const hookUrl = `${prefix}/${vegaVersion}/${parameter.username}/${
       parameter.id
-    }`;
+      }`;
     fetch(hookUrl, {
       method: "get",
       mode: "cors"
@@ -146,7 +159,7 @@ class App extends React.Component<{}, {}> {
     );
   }
 }
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function (dispatch) {
   return {
     setMode: mode => {
       dispatch(EditorActions.setMode(mode));

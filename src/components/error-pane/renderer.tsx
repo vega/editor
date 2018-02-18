@@ -1,6 +1,13 @@
-import React from "react";
+import * as React from "react";
 import "./index.css";
-export default class ErrorPane extends React.Component<{}, {}> {
+
+type Props = {
+  error
+  warningsLogger
+  showErrorPane: Function
+};
+
+export default class ErrorPane extends React.Component<Props> {
   render() {
     const list = [];
     if (this.props.error) {

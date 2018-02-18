@@ -1,14 +1,14 @@
 import "./index.css";
-import React from "react";
+import * as React from "react";
 import SplitPane from "react-split-pane";
 import ErrorBoundary from "../error-boundary";
 import ErrorPane from "../error-pane";
 import Renderer from "../renderer";
 import Toolbar from "../toolbar";
-type VizPaneProps = {
+type Props = {
   errorPane?: boolean
 };
-export default class VizPane extends React.Component<VizPaneProps, {}> {
+export default class VizPane extends React.Component<Props> {
   render() {
     const container = (
       <div className="chart-container">

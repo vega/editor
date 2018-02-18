@@ -1,10 +1,15 @@
-import React from "react";
+import * as React from "react";
 import MonacoEditor from "react-monaco-editor";
 import { connect } from "react-redux";
 import * as EditorActions from "../../../actions/editor";
 import CompiledSpecDisplayHeader from "../compiled-spec-header";
 const JSON3 = require("../../../../lib/json3-compactstringify");
-class CompiledSpecDisplay extends React.Component<{}, {}> {
+
+type Props = {
+  value
+};
+
+class CompiledSpecDisplay extends React.Component<Props> {
   render() {
     return (
       <div className={"sizeFixEditorParent full-height-wrapper"}>
@@ -31,7 +36,7 @@ function mapStateToProps(state, ownProps) {
     compiledVegaSpec: state.compiledVegaSpec
   };
 }
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function (dispatch) {
   return {
     showCompiledVegaSpec: () => {
       dispatch(EditorActions.showCompiledVegaSpec());

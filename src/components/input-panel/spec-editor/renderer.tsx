@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { MODES } from "../../../constants";
 import MonacoEditor from "react-monaco-editor";
 import { withRouter } from "react-router-dom";
@@ -18,9 +18,9 @@ const schemas = {
     fileMatch: ["*"]
   }
 };
-function debounce(func, wait, immediate) {
+function debounce(func, wait, immediate?) {
   let timeout;
-  return function() {
+  return function () {
     const context = this,
       args = arguments;
     const later = () => {
@@ -33,15 +33,26 @@ function debounce(func, wait, immediate) {
     if (callNow) func.apply(context, args);
   };
 }
-type EditorProps = {
+
+type Props = {
+  autoParse
+  history
+  mode
+  parse
   value?: string,
+
   onChange?: (...args: any[]) => any
+  parseSpec
+  updateEditorString
+  updateVegaLiteSpec
+  updateVegaSpec
 };
-type EditorState = {
-  code: any,
-  code: any
+
+type State = {
+  code
 };
-class Editor extends React.Component<EditorProps, EditorState> {
+
+class Editor extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
