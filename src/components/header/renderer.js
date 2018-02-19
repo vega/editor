@@ -75,6 +75,16 @@ class Header extends React.Component {
   }
 
   render() {
+    const closeOnEsc = function(stateName){
+      document.addEventListener('keyup', function(e){
+        if(e.keyCode === 27){
+          this.setState({
+            [stateName]: false
+          })
+        }
+      }.bind(this));
+    }.bind(this);
+
     const examplesButton = (
       <div className='button'
         onClick={(e) => {
@@ -227,6 +237,7 @@ class Header extends React.Component {
 
         { this.state.exampleIsOpened && <Portal>
           <div className='modal-background'>
+          <div className="modal-click-handler" onClick={(e) => {this.setState({exampleIsOpened: false});}}></div>
             <div className='modal-header'>
               <div className='button-groups'>
                 <button className={this.state.showVega ? 'selected' : ''} onClick={() => { this.setState({showVega: true});}}>{'Vega'}</button>
@@ -241,10 +252,11 @@ class Header extends React.Component {
               </div>
             </div>
           </div>
+          {closeOnEsc('exampleIsOpened')}
         </Portal>}
-
         { this.state.gistIsOpened && <Portal>
           <div className='modal-background'>
+          <div className="modal-click-handler" onClick={(e) => {this.setState({gistIsOpened: false});}}></div>
             <div className='modal-header'>
               <button className='close-button' onClick={() => {this.setState({gistIsOpened: false});}}>✖</button>
             </div>
@@ -254,6 +266,7 @@ class Header extends React.Component {
               </div>
             </div>
           </div>
+          {closeOnEsc('gistIsOpened')}
         </Portal>}
       </div>
     );
