@@ -1,7 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
-import {Portal} from 'react-portal';
+import {Portal, PortalWithState} from 'react-portal';
 import {withRouter} from 'react-router-dom';
 
 import {LAYOUT, Mode} from '../../constants';
@@ -21,8 +21,6 @@ type Props = {
 
 type State = {
   customIsOpened?: boolean;
-  exampleIsOpened?: boolean;
-  gistIsOpened?: boolean;
   left?: any;
   showVega: boolean;
   url: string;
@@ -43,18 +41,12 @@ class Header extends React.Component<Props & {history: any}, State> {
     this.setState({url: event.target.value});
   }
   public onSelectVega(name) {
-    this.setState({
-      exampleIsOpened: false,
-    });
     this.props.history.push('/examples/vega/' + name);
   }
   public onSelectNewVega() {
     this.props.history.push('/custom/vega');
   }
   public onSelectVegaLite(name) {
-    this.setState({
-      exampleIsOpened: false,
-    });
     this.props.history.push('/examples/vega-lite/' + name);
   }
   public onSelectNewVegaLite() {
@@ -62,7 +54,6 @@ class Header extends React.Component<Props & {history: any}, State> {
   }
   public onSelectVegaGist(gistUrl) {
     this.setState({
-      gistIsOpened: false,
       url: '',
     });
     const username = this.getGistNameAndId(gistUrl)[0];
@@ -71,7 +62,6 @@ class Header extends React.Component<Props & {history: any}, State> {
   }
   public onSelectVegaLiteGist(gistUrl) {
     this.setState({
-      gistIsOpened: false,
       url: '',
     });
     const username = this.getGistNameAndId(gistUrl)[0];
@@ -91,11 +81,6 @@ class Header extends React.Component<Props & {history: any}, State> {
     const examplesButton = (
       <div
         className='button'
-        onClick={(e) => {
-          this.setState({
-            exampleIsOpened: true,
-          });
-        }}
       >
         {'Examples'}
       </div>
@@ -103,11 +88,6 @@ class Header extends React.Component<Props & {history: any}, State> {
     const gistButton = (
       <div
         className='button'
-        onClick={(e) => {
-          this.setState({
-            gistIsOpened: true,
-          });
-        }}
       >
         {'Gist'}
       </div>
@@ -208,10 +188,6 @@ class Header extends React.Component<Props & {history: any}, State> {
         >
           <img height={37} alt='IDL Logo' src='https://vega.github.io/images/idl-logo.png'/>
         </a>
-        {examplesButton}
-        {gistButton}
-        {docsLink}
-        {customButton}
 
         {this.state.customIsOpened && (
           <Portal>
@@ -247,43 +223,86 @@ class Header extends React.Component<Props & {history: any}, State> {
           </Portal>
         )}
 
-        {this.state.exampleIsOpened && (
-          <Portal>
-            <div className='modal-background'>
-              <div className='modal-header'>
-                <div className='button-groups'>
-                  <button className={this.state.showVega ? 'selected' : ''} onClick={() => { this.setState({showVega: true}); }}>
-                    {'Vega'}
-                  </button>
-                  <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({showVega: false}); }}>
-                    {'Vega-Lite'}
+        <PortalWithState closeOnEsc>
+          {({openPortal, closePortal, isOpen, portal}) => [
+            <span
+              key="0"
+              onClick={openPortal}
+            >
+              {examplesButton}
+            </span>,
+            portal(
+              <div className="modal-background">
+                <div className="modal-header">
+                  <div className="button-groups">
+                    <button
+                      className={this.state.showVega ? 'selected' : ''}
+                      onClick={() => {
+                        this.setState({showVega: true});
+                      }}
+                    >
+                      {'Vega'}
+                    </button>
+                    <button
+                      className={this.state.showVega ? '' : 'selected'}
+                      onClick={() => {
+                        this.setState({showVega: false});
+                      }}
+                    >
+                      {'Vega-Lite'}
+                    </button>
+                  </div>
+
+                  <button
+                    className="close-button"
+                    onClick={() => {
+                      closePortal
+                    }}
+                  >
+                    ✖
                   </button>
                 </div>
-
-                <button className='close-button' onClick={() => { this.setState({exampleIsOpened: false}); }}>✖</button>
-              </div>
-              <div className='modal-area'>
-                <div className='modal'>
-                  {this.state.showVega ? vega : vegalite}
+                <div className="modal-area">
+                  <div className="modal">
+                    {this.state.showVega ? vega : vegalite}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Portal>
-        )}
+            )
+          ]}
+        </PortalWithState>
 
-        {this.state.gistIsOpened && (
-          <Portal>
-            <div className='modal-background'>
-              <div className='modal-header'>
-                <button className='close-button' onClick={() => { this.setState({gistIsOpened: false}); }}>✖</button>
+        <PortalWithState closeOnEsc>
+          {({openPortal, closePortal, isOpen, portal}) => [
+            <span
+              key="0"
+              onClick={openPortal}
+            >
+              {gistButton}
+            </span>,
+            portal(
+              <div className="modal-background">
+                <div className="modal-header">
+                  <button
+                    className="close-button"
+                    onClick={() => {
+                      closePortal
+                    }}
+                  >
+                    ✖
+                  </button>
+                </div>
+                <div className="modal-area">
+                  <div className="modal">{gist}</div>
+                </div>
               </div>
-              <div className='modal-area'>
-                <div className='modal'>{gist}</div>
-              </div>
-            </div>
-          </Portal>
-        )}
-      </div>
+            )
+          ]}
+        </PortalWithState>
+
+        <span>{docsLink}</span>
+        <span>{customButton}</span>
+        </div>
     );
   }
 }
