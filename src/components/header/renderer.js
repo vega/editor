@@ -238,15 +238,15 @@ class Header extends React.Component {
         { this.state.exampleIsOpened && <Portal>
           <div className='modal-background'>
           <div className="modal-click-handler" onClick={(e) => {this.setState({exampleIsOpened: false});}}></div>
-            <div className='modal-header'>
-              <div className='button-groups'>
-                <button className={this.state.showVega ? 'selected' : ''} onClick={() => { this.setState({showVega: true});}}>{'Vega'}</button>
-                <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({showVega: false});}}>{'Vega-Lite'}</button>
-              </div>
-
-              <button className='close-button' onClick={() => {this.setState({exampleIsOpened: false});}}>✖</button>
-            </div>
             <div className='modal-area'>
+              <div className='modal-header'>
+                <div className='button-groups'>
+                  <button className={this.state.showVega ? 'selected' : ''} onClick={() => { this.setState({showVega: true});}}>{'Vega'}</button>
+                  <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({showVega: false});}}>{'Vega-Lite'}</button>
+                </div>
+
+                <button className='close-button' onClick={() => {this.setState({exampleIsOpened: false});}}>✖</button>
+              </div>
               <div className='modal'>
                 { this.state.showVega ? vega : vegalite }
               </div>
@@ -257,10 +257,10 @@ class Header extends React.Component {
         { this.state.gistIsOpened && <Portal>
           <div className='modal-background'>
           <div className="modal-click-handler" onClick={(e) => {this.setState({gistIsOpened: false});}}></div>
-            <div className='modal-header'>
-              <button className='close-button' onClick={() => {this.setState({gistIsOpened: false});}}>✖</button>
-            </div>
             <div className='modal-area'>
+              <div className='modal-header'>
+                <button className='close-button' onClick={() => {this.setState({gistIsOpened: false});}}>✖</button>
+              </div>
               <div className='modal'>
                 {gist}
               </div>
