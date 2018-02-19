@@ -1,34 +1,40 @@
-import './index.css';
+/** @format */
 
-import PropTypes from 'prop-types';
-import React from 'react';
 import SplitPane from 'react-split-pane';
+
+import * as React from 'react';
 
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
 import Toolbar from '../toolbar';
 
-export default class VizPane extends React.Component {
-  static propTypes = {
-    errorPane: PropTypes.bool
-  }
+import './index.css';
 
+type Props = {
+  errorPane?: boolean;
+};
+export default class VizPane extends React.Component<Props> {
   render() {
-    const container =
+    const container = (
       <div className="chart-container">
         <ErrorBoundary>
           <Renderer />
         </ErrorBoundary>
         <Toolbar />
-      </div>;
-
+      </div>
+    );
     if (this.props.errorPane) {
       return (
-        <SplitPane split='horizontal' defaultSize={window.innerHeight * 0.6} paneStyle={{display: 'flex'}}>
+        <SplitPane
+          split="horizontal"
+          defaultSize={window.innerHeight * 0.6}
+          paneStyle={{display: 'flex'}}
+        >
           {container}
           <ErrorPane />
-        </SplitPane>);
+        </SplitPane>
+      );
     } else {
       return container;
     }

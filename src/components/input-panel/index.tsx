@@ -1,33 +1,35 @@
-import './index.css';
+/** @format */
 
-import PropTypes from 'prop-types';
-import React from 'react';
-import {connect} from 'react-redux';
 import SplitPane from 'react-split-pane';
 
-import {LAYOUT, MODES} from '../../constants';
+import {connect} from 'react-redux';
+
+import * as React from 'react';
+
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
 import SpecEditor from './spec-editor';
 
-class InputPanel extends React.Component {
-  static propTypes = {
-    compiledVegaSpec: PropTypes.bool,
-    mode: PropTypes.string
-  }
+import {LAYOUT, MODES} from '../../constants';
 
+import './index.css';
+
+type Props = {
+  compiledVegaSpec?: boolean;
+  mode?: string;
+};
+class InputPanel extends React.Component<Props> {
   getInnerPanes() {
-    const innerPanes = [<SpecEditor key='editor' />];
+    const innerPanes = [<SpecEditor key="editor" />];
     if (this.props.mode === MODES.VegaLite) {
       if (this.props.compiledVegaSpec) {
-        innerPanes.push(<CompiledSpecDisplay key='compiled' />);
+        innerPanes.push(<CompiledSpecDisplay key="compiled" />);
       } else {
-        innerPanes.push(<CompiledSpecHeader key='compiledSpecHeader' />)
+        innerPanes.push(<CompiledSpecHeader key="compiledSpecHeader" />);
       }
     }
     return innerPanes;
   }
-
   render() {
     const innerPanes = this.getInnerPanes();
 
@@ -43,19 +45,14 @@ class InputPanel extends React.Component {
         </SplitPane>;
       }
     } else {
-      return <div className={'full-height-wrapper'}>
-        {innerPanes}
-      </div>
+      return <div className={'full-height-wrapper'}>{innerPanes}</div>;
     }
   }
 }
-
-
 function mapStateToProps(state, ownProps) {
   return {
     mode: state.mode,
-    compiledVegaSpec: state.compiledVegaSpec
+    compiledVegaSpec: state.compiledVegaSpec,
   };
 }
-
 export default connect(mapStateToProps)(InputPanel);

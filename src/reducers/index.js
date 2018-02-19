@@ -1,15 +1,49 @@
+/** @format */
+
+import {State} from '../constants/default-state';
+
 import * as vl from 'vega-lite';
 
-import {UPDATE_VEGA_SPEC, UPDATE_VEGA_LITE_SPEC, PARSE_SPEC, TOGGLE_AUTO_PARSE, CYCLE_RENDERER, SET_VEGA_EXAMPLE, SET_VEGA_LITE_EXAMPLE,
-  SHOW_COMPILED_VEGA_SPEC, SET_GIST_VEGA_SPEC, SET_GIST_VEGA_LITE_SPEC, SET_MODE, SHOW_ERROR_PANE, LOG_ERROR,
-  UPDATE_EDITOR_STRING, SHOW_TOOLTIP} from '../actions/editor';
+import {
+  CYCLE_RENDERER,
+  LOG_ERROR,
+  PARSE_SPEC,
+  SET_GIST_VEGA_LITE_SPEC,
+  SET_GIST_VEGA_SPEC,
+  SET_MODE,
+  SET_VEGA_EXAMPLE,
+  SET_VEGA_LITE_EXAMPLE,
+  SHOW_COMPILED_VEGA_SPEC,
+  SHOW_ERROR_PANE,
+  SHOW_TOOLTIP,
+  TOGGLE_AUTO_PARSE,
+  UPDATE_EDITOR_STRING,
+  UPDATE_VEGA_LITE_SPEC,
+  UPDATE_VEGA_SPEC,
+} from '../actions/editor';
 
-import {MODES, RENDERERS, DEFAULT_STATE} from '../constants';
+import {DEFAULT_STATE, MODES, RENDERERS} from '../constants';
+import {LocalLogger} from '../utils/logger';
 import {validateVegaLite, validateVega} from '../utils/validate';
-import {LocalLogger} from '../utils/logger'
 
+type Action =
+  | CYCLE_RENDERER
+  | LOG_ERROR
+  | PARSE_SPEC
+  | SET_GIST_VEGA_LITE_SPEC
+  | SET_GIST_VEGA_SPEC
+  | SET_MODE
+  | SET_VEGA_EXAMPLE
+  | SET_VEGA_LITE_EXAMPLE
+  | SHOW_COMPILED_VEGA_SPEC
+  | SHOW_ERROR_PANE
+  | SHOW_TOOLTIP
+  | TOGGLE_AUTO_PARSE
+  | UPDATE_EDITOR_STRING
+  | UPDATE_VEGA_LITE_SPEC
+  | UPDATE_VEGA_SPEC;
 
-function parseVega(state, action, extend = {}) {
+function parseVega(state: State, action: Action, extend = {}) {
   const currLogger = new LocalLogger();
 
   try {
@@ -19,14 +53,14 @@ function parseVega(state, action, extend = {}) {
 
     extend = {
       ...extend,
-      vegaSpec: spec
+      vegaSpec: spec,
     };
   } catch (e) {
     console.warn(e);
 
     extend = {
       ...extend,
-      error: e.message
+      error: e.message,
     };
   }
   return {
@@ -43,11 +77,11 @@ function parseVega(state, action, extend = {}) {
     warningsLogger: currLogger,
 
     // extend with other changes
-    ...extend
+    ...extend,
   };
 }
 
-function parseVegaLite(state, action, extend = {}) {
+function parseVegaLite(state: State, action: Action, extend = {}) {
   const currLogger = new LocalLogger();
 
   try {
@@ -55,19 +89,20 @@ function parseVegaLite(state, action, extend = {}) {
 
     validateVegaLite(spec, currLogger);
 
-    const vegaSpec = action.spec !== '{}' ? vl.compile(spec, {logger: currLogger}).spec : {};
+    const vegaSpec =
+      action.spec !== '{}' ? vl.compile(spec, {logger: currLogger}).spec : {};
 
     extend = {
       ...extend,
       vegaLiteSpec: spec,
-      vegaSpec: vegaSpec
+      vegaSpec: vegaSpec,
     };
   } catch (e) {
     console.warn(e);
 
     extend = {
       ...extend,
-      error: e.message
+      error: e.message,
     };
   }
   return {
@@ -84,11 +119,11 @@ function parseVegaLite(state, action, extend = {}) {
     warningsLogger: currLogger,
 
     // extend with other changes
-    ...extend
+    ...extend,
   };
 }
 
-export default (state = DEFAULT_STATE, action) => {
+export default (state: State = DEFAULT_STATE, action: Action): State => {
   switch (action.type) {
     case SET_MODE:
       return {
@@ -102,16 +137,16 @@ export default (state = DEFAULT_STATE, action) => {
         gist: null,
         parse: false,
         warningsLogger: new LocalLogger(),
-        tooltip: true
-      }
+        tooltip: true,
+      };
     case PARSE_SPEC:
       return {
         ...state,
-        parse: action.parse
+        parse: action.parse,
       };
     case SET_VEGA_EXAMPLE: {
       return parseVega(state, action, {
-        selectedExample: action.example
+        selectedExample: action.example,
       });
     }
     case UPDATE_VEGA_SPEC: {
@@ -119,12 +154,12 @@ export default (state = DEFAULT_STATE, action) => {
     }
     case SET_GIST_VEGA_SPEC: {
       return parseVega(state, action, {
-        gist: action.gist
+        gist: action.gist,
       });
     }
     case SET_VEGA_LITE_EXAMPLE: {
       return parseVegaLite(state, action, {
-        selectedExample: action.example
+        selectedExample: action.example,
       });
     }
     case UPDATE_VEGA_LITE_SPEC: {
@@ -132,23 +167,24 @@ export default (state = DEFAULT_STATE, action) => {
     }
     case SET_GIST_VEGA_LITE_SPEC: {
       return parseVegaLite(state, action, {
-        gist: action.gist
+        gist: action.gist,
       });
     }
     case TOGGLE_AUTO_PARSE:
       return {
         ...state,
         autoParse: !state.autoParse,
-        parse: !state.autoParse
+        parse: !state.autoParse,
       };
     case CYCLE_RENDERER: {
       const rendererVals = Object.values(RENDERERS);
       const currentRenderer = rendererVals.indexOf(state.renderer);
-      const nextRenderer = rendererVals[(currentRenderer + 1) % rendererVals.length];
+      const nextRenderer =
+        rendererVals[(currentRenderer + 1) % rendererVals.length];
 
       return {
         ...state,
-        renderer: nextRenderer
+        renderer: nextRenderer,
       };
     }
     case SHOW_COMPILED_VEGA_SPEC:
@@ -159,24 +195,24 @@ export default (state = DEFAULT_STATE, action) => {
     case SHOW_ERROR_PANE:
       return {
         ...state,
-        errorPane: !state.errorPane
+        errorPane: !state.errorPane,
       };
     case LOG_ERROR:
       return {
         ...state,
-        error: action.error
+        error: action.error,
       };
     case UPDATE_EDITOR_STRING:
       return {
         ...state,
-        editorString: action.editorString
+        editorString: action.editorString,
       };
     case SHOW_TOOLTIP:
       return {
         ...state,
-        tooltip: !state.tooltip
+        tooltip: !state.tooltip,
       };
     default:
       return state;
   }
-}
+};

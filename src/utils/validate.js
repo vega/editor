@@ -1,9 +1,11 @@
+/** @format */
+
 import Ajv from 'ajv';
 
 const ajv = new Ajv({
   jsonPointers: true,
   allErrors: false,
-  schemaId: 'id'
+  schemaId: 'id',
 });
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));

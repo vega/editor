@@ -1,18 +1,19 @@
-import {applyMiddleware, compose, createStore} from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from '../reducers';
-import {DEFAULT_STATE} from './../constants/default-state'
-import persistState from 'redux-localstorage';
+/** @format */
 
+import persistState from 'redux-localstorage';
+import thunk from 'redux-thunk';
+
+import {applyMiddleware, compose, createStore} from 'redux';
+
+import rootReducer from '../reducers';
+
+import {DEFAULT_STATE} from './../constants/default-state';
 
 export default function configureStore(initialState = DEFAULT_STATE) {
   // Compose final middleware
   let middleware = applyMiddleware(thunk);
 
-  const enhancer = compose(
-    middleware,
-    persistState(),
-  )
+  const enhancer = compose(middleware, persistState());
 
   // Create final store
   const store = createStore(rootReducer, initialState, enhancer);
