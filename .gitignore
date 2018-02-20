@@ -1,12 +1,8 @@
 .DS_Store
 .idea
+.awcache
 _site
-app/data
-app/spec
-app/vl-specs.js
 coverage
 node_modules
-temp
-vendor
 build
 package-lock.json

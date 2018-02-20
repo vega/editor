@@ -121,6 +121,13 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
+          {
+            test: /\.tsx?$/,
+            loader: 'awesome-typescript-loader',
+            options: {
+              useBabel: true
+            }
+          },
           // Process JS with Babel.
           {
             test: /\.(js|jsx|mjs)$/,
@@ -130,7 +137,6 @@ module.exports = {
             ],
             loader: require.resolve('babel-loader'),
             options: {
-
               compact: true,
             },
           },
