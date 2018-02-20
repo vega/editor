@@ -16,7 +16,7 @@ const formatExampleName = (name) => {
 };
 
 const validateUrl = (url) => {
-  var reg = /(http(s)?:\/\/)?(www.)?[-a-zA-Z0-9]+\.[-a-zA-Z0-9\.]+\/[-a-zA-Z0-9]+\/[-a-zA-Z0-9]\/?/;
+  var reg = /^((http(s)?:\/\/)?(www.)?[-a-zA-Z0-9]+\.[-a-zA-Z0-9\.]+\/)?[-a-zA-Z0-9]+\/[-a-zA-Z0-9]+\/?$/g;
   if(reg.test(url))
     return true;
   return false;
