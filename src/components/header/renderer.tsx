@@ -15,6 +15,13 @@ const formatExampleName = (name) => {
     .join(' ');
 };
 
+const validateUrl = (url) => {
+  var reg = /(http(s)?:\/\/)?(www.)?[-a-zA-Z0-9]+\.[-a-zA-Z0-9\.]+\/[-a-zA-Z0-9]+\/[-a-zA-Z0-9]\/?/;
+  if(reg.test(url))
+    return true;
+  return false;
+};
+
 type Props = {
   mode: Mode;
 };
@@ -25,6 +32,7 @@ type State = {
   showVega: boolean;
   url: string;
   width?: number;
+  invalidUrl?: boolean;
 };
 
 class Header extends React.Component<Props & {history: any}, State> {
@@ -52,21 +60,37 @@ class Header extends React.Component<Props & {history: any}, State> {
   public onSelectNewVegaLite() {
     this.props.history.push('/custom/vega-lite');
   }
-  public onSelectVegaGist(gistUrl) {
-    this.setState({
-      url: '',
-    });
-    const username = this.getGistNameAndId(gistUrl)[0];
-    const id = this.getGistNameAndId(gistUrl)[1];
-    this.props.history.push('/gist/vega/' + username + '/' + id);
+  public onSelectVegaGist(gistUrl, closePortal) {
+    if(validateUrl(gistUrl)){
+      this.setState({
+        url: '',
+        invalidUrl: false
+      });
+      const username = this.getGistNameAndId(gistUrl)[0];
+      const id = this.getGistNameAndId(gistUrl)[1];
+      this.props.history.push('/gist/vega/' + username + '/' + id);
+      closePortal();
+    } else {
+      this.setState({
+        invalidUrl: true
+      });
+    }
   }
-  public onSelectVegaLiteGist(gistUrl) {
-    this.setState({
-      url: '',
-    });
-    const username = this.getGistNameAndId(gistUrl)[0];
-    const id = this.getGistNameAndId(gistUrl)[1];
-    this.props.history.push('/gist/vega-lite/' + username + '/' + id);
+  public onSelectVegaLiteGist(gistUrl, closePortal) {
+    if(validateUrl(gistUrl)){
+      this.setState({
+        url: '',
+        invalidUrl: false
+      });
+      const username = this.getGistNameAndId(gistUrl)[0];
+      const id = this.getGistNameAndId(gistUrl)[1];
+      this.props.history.push('/gist/vega-lite/' + username + '/' + id);
+      closePortal();
+    } else {
+      this.setState({
+        invalidUrl: true
+      });
+    }
   }
   public getGistNameAndId(gistUrl) {
     const suffix = gistUrl.substring(gistUrl.indexOf('.com/') + './com'.length);
@@ -162,10 +186,11 @@ class Header extends React.Component<Props & {history: any}, State> {
             https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9
             </div>
             <input className='gist-input' type='text' placeholder='enter gist url here' value={this.state.url} onChange={this.handleChange.bind(this)}/>
-            <button className='gist-button' onClick={() => {this.onSelectVegaGist(this.state.url); closePortal();}}>
+            <div className="error-message">{this.state.invalidUrl && <span>Please enter a correct URL.</span>}</div>
+            <button className='gist-button' onClick={() => {this.onSelectVegaGist(this.state.url, closePortal);}}>
               Vega
             </button>
-            <button className='gist-button' onClick={() => {this.onSelectVegaLiteGist(this.state.url); closePortal();}}>
+            <button className='gist-button' onClick={() => {this.onSelectVegaLiteGist(this.state.url, closePortal);}}>
               Vega-Lite
             </button>
           </div>
