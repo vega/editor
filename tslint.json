@@ -29,6 +29,7 @@
     "no-consecutive-blank-lines": [true, 3],
     "no-console": [
       true,
+      "warn",
       "debug",
       "info",
       "time",

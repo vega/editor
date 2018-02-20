@@ -4,8 +4,8 @@ export enum Mode {
 }
 
 export const NAME_TO_MODE = {
-  Vega: Mode.Vega,
-  VegaLite: Mode.VegaLite
+  vega: Mode.Vega,
+  'vega-lite': Mode.VegaLite
 };
 
 export const NAMES = {

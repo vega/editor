@@ -57,15 +57,15 @@ class App extends React.Component<Props & {match: any, history: any}> {
         this.setExample(parameter);
       } else if (parameter.username && parameter.id) {
         this.setGist(parameter);
-      } else {
-        this.props.setMode(NAME_TO_MODE[parameter.mode]);
+      } else if (parameter.mode) {
+        this.setEmptySpec(NAME_TO_MODE[parameter.mode]);
       }
     }
   }
-  public setGist(parameter) {
+  public setGist(parameter: {mode: string, username: string, id: string}) {
     const prefix = 'https://hook.io/tianyiii/vegaeditor';
-    const vegaVersion = parameter.mode;
-    const hookUrl = `${prefix}/${vegaVersion}/${parameter.username}/${
+    const mode = parameter.mode;
+    const hookUrl = `${prefix}/${mode}/${parameter.username}/${
       parameter.id
     }`;
     fetch(hookUrl, {
@@ -84,9 +84,9 @@ class App extends React.Component<Props & {match: any, history: any}> {
       })
       .then((data) => {
         if (data['message'] !== 'Not Found') {
-          if (vegaVersion === 'vega') {
+          if (mode === 'vega') {
             this.props.setGistVegaSpec(hookUrl, JSON.stringify(data, null, 2));
-          } else if (vegaVersion === 'vega-lite') {
+          } else if (mode === 'vega-lite') {
             this.props.setGistVegaLiteSpec(
               hookUrl,
               JSON.stringify(data, null, 2),
@@ -119,14 +119,15 @@ class App extends React.Component<Props & {match: any, history: any}> {
         break;
     }
   }
-  // TODO: this is unused but should be used to set the specs when the creates an empty spec
-  public setEmptySpec(parameter) {
-    if (parameter.mode === Mode.Vega) {
+
+  public setEmptySpec(mode: Mode) {
+    if (mode === Mode.Vega) {
       this.props.updateVegaSpec(VEGA_START_SPEC);
-    } else if (parameter.mode === Mode.VegaLite) {
+    } else if (mode === Mode.VegaLite) {
       this.props.updateVegaLiteSpec(VEGA_LITE_START_SPEC);
     }
   }
+
   public render() {
     const w = window.innerWidth;
     return (
@@ -157,9 +158,6 @@ class App extends React.Component<Props & {match: any, history: any}> {
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    setMode: (mode: Mode) => {
-      dispatch(EditorActions.setMode(mode));
-    },
     updateVegaSpec: (val) => {
       dispatch(EditorActions.updateVegaSpec(val));
     },
