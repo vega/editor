@@ -1,8 +1,6 @@
-/** @format */
+import './index.css';
 
 import * as React from 'react';
-
-import './index.css';
 
 type Props = {
   error;

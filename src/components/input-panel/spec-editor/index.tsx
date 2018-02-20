@@ -1,10 +1,7 @@
-/** @format */
-
-import {connect} from 'react-redux';
-
-import Renderer from './renderer';
+import { connect } from 'react-redux';
 
 import * as EditorActions from '../../../actions/editor';
+import Renderer from './renderer';
 
 const mapStateToProps = function(state, ownProps) {
   return {
@@ -16,6 +13,7 @@ const mapStateToProps = function(state, ownProps) {
     parse: state.parse,
   };
 };
+
 const mapDispatchToProps = function(dispatch) {
   return {
     updateVegaSpec: (val) => {

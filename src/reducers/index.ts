@@ -1,10 +1,8 @@
-/** @format */
-
-import {State} from '../constants/default-state';
-
 import * as vl from 'vega-lite';
+import { vals } from 'vega-lite/src/util';
 
 import {
+  Action,
   CYCLE_RENDERER,
   LOG_ERROR,
   PARSE_SPEC,
@@ -13,6 +11,10 @@ import {
   SET_MODE,
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
+  SetGistVegaLiteSpec,
+  SetGistVegaSpec,
+  SetVegaExample,
+  SetVegaLiteExample,
   SHOW_COMPILED_VEGA_SPEC,
   SHOW_ERROR_PANE,
   SHOW_TOOLTIP,
@@ -20,30 +22,15 @@ import {
   UPDATE_EDITOR_STRING,
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
+  UpdateVegaLiteSpec,
+  UpdateVegaSpec,
 } from '../actions/editor';
+import { DEFAULT_STATE, MODES, RENDERERS } from '../constants';
+import { State } from '../constants/default-state';
+import { LocalLogger } from '../utils/logger';
+import { validateVega, validateVegaLite } from '../utils/validate';
 
-import {DEFAULT_STATE, MODES, RENDERERS} from '../constants';
-import {LocalLogger} from '../utils/logger';
-import {validateVegaLite, validateVega} from '../utils/validate';
-
-type Action =
-  | CYCLE_RENDERER
-  | LOG_ERROR
-  | PARSE_SPEC
-  | SET_GIST_VEGA_LITE_SPEC
-  | SET_GIST_VEGA_SPEC
-  | SET_MODE
-  | SET_VEGA_EXAMPLE
-  | SET_VEGA_LITE_EXAMPLE
-  | SHOW_COMPILED_VEGA_SPEC
-  | SHOW_ERROR_PANE
-  | SHOW_TOOLTIP
-  | TOGGLE_AUTO_PARSE
-  | UPDATE_EDITOR_STRING
-  | UPDATE_VEGA_LITE_SPEC
-  | UPDATE_VEGA_SPEC;
-
-function parseVega(state: State, action: Action, extend = {}) {
+function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGistVegaSpec, extend = {}) {
   const currLogger = new LocalLogger();
 
   try {
@@ -81,7 +68,7 @@ function parseVega(state: State, action: Action, extend = {}) {
   };
 }
 
-function parseVegaLite(state: State, action: Action, extend = {}) {
+function parseVegaLite(state: State, action: SetVegaLiteExample | UpdateVegaLiteSpec | SetGistVegaLiteSpec, extend = {}) {
   const currLogger = new LocalLogger();
 
   try {
@@ -177,7 +164,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         parse: !state.autoParse,
       };
     case CYCLE_RENDERER: {
-      const rendererVals = Object.values(RENDERERS);
+      const rendererVals = vals(RENDERERS);
       const currentRenderer = rendererVals.indexOf(state.renderer);
       const nextRenderer =
         rendererVals[(currentRenderer + 1) % rendererVals.length];

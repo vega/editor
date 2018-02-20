@@ -1,5 +1,3 @@
-/** @format */
-
 export class LocalLogger {
   warns = [];
   infos = [];

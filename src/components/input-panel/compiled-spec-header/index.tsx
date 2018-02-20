@@ -1,5 +1,3 @@
-/** @format */
-
 import {connect} from 'react-redux';
 
 import * as React from 'react';
@@ -65,6 +63,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
     }
   }
 }
+
 function mapStateToProps(state, ownProps) {
   return {
     value: state.vegaSpec,
@@ -72,6 +71,7 @@ function mapStateToProps(state, ownProps) {
     mode: state.mode,
   };
 }
+
 const mapDispatchToProps = function(dispatch) {
   return {
     updateVegaSpec: (val) => {
@@ -82,6 +82,7 @@ const mapDispatchToProps = function(dispatch) {
     },
   };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(
   CompiledSpecDisplayHeader,
 );

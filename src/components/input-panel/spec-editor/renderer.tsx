@@ -1,15 +1,11 @@
-/** @format */
-
-import MonacoEditor from 'react-monaco-editor';
-import parser from 'vega-schema-url-parser';
-
-import {withRouter} from 'react-router-dom';
+import './index.css';
 
 import * as React from 'react';
+import MonacoEditor from 'react-monaco-editor';
+import { withRouter } from 'react-router-dom';
+import parser from 'vega-schema-url-parser';
 
-import {MODES} from '../../../constants';
-
-import './index.css';
+import { MODES } from '../../../constants';
 
 const vegaSchema = require('../../../../schema/vega.schema.json');
 const vegaLiteSchema = require('../../../../schema/vl.schema.json');
@@ -26,6 +22,7 @@ const schemas = {
     fileMatch: ['*'],
   },
 };
+
 function debounce(func, wait, immediate?) {
   let timeout;
   return function() {

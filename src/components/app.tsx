@@ -1,5 +1,3 @@
-/** @format */
-
 import equal from 'deep-equal';
 import SplitPane from 'react-split-pane';
 

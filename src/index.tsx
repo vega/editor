@@ -1,12 +1,11 @@
-/** @format */
-
-import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import {HashRouter, Route} from 'react-router-dom';
-import * as ReactGA from 'react-ga';
 import * as React from 'react';
-import * as vl from 'vega-lite';
+import ReactDOM from 'react-dom';
+import * as ReactGA from 'react-ga';
+import {Provider} from 'react-redux';
+import {HashRouter} from 'react-router-dom';
 import * as vega from 'vega';
+import * as vl from 'vega-lite';
+
 import AppShell from './components/app-shell';
 import configureStore from './store/configure-store';
 
@@ -49,11 +48,6 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root'),
 );
-/* eslint-disable */
-console.log(
-  '%cWelcome to the Vega-Editor!',
-  'font-size: 16px; font-weight: bold;',
-);
-console.log(
-  'You can access the Vega view with VEGA_DEBUG. Learn more at https://vega.github.io/vega/docs/api/debugging/.',
-);
+
+console.log('%cWelcome to the Vega-Editor!', 'font-size: 16px; font-weight: bold;');
+console.log('You can access the Vega view with VEGA_DEBUG. Learn more at https://vega.github.io/vega/docs/api/debugging/.');

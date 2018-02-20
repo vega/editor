@@ -6,15 +6,16 @@
     "declaration": false,
     "noImplicitAny": false,
     "sourceMap": true,
+    "strictNullChecks": false,
     "jsx": "react",
-    "noLib": false,
     "suppressImplicitAnyIndexErrors": true
   },
+  "compileOnSave": false,
   "types": [
     "node"
   ],
-  "compileOnSave": false,
-  "exclude": [
-    "node_modules"
+  "include": [
+    "src/**/*.ts",
+    "typings/*.d.ts"
   ]
 }

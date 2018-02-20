@@ -1,5 +1,3 @@
-/** @format */
-
 import SplitPane from 'react-split-pane';
 
 import * as React from 'react';

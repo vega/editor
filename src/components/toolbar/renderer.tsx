@@ -1,5 +1,3 @@
-/** @format */
-
 import * as React from 'react';
 import * as vl from 'vega-lite';
 import * as vega from 'vega';

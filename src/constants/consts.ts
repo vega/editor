@@ -1,5 +1,3 @@
-/** @format */
-
 const Vega = 'vega';
 const VegaLite = 'vega-lite';
 

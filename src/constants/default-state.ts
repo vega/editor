@@ -1,5 +1,3 @@
-/** @format */
-
 import {MODES, RENDERERS} from './consts';
 import {LocalLogger} from '../utils/logger';
 
