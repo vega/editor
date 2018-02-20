@@ -13,7 +13,7 @@ import VizPane from './viz-pane';
 
 import {VEGA_START_SPEC, VEGA_LITE_START_SPEC} from '../constants/consts';
 import {LAYOUT} from '../constants';
-import {MODES} from '../constants';
+import {Mode} from '../constants';
 
 import * as EditorActions from '../actions/editor';
 
@@ -120,11 +120,11 @@ class App extends React.Component<Props> {
   }
   setExample(parameter) {
     const name = parameter.example_name;
-    if (parameter.mode === MODES.Vega) {
+    if (parameter.mode === Mode.Vega) {
       text(`./spec/vega/${name}.vg.json`, (spec) => {
         this.props.setVegaExample(name, spec);
       });
-    } else if (parameter.mode === MODES.VegaLite) {
+    } else if (parameter.mode === Mode.VegaLite) {
       text(`./spec/vega-lite/${name}.vl.json`, (spec) => {
         this.props.setVegaLiteExample(name, spec);
       });
@@ -132,9 +132,9 @@ class App extends React.Component<Props> {
   }
   // TODO: this is unused but should be used to set the specs when the creates an empty spec
   setEmptySpec(parameter) {
-    if (parameter.mode === MODES.Vega) {
+    if (parameter.mode === Mode.Vega) {
       this.props.updateVegaSpec(VEGA_START_SPEC);
-    } else if (parameter.mode === MODES.VegaLite) {
+    } else if (parameter.mode === Mode.VegaLite) {
       this.props.updateVegaLiteSpec(VEGA_LITE_START_SPEC);
     }
   }

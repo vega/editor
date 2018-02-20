@@ -5,18 +5,18 @@ import MonacoEditor from 'react-monaco-editor';
 import { withRouter } from 'react-router-dom';
 import parser from 'vega-schema-url-parser';
 
-import { MODES } from '../../../constants';
+import { Mode } from '../../../constants';
 
 const vegaSchema = require('../../../../schema/vega.schema.json');
 const vegaLiteSchema = require('../../../../schema/vl.schema.json');
 
 const schemas = {
-  [MODES.Vega]: {
+  [Mode.Vega]: {
     uri: 'https://vega.github.io/schema/vega/v3.0.json',
     schema: vegaSchema,
     fileMatch: ['*'],
   },
-  [MODES.VegaLite]: {
+  [Mode.VegaLite]: {
     uri: 'https://vega.github.io/schema/vega-lite/v2.json',
     schema: vegaLiteSchema,
     fileMatch: ['*'],
@@ -111,10 +111,10 @@ class Editor extends React.Component<Props, State> {
       console.warn('Error parsing JSON string', err);
     }
     switch (parsedMode) {
-      case MODES.Vega:
+      case Mode.Vega:
         this.props.updateVegaSpec(spec);
         break;
-      case MODES.VegaLite:
+      case Mode.VegaLite:
         this.props.updateVegaLiteSpec(spec);
         break;
       default:

@@ -25,7 +25,7 @@ import {
   UpdateVegaLiteSpec,
   UpdateVegaSpec,
 } from '../actions/editor';
-import { DEFAULT_STATE, MODES, RENDERERS } from '../constants';
+import { DEFAULT_STATE, Mode, RENDERERS } from '../constants';
 import { State } from '../constants/default-state';
 import { LocalLogger } from '../utils/logger';
 import { validateVega, validateVegaLite } from '../utils/validate';
@@ -59,7 +59,7 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
     error: null,
 
     // set mode and spec
-    mode: MODES.Vega,
+    mode: Mode.Vega,
     editorString: action.spec,
     warningsLogger: currLogger,
 
@@ -101,7 +101,7 @@ function parseVegaLite(state: State, action: SetVegaLiteExample | UpdateVegaLite
     error: null,
 
     // set mode and spec
-    mode: MODES.VegaLite,
+    mode: Mode.VegaLite,
     editorString: action.spec,
     warningsLogger: currLogger,
 

@@ -1,3 +1,5 @@
+import {Mode} from '../constants';
+
 export const CYCLE_RENDERER: 'CYCLE_RENDERER' = 'CYCLE_RENDERER';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
 export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
@@ -16,7 +18,7 @@ export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
 
 export type Action = SetMode | ParseSpec | SetVegaExample | SetVegaLiteExample | UpdateVegaSpec | UpdateVegaLiteSpec | SetGistVegaSpec | SetGistVegaLiteSpec | ToggleAutoParse | CycleRenderer | ShowCompiledVegaSpec | ShowErrorPane | LogError | UpdateEditorString | ShowTooltip;
 
-export function setMode(mode: string) {
+export function setMode(mode: Mode) {
   return {
     type: SET_MODE,
     mode: mode,

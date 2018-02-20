@@ -1,11 +1,11 @@
-import './index.css';
 import 'vega-tooltip/build/vega-tooltip.css';
+import './index.css';
 
 import * as React from 'react';
 import * as vega from 'vega';
 import * as vegaTooltip from 'vega-tooltip';
 
-import { MODES } from '../../constants';
+import {Mode} from '../../constants';
 
 type Props = {
   vegaSpec?: object;
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default class Editor extends React.Component<Props> {
-  renderVega(props) {
+  public renderVega(props) {
     const chart = this.refs.chart as any;
     chart.style.width = chart.getBoundingClientRect().width + 'px';
 
@@ -27,7 +27,7 @@ export default class Editor extends React.Component<Props> {
       .initialize(chart)
       .renderer(props.renderer);
 
-    if (props.mode === MODES.Vega) {
+    if (props.mode === Mode.Vega) {
       view.hover();
     }
 
@@ -35,7 +35,7 @@ export default class Editor extends React.Component<Props> {
     chart.style.width = 'auto';
 
     if (this.props.tooltip) {
-      if (props.mode === MODES.VegaLite) {
+      if (props.mode === Mode.VegaLite) {
         vegaTooltip.vegaLite(view, props.vegaLiteSpec);
       } else {
         vegaTooltip.vega(view);
@@ -44,18 +44,18 @@ export default class Editor extends React.Component<Props> {
 
     window.VEGA_DEBUG.view = view;
   }
-  componentDidMount() {
+  public componentDidMount() {
     this.renderVega(this.props);
   }
-  componentDidUpdate() {
+  public componentDidUpdate() {
     this.renderVega(this.props);
   }
-  render() {
+  public render() {
     return (
-      <div className="chart">
-        <div ref="chart" />
+      <div className='chart'>
+        <div ref='chart' />
         {this.props.tooltip ? (
-          <div id="vis-tooltip" className="vg-tooltip" />
+          <div id='vis-tooltip' className='vg-tooltip' />
         ) : null}
       </div>
     );

@@ -1,5 +1,5 @@
-import {MODES, RENDERERS} from './consts';
 import {LocalLogger} from '../utils/logger';
+import {Mode, RENDERERS} from './consts';
 
 export type State = {
   autoParse: boolean;
@@ -8,7 +8,7 @@ export type State = {
   error: any;
   errorPane: boolean;
   gist: any;
-  mode: string;
+  mode: Mode;
   parse: boolean;
   renderer: string;
   selectedExample: any;
@@ -25,7 +25,7 @@ export const DEFAULT_STATE: State = {
   error: null,
   errorPane: false,
   gist: null,
-  mode: MODES.VegaLite,
+  mode: Mode.VegaLite,
   parse: false,
   renderer: RENDERERS.Canvas,
   selectedExample: null,

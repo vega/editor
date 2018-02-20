@@ -8,37 +8,37 @@ import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
 import SpecEditor from './spec-editor';
 
-import {LAYOUT, MODES} from '../../constants';
+import {LAYOUT, Mode} from '../../constants';
 
 import './index.css';
 
 type Props = {
   compiledVegaSpec?: boolean;
-  mode?: string;
+  mode?: Mode;
 };
 class InputPanel extends React.Component<Props> {
-  getInnerPanes() {
-    const innerPanes = [<SpecEditor key="editor" />];
-    if (this.props.mode === MODES.VegaLite) {
+  public getInnerPanes() {
+    const innerPanes = [<SpecEditor key='editor' />];
+    if (this.props.mode === Mode.VegaLite) {
       if (this.props.compiledVegaSpec) {
-        innerPanes.push(<CompiledSpecDisplay key="compiled" />);
+        innerPanes.push(<CompiledSpecDisplay key='compiled' />);
       } else {
-        innerPanes.push(<CompiledSpecHeader key="compiledSpecHeader" />);
+        innerPanes.push(<CompiledSpecHeader key='compiledSpecHeader' />);
       }
     }
     return innerPanes;
   }
-  render() {
+  public render() {
     const innerPanes = this.getInnerPanes();
 
-    if (this.props.mode === MODES.VegaLite) {
+    if (this.props.mode === Mode.VegaLite) {
       if (this.props.compiledVegaSpec) {
-        return <SplitPane split="horizontal" defaultSize={(window.innerHeight - LAYOUT.HeaderHeight) / innerPanes.length} pane2Style={{display: 'flex'}}>
+        return <SplitPane split='horizontal' defaultSize={(window.innerHeight - LAYOUT.HeaderHeight) / innerPanes.length} pane2Style={{display: 'flex'}}>
           {innerPanes}
         </SplitPane>;
       } else {
         // Use the same split pane as above to prevent the creation of a new monaco instance.
-        return <SplitPane split="horizontal" primary="second" defaultSize={25} pane1Style={{display: 'flex'}}>
+        return <SplitPane split='horizontal' primary='second' defaultSize={25} pane1Style={{display: 'flex'}}>
           {innerPanes}
         </SplitPane>;
       }
