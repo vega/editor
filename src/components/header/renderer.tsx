@@ -1,7 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
-import {Portal} from 'react-portal';
+import {Portal, PortalWithState} from 'react-portal';
 import {withRouter} from 'react-router-dom';
 
 import {LAYOUT, Mode} from '../../constants';
@@ -21,8 +21,6 @@ type Props = {
 
 type State = {
   customIsOpened?: boolean;
-  exampleIsOpened?: boolean;
-  gistIsOpened?: boolean;
   left?: any;
   showVega: boolean;
   url: string;
@@ -43,18 +41,12 @@ class Header extends React.Component<Props & {history: any}, State> {
     this.setState({url: event.target.value});
   }
   public onSelectVega(name) {
-    this.setState({
-      exampleIsOpened: false,
-    });
     this.props.history.push('/examples/vega/' + name);
   }
   public onSelectNewVega() {
     this.props.history.push('/custom/vega');
   }
   public onSelectVegaLite(name) {
-    this.setState({
-      exampleIsOpened: false,
-    });
     this.props.history.push('/examples/vega-lite/' + name);
   }
   public onSelectNewVegaLite() {
@@ -62,7 +54,6 @@ class Header extends React.Component<Props & {history: any}, State> {
   }
   public onSelectVegaGist(gistUrl) {
     this.setState({
-      gistIsOpened: false,
       url: '',
     });
     const username = this.getGistNameAndId(gistUrl)[0];
@@ -71,7 +62,6 @@ class Header extends React.Component<Props & {history: any}, State> {
   }
   public onSelectVegaLiteGist(gistUrl) {
     this.setState({
-      gistIsOpened: false,
       url: '',
     });
     const username = this.getGistNameAndId(gistUrl)[0];
@@ -89,26 +79,12 @@ class Header extends React.Component<Props & {history: any}, State> {
   }
   public render() {
     const examplesButton = (
-      <div
-        className='button'
-        onClick={(e) => {
-          this.setState({
-            exampleIsOpened: true,
-          });
-        }}
-      >
+      <div className='button'>
         {'Examples'}
       </div>
     );
     const gistButton = (
-      <div
-        className='button'
-        onClick={(e) => {
-          this.setState({
-            gistIsOpened: true,
-          });
-        }}
-      >
+      <div className='button'>
         {'Gist'}
       </div>
     );
@@ -128,95 +104,83 @@ class Header extends React.Component<Props & {history: any}, State> {
         {'New'}
       </div>
     );
-    const vega = (
-      <div className='vega'>
-        {Object.keys(VEGA_SPECS).map((specType, i) => {
-          const specs = VEGA_SPECS[specType];
-          return (
-            <div className='itemGroup' key={i}>
-              <div className='specType'>{specType}</div>
-              <div className='items'>
-                {specs.map((spec, j) => {
-                  return (
-                    <div key={j} onClick={() => this.onSelectVega(spec.name)} className='item'>
-                      <div style={{backgroundImage: `url(images/examples/vg/${spec.name}.vg.png)`}} className='img'/>
-                      <div className='name'>{formatExampleName(spec.name)}</div>
-                    </div>
-                  );
-                })}
+    const vega = (closePortal) => {
+      return (
+        <div className='vega'>
+          {Object.keys(VEGA_SPECS).map((specType, i) => {
+            const specs = VEGA_SPECS[specType];
+            return (
+              <div className='itemGroup' key={i}>
+                <div className='specType'>{specType}</div>
+                <div className='items'>
+                  {specs.map((spec, j) => {
+                    return (
+                      <div key={j} onClick={() => {this.onSelectVega(spec.name); closePortal();}} className='item'>
+                        <div style={{ backgroundImage: `url(images/examples/vg/${spec.name}.vg.png)`,}} className='img'/>
+                        <div className='name'>{formatExampleName(spec.name)}</div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-    const vegalite = (
-      <div className='vega-Lite'>
-        {Object.keys(VEGA_LITE_SPECS).map((specType, i) => {
-          const specs = VEGA_LITE_SPECS[specType];
-          return (
-            <div className='itemGroup' key={i}>
-              <div className='specType'>{specType}</div>
-              <div className='items'>
-                {specs.map((spec, j) => {
-                  return (
-                    <div key={j} onClick={() => this.onSelectVegaLite(spec.name)} className='item'>
-                      <div style={{backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`}} className='img'/>
-                      <div className='name'>{spec.title}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-    const gist = (
-      <div>
-        <header>Enter Gist URL: </header>
-        <div className='gist-content'>
-          <div className='gist-text'>For example (Vega-Lite)</div>
-          <div className='gist-url'>
-            https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9
-          </div>
-
-          <input
-            className='gist-input'
-            type='text'
-            placeholder='enter gist url here'
-            value={this.state.url}
-            onChange={this.handleChange.bind(this)}
-          />
-
-          <button className='gist-button' onClick={this.onSelectVegaGist.bind(this, this.state.url)}>
-            Vega
-          </button>
-          <button className='gist-button' onClick={this.onSelectVegaLiteGist.bind(this, this.state.url)}>
-            Vega-Lite
-          </button>
+            );
+          })}
         </div>
-      </div>
-    );
+      );
+    }
+    const vegalite = (closePortal) => {
+      return (
+        <div className='vega-Lite'>
+          {Object.keys(VEGA_LITE_SPECS).map((specType, i) => {
+            const specs = VEGA_LITE_SPECS[specType];
+            return (
+              <div className='itemGroup' key={i}>
+                <div className='specType'>{specType}</div>
+                <div className='items'>
+                  {specs.map((spec, j) => {
+                    return (
+                      <div key={j} onClick={() => {this.onSelectVegaLite(spec.name); closePortal();}} className='item'>
+                        <div style={{backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`,}} className='img'/>
+                        <div className='name'>{spec.title}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+    const gist = (closePortal) => {
+      return (
+        <div>
+          <header>Enter Gist URL: </header>
+          <div className='gist-content'>
+            <div className='gist-text'>For example (Vega-Lite)</div>
+            <div className='gist-url'>
+            https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9
+            </div>
+            <input className='gist-input' type='text' placeholder='enter gist url here' value={this.state.url} onChange={this.handleChange.bind(this)}/>
+            <button className='gist-button' onClick={() => {this.onSelectVegaGist(this.state.url); closePortal();}}>
+              Vega
+            </button>
+            <button className='gist-button' onClick={() => {this.onSelectVegaLiteGist(this.state.url); closePortal();}}>
+              Vega-Lite
+            </button>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className='header'>
-        <a
-          className='idl-logo'
-          href='https://idl.cs.washington.edu/'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
+        <a className='idl-logo' href='https://idl.cs.washington.edu/' target='_blank' rel='noopener noreferrer'>
           <img height={37} alt='IDL Logo' src='https://vega.github.io/images/idl-logo.png'/>
         </a>
-        {examplesButton}
-        {gistButton}
-        {docsLink}
-        {customButton}
 
         {this.state.customIsOpened && (
           <Portal>
-            <div
-              className='customSubmenuGroup'
+            <div className='customSubmenuGroup'
               onMouseOver={() => {
                 this.setState({customIsOpened: true});
               }}
@@ -246,43 +210,60 @@ class Header extends React.Component<Props & {history: any}, State> {
             </div>
           </Portal>
         )}
-
-        {this.state.exampleIsOpened && (
-          <Portal>
-            <div className='modal-background'>
-              <div className='modal-header'>
-                <div className='button-groups'>
-                  <button className={this.state.showVega ? 'selected' : ''} onClick={() => { this.setState({showVega: true}); }}>
-                    {'Vega'}
-                  </button>
-                  <button className={this.state.showVega ? '' : 'selected'} onClick={() => { this.setState({showVega: false}); }}>
-                    {'Vega-Lite'}
-                  </button>
+        <PortalWithState closeOnEsc>
+          {({openPortal, closePortal, isOpen, portal}) => [
+            <span key='0' onClick={openPortal}>
+              {examplesButton}
+            </span>,
+            portal(
+              <div className='modal-background' onClick={closePortal}>
+                <div className='modal-header'>
+                  <div className='button-groups' onClick={(e) => {e.stopPropagation()}}>
+                    <button className={this.state.showVega ? 'selected' : ''}
+                      onClick={() => {
+                        this.setState({showVega: true});
+                      }}
+                    >
+                      {'Vega'}
+                    </button>
+                    <button className={this.state.showVega ? '' : 'selected'}
+                      onClick={() => {
+                        this.setState({showVega: false});
+                      }}
+                    >
+                      {'Vega-Lite'}
+                    </button>
+                  </div>
+                  <button className='close-button' onClick={closePortal}>✖</button>
                 </div>
-
-                <button className='close-button' onClick={() => { this.setState({exampleIsOpened: false}); }}>✖</button>
-              </div>
-              <div className='modal-area'>
-                <div className='modal'>
-                  {this.state.showVega ? vega : vegalite}
+                <div className='modal-area'>
+                  <div className='modal' onClick={(e) => {e.stopPropagation()}}>
+                    {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Portal>
-        )}
-
-        {this.state.gistIsOpened && (
-          <Portal>
-            <div className='modal-background'>
-              <div className='modal-header'>
-                <button className='close-button' onClick={() => { this.setState({gistIsOpened: false}); }}>✖</button>
+            )
+          ]}
+        </PortalWithState>
+        <PortalWithState closeOnEsc>
+          {({openPortal, closePortal, isOpen, portal}) => [
+            <span key='0' onClick={openPortal}>
+              {gistButton}
+            </span>,
+            portal(
+              <div className='modal-background' onClick={closePortal}>
+                <div className='modal-header'>
+                <button className='close-button' onClick={closePortal}>✖</button>
+                </div>
+                <div className='modal-area'>
+                  <div className='modal' onClick={(e) => {e.stopPropagation()}}>{gist(closePortal)}</div>
+                </div>
               </div>
-              <div className='modal-area'>
-                <div className='modal'>{gist}</div>
-              </div>
-            </div>
-          </Portal>
-        )}
+            )
+          ]}
+        </PortalWithState>
+        <span>{docsLink}</span>
+        <span>{customButton}</span>
       </div>
     );
   }
