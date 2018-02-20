@@ -211,8 +211,15 @@
   resize: none;
   font-size: 14px;
   margin-top: 20px;
-  margin-bottom: 30px;
   padding: 5px;
+}
+
+.error-message {
+  font-size: 12px;
+  height: 10px;
+  color: red;
+  margin-top: 5px;
+  margin-bottom: 30px;
 }
 
 .customSubmenu {
