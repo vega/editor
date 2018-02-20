@@ -1,6 +1,5 @@
-import {Route} from 'react-router-dom';
-
 import * as React from 'react';
+import {Route} from 'react-router-dom';
 
 import App from './app';
 
@@ -12,6 +11,7 @@ export default class AppShell extends React.Component<Props> {
   public componentDidUpdate() {
     this.props.logPageView();
   }
+
   public render() {
     return (
       <div>

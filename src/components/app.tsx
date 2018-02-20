@@ -16,7 +16,7 @@ import VizPane from './viz-pane';
 
 type Props = ReturnType<typeof mapDispatchToProps>;
 
-class App extends React.Component<Props & {match: any, history: any}> {
+class App extends React.Component<Props & {match: any, location: any}> {
   public componentDidMount() {
     window.addEventListener(
       'message',
@@ -52,7 +52,7 @@ class App extends React.Component<Props & {match: any, history: any}> {
     }
   }
   public setSpecInUrl(parameter) {
-    if (parameter && parameter.mode && this.props.history.location.pathname.indexOf('/edited') === -1) {
+    if (parameter && parameter.mode && this.props.location.pathname.indexOf('/edited') === -1) {
       if (parameter.example_name) {
         this.setExample(parameter);
       } else if (parameter.username && parameter.id) {
