@@ -9,7 +9,7 @@ To run the editor locally, you must first install the dependencies and then laun
 1. Install the dependencies:
 
 ```
-$ yarn install
+$ yarn
 ```
 
 2. Start the server:
@@ -32,11 +32,11 @@ cd VEGA_EDITOR_DIR
 yarn link vega
 ```
 
-### Creating a release
+The Vega editor supports [React Developer Tools](https://github.com/facebook/react-devtools) and [Redux DevTools](https://github.com/zalmoxisus/redux-devtools-extension).
 
-* Install the latest versions of vega, vega-lite, and vega-datasets
+### Creating a release on gh-pages
+
+* Install the latest versions of Vega, Vega-Lite, and Vega-Datasets
 * `yarn run vendor`
 * `yarn run generate-example-images` (requires https://www.gnu.org/software/parallel/)
-* `yarn run build`
-
-
+* `yarn run deploy`
