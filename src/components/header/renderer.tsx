@@ -17,7 +17,6 @@ const formatExampleName = (name) => {
 
 type Props = {
   mode: Mode;
-  history;
 };
 
 type State = {
@@ -30,7 +29,7 @@ type State = {
   width?: number;
 };
 
-class Header extends React.Component<Props, State> {
+class Header extends React.Component<Props & {history: any}, State> {
   constructor(props) {
     super(props);
     // $FixMe - default state?
@@ -162,14 +161,7 @@ class Header extends React.Component<Props, State> {
                 {specs.map((spec, j) => {
                   return (
                     <div key={j} onClick={() => this.onSelectVegaLite(spec.name)} className='item'>
-                      <div
-                        style={{
-                          backgroundImage: `url(images/examples/vl/${
-                            spec.name
-                          }.vl.png)`,
-                        }}
-                        className='img'
-                      />
+                      <div style={{backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`}} className='img'/>
                       <div className='name'>{spec.title}</div>
                     </div>
                   );
@@ -184,9 +176,9 @@ class Header extends React.Component<Props, State> {
       <div>
         <header>Enter Gist URL: </header>
         <div className='gist-content'>
-          <div className='gist-text'>For example</div>
+          <div className='gist-text'>For example (Vega-Lite)</div>
           <div className='gist-url'>
-            https://gist.github.com/mathisonian/542616c4af5606784e97e59e3c65b7e5
+            https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9
           </div>
 
           <input
@@ -214,11 +206,7 @@ class Header extends React.Component<Props, State> {
           target='_blank'
           rel='noopener noreferrer'
         >
-          <img
-            height={37}
-            alt='IDL Logo'
-            src='https://vega.github.io/images/idl-logo.png'
-          />
+          <img height={37} alt='IDL Logo' src='https://vega.github.io/images/idl-logo.png'/>
         </a>
         {examplesButton}
         {gistButton}
@@ -299,4 +287,5 @@ class Header extends React.Component<Props, State> {
     );
   }
 }
+
 export default withRouter(Header);
