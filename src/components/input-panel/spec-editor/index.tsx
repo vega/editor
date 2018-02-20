@@ -1,9 +1,10 @@
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import * as EditorActions from '../../../actions/editor';
+import {State} from '../../../constants/default-state';
 import Renderer from './renderer';
 
-const mapStateToProps = function(state, ownProps) {
+const mapStateToProps = function(state: State, ownProps) {
   return {
     value: state.editorString,
     mode: state.mode,

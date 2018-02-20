@@ -1,23 +1,23 @@
 export class LocalLogger {
-  warns = [];
-  infos = [];
-  debugs = [];
+  private readonly warns = [];
+  private readonly infos = [];
+  private readonly debugs = [];
 
-  level() {
+  public level() {
     return this;
   }
 
-  warn(...args) {
+  public warn(...args) {
     this.warns.push(...args);
     return this;
   }
 
-  info(...args) {
+  public info(...args) {
     this.infos.push(...args);
     return this;
   }
 
-  debug(...args) {
+  public debug(...args) {
     this.debugs.push(...args);
     return this;
   }

@@ -1,48 +1,33 @@
-import equal from 'deep-equal';
-import SplitPane from 'react-split-pane';
+import './app.css';
 
 import {text} from 'd3-request';
+import equal from 'deep-equal';
+import * as React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
+import SplitPane from 'react-split-pane';
 
-import * as React from 'react';
-
+import * as EditorActions from '../actions/editor';
+import {LAYOUT, Mode} from '../constants';
+import {NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
 import Header from './header';
 import InputPanel from './input-panel';
 import VizPane from './viz-pane';
 
-import {VEGA_START_SPEC, VEGA_LITE_START_SPEC} from '../constants/consts';
-import {LAYOUT} from '../constants';
-import {Mode} from '../constants';
+type Props = ReturnType<typeof mapDispatchToProps>;
 
-import * as EditorActions from '../actions/editor';
-
-import './app.css';
-
-type Props = {
-  history;
-  match;
-  setGistVegaLiteSpec: Function;
-  setGistVegaSpec: Function;
-  setMode: Function;
-  setVegaExample: Function;
-  setVegaLiteExample: Function;
-  updateVegaLiteSpec: Function;
-  updateVegaSpec: Function;
-};
-
-class App extends React.Component<Props> {
-  componentDidMount() {
+class App extends React.Component<Props & {match: any, history: any}> {
+  public componentDidMount() {
     window.addEventListener(
       'message',
       (evt) => {
-        var data = evt.data;
+        const data = evt.data;
         if (!data.spec) {
           return;
         }
         console.info('[Vega-Editor] Received Message', evt.origin, data);
         // send acknowledgement
-        var parsed = JSON.parse(data.spec);
+        const parsed = JSON.parse(data.spec);
         data.spec = JSON.stringify(parsed, null, 2);
         if (data.spec || data.file) {
           evt.source.postMessage(true, '*');
@@ -57,30 +42,27 @@ class App extends React.Component<Props> {
       },
       false,
     );
+
     const parameter = this.props.match.params;
     this.setSpecInUrl(parameter);
   }
-  componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps) {
     if (!equal(this.props.match.params, nextProps.match.params)) {
       this.setSpecInUrl(nextProps.match.params);
     }
   }
-  setSpecInUrl(parameter) {
-    if (
-      parameter &&
-      parameter.mode &&
-      this.props.history.location.pathname.indexOf('/edited') === -1
-    ) {
+  public setSpecInUrl(parameter) {
+    if (parameter && parameter.mode && this.props.history.location.pathname.indexOf('/edited') === -1) {
       if (parameter.example_name) {
         this.setExample(parameter);
       } else if (parameter.username && parameter.id) {
         this.setGist(parameter);
       } else {
-        this.props.setMode(parameter.mode);
+        this.props.setMode(NAME_TO_MODE[parameter.mode]);
       }
     }
   }
-  setGist(parameter) {
+  public setGist(parameter) {
     const prefix = 'https://hook.io/tianyiii/vegaeditor';
     const vegaVersion = parameter.mode;
     const hookUrl = `${prefix}/${vegaVersion}/${parameter.username}/${
@@ -118,30 +100,37 @@ class App extends React.Component<Props> {
         console.error(ex);
       });
   }
-  setExample(parameter) {
+
+  public setExample(parameter: {example_name: string, mode: string}) {
     const name = parameter.example_name;
-    if (parameter.mode === Mode.Vega) {
-      text(`./spec/vega/${name}.vg.json`, (spec) => {
-        this.props.setVegaExample(name, spec);
-      });
-    } else if (parameter.mode === Mode.VegaLite) {
-      text(`./spec/vega-lite/${name}.vl.json`, (spec) => {
-        this.props.setVegaLiteExample(name, spec);
-      });
+    switch (parameter.mode) {
+      case 'vega':
+        text(`./spec/vega/${name}.vg.json`, (spec) => {
+          this.props.setVegaExample(name, spec);
+        });
+        break;
+      case 'vega-lite':
+        text(`./spec/vega-lite/${name}.vl.json`, (spec) => {
+          this.props.setVegaLiteExample(name, spec);
+        });
+        break;
+      default:
+        console.warn(`Unknown mode ${parameter.mode}`);
+        break;
     }
   }
   // TODO: this is unused but should be used to set the specs when the creates an empty spec
-  setEmptySpec(parameter) {
+  public setEmptySpec(parameter) {
     if (parameter.mode === Mode.Vega) {
       this.props.updateVegaSpec(VEGA_START_SPEC);
     } else if (parameter.mode === Mode.VegaLite) {
       this.props.updateVegaLiteSpec(VEGA_LITE_START_SPEC);
     }
   }
-  render() {
+  public render() {
     const w = window.innerWidth;
     return (
-      <div className="app-container">
+      <div className='app-container'>
         <Header />
         <div
           style={{
@@ -150,11 +139,11 @@ class App extends React.Component<Props> {
           }}
         >
           <SplitPane
-            split="vertical"
+            split='vertical'
             minSize={300}
             defaultSize={w * 0.4}
             pane1Style={{display: 'flex'}}
-            className="main-pane"
+            className='main-pane'
             pane2Style={{overflow: 'scroll'}}
           >
             <InputPanel />
@@ -165,9 +154,10 @@ class App extends React.Component<Props> {
     );
   }
 }
+
 const mapDispatchToProps = function(dispatch) {
   return {
-    setMode: (mode) => {
+    setMode: (mode: Mode) => {
       dispatch(EditorActions.setMode(mode));
     },
     updateVegaSpec: (val) => {
@@ -176,18 +166,19 @@ const mapDispatchToProps = function(dispatch) {
     updateVegaLiteSpec: (val) => {
       dispatch(EditorActions.updateVegaLiteSpec(val));
     },
-    setVegaExample: (example, val) => {
+    setVegaExample: (example: string, val) => {
       dispatch(EditorActions.setVegaExample(example, val));
     },
-    setVegaLiteExample: (example, val) => {
+    setVegaLiteExample: (example: string, val) => {
       dispatch(EditorActions.setVegaLiteExample(example, val));
     },
-    setGistVegaSpec: (gist, spec) => {
+    setGistVegaSpec: (gist: string, spec) => {
       dispatch(EditorActions.setGistVegaSpec(gist, spec));
     },
-    setGistVegaLiteSpec: (gist, spec) => {
+    setGistVegaLiteSpec: (gist: string, spec) => {
       dispatch(EditorActions.setGistVegaLiteSpec(gist, spec));
     },
   };
 };
+
 export default withRouter(connect(null, mapDispatchToProps)(App));

@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import Renderer from './renderer';
 
 import * as EditorActions from '../../actions/editor';
+import {State} from '../../constants/default-state';
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: State, ownProps) {
   return {
     renderer: state.renderer,
     error: state.error,
@@ -14,6 +15,7 @@ function mapStateToProps(state, ownProps) {
     tooltip: state.tooltip,
   };
 }
+
 const mapDispatchToProps = function(dispatch) {
   return {
     toggleAutoParse: () => {
@@ -30,4 +32,5 @@ const mapDispatchToProps = function(dispatch) {
     },
   };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(Renderer);

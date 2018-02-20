@@ -1,5 +1,5 @@
 import * as vl from 'vega-lite';
-import { vals } from 'vega-lite/src/util';
+import {vals} from 'vega-lite/src/util';
 
 import {
   Action,
@@ -25,10 +25,10 @@ import {
   UpdateVegaLiteSpec,
   UpdateVegaSpec,
 } from '../actions/editor';
-import { DEFAULT_STATE, Mode, RENDERERS } from '../constants';
-import { State } from '../constants/default-state';
-import { LocalLogger } from '../utils/logger';
-import { validateVega, validateVegaLite } from '../utils/validate';
+import {DEFAULT_STATE, Mode} from '../constants';
+import {State} from '../constants/default-state';
+import {LocalLogger} from '../utils/logger';
+import {validateVega, validateVegaLite} from '../utils/validate';
 
 function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGistVegaSpec, extend = {}) {
   const currLogger = new LocalLogger();
@@ -164,10 +164,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         parse: !state.autoParse,
       };
     case CYCLE_RENDERER: {
-      const rendererVals = vals(RENDERERS);
-      const currentRenderer = rendererVals.indexOf(state.renderer);
-      const nextRenderer =
-        rendererVals[(currentRenderer + 1) % rendererVals.length];
+      const nextRenderer = state.renderer === 'svg' ? 'canvas': 'svg';
 
       return {
         ...state,

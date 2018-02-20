@@ -1,17 +1,17 @@
 import {LocalLogger} from '../utils/logger';
-import {Mode, RENDERERS} from './consts';
+import {Mode, Renderer} from './consts';
 
 export type State = {
   autoParse: boolean;
   compiledVegaSpec: boolean;
   editorString: string;
-  error: any;
+  error: Error;
   errorPane: boolean;
-  gist: any;
+  gist: string;
   mode: Mode;
   parse: boolean;
-  renderer: string;
-  selectedExample: any;
+  renderer: Renderer;
+  selectedExample: string;
   tooltip: boolean;
   vegaLiteSpec: any;
   vegaSpec: any;
@@ -27,7 +27,7 @@ export const DEFAULT_STATE: State = {
   gist: null,
   mode: Mode.VegaLite,
   parse: false,
-  renderer: RENDERERS.Canvas,
+  renderer: 'canvas',
   selectedExample: null,
   tooltip: true,
   vegaLiteSpec: null,

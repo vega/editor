@@ -36,7 +36,9 @@ export default class Editor extends React.Component<Props> {
 
     if (this.props.tooltip) {
       if (props.mode === Mode.VegaLite) {
-        vegaTooltip.vegaLite(view, props.vegaLiteSpec);
+        if (props.vegaLiteSpec) {
+          vegaTooltip.vegaLite(view, props.vegaLiteSpec);
+        }
       } else {
         vegaTooltip.vega(view);
       }

@@ -2,10 +2,10 @@ import './index.css';
 
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import parser from 'vega-schema-url-parser';
 
-import { Mode } from '../../../constants';
+import {Mode} from '../../../constants';
 
 const vegaSchema = require('../../../../schema/vega.schema.json');
 const vegaLiteSchema = require('../../../../schema/vl.schema.json');
@@ -26,31 +26,31 @@ const schemas = {
 function debounce(func, wait, immediate?) {
   let timeout;
   return function() {
-    const context = this,
-      args = arguments;
+    const context = this;
+    const args = arguments;
     const later = () => {
       timeout = null;
-      if (!immediate) func.apply(context, args);
+      if (!immediate) { func.apply(context, args); }
     };
     const callNow = immediate && !timeout;
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
+    if (callNow) { func.apply(context, args); }
   };
 }
 
 type Props = {
-  autoParse;
+  autoParse: boolean;
   history;
-  mode;
-  parse;
+  mode: Mode;
+  parse: boolean;
   value?: string;
 
   onChange?: (...args: any[]) => any;
-  parseSpec;
-  updateEditorString;
-  updateVegaLiteSpec;
-  updateVegaSpec;
+  parseSpec: Function;
+  updateEditorString: Function;
+  updateVegaLiteSpec: Function;
+  updateVegaSpec: Function;
 };
 
 type State = {
@@ -64,10 +64,10 @@ class Editor extends React.Component<Props, State> {
       code: this.props.value,
     };
   }
-  editorDidMount(editor) {
+  public editorDidMount(editor) {
     editor.focus();
   }
-  handleEditorChange(spec) {
+  public handleEditorChange(spec) {
     if (this.props.autoParse) {
       this.updateSpec(spec);
     } else {
@@ -77,39 +77,49 @@ class Editor extends React.Component<Props, State> {
       this.props.history.push('/edited');
     }
   }
-  editorWillMount(monaco) {
+  public editorWillMount(monaco) {
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
       allowComments: true,
       schemas: [schemas[this.props.mode]],
     });
   }
-  componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps) {
     this.setState({code: nextProps.value});
     if (!nextProps.autoParse && nextProps.parse) {
       this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
     }
   }
-  manualParseSpec() {
+  public manualParseSpec() {
     if (!this.props.autoParse) {
       return (
-        <div className="editor-header">
-          <button id="parse-button" onClick={() => this.props.parseSpec(true)}>
+        <div className='editor-header'>
+          <button id='parse-button' onClick={() => this.props.parseSpec(true)}>
             Parse
           </button>
         </div>
       );
     }
   }
-  updateSpec(spec) {
+  public updateSpec(spec) {
     let parsedMode = this.props.mode;
+
     try {
       const schema = JSON.parse(spec).$schema;
-      parsedMode = parser(schema).library;
+
+      switch (parser(schema).library) {
+        case 'vega-lite':
+          parsedMode = Mode.VegaLite;
+          break;
+        case 'vega':
+          parsedMode = Mode.Vega;
+          break;
+      }
     } catch (err) {
       console.warn('Error parsing JSON string', err);
     }
+
     switch (parsedMode) {
       case Mode.Vega:
         this.props.updateVegaSpec(spec);
@@ -122,13 +132,14 @@ class Editor extends React.Component<Props, State> {
         break;
     }
   }
-  render() {
+
+  public render() {
     const code = this.state.code;
     return (
       <div className={'full-height-wrapper'}>
         {this.manualParseSpec()}
         <MonacoEditor
-          language="json"
+          language='json'
           options={{
             folding: true,
             scrollBeyondLastLine: true,

@@ -8,8 +8,6 @@
     "autoprefixer": "8.0.0",
     "awesome-typescript-loader": "3.4.1",
     "babel-core": "6.26.0",
-    "babel-eslint": "8.2.1",
-    "babel-jest": "22.2.2",
     "babel-loader": "7.1.2",
     "babel-preset-react-app": "^3.1.1",
     "babel-preset-react-optimize": "^1.0.1",
@@ -24,13 +22,6 @@
     "detect-port": "1.2.2",
     "dotenv": "5.0.0",
     "dotenv-expand": "4.2.0",
-    "eslint": "4.18.0",
-    "eslint-config-react-app": "^2.1.0",
-    "eslint-loader": "1.9.0",
-    "eslint-plugin-flowtype": "2.44.0",
-    "eslint-plugin-import": "2.8.0",
-    "eslint-plugin-jsx-a11y": "5.0.3",
-    "eslint-plugin-react": "7.6.1",
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.6",
     "filesize": "3.6.0",
@@ -40,7 +31,6 @@
     "gzip-size": "4.1.0",
     "html-webpack-plugin": "2.30.1",
     "http-proxy-middleware": "0.17.4",
-    "jest": "22.3.0",
     "json-loader": "0.5.7",
     "object-assign": "4.1.1",
     "path-exists": "3.0.0",
@@ -57,7 +47,7 @@
     "sw-precache-webpack-plugin": "0.11.4",
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^5.0.0",
-    "typescript": "@next",
+    "typescript": "next",
     "url-loader": "0.6.2",
     "webpack": "3.11.0",
     "webpack-dev-server": "2.11.1",
@@ -97,25 +87,6 @@
     "lint": "tslint -p .",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "jsx",
-      "js",
-      "json"
-    ],
-    "moduleNameMapper": {
-      "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/FileStub.js",
-      "^.+\\.css$": "<rootDir>/config/jest/CSSStub.js"
-    },
-    "setupFiles": [
-      "<rootDir>/config/polyfills.js"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/(build|docs|node_modules)/"
-    ],
-    "testEnvironment": "node",
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(js|jsx)$"
   },
   "babel": {
     "presets": [

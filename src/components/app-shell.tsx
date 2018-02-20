@@ -9,17 +9,17 @@ type Props = {
 };
 
 export default class AppShell extends React.Component<Props> {
-  componentDidUpdate() {
+  public componentDidUpdate() {
     this.props.logPageView();
   }
-  render() {
+  public render() {
     return (
       <div>
-        <Route path="/" component={App} />
-        <Route path="/edited" component={App} />
-        <Route path="/gist/:mode/:username/:id" component={App} />
-        <Route path="/examples/:mode/:example_name" component={App} />
-        <Route path="/custom/:mode" component={App} />
+        <Route path='/' component={App} />
+        <Route path='/edited' component={App} />
+        <Route path='/gist/:mode/:username/:id' component={App} />
+        <Route path='/examples/:mode/:example_name' component={App} />
+        <Route path='/custom/:mode' component={App} />
       </div>
     );
   }

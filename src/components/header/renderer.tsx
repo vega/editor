@@ -5,6 +5,7 @@ import {Portal} from 'react-portal';
 import {withRouter} from 'react-router-dom';
 
 import {LAYOUT, Mode} from '../../constants';
+import {NAMES} from '../../constants/consts';
 import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs';
 
 const formatExampleName = (name) => {
@@ -113,17 +114,8 @@ class Header extends React.Component<Props, State> {
       </div>
     );
     const docsLink = (
-      <a
-        className='button right'
-        href={
-          this.props.mode === Mode.Vega
-            ? 'https://vega.github.io/vega/docs/'
-            : 'https://vega.github.io/vega-lite/docs/'
-        }
-        target='_blank'
-        rel='noopener noreferrer'
-      >
-        {this.props.mode === Mode.Vega ? 'Vega' : 'Vega-Lite'} Docs
+      <a className='button right' href={this.props.mode === Mode.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'} target='_blank' rel='noopener noreferrer'>
+        {NAMES[this.props.mode]} Docs
       </a>
     );
     const customButton = (

@@ -1,8 +1,9 @@
 import {connect} from 'react-redux';
 
+import {State} from '../../constants/default-state';
 import Renderer from './renderer';
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: State, ownProps) {
   return {
     vegaSpec: state.vegaSpec,
     vegaLiteSpec: state.vegaLiteSpec,
@@ -11,4 +12,5 @@ function mapStateToProps(state, ownProps) {
     tooltip: state.tooltip,
   };
 }
+
 export default connect(mapStateToProps)(Renderer);

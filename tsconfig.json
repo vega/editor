@@ -8,12 +8,10 @@
     "sourceMap": true,
     "strictNullChecks": false,
     "jsx": "react",
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "removeComments": true
   },
   "compileOnSave": false,
-  "types": [
-    "node"
-  ],
   "include": [
     "src/**/*.ts",
     "typings/*.d.ts"
