@@ -11,16 +11,26 @@ const vegaSchema = require('../../../../schema/vega.schema.json');
 const vegaLiteSchema = require('../../../../schema/vl.schema.json');
 
 const schemas = {
-  [Mode.Vega]: {
+  [Mode.Vega]: [{
+    uri: 'https://vega.github.io/schema/vega/v3.json',
+    schema: vegaSchema,
+  }, {
     uri: 'https://vega.github.io/schema/vega/v3.0.json',
     schema: vegaSchema,
-    fileMatch: ['*'],
-  },
-  [Mode.VegaLite]: {
+  }, {
+    uri: 'https://vega.github.io/schema/vega/v3.1.json',
+    schema: vegaSchema,
+  }],
+  [Mode.VegaLite]: [{
     uri: 'https://vega.github.io/schema/vega-lite/v2.json',
     schema: vegaLiteSchema,
-    fileMatch: ['*'],
-  },
+  }, {
+    uri: 'https://vega.github.io/schema/vega-lite/v2.0.json',
+    schema: vegaLiteSchema,
+  }, {
+    uri: 'https://vega.github.io/schema/vega-lite/v2.1.json',
+    schema: vegaLiteSchema,
+  }],
 };
 
 function debounce(func, wait, immediate?) {
@@ -80,8 +90,8 @@ class Editor extends React.Component<Props, State> {
   public editorWillMount(monaco) {
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
-      allowComments: true,
-      schemas: [schemas[this.props.mode]],
+      allowComments: false,
+      schemas: schemas[this.props.mode],
     });
   }
   public componentWillReceiveProps(nextProps) {
