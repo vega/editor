@@ -59,6 +59,7 @@
     ],
     "one-variable-per-declaration": [true],
     "prefer-readonly": true,
+    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
     "typedef-whitespace": [
       true,
       {

@@ -1,5 +1,4 @@
 import * as vl from 'vega-lite';
-import {vals} from 'vega-lite/src/util';
 
 import {
   Action,

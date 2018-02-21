@@ -1,16 +1,16 @@
 export enum Mode {
   Vega,
-  VegaLite
+  VegaLite,
 }
 
 export const NAME_TO_MODE = {
   vega: Mode.Vega,
-  'vega-lite': Mode.VegaLite
+  'vega-lite': Mode.VegaLite,
 };
 
 export const NAMES = {
   [Mode.Vega]: 'Vega',
-  [Mode.VegaLite]: 'Vega-Lite'
+  [Mode.VegaLite]: 'Vega-Lite',
 };
 
 export const LAYOUT = {HeaderHeight: 56};
