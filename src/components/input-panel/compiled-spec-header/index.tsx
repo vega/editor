@@ -21,23 +21,23 @@ type Props = {
 };
 
 class CompiledSpecDisplayHeader extends React.Component<Props> {
-  editVegaSpec() {
+  public editVegaSpec() {
     this.props.updateVegaSpec(JSON.stringify(this.props.value, null, 2));
   }
-  render() {
+  public render() {
     if (this.props.compiledVegaSpec) {
       const toggleStyleUp = Object.assign({}, toggleStyle, {
         position: 'static',
       });
       return (
         <div
-          className="editor-header"
+          className='editor-header'
           style={toggleStyleUp}
           onClick={this.props.showCompiledVegaSpec}
         >
           <span style={{marginLeft: 10}}>Compiled Vega</span>
           <svg style={svgStyle}>
-            <polygon points="5,5 30,5 17.5,20" />
+            <polygon points='5,5 30,5 17.5,20' />
           </svg>
           <button
             onClick={this.editVegaSpec.bind(this)}
@@ -51,12 +51,12 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
       return (
         <div
           onClick={this.props.showCompiledVegaSpec}
-          className="editor-header"
+          className='editor-header'
           style={toggleStyle}
         >
           <span style={{marginLeft: 10}}>Compiled Vega</span>
           <svg style={svgStyle}>
-            <polygon points="5,20 30,20 17.5,5" />
+            <polygon points='5,20 30,20 17.5,5' />
           </svg>
         </div>
       );

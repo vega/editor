@@ -44,7 +44,7 @@ export default class Editor extends React.Component<Props> {
       }
     }
 
-    window.VEGA_DEBUG.view = view;
+    (window as any).VEGA_DEBUG.view = view;
   }
   public componentDidMount() {
     this.renderVega(this.props);

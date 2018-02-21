@@ -13,9 +13,9 @@ type Props = {
   errorPane?: boolean;
 };
 export default class VizPane extends React.Component<Props> {
-  render() {
+  public render() {
     const container = (
-      <div className="chart-container">
+      <div className='chart-container'>
         <ErrorBoundary>
           <Renderer />
         </ErrorBoundary>
@@ -25,7 +25,7 @@ export default class VizPane extends React.Component<Props> {
     if (this.props.errorPane) {
       return (
         <SplitPane
-          split="horizontal"
+          split='horizontal'
           defaultSize={window.innerHeight * 0.6}
           paneStyle={{display: 'flex'}}
         >

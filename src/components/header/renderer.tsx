@@ -62,7 +62,7 @@ class Header extends React.Component<Props & {history: any}, State> {
     if (validateUrl(gistUrl)) {
       this.setState({
         url: '',
-        invalidUrl: false
+        invalidUrl: false,
       });
       const username = this.getGistNameAndId(gistUrl)[0];
       const id = this.getGistNameAndId(gistUrl)[1];
@@ -70,7 +70,7 @@ class Header extends React.Component<Props & {history: any}, State> {
       closePortal();
     } else {
       this.setState({
-        invalidUrl: true
+        invalidUrl: true,
       });
     }
   }
@@ -78,7 +78,7 @@ class Header extends React.Component<Props & {history: any}, State> {
     if (validateUrl(gistUrl)) {
       this.setState({
         url: '',
-        invalidUrl: false
+        invalidUrl: false,
       });
       const username = this.getGistNameAndId(gistUrl)[0];
       const id = this.getGistNameAndId(gistUrl)[1];
@@ -86,7 +86,7 @@ class Header extends React.Component<Props & {history: any}, State> {
       closePortal();
     } else {
       this.setState({
-        invalidUrl: true
+        invalidUrl: true,
       });
     }
   }
@@ -265,7 +265,7 @@ class Header extends React.Component<Props & {history: any}, State> {
                   </div>
                 </div>
               </div>
-            )
+            ),
           ]}
         </PortalWithState>
         <PortalWithState closeOnEsc>
@@ -282,7 +282,7 @@ class Header extends React.Component<Props & {history: any}, State> {
                   <div className='modal' onClick={(e) => {e.stopPropagation();}}>{gist(closePortal)}</div>
                 </div>
               </div>
-            )
+            ),
           ]}
         </PortalWithState>
         <span>{docsLink}</span>

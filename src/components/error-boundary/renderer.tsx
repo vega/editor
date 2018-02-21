@@ -8,13 +8,13 @@ type Props = {
   error?: string;
 };
 export default class ErrorBoundary extends React.Component<Props> {
-  componentDidCatch(error, info) {
+  public componentDidCatch(error, info) {
     this.props.logError(error.toString());
   }
-  render() {
+  public render() {
     if (this.props.error) {
       return (
-        <div id="error-indicator" onClick={(e) => this.props.showErrorPane()}>
+        <div id='error-indicator' onClick={(e) => this.props.showErrorPane()}>
           {this.props.error}
         </div>
       );
