@@ -52,7 +52,7 @@ class App extends React.Component<Props & {match: any, location: any}> {
     }
   }
   public setSpecInUrl(parameter) {
-    if (parameter && parameter.mode && this.props.location.pathname.indexOf('/edited') === -1) {
+    if (parameter) {
       if (parameter.example_name) {
         this.setExample(parameter);
       } else if (parameter.username && parameter.id) {
