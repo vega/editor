@@ -93,7 +93,11 @@ class Header extends React.Component<Props & {history: any}, State> {
     }
   }
   public getGistNameAndId(gistUrl) {
-    const suffix = gistUrl.substring(gistUrl.indexOf('.com/') + './com'.length);
+    let suffix;
+    if(gistUrl.indexOf('.com/') === -1)
+      suffix = gistUrl;
+    else
+      suffix = gistUrl.substring(gistUrl.indexOf('.com/') + './com'.length);
     const arrayNames = suffix.split('/');
     if (arrayNames.length < 2) {
       console.warn('invalid url');
