@@ -210,18 +210,6 @@
   margin-top: 20px;
 }
 
-.gist-advanced:after {
-  display: table;
-  content: '';
-  clear: both;
-}
-
-.gist-advanced-input-container {
-  float: left;
-  width: 50%;
-  box-sizing: border-box;
-}
-
 .gist-input {
   display: block;
   width: 100%;

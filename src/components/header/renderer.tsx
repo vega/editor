@@ -43,6 +43,8 @@ type State = {
 };
 
 class Header extends React.Component<Props & {history: any}, State> {
+  refGistForm: HTMLFormElement;
+
   constructor(props) {
     super(props);
     // $FixMe - default state?
@@ -89,6 +91,14 @@ class Header extends React.Component<Props & {history: any}, State> {
     const url = this.state.gist.url.toLowerCase().trim();
     const revision = this.state.gist.revision.toLowerCase().trim();
     const filename = this.state.gist.filename.toLowerCase().trim();
+
+    if (url.length === 0 || filename.length === 0) {
+      console.log(1)
+      this.refGistForm.checkValidity();
+
+      return;
+    }
+    console.log(2)
 
     const gistUrl = new URL(url, 'https://gist.github.com');
 
@@ -233,29 +243,29 @@ class Header extends React.Component<Props & {history: any}, State> {
           <div className='gist-content'>
             <div className='gist-text'>For example (Vega-Lite)</div>
             <div className='gist-url'>
-            https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9
+              https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9
             </div>
-            <label className='gist-input-container'>
-              Gist URL
-              <input className='gist-input' type='text' placeholder='enter gist url here' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
-            </label>
-            <div className='gist-advanced'>
-              <label className='gist-input-container gist-advanced-input-container'>
-                Gist Revision
-                <input className='gist-input' type='text' placeholder='3c293816596d087b12c01bed93ffc8963ccf0fc2' value={this.state.gist.revision} onChange={this.updateGistRevision.bind(this)}/>
+            <form ref={(form) => this.refGistForm = form}>
+              <label className='gist-input-container'>
+                Gist URL
+                <input required className='gist-input' type='text' placeholder='Enter gist URL here' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
               </label>
-              <label className='gist-input-container gist-advanced-input-container'>
-                Gist Filename
-                <input className='gist-input' type='text' placeholder='bar.vl.json' value={this.state.gist.filename} onChange={this.updateGistFile.bind(this)}/>
+              <label className='gist-input-container'>
+                Data Filename
+                <input required className='gist-input' type='text' placeholder='Enter the JSON data filename' value={this.state.gist.filename} onChange={this.updateGistFile.bind(this)}/>
               </label>
-            </div>
-            <div className='error-message'>{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
-            <button className='gist-button' onClick={() => {this.onSelectVegaGist(closePortal);}}>
-              Vega
-            </button>
-            <button className='gist-button' onClick={() => {this.onSelectVegaLiteGist(closePortal);}}>
-              Vega-Lite
-            </button>
+              <label className='gist-input-container'>
+                Revision (<small>Optional</small>)
+                <input className='gist-input' type='text' placeholder='Enter specific revison hash' value={this.state.gist.revision} onChange={this.updateGistRevision.bind(this)}/>
+              </label>
+              <div className='error-message'>{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
+              <button className='gist-button' onClick={() => {this.onSelectVegaGist(closePortal);}}>
+                Vega
+              </button>
+              <button className='gist-button' onClick={() => {this.onSelectVegaLiteGist(closePortal);}}>
+                Vega-Lite
+              </button>
+            </form>
           </div>
         </div>
       );
