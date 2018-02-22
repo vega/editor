@@ -85,7 +85,7 @@ class Header extends React.Component<Props & {history: any}, State> {
   public onSelectNewVegaLite() {
     this.props.history.push('/custom/vega-lite');
   }
-  public async onSelectVegaGist(closePortal) {
+  public async onSelectGist(gistType, closePortal) {
     const url = this.state.gist.url.toLowerCase().trim();
     const revision = this.state.gist.revision.toLowerCase().trim();
     const filename = this.state.gist.filename.toLowerCase().trim();
@@ -117,7 +117,7 @@ class Header extends React.Component<Props & {history: any}, State> {
 
     const [username, gistId] = gistUrl.pathname.split('/').slice(1);
 
-    let nextUrl = `/gist/vega/${username}/${gistId}`;
+    let nextUrl = `/gist/${gistType}/${username}/${gistId}`;
 
     if (revision !== '') {
       nextUrl = `${nextUrl}/${revision}`;
@@ -140,58 +140,11 @@ class Header extends React.Component<Props & {history: any}, State> {
 
     closePortal();
   }
-  public async onSelectVegaLiteGist(closePortal) {
-    const {url, revision, filename} = this.state.gist;
-
-    const gistUrl = new URL(url, 'https://gist.github.com');
-
-    let rawUrl = gistUrl;
-
-    if (isRawUrl(gistUrl) === false) {
-      rawUrl = new URL(gistUrl.pathname, 'https://gist.githubusercontent.com');
-      rawUrl.pathname += '/raw';
-
-      if (revision !== '') {
-        rawUrl.pathname += `/${revision}`;
-      }
-
-      if (filename !== '') {
-        rawUrl.pathname += `/${filename}`;
-      }
-    }
-
-    const response = await fetch(rawUrl.href, { mode: 'no-cors' });
-
-    if (response.status === 404) {
-      this.setState({invalidUrl: true});
-
-      return;
-    }
-
-    const [username, gistId] = gistUrl.pathname.split('/').slice(1);
-
-    let nextUrl = `/gist/vega-lite/${username}/${gistId}`;
-
-    if (revision !== '') {
-      nextUrl = `${nextUrl}/${revision}`;
-    }
-
-    if (filename !== '') {
-      nextUrl = `${nextUrl}/${filename}`;
-    }
-
-    this.props.history.push(nextUrl);
-
-    this.setState({
-      gist: {
-        url: '',
-        revision: '',
-        filename: '',
-      },
-      invalidUrl: false,
-    });
-
-    closePortal();
+  public onSelectVegaGist(closePortal) {
+    this.onSelectGist('vega', closePortal);
+  }
+  public onSelectVegaLiteGist(closePortal) {
+    this.onSelectGist('vega-lite', closePortal);
   }
   public getGistNameAndId(gistUrl) {
     const suffix = gistUrl.indexOf('.com/') === -1 ? gistUrl : gistUrl.substring(gistUrl.indexOf('.com/') + './com'.length);
