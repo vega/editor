@@ -117,14 +117,10 @@ class Header extends React.Component<Props & {history: any}, State> {
 
     const [username, gistId] = gistUrl.pathname.split('/').slice(1);
 
-    let nextUrl = `/gist/${gistType}/${username}/${gistId}`;
+    let nextUrl = `/gist/${gistType}/${username}/${gistId}/${filename}`;
 
     if (revision !== '') {
       nextUrl = `${nextUrl}/${revision}`;
-    }
-
-    if (filename !== '') {
-      nextUrl = `${nextUrl}/${filename}`;
     }
 
     this.props.history.push(nextUrl);

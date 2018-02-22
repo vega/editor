@@ -44,7 +44,6 @@ class App extends React.Component<Props & {match: any, location: any}> {
     );
 
     const parameter = this.props.match.params;
-    console.log(this.props.match.params)
     this.setSpecInUrl(parameter);
   }
   public componentWillReceiveProps(nextProps) {
@@ -63,43 +62,38 @@ class App extends React.Component<Props & {match: any, location: any}> {
       }
     }
   }
-  public setGist(parameter: {mode: string, username: string, id: string}) {
-    const prefix = 'https://hook.io/tianyiii/vegaeditor';
-    const mode = parameter.mode;
-    const hookUrl = `${prefix}/${mode}/${parameter.username}/${
-      parameter.id
-    }`;
-    fetch(hookUrl, {
-      method: 'get',
-      mode: 'cors',
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return Promise.resolve(response);
-        } else {
-          return Promise.reject(new Error(response.statusText));
-        }
-      })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data['message'] !== 'Not Found') {
-          if (mode === 'vega') {
-            this.props.setGistVegaSpec(hookUrl, JSON.stringify(data, null, 2));
-          } else if (mode === 'vega-lite') {
-            this.props.setGistVegaLiteSpec(
-              hookUrl,
-              JSON.stringify(data, null, 2),
-            );
-          }
-        } else {
-          console.warn('invalid url');
-        }
-      })
-      .catch((ex) => {
-        console.error(ex);
-      });
+  public async setGist(parameter: {mode: string, username: string, id: string, filename: string, revision?: string}) {
+    const rawUrl = new URL(
+      `${parameter.username}/${parameter.id}/raw`,
+      'https://gist.githubusercontent.com'
+    );
+
+    if (parameter.revision !== undefined) {
+      rawUrl.pathname += `/${parameter.revision}`;
+    }
+
+    if (parameter.filename !== undefined) {
+      rawUrl.pathname += `/${parameter.filename}`;
+    }
+
+    const response = await fetch(rawUrl.href);
+
+    if (response.status !== 200) {
+      console.error(response.statusText);
+
+      return;
+    }
+
+    const data = await response.json();
+
+    if (parameter.mode === 'vega') {
+      this.props.setGistVegaSpec(rawUrl.href, JSON.stringify(data, null, 2));
+    } else if (parameter.mode === 'vega-lite') {
+      this.props.setGistVegaLiteSpec(
+        rawUrl.href,
+        JSON.stringify(data, null, 2),
+      );
+    }
   }
 
   public setExample(parameter: {example_name: string, mode: string}) {
