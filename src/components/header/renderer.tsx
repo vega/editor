@@ -181,9 +181,22 @@ class Header extends React.Component<Props & {history: any}, State> {
           <div className='gist-content'>
             <div className='gist-text'>For example (Vega-Lite)</div>
             <div className='gist-url'>
-            https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9
+            https://github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9
             </div>
-            <input className='gist-input' type='text' placeholder='enter gist url here' value={this.state.url} onChange={this.handleChange.bind(this)}/>
+            <label className='gist-input-container'>
+              Gist URL
+              <input className='gist-input' type='text' placeholder='enter gist url here' value={this.state.url} onChange={this.handleChange.bind(this)}/>
+            </label>
+            <div className='gist-advanced'>
+              <label className='gist-input-container gist-advanced-input-container'>
+                Gist Revision
+                <input className='gist-input' type='text' placeholder='3c293816596d087b12c01bed93ffc8963ccf0fc2'/>
+              </label>
+              <label className='gist-input-container gist-advanced-input-container'>
+                Gist File
+                <input className='gist-input' type='text' placeholder='bar.vl.json'/>
+              </label>
+            </div>
             <div className='error-message'>{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
             <button className='gist-button' onClick={() => {this.onSelectVegaGist(this.state.url, closePortal);}}>
               Vega

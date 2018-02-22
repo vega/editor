@@ -205,12 +205,28 @@
   color: rgb(6,69,173);
 }
 
+.gist-input-container {
+  display: block;
+  margin-top: 20px;
+}
+
+.gist-advanced:after {
+  display: table;
+  content: '';
+  clear: both;
+}
+
+.gist-advanced-input-container {
+  float: left;
+  width: 50%;
+  box-sizing: border-box;
+}
+
 .gist-input {
   display: block;
   width: 100%;
   resize: none;
   font-size: 14px;
-  margin-top: 20px;
   padding: 5px;
 }
 
