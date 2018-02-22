@@ -35,8 +35,8 @@ type State = {
   showVega: boolean;
   gist: {
     url: string;
-    revision: string;
     filename: string;
+    revision: string;
   };
   width?: number;
   invalidUrl?: boolean;
@@ -52,8 +52,8 @@ class Header extends React.Component<Props & {history: any}, State> {
       showVega: props.mode === Mode.Vega,
       gist: {
         url: '',
-        revision: '',
         filename: '',
+        revision: '',
       },
     };
     this.onSelectVega = this.onSelectVega.bind(this);
@@ -88,17 +88,15 @@ class Header extends React.Component<Props & {history: any}, State> {
     this.props.history.push('/custom/vega-lite');
   }
   public async onSelectGist(gistType, closePortal) {
-    const url = this.state.gist.url.toLowerCase().trim();
-    const revision = this.state.gist.revision.toLowerCase().trim();
-    const filename = this.state.gist.filename.toLowerCase().trim();
+    const url = this.state.gist.url.trim().toLowerCase();
+    const filename = this.state.gist.filename.trim();
+    const revision = this.state.gist.revision.trim().toLowerCase();
 
     if (url.length === 0 || filename.length === 0) {
-      console.log(1)
       this.refGistForm.checkValidity();
 
       return;
     }
-    console.log(2)
 
     const gistUrl = new URL(url, 'https://gist.github.com');
 
@@ -112,9 +110,7 @@ class Header extends React.Component<Props & {history: any}, State> {
         rawUrl.pathname += `/${revision}`;
       }
 
-      if (filename !== '') {
-        rawUrl.pathname += `/${filename}`;
-      }
+      rawUrl.pathname += `/${filename}`;
     }
 
     const response = await fetch(rawUrl.href, { mode: 'no-cors' });
@@ -151,15 +147,6 @@ class Header extends React.Component<Props & {history: any}, State> {
   }
   public onSelectVegaLiteGist(closePortal) {
     this.onSelectGist('vega-lite', closePortal);
-  }
-  public getGistNameAndId(gistUrl) {
-    const suffix = gistUrl.indexOf('.com/') === -1 ? gistUrl : gistUrl.substring(gistUrl.indexOf('.com/') + './com'.length);
-    const arrayNames = suffix.split('/');
-    if (arrayNames.length < 2) {
-      console.warn('invalid url');
-      return;
-    }
-    return arrayNames;
   }
   public render() {
     const examplesButton = (
@@ -239,24 +226,20 @@ class Header extends React.Component<Props & {history: any}, State> {
     const gist = (closePortal) => {
       return (
         <div>
-          <header>Enter Gist URL: </header>
+          <h2>Load Gist</h2>
           <div className='gist-content'>
-            <div className='gist-text'>For example (Vega-Lite)</div>
-            <div className='gist-url'>
-              https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9
-            </div>
             <form ref={(form) => this.refGistForm = form}>
               <label className='gist-input-container'>
                 Gist URL
-                <input required className='gist-input' type='text' placeholder='Enter gist URL here' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
+                <input required className='gist-input' type='text' placeholder='https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
               </label>
               <label className='gist-input-container'>
                 Data Filename
-                <input required className='gist-input' type='text' placeholder='Enter the JSON data filename' value={this.state.gist.filename} onChange={this.updateGistFile.bind(this)}/>
+                <input required className='gist-input' type='text' placeholder='Data Filename' value={this.state.gist.filename} onChange={this.updateGistFile.bind(this)}/>
               </label>
               <label className='gist-input-container'>
                 Revision (<small>Optional</small>)
-                <input className='gist-input' type='text' placeholder='Enter specific revison hash' value={this.state.gist.revision} onChange={this.updateGistRevision.bind(this)}/>
+                <input className='gist-input' type='text' placeholder='Revison' value={this.state.gist.revision} onChange={this.updateGistRevision.bind(this)}/>
               </label>
               <div className='error-message'>{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
               <button className='gist-button' onClick={() => {this.onSelectVegaGist(closePortal);}}>
