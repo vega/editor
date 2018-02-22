@@ -44,6 +44,7 @@ class App extends React.Component<Props & {match: any, location: any}> {
     );
 
     const parameter = this.props.match.params;
+    console.log(this.props.match.params)
     this.setSpecInUrl(parameter);
   }
   public componentWillReceiveProps(nextProps) {
