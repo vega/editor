@@ -24,9 +24,10 @@ type State = {
   left?: any;
   showVega: boolean;
   gist: {
+    type: string;
     url: string;
-    filename: string;
     revision: string;
+    filename: string;
   };
   width?: number;
   invalidUrl?: boolean;
@@ -41,9 +42,10 @@ class Header extends React.Component<Props & {history: any}, State> {
     this.state = {
       showVega: props.mode === Mode.Vega,
       gist: {
+        type: 'vega',
         url: '',
-        filename: '',
         revision: '',
+        filename: '',
       },
     };
     this.onSelectVega = this.onSelectVega.bind(this);
@@ -55,6 +57,9 @@ class Header extends React.Component<Props & {history: any}, State> {
         ...gist,
       }
     });
+  }
+  public updateGistType(event) {
+    this.updateGist({type: event.currentTarget.value});
   }
   public updateGistUrl(event) {
     this.updateGist({url: event.currentTarget.value});
@@ -77,7 +82,8 @@ class Header extends React.Component<Props & {history: any}, State> {
   public onSelectNewVegaLite() {
     this.props.history.push('/custom/vega-lite');
   }
-  public async onSelectGist(gistType, closePortal) {
+  public async onSelectGist(closePortal) {
+    const type = this.state.gist.type;
     const url = this.state.gist.url.trim().toLowerCase();
 
     let revision = this.state.gist.revision.trim().toLowerCase();
@@ -108,10 +114,11 @@ class Header extends React.Component<Props & {history: any}, State> {
       }
     }
 
-    this.props.history.push(`/gist/${gistType}/${username}/${gistId}/${revision}/${filename}`);
+    this.props.history.push(`/gist/${type}/${username}/${gistId}/${revision}/${filename}`);
 
     this.setState({
       gist: {
+        type: 'vega',
         url: '',
         revision: '',
         filename: '',
@@ -121,12 +128,6 @@ class Header extends React.Component<Props & {history: any}, State> {
     });
 
     closePortal();
-  }
-  public onSelectVegaGist(closePortal) {
-    this.onSelectGist('vega', closePortal);
-  }
-  public onSelectVegaLiteGist(closePortal) {
-    this.onSelectGist('vega-lite', closePortal);
   }
   public render() {
     const examplesButton = (
@@ -210,6 +211,13 @@ class Header extends React.Component<Props & {history: any}, State> {
           <div className='gist-content'>
             <form ref={(form) => this.refGistForm = form}>
               <div className='gist-input-container'>
+                Gist Type:
+                <input type="radio" name="gist-type" id="gist-type[vega]" value="vega" checked={this.state.gist.type === 'vega'} onChange={this.updateGistType.bind(this)} />
+                <label htmlFor="gist-type[vega]">Vega</label>
+                <input type="radio" name="gist-type" id="gist-type[vega-lite]" value="vega-lite" checked={this.state.gist.type === 'vega-lite'} onChange={this.updateGistType.bind(this)} />
+                <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
+              </div>
+              <div className='gist-input-container'>
                 <label>
                   Gist URL
                   <input required className='gist-input' type='text' placeholder='https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
@@ -230,11 +238,8 @@ class Header extends React.Component<Props & {history: any}, State> {
                 </div>
               </div>
               <div className='error-message'>{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
-              <button className='gist-button' onClick={() => {this.onSelectVegaGist(closePortal);}}>
-                Vega
-              </button>
-              <button className='gist-button' onClick={() => {this.onSelectVegaLiteGist(closePortal);}}>
-                Vega-Lite
+              <button type='button' className='gist-button' onClick={() => {this.onSelectGist(closePortal);}}>
+                Load
               </button>
             </form>
           </div>
