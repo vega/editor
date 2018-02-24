@@ -15,16 +15,6 @@ const formatExampleName = (name) => {
     .join(' ');
 };
 
-function isRawUrl(url) {
-  const protocol = 'https?:';
-  const host = 'gist\\.github(?:usercontent)?\\.com';
-  const rawUrlPattern = new RegExp(
-    `${protocol}//${host}/.+/.{32}/raw(?:/.{32})?(?:/.+)?/?`
-  );
-
-  return rawUrlPattern.test(url);
-}
-
 type Props = {
   mode: Mode;
 };
@@ -58,7 +48,7 @@ class Header extends React.Component<Props & {history: any}, State> {
     };
     this.onSelectVega = this.onSelectVega.bind(this);
   }
-  public handleChange(gist) {
+  public updateGist(gist) {
     this.setState({
       gist: {
         ...this.state.gist,
@@ -67,13 +57,13 @@ class Header extends React.Component<Props & {history: any}, State> {
     });
   }
   public updateGistUrl(event) {
-    this.handleChange({url: event.currentTarget.value});
+    this.updateGist({url: event.currentTarget.value});
   }
   public updateGistRevision(event) {
-    this.handleChange({revision: event.currentTarget.value});
+    this.updateGist({revision: event.currentTarget.value});
   }
   public updateGistFile(event) {
-    this.handleChange({filename: event.currentTarget.value});
+    this.updateGist({filename: event.currentTarget.value});
   }
   public onSelectVega(name) {
     this.props.history.push('/examples/vega/' + name);
@@ -89,47 +79,36 @@ class Header extends React.Component<Props & {history: any}, State> {
   }
   public async onSelectGist(gistType, closePortal) {
     const url = this.state.gist.url.trim().toLowerCase();
-    const filename = this.state.gist.filename.trim();
-    const revision = this.state.gist.revision.trim().toLowerCase();
 
-    if (url.length === 0 || filename.length === 0) {
+    let revision = this.state.gist.revision.trim().toLowerCase();
+    let filename = this.state.gist.filename.trim();
+
+    if (url.length === 0) {
       this.refGistForm.checkValidity();
 
       return;
     }
 
     const gistUrl = new URL(url, 'https://gist.github.com');
-
-    let rawUrl = gistUrl;
-
-    if (isRawUrl(gistUrl) === false) {
-      rawUrl = new URL(gistUrl.pathname, 'https://gist.githubusercontent.com');
-      rawUrl.pathname += '/raw';
-
-      if (revision !== '') {
-        rawUrl.pathname += `/${revision}`;
-      }
-
-      rawUrl.pathname += `/${filename}`;
-    }
-
-    const response = await fetch(rawUrl.href, { mode: 'no-cors' });
-
-    if (response.status === 404) {
-      this.setState({invalidUrl: true});
-
-      return;
-    }
-
     const [username, gistId] = gistUrl.pathname.split('/').slice(1);
 
-    let nextUrl = `/gist/${gistType}/${username}/${gistId}/${filename}`;
+    if (revision.length === 0) {
+      const gistCommits = await fetch(`https://api.github.com/gists/${gistId}/commits`).then(r => r.json());
 
-    if (revision !== '') {
-      nextUrl = `${nextUrl}/${revision}`;
+      revision = gistCommits[0].version;
     }
 
-    this.props.history.push(nextUrl);
+    if (filename.length === 0) {
+      const gistData = await fetch(`https://api.github.com/gists/${gistId}`).then(r => r.json());
+
+      filename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
+
+      if (filename === undefined) {
+        throw Error();
+      }
+    }
+
+    this.props.history.push(`/gist/${gistType}/${username}/${gistId}/${revision}/${filename}`);
 
     this.setState({
       gist: {
@@ -137,6 +116,7 @@ class Header extends React.Component<Props & {history: any}, State> {
         revision: '',
         filename: '',
       },
+
       invalidUrl: false,
     });
 
@@ -234,12 +214,12 @@ class Header extends React.Component<Props & {history: any}, State> {
                 <input required className='gist-input' type='text' placeholder='https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
               </label>
               <label className='gist-input-container'>
-                Data Filename
-                <input required className='gist-input' type='text' placeholder='Data Filename' value={this.state.gist.filename} onChange={this.updateGistFile.bind(this)}/>
-              </label>
-              <label className='gist-input-container'>
                 Revision (<small>Optional</small>)
                 <input className='gist-input' type='text' placeholder='Revison' value={this.state.gist.revision} onChange={this.updateGistRevision.bind(this)}/>
+              </label>
+              <label className='gist-input-container'>
+                Data Filename
+                <input className='gist-input' type='text' placeholder='Data Filename' value={this.state.gist.filename} onChange={this.updateGistFile.bind(this)}/>
               </label>
               <div className='error-message'>{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
               <button className='gist-button' onClick={() => {this.onSelectVegaGist(closePortal);}}>

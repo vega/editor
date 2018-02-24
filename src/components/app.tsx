@@ -62,19 +62,10 @@ class App extends React.Component<Props & {match: any, location: any}> {
       }
     }
   }
-  public async setGist(parameter: {mode: string, username: string, id: string, filename: string, revision?: string}) {
+  public async setGist(parameter: {mode: string, username: string, id: string, revision: string, filename: string}) {
     const rawUrl = new URL(
-      `${parameter.username}/${parameter.id}/raw`,
-      'https://gist.githubusercontent.com'
+      `https://gist.githubusercontent.com/${parameter.username}/${parameter.id}/raw/${parameter.revision}/${parameter.filename}`
     );
-
-    if (parameter.revision !== undefined) {
-      rawUrl.pathname += `/${parameter.revision}`;
-    }
-
-    if (parameter.filename !== undefined) {
-      rawUrl.pathname += `/${parameter.filename}`;
-    }
 
     const response = await fetch(rawUrl.href);
 
@@ -84,15 +75,12 @@ class App extends React.Component<Props & {match: any, location: any}> {
       return;
     }
 
-    const data = await response.json();
+    const spec = await response.text();
 
     if (parameter.mode === 'vega') {
-      this.props.setGistVegaSpec(rawUrl.href, JSON.stringify(data, null, 2));
+      this.props.setGistVegaSpec(rawUrl.href, spec);
     } else if (parameter.mode === 'vega-lite') {
-      this.props.setGistVegaLiteSpec(
-        rawUrl.href,
-        JSON.stringify(data, null, 2),
-      );
+      this.props.setGistVegaLiteSpec(rawUrl.href, spec);
     }
   }
 
