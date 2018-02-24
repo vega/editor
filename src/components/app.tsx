@@ -63,24 +63,16 @@ class App extends React.Component<Props & {match: any, location: any}> {
     }
   }
   public async setGist(parameter: {mode: string, username: string, id: string, revision: string, filename: string}) {
-    const rawUrl = new URL(
-      `https://gist.githubusercontent.com/${parameter.username}/${parameter.id}/raw/${parameter.revision}/${parameter.filename}`
-    );
+    const gistUrl = `https://api.github.com/gists/${parameter.id}/${parameter.revision}`;
 
-    const response = await fetch(rawUrl.href);
+    const gistData = await fetch(gistUrl).then(r => r.json());
 
-    if (response.status !== 200) {
-      console.error(response.statusText);
-
-      return;
-    }
-
-    const spec = await response.text();
+    const spec = gistData.files[parameter.filename].content;
 
     if (parameter.mode === 'vega') {
-      this.props.setGistVegaSpec(rawUrl.href, spec);
+      this.props.setGistVegaSpec(gistUrl, spec);
     } else if (parameter.mode === 'vega-lite') {
-      this.props.setGistVegaLiteSpec(rawUrl.href, spec);
+      this.props.setGistVegaLiteSpec(gistUrl, spec);
     }
   }
 
