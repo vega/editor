@@ -90,7 +90,7 @@ class Header extends React.Component<Props & {history: any}, State> {
     let filename = this.state.gist.filename.trim();
 
     if (url.length === 0) {
-      this.refGistForm.checkValidity();
+      this.refGistForm.reportValidity();
 
       return;
     }
