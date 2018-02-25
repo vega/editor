@@ -209,6 +209,8 @@ class Header extends React.Component<Props & {history: any}, State> {
         <div>
           <h2>Load Gist</h2>
           <div className='gist-content'>
+            <div className="gist-text">For example (Vega-Lite)</div>
+            <div className="gist-url">https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9</div>
             <form ref={(form) => this.refGistForm = form}>
               <div className='gist-input-container'>
                 Gist Type:
@@ -220,20 +222,20 @@ class Header extends React.Component<Props & {history: any}, State> {
               <div className='gist-input-container'>
                 <label>
                   Gist URL
-                  <input required className='gist-input' type='text' placeholder='https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
+                  <input required className='gist-input' type='text' placeholder='Enter url' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
                 </label>
               </div>
               <div className='gist-optional'>
                 <div className='gist-input-container gist-optional-input-container'>
                   <label>
                     Revision (<small>optional</small>)
-                    <input className='gist-input' type='text' placeholder='3c293816596d087b12c01bed93ffc8963ccf0fc2' value={this.state.gist.revision} onChange={this.updateGistRevision.bind(this)}/>
+                    <input className='gist-input' type='text' placeholder='Enter revision' value={this.state.gist.revision} onChange={this.updateGistRevision.bind(this)}/>
                   </label>
                 </div>
                 <div className='gist-input-container gist-optional-input-container'>
                   <label>
                     Filename (<small>optional</small>)
-                    <input className='gist-input' type='text' placeholder='bar.vl.json' value={this.state.gist.filename} onChange={this.updateGistFile.bind(this)}/>
+                    <input className='gist-input' type='text' placeholder='Enter filename' value={this.state.gist.filename} onChange={this.updateGistFile.bind(this)}/>
                   </label>
                 </div>
               </div>
