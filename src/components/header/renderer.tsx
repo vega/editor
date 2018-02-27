@@ -292,27 +292,27 @@ class Header extends React.Component<Props & {history: any}, State> {
             </span>,
             portal(
               <div className='modal-background' onClick={closePortal}>
-                <div className='modal-header'>
-                  <div className='button-groups' onClick={(e) => {e.stopPropagation();}}>
-                    <button className={this.state.showVega ? 'selected' : ''}
-                      onClick={() => {
-                        this.setState({showVega: true});
-                      }}
-                    >
-                      {'Vega'}
-                    </button>
-                    <button className={this.state.showVega ? '' : 'selected'}
-                      onClick={() => {
-                        this.setState({showVega: false});
-                      }}
-                    >
-                      {'Vega-Lite'}
-                    </button>
+                <div className='modal'>
+                  <div className='modal-header'>
+                    <div className='button-groups' onClick={(e) => {e.stopPropagation();}}>
+                      <button className={this.state.showVega ? 'selected' : ''}
+                        onClick={() => {
+                          this.setState({showVega: true});
+                        }}
+                      >
+                        {'Vega'}
+                      </button>
+                      <button className={this.state.showVega ? '' : 'selected'}
+                        onClick={() => {
+                          this.setState({showVega: false});
+                        }}
+                      >
+                        {'Vega-Lite'}
+                      </button>
+                    </div>
+                    <button className='close-button' onClick={closePortal}>✖</button>
                   </div>
-                  <button className='close-button' onClick={closePortal}>✖</button>
-                </div>
-                <div className='modal-area'>
-                  <div className='modal' onClick={(e) => {e.stopPropagation();}}>
+                  <div className='modal-body' onClick={(e) => {e.stopPropagation();}}>
                     {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
                   </div>
                 </div>
@@ -327,11 +327,11 @@ class Header extends React.Component<Props & {history: any}, State> {
             </span>,
             portal(
               <div className='modal-background' onClick={closePortal}>
-                <div className='modal-header'>
-                <button className='close-button' onClick={closePortal}>✖</button>
-                </div>
-                <div className='modal-area'>
-                  <div className='modal' onClick={(e) => {e.stopPropagation();}}>{gist(closePortal)}</div>
+                <div className='modal'>
+                  <div className='modal-header'>
+                    <button className='close-button' onClick={closePortal}>✖</button>
+                  </div>
+                  <div className='modal-body' onClick={(e) => {e.stopPropagation();}}>{gist(closePortal)}</div>
                 </div>
               </div>
             ),
