@@ -35,8 +35,6 @@ if [ ! -d "$TARGET" ]; then
   mkdir $TARGET
 fi
 
-cp lib/json3-compactstringify.js $TARGET
-
 echo "Copying data to '$DATA'."
 
 if [ ! -d "$DATA" ]; then
