@@ -15,11 +15,6 @@ const formatExampleName = (name) => {
     .join(' ');
 };
 
-const validateUrl = (url) => {
-  const reg = /^((http(s)?:\/\/)?(www.)?[-a-zA-Z0-9]+\.[-a-zA-Z0-9\.]+\/)?[-a-zA-Z0-9]+\/[-a-zA-Z0-9]+\/?$/g;
-  return reg.test(url);
-};
-
 type Props = {
   mode: Mode;
 };
@@ -28,23 +23,52 @@ type State = {
   customIsOpened?: boolean;
   left?: any;
   showVega: boolean;
-  url: string;
+  gist: {
+    type: string;
+    url: string;
+    revision: string;
+    filename: string;
+  };
   width?: number;
   invalidUrl?: boolean;
 };
 
 class Header extends React.Component<Props & {history: any}, State> {
+  refGistForm: HTMLFormElement;
+
   constructor(props) {
     super(props);
     // $FixMe - default state?
     this.state = {
       showVega: props.mode === Mode.Vega,
-      url: '',
+      gist: {
+        type: 'vega',
+        url: '',
+        revision: '',
+        filename: '',
+      },
     };
     this.onSelectVega = this.onSelectVega.bind(this);
   }
-  public handleChange(event) {
-    this.setState({url: event.target.value});
+  public updateGist(gist) {
+    this.setState({
+      gist: {
+        ...this.state.gist,
+        ...gist,
+      }
+    });
+  }
+  public updateGistType(event) {
+    this.updateGist({type: event.currentTarget.value});
+  }
+  public updateGistUrl(event) {
+    this.updateGist({url: event.currentTarget.value});
+  }
+  public updateGistRevision(event) {
+    this.updateGist({revision: event.currentTarget.value});
+  }
+  public updateGistFile(event) {
+    this.updateGist({filename: event.currentTarget.value});
   }
   public onSelectVega(name) {
     this.props.history.push('/examples/vega/' + name);
@@ -58,46 +82,52 @@ class Header extends React.Component<Props & {history: any}, State> {
   public onSelectNewVegaLite() {
     this.props.history.push('/custom/vega-lite');
   }
-  public onSelectVegaGist(gistUrl, closePortal) {
-    if (validateUrl(gistUrl)) {
-      this.setState({
-        url: '',
-        invalidUrl: false,
-      });
-      const username = this.getGistNameAndId(gistUrl)[0];
-      const id = this.getGistNameAndId(gistUrl)[1];
-      this.props.history.push('/gist/vega/' + username + '/' + id);
-      closePortal();
-    } else {
-      this.setState({
-        invalidUrl: true,
-      });
-    }
-  }
-  public onSelectVegaLiteGist(gistUrl, closePortal) {
-    if (validateUrl(gistUrl)) {
-      this.setState({
-        url: '',
-        invalidUrl: false,
-      });
-      const username = this.getGistNameAndId(gistUrl)[0];
-      const id = this.getGistNameAndId(gistUrl)[1];
-      this.props.history.push('/gist/vega-lite/' + username + '/' + id);
-      closePortal();
-    } else {
-      this.setState({
-        invalidUrl: true,
-      });
-    }
-  }
-  public getGistNameAndId(gistUrl) {
-    const suffix = gistUrl.indexOf('.com/') === -1 ? gistUrl : gistUrl.substring(gistUrl.indexOf('.com/') + './com'.length);
-    const arrayNames = suffix.split('/');
-    if (arrayNames.length < 2) {
-      console.warn('invalid url');
+  public async onSelectGist(closePortal) {
+    const type = this.state.gist.type;
+    const url = this.state.gist.url.trim().toLowerCase();
+
+    let revision = this.state.gist.revision.trim().toLowerCase();
+    let filename = this.state.gist.filename.trim();
+
+    if (url.length === 0) {
+      this.refGistForm.reportValidity();
+
       return;
     }
-    return arrayNames;
+
+    const gistUrl = new URL(url, 'https://gist.github.com');
+    const [username, gistId] = gistUrl.pathname.split('/').slice(1);
+
+    if (revision.length === 0) {
+      const gistCommits = await fetch(`https://api.github.com/gists/${gistId}/commits`).then(r => r.json());
+
+      revision = gistCommits[0].version;
+    }
+
+    if (filename.length === 0) {
+      const gistData = await fetch(`https://api.github.com/gists/${gistId}`).then(r => r.json());
+
+      filename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
+
+      if (filename === undefined) {
+        throw Error();
+      }
+    }
+
+    this.props.history.push(`/gist/${type}/${username}/${gistId}/${revision}/${filename}`);
+
+    this.setState({
+      gist: {
+        type: 'vega',
+        url: '',
+        revision: '',
+        filename: '',
+      },
+
+      invalidUrl: false,
+    });
+
+    closePortal();
   }
   public render() {
     const examplesButton = (
@@ -177,20 +207,42 @@ class Header extends React.Component<Props & {history: any}, State> {
     const gist = (closePortal) => {
       return (
         <div>
-          <header>Enter Gist URL: </header>
+          <h2>Load Gist</h2>
           <div className='gist-content'>
-            <div className='gist-text'>For example (Vega-Lite)</div>
-            <div className='gist-url'>
-            https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9
-            </div>
-            <input className='gist-input' type='text' placeholder='enter gist url here' value={this.state.url} onChange={this.handleChange.bind(this)}/>
-            <div className='error-message'>{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
-            <button className='gist-button' onClick={() => {this.onSelectVegaGist(this.state.url, closePortal);}}>
-              Vega
-            </button>
-            <button className='gist-button' onClick={() => {this.onSelectVegaLiteGist(this.state.url, closePortal);}}>
-              Vega-Lite
-            </button>
+            <form ref={(form) => this.refGistForm = form}>
+              <div className='gist-input-container'>
+                Gist Type:
+                <input type="radio" name="gist-type" id="gist-type[vega]" value="vega" checked={this.state.gist.type === 'vega'} onChange={this.updateGistType.bind(this)} />
+                <label htmlFor="gist-type[vega]">Vega</label>
+                <input type="radio" name="gist-type" id="gist-type[vega-lite]" value="vega-lite" checked={this.state.gist.type === 'vega-lite'} onChange={this.updateGistType.bind(this)} />
+                <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
+              </div>
+              <div className='gist-input-container'>
+                <label>
+                  Gist URL
+                  <div><small>Example: <span className="gist-url">https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9</span></small></div>
+                  <input required className='gist-input' type='text' placeholder='Enter url' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
+                </label>
+              </div>
+              <div className='gist-optional'>
+                <div className='gist-input-container gist-optional-input-container'>
+                  <label>
+                    Revision (<small>optional</small>)
+                    <input className='gist-input' type='text' placeholder='Enter revision' value={this.state.gist.revision} onChange={this.updateGistRevision.bind(this)}/>
+                  </label>
+                </div>
+                <div className='gist-input-container gist-optional-input-container'>
+                  <label>
+                    Filename (<small>optional</small>)
+                    <input className='gist-input' type='text' placeholder='Enter filename' value={this.state.gist.filename} onChange={this.updateGistFile.bind(this)}/>
+                  </label>
+                </div>
+              </div>
+              <div className='error-message'>{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
+              <button type='button' className='gist-button' onClick={() => {this.onSelectGist(closePortal);}}>
+                Load
+              </button>
+            </form>
           </div>
         </div>
       );
@@ -240,27 +292,27 @@ class Header extends React.Component<Props & {history: any}, State> {
             </span>,
             portal(
               <div className='modal-background' onClick={closePortal}>
-                <div className='modal-header'>
-                  <div className='button-groups' onClick={(e) => {e.stopPropagation();}}>
-                    <button className={this.state.showVega ? 'selected' : ''}
-                      onClick={() => {
-                        this.setState({showVega: true});
-                      }}
-                    >
-                      {'Vega'}
-                    </button>
-                    <button className={this.state.showVega ? '' : 'selected'}
-                      onClick={() => {
-                        this.setState({showVega: false});
-                      }}
-                    >
-                      {'Vega-Lite'}
-                    </button>
+                <div className='modal'>
+                  <div className='modal-header'>
+                    <div className='button-groups' onClick={(e) => {e.stopPropagation();}}>
+                      <button className={this.state.showVega ? 'selected' : ''}
+                        onClick={() => {
+                          this.setState({showVega: true});
+                        }}
+                      >
+                        {'Vega'}
+                      </button>
+                      <button className={this.state.showVega ? '' : 'selected'}
+                        onClick={() => {
+                          this.setState({showVega: false});
+                        }}
+                      >
+                        {'Vega-Lite'}
+                      </button>
+                    </div>
+                    <button className='close-button' onClick={closePortal}>✖</button>
                   </div>
-                  <button className='close-button' onClick={closePortal}>✖</button>
-                </div>
-                <div className='modal-area'>
-                  <div className='modal' onClick={(e) => {e.stopPropagation();}}>
+                  <div className='modal-body' onClick={(e) => {e.stopPropagation();}}>
                     {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
                   </div>
                 </div>
@@ -275,11 +327,11 @@ class Header extends React.Component<Props & {history: any}, State> {
             </span>,
             portal(
               <div className='modal-background' onClick={closePortal}>
-                <div className='modal-header'>
-                <button className='close-button' onClick={closePortal}>✖</button>
-                </div>
-                <div className='modal-area'>
-                  <div className='modal' onClick={(e) => {e.stopPropagation();}}>{gist(closePortal)}</div>
+                <div className='modal'>
+                  <div className='modal-header'>
+                    <button className='close-button' onClick={closePortal}>✖</button>
+                  </div>
+                  <div className='modal-body' onClick={(e) => {e.stopPropagation();}}>{gist(closePortal)}</div>
                 </div>
               </div>
             ),

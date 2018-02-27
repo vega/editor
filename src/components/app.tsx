@@ -62,43 +62,18 @@ class App extends React.Component<Props & {match: any, location: any}> {
       }
     }
   }
-  public setGist(parameter: {mode: string, username: string, id: string}) {
-    const prefix = 'https://hook.io/tianyiii/vegaeditor';
-    const mode = parameter.mode;
-    const hookUrl = `${prefix}/${mode}/${parameter.username}/${
-      parameter.id
-    }`;
-    fetch(hookUrl, {
-      method: 'get',
-      mode: 'cors',
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return Promise.resolve(response);
-        } else {
-          return Promise.reject(new Error(response.statusText));
-        }
-      })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data['message'] !== 'Not Found') {
-          if (mode === 'vega') {
-            this.props.setGistVegaSpec(hookUrl, JSON.stringify(data, null, 2));
-          } else if (mode === 'vega-lite') {
-            this.props.setGistVegaLiteSpec(
-              hookUrl,
-              JSON.stringify(data, null, 2),
-            );
-          }
-        } else {
-          console.warn('invalid url');
-        }
-      })
-      .catch((ex) => {
-        console.error(ex);
-      });
+  public async setGist(parameter: {mode: string, username: string, id: string, revision: string, filename: string}) {
+    const gistUrl = `https://api.github.com/gists/${parameter.id}/${parameter.revision}`;
+
+    const gistData = await fetch(gistUrl).then(r => r.json());
+
+    const spec = gistData.files[parameter.filename].content;
+
+    if (parameter.mode === 'vega') {
+      this.props.setGistVegaSpec(gistUrl, spec);
+    } else if (parameter.mode === 'vega-lite') {
+      this.props.setGistVegaLiteSpec(gistUrl, spec);
+    }
   }
 
   public setExample(parameter: {example_name: string, mode: string}) {
