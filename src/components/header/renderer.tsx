@@ -209,8 +209,6 @@ class Header extends React.Component<Props & {history: any}, State> {
         <div>
           <h2>Load Gist</h2>
           <div className='gist-content'>
-            <div className="gist-text">For example (Vega-Lite)</div>
-            <div className="gist-url">https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9</div>
             <form ref={(form) => this.refGistForm = form}>
               <div className='gist-input-container'>
                 Gist Type:
@@ -222,6 +220,7 @@ class Header extends React.Component<Props & {history: any}, State> {
               <div className='gist-input-container'>
                 <label>
                   Gist URL
+                  <div><small>Example: <span className="gist-url">https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9</span></small></div>
                   <input required className='gist-input' type='text' placeholder='Enter url' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
                 </label>
               </div>
