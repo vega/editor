@@ -104,11 +104,9 @@ class Editor extends React.Component<Props, State> {
   public manualParseSpec() {
     if (!this.props.autoParse) {
       return (
-        <div className='editor-header'>
-          <button id='parse-button' onClick={() => this.props.parseSpec(true)}>
-            Parse
-          </button>
-        </div>
+        <button id='parse-button' className='button' onClick={() => this.props.parseSpec(true)}>
+          Parse
+        </button>
       );
     }
   }
@@ -143,12 +141,29 @@ class Editor extends React.Component<Props, State> {
     }
   }
 
+  /**
+   * Formats the editor code.
+   * Triggered by #format-button on click.
+   */
+  public formatDocument() {
+    (this.refs.vegaEditor as any)
+      .editor
+      .getAction('editor.action.formatDocument')
+      .run();
+  }
+
   public render() {
     const code = this.state.code;
     return (
       <div className={'full-height-wrapper'}>
-        {this.manualParseSpec()}
+        <div className='editor-header right-align'>
+          <button id='format-button' className='button' onClick={() => this.formatDocument()}>
+            Format
+          </button>
+          {this.manualParseSpec()}
+        </div>
         <MonacoEditor
+          ref='vegaEditor'
           language='json'
           options={{
             folding: true,
