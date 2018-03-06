@@ -2,7 +2,6 @@ import * as vl from 'vega-lite';
 
 import {
   Action,
-  VEGA_EXPORT,
   CYCLE_RENDERER,
   LOG_ERROR,
   PARSE_SPEC,
@@ -24,6 +23,7 @@ import {
   UPDATE_VEGA_SPEC,
   UpdateVegaLiteSpec,
   UpdateVegaSpec,
+  VEGA_EXPORT,
 } from '../actions/editor';
 import {DEFAULT_STATE, Mode} from '../constants';
 import {State} from '../constants/default-state';

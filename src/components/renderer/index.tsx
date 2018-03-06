@@ -10,6 +10,7 @@ function mapStateToProps(state: State, ownProps) {
     renderer: state.renderer,
     mode: state.mode,
     tooltip: state.tooltip,
+    export: state.export,
   };
 }
 

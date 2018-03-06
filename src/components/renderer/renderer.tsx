@@ -13,6 +13,7 @@ type Props = {
   renderer?: string;
   mode?: string;
   tooltip?: boolean;
+  export?: boolean;
 };
 
 export default class Editor extends React.Component<Props> {
@@ -42,6 +43,20 @@ export default class Editor extends React.Component<Props> {
       } else {
         vegaTooltip.vega(view);
       }
+    }
+
+    if (this.props.export) {
+      const ext = this.props.renderer === 'canvas' ? 'png' : 'svg';
+      const url = view.toImageURL(ext);
+      url.then(function(url) {
+        var link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('target', '_blank');
+        link.setAttribute('download', 'export.'+ ext);
+        link.dispatchEvent(new MouseEvent('click'));
+      }).catch(function(error) {
+        throw new Error('Error in exporting: '+ error);
+      });
     }
 
     (window as any).VEGA_DEBUG.view = view;
