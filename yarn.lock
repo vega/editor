@@ -273,15 +273,15 @@ atob@^2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.0.3.tgz#19c7a760473774468f20b2d2d03372ad7d4cbf5d"
 
-autoprefixer@8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-8.0.0.tgz#c19e480f061013127c373df0b01cf46919943f74"
+autoprefixer@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-8.1.0.tgz#374cf35be1c0e8fce97408d876f95f66f5cb4641"
   dependencies:
-    browserslist "^3.0.0"
-    caniuse-lite "^1.0.30000808"
+    browserslist "^3.1.1"
+    caniuse-lite "^1.0.30000810"
     normalize-range "^0.1.2"
     num2fraction "^1.2.2"
-    postcss "^6.0.17"
+    postcss "^6.0.19"
     postcss-value-parser "^3.2.3"
 
 autoprefixer@^6.3.1:
@@ -1158,7 +1158,7 @@ browserslist@^2.1.2:
     caniuse-lite "^1.0.30000792"
     electron-to-chromium "^1.3.30"
 
-browserslist@^3.0.0:
+browserslist@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-3.1.1.tgz#d380fc048bc3a33e60fb87dc135110ebaaa6320a"
   dependencies:
@@ -1268,9 +1268,13 @@ caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
   version "1.0.30000810"
   resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000810.tgz#bd25830c41efab64339a2e381f49677343c84509"
 
-caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000808, caniuse-lite@^1.0.30000809:
+caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000809:
   version "1.0.30000810"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000810.tgz#47585fffce0e9f3593a6feea4673b945424351d9"
+
+caniuse-lite@^1.0.30000810:
+  version "1.0.30000812"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000812.tgz#d173b686b49bc941fa18ff2e7e533048e20ed92c"
 
 canvas-prebuilt@^1.6:
   version "1.6.0"
@@ -1921,7 +1925,7 @@ d3-scale@2:
     d3-time "1"
     d3-time-format "2"
 
-d3-selection@^1.2.0:
+d3-selection@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.3.0.tgz#d53772382d3dc4f7507bfb28bcd2d6aed2a0ad6d"
 
@@ -4069,9 +4073,13 @@ mime@1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.4.1.tgz#121f9ebc49e3766f311a76e1fa1c8003c4b03aa6"
 
-mime@^1.4.1, mime@^1.5.0:
+mime@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
+
+mime@^2.0.3:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-2.2.0.tgz#161e541965551d3b549fa1114391e3a3d55b923b"
 
 mimic-fn@^1.0.0:
   version "1.2.0"
@@ -4919,7 +4927,7 @@ postcss@^5.0.10, postcss@^5.0.11, postcss@^5.0.12, postcss@^5.0.13, postcss@^5.0
     source-map "^0.5.6"
     supports-color "^3.2.3"
 
-postcss@^6.0.0, postcss@^6.0.1, postcss@^6.0.17:
+postcss@^6.0.0, postcss@^6.0.1, postcss@^6.0.19:
   version "6.0.19"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.19.tgz#76a78386f670b9d9494a655bf23ac012effd1555"
   dependencies:
@@ -4934,6 +4942,10 @@ prepend-http@^1.0.0, prepend-http@^1.0.1:
 preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
+
+prettier@^1.10.2:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.11.1.tgz#61e43fc4cd44e68f2b0dfc2c38cd4bb0fccdcc75"
 
 pretty-bytes@^4.0.2:
   version "4.0.2"
@@ -6423,13 +6435,13 @@ urix@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
 
-url-loader@0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/url-loader/-/url-loader-0.6.2.tgz#a007a7109620e9d988d14bce677a1decb9a993f7"
+url-loader@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/url-loader/-/url-loader-1.0.1.tgz#61bc53f1f184d7343da2728a1289ef8722ea45ee"
   dependencies:
-    loader-utils "^1.0.2"
-    mime "^1.4.1"
-    schema-utils "^0.3.0"
+    loader-utils "^1.1.0"
+    mime "^2.0.3"
+    schema-utils "^0.4.3"
 
 url-parse-lax@^1.0.0:
   version "1.0.0"
@@ -6526,9 +6538,9 @@ vega-dataflow@3:
     vega-loader "2"
     vega-util "1"
 
-vega-datasets@^1.16.0:
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.16.0.tgz#dab090bb4210e6a4f87438032c62f9d96af6804a"
+vega-datasets@^1.18.0:
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.18.0.tgz#3fc697a5de9bf539dd8eb823f10df848084ee25a"
 
 vega-encode@2:
   version "2.0.6"
@@ -6579,7 +6591,7 @@ vega-hierarchy@^2.1:
     vega-dataflow "3"
     vega-util "1"
 
-vega-lite@^2.1.1, "vega-lite@github:vega/vega-lite#v2.1.3":
+vega-lite@^2.1.0, "vega-lite@github:vega/vega-lite#v2.1.3":
   version "2.1.3"
   resolved "https://codeload.github.com/vega/vega-lite/tar.gz/d7d06dd8d629bf1152172277c07ece92e9198247"
   dependencies:
@@ -6661,15 +6673,16 @@ vega-statistics@^1.2:
   dependencies:
     d3-array "1"
 
-vega-tooltip@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.5.1.tgz#8ec54177cf9444470c445e9f9433366f922a4b9c"
+vega-tooltip@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.6.1.tgz#b2c4c2cbd90f96e71d5dc5e0cd5065aa50856ea1"
   dependencies:
     d3-format "^1.2.2"
-    d3-selection "^1.2.0"
+    d3-selection "^1.3.0"
     d3-time-format "^2.1.1"
-    vega "^3.0.10"
-    vega-lite "^2.1.1"
+    vega "^3.1.0"
+    vega-lite "^2.1.0"
+    vega-util "^1.7.0"
 
 vega-transforms@^1.2:
   version "1.2.0"
@@ -6679,6 +6692,12 @@ vega-transforms@^1.2:
     vega-dataflow "3"
     vega-statistics "^1.2"
     vega-util "1"
+
+vega-typings@*, vega-typings@^0.2.9:
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.2.9.tgz#e52d1ed5792eed6097807876c419831e52eea053"
+  dependencies:
+    prettier "^1.10.2"
 
 vega-util@1, vega-util@^1.7, vega-util@^1.7.0:
   version "1.7.0"
@@ -6721,9 +6740,9 @@ vega-wordcloud@^2.1:
     vega-statistics "^1.2"
     vega-util "1"
 
-vega@^3.0.10, "vega@github:vega/vega#v3.1.0":
-  version "3.1.0"
-  resolved "https://codeload.github.com/vega/vega/tar.gz/0b2221746a663a8d7bda2db5f0313d6fa6cc25b6"
+vega@^3.1.0, "vega@github:vega/vega#v3.2.0":
+  version "3.2.0"
+  resolved "https://codeload.github.com/vega/vega/tar.gz/ea4c189218018c53179574e29f803348b737d8a9"
   dependencies:
     vega-crossfilter "2"
     vega-dataflow "3"
@@ -6740,6 +6759,7 @@ vega@^3.0.10, "vega@github:vega/vega#v3.1.0":
     vega-scenegraph "^2.3"
     vega-statistics "^1.2"
     vega-transforms "^1.2"
+    vega-typings "*"
     vega-util "^1.7"
     vega-view "^2.2"
     vega-view-transforms "^1.2"

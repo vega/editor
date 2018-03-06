@@ -13,7 +13,6 @@
   },
   "compileOnSave": false,
   "include": [
-    "src/**/*.ts",
-    "typings/*.d.ts"
+    "src/**/*.ts"
   ]
 }

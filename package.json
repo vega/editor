@@ -5,7 +5,7 @@
   "devDependencies": {
     "@types/node": "^9.4.6",
     "@types/react": "^16.0.38",
-    "autoprefixer": "8.0.0",
+    "autoprefixer": "8.1.0",
     "awesome-typescript-loader": "3.5.0",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.3",
@@ -48,7 +48,8 @@
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^5.1.0",
     "typescript": "next",
-    "url-loader": "0.6.2",
+    "url-loader": "1.0.1",
+    "vega-typings": "^0.2.9",
     "webpack": "3.11.0",
     "webpack-dev-server": "2.11.1",
     "webpack-manifest-plugin": "1.3.2",
@@ -71,11 +72,11 @@
     "redux": "^3.7.2",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.2.0",
-    "vega": "github:vega/vega#v3.1.0",
-    "vega-datasets": "^1.16.0",
+    "vega": "github:vega/vega#v3.2.0",
+    "vega-datasets": "^1.18.0",
     "vega-lite": "github:vega/vega-lite#v2.1.3",
     "vega-schema-url-parser": "^1.0.0",
-    "vega-tooltip": "^0.5.1"
+    "vega-tooltip": "^0.6.1"
   },
   "scripts": {
     "start": "node scripts/start.js",
