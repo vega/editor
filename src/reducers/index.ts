@@ -2,6 +2,7 @@ import * as vl from 'vega-lite';
 
 import {
   Action,
+  VEGA_EXPORT,
   CYCLE_RENDERER,
   LOG_ERROR,
   PARSE_SPEC,
@@ -124,6 +125,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         parse: false,
         warningsLogger: new LocalLogger(),
         tooltip: true,
+        export: false,
       };
     case PARSE_SPEC:
       return {
@@ -194,6 +196,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         tooltip: !state.tooltip,
+      };
+    case VEGA_EXPORT:
+      return {
+        ...state,
+        export: action.export,
       };
     default:
       return state;

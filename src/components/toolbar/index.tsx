@@ -13,6 +13,7 @@ function mapStateToProps(state: State, ownProps) {
     autoParse: state.autoParse,
     warningsLogger: state.warningsLogger,
     tooltip: state.tooltip,
+    export: state.export,
   };
 }
 
@@ -30,6 +31,9 @@ const mapDispatchToProps = function(dispatch) {
     showTooltip: () => {
       dispatch(EditorActions.showTooltip());
     },
+    vegaExport: (val) => {
+      dispatch(EditorActions.vegaExport(val));
+    }
   };
 };
 

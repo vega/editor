@@ -7,6 +7,7 @@ export type State = {
   editorString: string;
   error: Error;
   errorPane: boolean;
+  export: boolean;
   gist: string;
   mode: Mode;
   parse: boolean;
@@ -24,6 +25,7 @@ export const DEFAULT_STATE: State = {
   editorString: '{}',
   error: null,
   errorPane: false,
+  export: false,
   gist: null,
   mode: Mode.VegaLite,
   parse: false,
