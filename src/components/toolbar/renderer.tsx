@@ -22,7 +22,7 @@ type Props = {
   export?: boolean;
 
   showErrorPane: Function;
-  vegaExport: Function;
+  exportVega: Function;
 };
 
 export default class Toolbar extends React.Component<Props> {
@@ -43,7 +43,7 @@ export default class Toolbar extends React.Component<Props> {
   }
   public componentWillReceiveProps(nextProps) {
     if (nextProps.export) {
-      this.props.vegaExport(false);
+      this.props.exportVega(false);
     }
   }
   public render() {
@@ -62,7 +62,7 @@ export default class Toolbar extends React.Component<Props> {
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
           {`Renderer: ${this.props.renderer}`}
         </div>
-        <div className='vega-export' onClick={() => this.props.vegaExport(true)}>
+        <div className='vega-export' onClick={() => this.props.exportVega(true)}>
           {`Export`}
         </div>
       </div>

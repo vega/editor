@@ -31,8 +31,8 @@ const mapDispatchToProps = function(dispatch) {
     showTooltip: () => {
       dispatch(EditorActions.showTooltip());
     },
-    vegaExport: (val) => {
-      dispatch(EditorActions.vegaExport(val));
+    exportVega: (val) => {
+      dispatch(EditorActions.exportVega(val));
     }
   };
 };

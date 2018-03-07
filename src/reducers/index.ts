@@ -3,6 +3,7 @@ import * as vl from 'vega-lite';
 import {
   Action,
   CYCLE_RENDERER,
+  EXPORT_VEGA,
   LOG_ERROR,
   PARSE_SPEC,
   SET_GIST_VEGA_LITE_SPEC,
@@ -23,7 +24,6 @@ import {
   UPDATE_VEGA_SPEC,
   UpdateVegaLiteSpec,
   UpdateVegaSpec,
-  VEGA_EXPORT,
 } from '../actions/editor';
 import {DEFAULT_STATE, Mode} from '../constants';
 import {State} from '../constants/default-state';
@@ -197,7 +197,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         tooltip: !state.tooltip,
       };
-    case VEGA_EXPORT:
+    case EXPORT_VEGA:
       return {
         ...state,
         export: action.export,
