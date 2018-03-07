@@ -17,55 +17,57 @@ type Props = {
 };
 
 export default class Editor extends React.Component<Props> {
+  static view: any;
   public renderVega(props) {
     const chart = this.refs.chart as any;
     chart.style.width = chart.getBoundingClientRect().width + 'px';
 
     const runtime = vega.parse(props.vegaSpec);
 
-    const view = new vega.View(runtime)
+    Editor.view = new vega.View(runtime)
       .logLevel(vega.Warn)
       .initialize(chart)
       .renderer(props.renderer);
 
     if (props.mode === Mode.Vega) {
-      view.hover();
+      Editor.view.hover();
     }
 
-    view.run();
+    Editor.view.run();
     chart.style.width = 'auto';
 
     if (this.props.tooltip) {
       if (props.mode === Mode.VegaLite) {
         if (props.vegaLiteSpec) {
-          vegaTooltip.vegaLite(view, props.vegaLiteSpec);
+          vegaTooltip.vegaLite(Editor.view, props.vegaLiteSpec);
         }
       } else {
-        vegaTooltip.vega(view);
+        vegaTooltip.vega(Editor.view);
       }
     }
 
+    (window as any).VEGA_DEBUG.view = Editor.view;
+  }
+  public exportVega() {
     if (this.props.export) {
       const ext = this.props.renderer === 'canvas' ? 'png' : 'svg';
-      const url = view.toImageURL(ext);
-      url.then(function(url) {
+      const url = Editor.view.toImageURL(ext);
+      url.then(url => {
         var link = document.createElement('a');
         link.setAttribute('href', url);
         link.setAttribute('target', '_blank');
-        link.setAttribute('download', 'export.'+ ext);
+        if (ext === 'png') link.setAttribute('download', 'export.'+ ext);
         link.dispatchEvent(new MouseEvent('click'));
-      }).catch(function(error) {
-        throw new Error('Error in exporting: '+ error);
+      }).catch(err => {
+        throw new Error('Error in exporting: '+ err);
       });
     }
-
-    (window as any).VEGA_DEBUG.view = view;
   }
   public componentDidMount() {
     this.renderVega(this.props);
   }
   public componentDidUpdate() {
-    this.renderVega(this.props);
+    this.props.export ? this.exportVega() : this.renderVega(this.props);
   }
   public render() {
     return (
