@@ -60,10 +60,10 @@ export default class Toolbar extends React.Component<Props> {
           {this.props.tooltip ? 'Tooltips' : 'No Tooltips'}
         </div>
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
-          {`Renderer: ${this.props.renderer}`}
+          {`Renderer: ${this.props.renderer === 'canvas' ? 'Canvas' : 'SVG'}`}
         </div>
         <div className='vega-export' onClick={() => this.props.exportVega(true)}>
-          {`Export`}
+          {this.props.renderer === 'canvas' ? 'Export PNG' : 'Export SVG'}
         </div>
       </div>
     );

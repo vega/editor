@@ -17,7 +17,8 @@ type Props = {
 };
 
 export default class Editor extends React.Component<Props> {
-  static view: any;
+  static view: vega.View;
+
   public renderVega(props) {
     const chart = this.refs.chart as any;
     chart.style.width = chart.getBoundingClientRect().width + 'px';
@@ -66,8 +67,8 @@ export default class Editor extends React.Component<Props> {
   public componentDidMount() {
     this.renderVega(this.props);
   }
-  public componentDidUpdate() {
-    this.props.export ? this.exportVega() : this.renderVega(this.props);
+  public componentDidUpdate(prevProps) {
+    prevProps.export === this.props.export ? this.renderVega(this.props) : this.exportVega();
   }
   public render() {
     return (
