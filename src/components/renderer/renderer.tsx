@@ -18,40 +18,39 @@ type Props = {
 
 export default class Editor extends React.Component<Props> {
   static view: vega.View;
+  static chart: any;
 
-  public renderVega(props) {
-    const chart = this.refs.chart as any;
-    chart.style.width = chart.getBoundingClientRect().width + 'px';
+  public initilizeView(props) {
+    Editor.chart = this.refs.chart as any;
+    Editor.chart.style.width = Editor.chart.getBoundingClientRect().width + 'px';
 
     const runtime = vega.parse(props.vegaSpec);
 
     Editor.view = new vega.View(runtime)
       .logLevel(vega.Warn)
-      .initialize(chart)
-      .renderer(props.renderer);
+      .initialize(Editor.chart);
+
+  }
+  public renderVega(props) {
+    Editor.view.renderer(props.renderer);
 
     if (props.mode === Mode.Vega) {
       Editor.view.hover();
     }
-
     Editor.view.run();
-    chart.style.width = 'auto';
+    Editor.chart.style.width = 'auto';
 
-    if (this.props.tooltip) {
-      if (props.mode === Mode.VegaLite) {
-        if (props.vegaLiteSpec) {
-          vegaTooltip.vegaLite(Editor.view, props.vegaLiteSpec);
-        }
-      } else {
-        vegaTooltip.vega(Editor.view);
+    const options = {showAllFields: props.tooltip}
+    if (props.mode === Mode.VegaLite) {
+      if (props.vegaLiteSpec) {
+        vegaTooltip.vegaLite(Editor.view, props.vegaLiteSpec, options);
       }
+    } else {
+      vegaTooltip.vega(Editor.view, options);
     }
 
-    (window as any).VEGA_DEBUG.view = Editor.view;
-  }
-  public exportVega() {
-    if (this.props.export) {
-      const ext = this.props.renderer === 'canvas' ? 'png' : 'svg';
+    if (props.export) {
+      const ext = props.renderer === 'canvas' ? 'png' : 'svg';
       const url = Editor.view.toImageURL(ext);
       url.then(url => {
         var link = document.createElement('a');
@@ -63,12 +62,15 @@ export default class Editor extends React.Component<Props> {
         throw new Error('Error in exporting: '+ err);
       });
     }
+    (window as any).VEGA_DEBUG.view = Editor.view;
   }
   public componentDidMount() {
+    this.initilizeView(this.props);
     this.renderVega(this.props);
   }
   public componentDidUpdate(prevProps) {
-    prevProps.export === this.props.export ? this.renderVega(this.props) : this.exportVega();
+    if (prevProps.vegaSpec !== this.props.vegaSpec || prevProps.vegaLiteSpec !== this.props.vegaLiteSpec) this.initilizeView(this.props);
+    this.renderVega(this.props);
   }
   public render() {
     return (
