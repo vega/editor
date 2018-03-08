@@ -19,8 +19,10 @@ type Props = {
   renderer?: string;
   autoParse?: boolean;
   tooltip?: boolean;
+  export?: boolean;
 
   showErrorPane: Function;
+  exportVega: Function;
 };
 
 export default class Toolbar extends React.Component<Props> {
@@ -39,6 +41,11 @@ export default class Toolbar extends React.Component<Props> {
       );
     }
   }
+  public componentWillReceiveProps(nextProps) {
+    if (nextProps.export) {
+      this.props.exportVega(false);
+    }
+  }
   public render() {
     return (
       <div className='toolbar'>
@@ -53,7 +60,10 @@ export default class Toolbar extends React.Component<Props> {
           {this.props.tooltip ? 'Tooltips' : 'No Tooltips'}
         </div>
         <div className='renderer-toggle' onClick={this.props.cycleRenderer}>
-          {`Renderer: ${this.props.renderer}`}
+          {`Renderer: ${this.props.renderer === 'canvas' ? 'Canvas' : 'SVG'}`}
+        </div>
+        <div className='vega-export' onClick={() => this.props.exportVega(true)}>
+          {this.props.renderer === 'canvas' ? 'Export PNG' : 'Export SVG'}
         </div>
       </div>
     );

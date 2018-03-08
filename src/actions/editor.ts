@@ -1,5 +1,6 @@
 import {Mode} from '../constants';
 
+export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
 export const CYCLE_RENDERER: 'CYCLE_RENDERER' = 'CYCLE_RENDERER';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
 export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
@@ -16,7 +17,7 @@ export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRIN
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
 
-export type Action = SetMode | ParseSpec | SetVegaExample | SetVegaLiteExample | UpdateVegaSpec | UpdateVegaLiteSpec | SetGistVegaSpec | SetGistVegaLiteSpec | ToggleAutoParse | CycleRenderer | ShowCompiledVegaSpec | ShowErrorPane | LogError | UpdateEditorString | ShowTooltip;
+export type Action = SetMode | ParseSpec | SetVegaExample | SetVegaLiteExample | UpdateVegaSpec | UpdateVegaLiteSpec | SetGistVegaSpec | SetGistVegaLiteSpec | ToggleAutoParse | CycleRenderer | ShowCompiledVegaSpec | ShowErrorPane | LogError | UpdateEditorString | ShowTooltip | ExportVega;
 
 export function setMode(mode: Mode) {
   return {
@@ -136,3 +137,11 @@ export function showTooltip() {
   };
 }
 export type ShowTooltip = ReturnType<typeof showTooltip>;
+
+export function exportVega(value: boolean) {
+  return {
+    type: EXPORT_VEGA,
+    export: value,
+  };
+}
+export type ExportVega = ReturnType<typeof exportVega>;
