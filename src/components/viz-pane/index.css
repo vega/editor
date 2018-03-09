@@ -5,3 +5,7 @@
   padding: 10px;
   overflow: auto;
 }
+
+.Pane::-webkit-scrollbar {
+    display: none;
+}
