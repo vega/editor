@@ -3,10 +3,11 @@ import * as Ajv from 'ajv';
 const ajv = new Ajv({
   jsonPointers: true,
   allErrors: false,
-  schemaId: 'id',
+  schemaId: 'auto',
 });
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
+ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 
 const vegaValidator = ajv.compile(require('../../schema/vega.schema.json'));
 const vegaLiteValidator = ajv.compile(require('../../schema/vl.schema.json'));
