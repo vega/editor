@@ -72,7 +72,7 @@
     "redux": "^3.7.2",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.2.0",
-    "vega": "github:vega/vega#v3.2.0",
+    "vega": "github:vega/vega#v3.2.1",
     "vega-datasets": "^1.18.0",
     "vega-lite": "github:vega/vega-lite#v2.3.0",
     "vega-schema-url-parser": "^1.0.0",

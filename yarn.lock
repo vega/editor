@@ -6758,9 +6758,39 @@ vega-wordcloud@^2.1:
     vega-statistics "^1.2"
     vega-util "1"
 
-vega@^3.1.0, "vega@github:vega/vega#v3.2.0":
+vega@^3.1.0:
   version "3.2.0"
   resolved "https://codeload.github.com/vega/vega/tar.gz/ea4c189218018c53179574e29f803348b737d8a9"
+  dependencies:
+    vega-crossfilter "2"
+    vega-dataflow "3"
+    vega-encode "2"
+    vega-expression "^2.3"
+    vega-force "2"
+    vega-geo "^2.2"
+    vega-hierarchy "^2.1"
+    vega-loader "2"
+    vega-parser "^2.5"
+    vega-projection "1"
+    vega-runtime "2"
+    vega-scale "^2.1"
+    vega-scenegraph "^2.3"
+    vega-statistics "^1.2"
+    vega-transforms "^1.2"
+    vega-typings "*"
+    vega-util "^1.7"
+    vega-view "^2.2"
+    vega-view-transforms "^1.2"
+    vega-voronoi "2"
+    vega-wordcloud "^2.1"
+    yargs "4"
+  optionalDependencies:
+    canvas "^1.6"
+    canvas-prebuilt "^1.6"
+
+"vega@github:vega/vega#v3.2.1":
+  version "3.2.1"
+  resolved "https://codeload.github.com/vega/vega/tar.gz/11209587e8395e3566c3e9c0755dd3f72fe10183"
   dependencies:
     vega-crossfilter "2"
     vega-dataflow "3"
