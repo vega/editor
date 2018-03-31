@@ -116,13 +116,15 @@ class Editor extends React.Component<Props, State> {
     try {
       const schema = JSON.parse(spec).$schema;
 
-      switch (parser(schema).library) {
-        case 'vega-lite':
-          parsedMode = Mode.VegaLite;
-          break;
-        case 'vega':
-          parsedMode = Mode.Vega;
-          break;
+      if (schema) {
+        switch (parser(schema).library) {
+          case 'vega-lite':
+            parsedMode = Mode.VegaLite;
+            break;
+          case 'vega':
+            parsedMode = Mode.Vega;
+            break;
+        }
       }
     } catch (err) {
       console.warn('Error parsing JSON string', err);
