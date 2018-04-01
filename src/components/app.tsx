@@ -39,6 +39,9 @@ class App extends React.Component<Props & {match: any, location: any}> {
             this.props.updateVegaLiteSpec(data.spec);
           }
         }
+        if (data.renderer) {
+          this.props.updateRenderer(data.renderer);
+        }
       },
       false,
     );
@@ -150,6 +153,9 @@ const mapDispatchToProps = function(dispatch) {
     },
     setGistVegaLiteSpec: (gist: string, spec) => {
       dispatch(EditorActions.setGistVegaLiteSpec(gist, spec));
+    },
+    updateRenderer: (val) => {
+      dispatch(EditorActions.updateRenderer(val));
     },
   };
 };
