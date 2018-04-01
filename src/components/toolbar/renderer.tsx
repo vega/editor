@@ -60,6 +60,7 @@ export default class Toolbar extends React.Component<Props> {
           {this.props.tooltip ? 'Tooltips' : 'No Tooltips'}
         </div>
         <div className='renderer-toggle' onClick={() => {
+          // cycle renderer
           const nextRenderer = this.props.renderer === 'svg' ? 'canvas': 'svg';
           this.props.setRenderer(nextRenderer);
         }}>
