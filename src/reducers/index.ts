@@ -20,6 +20,7 @@ import {
   SHOW_TOOLTIP,
   TOGGLE_AUTO_PARSE,
   UPDATE_EDITOR_STRING,
+  UPDATE_RENDERER,
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
   UpdateVegaLiteSpec,
@@ -201,6 +202,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         export: action.export,
+      };
+    case UPDATE_RENDERER:
+      return {
+        ...state,
+        renderer: action.renderer,
       };
     default:
       return state;
