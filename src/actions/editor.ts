@@ -1,7 +1,6 @@
 import {Mode, Renderer} from '../constants';
 
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
-export const CYCLE_RENDERER: 'CYCLE_RENDERER' = 'CYCLE_RENDERER';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
 export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
 export const SET_GIST_VEGA_LITE_SPEC: 'SET_GIST_VEGA_LITE_SPEC' = 'SET_GIST_VEGA_LITE_SPEC';
@@ -18,7 +17,7 @@ export const UPDATE_RENDERER: 'UPDATE_RENDERER' = 'UPDATE_RENDERER';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
 
-export type Action = SetMode | ParseSpec | SetVegaExample | SetVegaLiteExample | UpdateVegaSpec | UpdateVegaLiteSpec | SetGistVegaSpec | SetGistVegaLiteSpec | ToggleAutoParse | CycleRenderer | ShowCompiledVegaSpec | ShowErrorPane | LogError | UpdateEditorString | ShowTooltip | ExportVega | UpdateRenderer;
+export type Action = SetMode | ParseSpec | SetVegaExample | SetVegaLiteExample | UpdateVegaSpec | UpdateVegaLiteSpec | SetGistVegaSpec | SetGistVegaLiteSpec | ToggleAutoParse | ShowCompiledVegaSpec | ShowErrorPane | LogError | UpdateEditorString | ShowTooltip | ExportVega | UpdateRenderer;
 
 export function setMode(mode: Mode) {
   return {
@@ -94,13 +93,6 @@ export function toggleAutoParse() {
   };
 }
 export type ToggleAutoParse = ReturnType<typeof toggleAutoParse>;
-
-export function cycleRenderer() {
-  return {
-    type: CYCLE_RENDERER,
-  };
-}
-export type CycleRenderer = ReturnType<typeof cycleRenderer>;
 
 export function showCompiledVegaSpec() {
   return {

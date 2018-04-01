@@ -2,7 +2,6 @@ import * as vl from 'vega-lite';
 
 import {
   Action,
-  CYCLE_RENDERER,
   EXPORT_VEGA,
   LOG_ERROR,
   PARSE_SPEC,
@@ -165,14 +164,6 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         autoParse: !state.autoParse,
         parse: !state.autoParse,
       };
-    case CYCLE_RENDERER: {
-      const nextRenderer = state.renderer === 'svg' ? 'canvas': 'svg';
-
-      return {
-        ...state,
-        renderer: nextRenderer,
-      };
-    }
     case SHOW_COMPILED_VEGA_SPEC:
       return {
         ...state,
