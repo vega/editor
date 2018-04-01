@@ -22,8 +22,8 @@ const mapDispatchToProps = function(dispatch) {
     toggleAutoParse: () => {
       dispatch(EditorActions.toggleAutoParse());
     },
-    updateRenderer: (val) => {
-      dispatch(EditorActions.updateRenderer(val));
+    setRenderer: (val) => {
+      dispatch(EditorActions.setRenderer(val));
     },
     showErrorPane: () => {
       dispatch(EditorActions.showErrorPane());

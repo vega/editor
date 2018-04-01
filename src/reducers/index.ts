@@ -8,6 +8,7 @@ import {
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
   SET_MODE,
+  SET_RENDERER,
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
   SetGistVegaLiteSpec,
@@ -19,7 +20,6 @@ import {
   SHOW_TOOLTIP,
   TOGGLE_AUTO_PARSE,
   UPDATE_EDITOR_STRING,
-  UPDATE_RENDERER,
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
   UpdateVegaLiteSpec,
@@ -194,7 +194,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         export: action.export,
       };
-    case UPDATE_RENDERER:
+    case SET_RENDERER:
       return {
         ...state,
         renderer: action.renderer,
