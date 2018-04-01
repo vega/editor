@@ -40,7 +40,7 @@ class App extends React.Component<Props & {match: any, location: any}> {
           }
         }
         if (data.renderer) {
-          this.props.updateRenderer(data.renderer);
+          this.props.setRenderer(data.renderer);
         }
       },
       false,
@@ -154,8 +154,8 @@ const mapDispatchToProps = function(dispatch) {
     setGistVegaLiteSpec: (gist: string, spec) => {
       dispatch(EditorActions.setGistVegaLiteSpec(gist, spec));
     },
-    updateRenderer: (val) => {
-      dispatch(EditorActions.updateRenderer(val));
+    setRenderer: (val) => {
+      dispatch(EditorActions.setRenderer(val));
     },
   };
 };

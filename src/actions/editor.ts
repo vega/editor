@@ -6,6 +6,7 @@ export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
 export const SET_GIST_VEGA_LITE_SPEC: 'SET_GIST_VEGA_LITE_SPEC' = 'SET_GIST_VEGA_LITE_SPEC';
 export const SET_GIST_VEGA_SPEC: 'SET_GIST_VEGA_SPEC' = 'SET_GIST_VEGA_SPEC';
 export const SET_MODE: 'SET_MODE' = 'SET_MODE';
+export const SET_RENDERER: 'SET_RENDERER' = 'SET_RENDERER';
 export const SET_VEGA_EXAMPLE: 'SET_VEGA_EXAMPLE' = 'SET_VEGA_EXAMPLE';
 export const SET_VEGA_LITE_EXAMPLE: 'SET_VEGA_LITE_EXAMPLE' = 'SET_VEGA_LITE_EXAMPLE';
 export const SHOW_COMPILED_VEGA_SPEC: 'SHOW_COMPILED_VEGA_SPEC' = 'SHOW_COMPILED_VEGA_SPEC';
@@ -13,11 +14,10 @@ export const SHOW_ERROR_PANE: 'SHOW_ERROR_PANE' = 'SHOW_ERROR_PANE';
 export const SHOW_TOOLTIP: 'SHOW_TOOLTIP' = 'SHOW_TOOLTIP';
 export const TOGGLE_AUTO_PARSE: 'TOGGLE_AUTO_PARSE' = 'TOGGLE_AUTO_PARSE';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
-export const UPDATE_RENDERER: 'UPDATE_RENDERER' = 'UPDATE_RENDERER';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
 
-export type Action = SetMode | ParseSpec | SetVegaExample | SetVegaLiteExample | UpdateVegaSpec | UpdateVegaLiteSpec | SetGistVegaSpec | SetGistVegaLiteSpec | ToggleAutoParse | ShowCompiledVegaSpec | ShowErrorPane | LogError | UpdateEditorString | ShowTooltip | ExportVega | UpdateRenderer;
+export type Action = SetMode | ParseSpec | SetVegaExample | SetVegaLiteExample | UpdateVegaSpec | UpdateVegaLiteSpec | SetGistVegaSpec | SetGistVegaLiteSpec | ToggleAutoParse | ShowCompiledVegaSpec | ShowErrorPane | LogError | UpdateEditorString | ShowTooltip | ExportVega | SetRenderer;
 
 export function setMode(mode: Mode) {
   return {
@@ -139,10 +139,10 @@ export function exportVega(value: boolean) {
 }
 export type ExportVega = ReturnType<typeof exportVega>;
 
-export function updateRenderer(renderer: Renderer) {
+export function setRenderer(renderer: Renderer) {
   return {
-    type: UPDATE_RENDERER,
+    type: SET_RENDERER,
     renderer: renderer,
   };
 }
-export type UpdateRenderer = ReturnType<typeof updateRenderer>;
+export type SetRenderer = ReturnType<typeof setRenderer>;

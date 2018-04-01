@@ -10,7 +10,7 @@ const getVersion = (mode: Mode) => {
 };
 
 type Props = {
-  updateRenderer;
+  setRenderer;
   mode;
   showTooltip;
   toggleAutoParse;
@@ -61,7 +61,7 @@ export default class Toolbar extends React.Component<Props> {
         </div>
         <div className='renderer-toggle' onClick={() => {
           const nextRenderer = this.props.renderer === 'svg' ? 'canvas': 'svg';
-          this.props.updateRenderer(nextRenderer);
+          this.props.setRenderer(nextRenderer);
         }}>
           {`Renderer: ${this.props.renderer === 'canvas' ? 'Canvas' : 'SVG'}`}
         </div>
