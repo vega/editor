@@ -5,6 +5,7 @@ import {
   EXPORT_VEGA,
   LOG_ERROR,
   PARSE_SPEC,
+  SET_BASEURL,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
   SET_MODE,
@@ -126,6 +127,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         warningsLogger: new LocalLogger(),
         tooltip: true,
         export: false,
+        baseURL: null,
       };
     case PARSE_SPEC:
       return {
@@ -198,6 +200,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         renderer: action.renderer,
+      };
+    case SET_BASEURL:
+      return {
+        ...state,
+        baseURL: action.baseURL,
       };
     default:
       return state;
