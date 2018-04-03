@@ -3,6 +3,7 @@ import {Mode, Renderer} from './consts';
 
 export type State = {
   autoParse: boolean;
+  baseURL: string;
   compiledVegaSpec: boolean;
   editorString: string;
   error: Error;
@@ -21,6 +22,7 @@ export type State = {
 
 export const DEFAULT_STATE: State = {
   autoParse: true,
+  baseURL: null,
   compiledVegaSpec: false,
   editorString: '{}',
   error: null,
