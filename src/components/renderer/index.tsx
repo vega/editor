@@ -11,6 +11,7 @@ function mapStateToProps(state: State, ownProps) {
     mode: state.mode,
     tooltip: state.tooltip,
     export: state.export,
+    baseURL: state.baseURL,
   };
 }
 

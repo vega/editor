@@ -14,6 +14,7 @@ type Props = {
   mode?: string;
   tooltip?: boolean;
   export?: boolean;
+  baseURL?: string;
 };
 
 export default class Editor extends React.Component<Props> {
@@ -26,10 +27,22 @@ export default class Editor extends React.Component<Props> {
 
     const runtime = vega.parse(props.vegaSpec);
 
-    Editor.view = new vega.View(runtime)
-      .logLevel(vega.Warn)
-      .initialize(Editor.chart);
+    const loader = vega.loader();
+    const originalLoad = loader.load.bind(loader);
+    // Custom Loader
+    loader.load = async(url, options) => {
+      try {
+        return await originalLoad(url, {options, ...{baseURL: this.props.baseURL}});
+      } catch {
+        return await originalLoad(url, options);
+      }
+    };
 
+    Editor.view = new vega.View(runtime, {
+      loader: loader,
+      logLevel: vega.Warn,
+    })
+    .initialize(Editor.chart);
   }
   public renderVega(props) {
     Editor.view.renderer(props.renderer);
@@ -69,7 +82,7 @@ export default class Editor extends React.Component<Props> {
     this.renderVega(this.props);
   }
   public componentDidUpdate(prevProps) {
-    if (prevProps.vegaSpec !== this.props.vegaSpec || prevProps.vegaLiteSpec !== this.props.vegaLiteSpec) this.initilizeView(this.props);
+    if (prevProps.vegaSpec !== this.props.vegaSpec || prevProps.vegaLiteSpec !== this.props.vegaLiteSpec || prevProps.baseURL !== this.props.baseURL) this.initilizeView(this.props);
     this.renderVega(this.props);
   }
   public render() {
