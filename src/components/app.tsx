@@ -25,6 +25,8 @@ class App extends React.Component<Props & {match: any, location: any}> {
         if (!data.spec) {
           return;
         }
+        // setting baseURL as event's origin
+        this.props.setBaseUrl(evt.origin);
         console.info('[Vega-Editor] Received Message', evt.origin, data);
         // send acknowledgement
         const parsed = JSON.parse(data.spec);
@@ -141,6 +143,9 @@ const mapDispatchToProps = function(dispatch) {
     },
     updateVegaLiteSpec: (val) => {
       dispatch(EditorActions.updateVegaLiteSpec(val));
+    },
+    setBaseUrl: (val) => {
+      dispatch(EditorActions.setBaseUrl(val));
     },
     setVegaExample: (example: string, val) => {
       dispatch(EditorActions.setVegaExample(example, val));
