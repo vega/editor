@@ -21,7 +21,7 @@ type Props = {
 
 type State = {
   customIsOpened?: boolean;
-  left?: any;
+  left?: number;
   showVega: boolean;
   gist: {
     type: string;
@@ -29,7 +29,6 @@ type State = {
     revision: string;
     filename: string;
   };
-  width?: number;
   invalidUrl?: boolean;
 };
 
@@ -130,18 +129,21 @@ class Header extends React.Component<Props & {history: any}, State> {
     closePortal();
   }
   public render() {
+    const title = (
+      <a className='header-title' href="https://vega.github.io/editor">{'Vega-Editor'}</a>
+    );
     const examplesButton = (
-      <div className='button'>
+      <div>
         {'Examples'}
       </div>
     );
     const gistButton = (
-      <div className='button'>
+      <div>
         {'Gist'}
       </div>
     );
     const docsLink = (
-      <a className='button right' href={this.props.mode === Mode.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'} target='_blank' rel='noopener noreferrer'>
+      <a href={this.props.mode === Mode.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'} target='_blank' rel='noopener noreferrer'>
         {NAMES[this.props.mode]} Docs
       </a>
     );
@@ -153,7 +155,7 @@ class Header extends React.Component<Props & {history: any}, State> {
             left: targetRect.left,
           });
       }}>
-        {'New'}
+        {'New+'}
       </div>
     );
     const vega = (closePortal) => {
@@ -256,13 +258,15 @@ class Header extends React.Component<Props & {history: any}, State> {
     };
     return (
       <div className='header'>
-        <a className='idl-logo' href='https://idl.cs.washington.edu/' target='_blank' rel='noopener noreferrer'>
-          <img height={37} alt='IDL Logo' src='https://vega.github.io/images/idl-logo.png'/>
-        </a>
-
+        <span>
+          <a className='idl-logo' href='https://idl.cs.washington.edu/' target='_blank' rel='noopener noreferrer'>
+            <img height={37} alt='IDL Logo' src='https://vega.github.io/images/idl-logo.png'/>
+          </a>
+        </span>
+        <h3>{title}</h3>
         {this.state.customIsOpened && (
           <Portal>
-            <div className='customSubmenuGroup'
+            <div className='custom-submenu-group'
               onMouseOver={() => {
                 this.setState({customIsOpened: true});
               }}
@@ -274,21 +278,19 @@ class Header extends React.Component<Props & {history: any}, State> {
               }}
               style={{
                 left: this.state.left,
-                width: this.state.width, // $FixMe
                 position: 'absolute',
                 cursor: 'pointer',
                 zIndex: 1000000000,
                 top: 0,
               }}
             >
-              <div id='emptyButton' style={{height: LAYOUT.HeaderHeight}} />
-
-              <div className='customSubmenu' onClick={() => this.onSelectNewVega()}>
+              <div id='empty-button' style={{height: LAYOUT.HeaderHeight}} />
+              <div className='custom-submenu' onClick={() => this.onSelectNewVega()}>
                 {'Vega'}
-              </div>
-              <div className='customSubmenu' onClick={() => this.onSelectNewVegaLite()}>
+               </div>
+               <div className='custom-submenu' onClick={() => this.onSelectNewVegaLite()}>
                 {'Vega-Lite'}
-              </div>
+               </div>
             </div>
           </Portal>
         )}
@@ -344,8 +346,8 @@ class Header extends React.Component<Props & {history: any}, State> {
             ),
           ]}
         </PortalWithState>
-        <span>{docsLink}</span>
         <span>{customButton}</span>
+        <span className='header-docs'>{docsLink}</span>
       </div>
     );
   }

@@ -1,39 +1,44 @@
+/* Navigation bar */
 .header {
-  border-bottom: solid 2px rgba(0, 0, 0, 0.2);
   display: flex;
+  width: 100%;
+  background: #1e1e1e;
+  align-items: center;
 }
 
-.header div, .header a {
-  display: inline-block;
-  font-size: 18px;
-  align-self: flex-end;
-  background: white;
-  border: none;
+.header span,
+.header a {
+  color: #fff;
+  font-size: 1.1em;
   cursor: pointer;
-  border-bottom: solid 5px white;
-  padding-bottom: 12px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 18px;
-  color: black;
+  padding: 0.5vw 1vw;
   text-decoration: none;
+  transition: all 150ms ease-in-out;
 }
 
 .header a.idl-logo {
-  padding: 10px 10px 5px 10px;
-  margin: 0;
-  border: none;
+  padding: 0;
 }
 
-.header .button:hover {
-    background: white;
-    border-bottom: solid 5px rgb(92, 64, 141);
-}
-.header .button.right {
-    position: absolute;
-    right: 0;
+.header-title {
+  padding: 0 1vw;
+  border-left: 1px solid #fff;
 }
 
+.header-docs {
+  margin-left: auto;
+}
+
+.header-docs a {
+  font-size: 1em !important;
+}
+.header div:hover,
+.header div:active,
+.header-docs a:hover {
+  color: #569CD6;
+}
+
+/* Modals */
 .modal-background {
   position: fixed;
   background: rgba(0, 0, 0, 0.8);
@@ -91,7 +96,7 @@
 }
 
 .button-groups button.selected {
-  background: rgb(92, 64, 141);
+  background: #325;
   color: white;
 }
 
@@ -180,7 +185,7 @@
 }
 
 .gist-button:hover {
-  background: rgb(92, 64, 141);
+  background: #325;
   color: white;
 }
 
@@ -236,21 +241,16 @@
   margin-bottom: 30px;
 }
 
-.customSubmenu {
-  font-size: 16px;
-  padding: 10px 23px;
-  background: white;
-  border-left: solid 1px #A9A9A9;
-  border-right: solid 1px #A9A9A9;
+.custom-submenu {
+  font-size: 1em;
+  padding: 1vw 1.5vw;
+  background: #fff;
   border-bottom: solid 1px #A9A9A9;
   cursor: pointer;
+  transition: color 150ms ease-in-out;
 }
 
-.customSubmenu:hover {
-  background: rgb(92, 64, 141);
-  color: white;
+.custom-submenu:hover {
+  color: #569CD6;
 }
 
-#emptyButton:hover {
-  border-bottom: solid 5px rgb(92, 64, 141);
-}
