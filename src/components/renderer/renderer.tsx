@@ -32,7 +32,8 @@ export default class Editor extends React.Component<Props> {
     // Custom Loader
     loader.load = async(url, options) => {
       try {
-        return await originalLoad(url, {options, ...{baseURL: this.props.baseURL}});
+        if (options) return await originalLoad(url, {...options, ...{baseURL: this.props.baseURL}});
+        return await originalLoad(url, {baseURL: this.props.baseURL});
       } catch {
         return await originalLoad(url, options);
       }
