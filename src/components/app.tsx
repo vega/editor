@@ -6,7 +6,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import SplitPane from 'react-split-pane';
-
+import {util} from 'vega-lite';
 import * as EditorActions from '../actions/editor';
 import {LAYOUT, Mode} from '../constants';
 import {NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
@@ -30,6 +30,8 @@ class App extends React.Component<Props & {match: any, location: any}> {
         console.info('[Vega-Editor] Received Message', evt.origin, data);
         // send acknowledgement
         const parsed = JSON.parse(data.spec);
+        // merging config into the spec
+        if (data.config) util.mergeDeep(parsed, {config: data.config});
         data.spec = JSON.stringify(parsed, null, 2);
         if (data.spec || data.file) {
           evt.source.postMessage(true, '*');
