@@ -151,7 +151,7 @@ module.exports = {
             test: /\.(js|jsx|mjs)$/,
             include: [
               paths.appSrc,
-              /\/vega\//  // we need to transpile vega
+              /\/vega|uri-js\//  // we need to transpile vega
             ],
             loader: require.resolve('babel-loader'),
             options: {
