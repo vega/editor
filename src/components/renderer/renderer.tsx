@@ -18,8 +18,8 @@ type Props = {
 };
 
 export default class Editor extends React.Component<Props> {
-  static view: vega.View;
-  static chart: any;
+  public static view: vega.View;
+  public static chart: any;
 
   public initilizeView(props) {
     Editor.chart = this.refs.chart as any;
@@ -32,7 +32,9 @@ export default class Editor extends React.Component<Props> {
     // Custom Loader
     loader.load = async(url, options) => {
       try {
-        if (options) return await originalLoad(url, {...options, ...{baseURL: this.props.baseURL}});
+        if (options) {
+          return await originalLoad(url, {...options, ...{baseURL: this.props.baseURL}});
+        }
         return await originalLoad(url, {baseURL: this.props.baseURL});
       } catch {
         return await originalLoad(url, options);
@@ -54,7 +56,7 @@ export default class Editor extends React.Component<Props> {
     Editor.view.run();
     Editor.chart.style.width = 'auto';
 
-    const options = {showAllFields: props.tooltip}
+    const options = {showAllFields: props.tooltip};
     if (props.mode === Mode.VegaLite) {
       if (props.vegaLiteSpec) {
         vegaTooltip.vegaLite(Editor.view, props.vegaLiteSpec, options);
@@ -66,11 +68,11 @@ export default class Editor extends React.Component<Props> {
     if (props.export) {
       const ext = props.renderer === 'canvas' ? 'png' : 'svg';
       const url = Editor.view.toImageURL(ext);
-      url.then(url => {
-        var link = document.createElement('a');
-        link.setAttribute('href', url);
+      url.then(href => {
+        const link = document.createElement('a');
+        link.setAttribute('href', href);
         link.setAttribute('target', '_blank');
-        if (ext === 'png') link.setAttribute('download', 'export.'+ ext);
+        if (ext === 'png') { link.setAttribute('download', 'export.'+ ext); }
         link.dispatchEvent(new MouseEvent('click'));
       }).catch(err => {
         throw new Error('Error in exporting: '+ err);
@@ -83,7 +85,7 @@ export default class Editor extends React.Component<Props> {
     this.renderVega(this.props);
   }
   public componentDidUpdate(prevProps) {
-    if (prevProps.vegaSpec !== this.props.vegaSpec || prevProps.vegaLiteSpec !== this.props.vegaLiteSpec || prevProps.baseURL !== this.props.baseURL) this.initilizeView(this.props);
+    if (prevProps.vegaSpec !== this.props.vegaSpec || prevProps.vegaLiteSpec !== this.props.vegaLiteSpec || prevProps.baseURL !== this.props.baseURL) { this.initilizeView(this.props); }
     this.renderVega(this.props);
   }
   public render() {
