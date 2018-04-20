@@ -1,3 +1,4 @@
+import * as stringify from 'json-stringify-pretty-compact';
 import {connect} from 'react-redux';
 
 import * as React from 'react';
@@ -22,7 +23,7 @@ type Props = {
 
 class CompiledSpecDisplayHeader extends React.Component<Props> {
   public editVegaSpec() {
-    this.props.updateVegaSpec(JSON.stringify(this.props.value, null, 2));
+    this.props.updateVegaSpec(stringify(this.props.value));
   }
   public render() {
     if (this.props.compiledVegaSpec) {

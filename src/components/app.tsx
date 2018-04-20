@@ -2,6 +2,7 @@ import './app.css';
 
 import {text} from 'd3-request';
 import equal from 'deep-equal';
+import * as stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
@@ -31,8 +32,8 @@ class App extends React.Component<Props & {match: any, location: any}> {
         // send acknowledgement
         const parsed = JSON.parse(data.spec);
         // merging config into the spec
-        if (data.config) util.mergeDeep(parsed, {config: data.config});
-        data.spec = JSON.stringify(parsed, null, 2);
+        if (data.config) { util.mergeDeep(parsed, {config: data.config}); }
+        data.spec = stringify(parsed);
         if (data.spec || data.file) {
           evt.source.postMessage(true, '*');
         }

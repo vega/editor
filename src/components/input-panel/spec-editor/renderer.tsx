@@ -1,5 +1,6 @@
 import './index.css';
 
+import * as stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import {withRouter} from 'react-router-dom';
@@ -92,6 +93,17 @@ class Editor extends React.Component<Props, State> {
       validate: true,
       allowComments: false,
       schemas: schemas[this.props.mode],
+    });
+
+    monaco.languages.registerDocumentFormattingEditProvider('json', {
+      provideDocumentFormattingEdits: function (model, options, token) {
+        return [
+          {
+            range: model.getEditableRange(),
+            text: stringify(JSON.parse(model.getValue())),
+          },
+        ];
+      },
     });
   }
   public componentWillReceiveProps(nextProps) {

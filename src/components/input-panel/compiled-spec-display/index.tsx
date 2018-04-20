@@ -1,3 +1,4 @@
+import * as stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import {connect} from 'react-redux';
@@ -5,8 +6,6 @@ import {connect} from 'react-redux';
 import {showCompiledVegaSpec} from '../../../actions/editor';
 import {State} from '../../../constants/default-state';
 import CompiledSpecDisplayHeader from '../compiled-spec-header';
-
-const JSON3 = require('../../../../lib/json3-compactstringify');
 
 type Props = {
   value;
@@ -27,7 +26,7 @@ class CompiledSpecDisplay extends React.Component<Props> {
           }}
           language='json'
           key={JSON.stringify(this.state)}
-          value={JSON3.stringify(this.props.value, null, 2, 60)}
+          value={stringify(this.props.value)}
         />
       </div>
     );
