@@ -1,9 +1,8 @@
-import 'vega-tooltip/build/vega-tooltip.css';
 import './index.css';
 
 import * as React from 'react';
 import * as vega from 'vega';
-import * as vegaTooltip from 'vega-tooltip';
+import vegaTooltip from 'vega-tooltip';
 
 import {Mode} from '../../constants';
 
@@ -12,7 +11,6 @@ type Props = {
   vegaLiteSpec?: object;
   renderer?: string;
   mode?: string;
-  tooltip?: boolean;
   export?: boolean;
   baseURL?: string;
 };
@@ -48,22 +46,10 @@ export default class Editor extends React.Component<Props> {
     .initialize(Editor.chart);
   }
   public renderVega(props) {
-    Editor.view.renderer(props.renderer);
-
-    if (props.mode === Mode.Vega) {
-      Editor.view.hover();
-    }
-    Editor.view.run();
+    Editor.view.renderer(props.renderer).hover().run();
     Editor.chart.style.width = 'auto';
 
-    const options = {showAllFields: props.tooltip};
-    if (props.mode === Mode.VegaLite) {
-      if (props.vegaLiteSpec) {
-        vegaTooltip.vegaLite(Editor.view, props.vegaLiteSpec, options);
-      }
-    } else {
-      vegaTooltip.vega(Editor.view, options);
-    }
+    vegaTooltip(Editor.view);
 
     if (props.export) {
       const ext = props.renderer === 'canvas' ? 'png' : 'svg';
@@ -92,9 +78,6 @@ export default class Editor extends React.Component<Props> {
     return (
       <div className='chart'>
         <div ref='chart' />
-        {this.props.tooltip ? (
-          <div id='vis-tooltip' className='vg-tooltip' />
-        ) : null}
       </div>
     );
   }

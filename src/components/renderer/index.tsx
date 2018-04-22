@@ -9,7 +9,6 @@ function mapStateToProps(state: State, ownProps) {
     vegaLiteSpec: state.vegaLiteSpec,
     renderer: state.renderer,
     mode: state.mode,
-    tooltip: state.tooltip,
     export: state.export,
     baseURL: state.baseURL,
   };

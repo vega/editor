@@ -12,13 +12,11 @@ const getVersion = (mode: Mode) => {
 type Props = {
   setRenderer;
   mode;
-  showTooltip;
   toggleAutoParse;
   warningsLogger;
   error?: string;
   renderer?: string;
   autoParse?: boolean;
-  tooltip?: boolean;
   export?: boolean;
 
   showErrorPane: Function;
@@ -55,9 +53,6 @@ export default class Toolbar extends React.Component<Props> {
         </div>
         <div className='autoParse' onClick={this.props.toggleAutoParse}>
           {this.props.autoParse ? 'Parse: auto' : 'Parse: manual'}
-        </div>
-        <div className='tooltip-toggle' onClick={this.props.showTooltip}>
-          {this.props.tooltip ? 'Tooltips' : 'No Tooltips'}
         </div>
         <div className='renderer-toggle' onClick={() => {
           // cycle renderer

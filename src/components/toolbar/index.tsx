@@ -12,7 +12,6 @@ function mapStateToProps(state: State, ownProps) {
     mode: state.mode,
     autoParse: state.autoParse,
     warningsLogger: state.warningsLogger,
-    tooltip: state.tooltip,
     export: state.export,
   };
 }
@@ -28,12 +27,9 @@ const mapDispatchToProps = function(dispatch) {
     showErrorPane: () => {
       dispatch(EditorActions.showErrorPane());
     },
-    showTooltip: () => {
-      dispatch(EditorActions.showTooltip());
-    },
     exportVega: (val) => {
       dispatch(EditorActions.exportVega(val));
-    }
+    },
   };
 };
 
