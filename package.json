@@ -60,7 +60,7 @@
     "d3-request": "1.0.6",
     "deep-equal": "^1.0.1",
     "history": "^4.7.2",
-    "json-stringify-pretty-compact": "^1.1.0",
+    "json-stringify-pretty-compact": "^1.2.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
