@@ -3739,7 +3739,7 @@ json-stringify-pretty-compact@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/json-stringify-pretty-compact/-/json-stringify-pretty-compact-1.2.0.tgz#0bc316b5e6831c07041fc35612487fb4e9ab98b8"
 
-json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
+json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
@@ -6783,11 +6783,10 @@ vega-statistics@^1.2:
   dependencies:
     d3-array "1"
 
-vega-tooltip@^0.9.14:
-  version "0.9.14"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.9.14.tgz#c10bcacf69bf60a02c598ec46b905f94f28c54ac"
+vega-tooltip@^0.9.16:
+  version "0.9.16"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.9.16.tgz#1a2c01aa53ce8fbe9478ded50c3e556e72c7ae66"
   dependencies:
-    json-stringify-safe "^5.0.1"
     vega-util "^1.7.0"
 
 vega-transforms@^1.2:
