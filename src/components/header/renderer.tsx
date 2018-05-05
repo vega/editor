@@ -8,10 +8,10 @@ import {LAYOUT, Mode} from '../../constants';
 import {NAMES} from '../../constants/consts';
 import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs';
 
-const formatExampleName = (name) => {
+const formatExampleName = name => {
   return name
     .split(/[_-]/)
-    .map((i) => i[0].toUpperCase() + i.substring(1))
+    .map(i => i[0].toUpperCase() + i.substring(1))
     .join(' ');
 };
 
@@ -34,7 +34,7 @@ type State = {
 };
 
 class Header extends React.Component<Props & {history: any}, State> {
-  refGistForm: HTMLFormElement;
+  private refGistForm: HTMLFormElement;
 
   constructor(props) {
     super(props);
@@ -55,7 +55,7 @@ class Header extends React.Component<Props & {history: any}, State> {
       gist: {
         ...this.state.gist,
         ...gist,
-      }
+      },
     });
   }
   public updateGistType(event) {
@@ -183,23 +183,26 @@ class Header extends React.Component<Props & {history: any}, State> {
     const vegalite = (closePortal) => {
       return (
         <div className='vega-Lite'>
-          {Object.keys(VEGA_LITE_SPECS).map((specType, i) => {
-            const specs = VEGA_LITE_SPECS[specType];
-            return (
-              <div className='itemGroup' key={i}>
-                <div className='specType'>{specType}</div>
-                <div className='items'>
-                  {specs.map((spec, j) => {
-                    return (
-                      <div key={j} onClick={() => {this.onSelectVegaLite(spec.name); closePortal();}} className='item'>
-                        <div style={{backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`}} className='img'/>
-                        <div className='name'>{spec.title}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
+          {Object.keys(VEGA_LITE_SPECS).map((subType, _) => {
+            {Object.keys(VEGA_LITE_SPECS[subType]).map((specType, i) => {
+              const specs = VEGA_LITE_SPECS[subType][specType];
+                return (
+                  <div className='itemGroup' key={i}>
+                    <div className='specType'>{specType}</div>
+                    <div className='items'>
+                      {specs.map((spec, j) => {
+                        return (
+                          <div key={j} onClick={() => {this.onSelectVegaLite(spec.name); closePortal();}} className='item'>
+                            <div style={{backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`}} className='img'/>
+                            <div className='name'>{spec.title}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              });
+            }
           })}
         </div>
       );
@@ -212,15 +215,15 @@ class Header extends React.Component<Props & {history: any}, State> {
             <form ref={(form) => this.refGistForm = form}>
               <div className='gist-input-container'>
                 Gist Type:
-                <input type="radio" name="gist-type" id="gist-type[vega]" value="vega" checked={this.state.gist.type === 'vega'} onChange={this.updateGistType.bind(this)} />
-                <label htmlFor="gist-type[vega]">Vega</label>
-                <input type="radio" name="gist-type" id="gist-type[vega-lite]" value="vega-lite" checked={this.state.gist.type === 'vega-lite'} onChange={this.updateGistType.bind(this)} />
-                <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
+                <input type='radio' name='gist-type' id='gist-type[vega]' value='vega' checked={this.state.gist.type === 'vega'} onChange={this.updateGistType.bind(this)} />
+                <label htmlFor='gist-type[vega]'>Vega</label>
+                <input type='radio' name='gist-type' id='gist-type[vega-lite]' value='vega-lite' checked={this.state.gist.type === 'vega-lite'} onChange={this.updateGistType.bind(this)} />
+                <label htmlFor='gist-type[vega-lite]'>Vega Lite</label>
               </div>
               <div className='gist-input-container'>
                 <label>
                   Gist URL
-                  <div><small>Example: <span className="gist-url">https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9</span></small></div>
+                  <div><small>Example: <span className='gist-url'>https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9</span></small></div>
                   <input required className='gist-input' type='text' placeholder='Enter url' value={this.state.gist.url} onChange={this.updateGistUrl.bind(this)}/>
                 </label>
               </div>
@@ -316,7 +319,7 @@ class Header extends React.Component<Props & {history: any}, State> {
                     {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
                   </div>
                 </div>
-              </div>
+              </div>,
             ),
           ]}
         </PortalWithState>
@@ -333,7 +336,7 @@ class Header extends React.Component<Props & {history: any}, State> {
                   </div>
                   <div className='modal-body' onClick={(e) => {e.stopPropagation();}}>{gist(closePortal)}</div>
                 </div>
-              </div>
+              </div>,
             ),
           ]}
         </PortalWithState>
