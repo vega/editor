@@ -183,26 +183,30 @@ class Header extends React.Component<Props & {history: any}, State> {
     const vegalite = (closePortal) => {
       return (
         <div className='vega-Lite'>
-          {Object.keys(VEGA_LITE_SPECS).map((subType, _) => {
-            {Object.keys(VEGA_LITE_SPECS[subType]).map((specType, i) => {
-              const specs = VEGA_LITE_SPECS[subType][specType];
-                return (
-                  <div className='itemGroup' key={i}>
-                    <div className='specType'>{specType}</div>
-                    <div className='items'>
-                      {specs.map((spec, j) => {
-                        return (
-                          <div key={j} onClick={() => {this.onSelectVegaLite(spec.name); closePortal();}} className='item'>
-                            <div style={{backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`}} className='img'/>
-                            <div className='name'>{spec.title}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              });
-            }
+          {Object.keys(VEGA_LITE_SPECS).map((specGroup, i) => {
+            return (
+              <div key={i}>
+                <h3>{specGroup}</h3>
+                {Object.keys(VEGA_LITE_SPECS[specGroup]).map((specType, j) => {
+                  const specs = VEGA_LITE_SPECS[specGroup][specType];
+                    return (
+                      <div className='itemGroup' key={j}>
+                        <div className='specType'>{specType}</div>
+                        <div className='items'>
+                          {specs.map((spec, k) => {
+                            return (
+                              <div key={k} onClick={() => {this.onSelectVegaLite(spec.name); closePortal();}} className='item'>
+                                <div style={{backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`}} className='img'/>
+                                <div className='name'>{spec.title}</div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            );
           })}
         </div>
       );
