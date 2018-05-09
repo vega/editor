@@ -6700,15 +6700,15 @@ vega-hierarchy@^2.1:
     vega-dataflow "^3.1"
     vega-util "1"
 
-"vega-lite@github:vega/vega-lite#v2.4.1":
-  version "2.4.1"
-  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/303374d20fcc0763574a64421604d1fa474e1ff3"
+"vega-lite@github:vega/vega-lite#v2.4.3":
+  version "2.4.3"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/09eafd9a5d11c0331a710551e27943f9ac90106b"
   dependencies:
     "@types/json-stable-stringify" "^1.0.32"
     json-stable-stringify "^1.0.1"
     tslib "^1.9.0"
     vega-event-selector "^2.0.0"
-    vega-typings "^0.2.15"
+    vega-typings "^0.2.16"
     vega-util "^1.7.0"
     yargs "^11.0.0"
 
@@ -6801,6 +6801,10 @@ vega-transforms@^1.2:
 vega-typings@*, vega-typings@^0.2.15:
   version "0.2.15"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.2.15.tgz#7c973f7f342efe82fb9c4ad96833431c11cd5911"
+
+vega-typings@^0.2.16:
+  version "0.2.16"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.2.16.tgz#2f67e494ac37b2ba6e38f9c147059aabbfe0f247"
 
 vega-util@1, vega-util@^1.7, vega-util@^1.7.0:
   version "1.7.0"
