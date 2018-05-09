@@ -13,6 +13,7 @@
   },
   "compileOnSave": false,
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "node_modules/vega-lite/typings/*.d.ts"
   ]
 }
