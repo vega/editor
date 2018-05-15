@@ -21,7 +21,7 @@ class CompiledSpecDisplay extends React.Component<Props> {
             readOnly: true,
             folding: true,
             scrollBeyondLastLine: true,
-            wordWrap: true,
+            wordWrap: 'on',
             automaticLayout: true,
           }}
           language='json'
