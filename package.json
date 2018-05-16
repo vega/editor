@@ -50,8 +50,10 @@
     "vega-tooltip": "^0.9.16"
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development --hot --inline --progress --open --colors",
-    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --hot --inline --progress --open --color",
+    "build": "webpack --mode production --progress",
+    "clean": "rm -rf build",
+    "postbuild": "cp -rn public/* build",
     "generate-example-images": "./scripts/generate-example-images.sh",
     "test": "node scripts/test.js --env=jsdom",
     "postinstall": "npm run vendor",
