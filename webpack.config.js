@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
@@ -41,20 +42,13 @@ module.exports = env => {
         filename: 'index.html',
         template: 'public/index.html'
       }),
-      new MonacoWebpackPlugin()
+      new MonacoWebpackPlugin(),
+      // Limit the maximum number of chunks
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 5,
+        minChunkSize: 30000
+      })
     ],
-    //  Bundles everything in `node_modules` in the separate file
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: "vendors",
-            chunks: "all"
-          }
-        }
-      }
-    },
     // Configurations for `webpack-dev-server`
     devServer: {
       contentBase: path.join(__dirname, "public"),
