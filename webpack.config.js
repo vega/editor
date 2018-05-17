@@ -38,11 +38,21 @@ module.exports = env => {
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin({
         filename: 'index.html',
-        template: 'public/index.html',
-        favicon: 'public/favicon.ico'
+        template: 'public/index.html'
       }),
       new MonacoWebpackPlugin()
     ],
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: "vendors",
+            chunks: "all"
+          }
+        }
+      }
+    },
     devServer: {
       contentBase: path.join(__dirname, "public"),
     },
