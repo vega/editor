@@ -28,6 +28,7 @@ module.exports = env => {
               test: /\.tsx?$/,
               use: ['ts-loader'],
             },
+             // All CSS files will be handled by 'css-loader' & `styles-loader`.
             {
               test: /\.css$/,
               use: ['style-loader', 'css-loader']
@@ -42,6 +43,7 @@ module.exports = env => {
       }),
       new MonacoWebpackPlugin()
     ],
+    //  Bundles everything in `node_modules` in the separate file
     optimization: {
       splitChunks: {
         cacheGroups: {
@@ -53,6 +55,7 @@ module.exports = env => {
         }
       }
     },
+    // Configurations for `webpack-dev-server`
     devServer: {
       contentBase: path.join(__dirname, "public"),
     },
