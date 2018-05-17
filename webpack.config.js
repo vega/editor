@@ -8,9 +8,9 @@ module.exports = env => {
         main: './src/index.tsx'
     },
     output: {
-        filename: 'static/js/[name].bundle.js',
-        chunkFilename: 'static/js/[name].chunk.js',
-        path: path.resolve(__dirname, 'build'),
+        filename: '[name].bundle.js',
+        chunkFilename: '[name].chunk.js',
+        path: path.resolve(__dirname, 'dist'),
     },
 
     // Enable sourcemaps for debugging webpack's output.

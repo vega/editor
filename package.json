@@ -8,13 +8,11 @@
     "babel-preset-react-app": "^3.1.1",
     "babel-preset-react-optimize": "^1.0.1",
     "babel-runtime": "^6.26.0",
-    "copy-webpack-plugin": "^4.4.2",
     "css-loader": "^0.28.11",
     "gh-pages": "^1.1.0",
     "html-webpack-plugin": "^3.2.0",
     "monaco-editor": "^0.12.0",
     "monaco-editor-webpack-plugin": "^1.1.0",
-    "source-map-loader": "^0.2.3",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.3.0",
     "tslint": "^5.9.1",
@@ -52,15 +50,15 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --inline --progress --open --color",
     "build": "webpack --mode production --progress",
-    "clean": "rm -rf build",
-    "postbuild": "cp -rn public/* build",
+    "clean": "rm -rf dist",
+    "postbuild": "rsync -r --ignore-existing public/* dist",
     "generate-example-images": "./scripts/generate-example-images.sh",
     "test": "node scripts/test.js --env=jsdom",
     "postinstall": "npm run vendor",
     "vendor": "./scripts/vendor.sh",
     "lint": "tslint -p .",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "babel": {
     "presets": [
