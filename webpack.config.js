@@ -10,8 +10,7 @@ module.exports = env => {
     output: {
       filename: '[name].bundle.js',
       chunkFilename: '[name].chunk.js',
-      path: path.resolve(__dirname, 'dist'),
-      publicPath: '/'
+      path: path.resolve(__dirname, 'dist')
     },
 
     // Enable sourcemaps for debugging webpack's output.
