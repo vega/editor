@@ -16,10 +16,10 @@ deploy:
   name: Dominik Moritz
   email: domoritz@gmail.com
   project-name: editor
-  addons:
-    apt:
-      packages:
-        - parallel
   on:
     branch: master
     tags: true
+addons:
+  apt:
+    packages:
+      - parallel
