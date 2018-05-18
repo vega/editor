@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "es6",
+    "module": "es2015",
     "moduleResolution": "node",
     "declaration": false,
     "noImplicitAny": false,
@@ -9,11 +9,13 @@
     "strictNullChecks": false,
     "jsx": "react",
     "suppressImplicitAnyIndexErrors": true,
-    "removeComments": true
+    "allowSyntheticDefaultImports": true
   },
   "compileOnSave": false,
+  "files": [
+    "src/index.tsx"
+  ],
   "include": [
-    "src/**/*.ts",
     "node_modules/vega-lite/typings/*.d.ts"
   ]
 }

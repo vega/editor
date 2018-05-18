@@ -46,7 +46,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --inline --progress --open --color",
-    "build": "webpack --mode production --progress",
+    "build": "npm run clean && webpack --mode production --progress",
     "clean": "rm -rf dist",
     "postbuild": "rsync -r --ignore-existing public/* dist",
     "generate-example-images": "./scripts/generate-example-images.sh",

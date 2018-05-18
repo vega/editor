@@ -42,11 +42,8 @@ module.exports = env => {
         filename: 'index.html',
         template: 'public/index.html'
       }),
-      new MonacoWebpackPlugin(),
-      // Limit the maximum number of chunks
-      new webpack.optimize.LimitChunkCountPlugin({
-        maxChunks: 5,
-        minChunkSize: 30000
+      new MonacoWebpackPlugin({
+        languages: ['json']
       })
     ],
     // Configurations for `webpack-dev-server`
