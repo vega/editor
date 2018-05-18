@@ -21,11 +21,11 @@
   version "1.0.32"
   resolved "https://registry.yarnpkg.com/@types/json-stable-stringify/-/json-stable-stringify-1.0.32.tgz#121f6917c4389db3923640b2e68de5fa64dda88e"
 
-"@types/node@^9.6.6":
-  version "9.6.17"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.17.tgz#00a225d8240c953c71e7a7336e153cd69ff704b6"
+"@types/node@^10.1.1":
+  version "10.1.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.1.1.tgz#ca39d8607fa1fcb146b0530420b93f1dd4802f6c"
 
-"@types/react@^16.3.13", "@types/react@^16.3.14":
+"@types/react@*", "@types/react@^16.3.14":
   version "16.3.14"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.3.14.tgz#f90ac6834de172e13ecca430dcb6814744225d36"
   dependencies:
@@ -4341,13 +4341,13 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-monaco-editor-webpack-plugin@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/monaco-editor-webpack-plugin/-/monaco-editor-webpack-plugin-1.1.0.tgz#017fd2edb916ce9411f690e2e3d4f931509ea474"
+monaco-editor-webpack-plugin@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/monaco-editor-webpack-plugin/-/monaco-editor-webpack-plugin-1.2.0.tgz#8d0b6bb1986350b714f6de409ca438ef93ebe650"
 
-monaco-editor@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.12.0.tgz#cd8621017526b57746245104d764bbf52ad42283"
+monaco-editor@^0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.13.1.tgz#6b9ce20e4d1c945042d256825eb133cb23315a52"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -5431,12 +5431,12 @@ react-ga@2.5.2:
     prop-types "^15.6.0"
     react "^15.6.2 || ^16.0"
 
-react-monaco-editor@^0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.16.0.tgz#1244762451adbad8c3dc01a43fc2a3d861dabf82"
+react-monaco-editor@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.17.0.tgz#d8e79f797c5b7684079424693daec8ca1258bb51"
   dependencies:
-    "@types/react" "^16.3.13"
-    monaco-editor "^0.12.0"
+    "@types/react" "*"
+    monaco-editor "^0.13.1"
     prop-types "^15.6.1"
 
 react-portal@^4.1.5:
