@@ -1,8 +1,24 @@
 language: node_js
 node_js:
   - "8"
-
 script:
   - yarn run lint
-
+  - yarn run generate-example-images
+  - yarn run build
 cache: yarn
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable (Over to you, dom)
+  keep-history: true
+  local-dir: dist
+  name: Dominik Moritz
+  email: domoritz@gmail.com
+  project-name: vega-editor
+  addons:
+    apt:
+      packages:
+        - parallel
+  on:
+    branch: master
+  
