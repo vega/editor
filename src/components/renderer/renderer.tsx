@@ -10,7 +10,7 @@ type Props = {
   vegaSpec?: object;
   vegaLiteSpec?: object;
   renderer?: string;
-  mode?: string;
+  mode?: Mode;
   export?: boolean;
   baseURL?: string;
 };

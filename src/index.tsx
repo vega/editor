@@ -49,5 +49,7 @@ ReactDOM.render(
   document.getElementById('root'),
 );
 
+/* tslint:disable */
 console.log('%cWelcome to the Vega-Editor!', 'font-size: 16px; font-weight: bold;');
 console.log('You can access the Vega view with VEGA_DEBUG. Learn more at https://vega.github.io/vega/docs/api/debugging/.');
+/* tslint:enable */
