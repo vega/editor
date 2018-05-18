@@ -14,11 +14,12 @@ deploy:
   local-dir: dist
   name: Dominik Moritz
   email: domoritz@gmail.com
-  project-name: vega-editor
+  project-name: editor
   addons:
     apt:
       packages:
         - parallel
   on:
     branch: master
+    tags: true
   
