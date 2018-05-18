@@ -182,7 +182,7 @@ class Editor extends React.Component<Props, State> {
           options={{
             folding: true,
             scrollBeyondLastLine: true,
-            wordWrap: true,
+            wordWrap: 'on',
             wrappingIndent: 'same',
             automaticLayout: true,
             autoIndent: true,

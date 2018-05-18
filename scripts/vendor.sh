@@ -7,11 +7,11 @@ SCHEMA=schema
 
 # Copy dependencies by default. Link if a -l flag is specified.
 CWD=$(pwd)
-VEGA_OP="cp -R"
-VEGA_DATASETS_OP="cp -R"
-SCHEMA_OP="cp"
-VEGA_EMBED_OP="cp -R"
-VEGA_LITE_OP="cp -R"
+VEGA_OP="rsync -r"
+VEGA_DATASETS_OP="rsync -r"
+SCHEMA_OP="rsync"
+VEGA_EMBED_OP="rsync -r"
+VEGA_LITE_OP="rsync -r"
 
 while getopts :l: FLAG; do
   case $FLAG in
