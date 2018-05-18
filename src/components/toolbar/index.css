@@ -1,34 +1,35 @@
+/* Toolbar */
 .toolbar {
+  width: 100%;
   position: absolute;
-  bottom: 0;
-  right: 0;
+  top: 0;
+  left: 0;
 }
 
 .toolbar > div {
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin: 0.4vw;
   display: inline-block;
-  padding: 5px 5px;
+  padding: 0.4vw;
   border-radius: 5px;
-  font-size: 12px;
+  font-size: 0.8em;
 }
 
-.renderer-toggle, .autoParse, .tooltip-toggle, .vega-export {
-  background: #777;
-  color: white;
+.renderer-toggle,
+.autoParse,
+.tooltip-toggle,
+.vega-export {
+  background: #1e1e1e;
+  color: #eee;
+  opacity: 0.9;
   cursor: pointer;
+  border: 1px solid #1e1e1e;
 }
 
 .status {
+  float: right;
   background: #399e39;
-  color: white;
+  color: #fff;
   cursor: default;
-}
-
-.toolbar .debug-toggle {
-  background: #399e39;
-  color: white;
-  margin-left: 20px;
 }
 
 .toolbar .warning-indicator {
@@ -38,7 +39,7 @@
 }
 
 .toolbar .error-indicator {
-  background:red;
-  color: white;
+  background: #ff0033;
+  color: #fff;
   cursor: pointer;
 }

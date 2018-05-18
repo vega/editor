@@ -185,6 +185,7 @@ class Editor extends React.Component<Props, State> {
             wordWrap: 'on',
             wrappingIndent: 'same',
             automaticLayout: true,
+            theme: 'vs-dark',
             autoIndent: true,
             cursorBlinking: 'smooth',
             lineNumbersMinChars: 4,
