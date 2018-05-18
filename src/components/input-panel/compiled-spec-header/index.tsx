@@ -42,7 +42,8 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
           </svg>
           <button
             onClick={this.editVegaSpec.bind(this)}
-            style={{position: 'absolute', right: '3%', cursor: 'pointer'}}
+            className='button'
+            style={{float: 'right'}}
           >
             Edit Vega spec
           </button>

@@ -52,7 +52,7 @@
 .modal {
   position: relative;
   background: white;
-  margin: 70px auto;
+  margin: 2vw auto;
   width: 80%;
 }
 
@@ -96,7 +96,7 @@
 }
 
 .button-groups button.selected {
-  background: #325;
+  background: #569CD6;
   color: white;
 }
 
@@ -185,7 +185,7 @@
 }
 
 .gist-button:hover {
-  background: #325;
+  background: #569CD6;
   color: white;
 }
 

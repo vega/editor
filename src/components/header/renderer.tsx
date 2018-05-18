@@ -130,7 +130,7 @@ class Header extends React.Component<Props & {history: any}, State> {
   }
   public render() {
     const title = (
-      <a className='header-title' href="https://vega.github.io/editor">{'Vega-Editor'}</a>
+      <a className='header-title' href='https://vega.github.io/editor'>{'Vega-Editor'}</a>
     );
     const examplesButton = (
       <div>
@@ -155,7 +155,7 @@ class Header extends React.Component<Props & {history: any}, State> {
             left: targetRect.left,
           });
       }}>
-        {'New+'}
+        {'New'}
       </div>
     );
     const vega = (closePortal) => {
