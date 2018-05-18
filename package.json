@@ -2,6 +2,7 @@
   "name": "vega-editor",
   "version": "0.1.0",
   "homepage": "http://vega.github.io/editor",
+  "private": true,
   "devDependencies": {
     "@types/node": "^10.1.1",
     "@types/react": "^16.3.14",
