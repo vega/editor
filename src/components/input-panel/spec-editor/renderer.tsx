@@ -99,7 +99,7 @@ class Editor extends React.Component<Props, State> {
       provideDocumentFormattingEdits: function (model, options, token) {
         return [
           {
-            range: model.getEditableRange(),
+            range: model.getFullModelRange(),
             text: stringify(JSON.parse(model.getValue())),
           },
         ];
