@@ -46,7 +46,7 @@
     "vega-tooltip": "^0.9.16"
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development --hot --inline --progress --open --color",
+    "start": "webpack-dev-server --mode development --hot",
     "build": "npm run clean && webpack --mode production --progress",
     "clean": "rm -rf dist",
     "postbuild": "rsync -r --ignore-existing public/* dist",
