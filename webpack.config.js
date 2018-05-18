@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
@@ -11,7 +10,8 @@ module.exports = env => {
     output: {
       filename: '[name].bundle.js',
       chunkFilename: '[name].chunk.js',
-      path: path.resolve(__dirname, 'dist')
+      path: path.resolve(__dirname, 'dist'),
+      publicPath: '/'
     },
 
     // Enable sourcemaps for debugging webpack's output.
@@ -48,7 +48,22 @@ module.exports = env => {
     ],
     // Configurations for `webpack-dev-server`
     devServer: {
-      contentBase: path.join(__dirname, 'public')
+      stats: {
+        colors: true
+      },
+      compress: true,
+      overlay: {
+        warnings: true,
+        errors: true
+      },
+      progress: true,
+      inline: true,
+      open: true,
+      contentBase: path.join(__dirname, 'public'),
+      watchContentBase: true,
+      watchOptions: {
+        ignored: /node_modules/
+      }
     },
     node: {
       fs: 'empty'
