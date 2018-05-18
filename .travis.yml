@@ -2,8 +2,8 @@ language: node_js
 node_js:
   - "8"
 script:
-  - yarn run lint
-  - yarn run build
+  - yarn lint
+  - yarn build
 cache: yarn
 deploy:
   provider: pages
@@ -15,7 +15,7 @@ deploy:
   email: domoritz@gmail.com
   project-name: editor
   script:
-    - yarn run generate-example-images
+    - yarn generate-example-images
   addons:
     apt:
       packages:
@@ -23,4 +23,4 @@ deploy:
   on:
     branch: master
     tags: true
-  
+
