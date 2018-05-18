@@ -4,6 +4,8 @@ node_js:
 script:
   - yarn lint
   - yarn build
+before_deploy:
+  - yarn generate-example-images
 cache: yarn
 deploy:
   provider: pages
@@ -14,8 +16,6 @@ deploy:
   name: Dominik Moritz
   email: domoritz@gmail.com
   project-name: editor
-  script:
-    - yarn generate-example-images
   addons:
     apt:
       packages:
@@ -23,4 +23,3 @@ deploy:
   on:
     branch: master
     tags: true
-
