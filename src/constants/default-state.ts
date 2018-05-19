@@ -9,6 +9,7 @@ export type State = {
   error: Error;
   errorPane: boolean;
   export: boolean;
+  exportPDF: boolean;
   gist: string;
   mode: Mode;
   parse: boolean;
@@ -28,6 +29,7 @@ export const DEFAULT_STATE: State = {
   error: null,
   errorPane: false,
   export: false,
+  exportPDF: false,
   gist: null,
   mode: Mode.VegaLite,
   parse: false,

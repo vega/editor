@@ -10,6 +10,7 @@ function mapStateToProps(state: State, ownProps) {
     renderer: state.renderer,
     mode: state.mode,
     export: state.export,
+    exportPDF: state.exportPDF,
     baseURL: state.baseURL,
   };
 }

@@ -2,6 +2,7 @@ import * as vl from 'vega-lite';
 
 import {
   Action,
+  EXPORT_PDF,
   EXPORT_VEGA,
   LOG_ERROR,
   PARSE_SPEC,
@@ -127,6 +128,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         warningsLogger: new LocalLogger(),
         tooltip: true,
         export: false,
+        exportPDF: false,
         baseURL: null,
       };
     case PARSE_SPEC:
@@ -205,6 +207,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         baseURL: action.baseURL,
+      };
+    case EXPORT_PDF:
+      return {
+        ...state,
+        exportPDF: action.exportPDF,
       };
     default:
       return state;
