@@ -21,6 +21,7 @@ type Props = {
 
   showErrorPane: Function;
   exportVega: Function;
+  exportPDF: Function;
 };
 
 export default class Toolbar extends React.Component<Props> {
@@ -43,6 +44,9 @@ export default class Toolbar extends React.Component<Props> {
     if (nextProps.export) {
       this.props.exportVega(false);
     }
+    if (nextProps.exportPDF) {
+      this.props.exportPDF(false);
+    }
   }
   public render() {
     return (
@@ -63,6 +67,9 @@ export default class Toolbar extends React.Component<Props> {
         </div>
         <div className='vega-export' onClick={() => this.props.exportVega(true)}>
           {this.props.renderer === 'canvas' ? 'Export PNG' : 'Export SVG'}
+        </div>
+        <div className='pdf-export' onClick={() => this.props.exportPDF(true)}>
+          {`Export PDF`}
         </div>
       </div>
     );

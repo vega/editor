@@ -13,6 +13,7 @@ function mapStateToProps(state: State, ownProps) {
     autoParse: state.autoParse,
     warningsLogger: state.warningsLogger,
     export: state.export,
+    exportPDF: state.exportPDF,
   };
 }
 
@@ -29,6 +30,9 @@ const mapDispatchToProps = function(dispatch) {
     },
     exportVega: (val) => {
       dispatch(EditorActions.exportVega(val));
+    },
+    exportPDF: (val) => {
+      dispatch(EditorActions.exportPDF(val));
     },
   };
 };
