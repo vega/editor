@@ -1,5 +1,6 @@
 import './index.css';
 
+import jsPDF from 'jspdf';
 import * as React from 'react';
 import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
@@ -12,6 +13,7 @@ type Props = {
   renderer?: string;
   mode?: Mode;
   export?: boolean;
+  exportPDF?: boolean;
   baseURL?: string;
 };
 
@@ -58,11 +60,23 @@ export default class Editor extends React.Component<Props> {
         const link = document.createElement('a');
         link.setAttribute('href', href);
         link.setAttribute('target', '_blank');
-        if (ext === 'png') { link.setAttribute('download', 'export.'+ ext); }
+        link.setAttribute('download', 'export.'+ ext);
         link.dispatchEvent(new MouseEvent('click'));
       }).catch(err => {
         throw new Error('Error in exporting: '+ err);
       });
+    }
+
+    if (props.exportPDF) {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const url = Editor.view.toImageURL('png');
+      url.then(data => {
+        pdf.addImage(data, 'PNG', 0, 0);
+        pdf.save('export.pdf');
+      }).catch(err => {
+        throw new Error('Error in exporting PDF: '+ err);
+      });
+
     }
     (window as any).VEGA_DEBUG.view = Editor.view;
   }
