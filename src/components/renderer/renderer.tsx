@@ -55,11 +55,16 @@ export default class Editor extends React.Component<Props> {
       const ext = props.renderer === 'canvas' ? 'png' : 'svg';
       const url = Editor.view.toImageURL(ext);
       url.then(href => {
-        const link = document.createElement('a');
-        link.setAttribute('href', href);
-        link.setAttribute('target', '_blank');
-        if (ext === 'png') { link.setAttribute('download', 'export.'+ ext); }
-        link.dispatchEvent(new MouseEvent('click'));
+        if (ext === 'png') {
+          const link = document.createElement('a');
+          link.setAttribute('href', href);
+          link.setAttribute('target', '_blank');
+          link.setAttribute('download', 'export.'+ ext);
+          link.dispatchEvent(new MouseEvent('click'));
+        } else {
+          const tab = window.open();
+          tab.document.write('<img src="'+ href + '"/>');
+        }
       }).catch(err => {
         throw new Error('Error in exporting: '+ err);
       });
