@@ -9,7 +9,7 @@
     "tslint-config-prettier"
   ],
   "rules": {
-    "quotemark": [true, "single"],
+    "quotemark": [true, "single", "jsx-double"],
     "arrow-parens": [true, "ban-single-arg-parens"],
     "no-console": [true, "log", "error"],
     "no-bitwise": false,
