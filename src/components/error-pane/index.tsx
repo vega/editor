@@ -1,18 +1,18 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import * as EditorActions from '../../actions/editor';
-import {State} from '../../constants/default-state';
+import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
 function mapStateToProps(state: State, ownProps) {
   return {
     error: state.error,
-    warningsLogger: state.warningsLogger,
     errorPane: state.errorPane,
+    warningsLogger: state.warningsLogger,
   };
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
     showErrorPane: () => {
       dispatch(EditorActions.showErrorPane());

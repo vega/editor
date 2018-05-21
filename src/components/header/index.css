@@ -3,7 +3,8 @@
   display: flex;
 }
 
-.header div, .header a {
+.header div,
+.header a {
   display: inline-block;
   font-size: 18px;
   align-self: flex-end;
@@ -26,12 +27,12 @@
 }
 
 .header .button:hover {
-    background: white;
-    border-bottom: solid 5px rgb(92, 64, 141);
+  background: white;
+  border-bottom: solid 5px rgb(92, 64, 141);
 }
 .header .button.right {
-    position: absolute;
-    right: 0;
+  position: absolute;
+  right: 0;
 }
 
 .modal-background {
@@ -57,7 +58,7 @@
 
 .modal-header:after {
   display: table;
-  content: '';
+  content: "";
   clear: both;
 }
 
@@ -170,7 +171,7 @@
 .gist-button {
   background: rgb(100, 80, 150);
   color: white;
-  border: 1px solid #A9A9A9;
+  border: 1px solid #a9a9a9;
   cursor: pointer;
   height: 30px;
   outline: none;
@@ -193,7 +194,7 @@
 .gist-url {
   font-size: 12px;
   font-style: italic;
-  color: rgb(6,69,173);
+  color: rgb(6, 69, 173);
 }
 
 .gist-input-container {
@@ -202,7 +203,7 @@
 
 .gist-optional:after {
   display: table;
-  content: '';
+  content: "";
   clear: both;
 }
 
@@ -240,9 +241,9 @@
   font-size: 16px;
   padding: 10px 23px;
   background: white;
-  border-left: solid 1px #A9A9A9;
-  border-right: solid 1px #A9A9A9;
-  border-bottom: solid 1px #A9A9A9;
+  border-left: solid 1px #a9a9a9;
+  border-right: solid 1px #a9a9a9;
+  border-bottom: solid 1px #a9a9a9;
   cursor: pointer;
 }
 

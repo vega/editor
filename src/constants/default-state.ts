@@ -1,7 +1,7 @@
-import {LocalLogger} from '../utils/logger';
-import {Mode, Renderer} from './consts';
+import { LocalLogger } from '../utils/logger';
+import { Mode, Renderer } from './consts';
 
-export type State = {
+export interface State {
   autoParse: boolean;
   baseURL: string;
   compiledVegaSpec: boolean;
@@ -18,7 +18,7 @@ export type State = {
   vegaLiteSpec: any;
   vegaSpec: any;
   warningsLogger: LocalLogger;
-};
+}
 
 export const DEFAULT_STATE: State = {
   autoParse: true,

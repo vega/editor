@@ -3,48 +3,59 @@ import './index.css';
 import * as stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import parser from 'vega-schema-url-parser';
 import addMarkdownProps from '../../../utils/markdownProps';
 
-import {Mode} from '../../../constants';
+import { Mode } from '../../../constants';
 
-const vegaSchema = require('vega/docs/vega-schema.json');
 const vegaLiteSchema = require('vega-lite/build/vega-lite-schema.json');
+const vegaSchema = require('vega/docs/vega-schema.json');
 
 addMarkdownProps(vegaSchema);
 addMarkdownProps(vegaLiteSchema);
 
 const schemas = {
-  [Mode.Vega]: [{
-    uri: 'https://vega.github.io/schema/vega/v3.json',
-    schema: vegaSchema,
-  }, {
-    uri: 'https://vega.github.io/schema/vega/v3.0.json',
-    schema: vegaSchema,
-  }, {
-    uri: 'https://vega.github.io/schema/vega/v3.1.json',
-    schema: vegaSchema,
-  }],
-  [Mode.VegaLite]: [{
-    uri: 'https://vega.github.io/schema/vega-lite/v2.json',
-    schema: vegaLiteSchema,
-  }, {
-    uri: 'https://vega.github.io/schema/vega-lite/v2.0.json',
-    schema: vegaLiteSchema,
-  }, {
-    uri: 'https://vega.github.io/schema/vega-lite/v2.1.json',
-    schema: vegaLiteSchema,
-  }, {
-    uri: 'https://vega.github.io/schema/vega-lite/v2.2.json',
-    schema: vegaLiteSchema,
-  }, {
-    uri: 'https://vega.github.io/schema/vega-lite/v2.3.json',
-    schema: vegaLiteSchema,
-  }, {
-    uri: 'https://vega.github.io/schema/vega-lite/v2.4.json',
-    schema: vegaLiteSchema,
-  }],
+  [Mode.Vega]: [
+    {
+      schema: vegaSchema,
+      uri: 'https://vega.github.io/schema/vega/v3.json',
+    },
+    {
+      schema: vegaSchema,
+      uri: 'https://vega.github.io/schema/vega/v3.0.json',
+    },
+    {
+      schema: vegaSchema,
+      uri: 'https://vega.github.io/schema/vega/v3.1.json',
+    },
+  ],
+  [Mode.VegaLite]: [
+    {
+      schema: vegaLiteSchema,
+      uri: 'https://vega.github.io/schema/vega-lite/v2.json',
+    },
+    {
+      schema: vegaLiteSchema,
+      uri: 'https://vega.github.io/schema/vega-lite/v2.0.json',
+    },
+    {
+      schema: vegaLiteSchema,
+      uri: 'https://vega.github.io/schema/vega-lite/v2.1.json',
+    },
+    {
+      schema: vegaLiteSchema,
+      uri: 'https://vega.github.io/schema/vega-lite/v2.2.json',
+    },
+    {
+      schema: vegaLiteSchema,
+      uri: 'https://vega.github.io/schema/vega-lite/v2.3.json',
+    },
+    {
+      schema: vegaLiteSchema,
+      uri: 'https://vega.github.io/schema/vega-lite/v2.4.json',
+    },
+  ],
 };
 
 function debounce(func, wait, immediate?) {
@@ -54,16 +65,20 @@ function debounce(func, wait, immediate?) {
     const args = arguments;
     const later = () => {
       timeout = null;
-      if (!immediate) { func.apply(context, args); }
+      if (!immediate) {
+        func.apply(context, args);
+      }
     };
     const callNow = immediate && !timeout;
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
-    if (callNow) { func.apply(context, args); }
+    if (callNow) {
+      func.apply(context, args);
+    }
   };
 }
 
-type Props = {
+interface Props {
   autoParse: boolean;
   history;
   mode: Mode;
@@ -71,15 +86,15 @@ type Props = {
   value?: string;
 
   onChange?: (...args: any[]) => any;
-  parseSpec: Function;
-  updateEditorString: Function;
-  updateVegaLiteSpec: Function;
-  updateVegaSpec: Function;
-};
+  parseSpec: (val: any) => void;
+  updateEditorString: (val: any) => void;
+  updateVegaLiteSpec: (val: any) => void;
+  updateVegaSpec: (val: any) => void;
+}
 
-type State = {
+interface State {
   code;
-};
+}
 
 class Editor extends React.Component<Props, State> {
   constructor(props) {
@@ -103,13 +118,13 @@ class Editor extends React.Component<Props, State> {
   }
   public editorWillMount(monaco) {
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-      validate: true,
       allowComments: false,
       schemas: schemas[this.props.mode],
+      validate: true,
     });
 
     monaco.languages.registerDocumentFormattingEditProvider('json', {
-      provideDocumentFormattingEdits: function (model, options, token) {
+      provideDocumentFormattingEdits(model, options, token) {
         return [
           {
             range: model.getFullModelRange(),
@@ -120,7 +135,7 @@ class Editor extends React.Component<Props, State> {
     });
   }
   public componentWillReceiveProps(nextProps) {
-    this.setState({code: nextProps.value});
+    this.setState({ code: nextProps.value });
     if (!nextProps.autoParse && nextProps.parse) {
       this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
@@ -129,7 +144,7 @@ class Editor extends React.Component<Props, State> {
   public manualParseSpec() {
     if (!this.props.autoParse) {
       return (
-        <button id='parse-button' className='button' onClick={() => this.props.parseSpec(true)}>
+        <button id="parse-button" className="button" onClick={() => this.props.parseSpec(true)}>
           Parse
         </button>
       );
@@ -163,7 +178,7 @@ class Editor extends React.Component<Props, State> {
         this.props.updateVegaLiteSpec(spec);
         break;
       default:
-        console.error(`Unknown mode:  ${parsedMode}`);
+        console.exception(`Unknown mode:  ${parsedMode}`);
         break;
     }
   }
@@ -173,34 +188,31 @@ class Editor extends React.Component<Props, State> {
    * Triggered by #format-button on click.
    */
   public formatDocument() {
-    (this.refs.vegaEditor as any)
-      .editor
-      .getAction('editor.action.formatDocument')
-      .run();
+    (this.refs.vegaEditor as any).editor.getAction('editor.action.formatDocument').run();
   }
 
   public render() {
     const code = this.state.code;
     return (
       <div className={'full-height-wrapper'}>
-        <div className='editor-header right-align'>
-          <button id='format-button' className='button' onClick={() => this.formatDocument()}>
+        <div className="editor-header right-align">
+          <button id="format-button" className="button" onClick={() => this.formatDocument()}>
             Format
           </button>
           {this.manualParseSpec()}
         </div>
         <MonacoEditor
-          ref='vegaEditor'
-          language='json'
+          ref="vegaEditor"
+          language="json"
           options={{
+            autoIndent: true,
+            automaticLayout: true,
+            cursorBlinking: 'smooth',
             folding: true,
+            lineNumbersMinChars: 4,
             scrollBeyondLastLine: true,
             wordWrap: 'on',
             wrappingIndent: 'same',
-            automaticLayout: true,
-            autoIndent: true,
-            cursorBlinking: 'smooth',
-            lineNumbersMinChars: 4,
           }}
           value={code}
           onChange={debounce(this.handleEditorChange, 700).bind(this)}

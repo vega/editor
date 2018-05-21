@@ -1,16 +1,16 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-import {State} from '../../constants/default-state';
+import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
 function mapStateToProps(state: State, ownProps) {
   return {
-    vegaSpec: state.vegaSpec,
-    vegaLiteSpec: state.vegaLiteSpec,
-    renderer: state.renderer,
-    mode: state.mode,
-    export: state.export,
     baseURL: state.baseURL,
+    export: state.export,
+    mode: state.mode,
+    renderer: state.renderer,
+    vegaLiteSpec: state.vegaLiteSpec,
+    vegaSpec: state.vegaSpec,
   };
 }
 

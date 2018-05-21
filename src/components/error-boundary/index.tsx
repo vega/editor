@@ -1,7 +1,7 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import * as EditorActions from '../../actions/editor';
-import {State} from '../../constants/default-state';
+import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
 function mapStateToProps(state: State, ownProps) {
@@ -10,9 +10,9 @@ function mapStateToProps(state: State, ownProps) {
   };
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
-    logError: (err) => {
+    logError: err => {
       dispatch(EditorActions.logError(err));
     },
     showErrorPane: () => {

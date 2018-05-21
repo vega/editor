@@ -13,7 +13,10 @@
   font-size: 12px;
 }
 
-.renderer-toggle, .autoParse, .tooltip-toggle, .vega-export {
+.renderer-toggle,
+.autoParse,
+.tooltip-toggle,
+.vega-export {
   background: #777;
   color: white;
   cursor: pointer;
@@ -38,7 +41,7 @@
 }
 
 .toolbar .error-indicator {
-  background:red;
+  background: red;
   color: white;
   cursor: pointer;
 }

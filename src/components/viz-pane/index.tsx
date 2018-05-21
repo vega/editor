@@ -1,6 +1,6 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-import {State} from '../../constants/default-state';
+import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
 function mapStateToProps(state: State, ownProps) {

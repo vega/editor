@@ -1,34 +1,34 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import Renderer from './renderer';
 
 import * as EditorActions from '../../actions/editor';
-import {State} from '../../constants/default-state';
+import { State } from '../../constants/default-state';
 
 function mapStateToProps(state: State, ownProps) {
   return {
-    renderer: state.renderer,
-    error: state.error,
-    mode: state.mode,
     autoParse: state.autoParse,
-    warningsLogger: state.warningsLogger,
+    error: state.error,
     export: state.export,
+    mode: state.mode,
+    renderer: state.renderer,
+    warningsLogger: state.warningsLogger,
   };
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
-    toggleAutoParse: () => {
-      dispatch(EditorActions.toggleAutoParse());
+    exportVega: val => {
+      dispatch(EditorActions.exportVega(val));
     },
-    setRenderer: (val) => {
+    setRenderer: val => {
       dispatch(EditorActions.setRenderer(val));
     },
     showErrorPane: () => {
       dispatch(EditorActions.showErrorPane());
     },
-    exportVega: (val) => {
-      dispatch(EditorActions.exportVega(val));
+    toggleAutoParse: () => {
+      dispatch(EditorActions.toggleAutoParse());
     },
   };
 };

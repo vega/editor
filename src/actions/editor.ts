@@ -1,4 +1,4 @@
-import {Mode, Renderer} from '../constants';
+import { Mode, Renderer } from '../constants';
 
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
@@ -18,72 +18,89 @@ export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRIN
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
 
-export type Action = SetMode | ParseSpec | SetVegaExample | SetVegaLiteExample | UpdateVegaSpec | UpdateVegaLiteSpec | SetGistVegaSpec | SetGistVegaLiteSpec | ToggleAutoParse | ShowCompiledVegaSpec | ShowErrorPane | LogError | UpdateEditorString | ShowTooltip | ExportVega | SetRenderer | SetBaseUrl;
+export type Action =
+  | SetMode
+  | ParseSpec
+  | SetVegaExample
+  | SetVegaLiteExample
+  | UpdateVegaSpec
+  | UpdateVegaLiteSpec
+  | SetGistVegaSpec
+  | SetGistVegaLiteSpec
+  | ToggleAutoParse
+  | ShowCompiledVegaSpec
+  | ShowErrorPane
+  | LogError
+  | UpdateEditorString
+  | ShowTooltip
+  | ExportVega
+  | SetRenderer
+  | SetBaseUrl;
 
 export function setMode(mode: Mode) {
   return {
+    mode,
     type: SET_MODE,
-    mode: mode,
   };
 }
 export type SetMode = ReturnType<typeof setMode>;
 
 export function parseSpec(value: boolean) {
   return {
-    type: PARSE_SPEC,
     parse: value,
+    type: PARSE_SPEC,
   };
 }
 export type ParseSpec = ReturnType<typeof parseSpec>;
 
 export function setVegaExample(example: string, spec) {
   return {
+    example,
+    spec,
     type: SET_VEGA_EXAMPLE,
-    spec: spec,
-    example: example,
   };
 }
 export type SetVegaExample = ReturnType<typeof setVegaExample>;
 
 export function setVegaLiteExample(example: string, spec) {
   return {
+    example,
+    spec,
     type: SET_VEGA_LITE_EXAMPLE,
-    spec: spec,
-    example: example,
   };
 }
 export type SetVegaLiteExample = ReturnType<typeof setVegaLiteExample>;
 
 export function updateVegaSpec(spec) {
   return {
+    spec,
     type: UPDATE_VEGA_SPEC,
-    spec: spec,
   };
 }
 export type UpdateVegaSpec = ReturnType<typeof updateVegaSpec>;
 
 export function updateVegaLiteSpec(spec) {
   return {
+    spec,
     type: UPDATE_VEGA_LITE_SPEC,
-    spec: spec,
   };
 }
 export type UpdateVegaLiteSpec = ReturnType<typeof updateVegaLiteSpec>;
 
 export function setGistVegaSpec(gist: string, spec) {
   return {
+    gist,
+    spec,
     type: SET_GIST_VEGA_SPEC,
-    gist: gist,
-    spec: spec,
   };
 }
 export type SetGistVegaSpec = ReturnType<typeof setGistVegaSpec>;
 
 export function setGistVegaLiteSpec(gist: string, spec) {
   return {
+    gist,
+    spec,
     type: SET_GIST_VEGA_LITE_SPEC,
-    gist: gist,
-    spec: spec,
   };
 }
 export type SetGistVegaLiteSpec = ReturnType<typeof setGistVegaLiteSpec>;
@@ -111,16 +128,16 @@ export type ShowErrorPane = ReturnType<typeof showErrorPane>;
 
 export function logError(err) {
   return {
-    type: LOG_ERROR,
     error: err,
+    type: LOG_ERROR,
   };
 }
 export type LogError = ReturnType<typeof logError>;
 
 export function updateEditorString(editorString: string) {
   return {
+    editorString,
     type: UPDATE_EDITOR_STRING,
-    editorString: editorString,
   };
 }
 export type UpdateEditorString = ReturnType<typeof updateEditorString>;
@@ -134,24 +151,24 @@ export type ShowTooltip = ReturnType<typeof showTooltip>;
 
 export function exportVega(value: boolean) {
   return {
-    type: EXPORT_VEGA,
     export: value,
+    type: EXPORT_VEGA,
   };
 }
 export type ExportVega = ReturnType<typeof exportVega>;
 
 export function setRenderer(renderer: Renderer) {
   return {
+    renderer,
     type: SET_RENDERER,
-    renderer: renderer,
   };
 }
 export type SetRenderer = ReturnType<typeof setRenderer>;
 
-export function setBaseUrl(val: string) {
+export function setBaseUrl(baseURL: string) {
   return {
+    baseURL,
     type: SET_BASEURL,
-    baseURL: val,
   };
 }
 export type SetBaseUrl = ReturnType<typeof setBaseUrl>;

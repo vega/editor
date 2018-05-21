@@ -9,13 +9,13 @@ import Toolbar from '../toolbar';
 
 import './index.css';
 
-type Props = {
+interface Props {
   errorPane?: boolean;
-};
+}
 export default class VizPane extends React.Component<Props> {
   public render() {
     const container = (
-      <div className='chart-container'>
+      <div className="chart-container">
         <ErrorBoundary>
           <Renderer />
         </ErrorBoundary>
@@ -24,11 +24,7 @@ export default class VizPane extends React.Component<Props> {
     );
     if (this.props.errorPane) {
       return (
-        <SplitPane
-          split='horizontal'
-          defaultSize={window.innerHeight * 0.6}
-          paneStyle={{display: 'flex'}}
-        >
+        <SplitPane split="horizontal" defaultSize={window.innerHeight * 0.6} paneStyle={{ display: 'flex' }}>
           {container}
           <ErrorPane />
         </SplitPane>
