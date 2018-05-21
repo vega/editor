@@ -127,7 +127,6 @@ class Editor extends React.Component<Props, State> {
       provideDocumentFormattingEdits(model, options, token) {
         return [
           {
-            range: model.getFullModelRange(),
             text: stringify(JSON.parse(model.getValue())),
           },
         ];
@@ -183,12 +182,9 @@ class Editor extends React.Component<Props, State> {
     }
   }
 
-  /**
-   * Formats the editor code.
-   * Triggered by #format-button on click.
-   */
-  public formatDocument() {
-    (this.refs.vegaEditor as any).editor.getAction('editor.action.formatDocument').run();
+  // Manual formatting function
+  public formatSpec() {
+    (this.refs.monaco as any).editor.getAction('editor.action.formatDocument').run();
   }
 
   public render() {
@@ -196,13 +192,13 @@ class Editor extends React.Component<Props, State> {
     return (
       <div className={'full-height-wrapper'}>
         <div className="editor-header right-align">
-          <button id="format-button" className="button" onClick={() => this.formatDocument()}>
+          <button id="format-button" className="button" onClick={() => this.formatSpec()}>
             Format
           </button>
           {this.manualParseSpec()}
         </div>
         <MonacoEditor
-          ref="vegaEditor"
+          ref="monaco"
           language="json"
           options={{
             autoIndent: true,
