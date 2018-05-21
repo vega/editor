@@ -1,27 +1,27 @@
 import './app.css';
 
-import {text} from 'd3-request';
+import { text } from 'd3-request';
 import equal from 'deep-equal';
 import * as stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import SplitPane from 'react-split-pane';
-import {util} from 'vega-lite';
+import { util } from 'vega-lite';
 import * as EditorActions from '../actions/editor';
-import {LAYOUT, Mode} from '../constants';
-import {NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
+import { LAYOUT, Mode } from '../constants';
+import { NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC } from '../constants/consts';
 import Header from './header';
 import InputPanel from './input-panel';
 import VizPane from './viz-pane';
 
 type Props = ReturnType<typeof mapDispatchToProps>;
 
-class App extends React.Component<Props & {match: any, location: any}> {
+class App extends React.Component<Props & { match: any; location: any }> {
   public componentDidMount() {
     window.addEventListener(
       'message',
-      (evt) => {
+      evt => {
         const data = evt.data;
         if (!data.spec) {
           return;
@@ -32,7 +32,9 @@ class App extends React.Component<Props & {match: any, location: any}> {
         // send acknowledgement
         const parsed = JSON.parse(data.spec);
         // merging config into the spec
-        if (data.config) { util.mergeDeep(parsed, {config: data.config}); }
+        if (data.config) {
+          util.mergeDeep(parsed, { config: data.config });
+        }
         data.spec = stringify(parsed);
         if (data.spec || data.file) {
           evt.source.postMessage(true, '*');
@@ -48,7 +50,7 @@ class App extends React.Component<Props & {match: any, location: any}> {
           this.props.setRenderer(data.renderer);
         }
       },
-      false,
+      false
     );
 
     const parameter = this.props.match.params;
@@ -70,7 +72,7 @@ class App extends React.Component<Props & {match: any, location: any}> {
       }
     }
   }
-  public async setGist(parameter: {mode: string, username: string, id: string, revision: string, filename: string}) {
+  public async setGist(parameter: { mode: string; username: string; id: string; revision: string; filename: string }) {
     const gistUrl = `https://api.github.com/gists/${parameter.id}/${parameter.revision}`;
 
     const gistData = await fetch(gistUrl).then(r => r.json());
@@ -84,16 +86,16 @@ class App extends React.Component<Props & {match: any, location: any}> {
     }
   }
 
-  public setExample(parameter: {example_name: string, mode: string}) {
+  public setExample(parameter: { example_name: string; mode: string }) {
     const name = parameter.example_name;
     switch (parameter.mode) {
       case 'vega':
-        text(`./spec/vega/${name}.vg.json`, (spec) => {
+        text(`./spec/vega/${name}.vg.json`, spec => {
           this.props.setVegaExample(name, spec);
         });
         break;
       case 'vega-lite':
-        text(`./spec/vega-lite/${name}.vl.json`, (spec) => {
+        text(`./spec/vega-lite/${name}.vl.json`, spec => {
           this.props.setVegaLiteExample(name, spec);
         });
         break;
@@ -114,21 +116,21 @@ class App extends React.Component<Props & {match: any, location: any}> {
   public render() {
     const w = window.innerWidth;
     return (
-      <div className='app-container'>
+      <div className="app-container">
         <Header />
         <div
           style={{
-            position: 'relative',
             height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,
+            position: 'relative',
           }}
         >
           <SplitPane
-            split='vertical'
+            split="vertical"
             minSize={300}
             defaultSize={w * 0.4}
-            pane1Style={{display: 'flex'}}
-            className='main-pane'
-            pane2Style={{overflow: 'scroll'}}
+            pane1Style={{ display: 'flex' }}
+            className="main-pane"
+            pane2Style={{ overflow: 'scroll' }}
           >
             <InputPanel />
             <VizPane />
@@ -139,16 +141,19 @@ class App extends React.Component<Props & {match: any, location: any}> {
   }
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
-    updateVegaSpec: (val) => {
-      dispatch(EditorActions.updateVegaSpec(val));
-    },
-    updateVegaLiteSpec: (val) => {
-      dispatch(EditorActions.updateVegaLiteSpec(val));
-    },
-    setBaseUrl: (val) => {
+    setBaseUrl: val => {
       dispatch(EditorActions.setBaseUrl(val));
+    },
+    setGistVegaLiteSpec: (gist: string, spec) => {
+      dispatch(EditorActions.setGistVegaLiteSpec(gist, spec));
+    },
+    setGistVegaSpec: (gist: string, spec) => {
+      dispatch(EditorActions.setGistVegaSpec(gist, spec));
+    },
+    setRenderer: val => {
+      dispatch(EditorActions.setRenderer(val));
     },
     setVegaExample: (example: string, val) => {
       dispatch(EditorActions.setVegaExample(example, val));
@@ -156,14 +161,11 @@ const mapDispatchToProps = function(dispatch) {
     setVegaLiteExample: (example: string, val) => {
       dispatch(EditorActions.setVegaLiteExample(example, val));
     },
-    setGistVegaSpec: (gist: string, spec) => {
-      dispatch(EditorActions.setGistVegaSpec(gist, spec));
+    updateVegaLiteSpec: val => {
+      dispatch(EditorActions.updateVegaLiteSpec(val));
     },
-    setGistVegaLiteSpec: (gist: string, spec) => {
-      dispatch(EditorActions.setGistVegaLiteSpec(gist, spec));
-    },
-    setRenderer: (val) => {
-      dispatch(EditorActions.setRenderer(val));
+    updateVegaSpec: val => {
+      dispatch(EditorActions.updateVegaSpec(val));
     },
   };
 };

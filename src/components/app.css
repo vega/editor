@@ -1,7 +1,8 @@
-body, html {
+body,
+html {
   padding: 0;
   margin: 0;
-  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-family: "Helvetica", "Arial", sans-serif;
   overflow: hidden;
 }
 * {
@@ -10,7 +11,7 @@ body, html {
 
 .Resizer {
   background: #000;
-  opacity: .2;
+  opacity: 0.2;
   z-index: 1;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -58,7 +59,9 @@ body, html {
   border-color: transparent;
 }
 
-.main-pane > .Pane1 .Pane, .main-pane > .Pane1 .SplitPane, .react-monaco-editor-container {
+.main-pane > .Pane1 .Pane,
+.main-pane > .Pane1 .SplitPane,
+.react-monaco-editor-container {
   /* Need to override overflow because we can't set it on the pane. */
   overflow: visible !important;
 }

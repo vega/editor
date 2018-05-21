@@ -2,11 +2,11 @@ import './index.css';
 
 import * as React from 'react';
 
-type Props = {
+interface Props {
   error;
   warningsLogger;
-  showErrorPane: Function;
-};
+  showErrorPane: () => void;
+}
 
 export default class ErrorPane extends React.Component<Props> {
   public render() {
@@ -14,29 +14,29 @@ export default class ErrorPane extends React.Component<Props> {
     if (this.props.error) {
       list.push(
         <li key={0}>
-          <span className='error'>[Error] </span>
+          <span className="error">[Error] </span>
           {this.props.error}
-        </li>,
+        </li>
       );
     }
     this.props.warningsLogger.warns.forEach((warning, i) => {
       list.push(
         <li key={i + 1}>
-          <span className='warning'>[Warning] </span>
+          <span className="warning">[Warning] </span>
           {warning}
-        </li>,
+        </li>
       );
     });
     if (list.length === 0) {
       list.push(
         <li key={'no error'}>
-          <span className='info'>[Info] </span>No error or warnings
-        </li>,
+          <span className="info">[Info] </span>No error or warnings
+        </li>
       );
     }
     return (
-      <div className='error-pane'>
-        <span onClick={(e) => this.props.showErrorPane()} className='close'>
+      <div className="error-pane">
+        <span onClick={e => this.props.showErrorPane()} className="close">
           &#10006;
         </span>
         <ul>{list}</ul>

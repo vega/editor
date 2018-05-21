@@ -1,33 +1,33 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import * as EditorActions from '../../../actions/editor';
-import {State} from '../../../constants/default-state';
+import { State } from '../../../constants/default-state';
 import Renderer from './renderer';
 
-const mapStateToProps = function(state: State, ownProps) {
+const mapStateToProps = (state: State, ownProps) => {
   return {
-    value: state.editorString,
-    mode: state.mode,
-    selectedExample: state.selectedExample,
-    gist: state.gist,
     autoParse: state.autoParse,
+    gist: state.gist,
+    mode: state.mode,
     parse: state.parse,
+    selectedExample: state.selectedExample,
+    value: state.editorString,
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
-    updateVegaSpec: (val) => {
-      dispatch(EditorActions.updateVegaSpec(val));
-    },
-    updateVegaLiteSpec: (val) => {
-      dispatch(EditorActions.updateVegaLiteSpec(val));
-    },
-    parseSpec: (val) => {
+    parseSpec: val => {
       dispatch(EditorActions.parseSpec(val));
     },
-    updateEditorString: (val) => {
+    updateEditorString: val => {
       dispatch(EditorActions.updateEditorString(val));
+    },
+    updateVegaLiteSpec: val => {
+      dispatch(EditorActions.updateVegaLiteSpec(val));
+    },
+    updateVegaSpec: val => {
+      dispatch(EditorActions.updateVegaSpec(val));
     },
   };
 };

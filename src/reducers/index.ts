@@ -26,10 +26,10 @@ import {
   UpdateVegaLiteSpec,
   UpdateVegaSpec,
 } from '../actions/editor';
-import {DEFAULT_STATE, Mode} from '../constants';
-import {State} from '../constants/default-state';
-import {LocalLogger} from '../utils/logger';
-import {validateVega, validateVegaLite} from '../utils/validate';
+import { DEFAULT_STATE, Mode } from '../constants';
+import { State } from '../constants/default-state';
+import { LocalLogger } from '../utils/logger';
+import { validateVega, validateVegaLite } from '../utils/validate';
 
 function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGistVegaSpec, extend = {}) {
   const currLogger = new LocalLogger();
@@ -54,14 +54,11 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
   return {
     ...state,
 
-    // reset things
-    selectedExample: null,
-    gist: null,
-    error: null,
-
-    // set mode and spec
-    mode: Mode.Vega,
     editorString: action.spec,
+    error: null,
+    gist: null,
+    mode: Mode.Vega,
+    selectedExample: null,
     warningsLogger: currLogger,
 
     // extend with other changes
@@ -69,7 +66,11 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
   };
 }
 
-function parseVegaLite(state: State, action: SetVegaLiteExample | UpdateVegaLiteSpec | SetGistVegaLiteSpec, extend = {}) {
+function parseVegaLite(
+  state: State,
+  action: SetVegaLiteExample | UpdateVegaLiteSpec | SetGistVegaLiteSpec,
+  extend = {}
+) {
   const currLogger = new LocalLogger();
 
   try {
@@ -77,13 +78,12 @@ function parseVegaLite(state: State, action: SetVegaLiteExample | UpdateVegaLite
 
     validateVegaLite(spec, currLogger);
 
-    const vegaSpec =
-      action.spec !== '{}' ? vl.compile(spec, {logger: currLogger}).spec : {};
+    const vegaSpec = action.spec !== '{}' ? vl.compile(spec, { logger: currLogger }).spec : {};
 
     extend = {
       ...extend,
       vegaLiteSpec: spec,
-      vegaSpec: vegaSpec,
+      vegaSpec,
     };
   } catch (e) {
     console.warn(e);
@@ -96,14 +96,11 @@ function parseVegaLite(state: State, action: SetVegaLiteExample | UpdateVegaLite
   return {
     ...state,
 
-    // reset things
-    selectedExample: null,
-    gist: null,
-    error: null,
-
-    // set mode and spec
-    mode: Mode.VegaLite,
     editorString: action.spec,
+    error: null,
+    gist: null,
+    mode: Mode.VegaLite,
+    selectedExample: null,
     warningsLogger: currLogger,
 
     // extend with other changes
@@ -116,18 +113,18 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case SET_MODE:
       return {
         ...state,
-        mode: action.mode,
-        vegaSpec: {},
-        vegaLiteSpec: {},
-        selectedExample: null,
-        editorString: '{}',
-        compiledVegaSpec: false,
-        gist: null,
-        parse: false,
-        warningsLogger: new LocalLogger(),
-        tooltip: true,
-        export: false,
         baseURL: null,
+        compiledVegaSpec: false,
+        editorString: '{}',
+        export: false,
+        gist: null,
+        mode: action.mode,
+        parse: false,
+        selectedExample: null,
+        tooltip: true,
+        vegaLiteSpec: {},
+        vegaSpec: {},
+        warningsLogger: new LocalLogger(),
       };
     case PARSE_SPEC:
       return {

@@ -1,5 +1,5 @@
 import * as stringify from 'json-stringify-pretty-compact';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import * as React from 'react';
 import * as EditorActions from '../../../actions/editor';
@@ -8,18 +8,18 @@ const toggleStyle = {
   cursor: 'pointer',
 };
 const svgStyle = {
+  height: 25,
   position: 'absolute' as 'absolute', // $FixMe
   right: '50%',
-  height: 25,
   width: 35,
 };
 
-type Props = {
+interface Props {
   value;
   compiledVegaSpec;
   showCompiledVegaSpec; // $FixMe - function
-  updateVegaSpec: Function;
-};
+  updateVegaSpec: (value: any) => void;
+}
 
 class CompiledSpecDisplayHeader extends React.Component<Props> {
   public editVegaSpec() {
@@ -31,18 +31,14 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
         position: 'static',
       });
       return (
-        <div
-          className='editor-header'
-          style={toggleStyleUp}
-          onClick={this.props.showCompiledVegaSpec}
-        >
-          <span style={{marginLeft: 10}}>Compiled Vega</span>
+        <div className="editor-header" style={toggleStyleUp} onClick={this.props.showCompiledVegaSpec}>
+          <span style={{ marginLeft: 10 }}>Compiled Vega</span>
           <svg style={svgStyle}>
-            <polygon points='5,5 30,5 17.5,20' />
+            <polygon points="5,5 30,5 17.5,20" />
           </svg>
           <button
             onClick={this.editVegaSpec.bind(this)}
-            style={{position: 'absolute', right: '3%', cursor: 'pointer'}}
+            style={{ position: 'absolute', right: '3%', cursor: 'pointer' }}
           >
             Edit Vega spec
           </button>
@@ -50,14 +46,10 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
       );
     } else {
       return (
-        <div
-          onClick={this.props.showCompiledVegaSpec}
-          className='editor-header'
-          style={toggleStyle}
-        >
-          <span style={{marginLeft: 10}}>Compiled Vega</span>
+        <div onClick={this.props.showCompiledVegaSpec} className="editor-header" style={toggleStyle}>
+          <span style={{ marginLeft: 10 }}>Compiled Vega</span>
           <svg style={svgStyle}>
-            <polygon points='5,20 30,20 17.5,5' />
+            <polygon points="5,20 30,20 17.5,5" />
           </svg>
         </div>
       );
@@ -67,23 +59,21 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
 
 function mapStateToProps(state, ownProps) {
   return {
-    value: state.vegaSpec,
     compiledVegaSpec: state.compiledVegaSpec,
     mode: state.mode,
+    value: state.vegaSpec,
   };
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
-    updateVegaSpec: (val) => {
-      dispatch(EditorActions.updateVegaSpec(val));
-    },
     showCompiledVegaSpec: () => {
       dispatch(EditorActions.showCompiledVegaSpec());
+    },
+    updateVegaSpec: val => {
+      dispatch(EditorActions.updateVegaSpec(val));
     },
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  CompiledSpecDisplayHeader,
-);
+export default connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplayHeader);
