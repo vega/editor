@@ -1,6 +1,7 @@
 import './index.css';
 
 import * as stringify from 'json-stringify-pretty-compact';
+import Monaco from 'monaco-editor';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { withRouter } from 'react-router-dom';
@@ -124,7 +125,7 @@ class Editor extends React.Component<Props, State> {
     });
 
     monaco.languages.registerDocumentFormattingEditProvider('json', {
-      provideDocumentFormattingEdits(model, options, token) {
+      provideDocumentFormattingEdits(model: Monaco.editor.ITextModel, options: Monaco.languages.FormattingOptions, token: Monaco.CancellationToken): Monaco.languages.TextEdit[] {
         return [
           {
             range: model.getFullModelRange(),
