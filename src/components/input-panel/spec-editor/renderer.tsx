@@ -125,7 +125,11 @@ class Editor extends React.Component<Props, State> {
     });
 
     monaco.languages.registerDocumentFormattingEditProvider('json', {
-      provideDocumentFormattingEdits(model: Monaco.editor.ITextModel, options: Monaco.languages.FormattingOptions, token: Monaco.CancellationToken): Monaco.languages.TextEdit[] {
+      provideDocumentFormattingEdits(
+        model: Monaco.editor.ITextModel,
+        options: Monaco.languages.FormattingOptions,
+        token: Monaco.CancellationToken
+      ): Monaco.languages.TextEdit[] {
         return [
           {
             range: model.getFullModelRange(),
