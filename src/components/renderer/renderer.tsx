@@ -51,7 +51,7 @@ export default class Editor extends React.Component<Props> {
       .run();
     Editor.chart.style.width = 'auto';
 
-    vegaTooltip(Editor.view);
+    vegaTooltip(Editor.view as any);  // FIXME: remove as any
 
     if (props.export) {
       const ext = props.renderer === 'canvas' ? 'png' : 'svg';

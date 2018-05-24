@@ -13,6 +13,10 @@ export NODE_PATH=.
 echo "Building Vega"
 cd node_modules/vega
 yarn
+cd node_modules/vega-lib
+yarn
+cd ../..
+yarn build
 cd ../..
 
 echo "Generating SVGs..."

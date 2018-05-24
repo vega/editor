@@ -17,7 +17,7 @@
     "tslint-config-prettier": "^1.13.0",
     "tslint-eslint-rules": "^5.3.1",
     "typescript": "^2.8.3",
-    "vega-typings": "^0.2.17",
+    "vega-typings": "^0.3.1",
     "webpack": "^4.8.3",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^2.1.4",
@@ -42,11 +42,11 @@
     "redux": "^4.0.0",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.2.0",
-    "vega": "github:vega/vega#v3.3.1",
+    "vega": "github:vega/vega#v4.0.0-rc.1",
     "vega-datasets": "^1.19.0",
     "vega-lite": "github:vega/vega-lite#v2.4.3",
     "vega-schema-url-parser": "^1.0.0",
-    "vega-tooltip": "^0.10.2"
+    "vega-tooltip": "^0.10.4"
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --hot",
@@ -54,7 +54,6 @@
     "clean": "rm -rf dist",
     "postbuild": "rsync -r --ignore-existing public/* dist",
     "generate-example-images": "./scripts/generate-example-images.sh",
-    "test": "node scripts/test.js --env=jsdom",
     "postinstall": "npm run vendor",
     "vendor": "./scripts/vendor.sh",
     "format": "tslint -p . --fix && prettier --write 'src/**/*.{ts,tsx,css}'",
