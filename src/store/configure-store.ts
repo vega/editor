@@ -12,7 +12,9 @@ export default function configureStore(initialState = DEFAULT_STATE) {
   // https://github.com/zalmoxisus/redux-devtools-extension#usage
   const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-  const enhancer = composeEnhancers(middleware, persistState());
+  // Subset of state to store in localStorage
+  const paths = Object.keys(DEFAULT_STATE).filter(e => e !== 'dataSets');
+  const enhancer = composeEnhancers(middleware, persistState(paths));
 
   // Create final store
   const store = createStore(rootReducer, initialState, enhancer);
