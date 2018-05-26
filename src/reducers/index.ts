@@ -7,6 +7,7 @@ import {
   LOG_ERROR,
   PARSE_SPEC,
   SET_BASEURL,
+  SET_DATASETS,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
   SET_MODE,
@@ -116,6 +117,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         baseURL: null,
         compiledVegaSpec: false,
+        dataSets: null,
         editorString: '{}',
         export: false,
         format: false,
@@ -209,6 +211,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         format: action.format,
+      };
+    case SET_DATASETS:
+      return {
+        ...state,
+        dataSets: action.dataSets,
       };
     default:
       return state;

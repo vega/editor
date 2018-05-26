@@ -5,6 +5,7 @@ export interface State {
   autoParse: boolean;
   baseURL: string;
   compiledVegaSpec: boolean;
+  dataSets: any;
   editorString: string;
   error: Error;
   errorPane: boolean;
@@ -25,6 +26,7 @@ export const DEFAULT_STATE: State = {
   autoParse: true,
   baseURL: null,
   compiledVegaSpec: false,
+  dataSets: null,
   editorString: '{}',
   error: null,
   errorPane: false,
