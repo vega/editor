@@ -4,7 +4,7 @@ import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
-function mapStateToProps(state: State, ownProps) {
+const mapStateToProps = (state: State, ownProps) => {
   return {
     baseURL: state.baseURL,
     export: state.export,
@@ -13,12 +13,15 @@ function mapStateToProps(state: State, ownProps) {
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
   };
-}
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     exportVega: val => {
       dispatch(EditorActions.exportVega(val));
+    },
+    setDataSets: val => {
+      dispatch(EditorActions.setDataSets(val));
     },
   };
 };

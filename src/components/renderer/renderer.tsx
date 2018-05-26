@@ -23,6 +23,7 @@ interface Props {
   history?: any;
 
   exportVega: (val: any) => void;
+  setDataSets: (val: any) => void;
 }
 
 interface State {
@@ -76,6 +77,7 @@ class Editor extends React.Component<Props, State> {
 
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
+
     // Custom Loader
     loader.load = async (url, options) => {
       try {
@@ -88,6 +90,7 @@ class Editor extends React.Component<Props, State> {
       }
     };
 
+    // Initialize view instance
     Editor.view = new vega.View(runtime, {
       loader,
       logLevel: vega.Warn,
@@ -104,10 +107,17 @@ class Editor extends React.Component<Props, State> {
       .initialize(chart)
       .renderer(props.renderer)
       .hover()
-      .run();
+      .runAsync()
+      .then(async view => {
+        // Get all datasets using view
+        const dataSets = await Editor.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data;
+        // Storing datasets in state
+        this.props.setDataSets(dataSets);
+      });
+
     chart.style.width = 'auto';
 
-    vegaTooltip(Editor.view as any); // FIXME: remove as any
+    vegaTooltip(Editor.view);
 
     // Export visualization as SVG/PNG
     if (props.export) {
@@ -130,6 +140,7 @@ class Editor extends React.Component<Props, State> {
           throw new Error('Error in exporting: ' + err);
         });
     }
+
     (window as any).VEGA_DEBUG.view = Editor.view;
   }
   public componentDidMount() {
