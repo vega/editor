@@ -36,13 +36,16 @@
   height: 100vh;
   background: #fff;
 }
-.fullscreen-open {
-  position: absolute;
-  top: 0.5vw;
-  right: 0.5vw;
-}
+.fullscreen-open,
 .fullscreen-close {
   position: absolute;
-  top: 1vw;
-  right: 1vw;
+  background: #777;
+  top: 0.5vw;
+  right: 0.5vw;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.5vw;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.75em;
 }

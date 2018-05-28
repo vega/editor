@@ -85,7 +85,7 @@ export default class Editor extends React.Component<Props, State> {
   }
   public updateImageURL(props) {
     Editor.view
-      .toImageURL('svg')
+      .toImageURL(props.renderer === 'canvas' ? 'png' : 'svg')
       .then(href => {
         this.setState({
           imageURL: href,
@@ -109,6 +109,9 @@ export default class Editor extends React.Component<Props, State> {
       this.initilizeView(this.props);
       this.updateImageURL(this.props);
     }
+    if (prevProps.renderer !== this.props.renderer) {
+      this.updateImageURL(this.props);
+    }
     this.renderVega(this.props);
   }
   public render() {
@@ -126,7 +129,7 @@ export default class Editor extends React.Component<Props, State> {
               {portal(
                 <div className="fullscreen-chart">
                   <button className="fullscreen-close" onClick={closePortal}>
-                    X
+                    &#10006;
                   </button>
                   <img src={this.state.imageURL} />
                 </div>
