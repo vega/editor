@@ -255,8 +255,8 @@ aproba@^1.0.3, aproba@^1.1.1:
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.2.0.tgz#6802e6264efd18c790a1b0d517f0f2627bf2c94a"
 
 are-we-there-yet@~1.1.2:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/are-we-there-yet/-/are-we-there-yet-1.1.4.tgz#bb5dca382bb94f05e15194373d16fd3ba1ca110d"
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/are-we-there-yet/-/are-we-there-yet-1.1.5.tgz#4b35c2944f062a8bfcda66410760350fe9ddfc21"
   dependencies:
     delegates "^1.0.0"
     readable-stream "^2.0.6"
@@ -1719,8 +1719,8 @@ core-js@^1.0.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
 core-js@^2.4.0, core-js@^2.4.1, core-js@^2.5.0:
-  version "2.5.6"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.6.tgz#0fe6d45bf3cac3ac364a9d72de7576f4eb221b9d"
+  version "2.5.7"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -1988,7 +1988,7 @@ d3-geo-projection@^2.4.0:
     d3-array "1"
     d3-geo "^1.10.0"
 
-d3-geo@1, d3-geo@^1.10.0:
+d3-geo@^1.10.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/d3-geo/-/d3-geo-1.10.0.tgz#2972d18014f1e38fc1f8bb6d545377bdfb00c9ab"
   dependencies:
@@ -2021,14 +2021,14 @@ d3-request@1.0.6:
     d3-dsv "1"
     xmlhttprequest "1"
 
-d3-scale-chromatic@^1.2, d3-scale-chromatic@^1.3.0:
+d3-scale-chromatic@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/d3-scale-chromatic/-/d3-scale-chromatic-1.3.0.tgz#7ee38ffcaa7ad55cfed83a6a668aac5570c653c4"
   dependencies:
     d3-color "1"
     d3-interpolate "1"
 
-d3-scale@2, d3-scale@^2.0.0:
+d3-scale@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-2.0.0.tgz#fd8ac78381bc2ed741d8c71770437a5e0549a5a5"
   dependencies:
@@ -2124,6 +2124,10 @@ deep-equal@^1.0.1:
 deep-extend@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.5.1.tgz#b894a9dd90d3023fbf1c55a394fb858eb2066f1f"
+
+deep-extend@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
 
 define-properties@^1.1.2:
   version "1.1.2"
@@ -2386,8 +2390,8 @@ entities@~1.1.1:
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
 
 envinfo@^5.7.0:
-  version "5.7.0"
-  resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-5.7.0.tgz#690e5fdf30aa75dda19c0c5338d0a48a48f1e998"
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-5.8.1.tgz#1910c0d1dbd74ff1c6b8ca0974841a5dcf7900ca"
 
 errno@^0.1.3, errno@~0.1.7:
   version "0.1.7"
@@ -2427,8 +2431,8 @@ es-to-primitive@^1.1.1:
     is-symbol "^1.0.1"
 
 es5-ext@^0.10.35, es5-ext@^0.10.9, es5-ext@~0.10.14:
-  version "0.10.42"
-  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.42.tgz#8c07dd33af04d5dcd1310b5cef13bea63a89ba8d"
+  version "0.10.43"
+  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.43.tgz#c705e645253210233a270869aa463a2333b7ca64"
   dependencies:
     es6-iterator "~2.0.3"
     es6-symbol "~3.1.1"
@@ -2779,8 +2783,8 @@ flatten@^1.0.2:
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
 flow-parser@^0.*:
-  version "0.72.0"
-  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.72.0.tgz#6c8041e76ac7d0be1a71ce29c00cd1435fb6013c"
+  version "0.73.0"
+  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.73.0.tgz#525ac0776f743e16b6dca1a3dd6c602260b15773"
 
 flush-write-stream@^1.0.0:
   version "1.0.3"
@@ -5364,13 +5368,9 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-prettier@1.13.0:
+prettier@1.13.0, prettier@^1.12.1:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.0.tgz#054de8d5fb1a4405c845d16183f58a2c301f6f16"
-
-prettier@^1.12.1:
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.12.1.tgz#c1ad20e803e7749faf905a409d2367e06bbe7325"
 
 pretty-bytes@^4.0.2:
   version "4.0.2"
@@ -5539,10 +5539,10 @@ raw-body@2.3.2:
     unpipe "1.0.0"
 
 rc@^1.1.7:
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.7.tgz#8a10ca30d588d00464360372b890d06dacd02297"
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
   dependencies:
-    deep-extend "^0.5.1"
+    deep-extend "^0.6.0"
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
@@ -6386,7 +6386,7 @@ string-template@~0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/string-template/-/string-template-0.2.1.tgz#42932e598a352d01fc22ec3367d9d84eec6c9add"
 
-string-width@^1.0.1, string-width@^1.0.2:
+string-width@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-1.0.2.tgz#118bdf5b8cdc51a2a7e70d211e07e2b0b9b107d3"
   dependencies:
@@ -6394,7 +6394,7 @@ string-width@^1.0.1, string-width@^1.0.2:
     is-fullwidth-code-point "^1.0.0"
     strip-ansi "^3.0.0"
 
-string-width@^2.0.0, string-width@^2.1.0, string-width@^2.1.1:
+"string-width@^1.0.2 || 2", string-width@^2.0.0, string-width@^2.1.0, string-width@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-2.1.1.tgz#ab93f27a8dc13d28cac815c462143a6d9012ae9e"
   dependencies:
@@ -6531,8 +6531,8 @@ tar@^2.2.1:
     inherits "2"
 
 tar@^4:
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.3.tgz#d6bd509dc7f6b5a5d2c13aa0f7d57b03269b8376"
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.4.tgz#ec8409fae9f665a4355cc3b4087d0820232bb8cd"
   dependencies:
     chownr "^1.0.1"
     fs-minipass "^1.2.5"
@@ -6845,8 +6845,8 @@ upper-case@^1.1.1:
   resolved "https://registry.yarnpkg.com/upper-case/-/upper-case-1.1.3.tgz#f6b4501c2ec4cdd26ba78be7222961de77621598"
 
 uri-js@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/uri-js/-/uri-js-4.2.1.tgz#4595a80a51f356164e22970df64c7abd6ade9850"
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/uri-js/-/uri-js-4.2.2.tgz#94c540e1ff772956e2299507c010aea6c8838eb0"
   dependencies:
     punycode "^2.1.0"
 
@@ -7085,10 +7085,10 @@ vega-parser@3.1.0, vega-parser@^3.1.0:
     vega-util "^1.7.0"
 
 vega-projection@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/vega-projection/-/vega-projection-1.1.0.tgz#46452fd12927201d1a7f7ef8f61d6e24253dbcd2"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vega-projection/-/vega-projection-1.2.0.tgz#812c955251dab495fda83d9406ba72d9833a2014"
   dependencies:
-    d3-geo "1"
+    d3-geo "^1.10.0"
 
 vega-runtime@^3.0.1:
   version "3.0.1"
@@ -7097,18 +7097,7 @@ vega-runtime@^3.0.1:
     vega-dataflow "^4.0.1"
     vega-util "^1.7.0"
 
-vega-scale@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/vega-scale/-/vega-scale-2.1.1.tgz#6ccdb796d9bcf86ceb677af5f9474a08cb01aaea"
-  dependencies:
-    d3-array "1"
-    d3-interpolate "1"
-    d3-scale "2"
-    d3-scale-chromatic "^1.2"
-    d3-time "1"
-    vega-util "1"
-
-vega-scale@^2.2.0:
+vega-scale@^2.1.1, vega-scale@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/vega-scale/-/vega-scale-2.2.0.tgz#676c0aa2e744ee378bc5dc3fc1251d249f468d40"
   dependencies:
@@ -7154,17 +7143,13 @@ vega-transforms@^2.0.0:
     vega-statistics "^1.2.1"
     vega-util "^1.7.0"
 
-vega-typings@*:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.1.tgz#bd9485ed7332ced0815f65c0447f73eefd8ff1fe"
+vega-typings@*, vega-typings@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.3.tgz#122f4224aa6f98aa6516e60278d40f43aa2d0787"
 
 vega-typings@^0.2.16:
   version "0.2.17"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.2.17.tgz#9f26775173b3d234d68dfe4c482037743786b8d2"
-
-vega-typings@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.3.tgz#122f4224aa6f98aa6516e60278d40f43aa2d0787"
 
 vega-util@1, vega-util@^1.7.0:
   version "1.7.0"
@@ -7479,16 +7464,16 @@ which-module@^2.0.0:
   resolved "https://registry.yarnpkg.com/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
 
 which@^1.2.14, which@^1.2.9:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/which/-/which-1.3.0.tgz#ff04bdfc010ee547d780bec38e1ac1c2777d253a"
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/which/-/which-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
   dependencies:
     isexe "^2.0.0"
 
 wide-align@^1.1.0:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/wide-align/-/wide-align-1.1.2.tgz#571e0f1b0604636ebc0dfc21b0339bbe31341710"
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/wide-align/-/wide-align-1.1.3.tgz#ae074e6bdc0c14a431e804e624549c633b000457"
   dependencies:
-    string-width "^1.0.2"
+    string-width "^1.0.2 || 2"
 
 window-size@^0.2.0:
   version "0.2.0"
