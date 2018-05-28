@@ -9,4 +9,7 @@ const mapStateToProps = (state: State, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Renderer);
+export default connect(
+  mapStateToProps,
+  null
+)(Renderer);
