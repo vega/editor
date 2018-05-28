@@ -90,9 +90,8 @@ export default function(vegaProjections: any) {
     'polyhedralCollignon',
     'polyhedralWaterman',
     'gringortenQuincuncial',
-    'peirceQuincuncial'
+    'peirceQuincuncial',
   ]) {
     vegaProjections(p, d3['geo' + p[0].toUpperCase() + p.slice(1)]);
   }
 }
-
