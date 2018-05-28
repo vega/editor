@@ -6,6 +6,7 @@ import addProjections from '../../utils/addProjections';
 
 import './index.css';
 
+// Add additional projections
 addProjections(vega.projection);
 
 interface Props {

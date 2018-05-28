@@ -1,24 +1,25 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
+var ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = env => {
   const config = {
     entry: {
-      main: './src/index.tsx'
+      main: "./src/index.tsx"
     },
     output: {
-      filename: '[name].bundle.js',
-      chunkFilename: '[name].chunk.js',
-      path: path.resolve(__dirname, 'dist')
+      filename: "[name].bundle.js",
+      chunkFilename: "[name].chunk.js",
+      path: path.resolve(__dirname, "dist")
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    devtool: 'source-map',
+    devtool: "source-map",
 
     resolve: {
       // Add '.ts' and '.tsx' as resolvable extensions.
-      extensions: ['.ts', '.tsx', '.js', '.json']
+      extensions: [".ts", ".tsx", ".js", ".json"]
     },
 
     module: {
@@ -26,24 +27,26 @@ module.exports = env => {
         // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
         {
           test: /\.tsx?$/,
-          use: ['ts-loader']
+          exclude: /node_modules/,
+          use: ["ts-loader"]
         },
         // All CSS files will be handled by 'css-loader' & `styles-loader`.
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader']
+          use: ["style-loader", "css-loader"]
         }
       ]
     },
     plugins: [
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin({
-        filename: 'index.html',
-        template: 'public/index.html'
+        filename: "index.html",
+        template: "public/index.html"
       }),
       new MonacoWebpackPlugin({
-        languages: ['json']
-      })
+        languages: ["json"]
+      }),
+      new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
     ],
     // Configurations for `webpack-dev-server`
     devServer: {
@@ -58,14 +61,14 @@ module.exports = env => {
       progress: true,
       inline: true,
       open: true,
-      contentBase: path.join(__dirname, 'public'),
+      contentBase: path.join(__dirname, "public"),
       watchContentBase: true,
       watchOptions: {
         ignored: /node_modules/
       }
     },
     node: {
-      fs: 'empty'
+      fs: "empty"
     }
   };
 
