@@ -2,6 +2,7 @@ import './index.css';
 
 import * as React from 'react';
 import * as vega from 'vega';
+import 'vega-projection-extended';
 import vegaTooltip from 'vega-tooltip';
 
 import { Mode } from '../../constants';
