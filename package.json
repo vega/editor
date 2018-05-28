@@ -62,6 +62,7 @@
     "lint": "tslint -p . && prettier --list-different 'src/**/*.{ts,tsx,css}'",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "analyze": "webpack --mode production --profile --json > stats.json && webpack-bundle-analyzer stats.json"
+    "analyze": "webpack --mode production --profile --json > stats.json && webpack-bundle-analyzer stats.json",
+    "preversion": "npm run lint"
   }
 }
