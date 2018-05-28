@@ -1,10 +1,12 @@
-import './index.css';
-
 import * as React from 'react';
 import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
-
 import { Mode } from '../../constants';
+import addProjections from '../../utils/addProjections';
+
+import './index.css';
+
+addProjections(vega.projection);
 
 interface Props {
   vegaSpec?: object;

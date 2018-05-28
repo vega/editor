@@ -7094,9 +7094,9 @@ vega-typings@^0.2.16:
   version "0.2.17"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.2.17.tgz#9f26775173b3d234d68dfe4c482037743786b8d2"
 
-vega-typings@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.2.tgz#98a4ca1f510894e11055d2087c58dfc93d1ea853"
+vega-typings@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.3.tgz#122f4224aa6f98aa6516e60278d40f43aa2d0787"
 
 vega-util@1, vega-util@^1.7.0:
   version "1.7.0"
