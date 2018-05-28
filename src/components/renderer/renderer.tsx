@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { PortalWithState } from 'react-portal';
 import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
 import { Mode } from '../../constants';
@@ -18,9 +19,20 @@ interface Props {
   baseURL?: string;
 }
 
-export default class Editor extends React.Component<Props> {
+interface State {
+  imageURL: string;
+}
+
+export default class Editor extends React.Component<Props, State> {
   public static view: vega.View;
   public static chart: any;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      imageURL: '',
+    };
+  }
 
   public initilizeView(props) {
     Editor.chart = this.refs.chart as any;
@@ -58,29 +70,35 @@ export default class Editor extends React.Component<Props> {
 
     if (props.export) {
       const ext = props.renderer === 'canvas' ? 'png' : 'svg';
-      const url = Editor.view.toImageURL(ext);
-      url
-        .then(href => {
-          if (ext === 'png') {
-            const link = document.createElement('a');
-            link.setAttribute('href', href);
-            link.setAttribute('target', '_blank');
-            link.setAttribute('download', 'export.' + ext);
-            link.dispatchEvent(new MouseEvent('click'));
-          } else {
-            const tab = window.open();
-            tab.document.write('<img src="' + href + '"/>');
-          }
-        })
-        .catch(err => {
-          throw new Error('Error in exporting: ' + err);
-        });
+      if (ext === 'png') {
+        const link = document.createElement('a');
+        link.setAttribute('href', this.state.imageURL);
+        link.setAttribute('target', '_blank');
+        link.setAttribute('download', 'export.' + ext);
+        link.dispatchEvent(new MouseEvent('click'));
+      } else {
+        const tab = window.open();
+        tab.document.write('<img src="' + this.state.imageURL + '"/>');
+      }
     }
     (window as any).VEGA_DEBUG.view = Editor.view;
+  }
+  public updateImageURL(props) {
+    Editor.view
+      .toImageURL('svg')
+      .then(href => {
+        this.setState({
+          imageURL: href,
+        });
+      })
+      .catch(err => {
+        throw new Error('Error in generating image URL: ' + err);
+      });
   }
   public componentDidMount() {
     this.initilizeView(this.props);
     this.renderVega(this.props);
+    this.updateImageURL(this.props);
   }
   public componentDidUpdate(prevProps) {
     if (
@@ -89,13 +107,33 @@ export default class Editor extends React.Component<Props> {
       prevProps.baseURL !== this.props.baseURL
     ) {
       this.initilizeView(this.props);
+      this.updateImageURL(this.props);
     }
     this.renderVega(this.props);
   }
   public render() {
     return (
-      <div className="chart">
-        <div ref="chart" />
+      <div>
+        <div className="chart">
+          <div ref="chart" />
+        </div>
+        <PortalWithState closeOnOutsideClick closeOnEsc>
+          {({ openPortal, closePortal, isOpen, portal }) => (
+            <React.Fragment>
+              <button className="fullscreen-open" onClick={openPortal}>
+                Fullscreen
+              </button>
+              {portal(
+                <div className="fullscreen-chart">
+                  <button className="fullscreen-close" onClick={closePortal}>
+                    X
+                  </button>
+                  <img src={this.state.imageURL} />
+                </div>
+              )}
+            </React.Fragment>
+          )}
+        </PortalWithState>
       </div>
     );
   }
