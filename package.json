@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "ajv": "^6.5.0",
+    "d3-geo-projection": "^2.4.0",
     "d3-request": "1.0.6",
     "deep-equal": "^1.0.1",
     "history": "^4.7.2",
