@@ -123,14 +123,10 @@ export default class Editor extends React.Component<Props, State> {
         <PortalWithState closeOnOutsideClick closeOnEsc>
           {({ openPortal, closePortal, isOpen, portal }) => (
             <React.Fragment>
-              <button className="fullscreen-open" onClick={openPortal}>
-                Fullscreen
-              </button>
+              <img className="fullscreen-open" onClick={openPortal} src="images/fullscreen.svg" />
               {portal(
                 <div className="fullscreen-chart">
-                  <button className="fullscreen-close" onClick={closePortal}>
-                    &#10006;
-                  </button>
+                  <img className="fullscreen-close" onClick={closePortal} src="images/close.svg" />
                   <img src={this.state.imageURL} />
                 </div>
               )}
