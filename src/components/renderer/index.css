@@ -29,12 +29,14 @@
   position: fixed;
   top: 0;
   left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100vw;
   height: 100vh;
   background: #fff;
+  overflow: auto;
+}
+.fullscreen-chart img {
+  display: block;
+  margin: 0 auto;
 }
 .fullscreen-open {
   position: absolute;
@@ -50,12 +52,12 @@
   position: absolute;
   background: #eee;
   border: 2px solid #000;
-  width: 7vw;
-  height: 2vw;
+  width: 200px;
+  height: 40px;
   top: 2vw;
   right: 2vw;
   cursor: pointer;
-  font-size: 0.75vw;
+  font-size: 1.2em;
 }
 .fullscreen-close:hover {
   background: #ccc;
