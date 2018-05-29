@@ -135,36 +135,35 @@ class Editor extends React.Component<Props, State> {
         <div className="chart">
           <div ref="chart" />
         </div>
-        <PortalWithState closeOnEsc ref="portal">
-          {({ openPortal, closePortal, isOpen, portal }) => (
+        <PortalWithState
+          closeOnEsc
+          onOpen={() => {
+            this.setState({ fullscreen: true });
+            const params = pathname.split('/');
+            if (pathname !== '/' && pathname !== '/edited' && params[params.length - 1] !== 'view') {
+              this.props.history.push(pathname + '/view');
+            }
+          }}
+          onClose={() => {
+            this.setState({ fullscreen: false });
+            pathname = pathname
+              .split('/')
+              .filter(e => e !== 'view')
+              .join('/');
+            if (pathname !== '/' && pathname !== '/edited') {
+              this.props.history.push(pathname);
+            }
+          }}
+          ref="portal"
+        >
+          {({ openPortal, closePortal, portal }) => (
             <React.Fragment>
-              <img
-                data-tip="Fullscreen"
-                className="fullscreen-open"
-                onClick={() => {
-                  this.setState({ fullscreen: true });
-                  if (pathname !== '/' && pathname !== '/edited') {
-                    this.props.history.push(pathname + '/view');
-                  }
-                }}
-                src="images/fullscreen.svg"
-              />
+              <img data-tip="Fullscreen" className="fullscreen-open" onClick={openPortal} src="images/fullscreen.svg" />
               {portal(
                 <div className="fullscreen-chart">
-                  <img
-                    className="fullscreen-close"
-                    onClick={() => {
-                      this.setState({ fullscreen: false });
-                      pathname = pathname
-                        .split('/')
-                        .filter(e => e !== 'view')
-                        .join('/');
-                      if (pathname !== '/' && pathname !== '/edited') {
-                        this.props.history.push(pathname, 'view');
-                      }
-                    }}
-                    src="images/close.svg"
-                  />
+                  <button className="fullscreen-close" onClick={closePortal}>
+                    <span>{'Edit it the Editor'}</span>
+                  </button>
                   <img src={this.state.imageURL} />
                 </div>
               )}

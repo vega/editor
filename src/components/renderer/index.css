@@ -40,15 +40,24 @@
   position: absolute;
   width: 2vw;
   height: 2vw;
+  max-width: 45px;
+  max-height: 45px;
   top: 0.8vw;
   right: 0.8vw;
   cursor: pointer;
 }
 .fullscreen-close {
   position: absolute;
-  width: 1.5vw;
-  height: 1.5vw;
+  background: #eee;
+  border: 2px solid #000;
+  width: 7vw;
+  height: 2vw;
   top: 2vw;
   right: 2vw;
   cursor: pointer;
+  font-size: 0.75vw;
+}
+.fullscreen-close:hover {
+  background: #ccc;
+  transition: 0.125s ease-in-out all;
 }
