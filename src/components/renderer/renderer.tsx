@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PortalWithState } from 'react-portal';
+import { withRouter } from 'react-router-dom';
 import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
 import { Mode } from '../../constants';
@@ -17,19 +18,22 @@ interface Props {
   mode?: Mode;
   export?: boolean;
   baseURL?: string;
+  history?: any;
 }
 
 interface State {
   imageURL: string;
+  fullscreen: boolean;
 }
 
-export default class Editor extends React.Component<Props, State> {
+class Editor extends React.Component<Props, State> {
   public static view: vega.View;
   public static chart: any;
 
   constructor(props) {
     super(props);
     this.state = {
+      fullscreen: false,
       imageURL: '',
     };
   }
@@ -81,6 +85,13 @@ export default class Editor extends React.Component<Props, State> {
         tab.document.write('<img src="' + this.state.imageURL + '"/>');
       }
     }
+
+    const portal = this.refs.portal as any;
+    if (this.state.fullscreen) {
+      portal.openPortal();
+    } else {
+      portal.closePortal();
+    }
     (window as any).VEGA_DEBUG.view = Editor.view;
   }
   public updateImageURL(props) {
@@ -114,19 +125,47 @@ export default class Editor extends React.Component<Props, State> {
     }
     this.renderVega(this.props);
   }
+  public componentWillReceiveProps(nextProps) {
+    // Enter fullscreen mode if url ends with /view
+    const params = window.location.hash.split('#')[1].split('/');
+    params[params.length - 1] === 'view' ? this.setState({ fullscreen: true }) : this.setState({ fullscreen: false });
+  }
   public render() {
+    let pathname = window.location.hash.split('#')[1];
     return (
       <div>
         <div className="chart">
           <div ref="chart" />
         </div>
-        <PortalWithState closeOnOutsideClick closeOnEsc>
+        <PortalWithState closeOnEsc ref="portal">
           {({ openPortal, closePortal, isOpen, portal }) => (
             <React.Fragment>
-              <img className="fullscreen-open" onClick={openPortal} src="images/fullscreen.svg" />
+              <img
+                className="fullscreen-open"
+                onClick={() => {
+                  this.setState({ fullscreen: true });
+                  if (pathname !== '/' && pathname !== '/edited') {
+                    this.props.history.push(pathname + '/view');
+                  }
+                }}
+                src="images/fullscreen.svg"
+              />
               {portal(
                 <div className="fullscreen-chart">
-                  <img className="fullscreen-close" onClick={closePortal} src="images/close.svg" />
+                  <img
+                    className="fullscreen-close"
+                    onClick={() => {
+                      this.setState({ fullscreen: false });
+                      pathname = pathname
+                        .split('/')
+                        .filter(e => e !== 'view')
+                        .join('/');
+                      if (pathname !== '/' && pathname !== '/edited') {
+                        this.props.history.push(pathname, 'view');
+                      }
+                    }}
+                    src="images/close.svg"
+                  />
                   <img src={this.state.imageURL} />
                 </div>
               )}
@@ -137,3 +176,4 @@ export default class Editor extends React.Component<Props, State> {
     );
   }
 }
+export default withRouter(Editor);
