@@ -209,7 +209,8 @@ class Editor extends React.Component<Props, {}> {
             cursorBlinking: 'smooth',
             folding: true,
             lineNumbersMinChars: 4,
-            wordWrap: 'on',
+            scrollBeyondLastLine: false,
+            wordWrap: 'on'
           }}
           value={this.props.value}
           onChange={debounce(this.handleEditorChange, 700).bind(this)}
