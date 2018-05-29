@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
 import { Mode } from '../../constants';
@@ -85,13 +86,6 @@ class Editor extends React.Component<Props, State> {
         tab.document.write('<img src="' + this.state.imageURL + '"/>');
       }
     }
-
-    const portal = this.refs.portal as any;
-    if (this.state.fullscreen) {
-      portal.openPortal();
-    } else {
-      portal.closePortal();
-    }
     (window as any).VEGA_DEBUG.view = Editor.view;
   }
   public updateImageURL(props) {
@@ -110,6 +104,10 @@ class Editor extends React.Component<Props, State> {
     this.initilizeView(this.props);
     this.renderVega(this.props);
     this.updateImageURL(this.props);
+
+    // Enter fullscreen mode if url ends with /view
+    const params = window.location.hash.split('#')[1].split('/');
+    params[params.length - 1] === 'view' ? this.setState({ fullscreen: true }) : this.setState({ fullscreen: false });
   }
   public componentDidUpdate(prevProps) {
     if (
@@ -124,13 +122,13 @@ class Editor extends React.Component<Props, State> {
       this.updateImageURL(this.props);
     }
     this.renderVega(this.props);
-  }
-  public componentWillReceiveProps(nextProps) {
-    // Enter fullscreen mode if url ends with /view
-    const params = window.location.hash.split('#')[1].split('/');
-    params[params.length - 1] === 'view' ? this.setState({ fullscreen: true }) : this.setState({ fullscreen: false });
+
+    // Open/Close fullscreen portal
+    const portal = this.refs.portal as any;
+    this.state.fullscreen ? portal.openPortal() : portal.closePortal();
   }
   public render() {
+    // Parsing pathname from URL
     let pathname = window.location.hash.split('#')[1];
     return (
       <div>
@@ -141,6 +139,7 @@ class Editor extends React.Component<Props, State> {
           {({ openPortal, closePortal, isOpen, portal }) => (
             <React.Fragment>
               <img
+                data-tip="Fullscreen"
                 className="fullscreen-open"
                 onClick={() => {
                   this.setState({ fullscreen: true });
@@ -172,6 +171,7 @@ class Editor extends React.Component<Props, State> {
             </React.Fragment>
           )}
         </PortalWithState>
+        <ReactTooltip place="left" type="dark" effect="solid" />
       </div>
     );
   }
