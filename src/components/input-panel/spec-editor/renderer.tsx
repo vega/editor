@@ -97,16 +97,9 @@ interface Props {
   updateVegaSpec: (val: any) => void;
 }
 
-interface State {
-  code;
-}
-
-class Editor extends React.Component<Props, State> {
+class Editor extends React.Component<Props, {}> {
   constructor(props) {
     super(props);
-    this.state = {
-      code: this.props.value,
-    };
   }
   public editorDidMount(editor) {
     editor.focus();
@@ -143,8 +136,7 @@ class Editor extends React.Component<Props, State> {
       },
     });
   }
-  public componentWillReceiveProps(nextProps) {
-    this.setState({ code: nextProps.value });
+  public componentWillReceiveProps(nextProps: Props) {
     if (!nextProps.autoParse && nextProps.parse) {
       this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
@@ -201,7 +193,6 @@ class Editor extends React.Component<Props, State> {
   }
 
   public render() {
-    const code = this.state.code;
     return (
       <div className={'full-height-wrapper'}>
         <div className="editor-header right-align">
@@ -214,16 +205,13 @@ class Editor extends React.Component<Props, State> {
           ref="vegaEditor"
           language="json"
           options={{
-            autoIndent: true,
             automaticLayout: true,
             cursorBlinking: 'smooth',
             folding: true,
             lineNumbersMinChars: 4,
-            scrollBeyondLastLine: true,
             wordWrap: 'on',
-            wrappingIndent: 'same',
           }}
-          value={code}
+          value={this.props.value}
           onChange={debounce(this.handleEditorChange, 700).bind(this)}
           editorWillMount={this.editorWillMount.bind(this)}
           editorDidMount={this.editorDidMount}
