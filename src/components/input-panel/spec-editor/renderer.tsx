@@ -210,7 +210,7 @@ class Editor extends React.Component<Props, {}> {
             folding: true,
             lineNumbersMinChars: 4,
             scrollBeyondLastLine: false,
-            wordWrap: 'on'
+            wordWrap: 'on',
           }}
           value={this.props.value}
           onChange={debounce(this.handleEditorChange, 700).bind(this)}
