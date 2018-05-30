@@ -49,11 +49,12 @@
   position: absolute;
   background: #fff;
   border: 1px solid #666;
-  padding: 6px 20px;
+  padding: 6px 26px;
   top: 20px;
   right: 20px;
   cursor: pointer;
   font-size: 1.1em;
+  border-radius: 2px;
 }
 .fullscreen-close:hover {
   background: #ccc;
