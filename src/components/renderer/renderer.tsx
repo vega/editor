@@ -179,7 +179,7 @@ class Editor extends React.Component<Props, State> {
                 this.setState({ fullscreen: false }, this.onClosePortal);
               }}
             >
-              <span>{'Edit'}</span>
+              <span>{'Close and Edit'}</span>
             </button>
           </Portal>
         )}
