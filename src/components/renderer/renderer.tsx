@@ -32,7 +32,6 @@ const KEYCODES = {
 
 class Editor extends React.Component<Props, State> {
   public static view: vega.View;
-  public static chart: any;
   public static pathname: string;
 
   constructor(props) {
@@ -70,12 +69,6 @@ class Editor extends React.Component<Props, State> {
   }
   // Initialize the view instance
   public initView(props) {
-    // Selecting chart for rendering vega
-    Editor.chart = this.state.fullscreen ? (this.refs.fchart as any) : (this.refs.chart as any);
-    Editor.chart.style.width = Editor.chart.getBoundingClientRect().width + 'px';
-    // Parsing pathname from URL
-    Editor.pathname = window.location.hash.split('#')[1];
-
     const runtime = vega.parse(props.vegaSpec);
 
     const loader = vega.loader();
@@ -95,14 +88,21 @@ class Editor extends React.Component<Props, State> {
     Editor.view = new vega.View(runtime, {
       loader,
       logLevel: vega.Warn,
-    }).initialize(Editor.chart);
+    });
   }
   public renderVega(props) {
+    // Selecting chart for rendering vega
+    const chart = this.state.fullscreen ? (this.refs.fchart as any) : (this.refs.chart as any);
+    chart.style.width = chart.getBoundingClientRect().width + 'px';
+    // Parsing pathname from URL
+    Editor.pathname = window.location.hash.split('#')[1];
+
     Editor.view
+      .initialize(chart)
       .renderer(props.renderer)
       .hover()
       .run();
-    Editor.chart.style.width = 'auto';
+    chart.style.width = 'auto';
 
     vegaTooltip(Editor.view as any); // FIXME: remove as any
 
@@ -144,8 +144,7 @@ class Editor extends React.Component<Props, State> {
     if (
       prevProps.vegaSpec !== this.props.vegaSpec ||
       prevProps.vegaLiteSpec !== this.props.vegaLiteSpec ||
-      prevProps.baseURL !== this.props.baseURL ||
-      prevState.fullscreen !== this.state.fullscreen
+      prevProps.baseURL !== this.props.baseURL
     ) {
       this.initView(this.props);
     }
