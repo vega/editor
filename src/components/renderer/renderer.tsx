@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { Portal } from 'react-portal';
+import { withRouter } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
 import { Mode } from '../../constants';
@@ -16,16 +19,56 @@ interface Props {
   mode?: Mode;
   export?: boolean;
   baseURL?: string;
+  history?: any;
 }
 
-export default class Editor extends React.Component<Props> {
+interface State {
+  fullscreen: boolean;
+}
+
+const KEYCODES = {
+  ESCAPE: 27,
+};
+
+class Editor extends React.Component<Props, State> {
   public static view: vega.View;
-  public static chart: any;
+  public static pathname: string;
 
-  public initilizeView(props) {
-    Editor.chart = this.refs.chart as any;
-    Editor.chart.style.width = Editor.chart.getBoundingClientRect().width + 'px';
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      fullscreen: false,
+    };
+    this.handleKeydown = this.handleKeydown.bind(this);
+    this.onOpenPortal = this.onOpenPortal.bind(this);
+    this.onClosePortal = this.onClosePortal.bind(this);
+  }
+  // Callback to opening portal
+  public onOpenPortal() {
+    const pathname = Editor.pathname;
+    if (pathname !== '/' && pathname !== '/edited') {
+      this.props.history.push(pathname + '/view');
+    }
+  }
+  // Callback to closing portal
+  public onClosePortal() {
+    let pathname = Editor.pathname;
+    pathname = pathname
+      .split('/')
+      .filter(e => e !== 'view')
+      .join('/');
+    if (pathname !== '/' && pathname !== '/edited') {
+      this.props.history.push(pathname);
+    }
+  }
+  // Close portal on pressing escape key
+  public handleKeydown(e) {
+    if (e.keyCode === KEYCODES.ESCAPE && this.state.fullscreen) {
+      this.setState({ fullscreen: false }, this.onClosePortal);
+    }
+  }
+  // Initialize the view instance
+  public initView(props) {
     const runtime = vega.parse(props.vegaSpec);
 
     const loader = vega.loader();
@@ -45,17 +88,25 @@ export default class Editor extends React.Component<Props> {
     Editor.view = new vega.View(runtime, {
       loader,
       logLevel: vega.Warn,
-    }).initialize(Editor.chart);
+    });
   }
   public renderVega(props) {
+    // Selecting chart for rendering vega
+    const chart = this.state.fullscreen ? (this.refs.fchart as any) : (this.refs.chart as any);
+    chart.style.width = chart.getBoundingClientRect().width + 'px';
+    // Parsing pathname from URL
+    Editor.pathname = window.location.hash.split('#')[1];
+
     Editor.view
+      .initialize(chart)
       .renderer(props.renderer)
       .hover()
       .run();
-    Editor.chart.style.width = 'auto';
+    chart.style.width = 'auto';
 
     vegaTooltip(Editor.view as any); // FIXME: remove as any
 
+    // Export visualization as SVG/PNG
     if (props.export) {
       const ext = props.renderer === 'canvas' ? 'png' : 'svg';
       const url = Editor.view.toImageURL(ext);
@@ -79,24 +130,62 @@ export default class Editor extends React.Component<Props> {
     (window as any).VEGA_DEBUG.view = Editor.view;
   }
   public componentDidMount() {
-    this.initilizeView(this.props);
+    this.initView(this.props);
     this.renderVega(this.props);
+    // Add listener to event keydown
+    document.addEventListener('keydown', this.handleKeydown);
+    // Enter fullscreen mode if url ends with /view
+    const params = Editor.pathname.split('/');
+    if (params[params.length - 1] === 'view') {
+      this.setState({ fullscreen: true });
+    }
   }
-  public componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.vegaSpec !== this.props.vegaSpec ||
       prevProps.vegaLiteSpec !== this.props.vegaLiteSpec ||
       prevProps.baseURL !== this.props.baseURL
     ) {
-      this.initilizeView(this.props);
+      this.initView(this.props);
     }
     this.renderVega(this.props);
   }
+  public componentWillUnmount() {
+    // Remove listener to event keydown
+    document.removeEventListener('keydown', this.handleKeydown);
+  }
   public render() {
     return (
-      <div className="chart">
-        <div ref="chart" />
+      <div>
+        <div className="chart">
+          <div ref="chart" />
+        </div>
+        <img
+          data-tip="Fullscreen"
+          className="fullscreen-open"
+          onClick={() => {
+            this.setState({ fullscreen: true }, this.onOpenPortal);
+          }}
+          src="images/fullscreen.svg"
+        />
+        {this.state.fullscreen && (
+          <Portal>
+            <div className="chart fullscreen-chart">
+              <div ref="fchart" />
+            </div>
+            <button
+              className="fullscreen-close"
+              onClick={() => {
+                this.setState({ fullscreen: false }, this.onClosePortal);
+              }}
+            >
+              <span>{'Edit'}</span>
+            </button>
+          </Portal>
+        )}
+        <ReactTooltip place="left" type="dark" effect="solid" />
       </div>
     );
   }
 }
+export default withRouter(Editor);
