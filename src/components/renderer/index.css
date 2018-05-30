@@ -32,32 +32,29 @@
   width: 100vw;
   height: 100vh;
   overflow: auto;
+  display: flex;
+  align-items: center;
 }
-.fullscreen-chart > div > *:first-child {
-  display: block;
-  margin: 0 auto;
+.fullscreen-chart > div {
+  margin: auto;
 }
 .fullscreen-open {
   position: absolute;
-  width: 30px;
-  top: 20px;
-  right: 20px;
+  width: 20px;
+  top: 10px;
+  right: 10px;
   cursor: pointer;
 }
 .fullscreen-close {
   position: absolute;
   background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.23);
-  border-radius: 4px;
-  width: 200px;
-  height: 40px;
-  top: 30px;
-  right: 30px;
+  border: 1px solid #666;
+  padding: 6px 40px;
+  top: 20px;
+  right: 20px;
   cursor: pointer;
-  color: rgba(0, 0, 0, 0.87);
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 .fullscreen-close:hover {
-  background: rgba(0, 0, 0, 0.08);
-  transition: background 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  background: #ccc;
 }
