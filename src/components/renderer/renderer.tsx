@@ -40,9 +40,7 @@ class Editor extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.state = {
-      fullscreen: false,
-    };
+    this.state = { fullscreen: false };
     this.handleKeydown = this.handleKeydown.bind(this);
     this.onOpenPortal = this.onOpenPortal.bind(this);
     this.onClosePortal = this.onClosePortal.bind(this);
@@ -90,7 +88,6 @@ class Editor extends React.Component<Props, State> {
       }
     };
 
-    // Initialize view instance
     Editor.view = new vega.View(runtime, {
       loader,
       logLevel: vega.Warn,
