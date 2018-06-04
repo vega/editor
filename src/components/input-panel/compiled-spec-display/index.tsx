@@ -1,4 +1,4 @@
-import * as stringify from 'json-stringify-pretty-compact';
+import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { connect } from 'react-redux';
@@ -11,7 +11,7 @@ interface Props {
   value;
 }
 
-class CompiledSpecDisplay extends React.Component<Props> {
+class CompiledSpecDisplay extends React.PureComponent<Props, {}> {
   public render() {
     return (
       <div className={'sizeFixEditorParent full-height-wrapper'}>
@@ -25,7 +25,6 @@ class CompiledSpecDisplay extends React.Component<Props> {
             wordWrap: 'on',
           }}
           language="json"
-          key={JSON.stringify(this.state)}
           value={stringify(this.props.value)}
         />
       </div>

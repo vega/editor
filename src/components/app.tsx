@@ -2,7 +2,7 @@ import './app.css';
 
 import { text } from 'd3-request';
 import equal from 'deep-equal';
-import * as stringify from 'json-stringify-pretty-compact';
+import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';

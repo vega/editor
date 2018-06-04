@@ -1,4 +1,4 @@
-import * as stringify from 'json-stringify-pretty-compact';
+import stringify from 'json-stringify-pretty-compact';
 import { connect } from 'react-redux';
 
 import * as React from 'react';

@@ -1,6 +1,6 @@
 import './index.css';
 
-import * as stringify from 'json-stringify-pretty-compact';
+import stringify from 'json-stringify-pretty-compact';
 import Monaco from 'monaco-editor';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
@@ -98,9 +98,6 @@ interface Props {
 }
 
 class Editor extends React.Component<Props, {}> {
-  constructor(props) {
-    super(props);
-  }
   public editorDidMount(editor) {
     editor.focus();
   }

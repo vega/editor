@@ -9,7 +9,9 @@
     "strictNullChecks": false,
     "jsx": "react",
     "suppressImplicitAnyIndexErrors": true,
-    "allowSyntheticDefaultImports": true
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true
   },
   "compileOnSave": false,
   "files": [
