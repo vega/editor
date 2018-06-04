@@ -5604,9 +5604,9 @@ vega-lib@4.0.0-rc.2:
     vega-voronoi "^3.0.0"
     vega-wordcloud "^3.0.0"
 
-"vega-lite@github:vega/vega-lite#v2.5.0":
-  version "2.5.0"
-  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/290bf73f411ccdddf0fca23d2650449648969c80"
+"vega-lite@github:vega/vega-lite#v2.5.1":
+  version "2.5.1"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/038d13263f9565c4750010db99726c7891d2b124"
   dependencies:
     "@types/json-stable-stringify" "^1.0.32"
     json-stable-stringify "^1.0.1"
