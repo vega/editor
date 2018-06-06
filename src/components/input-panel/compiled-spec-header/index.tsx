@@ -1,6 +1,6 @@
 import stringify from 'json-stringify-pretty-compact';
 import { connect } from 'react-redux';
-
+import { withRouter } from 'react-router-dom';
 import * as React from 'react';
 import * as EditorActions from '../../../actions/editor';
 
@@ -18,11 +18,19 @@ interface Props {
   value;
   compiledVegaSpec;
   showCompiledVegaSpec; // $FixMe - function
+  history;
   updateVegaSpec: (value: any) => void;
 }
 
 class CompiledSpecDisplayHeader extends React.Component<Props> {
+  constructor(props) {
+    super(props);
+    this.editVegaSpec = this.editVegaSpec.bind(this);
+  }
   public editVegaSpec() {
+    if (this.props.history.location.pathname.indexOf('/edited') === -1) {
+      this.props.history.push('/edited');
+    }
     this.props.updateVegaSpec(stringify(this.props.value));
   }
   public render() {
@@ -37,7 +45,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
             <polygon points="5,5 30,5 17.5,20" />
           </svg>
           <button
-            onClick={this.editVegaSpec.bind(this)}
+            onClick={this.editVegaSpec}
             style={{ position: 'absolute', right: '3%', cursor: 'pointer' }}
           >
             Edit Vega spec
@@ -76,7 +84,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(CompiledSpecDisplayHeader);
+)(CompiledSpecDisplayHeader));
