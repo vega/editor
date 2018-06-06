@@ -172,15 +172,15 @@ class Editor extends React.Component<Props, State> {
           <Portal>
             <div className="chart fullscreen-chart">
               <div ref="fchart" />
+              <button
+                className="fullscreen-close"
+                onClick={() => {
+                  this.setState({ fullscreen: false }, this.onClosePortal);
+                }}
+              >
+                <span>{'Edit'}</span>
+              </button>
             </div>
-            <button
-              className="fullscreen-close"
-              onClick={() => {
-                this.setState({ fullscreen: false }, this.onClosePortal);
-              }}
-            >
-              <span>{'Edit'}</span>
-            </button>
           </Portal>
         )}
         <ReactTooltip place="left" type="dark" effect="solid" />

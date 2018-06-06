@@ -55,6 +55,7 @@
   cursor: pointer;
   font-size: 1.1em;
   border-radius: 2px;
+  z-index: 1000;
 }
 .fullscreen-close:hover {
   background: #ccc;
