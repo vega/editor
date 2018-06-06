@@ -97,7 +97,22 @@ interface Props {
   updateVegaSpec: (val: any) => void;
 }
 
+const KEYCODES = {
+  B: 66,
+};
+
 class Editor extends React.Component<Props, {}> {
+  constructor(props) {
+    super(props);
+    this.handleKeydown = this.handleKeydown.bind(this);
+    this.handleEditorChange = this.handleEditorChange.bind(this);
+    this.editorWillMount = this.editorWillMount.bind(this);
+  }
+  public handleKeydown(e) {
+    if (e.keyCode === KEYCODES.B && e.ctrlKey && !this.props.autoParse) {
+      this.props.parseSpec(true);
+    }
+  }
   public editorDidMount(editor) {
     editor.focus();
   }
@@ -138,6 +153,12 @@ class Editor extends React.Component<Props, {}> {
       this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
     }
+  }
+  public componentDidMount() {
+    document.addEventListener('keydown', this.handleKeydown);
+  }
+  public componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeydown);
   }
   public manualParseSpec() {
     if (!this.props.autoParse) {
@@ -210,8 +231,8 @@ class Editor extends React.Component<Props, {}> {
             wordWrap: 'on',
           }}
           value={this.props.value}
-          onChange={debounce(this.handleEditorChange, 700).bind(this)}
-          editorWillMount={this.editorWillMount.bind(this)}
+          onChange={debounce(this.handleEditorChange, 700)}
+          editorWillMount={this.editorWillMount}
           editorDidMount={this.editorDidMount}
         />
       </div>
