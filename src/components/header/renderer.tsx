@@ -346,7 +346,7 @@ class Header extends React.Component<Props & { history: any }, State> {
                 position: 'absolute',
                 top: 0,
                 width: this.state.width, // $FixMe
-                zIndex: 1000000000,
+                zIndex: 100,
               }}
             >
               <div id="emptyButton" style={{ height: LAYOUT.HeaderHeight }} />
