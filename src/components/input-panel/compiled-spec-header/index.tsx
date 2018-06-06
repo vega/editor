@@ -1,6 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+
 import * as React from 'react';
 import * as EditorActions from '../../../actions/editor';
 
@@ -44,10 +45,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
           <svg style={svgStyle}>
             <polygon points="5,5 30,5 17.5,20" />
           </svg>
-          <button
-            onClick={this.editVegaSpec}
-            style={{ position: 'absolute', right: '3%', cursor: 'pointer' }}
-          >
+          <button onClick={this.editVegaSpec} style={{ position: 'absolute', right: '3%', cursor: 'pointer' }}>
             Edit Vega spec
           </button>
         </div>
@@ -84,7 +82,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CompiledSpecDisplayHeader));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(CompiledSpecDisplayHeader)
+);
