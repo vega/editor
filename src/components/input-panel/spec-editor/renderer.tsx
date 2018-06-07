@@ -99,6 +99,7 @@ interface Props {
 
 const KEYCODES = {
   B: 66,
+  S: 83,
 };
 
 class Editor extends React.Component<Props, {}> {
@@ -109,8 +110,11 @@ class Editor extends React.Component<Props, {}> {
     this.editorWillMount = this.editorWillMount.bind(this);
   }
   public handleKeydown(e) {
-    if (e.keyCode === KEYCODES.B && e.ctrlKey && !this.props.autoParse) {
-      this.props.parseSpec(true);
+    if (!this.props.autoParse) {
+      if ((e.keyCode === KEYCODES.B || e.keyCode === KEYCODES.S) && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        this.props.parseSpec(true);
+      }
     }
   }
   public editorDidMount(editor) {
