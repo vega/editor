@@ -17,5 +17,15 @@
 }
 
 .button {
+  user-select: none;
   margin-right: 8px;
+}
+
+.button:focus {
+  outline: 0;
+}
+
+.button:active,
+.button-press {
+  box-shadow: 0 0 1px 0 #000;
 }

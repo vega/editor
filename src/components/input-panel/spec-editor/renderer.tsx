@@ -155,7 +155,9 @@ class Editor extends React.Component<Props, {}> {
   public componentWillReceiveProps(nextProps: Props) {
     if (!nextProps.autoParse && nextProps.parse) {
       this.updateSpec(nextProps.value);
-      this.props.parseSpec(false);
+      setTimeout(() => {
+        this.props.parseSpec(false);
+      }, 230);
     }
   }
   public componentDidMount() {
@@ -167,7 +169,11 @@ class Editor extends React.Component<Props, {}> {
   public manualParseSpec() {
     if (!this.props.autoParse) {
       return (
-        <button id="parse-button" className="button" onClick={() => this.props.parseSpec(true)}>
+        <button
+          id="parse-button"
+          className={this.props.parse ? 'button button-press' : 'button'}
+          onClick={() => this.props.parseSpec(true)}
+        >
           Parse
         </button>
       );
