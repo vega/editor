@@ -114,6 +114,11 @@ class Editor extends React.Component<Props, {}> {
       if ((e.keyCode === KEYCODES.B || e.keyCode === KEYCODES.S) && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         this.props.parseSpec(true);
+        const parseButton = this.refs.parse as any;
+        parseButton.classList.add('pressed');
+        setTimeout(() => {
+          parseButton.classList.remove('pressed');
+        }, 250);
       }
     }
   }
@@ -155,9 +160,7 @@ class Editor extends React.Component<Props, {}> {
   public componentWillReceiveProps(nextProps: Props) {
     if (!nextProps.autoParse && nextProps.parse) {
       this.updateSpec(nextProps.value);
-      setTimeout(() => {
-        this.props.parseSpec(false);
-      }, 230);
+      this.props.parseSpec(false);
     }
   }
   public componentDidMount() {
@@ -169,11 +172,7 @@ class Editor extends React.Component<Props, {}> {
   public manualParseSpec() {
     if (!this.props.autoParse) {
       return (
-        <button
-          id="parse-button"
-          className={this.props.parse ? 'button button-press' : 'button'}
-          onClick={() => this.props.parseSpec(true)}
-        >
+        <button ref="parse" id="parse-button" className="button" onClick={() => this.props.parseSpec(true)}>
           Parse
         </button>
       );
