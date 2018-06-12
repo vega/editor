@@ -97,7 +97,31 @@ interface Props {
   updateVegaSpec: (val: any) => void;
 }
 
+const KEYCODES = {
+  B: 66,
+  S: 83,
+};
+
 class Editor extends React.Component<Props, {}> {
+  constructor(props) {
+    super(props);
+    this.handleKeydown = this.handleKeydown.bind(this);
+    this.handleEditorChange = this.handleEditorChange.bind(this);
+    this.editorWillMount = this.editorWillMount.bind(this);
+  }
+  public handleKeydown(e) {
+    if (!this.props.autoParse) {
+      if ((e.keyCode === KEYCODES.B || e.keyCode === KEYCODES.S) && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        this.props.parseSpec(true);
+        const parseButton = this.refs.parse as any;
+        parseButton.classList.add('pressed');
+        setTimeout(() => {
+          parseButton.classList.remove('pressed');
+        }, 250);
+      }
+    }
+  }
   public editorDidMount(editor) {
     editor.focus();
   }
@@ -139,10 +163,16 @@ class Editor extends React.Component<Props, {}> {
       this.props.parseSpec(false);
     }
   }
+  public componentDidMount() {
+    document.addEventListener('keydown', this.handleKeydown);
+  }
+  public componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeydown);
+  }
   public manualParseSpec() {
     if (!this.props.autoParse) {
       return (
-        <button id="parse-button" className="button" onClick={() => this.props.parseSpec(true)}>
+        <button ref="parse" id="parse-button" className="button" onClick={() => this.props.parseSpec(true)}>
           Parse
         </button>
       );
@@ -210,8 +240,8 @@ class Editor extends React.Component<Props, {}> {
             wordWrap: 'on',
           }}
           value={this.props.value}
-          onChange={debounce(this.handleEditorChange, 700).bind(this)}
-          editorWillMount={this.editorWillMount.bind(this)}
+          onChange={debounce(this.handleEditorChange, 700)}
+          editorWillMount={this.editorWillMount}
           editorDidMount={this.editorDidMount}
         />
       </div>
