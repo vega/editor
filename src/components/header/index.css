@@ -11,13 +11,10 @@
   background: white;
   border: none;
   cursor: pointer;
-  border-bottom: solid 5px white;
-  padding-bottom: 12px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 18px;
+  padding: 20px 20px 12px 18px;
   color: black;
   text-decoration: none;
+  margin: auto;
 }
 
 .header a.idl-logo {
@@ -26,13 +23,18 @@
   border: none;
 }
 
-.header .button:hover {
+.header span {
+  border-bottom: solid 5px white;
+}
+
+.header span:hover {
   background: white;
   border-bottom: solid 5px rgb(92, 64, 141);
 }
-.header .button.right {
+
+.right {
   position: absolute;
-  right: 0;
+  right: 5px;
 }
 
 .modal-background {

@@ -134,7 +134,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     const gistButton = <div className="button">{'Gist'}</div>;
     const docsLink = (
       <a
-        className="button right"
+        className="button"
         href={
           this.props.mode === Mode.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'
         }
@@ -435,7 +435,7 @@ class Header extends React.Component<Props & { history: any }, State> {
             ),
           ]}
         </PortalWithState>
-        <span>{docsLink}</span>
+        <span className="right">{docsLink}</span>
         <span>{customButton}</span>
       </div>
     );
