@@ -1,13 +1,14 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
-var ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
-module.exports = env => {
+module.exports = (env, argv) => {
   const config = {
     entry: {
       main: "./src/index.tsx"
     },
+
     output: {
       filename: "[name].bundle.js",
       chunkFilename: "[name].chunk.js",
@@ -15,7 +16,10 @@ module.exports = env => {
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    devtool: process.env.NODE_ENV === "development" ? "eval-source-map" : "source-map",
+    devtool:
+      argv.mode === "development"
+        ? "cheap-module-eval-source-map"
+        : "source-map",
 
     resolve: {
       // Add '.ts' and '.tsx' as resolvable extensions.
@@ -56,13 +60,11 @@ module.exports = env => {
         colors: true
       },
       compress: true,
-      hot: true,
       overlay: {
         warnings: true,
         errors: true
       },
       progress: true,
-      inline: true,
       open: true,
       contentBase: path.join(__dirname, "public"),
       watchContentBase: true,
