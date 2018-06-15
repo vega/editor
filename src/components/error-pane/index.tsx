@@ -6,6 +6,7 @@ import Renderer from './renderer';
 
 function mapStateToProps(state: State, ownProps) {
   return {
+    dataSets: state.dataSets,
     error: state.error,
     errorPane: state.errorPane,
     warningsLogger: state.warningsLogger,
