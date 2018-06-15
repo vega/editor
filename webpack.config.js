@@ -1,7 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const { CheckerPlugin } = require("awesome-typescript-loader");
 
 module.exports = (env, argv) => {
   const config = {
@@ -15,26 +15,22 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, "dist")
     },
 
-    // Enable sourcemaps for debugging webpack's output.
     devtool:
       argv.mode === "development"
         ? "cheap-module-eval-source-map"
         : "source-map",
 
     resolve: {
-      // Add '.ts' and '.tsx' as resolvable extensions.
       extensions: [".ts", ".tsx", ".js", ".json"]
     },
 
     module: {
       rules: [
-        // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
         {
           test: /\.tsx?$/,
           exclude: /node_modules/,
-          use: ["ts-loader"]
+          use: ["awesome-typescript-loader"]
         },
-        // All CSS files will be handled by 'css-loader' & `styles-loader`.
         {
           test: /\.css$/,
           use: ["style-loader", "css-loader"]
@@ -43,7 +39,6 @@ module.exports = (env, argv) => {
     },
 
     plugins: [
-      // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin({
         filename: "index.html",
         template: "public/index.html"
@@ -51,10 +46,9 @@ module.exports = (env, argv) => {
       new MonacoWebpackPlugin({
         languages: ["json"]
       }),
-      new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
+      new CheckerPlugin()
     ],
 
-    // Configurations for `webpack-dev-server`
     devServer: {
       stats: {
         colors: true
@@ -65,6 +59,7 @@ module.exports = (env, argv) => {
         errors: true
       },
       progress: true,
+      stats: "errors-only",
       open: true,
       contentBase: path.join(__dirname, "public"),
       watchContentBase: true,

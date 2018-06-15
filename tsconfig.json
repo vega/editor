@@ -13,11 +13,6 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true
   },
-  "compileOnSave": false,
-  "files": [
-    "src/index.tsx"
-  ],
-  "include": [
-    "node_modules/vega-lite/typings/*.d.ts"
-  ]
+  "files": ["src/index.tsx"],
+  "include": ["node_modules/vega-lite/typings/*.d.ts"]
 }
