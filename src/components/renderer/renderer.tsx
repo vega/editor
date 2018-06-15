@@ -109,7 +109,9 @@ class Editor extends React.Component<Props, State> {
         // Get all datasets using view
         const dataSets = await Editor.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data;
         // Storing datasets in state
-        this.props.setDataSets(dataSets);
+        if (dataSets.root.length > 0) {
+          this.props.setDataSets(dataSets);
+        }
       });
 
     chart.style.width = 'auto';
