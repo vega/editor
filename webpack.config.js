@@ -37,6 +37,7 @@ module.exports = env => {
         }
       ]
     },
+
     plugins: [
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin({
@@ -48,12 +49,14 @@ module.exports = env => {
       }),
       new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
     ],
+
     // Configurations for `webpack-dev-server`
     devServer: {
       stats: {
         colors: true
       },
       compress: true,
+      hot: true,
       overlay: {
         warnings: true,
         errors: true
@@ -67,6 +70,7 @@ module.exports = env => {
         ignored: /node_modules/
       }
     },
+
     node: {
       fs: "empty"
     }
