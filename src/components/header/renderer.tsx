@@ -1,7 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
-import { Code, Download, FileText, Github, Image, Play, Plus } from 'react-feather';
+import { Code, Download, FileText, Github, Grid, Play, Plus } from 'react-feather';
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 
@@ -138,7 +138,7 @@ class Header extends React.Component<Props & { history: any }, State> {
   public render() {
     const examplesButton = (
       <div className="header-button">
-        <Image className="header-icon" />
+        <Grid className="header-icon" />
         {'Examples'}
       </div>
     );
