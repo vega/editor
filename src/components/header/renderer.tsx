@@ -17,8 +17,10 @@ const formatExampleName = name => {
 };
 
 interface Props {
+  autoParse?: boolean;
   mode: Mode;
-  autoParse: boolean;
+
+  exportVega: (val: any) => void;
   parseSpec: (val: any) => void;
 }
 
@@ -349,7 +351,7 @@ class Header extends React.Component<Props & { history: any }, State> {
       </div>
     );
     const exportButton = (
-      <div className="header-button">
+      <div className="header-button" onClick={() => this.props.exportVega(true)}>
         <Download className="header-icon" />
         {'Export'}
       </div>

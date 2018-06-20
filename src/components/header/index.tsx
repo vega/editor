@@ -13,6 +13,9 @@ const mapStateToProps = (state: State, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    exportVega: val => {
+      dispatch(EditorActions.exportVega(val));
+    },
     parseSpec: val => {
       dispatch(EditorActions.parseSpec(val));
     },
