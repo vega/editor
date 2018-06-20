@@ -62,9 +62,6 @@ export default class Toolbar extends React.Component<Props> {
         >
           {`Renderer: ${this.props.renderer === 'canvas' ? 'Canvas' : 'SVG'}`}
         </div>
-        <div className="vega-export" onClick={() => this.props.exportVega(true)}>
-          {this.props.renderer === 'canvas' ? 'Export PNG' : 'Export SVG'}
-        </div>
       </div>
     );
   }

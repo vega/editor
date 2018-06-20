@@ -224,11 +224,6 @@ class Editor extends React.Component<Props, {}> {
   public render() {
     return (
       <div className={'full-height-wrapper'}>
-        <div className="editor-header right-align">
-          <button id="format-button" className="button" onClick={() => this.formatDocument()}>
-            Format
-          </button>
-        </div>
         <MonacoEditor
           ref="editor"
           language="json"
