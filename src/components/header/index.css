@@ -32,7 +32,7 @@
 }
 
 .header-icon {
-  margin: 0 5px;
+  margin-right: 5px;
   vertical-align: middle;
 }
 
@@ -254,17 +254,13 @@
   font-size: 16px;
   padding: 10px 23px;
   background: white;
-  border-left: solid 1px #a9a9a9;
-  border-right: solid 1px #a9a9a9;
-  border-bottom: solid 1px #a9a9a9;
+  border: 1px solid #a9a9a9;
   cursor: pointer;
 }
 
 .customSubmenu:hover {
-  background: rgb(92, 64, 141);
-  color: white;
+  background: #ebebeb;
 }
 
 #emptyButton:hover {
-  border-bottom: solid 5px rgb(92, 64, 141);
 }

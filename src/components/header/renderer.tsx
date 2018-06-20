@@ -163,7 +163,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     );
     const customButton = (
       <div
-        onMouseOver={e => {
+        onClick={e => {
           const targetRect = (e.target as any).getBoundingClientRect();
           this.setState({
             customIsOpened: true,
