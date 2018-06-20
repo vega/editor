@@ -1,40 +1,49 @@
 .header {
-  border-bottom: solid 2px rgba(0, 0, 0, 0.2);
   display: flex;
+  border-bottom: solid 2px rgba(0, 0, 0, 0.2);
 }
 
 .header div,
 .header a {
-  display: inline-block;
-  font-size: 18px;
-  align-self: flex-end;
-  background: white;
-  border: none;
+  display: flex;
+  align-items: center;
+  font-size: 1.125em;
   cursor: pointer;
-  padding: 20px 20px 12px 18px;
-  color: black;
+  justify-content: center;
+  color: #000;
   text-decoration: none;
-  margin: auto;
+  padding: 5px 10px;
 }
 
 .header a.idl-logo {
-  padding: 10px 10px 5px 10px;
+  padding: 10px;
   margin: 0;
   border: none;
 }
 
+.header div:hover,
+.docs-link:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
 .header span {
-  border-bottom: solid 5px white;
+  margin: auto;
 }
 
-.header span:hover {
-  background: white;
-  border-bottom: solid 5px rgb(92, 64, 141);
+.header-icon {
+  margin: 0 5px;
 }
 
-.right {
-  position: absolute;
-  right: 5px;
+.header-right {
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.docs-link {
+  align-self: flex-end;
 }
 
 .modal-background {

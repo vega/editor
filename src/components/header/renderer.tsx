@@ -1,6 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
+import { Code, Download, FileText, Github, Image, Play, Plus } from 'react-feather';
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 
@@ -130,17 +131,28 @@ class Header extends React.Component<Props & { history: any }, State> {
     closePortal();
   }
   public render() {
-    const examplesButton = <div className="button">{'Examples'}</div>;
-    const gistButton = <div className="button">{'Gist'}</div>;
+    const examplesButton = (
+      <div className="header-button">
+        <Image className="header-icon" />
+        {'Examples'}
+      </div>
+    );
+    const gistButton = (
+      <div className="header-button">
+        <Github className="header-icon" />
+        {'Gist'}
+      </div>
+    );
     const docsLink = (
       <a
-        className="button"
+        className="docs-link"
         href={
           this.props.mode === Mode.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'
         }
         target="_blank"
         rel="noopener noreferrer"
       >
+        <FileText className="header-icon" />
         {NAMES[this.props.mode]} Docs
       </a>
     );
@@ -154,6 +166,7 @@ class Header extends React.Component<Props & { history: any }, State> {
           });
         }}
       >
+        <Plus className="header-icon" />
         {'New'}
       </div>
     );
@@ -321,6 +334,24 @@ class Header extends React.Component<Props & { history: any }, State> {
         </div>
       );
     };
+    const formatButton = (
+      <div className="header-button">
+        <Code className="header-icon" />
+        {'Format'}
+      </div>
+    );
+    const runButton = (
+      <div className="header-button">
+        <Play className="header-icon" />
+        {'Run'}
+      </div>
+    );
+    const exportButton = (
+      <div className="header-button">
+        <Download className="header-icon" />
+        {'Export'}
+      </div>
+    );
     return (
       <div className="header">
         <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
@@ -435,8 +466,11 @@ class Header extends React.Component<Props & { history: any }, State> {
             ),
           ]}
         </PortalWithState>
-        <span className="right">{docsLink}</span>
         <span>{customButton}</span>
+        <span>{formatButton}</span>
+        <span>{runButton}</span>
+        <span>{exportButton}</span>
+        <span className="header-right">{docsLink}</span>
       </div>
     );
   }
