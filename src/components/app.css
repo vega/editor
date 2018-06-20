@@ -1,10 +1,15 @@
+/* Import font style*/
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
 body,
 html {
   padding: 0;
   margin: 0;
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   overflow: hidden;
+  line-height: 1;
 }
+
 * {
   box-sizing: border-box;
 }
