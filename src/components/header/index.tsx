@@ -1,15 +1,24 @@
 import { connect } from 'react-redux';
 
+import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
 const mapStateToProps = (state: State, ownProps) => {
   return {
+    autoParse: state.parse,
     mode: state.mode,
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    parseSpec: val => {
+      dispatch(EditorActions.parseSpec(val));
+    },
+  };
+};
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Renderer);

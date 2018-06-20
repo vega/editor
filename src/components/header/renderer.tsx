@@ -18,6 +18,8 @@ const formatExampleName = name => {
 
 interface Props {
   mode: Mode;
+  autoParse: boolean;
+  parseSpec: (val: any) => void;
 }
 
 interface State {
@@ -341,7 +343,7 @@ class Header extends React.Component<Props & { history: any }, State> {
       </div>
     );
     const runButton = (
-      <div className="header-button">
+      <div className="header-button" onClick={() => this.props.parseSpec(true)}>
         <Play className="header-icon" />
         {'Run'}
       </div>
@@ -468,7 +470,7 @@ class Header extends React.Component<Props & { history: any }, State> {
         </PortalWithState>
         <span>{customButton}</span>
         <span>{formatButton}</span>
-        <span>{runButton}</span>
+        <span>{this.props.autoParse ? null : runButton}</span>
         <span>{exportButton}</span>
         <span className="header-right">{docsLink}</span>
       </div>

@@ -169,15 +169,6 @@ class Editor extends React.Component<Props, {}> {
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeydown);
   }
-  public manualParseSpec() {
-    if (!this.props.autoParse) {
-      return (
-        <button ref="parse" id="parse-button" className="button" onClick={() => this.props.parseSpec(true)}>
-          Parse
-        </button>
-      );
-    }
-  }
   public updateSpec(spec) {
     let parsedMode = this.props.mode;
 
@@ -226,7 +217,6 @@ class Editor extends React.Component<Props, {}> {
           <button id="format-button" className="button" onClick={() => this.formatDocument()}>
             Format
           </button>
-          {this.manualParseSpec()}
         </div>
         <MonacoEditor
           ref="vegaEditor"
