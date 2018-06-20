@@ -3,6 +3,7 @@ import * as vl from 'vega-lite';
 import {
   Action,
   EXPORT_VEGA,
+  FORMAT_SPEC,
   LOG_ERROR,
   PARSE_SPEC,
   SET_BASEURL,
@@ -117,6 +118,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         compiledVegaSpec: false,
         editorString: '{}',
         export: false,
+        format: false,
         gist: null,
         mode: action.mode,
         parse: false,
@@ -202,6 +204,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         baseURL: action.baseURL,
+      };
+    case FORMAT_SPEC:
+      return {
+        ...state,
+        format: action.format,
       };
     default:
       return state;

@@ -21,6 +21,7 @@ interface Props {
   mode: Mode;
 
   exportVega: (val: any) => void;
+  formatSpec: (val: any) => void;
   parseSpec: (val: any) => void;
 }
 
@@ -339,7 +340,7 @@ class Header extends React.Component<Props & { history: any }, State> {
       );
     };
     const formatButton = (
-      <div className="header-button">
+      <div className="header-button" onClick={() => this.props.formatSpec(true)}>
         <Code className="header-icon" />
         {'Format'}
       </div>

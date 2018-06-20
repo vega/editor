@@ -84,14 +84,16 @@ function debounce(func, wait, immediate?) {
 }
 
 interface Props {
-  autoParse: boolean;
+  autoParse?: boolean;
+  format?: boolean;
   history;
   mode: Mode;
-  parse: boolean;
+  parse?: boolean;
   value?: string;
 
   onChange?: (...args: any[]) => any;
   parseSpec: (val: any) => void;
+  formatSpec: (val: any) => void;
   updateEditorString: (val: any) => void;
   updateVegaLiteSpec: (val: any) => void;
   updateVegaSpec: (val: any) => void;
@@ -108,6 +110,7 @@ class Editor extends React.Component<Props, {}> {
     this.handleKeydown = this.handleKeydown.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.editorWillMount = this.editorWillMount.bind(this);
+    this.editorDidMount = this.editorDidMount.bind(this);
   }
   public handleKeydown(e) {
     if (!this.props.autoParse) {
@@ -162,6 +165,14 @@ class Editor extends React.Component<Props, {}> {
       this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
     }
+    if (nextProps.format) {
+      this.props.formatSpec(false);
+    }
+  }
+  public componentDidUpdate() {
+    if (this.props.format) {
+      (this.refs.editor as any).editor.getAction('editor.action.formatDocument').run();
+    }
   }
   public componentDidMount() {
     document.addEventListener('keydown', this.handleKeydown);
@@ -207,7 +218,7 @@ class Editor extends React.Component<Props, {}> {
    * Triggered by #format-button on click.
    */
   public formatDocument() {
-    (this.refs.vegaEditor as any).editor.getAction('editor.action.formatDocument').run();
+    (this.refs.editor as any).editor.getAction('editor.action.formatDocument').run();
   }
 
   public render() {
@@ -219,7 +230,7 @@ class Editor extends React.Component<Props, {}> {
           </button>
         </div>
         <MonacoEditor
-          ref="vegaEditor"
+          ref="editor"
           language="json"
           options={{
             automaticLayout: true,

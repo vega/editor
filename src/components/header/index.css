@@ -13,6 +13,7 @@
   color: #000;
   text-decoration: none;
   padding: 5px 10px;
+  user-select: none;
 }
 
 .header a.idl-logo {

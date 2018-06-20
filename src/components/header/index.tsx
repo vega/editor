@@ -16,6 +16,9 @@ const mapDispatchToProps = dispatch => {
     exportVega: val => {
       dispatch(EditorActions.exportVega(val));
     },
+    formatSpec: val => {
+      dispatch(EditorActions.formatSpec(val));
+    },
     parseSpec: val => {
       dispatch(EditorActions.parseSpec(val));
     },
