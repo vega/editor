@@ -22,7 +22,6 @@ interface Props {
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
   parseSpec: (val: any) => void;
-  updateEditorString: (val: any) => void;
 }
 
 interface State {
@@ -89,9 +88,10 @@ class Header extends React.Component<Props & { history: any }, State> {
     this.props.history.push('/custom/vega-lite');
   }
   public onClear() {
-    this.props.updateEditorString('{}');
-    if (this.props.history.location.pathname !== '/') {
-      this.props.history.push('/');
+    if (this.props.mode === 0) {
+      this.onSelectNewVega();
+    } else {
+      this.onSelectNewVegaLite();
     }
   }
   public onSwitch(event) {

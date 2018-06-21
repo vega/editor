@@ -21,9 +21,6 @@ const mapDispatchToProps = dispatch => {
     parseSpec: val => {
       dispatch(EditorActions.parseSpec(val));
     },
-    updateEditorString: val => {
-      dispatch(EditorActions.updateEditorString(val));
-    },
   };
 };
 export default connect(
