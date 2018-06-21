@@ -1,7 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
-import { Code, Download, FileText, Github, Grid, Play, Plus } from 'react-feather';
+import { Code, ExternalLink, FileText, Github, Grid, Play, Plus } from 'react-feather';
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 
@@ -353,7 +353,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     );
     const exportButton = (
       <div className="header-button" onClick={() => this.props.exportVega(true)}>
-        <Download className="header-icon" />
+        <ExternalLink className="header-icon" />
         {'Export'}
       </div>
     );
