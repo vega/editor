@@ -359,123 +359,126 @@ class Header extends React.Component<Props & { history: any }, State> {
     );
     return (
       <div className="header">
-        <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
-          <img height={37} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
-        </a>
+        <section className="left-section">
+          <span>{customButton}</span>
+          <span>{formatButton}</span>
+          <span>{this.props.autoParse ? null : runButton}</span>
+          {this.state.customIsOpened && (
+            <Portal>
+              <div
+                className="customSubmenuGroup"
+                onMouseOver={() => {
+                  this.setState({ customIsOpened: true });
+                }}
+                onMouseLeave={() => {
+                  this.setState({ customIsOpened: false });
+                }}
+                onClick={() => {
+                  this.setState({ customIsOpened: false });
+                }}
+                style={{
+                  cursor: 'pointer',
+                  left: this.state.left,
+                  position: 'absolute',
+                  top: 0,
+                  width: this.state.width, // $FixMe
+                  zIndex: 100,
+                }}
+              >
+                <div id="emptyButton" style={{ height: LAYOUT.HeaderHeight }} />
 
-        {this.state.customIsOpened && (
-          <Portal>
-            <div
-              className="customSubmenuGroup"
-              onMouseOver={() => {
-                this.setState({ customIsOpened: true });
-              }}
-              onMouseLeave={() => {
-                this.setState({ customIsOpened: false });
-              }}
-              onClick={() => {
-                this.setState({ customIsOpened: false });
-              }}
-              style={{
-                cursor: 'pointer',
-                left: this.state.left,
-                position: 'absolute',
-                top: 0,
-                width: this.state.width, // $FixMe
-                zIndex: 100,
-              }}
-            >
-              <div id="emptyButton" style={{ height: LAYOUT.HeaderHeight }} />
-
-              <div className="customSubmenu" onClick={() => this.onSelectNewVega()}>
-                {'Vega'}
+                <div className="customSubmenu" onClick={() => this.onSelectNewVega()}>
+                  {'Vega'}
+                </div>
+                <div className="customSubmenu" onClick={() => this.onSelectNewVegaLite()}>
+                  {'Vega-Lite'}
+                </div>
               </div>
-              <div className="customSubmenu" onClick={() => this.onSelectNewVegaLite()}>
-                {'Vega-Lite'}
-              </div>
-            </div>
-          </Portal>
-        )}
-        <PortalWithState closeOnEsc>
-          {({ openPortal, closePortal, isOpen, portal }) => [
-            <span key="0" onClick={openPortal}>
-              {examplesButton}
-            </span>,
-            portal(
-              <div className="modal-background" onClick={closePortal}>
-                <div className="modal">
-                  <div className="modal-header">
+            </Portal>
+          )}
+          <PortalWithState closeOnEsc>
+            {({ openPortal, closePortal, isOpen, portal }) => [
+              <span key="0" onClick={openPortal}>
+                {examplesButton}
+              </span>,
+              portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal">
+                    <div className="modal-header">
+                      <div
+                        className="button-groups"
+                        onClick={e => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <button
+                          className={this.state.showVega ? 'selected' : ''}
+                          onClick={() => {
+                            this.setState({ showVega: true });
+                          }}
+                        >
+                          {'Vega'}
+                        </button>
+                        <button
+                          className={this.state.showVega ? '' : 'selected'}
+                          onClick={() => {
+                            this.setState({ showVega: false });
+                          }}
+                        >
+                          {'Vega-Lite'}
+                        </button>
+                      </div>
+                      <button className="close-button" onClick={closePortal}>
+                        ✖
+                      </button>
+                    </div>
                     <div
-                      className="button-groups"
+                      className="modal-body"
                       onClick={e => {
                         e.stopPropagation();
                       }}
                     >
-                      <button
-                        className={this.state.showVega ? 'selected' : ''}
-                        onClick={() => {
-                          this.setState({ showVega: true });
-                        }}
-                      >
-                        {'Vega'}
-                      </button>
-                      <button
-                        className={this.state.showVega ? '' : 'selected'}
-                        onClick={() => {
-                          this.setState({ showVega: false });
-                        }}
-                      >
-                        {'Vega-Lite'}
+                      {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
+                    </div>
+                  </div>
+                </div>
+              ),
+            ]}
+          </PortalWithState>
+          <PortalWithState closeOnEsc>
+            {({ openPortal, closePortal, isOpen, portal }) => [
+              <span key="0" onClick={openPortal}>
+                {gistButton}
+              </span>,
+              portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal">
+                    <div className="modal-header">
+                      <button className="close-button" onClick={closePortal}>
+                        ✖
                       </button>
                     </div>
-                    <button className="close-button" onClick={closePortal}>
-                      ✖
-                    </button>
-                  </div>
-                  <div
-                    className="modal-body"
-                    onClick={e => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
+                    <div
+                      className="modal-body"
+                      onClick={e => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      {gist(closePortal)}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ),
-          ]}
-        </PortalWithState>
-        <PortalWithState closeOnEsc>
-          {({ openPortal, closePortal, isOpen, portal }) => [
-            <span key="0" onClick={openPortal}>
-              {gistButton}
-            </span>,
-            portal(
-              <div className="modal-background" onClick={closePortal}>
-                <div className="modal">
-                  <div className="modal-header">
-                    <button className="close-button" onClick={closePortal}>
-                      ✖
-                    </button>
-                  </div>
-                  <div
-                    className="modal-body"
-                    onClick={e => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    {gist(closePortal)}
-                  </div>
-                </div>
-              </div>
-            ),
-          ]}
-        </PortalWithState>
-        <span>{customButton}</span>
-        <span>{formatButton}</span>
-        <span>{this.props.autoParse ? null : runButton}</span>
-        <span>{exportButton}</span>
-        <span className="header-right">{docsLink}</span>
+              ),
+            ]}
+          </PortalWithState>
+          <span>{exportButton}</span>
+        </section>
+        <section className="right-section">
+          <span>{docsLink}</span>
+          <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
+            <img height={37} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
+          </a>
+        </section>
       </div>
     );
   }

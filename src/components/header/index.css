@@ -1,5 +1,6 @@
 .header {
   display: flex;
+  justify-content: space-between;
   border-bottom: solid 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -12,7 +13,7 @@
   justify-content: center;
   color: #000;
   text-decoration: none;
-  padding: 5px 10px;
+  padding: 5px 20px;
   user-select: none;
 }
 
@@ -36,12 +37,10 @@
   vertical-align: middle;
 }
 
-.header-right {
-  width: 100%;
+.header section {
   display: flex;
-  padding: 10px;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
 }
 
 .docs-link {
