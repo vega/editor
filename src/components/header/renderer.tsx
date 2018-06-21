@@ -1,7 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
-import { Code, ExternalLink, FileText, Github, Grid, Play, Plus } from 'react-feather';
+import { Code, ExternalLink, FileText, Github, Grid, Play, Trash2 } from 'react-feather';
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 
@@ -17,12 +17,12 @@ const formatExampleName = name => {
 };
 
 interface Props {
-  autoParse?: boolean;
   mode: Mode;
 
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
   parseSpec: (val: any) => void;
+  updateEditorString: (val: any) => void;
 }
 
 interface State {
@@ -87,6 +87,12 @@ class Header extends React.Component<Props & { history: any }, State> {
   }
   public onSelectNewVegaLite() {
     this.props.history.push('/custom/vega-lite');
+  }
+  public onClear() {
+    this.props.updateEditorString('{}');
+    if (this.props.history.location.pathname !== '/') {
+      this.props.history.push('/');
+    }
   }
   public async onSelectGist(closePortal) {
     const type = this.state.gist.type;
@@ -161,18 +167,10 @@ class Header extends React.Component<Props & { history: any }, State> {
         {NAMES[this.props.mode]} Docs
       </a>
     );
-    const customButton = (
-      <div
-        onClick={e => {
-          const targetRect = (e.target as any).getBoundingClientRect();
-          this.setState({
-            customIsOpened: true,
-            left: targetRect.left,
-          });
-        }}
-      >
-        <Plus className="header-icon" />
-        {'New'}
+    const clearButton = (
+      <div onClick={() => this.onClear()}>
+        <Trash2 className="header-icon" />
+        {'Clear'}
       </div>
     );
     const vega = closePortal => {
@@ -360,9 +358,9 @@ class Header extends React.Component<Props & { history: any }, State> {
     return (
       <div className="header">
         <section className="left-section">
-          <span>{customButton}</span>
+          <span>{clearButton}</span>
           <span>{formatButton}</span>
-          <span>{this.props.autoParse ? null : runButton}</span>
+          <span>{runButton}</span>
           {this.state.customIsOpened && (
             <Portal>
               <div

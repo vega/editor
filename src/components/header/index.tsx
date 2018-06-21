@@ -6,7 +6,6 @@ import Renderer from './renderer';
 
 const mapStateToProps = (state: State, ownProps) => {
   return {
-    autoParse: state.parse,
     mode: state.mode,
   };
 };
@@ -21,6 +20,9 @@ const mapDispatchToProps = dispatch => {
     },
     parseSpec: val => {
       dispatch(EditorActions.parseSpec(val));
+    },
+    updateEditorString: val => {
+      dispatch(EditorActions.updateEditorString(val));
     },
   };
 };

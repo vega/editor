@@ -8,13 +8,14 @@
 .header div,
 .header a {
   display: flex;
+  height: 100%;
   align-items: center;
-  font-size: 1.125em;
+  font-size: 1em;
   cursor: pointer;
   justify-content: center;
   color: #000;
   text-decoration: none;
-  padding: 5px 20px;
+  padding: 0 20px;
   user-select: none;
 }
 
@@ -31,6 +32,7 @@
 
 .header span {
   margin: auto;
+  height: 100%;
 }
 
 .header-icon {
