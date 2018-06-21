@@ -94,6 +94,13 @@ class Header extends React.Component<Props & { history: any }, State> {
       this.props.history.push('/');
     }
   }
+  public onSwitch(event) {
+    if (event.target.value === 'Vega') {
+      this.onSelectNewVega();
+    } else {
+      this.onSelectNewVegaLite();
+    }
+  }
   public async onSelectGist(closePortal) {
     const type = this.state.gist.type;
     const url = this.state.gist.url.trim().toLowerCase();
@@ -142,6 +149,16 @@ class Header extends React.Component<Props & { history: any }, State> {
     closePortal();
   }
   public render() {
+    const modeSwitcher = (
+      <select
+        className="mode-switcher"
+        value={this.props.mode === 0 ? 'Vega' : 'Vega-Lite'}
+        onChange={this.onSwitch.bind(this)}
+      >
+        <option value="Vega">Vega</option>
+        <option value="Vega-Lite">Vega-Lite</option>
+      </select>
+    );
     const examplesButton = (
       <div className="header-button">
         <Grid className="header-icon" />
@@ -358,6 +375,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     return (
       <div className="header">
         <section className="left-section">
+          <span>{modeSwitcher}</span>
           <span>{clearButton}</span>
           <span>{formatButton}</span>
           <span>{runButton}</span>

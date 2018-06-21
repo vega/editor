@@ -1,3 +1,7 @@
+.header * {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
 .header {
   display: flex;
   height: 60px;
@@ -31,6 +35,8 @@
 }
 
 .header span {
+  display: flex;
+  align-items: center;
   margin: auto;
   height: 100%;
 }
@@ -264,5 +270,13 @@
   background: #ebebeb;
 }
 
-#emptyButton:hover {
+.mode-switcher {
+  background: transparent;
+  padding: 5px 10px;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.mode-switcher:focus {
+  outline: 0;
 }
