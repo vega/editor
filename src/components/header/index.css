@@ -1,7 +1,3 @@
-.header * {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-}
-
 .header {
   display: flex;
   height: 60px;
@@ -22,7 +18,7 @@
   padding: 0 10px;
   user-select: none;
   position: relative;
-  z-index: 1000;
+  white-space: nowrap;
 }
 
 .header a.idl-logo {
@@ -348,5 +344,17 @@
     width: 120px;
     right: 100px;
     margin-right: -105px;
+  }
+}
+
+.header-button svg,
+.docs-link svg {
+  display: none;
+}
+
+@media only screen and (min-width: 960px) {
+  .header-button svg,
+  .docs-link svg {
+    display: block;
   }
 }
