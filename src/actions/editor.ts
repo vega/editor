@@ -1,6 +1,7 @@
 import { Mode, Renderer } from '../constants';
 
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
+export const FORMAT_SPEC: 'FORMAT_SPEC' = 'FORMAT_SPEC';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
 export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
 export const SET_BASEURL: 'SET_BASEURL' = 'SET_BASEURL';
@@ -35,7 +36,8 @@ export type Action =
   | ShowTooltip
   | ExportVega
   | SetRenderer
-  | SetBaseUrl;
+  | SetBaseUrl
+  | FormatSpec;
 
 export function setMode(mode: Mode) {
   return {
@@ -172,3 +174,11 @@ export function setBaseUrl(baseURL: string) {
   };
 }
 export type SetBaseUrl = ReturnType<typeof setBaseUrl>;
+
+export function formatSpec(value: boolean) {
+  return {
+    format: value,
+    type: FORMAT_SPEC,
+  };
+}
+export type FormatSpec = ReturnType<typeof formatSpec>;

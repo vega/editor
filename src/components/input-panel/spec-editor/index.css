@@ -24,7 +24,3 @@
 .button:focus {
   outline: 0;
 }
-
-.pressed {
-  box-shadow: 0 0 5px 1px steelblue;
-}

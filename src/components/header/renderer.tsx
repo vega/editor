@@ -1,8 +1,11 @@
 import './index.css';
 
 import * as React from 'react';
+import { Code, ExternalLink, FileText, Github, Grid, Play, Trash2 } from 'react-feather';
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 import { LAYOUT, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
@@ -16,7 +19,13 @@ const formatExampleName = name => {
 };
 
 interface Props {
+  autoParse?: boolean;
   mode: Mode;
+  toggleAutoParse;
+
+  exportVega: (val: any) => void;
+  formatSpec: (val: any) => void;
+  parseSpec: (val: any) => void;
 }
 
 interface State {
@@ -82,6 +91,31 @@ class Header extends React.Component<Props & { history: any }, State> {
   public onSelectNewVegaLite() {
     this.props.history.push('/custom/vega-lite');
   }
+  public onClear() {
+    if (this.props.mode === 0) {
+      this.onSelectNewVega();
+    } else {
+      this.onSelectNewVegaLite();
+    }
+  }
+  public onSwitch(option) {
+    if (option.value === 'vega') {
+      this.onSelectNewVega();
+    } else {
+      this.onSelectNewVegaLite();
+    }
+  }
+  public onSelectRun(option) {
+    if (option.value === 'auto') {
+      if (!this.props.autoParse) {
+        this.props.toggleAutoParse();
+      }
+    } else {
+      if (this.props.autoParse) {
+        this.props.toggleAutoParse();
+      }
+    }
+  }
   public async onSelectGist(closePortal) {
     const type = this.state.gist.type;
     const url = this.state.gist.url.trim().toLowerCase();
@@ -129,32 +163,82 @@ class Header extends React.Component<Props & { history: any }, State> {
 
     closePortal();
   }
+  public componentDidUpdate() {
+    if (this.props.autoParse) {
+      (this.refs.splitButton as any).classList.add('auto-run');
+    } else {
+      (this.refs.splitButton as any).classList.remove('auto-run');
+    }
+  }
   public render() {
-    const examplesButton = <div className="button">{'Examples'}</div>;
-    const gistButton = <div className="button">{'Gist'}</div>;
+    const modeSwitcher = (
+      <Select
+        className="mode-switcher"
+        value={{ label: `${this.props.mode === 0 ? 'Vega' : 'Vega-Lite'}` }}
+        options={[{ value: 'vega', label: 'Vega' }, { value: 'vega-lite', label: 'Vega-Lite' }]}
+        clearable={false}
+        searchable={false}
+        onChange={this.onSwitch.bind(this)}
+      />
+    );
+    const examplesButton = (
+      <div className="header-button">
+        <Grid className="header-icon" />
+        {'Examples'}
+      </div>
+    );
+    const gistButton = (
+      <div className="header-button">
+        <Github className="header-icon" />
+        {'Gist'}
+      </div>
+    );
     const docsLink = (
       <a
-        className="button"
+        className="docs-link"
         href={
           this.props.mode === Mode.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'
         }
         target="_blank"
         rel="noopener noreferrer"
       >
+        <FileText className="header-icon" />
         {NAMES[this.props.mode]} Docs
       </a>
     );
-    const customButton = (
-      <div
-        onMouseOver={e => {
-          const targetRect = (e.target as any).getBoundingClientRect();
-          this.setState({
-            customIsOpened: true,
-            left: targetRect.left,
-          });
-        }}
-      >
-        {'New'}
+    const clearButton = (
+      <div className="header-button" onClick={() => this.onClear()}>
+        <Trash2 className="header-icon" />
+        {'Clear'}
+      </div>
+    );
+    const formatButton = (
+      <div className="header-button" onClick={() => this.props.formatSpec(true)}>
+        <Code className="header-icon" />
+        {'Format'}
+      </div>
+    );
+    const runButton = (
+      <div className="header-button" onClick={() => this.props.parseSpec(true)}>
+        <Play className="header-icon" />
+        {'Run'}
+        <span className="parse-mode">{this.props.autoParse ? 'Auto' : 'Manual'}</span>
+      </div>
+    );
+    const autoRunToggle = (
+      <Select
+        className="auto-run-toggle"
+        value={{ label: '' }}
+        options={[{ value: 'auto', label: 'Auto' }, { value: 'manual', label: 'Manual' }]}
+        clearable={false}
+        searchable={false}
+        onChange={this.onSelectRun.bind(this)}
+      />
+    );
+    const exportButton = (
+      <div className="header-button" onClick={() => this.props.exportVega(true)}>
+        <ExternalLink className="header-icon" />
+        {'Export'}
       </div>
     );
     const vega = closePortal => {
@@ -323,120 +407,97 @@ class Header extends React.Component<Props & { history: any }, State> {
     };
     return (
       <div className="header">
-        <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
-          <img height={37} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
-        </a>
-
-        {this.state.customIsOpened && (
-          <Portal>
-            <div
-              className="customSubmenuGroup"
-              onMouseOver={() => {
-                this.setState({ customIsOpened: true });
-              }}
-              onMouseLeave={() => {
-                this.setState({ customIsOpened: false });
-              }}
-              onClick={() => {
-                this.setState({ customIsOpened: false });
-              }}
-              style={{
-                cursor: 'pointer',
-                left: this.state.left,
-                position: 'absolute',
-                top: 0,
-                width: this.state.width, // $FixMe
-                zIndex: 100,
-              }}
-            >
-              <div id="emptyButton" style={{ height: LAYOUT.HeaderHeight }} />
-
-              <div className="customSubmenu" onClick={() => this.onSelectNewVega()}>
-                {'Vega'}
-              </div>
-              <div className="customSubmenu" onClick={() => this.onSelectNewVegaLite()}>
-                {'Vega-Lite'}
-              </div>
-            </div>
-          </Portal>
-        )}
-        <PortalWithState closeOnEsc>
-          {({ openPortal, closePortal, isOpen, portal }) => [
-            <span key="0" onClick={openPortal}>
-              {examplesButton}
-            </span>,
-            portal(
-              <div className="modal-background" onClick={closePortal}>
-                <div className="modal">
-                  <div className="modal-header">
+        <section className="left-section">
+          <span>{modeSwitcher}</span>
+          <span>{clearButton}</span>
+          <span>{formatButton}</span>
+          <span ref="splitButton" className="split-button">
+            {runButton}
+            {autoRunToggle}
+          </span>
+          <span>{exportButton}</span>
+        </section>
+        <section className="right-section">
+          <PortalWithState closeOnEsc>
+            {({ openPortal, closePortal, isOpen, portal }) => [
+              <span key="0" onClick={openPortal}>
+                {examplesButton}
+              </span>,
+              portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal">
+                    <div className="modal-header">
+                      <div
+                        className="button-groups"
+                        onClick={e => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <button
+                          className={this.state.showVega ? 'selected' : ''}
+                          onClick={() => {
+                            this.setState({ showVega: true });
+                          }}
+                        >
+                          {'Vega'}
+                        </button>
+                        <button
+                          className={this.state.showVega ? '' : 'selected'}
+                          onClick={() => {
+                            this.setState({ showVega: false });
+                          }}
+                        >
+                          {'Vega-Lite'}
+                        </button>
+                      </div>
+                      <button className="close-button" onClick={closePortal}>
+                        ✖
+                      </button>
+                    </div>
                     <div
-                      className="button-groups"
+                      className="modal-body"
                       onClick={e => {
                         e.stopPropagation();
                       }}
                     >
-                      <button
-                        className={this.state.showVega ? 'selected' : ''}
-                        onClick={() => {
-                          this.setState({ showVega: true });
-                        }}
-                      >
-                        {'Vega'}
-                      </button>
-                      <button
-                        className={this.state.showVega ? '' : 'selected'}
-                        onClick={() => {
-                          this.setState({ showVega: false });
-                        }}
-                      >
-                        {'Vega-Lite'}
+                      {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
+                    </div>
+                  </div>
+                </div>
+              ),
+            ]}
+          </PortalWithState>
+          <PortalWithState closeOnEsc>
+            {({ openPortal, closePortal, isOpen, portal }) => [
+              <span key="0" onClick={openPortal}>
+                {gistButton}
+              </span>,
+              portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal">
+                    <div className="modal-header">
+                      <button className="close-button" onClick={closePortal}>
+                        ✖
                       </button>
                     </div>
-                    <button className="close-button" onClick={closePortal}>
-                      ✖
-                    </button>
-                  </div>
-                  <div
-                    className="modal-body"
-                    onClick={e => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
+                    <div
+                      className="modal-body"
+                      onClick={e => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      {gist(closePortal)}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ),
-          ]}
-        </PortalWithState>
-        <PortalWithState closeOnEsc>
-          {({ openPortal, closePortal, isOpen, portal }) => [
-            <span key="0" onClick={openPortal}>
-              {gistButton}
-            </span>,
-            portal(
-              <div className="modal-background" onClick={closePortal}>
-                <div className="modal">
-                  <div className="modal-header">
-                    <button className="close-button" onClick={closePortal}>
-                      ✖
-                    </button>
-                  </div>
-                  <div
-                    className="modal-body"
-                    onClick={e => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    {gist(closePortal)}
-                  </div>
-                </div>
-              </div>
-            ),
-          ]}
-        </PortalWithState>
-        <span className="right">{docsLink}</span>
-        <span>{customButton}</span>
+              ),
+            ]}
+          </PortalWithState>
+          <span>{docsLink}</span>
+          <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
+            <img height={37} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
+          </a>
+        </section>
       </div>
     );
   }
