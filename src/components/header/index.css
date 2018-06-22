@@ -316,9 +316,16 @@
   background: transparent;
 }
 
-.split-button:hover,
-.auto-run {
+.split-button:hover {
   background: rgba(0, 0, 0, 0.08);
+}
+
+.auto-run .header-button {
+  opacity: 0.4;
+}
+
+.auto-run .parse-mode {
+  color: black;
 }
 
 .parse-mode {
