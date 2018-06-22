@@ -7,7 +7,6 @@ import { State } from '../../constants/default-state';
 
 function mapStateToProps(state: State, ownProps) {
   return {
-    autoParse: state.autoParse,
     error: state.error,
     export: state.export,
     mode: state.mode,
@@ -26,9 +25,6 @@ const mapDispatchToProps = dispatch => {
     },
     showErrorPane: () => {
       dispatch(EditorActions.showErrorPane());
-    },
-    toggleAutoParse: () => {
-      dispatch(EditorActions.toggleAutoParse());
     },
   };
 };

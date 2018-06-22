@@ -14,13 +14,15 @@
   display: flex;
   height: 100%;
   align-items: center;
-  font-size: 1em;
+  font-size: 14px;
   cursor: pointer;
   justify-content: center;
   color: #000;
   text-decoration: none;
   padding: 0 20px;
   user-select: none;
+  position: relative;
+  z-index: 1000;
 }
 
 .header a.idl-logo {
@@ -63,7 +65,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 80;
+  z-index: 8000;
 }
 
 .modal {
@@ -87,7 +89,7 @@
   padding: 0 30px 30px;
   max-height: 90vh;
   overflow-y: auto;
-  z-index: 90;
+  z-index: 9000;
 }
 
 .close-button {
@@ -275,9 +277,53 @@
 }
 
 .Select * {
+  color: #000 !important;
+}
+
+.Select-control {
+  border-color: #d9d9d9 !important;
   box-shadow: none !important;
 }
 
 .Select-option.is-focused {
   background-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.auto-run-toggle .Select-control,
+.auto-run-toggle .Select-input {
+  background: transparent !important;
+  border: none !important;
+}
+
+.auto-run-toggle .Select-control {
+  height: 60px;
+}
+
+.auto-run-toggle .Select-arrow-zone {
+  position: relative;
+  z-index: 5000;
+}
+
+.auto-run-toggle {
+  width: 75px;
+  right: 70px;
+  margin-right: -60px;
+}
+
+.split-button > div:hover {
+  background: transparent;
+}
+
+.split-button:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.parse-mode {
+  position: absolute;
+  bottom: 5px;
+  right: 12px;
+  text-align: center;
+  width: 43%;
+  font-size: 10px;
+  color: #aaa;
 }

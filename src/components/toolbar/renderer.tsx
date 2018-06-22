@@ -12,7 +12,6 @@ const getVersion = (mode: Mode) => {
 interface Props {
   setRenderer;
   mode;
-  toggleAutoParse;
   warningsLogger;
   error?: string;
   renderer?: string;
@@ -49,9 +48,6 @@ export default class Toolbar extends React.Component<Props> {
       <div className="toolbar">
         {this.showErrorAndWarnings()}
         <div className="status">{`${NAMES[this.props.mode]} version ${getVersion(this.props.mode)}`}</div>
-        <div className="autoParse" onClick={this.props.toggleAutoParse}>
-          {this.props.autoParse ? 'Parse: auto' : 'Parse: manual'}
-        </div>
         <div
           className="renderer-toggle"
           onClick={() => {

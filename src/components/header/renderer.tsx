@@ -19,7 +19,9 @@ const formatExampleName = name => {
 };
 
 interface Props {
+  autoParse?: boolean;
   mode: Mode;
+  toggleAutoParse;
 
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
@@ -101,6 +103,17 @@ class Header extends React.Component<Props & { history: any }, State> {
       this.onSelectNewVega();
     } else {
       this.onSelectNewVegaLite();
+    }
+  }
+  public onSelectRun(option) {
+    if (option.value === 'auto') {
+      if (!this.props.autoParse) {
+        this.props.toggleAutoParse();
+      }
+    } else {
+      if (this.props.autoParse) {
+        this.props.toggleAutoParse();
+      }
     }
   }
   public async onSelectGist(closePortal) {
@@ -190,6 +203,35 @@ class Header extends React.Component<Props & { history: any }, State> {
       <div className="header-button" onClick={() => this.onClear()}>
         <Trash2 className="header-icon" />
         {'Clear'}
+      </div>
+    );
+    const formatButton = (
+      <div className="header-button" onClick={() => this.props.formatSpec(true)}>
+        <Code className="header-icon" />
+        {'Format'}
+      </div>
+    );
+    const runButton = (
+      <div className="header-button" onClick={() => this.props.parseSpec(true)}>
+        <Play className="header-icon" />
+        {'Run'}
+        <span className="parse-mode">{this.props.autoParse ? 'Auto' : 'Manual'}</span>
+      </div>
+    );
+    const autoRunToggle = (
+      <Select
+        className="auto-run-toggle"
+        value={{ label: '' }}
+        options={[{ value: 'auto', label: 'Auto' }, { value: 'manual', label: 'Manual' }]}
+        clearable={false}
+        searchable={false}
+        onChange={this.onSelectRun.bind(this)}
+      />
+    );
+    const exportButton = (
+      <div className="header-button" onClick={() => this.props.exportVega(true)}>
+        <ExternalLink className="header-icon" />
+        {'Export'}
       </div>
     );
     const vega = closePortal => {
@@ -356,64 +398,19 @@ class Header extends React.Component<Props & { history: any }, State> {
         </div>
       );
     };
-    const formatButton = (
-      <div className="header-button" onClick={() => this.props.formatSpec(true)}>
-        <Code className="header-icon" />
-        {'Format'}
-      </div>
-    );
-    const runButton = (
-      <div className="header-button" onClick={() => this.props.parseSpec(true)}>
-        <Play className="header-icon" />
-        {'Run'}
-      </div>
-    );
-    const exportButton = (
-      <div className="header-button" onClick={() => this.props.exportVega(true)}>
-        <ExternalLink className="header-icon" />
-        {'Export'}
-      </div>
-    );
     return (
       <div className="header">
         <section className="left-section">
           <span>{modeSwitcher}</span>
           <span>{clearButton}</span>
           <span>{formatButton}</span>
-          <span>{runButton}</span>
-          {this.state.customIsOpened && (
-            <Portal>
-              <div
-                className="customSubmenuGroup"
-                onMouseOver={() => {
-                  this.setState({ customIsOpened: true });
-                }}
-                onMouseLeave={() => {
-                  this.setState({ customIsOpened: false });
-                }}
-                onClick={() => {
-                  this.setState({ customIsOpened: false });
-                }}
-                style={{
-                  cursor: 'pointer',
-                  left: this.state.left,
-                  position: 'absolute',
-                  top: 0,
-                  width: this.state.width, // $FixMe
-                  zIndex: 100,
-                }}
-              >
-                <div id="emptyButton" style={{ height: LAYOUT.HeaderHeight }} />
-
-                <div className="customSubmenu" onClick={() => this.onSelectNewVega()}>
-                  {'Vega'}
-                </div>
-                <div className="customSubmenu" onClick={() => this.onSelectNewVegaLite()}>
-                  {'Vega-Lite'}
-                </div>
-              </div>
-            </Portal>
-          )}
+          <span className="split-button">
+            {runButton}
+            {autoRunToggle}
+          </span>
+          <span>{exportButton}</span>
+        </section>
+        <section className="right-section">
           <PortalWithState closeOnEsc>
             {({ openPortal, closePortal, isOpen, portal }) => [
               <span key="0" onClick={openPortal}>
@@ -489,9 +486,6 @@ class Header extends React.Component<Props & { history: any }, State> {
               ),
             ]}
           </PortalWithState>
-          <span>{exportButton}</span>
-        </section>
-        <section className="right-section">
           <span>{docsLink}</span>
           <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
             <img height={37} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
