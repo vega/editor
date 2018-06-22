@@ -19,7 +19,7 @@
   justify-content: center;
   color: #000;
   text-decoration: none;
-  padding: 0 20px;
+  padding: 0 10px;
   user-select: none;
   position: relative;
   z-index: 1000;
@@ -41,6 +41,7 @@
   align-items: center;
   margin: auto;
   height: 100%;
+  padding: 0 5px;
 }
 
 .header-icon {
@@ -273,7 +274,7 @@
 }
 
 .mode-switcher {
-  width: 120px;
+  width: 100px;
 }
 
 .Select * {
@@ -297,6 +298,7 @@
 
 .auto-run-toggle .Select-control {
   height: 60px;
+  padding-right: 15px;
 }
 
 .auto-run-toggle .Select-arrow-zone {
@@ -305,16 +307,17 @@
 }
 
 .auto-run-toggle {
-  width: 75px;
-  right: 70px;
-  margin-right: -60px;
+  width: 120px;
+  right: 90px;
+  margin-right: -105px;
 }
 
 .split-button > div:hover {
   background: transparent;
 }
 
-.split-button:hover {
+.split-button:hover,
+.auto-run {
   background: rgba(0, 0, 0, 0.08);
 }
 
@@ -326,4 +329,17 @@
   width: 43%;
   font-size: 10px;
   color: #aaa;
+}
+
+@media only screen and (min-width: 1200px) {
+  .header-button,
+  .header a {
+    padding: 0 20px;
+  }
+
+  .auto-run-toggle {
+    width: 120px;
+    right: 100px;
+    margin-right: -105px;
+  }
 }
