@@ -4,6 +4,8 @@ import * as React from 'react';
 import { Code, ExternalLink, FileText, Github, Grid, Play, Trash2 } from 'react-feather';
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 import { LAYOUT, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
@@ -94,8 +96,8 @@ class Header extends React.Component<Props & { history: any }, State> {
       this.onSelectNewVegaLite();
     }
   }
-  public onSwitch(event) {
-    if (event.target.value === 'Vega') {
+  public onSwitch(option) {
+    if (option.value === 'vega') {
       this.onSelectNewVega();
     } else {
       this.onSelectNewVegaLite();
@@ -150,14 +152,14 @@ class Header extends React.Component<Props & { history: any }, State> {
   }
   public render() {
     const modeSwitcher = (
-      <select
+      <Select
         className="mode-switcher"
-        value={this.props.mode === 0 ? 'Vega' : 'Vega-Lite'}
+        value={{ label: `${this.props.mode === 0 ? 'Vega' : 'Vega-Lite'}` }}
+        options={[{ value: 'vega', label: 'Vega' }, { value: 'vega-lite', label: 'Vega-Lite' }]}
+        clearable={false}
+        searchable={false}
         onChange={this.onSwitch.bind(this)}
-      >
-        <option value="Vega">Vega</option>
-        <option value="Vega-Lite">Vega-Lite</option>
-      </select>
+      />
     );
     const examplesButton = (
       <div className="header-button">
@@ -185,7 +187,7 @@ class Header extends React.Component<Props & { history: any }, State> {
       </a>
     );
     const clearButton = (
-      <div onClick={() => this.onClear()}>
+      <div className="header-button" onClick={() => this.onClear()}>
         <Trash2 className="header-icon" />
         {'Clear'}
       </div>

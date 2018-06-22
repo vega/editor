@@ -9,7 +9,7 @@
   border-bottom: solid 2px rgba(0, 0, 0, 0.2);
 }
 
-.header div,
+.header-button,
 .header a {
   display: flex;
   height: 100%;
@@ -29,12 +29,12 @@
   border: none;
 }
 
-.header div:hover,
+.header-button:hover,
 .docs-link:hover {
   background: rgba(0, 0, 0, 0.08);
 }
 
-.header span {
+.header section > span {
   display: flex;
   align-items: center;
   margin: auto;
@@ -271,12 +271,13 @@
 }
 
 .mode-switcher {
-  background: transparent;
-  padding: 5px 10px;
-  border: 1px solid #000;
-  cursor: pointer;
+  width: 120px;
 }
 
-.mode-switcher:focus {
-  outline: 0;
+.Select * {
+  box-shadow: none !important;
+}
+
+.Select-option.is-focused {
+  background-color: rgba(0, 0, 0, 0.08) !important;
 }
