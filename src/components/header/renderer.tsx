@@ -31,7 +31,7 @@ interface Props {
 interface State {
   showVega: boolean;
   gist: {
-    type: string;
+    type: Mode;
     url: string;
     revision: string;
     filename: string;
@@ -49,7 +49,7 @@ class Header extends React.Component<Props & { history: any }, State> {
       gist: {
         filename: '',
         revision: '',
-        type: 'vega',
+        type: props.mode,
         url: '',
       },
       showVega: props.mode === Mode.Vega,
@@ -89,7 +89,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     this.props.history.push('/custom/vega-lite');
   }
   public onClear() {
-    if (this.props.mode === 0) {
+    if (this.props.mode === Mode.Vega) {
       this.onSelectNewVega();
     } else {
       this.onSelectNewVegaLite();
@@ -151,7 +151,7 @@ class Header extends React.Component<Props & { history: any }, State> {
       gist: {
         filename: '',
         revision: '',
-        type: 'vega',
+        type: Mode.Vega,
         url: '',
       },
 
@@ -160,14 +160,24 @@ class Header extends React.Component<Props & { history: any }, State> {
 
     closePortal();
   }
-
+  public componentWillReceiveProps(nextProps) {
+    this.setState({
+      gist: {
+        filename: '',
+        revision: '',
+        type: nextProps.mode,
+        url: '',
+      },
+      showVega: nextProps.mode === Mode.Vega,
+    });
+  }
   public render() {
     const modeOptions =
-      this.props.mode === 0 ? [{ value: 'vega-lite', label: 'Vega-Lite' }] : [{ value: 'vega', label: 'Vega' }];
+      this.props.mode === Mode.Vega ? [{ value: 'vega-lite', label: 'Vega-Lite' }] : [{ value: 'vega', label: 'Vega' }];
     const modeSwitcher = (
       <Select
         className="mode-switcher"
-        value={{ label: `${this.props.mode === 0 ? 'Vega' : 'Vega-Lite'}` }}
+        value={{ label: `${this.props.mode === Mode.Vega ? 'Vega' : 'Vega-Lite'}` }}
         options={modeOptions}
         clearable={false}
         searchable={false}
@@ -326,7 +336,7 @@ class Header extends React.Component<Props & { history: any }, State> {
                   name="gist-type"
                   id="gist-type[vega]"
                   value="vega"
-                  checked={this.state.gist.type === 'vega'}
+                  checked={this.state.gist.type === Mode.Vega}
                   onChange={this.updateGistType.bind(this)}
                 />
                 <label htmlFor="gist-type[vega]">Vega</label>
@@ -335,7 +345,7 @@ class Header extends React.Component<Props & { history: any }, State> {
                   name="gist-type"
                   id="gist-type[vega-lite]"
                   value="vega-lite"
-                  checked={this.state.gist.type === 'vega-lite'}
+                  checked={this.state.gist.type === Mode.VegaLite}
                   onChange={this.updateGistType.bind(this)}
                 />
                 <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
