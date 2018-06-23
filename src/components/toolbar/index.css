@@ -13,10 +13,7 @@
   font-size: 12px;
 }
 
-.renderer-toggle,
-.autoParse,
-.tooltip-toggle,
-.vega-export {
+.renderer-toggle {
   background: #777;
   color: white;
   cursor: pointer;

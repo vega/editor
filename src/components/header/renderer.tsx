@@ -29,8 +29,6 @@ interface Props {
 }
 
 interface State {
-  customIsOpened?: boolean;
-  left?: any;
   showVega: boolean;
   gist: {
     type: string;
@@ -38,7 +36,6 @@ interface State {
     revision: string;
     filename: string;
   };
-  width?: number;
   invalidUrl?: boolean;
 }
 
@@ -495,7 +492,7 @@ class Header extends React.Component<Props & { history: any }, State> {
           </PortalWithState>
           <span>{docsLink}</span>
           <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
-            <img height={37} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
+            <img height={32} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
           </a>
         </section>
       </div>
