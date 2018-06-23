@@ -15,11 +15,8 @@ interface Props {
   warningsLogger;
   error?: string;
   renderer?: string;
-  autoParse?: boolean;
-  export?: boolean;
 
   showErrorPane: () => void;
-  exportVega: (val: any) => void;
 }
 
 export default class Toolbar extends React.Component<Props> {
@@ -36,11 +33,6 @@ export default class Toolbar extends React.Component<Props> {
           Warning
         </div>
       );
-    }
-  }
-  public componentWillReceiveProps(nextProps) {
-    if (nextProps.export) {
-      this.props.exportVega(false);
     }
   }
   public render() {

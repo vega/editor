@@ -20,6 +20,8 @@ interface Props {
   export?: boolean;
   baseURL?: string;
   history?: any;
+
+  exportVega: (val: any) => void;
 }
 
 interface State {
@@ -153,6 +155,11 @@ class Editor extends React.Component<Props, State> {
   public componentWillUnmount() {
     // Remove listener to event keydown
     document.removeEventListener('keydown', this.handleKeydown);
+  }
+  public componentWillReceiveProps(nextProps) {
+    if (nextProps.export) {
+      this.props.exportVega(false);
+    }
   }
   public render() {
     return (

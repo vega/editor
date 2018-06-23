@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 
+import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
@@ -14,4 +15,15 @@ function mapStateToProps(state: State, ownProps) {
   };
 }
 
-export default connect(mapStateToProps)(Renderer);
+const mapDispatchToProps = dispatch => {
+  return {
+    exportVega: val => {
+      dispatch(EditorActions.exportVega(val));
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Renderer);
