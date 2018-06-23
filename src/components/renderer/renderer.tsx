@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Maximize } from 'react-feather';
 import { Portal } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
@@ -167,13 +168,12 @@ class Editor extends React.Component<Props, State> {
         <div className="chart">
           <div ref="chart" />
         </div>
-        <img
+        <Maximize
           data-tip="Fullscreen"
           className="fullscreen-open"
           onClick={() => {
             this.setState({ fullscreen: true }, this.onOpenPortal);
           }}
-          src="images/fullscreen.svg"
         />
         {this.state.fullscreen && (
           <Portal>

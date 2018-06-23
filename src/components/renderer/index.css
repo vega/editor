@@ -41,7 +41,6 @@
 }
 .fullscreen-open {
   position: absolute;
-  width: 20px;
   top: 10px;
   right: 10px;
   cursor: pointer;

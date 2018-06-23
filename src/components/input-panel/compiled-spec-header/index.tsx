@@ -1,4 +1,5 @@
 import stringify from 'json-stringify-pretty-compact';
+import { ChevronDown, ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -41,22 +42,21 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
       });
       return (
         <div className="editor-header" style={toggleStyleUp} onClick={this.props.showCompiledVegaSpec}>
-          <span style={{ marginLeft: 10 }}>Compiled Vega</span>
-          <svg style={svgStyle}>
-            <polygon points="5,5 30,5 17.5,20" />
-          </svg>
-          <button onClick={this.editVegaSpec} style={{ position: 'absolute', right: '3%', cursor: 'pointer' }}>
-            Edit Vega spec
+          <span>Compiled Vega</span>
+          <ChevronDown />
+          <button onClick={this.editVegaSpec} style={{ cursor: 'pointer' }}>
+            Edit Vega Spec
           </button>
         </div>
       );
     } else {
       return (
         <div onClick={this.props.showCompiledVegaSpec} className="editor-header" style={toggleStyle}>
-          <span style={{ marginLeft: 10 }}>Compiled Vega</span>
-          <svg style={svgStyle}>
-            <polygon points="5,20 30,20 17.5,5" />
-          </svg>
+          <span>Compiled Vega</span>
+          <ChevronUp />
+          <button onClick={this.editVegaSpec} style={{ zIndex: -1, opacity: 0, cursor: 'pointer' }}>
+            Edit Vega Spec
+          </button>
         </div>
       );
     }
