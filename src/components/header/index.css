@@ -272,6 +272,10 @@
 }
 
 .Select-option.is-focused {
+  background-color: #fff !important;
+}
+
+.Select-option:hover {
   background-color: rgba(0, 0, 0, 0.08) !important;
 }
 

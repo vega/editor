@@ -162,11 +162,13 @@ class Header extends React.Component<Props & { history: any }, State> {
   }
 
   public render() {
+    const modeOptions =
+      this.props.mode === 0 ? [{ value: 'vega-lite', label: 'Vega-Lite' }] : [{ value: 'vega', label: 'Vega' }];
     const modeSwitcher = (
       <Select
         className="mode-switcher"
         value={{ label: `${this.props.mode === 0 ? 'Vega' : 'Vega-Lite'}` }}
-        options={[{ value: 'vega', label: 'Vega' }, { value: 'vega-lite', label: 'Vega-Lite' }]}
+        options={modeOptions}
         clearable={false}
         searchable={false}
         onChange={this.onSwitch.bind(this)}
@@ -216,17 +218,20 @@ class Header extends React.Component<Props & { history: any }, State> {
         <span className="parse-mode">{this.props.autoParse ? 'Auto' : 'Manual'}</span>
       </div>
     );
-    const splitClass = 'split-button' + (this.props.autoParse ? ' auto-run' : '');
+    const runOptions = this.props.autoParse
+      ? [{ value: 'manual', label: 'Manual' }]
+      : [{ value: 'auto', label: 'Auto' }];
     const autoRunToggle = (
       <Select
         className="auto-run-toggle"
         value={{ label: '' }}
-        options={[{ value: 'auto', label: 'Auto' }, { value: 'manual', label: 'Manual' }]}
+        options={runOptions}
         clearable={false}
         searchable={false}
         onChange={this.onSelectRun.bind(this)}
       />
     );
+    const splitClass = 'split-button' + (this.props.autoParse ? ' auto-run' : '');
     const exportButton = (
       <div className="header-button" onClick={() => this.props.exportVega(true)}>
         <ExternalLink className="header-icon" />
