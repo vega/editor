@@ -89,7 +89,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     this.props.history.push('/custom/vega-lite');
   }
   public onClear() {
-    if (this.props.mode === 0) {
+    if (this.props.mode === Mode.Vega) {
       this.onSelectNewVega();
     } else {
       this.onSelectNewVegaLite();
@@ -173,11 +173,11 @@ class Header extends React.Component<Props & { history: any }, State> {
   }
   public render() {
     const modeOptions =
-      this.props.mode === 0 ? [{ value: 'vega-lite', label: 'Vega-Lite' }] : [{ value: 'vega', label: 'Vega' }];
+      this.props.mode === Mode.Vega ? [{ value: 'vega-lite', label: 'Vega-Lite' }] : [{ value: 'vega', label: 'Vega' }];
     const modeSwitcher = (
       <Select
         className="mode-switcher"
-        value={{ label: `${this.props.mode === 0 ? 'Vega' : 'Vega-Lite'}` }}
+        value={{ label: `${this.props.mode === Mode.Vega ? 'Vega' : 'Vega-Lite'}` }}
         options={modeOptions}
         clearable={false}
         searchable={false}
