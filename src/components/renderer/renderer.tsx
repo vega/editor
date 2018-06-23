@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Maximize } from 'react-feather';
+import { Edit3, Maximize } from 'react-feather';
 import { Portal } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
@@ -185,6 +185,7 @@ class Editor extends React.Component<Props, State> {
                   this.setState({ fullscreen: false }, this.onClosePortal);
                 }}
               >
+                <Edit3 />
                 <span>{'Edit'}</span>
               </button>
             </div>

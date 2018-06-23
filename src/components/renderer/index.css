@@ -46,10 +46,12 @@
   cursor: pointer;
 }
 .fullscreen-close {
+  display: flex;
+  align-items: center;
   position: absolute;
   background: #fff;
   border: 1px solid #666;
-  padding: 6px 26px;
+  padding: 5px 15px;
   top: 20px;
   right: 20px;
   cursor: pointer;
@@ -57,6 +59,9 @@
   border-radius: 2px;
   z-index: 1000;
 }
+.fullscreen-close span {
+  padding-left: 5px;
+}
 .fullscreen-close:hover {
-  background: #ccc;
+  background: rgba(0, 0, 0, 0.08);
 }
