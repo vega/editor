@@ -49,7 +49,7 @@ class Header extends React.Component<Props & { history: any }, State> {
       gist: {
         filename: '',
         revision: '',
-        type: 'vega',
+        type: props.mode === Mode.Vega ? 'vega' : 'vega-lite',
         url: '',
       },
       showVega: props.mode === Mode.Vega,
@@ -160,7 +160,17 @@ class Header extends React.Component<Props & { history: any }, State> {
 
     closePortal();
   }
-
+  public componentWillReceiveProps(nextProps) {
+    this.setState({
+      gist: {
+        filename: '',
+        revision: '',
+        type: nextProps.mode === Mode.Vega ? 'vega' : 'vega-lite',
+        url: '',
+      },
+      showVega: nextProps.mode === Mode.Vega,
+    });
+  }
   public render() {
     const modeOptions =
       this.props.mode === 0 ? [{ value: 'vega-lite', label: 'Vega-Lite' }] : [{ value: 'vega', label: 'Vega' }];
