@@ -1,0 +1,13 @@
+{
+  "name": "vega-editor-server",
+  "dependencies": {
+    "micro": "latest"
+  },
+  "now": {
+    "alias": "vega"
+  },
+  "scripts": {
+    "start": "micro"
+  },
+  "private": true
+}
