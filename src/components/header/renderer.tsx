@@ -160,13 +160,7 @@ class Header extends React.Component<Props & { history: any }, State> {
 
     closePortal();
   }
-  public componentDidUpdate() {
-    if (this.props.autoParse) {
-      (this.refs.splitButton as any).classList.add('auto-run');
-    } else {
-      (this.refs.splitButton as any).classList.remove('auto-run');
-    }
-  }
+
   public render() {
     const modeSwitcher = (
       <Select
@@ -222,6 +216,7 @@ class Header extends React.Component<Props & { history: any }, State> {
         <span className="parse-mode">{this.props.autoParse ? 'Auto' : 'Manual'}</span>
       </div>
     );
+    const splitClass = 'split-button' + (this.props.autoParse ? ' auto-run' : '');
     const autoRunToggle = (
       <Select
         className="auto-run-toggle"
@@ -402,13 +397,14 @@ class Header extends React.Component<Props & { history: any }, State> {
         </div>
       );
     };
+
     return (
       <div className="header">
         <section className="left-section">
           <span>{modeSwitcher}</span>
           <span>{clearButton}</span>
           <span>{formatButton}</span>
-          <span ref="splitButton" className="split-button">
+          <span ref="splitButton" className={splitClass}>
             {runButton}
             {autoRunToggle}
           </span>
