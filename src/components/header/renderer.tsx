@@ -31,7 +31,7 @@ interface Props {
 interface State {
   showVega: boolean;
   gist: {
-    type: string;
+    type: Mode;
     url: string;
     revision: string;
     filename: string;
@@ -49,7 +49,7 @@ class Header extends React.Component<Props & { history: any }, State> {
       gist: {
         filename: '',
         revision: '',
-        type: props.mode === Mode.Vega ? 'vega' : 'vega-lite',
+        type: props.mode,
         url: '',
       },
       showVega: props.mode === Mode.Vega,
@@ -151,7 +151,7 @@ class Header extends React.Component<Props & { history: any }, State> {
       gist: {
         filename: '',
         revision: '',
-        type: 'vega',
+        type: Mode.Vega,
         url: '',
       },
 
@@ -165,7 +165,7 @@ class Header extends React.Component<Props & { history: any }, State> {
       gist: {
         filename: '',
         revision: '',
-        type: nextProps.mode === Mode.Vega ? 'vega' : 'vega-lite',
+        type: nextProps.mode,
         url: '',
       },
       showVega: nextProps.mode === Mode.Vega,
@@ -336,7 +336,7 @@ class Header extends React.Component<Props & { history: any }, State> {
                   name="gist-type"
                   id="gist-type[vega]"
                   value="vega"
-                  checked={this.state.gist.type === 'vega'}
+                  checked={this.state.gist.type === Mode.Vega}
                   onChange={this.updateGistType.bind(this)}
                 />
                 <label htmlFor="gist-type[vega]">Vega</label>
@@ -345,7 +345,7 @@ class Header extends React.Component<Props & { history: any }, State> {
                   name="gist-type"
                   id="gist-type[vega-lite]"
                   value="vega-lite"
-                  checked={this.state.gist.type === 'vega-lite'}
+                  checked={this.state.gist.type === Mode.VegaLite}
                   onChange={this.updateGistType.bind(this)}
                 />
                 <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
