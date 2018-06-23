@@ -1,7 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
-import { Code, ExternalLink, FileText, Github, Grid, Play, Trash2 } from 'react-feather';
+import { Code, ExternalLink, FileText, Github, Grid, Play, Trash2, X } from 'react-feather';
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
@@ -449,7 +449,7 @@ class Header extends React.Component<Props & { history: any }, State> {
                         </button>
                       </div>
                       <button className="close-button" onClick={closePortal}>
-                        ✖
+                        <X />
                       </button>
                     </div>
                     <div
@@ -475,7 +475,7 @@ class Header extends React.Component<Props & { history: any }, State> {
                   <div className="modal">
                     <div className="modal-header">
                       <button className="close-button" onClick={closePortal}>
-                        ✖
+                        <X />
                       </button>
                     </div>
                     <div

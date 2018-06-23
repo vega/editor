@@ -1,6 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
+import { X } from 'react-feather';
 
 interface Props {
   error;
@@ -37,7 +38,7 @@ export default class ErrorPane extends React.Component<Props> {
     return (
       <div className="error-pane">
         <span onClick={e => this.props.showErrorPane()} className="close">
-          &#10006;
+          <X />
         </span>
         <ul>{list}</ul>
       </div>
