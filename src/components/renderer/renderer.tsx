@@ -185,7 +185,7 @@ class Editor extends React.Component<Props, State> {
                   this.setState({ fullscreen: false }, this.onClosePortal);
                 }}
               >
-                <Edit3 />
+                <Edit3 size={16} />
                 <span>{'Edit'}</span>
               </button>
             </div>
