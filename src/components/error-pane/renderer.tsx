@@ -6,6 +6,7 @@ import { X } from 'react-feather';
 interface Props {
   error;
   warningsLogger;
+
   showErrorPane: () => void;
 }
 

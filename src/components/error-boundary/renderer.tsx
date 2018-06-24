@@ -3,10 +3,12 @@ import './index.css';
 import * as React from 'react';
 
 interface Props {
-  logError?: (...args: any[]) => any;
-  showErrorPane?: (...args: any[]) => any;
   error?: string;
+
+  logError?: (err: any) => void;
+  showErrorPane?: () => void;
 }
+
 export default class ErrorBoundary extends React.Component<Props> {
   public componentDidCatch(error, info) {
     this.props.logError(error.toString());

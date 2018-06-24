@@ -3,7 +3,6 @@ import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { connect } from 'react-redux';
 
-import { showCompiledVegaSpec } from '../../../actions/editor';
 import { State } from '../../../constants/default-state';
 import CompiledSpecDisplayHeader from '../compiled-spec-header';
 
@@ -39,15 +38,4 @@ function mapStateToProps(state: State, ownProps) {
   };
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    showCompiledVegaSpec: () => {
-      dispatch(showCompiledVegaSpec());
-    },
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CompiledSpecDisplay);
+export default connect(mapStateToProps)(CompiledSpecDisplay);

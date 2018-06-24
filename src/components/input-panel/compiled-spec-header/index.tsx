@@ -1,26 +1,21 @@
 import stringify from 'json-stringify-pretty-compact';
+import * as React from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import * as React from 'react';
 import * as EditorActions from '../../../actions/editor';
 
 const toggleStyle = {
   cursor: 'pointer',
 };
-const svgStyle = {
-  height: 25,
-  position: 'absolute' as 'absolute', // $FixMe
-  right: '50%',
-  width: 35,
-};
 
 interface Props {
   value;
   compiledVegaSpec;
-  showCompiledVegaSpec; // $FixMe - function
   history;
+
+  showCompiledVegaSpec: () => void;
   updateVegaSpec: (value: any) => void;
 }
 

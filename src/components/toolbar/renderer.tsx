@@ -10,12 +10,12 @@ const getVersion = (mode: Mode) => {
 };
 
 interface Props {
-  setRenderer;
   mode;
   warningsLogger;
   error?: string;
   renderer?: string;
 
+  setRenderer: (val: any) => void;
   showErrorPane: () => void;
 }
 
@@ -43,7 +43,7 @@ export default class Toolbar extends React.Component<Props> {
         <div
           className="renderer-toggle"
           onClick={() => {
-            // cycle renderer
+            // Cycle renderer
             const nextRenderer = this.props.renderer === 'svg' ? 'canvas' : 'svg';
             this.props.setRenderer(nextRenderer);
           }}

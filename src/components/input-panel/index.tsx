@@ -1,21 +1,19 @@
-import SplitPane from 'react-split-pane';
-
-import { connect } from 'react-redux';
+import './index.css';
 
 import * as React from 'react';
+import { connect } from 'react-redux';
+import SplitPane from 'react-split-pane';
 
+import { LAYOUT, Mode } from '../../constants';
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
 import SpecEditor from './spec-editor';
-
-import { LAYOUT, Mode } from '../../constants';
-
-import './index.css';
 
 interface Props {
   compiledVegaSpec?: boolean;
   mode?: Mode;
 }
+
 class InputPanel extends React.Component<Props> {
   public getInnerPanes() {
     const innerPanes = [<SpecEditor key="editor" />];
@@ -55,10 +53,12 @@ class InputPanel extends React.Component<Props> {
     }
   }
 }
+
 function mapStateToProps(state, ownProps) {
   return {
     compiledVegaSpec: state.compiledVegaSpec,
     mode: state.mode,
   };
 }
+
 export default connect(mapStateToProps)(InputPanel);
