@@ -91,7 +91,6 @@ interface Props {
   parse?: boolean;
   value?: string;
 
-  onChange?: (...args: any[]) => any;
   parseSpec: (val: any) => void;
   formatSpec: (val: any) => void;
   updateEditorString: (val: any) => void;
@@ -212,15 +211,6 @@ class Editor extends React.Component<Props, {}> {
         break;
     }
   }
-
-  /**
-   * Formats the editor code.
-   * Triggered by #format-button on click.
-   */
-  public formatDocument() {
-    (this.refs.editor as any).editor.getAction('editor.action.formatDocument').run();
-  }
-
   public render() {
     return (
       <div className={'full-height-wrapper'}>
@@ -244,4 +234,5 @@ class Editor extends React.Component<Props, {}> {
     );
   }
 }
+
 export default withRouter(Editor);

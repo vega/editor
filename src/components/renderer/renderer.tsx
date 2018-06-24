@@ -1,3 +1,5 @@
+import './index.css';
+
 import * as React from 'react';
 import { Edit3, Maximize } from 'react-feather';
 import { Portal } from 'react-portal';
@@ -7,8 +9,6 @@ import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
 import { Mode } from '../../constants';
 import addProjections from '../../utils/addProjections';
-
-import './index.css';
 
 // Add additional projections
 addProjections(vega.projection);
@@ -119,11 +119,11 @@ class Editor extends React.Component<Props, State> {
             const link = document.createElement('a');
             link.setAttribute('href', href);
             link.setAttribute('target', '_blank');
-            link.setAttribute('download', 'export.' + ext);
+            link.setAttribute('download', 'visualization.' + ext);
             link.dispatchEvent(new MouseEvent('click'));
           } else {
             const tab = window.open();
-            tab.document.write('<img src="' + href + '"/>');
+            tab.document.write('<title>SVG</title><img src="' + href + '"/>');
           }
         })
         .catch(err => {
@@ -196,4 +196,5 @@ class Editor extends React.Component<Props, State> {
     );
   }
 }
+
 export default withRouter(Editor);

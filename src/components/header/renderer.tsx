@@ -21,11 +21,11 @@ const formatExampleName = name => {
 interface Props {
   autoParse?: boolean;
   mode: Mode;
-  toggleAutoParse;
 
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
   parseSpec: (val: any) => void;
+  toggleAutoParse: () => void;
 }
 
 interface State {

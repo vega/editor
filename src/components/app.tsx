@@ -1,3 +1,5 @@
+import './app.css';
+
 import { text } from 'd3-request';
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
@@ -6,14 +8,13 @@ import { withRouter } from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import { util } from 'vega-lite';
 import { hash } from 'vega-lite/build/src/util';
+
 import * as EditorActions from '../actions/editor';
 import { LAYOUT, Mode } from '../constants';
 import { NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC } from '../constants/consts';
 import Header from './header';
 import InputPanel from './input-panel';
 import VizPane from './viz-pane';
-
-import './app.css';
 
 type Props = ReturnType<typeof mapDispatchToProps>;
 

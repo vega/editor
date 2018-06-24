@@ -7,24 +7,30 @@
 .chart .vega-bindings {
   line-height: 20px;
 }
+
 .chart .vega-bind-name {
   display: inline-block;
   width: 105px;
 }
+
 .chart .vega-bind input[type="range"] {
   padding: 0;
   width: 100px;
 }
+
 .chart .vega-bind select {
   max-width: 200px;
 }
+
 .chart .vega-bind label {
   margin-left: 4px;
 }
+
 .chart .vega-bind-radio label {
   margin-left: 0;
   margin-right: 4px;
 }
+
 .fullscreen-chart {
   position: fixed;
   top: 0;
@@ -36,15 +42,18 @@
   align-items: center;
   z-index: 10000;
 }
+
 .fullscreen-chart > div {
   margin: auto;
 }
+
 .fullscreen-open {
   position: absolute;
   top: 10px;
   right: 10px;
   cursor: pointer;
 }
+
 .fullscreen-close {
   display: flex;
   align-items: center;
@@ -59,9 +68,11 @@
   border-radius: 2px;
   z-index: 1000;
 }
+
 .fullscreen-close span {
   padding-left: 5px;
 }
+
 .fullscreen-close:hover {
   background: rgba(0, 0, 0, 0.08);
 }

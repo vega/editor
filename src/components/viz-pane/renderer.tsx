@@ -1,17 +1,17 @@
-import SplitPane from 'react-split-pane';
+import './index.css';
 
 import * as React from 'react';
+import SplitPane from 'react-split-pane';
 
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
 import Toolbar from '../toolbar';
 
-import './index.css';
-
 interface Props {
   errorPane?: boolean;
 }
+
 export default class VizPane extends React.Component<Props> {
   public render() {
     const container = (
