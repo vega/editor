@@ -10,13 +10,6 @@
   color: #399e39;
 }
 
-.close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  cursor: pointer;
-}
-
 .error-pane {
   overflow: auto;
   width: 100%;

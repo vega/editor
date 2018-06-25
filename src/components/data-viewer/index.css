@@ -1,0 +1,27 @@
+.data-dropdown {
+  width: 14%;
+  font-size: 1em;
+  padding: 5px;
+  margin: 10px;
+}
+
+.data-dropdown:focus {
+  outline: 0;
+}
+
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table td,
+.data-table th {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+  max-height: 40px;
+}
+
+.data-table th {
+  background: #eee;
+}

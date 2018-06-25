@@ -6,19 +6,8 @@ import Renderer from './renderer';
 
 function mapStateToProps(state: State, ownProps) {
   return {
-    errorPane: state.errorPane,
+    dataSets: state.dataSets,
   };
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    showErrorPane: () => {
-      dispatch(EditorActions.showErrorPane());
-    },
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Renderer);
+export default connect(mapStateToProps)(Renderer);
