@@ -2,6 +2,7 @@ import './index.css';
 
 import * as React from 'react';
 import { X } from 'react-feather';
+import Select from 'react-select';
 import { stringify } from 'vega-tooltip';
 import { isObject } from 'vega-util';
 
@@ -30,8 +31,8 @@ export default class ErrorPane extends React.Component<Props, State> {
     this.handleChange = this.handleChange.bind(this);
     this.formatData = this.formatData.bind(this);
   }
-  public handleChange(event) {
-    this.setState({ dataName: event.target.value });
+  public handleChange(option) {
+    this.setState({ dataName: option.value });
   }
   public formatData(data: any) {
     const keys = Object.keys(data);
@@ -95,12 +96,24 @@ export default class ErrorPane extends React.Component<Props, State> {
       );
     }
     let table;
-    let options;
+    let select;
+    const options = [];
     if (this.props.dataSets) {
-      options = (
-        <select className="data-dropdown" value={this.state.dataName} onChange={this.handleChange}>
-          {Object.keys(this.props.dataSets).map((value, id) => <option key={id}>{value}</option>)}
-        </select>
+      Object.keys(this.props.dataSets).map(key => {
+        options.push({
+          label: key,
+          value: key,
+        });
+      });
+      select = (
+        <Select
+          className="data-dropdown"
+          value={{ label: this.state.dataName }}
+          onChange={this.handleChange}
+          options={options}
+          clearable={false}
+          searchable={false}
+        />
       );
       if (this.props.dataSets[this.state.dataName]) {
         const currDataSet = this.formatData(this.props.dataSets[this.state.dataName]);
@@ -113,7 +126,7 @@ export default class ErrorPane extends React.Component<Props, State> {
           <X />
         </span>
         <ul>{list}</ul>
-        {options ? options : ''}
+        {select ? select : ''}
         <div className="data-viewer" dangerouslySetInnerHTML={{ __html: table }} />
       </div>
     );
