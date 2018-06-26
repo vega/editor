@@ -1,7 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
-import { X } from 'react-feather';
+import { ChevronDown, ChevronUp, X } from 'react-feather';
 import SplitPane from 'react-split-pane';
 
 import DataViewer from '../data-viewer';
@@ -30,12 +30,14 @@ export default class VizPane extends React.Component<Props, State> {
   public render() {
     const container = (
       <div className="chart-container">
-        <div className="debug-pane-header">
-          <ul className="tabs-nav" onClick={e => this.props.showErrorPane()}>
+        <div className="debug-pane-header" onClick={e => this.props.showErrorPane()}>
+          <ul className="tabs-nav">
             <li
               className={this.state.errorLogs ? 'active-tab' : ''}
               onClick={e => {
-                e.stopPropagation();
+                if (this.props.errorPane) {
+                  e.stopPropagation();
+                }
                 this.setState({ errorLogs: true });
               }}
             >
@@ -44,13 +46,16 @@ export default class VizPane extends React.Component<Props, State> {
             <li
               className={this.state.errorLogs ? '' : 'active-tab'}
               onClick={e => {
-                e.stopPropagation();
+                if (this.props.errorPane) {
+                  e.stopPropagation();
+                }
                 this.setState({ errorLogs: false });
               }}
             >
               Data Viewer
             </li>
           </ul>
+          {this.props.errorPane ? <ChevronDown className="icon" /> : <ChevronUp className="icon" />}
         </div>
         <ErrorBoundary>
           <Renderer />
