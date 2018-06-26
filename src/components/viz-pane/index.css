@@ -10,6 +10,10 @@
   display: none;
 }
 
+.debug-pane {
+  overflow: auto;
+}
+
 .tabs-nav {
   position: absolute;
   bottom: 0;

@@ -20,35 +20,3 @@
   padding-left: 1em;
   padding-right: 2em;
 }
-
-/* Data Viewer*/
-.data-dropdown {
-  width: 14%;
-  font-size: 1em;
-  padding: 5px;
-  margin: 10px;
-}
-
-.data-dropdown:focus {
-  outline: 0;
-}
-
-.data-viewer {
-}
-
-.data-viewer table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.data-viewer td,
-.data-viewer th {
-  border: 1px solid #ddd;
-  text-align: left;
-  padding: 8px;
-  max-height: 40px;
-}
-
-.data-viewer th {
-  background: #eee;
-}

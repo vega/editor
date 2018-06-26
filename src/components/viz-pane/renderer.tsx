@@ -31,10 +31,22 @@ export default class VizPane extends React.Component<Props, State> {
     const container = (
       <div className="chart-container">
         <ul className="tabs-nav" onClick={e => this.props.showErrorPane()}>
-          <li className={this.state.errorLogs ? 'active-tab' : ''} onClick={() => this.setState({ errorLogs: true })}>
+          <li
+            className={this.state.errorLogs ? 'active-tab' : ''}
+            onClick={e => {
+              e.stopPropagation();
+              this.setState({ errorLogs: true });
+            }}
+          >
             Error Logs
           </li>
-          <li className={this.state.errorLogs ? '' : 'active-tab'} onClick={() => this.setState({ errorLogs: false })}>
+          <li
+            className={this.state.errorLogs ? '' : 'active-tab'}
+            onClick={e => {
+              e.stopPropagation();
+              this.setState({ errorLogs: false });
+            }}
+          >
             Data Viewer
           </li>
         </ul>

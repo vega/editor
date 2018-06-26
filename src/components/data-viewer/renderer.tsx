@@ -88,6 +88,8 @@ export default class ErrorPane extends React.Component<Props, State> {
       if (this.props.dataSets[this.state.dataName]) {
         const currDataSet = this.formatData(this.props.dataSets[this.state.dataName]);
         table = this.generateTable(currDataSet);
+      } else {
+        this.setState({ dataName: 'root' });
       }
     }
     return (
