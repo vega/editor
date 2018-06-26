@@ -20,6 +20,7 @@
   width: 100%;
   overflow: auto;
   border: 1px solid #ddd;
+  font-family: monospace;
 }
 
 .data-table table {
@@ -41,9 +42,18 @@
   white-space: nowrap;
 }
 
+.data-table td {
+  color: #777;
+}
+
+.data-table td:hover {
+  color: #444;
+}
+
 .data-table th {
   text-align: center;
-  border-bottom: 2px solid #000 !important;
+  border-bottom: 1px solid #444 !important;
+  color: #444;
 }
 
 .data-table::-webkit-scrollbar {
