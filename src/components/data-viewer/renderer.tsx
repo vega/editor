@@ -57,12 +57,26 @@ export default class ErrorPane extends React.Component<Props, State> {
     Object.values(data).map(key => {
       table += '<tr>';
       Object.values(key).map(value => {
-        table += `<td>${value}</td>`;
+        // Width of table cell / average width of a char i.e 8px
+        if (value && value.length > 24) {
+          value = this.escapeHTML(value);
+          table += `<td data-tip="${value}">(...)</td>`;
+        } else {
+          table += `<td>${value}</td>`;
+        }
       });
       table += '</tr>';
     });
     table += '</table>';
     return table;
+  }
+  public escapeHTML(data: string) {
+    return data
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
   public render() {
     let table;
