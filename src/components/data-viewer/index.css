@@ -9,9 +9,13 @@
   outline: 0;
 }
 
-.data-table table {
+.data-viewer {
+}
+
+.data-table {
   width: 100%;
   border-collapse: collapse;
+  overflow: auto;
 }
 
 .data-table td,

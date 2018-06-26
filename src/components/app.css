@@ -27,16 +27,11 @@ html {
 .Resizer {
   background: #000;
   opacity: 0.2;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding;
   background-clip: padding-box;
 }
 
 .Resizer:hover {
-  -webkit-transition: all 2s ease;
   transition: all 2s ease;
 }
 
@@ -66,9 +61,11 @@ html {
   border-left: 5px solid rgba(0, 0, 0, 0.5);
   border-right: 5px solid rgba(0, 0, 0, 0.5);
 }
+
 .Resizer.disabled {
   cursor: not-allowed;
 }
+
 .Resizer.disabled:hover {
   border-color: transparent;
 }
