@@ -5446,15 +5446,15 @@ vega-lib@4.0.0-rc.3:
     vega-voronoi "^3.0.0"
     vega-wordcloud "^3.0.0"
 
-"vega-lite@github:vega/vega-lite#v2.5.1":
-  version "2.5.1"
-  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/038d13263f9565c4750010db99726c7891d2b124"
+"vega-lite@github:vega/vega-lite#v2.6.0":
+  version "2.6.0"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/7764e7248a26eb720185a236e2d71b5930e93419"
   dependencies:
     "@types/json-stable-stringify" "^1.0.32"
     json-stable-stringify "^1.0.1"
     tslib "^1.9.2"
     vega-event-selector "^2.0.0"
-    vega-typings "^0.3.4"
+    vega-typings "^0.3.17"
     vega-util "^1.7.0"
     yargs "^11.0.0"
 
@@ -5596,9 +5596,15 @@ vega-transforms@^2.0.0:
     vega-statistics "^1.2.1"
     vega-util "^1.7.0"
 
-vega-typings@*, vega-typings@^0.3.15, vega-typings@^0.3.4:
+vega-typings@*, vega-typings@^0.3.15:
   version "0.3.15"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.15.tgz#347b9065935e83ca23386d07b7d029a8b1c2619c"
+  dependencies:
+    vega-util "^1.7.0"
+
+vega-typings@^0.3.17:
+  version "0.3.17"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.17.tgz#7c0074371634761017aeed76df5355c927da3b21"
   dependencies:
     vega-util "^1.7.0"
 
