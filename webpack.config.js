@@ -17,7 +17,7 @@ module.exports = (env, argv) => {
 
     devtool:
       argv.mode === "development"
-        ? "cheap-module-eval-source-map"
+        ? "cheap-module-source-map"
         : "source-map",
 
     resolve: {
