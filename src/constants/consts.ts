@@ -18,7 +18,7 @@ export const LAYOUT = { HeaderHeight: 56 };
 export type Renderer = 'svg' | 'canvas';
 
 export const VEGA_START_SPEC = `{
-  "$schema": "https://vega.github.io/schema/vega/v3.0.json"
+  "$schema": "https://vega.github.io/schema/vega/v4.json"
 }`;
 
 export const VEGA_LITE_START_SPEC = `{
