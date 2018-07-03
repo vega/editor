@@ -1,6 +1,6 @@
 # Vega Editor [![Build Status](https://travis-ci.org/vega/editor.svg?branch=master)](https://travis-ci.org/vega/editor)
 
-The **Vega editor** is a web application for authoring and testing [Vega](http://github.com/vega/vega) visualizations. It includes a number of example specifications that showcase both the visual encodings and interaction techniques supported by Vega.
+The **Vega editor** is a web application for authoring and testing [Vega](https://github.com/vega/vega) and [Vega-Lite](https://vega.github.io/vega-lite) visualizations. It includes a number of example specifications that showcase both the visual encodings and interaction techniques. It is deployed at https://vega.github.io/editor/. 
 
 ### Usage Instructions
 
@@ -36,7 +36,5 @@ The Vega editor supports [React Developer Tools](https://github.com/facebook/rea
 
 ### Creating a release on gh-pages
 
-* Install the latest versions of Vega, Vega-Lite, and Vega-Datasets
-* `yarn run vendor`
-* `yarn run generate-example-images` (requires https://www.gnu.org/software/parallel/)
-* `yarn run deploy`
+* Tag a new version with `yarn version`
+* Push the tag. Travis will automatically deploy the editor. 
