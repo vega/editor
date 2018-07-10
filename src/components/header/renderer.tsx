@@ -65,7 +65,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     });
   }
   public updateGistType(event) {
-    this.updateGist({ type: event.currentTarget.value });
+    this.updateGist({ type: event.currentTarget.value === 'vega' ? Mode.Vega : Mode.VegaLite });
   }
   public updateGistUrl(event) {
     this.updateGist({ url: event.currentTarget.value });
