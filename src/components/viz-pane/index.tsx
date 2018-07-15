@@ -6,14 +6,14 @@ import Renderer from './renderer';
 
 function mapStateToProps(state: State, ownProps) {
   return {
-    errorPane: state.errorPane,
+    debugPane: state.debugPane,
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    showErrorPane: () => {
-      dispatch(EditorActions.showErrorPane());
+    toggleDebugPane: () => {
+      dispatch(EditorActions.toggleDebugPane());
     },
   };
 };

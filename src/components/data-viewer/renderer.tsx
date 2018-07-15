@@ -2,15 +2,18 @@ import './index.css';
 
 import * as React from 'react';
 import Select from 'react-select';
+import * as vega from 'vega';
 import { stringify } from 'vega-tooltip';
 import { isObject } from 'vega-util';
+import { View } from '../../constants';
 
 interface Props {
-  dataSets;
+  view: View;
 }
 
 interface State {
-  dataName: string;
+  dataSets: any;
+  selectedData: string;
 }
 
 const OPTIONS = {
@@ -21,13 +24,18 @@ export default class ErrorPane extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      dataName: 'root', // Default value
+      dataSets: null,
+      selectedData: 'root',
     };
     this.handleChange = this.handleChange.bind(this);
     this.formatData = this.formatData.bind(this);
   }
   public handleChange(option) {
-    this.setState({ dataName: option.value });
+    this.setState({ selectedData: option.value });
+  }
+  public getDataSets() {
+    const dataSets = this.props.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data;
+    this.setState({ dataSets });
   }
   public formatData(data: any) {
     const keys = Object.keys(data);
@@ -78,12 +86,15 @@ export default class ErrorPane extends React.Component<Props, State> {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
   }
+  public componentDidMount() {
+    this.getDataSets();
+  }
   public render() {
     let table;
     let select;
     const options = [];
-    if (this.props.dataSets) {
-      Object.keys(this.props.dataSets).map(key => {
+    if (this.state.dataSets) {
+      Object.keys(this.state.dataSets).map(key => {
         options.push({
           label: key,
           value: key,
@@ -92,18 +103,18 @@ export default class ErrorPane extends React.Component<Props, State> {
       select = (
         <Select
           className="data-dropdown"
-          value={{ label: this.state.dataName }}
+          value={{ label: this.state.selectedData }}
           onChange={this.handleChange}
           options={options}
           clearable={false}
           searchable={false}
         />
       );
-      if (this.props.dataSets[this.state.dataName]) {
-        const currDataSet = this.formatData(this.props.dataSets[this.state.dataName]);
+      if (this.state.dataSets[this.state.selectedData]) {
+        const currDataSet = this.formatData(this.state.dataSets[this.state.selectedData]);
         table = this.generateTable(currDataSet);
       } else {
-        this.setState({ dataName: 'root' });
+        this.setState({ selectedData: 'root' });
       }
     }
     return (

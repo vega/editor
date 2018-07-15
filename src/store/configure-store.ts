@@ -13,7 +13,7 @@ export default function configureStore(initialState = DEFAULT_STATE) {
   const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
   // Subset of state to store in localStorage
-  const paths = Object.keys(DEFAULT_STATE).filter(e => e !== 'dataSets');
+  const paths = Object.keys(DEFAULT_STATE).filter(e => e !== 'view');
   const enhancer = composeEnhancers(middleware, persistState(paths));
 
   // Create final store

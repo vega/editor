@@ -20,8 +20,8 @@ const mapDispatchToProps = dispatch => {
     exportVega: val => {
       dispatch(EditorActions.exportVega(val));
     },
-    setDataSets: val => {
-      dispatch(EditorActions.setDataSets(val));
+    setView: val => {
+      dispatch(EditorActions.setView(val));
     },
   };
 };

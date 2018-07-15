@@ -6,7 +6,7 @@ interface Props {
   error?: string;
 
   logError?: (err: any) => void;
-  showErrorPane?: () => void;
+  toggleDebugPane?: () => void;
 }
 
 export default class ErrorBoundary extends React.Component<Props> {
@@ -16,7 +16,7 @@ export default class ErrorBoundary extends React.Component<Props> {
   public render() {
     if (this.props.error) {
       return (
-        <div id="error-indicator" onClick={e => this.props.showErrorPane()}>
+        <div id="error-indicator" onClick={e => this.props.toggleDebugPane()}>
           {this.props.error}
         </div>
       );

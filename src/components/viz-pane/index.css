@@ -3,36 +3,27 @@
   height: 100%;
   background: rgba(243, 240, 240, 0.63);
   padding: 10px;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .Pane::-webkit-scrollbar {
   display: none;
 }
 
-.debug-pane {
-  overflow: auto;
-}
-
 .debug-pane-header {
   width: 100%;
-  height: 30px;
+  height: 25px;
   display: flex;
   flex: 1;
   align-items: center;
-  justify-content: flex-start;
-  position: absolute;
-  bottom: 0;
+  justify-content: space-between;
   background: #ebebeb;
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: 12px;
   color: #666;
-  border-top: 1px solid #ccc;
-  margin: 0 0 0 -10px;
 }
 
 .tabs-nav {
-  position: absolute;
   height: 100%;
   list-style: none;
   padding: 0;
@@ -61,8 +52,10 @@
 }
 
 .close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
   cursor: pointer;
+  padding: 0 10px;
+}
+
+.close svg {
+  stroke: black;
 }

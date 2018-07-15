@@ -11,9 +11,9 @@ import Renderer from '../renderer';
 import Toolbar from '../toolbar';
 
 interface Props {
-  errorPane?: boolean;
+  debugPane?: boolean;
 
-  showErrorPane: () => void;
+  toggleDebugPane: () => void;
 }
 
 interface State {
@@ -30,53 +30,75 @@ export default class VizPane extends React.Component<Props, State> {
   public render() {
     const container = (
       <div className="chart-container">
-        <div className="debug-pane-header" onClick={e => this.props.showErrorPane()}>
-          <ul className="tabs-nav">
-            <li
-              className={this.state.errorLogs ? 'active-tab' : ''}
-              onClick={e => {
-                if (this.props.errorPane) {
-                  e.stopPropagation();
-                }
-                this.setState({ errorLogs: true });
-              }}
-            >
-              Error Logs
-            </li>
-            <li
-              className={this.state.errorLogs ? '' : 'active-tab'}
-              onClick={e => {
-                if (this.props.errorPane) {
-                  e.stopPropagation();
-                }
-                this.setState({ errorLogs: false });
-              }}
-            >
-              Data Viewer
-            </li>
-          </ul>
-          {this.props.errorPane ? <ChevronDown className="icon" /> : <ChevronUp className="icon" />}
-        </div>
         <ErrorBoundary>
           <Renderer />
         </ErrorBoundary>
         <Toolbar />
       </div>
     );
-    if (this.props.errorPane) {
+    const debugPaneHeader = (
+      <div className="debug-pane-header" onClick={e => this.props.toggleDebugPane()}>
+        <ul className="tabs-nav">
+          <li
+            className={this.state.errorLogs ? 'active-tab' : ''}
+            onClick={e => {
+              if (this.props.debugPane) {
+                e.stopPropagation();
+              }
+              this.setState({ errorLogs: true });
+            }}
+          >
+            Error Logs
+          </li>
+          <li
+            className={this.state.errorLogs ? '' : 'active-tab'}
+            onClick={e => {
+              if (this.props.debugPane) {
+                e.stopPropagation();
+              }
+              this.setState({ errorLogs: false });
+            }}
+          >
+            Data Viewer
+          </li>
+        </ul>
+        <span onClick={e => this.props.toggleDebugPane()} className="close">
+          <X size={20} />
+        </span>
+      </div>
+    );
+    if (this.props.debugPane) {
       return (
-        <SplitPane split="horizontal" defaultSize={window.innerHeight * 0.6} paneStyle={{ display: 'flex' }}>
+        <SplitPane
+          split="horizontal"
+          primary="second"
+          minSize={25}
+          defaultSize={window.innerHeight * 0.4}
+          paneStyle={{ display: 'flex' }}
+        >
           {container}
           <div className="debug-pane">
-            <span onClick={e => this.props.showErrorPane()} className="close">
-              <X />
-            </span>
+            {debugPaneHeader}
             {this.state.errorLogs ? <ErrorPane /> : <DataViewer />}
           </div>
         </SplitPane>
       );
     } else {
-      return container;
+      return (
+        <SplitPane
+          split="horizontal"
+          primary="second"
+          minSize={25}
+          defaultSize={25}
+          paneStyle={{ display: 'flex', height: '25px' }}
+        >
+          {container}
+          <div className="debug-pane">
+            {debugPaneHeader}
+            {this.state.errorLogs ? <ErrorPane /> : <DataViewer />}
+          </div>
+        </SplitPane>
+      );
     }
   }
 }

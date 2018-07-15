@@ -43,7 +43,7 @@ class InputPanel extends React.Component<Props> {
       } else {
         // Use the same split pane as above to prevent the creation of a new monaco instance.
         return (
-          <SplitPane split="horizontal" primary="second" defaultSize={25} pane1Style={{ display: 'flex' }}>
+          <SplitPane split="horizontal" primary="second" minSize={25} defaultSize={25} pane1Style={{ display: 'flex' }}>
             {innerPanes}
           </SplitPane>
         );

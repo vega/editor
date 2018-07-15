@@ -1,14 +1,13 @@
 import { LocalLogger } from '../utils/logger';
-import { Mode, Renderer } from './consts';
+import { Mode, Renderer, View } from './consts';
 
 export interface State {
   autoParse: boolean;
   baseURL: string;
   compiledVegaSpec: boolean;
-  dataSets: any;
+  debugPane: boolean;
   editorString: string;
   error: Error;
-  errorPane: boolean;
   export: boolean;
   format: boolean;
   gist: string;
@@ -19,6 +18,7 @@ export interface State {
   tooltip: boolean;
   vegaLiteSpec: any;
   vegaSpec: any;
+  view: View;
   warningsLogger: LocalLogger;
 }
 
@@ -26,10 +26,9 @@ export const DEFAULT_STATE: State = {
   autoParse: true,
   baseURL: null,
   compiledVegaSpec: false,
-  dataSets: null,
+  debugPane: false,
   editorString: '{}',
   error: null,
-  errorPane: false,
   export: false,
   format: false,
   gist: null,
@@ -40,5 +39,6 @@ export const DEFAULT_STATE: State = {
   tooltip: true,
   vegaLiteSpec: null,
   vegaSpec: {},
+  view: null,
   warningsLogger: new LocalLogger(),
 };

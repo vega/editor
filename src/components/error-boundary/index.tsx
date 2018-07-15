@@ -15,8 +15,8 @@ const mapDispatchToProps = dispatch => {
     logError: err => {
       dispatch(EditorActions.logError(err));
     },
-    showErrorPane: () => {
-      dispatch(EditorActions.showErrorPane());
+    toggleDebugPane: () => {
+      dispatch(EditorActions.toggleDebugPane());
     },
   };
 };

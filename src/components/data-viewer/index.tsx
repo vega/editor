@@ -6,7 +6,7 @@ import Renderer from './renderer';
 
 function mapStateToProps(state: State, ownProps) {
   return {
-    dataSets: state.dataSets,
+    view: state.view,
   };
 }
 

@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
-import { Mode } from '../../constants';
+import { Mode, View } from '../../constants';
 import addProjections from '../../utils/addProjections';
 
 // Add additional projections
@@ -23,7 +23,7 @@ interface Props {
   history?: any;
 
   exportVega: (val: any) => void;
-  setDataSets: (val: any) => void;
+  setView: (val: any) => void;
 }
 
 interface State {
@@ -35,7 +35,7 @@ const KEYCODES = {
 };
 
 class Editor extends React.Component<Props, State> {
-  public static view: vega.View;
+  public static view: View;
   public static pathname: string;
 
   constructor(props) {
@@ -106,12 +106,7 @@ class Editor extends React.Component<Props, State> {
       .hover()
       .runAsync()
       .then(async view => {
-        // Get all datasets using view
-        const dataSets = await Editor.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data;
-        // Storing datasets in state
-        if (dataSets.root.length > 0) {
-          this.props.setDataSets(dataSets);
-        }
+        this.props.setView(view);
       });
 
     chart.style.width = 'auto';
