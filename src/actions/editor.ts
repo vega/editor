@@ -64,11 +64,12 @@ export function setVegaExample(example: string, spec) {
 }
 export type SetVegaExample = ReturnType<typeof setVegaExample>;
 
-export function setVegaLiteExample(example: string, spec) {
+export function setVegaLiteExample(example: string, spec, validationSchema) {
   return {
     example,
     spec,
     type: SET_VEGA_LITE_EXAMPLE,
+    validationSchema
   };
 }
 export type SetVegaLiteExample = ReturnType<typeof setVegaLiteExample>;
@@ -81,10 +82,11 @@ export function updateVegaSpec(spec) {
 }
 export type UpdateVegaSpec = ReturnType<typeof updateVegaSpec>;
 
-export function updateVegaLiteSpec(spec) {
+export function updateVegaLiteSpec(spec, validationSchema?) {
   return {
     spec,
     type: UPDATE_VEGA_LITE_SPEC,
+    validationSchema
   };
 }
 export type UpdateVegaLiteSpec = ReturnType<typeof updateVegaLiteSpec>;
@@ -98,11 +100,12 @@ export function setGistVegaSpec(gist: string, spec) {
 }
 export type SetGistVegaSpec = ReturnType<typeof setGistVegaSpec>;
 
-export function setGistVegaLiteSpec(gist: string, spec) {
+export function setGistVegaLiteSpec(gist: string, spec, validationSchema?) {
   return {
     gist,
     spec,
     type: SET_GIST_VEGA_LITE_SPEC,
+    validationSchema
   };
 }
 export type SetGistVegaLiteSpec = ReturnType<typeof setGistVegaLiteSpec>;

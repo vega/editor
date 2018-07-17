@@ -77,7 +77,7 @@ function parseVegaLite(
   try {
     const spec = JSON.parse(action.spec);
 
-    validateVegaLite(spec, currLogger);
+    validateVegaLite(spec, currLogger, action.validationSchema);
 
     const vegaSpec = action.spec !== '{}' ? vl.compile(spec, { logger: currLogger }).spec : {};
 
