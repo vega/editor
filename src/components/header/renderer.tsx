@@ -114,7 +114,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     }
   }
   public async onSelectGist(closePortal) {
-    const type = this.state.gist.type;
+    const type = this.state.gist.type === Mode.Vega ? 'vega' : 'vega-lite';
     const url = this.state.gist.url.trim().toLowerCase();
 
     let revision = this.state.gist.revision.trim().toLowerCase();
@@ -365,7 +365,7 @@ class Header extends React.Component<Props & { history: any }, State> {
                     required
                     className="gist-input"
                     type="text"
-                    placeholder="Enter url"
+                    placeholder="Enter URL"
                     value={this.state.gist.url}
                     onChange={this.updateGistUrl.bind(this)}
                   />
