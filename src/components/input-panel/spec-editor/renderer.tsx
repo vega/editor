@@ -6,67 +6,9 @@ import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { withRouter } from 'react-router-dom';
 import parser from 'vega-schema-url-parser';
-import addMarkdownProps from '../../../utils/markdownProps';
 
 import { Mode } from '../../../constants';
-
-const vegaLiteSchema20 = require('../../../schemas/vega-lite/v2.0.json');
-const vegaLiteSchema = require('vega-lite/build/vega-lite-schema.json');
-const vegaSchema = require('vega/docs/vega-schema.json');
-
-addMarkdownProps(vegaSchema);
-addMarkdownProps(vegaLiteSchema);
-
-const schemas = {
-  [Mode.Vega]: [
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v3.json',
-    },
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v3.0.json',
-    },
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v3.1.json',
-    },
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v4.json',
-    },
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v4.0.json',
-    },
-  ],
-  [Mode.VegaLite]: [
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.json',
-    },
-    {
-      schema: vegaLiteSchema20,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.0.json',
-    },
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.1.json',
-    },
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.2.json',
-    },
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.3.json',
-    },
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.4.json',
-    },
-  ],
-};
+import { DEFAULT_SCHEMAS } from '../../../constants/schemas';
 
 function debounce(func, wait, immediate?) {
   let timeout;
@@ -145,7 +87,7 @@ class Editor extends React.Component<Props, {}> {
   public editorWillMount(monaco) {
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       allowComments: false,
-      schemas: schemas[this.props.mode],
+      schemas: DEFAULT_SCHEMAS[this.props.mode],
       validate: true,
     });
 
