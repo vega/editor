@@ -4,16 +4,14 @@
     "typeCheck": true
   },
   "defaultSeverity": "error",
-  "extends": [
-    "tslint:recommended",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rules": {
     "quotemark": [true, "single", "jsx-double"],
     "arrow-parens": [true, "ban-single-arg-parens"],
     "no-console": [true, "log", "error"],
     "no-bitwise": false,
     "interface-name": false,
-    "no-var-requires": false
+    "no-var-requires": false,
+    "no-namespace": false
   }
 }
