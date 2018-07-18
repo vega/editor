@@ -1,7 +1,9 @@
-export enum Mode {
-  Vega,
-  VegaLite,
+export namespace Mode {
+  export const Vega: 'vega' = 'vega';
+  export const VegaLite: 'vega-lite' = 'vega-lite';
 }
+
+export type Mode = typeof Mode.Vega | typeof Mode.VegaLite;
 
 export const NAME_TO_MODE = {
   vega: Mode.Vega,

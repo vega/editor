@@ -2,12 +2,11 @@ import './index.css';
 
 import * as React from 'react';
 import { Code, ExternalLink, FileText, Github, Grid, Play, Trash2, X } from 'react-feather';
-import { Portal, PortalWithState } from 'react-portal';
+import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-
-import { LAYOUT, Mode } from '../../constants';
+import { Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 
@@ -65,7 +64,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     });
   }
   public updateGistType(event) {
-    this.updateGist({ type: event.currentTarget.value === 'vega' ? Mode.Vega : Mode.VegaLite });
+    this.updateGist({ type: event.currentTarget.value });
   }
   public updateGistUrl(event) {
     this.updateGist({ url: event.currentTarget.value });
@@ -114,7 +113,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     }
   }
   public async onSelectGist(closePortal) {
-    const type = this.state.gist.type === Mode.Vega ? 'vega' : 'vega-lite';
+    const type = this.state.gist.type;
     const url = this.state.gist.url.trim().toLowerCase();
 
     let revision = this.state.gist.revision.trim().toLowerCase();
@@ -173,11 +172,13 @@ class Header extends React.Component<Props & { history: any }, State> {
   }
   public render() {
     const modeOptions =
-      this.props.mode === Mode.Vega ? [{ value: 'vega-lite', label: 'Vega-Lite' }] : [{ value: 'vega', label: 'Vega' }];
+      this.props.mode === Mode.Vega
+        ? [{ value: Mode.VegaLite, label: NAMES[Mode.VegaLite] }]
+        : [{ value: Mode.Vega, label: NAMES[Mode.Vega] }];
     const modeSwitcher = (
       <Select
         className="mode-switcher"
-        value={{ label: `${this.props.mode === Mode.Vega ? 'Vega' : 'Vega-Lite'}` }}
+        value={{ label: `${NAMES[this.props.mode]}` }}
         options={modeOptions}
         clearable={false}
         searchable={false}
@@ -199,9 +200,7 @@ class Header extends React.Component<Props & { history: any }, State> {
     const docsLink = (
       <a
         className="docs-link"
-        href={
-          this.props.mode === Mode.Vega ? 'https://vega.github.io/vega/docs/' : 'https://vega.github.io/vega-lite/docs/'
-        }
+        href={`https://vega.github.io/${this.props.mode}/docs/`}
         target="_blank"
         rel="noopener noreferrer"
       >
