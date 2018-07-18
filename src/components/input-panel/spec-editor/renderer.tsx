@@ -51,6 +51,8 @@ const KEYCODES = {
 };
 
 class Editor extends React.Component<Props, {}> {
+  private monacoEditor: any;
+
   constructor(props) {
     super(props);
     this.handleKeydown = this.handleKeydown.bind(this);
@@ -84,12 +86,16 @@ class Editor extends React.Component<Props, {}> {
       this.props.history.push('/edited');
     }
   }
-  public editorWillMount(monaco) {
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+  public updateEditorJsonLanguageSchemas(schemas) {
+    this.monacoEditor.languages.json.jsonDefaults.setDiagnosticsOptions({
       allowComments: false,
-      schemas: DEFAULT_SCHEMAS[this.props.mode],
+      schemas,
       validate: true,
     });
+  }
+  public editorWillMount(monaco) {
+    this.monacoEditor = monaco;
+    this.updateEditorJsonLanguageSchemas(DEFAULT_SCHEMAS[this.props.mode]);
 
     monaco.languages.registerDocumentFormattingEditProvider('json', {
       provideDocumentFormattingEdits(
@@ -126,14 +132,14 @@ class Editor extends React.Component<Props, {}> {
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeydown);
   }
-  public updateSpec(spec) {
+  public async updateSpec(spec) {
     let parsedMode = this.props.mode;
 
     try {
-      const schema = JSON.parse(spec).$schema;
+      const schemaUrl = JSON.parse(spec).$schema;
 
-      if (schema) {
-        switch (parser(schema).library) {
+      if (schemaUrl) {
+        switch (parser(schemaUrl).library) {
           case 'vega-lite':
             parsedMode = Mode.VegaLite;
             break;
@@ -142,6 +148,27 @@ class Editor extends React.Component<Props, {}> {
             break;
         }
       }
+
+      try {
+        const schema = await fetch(schemaUrl).then(r => r.json());
+        const schemas = DEFAULT_SCHEMAS[parsedMode].reduce((memo, item)=> {
+          if (item.uri !== schemaUrl) {
+            memo.push(item);
+          }else {
+            memo.push({
+              schema,
+              uri: schemaUrl
+            })
+          }
+          return memo;
+        }, []);
+
+        this.updateEditorJsonLanguageSchemas(schemas)
+
+      } catch (err) {
+        console.warn('Error fetching JSON schema',err);
+      }
+
     } catch (err) {
       console.warn('Error parsing JSON string', err);
     }
