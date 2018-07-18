@@ -10,6 +10,7 @@ import addMarkdownProps from '../../../utils/markdownProps';
 
 import { Mode } from '../../../constants';
 
+const vegaLiteSchema20 = require('../../../schemas/vega-lite/v2.0.json');
 const vegaLiteSchema = require('vega-lite/build/vega-lite-schema.json');
 const vegaSchema = require('vega/docs/vega-schema.json');
 
@@ -45,7 +46,7 @@ const schemas = {
       uri: 'https://vega.github.io/schema/vega-lite/v2.json',
     },
     {
-      schema: vegaLiteSchema,
+      schema: vegaLiteSchema20,
       uri: 'https://vega.github.io/schema/vega-lite/v2.0.json',
     },
     {
