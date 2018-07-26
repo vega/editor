@@ -12,7 +12,6 @@ interface Props {
 }
 
 interface State {
-  dataSets: any;
   selectedData: string;
 }
 
@@ -33,9 +32,11 @@ export default class ErrorPane extends React.Component<Props, State> {
   public handleChange(option) {
     this.setState({ selectedData: option.value });
   }
-  public getDataSets() {
-    const dataSets = this.props.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data;
-    this.setState({ dataSets });
+  public getDataList() {
+    return Object.keys(this.props.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data);
+  }
+  public getData(name: string) {
+    return this.props.view.data(name);
   }
   public formatData(data: any) {
     const keys = Object.keys(data);
@@ -86,15 +87,13 @@ export default class ErrorPane extends React.Component<Props, State> {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
   }
-  public componentDidMount() {
-    this.getDataSets();
-  }
   public render() {
     let table;
     let select;
     const options = [];
-    if (this.state.dataSets) {
-      Object.keys(this.state.dataSets).map(key => {
+    const dataList = this.getDataList();
+    if (dataList) {
+      dataList.map(key => {
         options.push({
           label: key,
           value: key,
@@ -110,9 +109,11 @@ export default class ErrorPane extends React.Component<Props, State> {
           searchable={false}
         />
       );
-      if (this.state.dataSets[this.state.selectedData]) {
-        const currDataSet = this.formatData(this.state.dataSets[this.state.selectedData]);
-        table = this.generateTable(currDataSet);
+      if (dataList.includes(this.state.selectedData)) {
+        const data = this.getData(this.state.selectedData);
+        if (data) {
+          table = this.generateTable(this.formatData(data));
+        }
       } else {
         this.setState({ selectedData: 'root' });
       }

@@ -7,6 +7,7 @@ import Renderer from './renderer';
 const mapStateToProps = (state: State, ownProps) => {
   return {
     baseURL: state.baseURL,
+    editorString: state.editorString,
     export: state.export,
     mode: state.mode,
     renderer: state.renderer,

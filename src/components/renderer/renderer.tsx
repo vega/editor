@@ -21,6 +21,7 @@ interface Props {
   export?: boolean;
   baseURL?: string;
   history?: any;
+  editorString?: string;
 
   exportVega: (val: any) => void;
   setView: (val: any) => void;
@@ -104,10 +105,7 @@ class Editor extends React.Component<Props, State> {
       .initialize(chart)
       .renderer(props.renderer)
       .hover()
-      .runAsync()
-      .then(async view => {
-        this.props.setView(view);
-      });
+      .run();
 
     chart.style.width = 'auto';
 
@@ -147,6 +145,7 @@ class Editor extends React.Component<Props, State> {
     if (params[params.length - 1] === 'view') {
       this.setState({ fullscreen: true });
     }
+    this.props.setView(Editor.view);
   }
   public componentDidUpdate(prevProps, prevState) {
     if (
@@ -157,6 +156,9 @@ class Editor extends React.Component<Props, State> {
       this.initView(this.props);
     }
     this.renderVega(this.props);
+    if (prevProps.editorString !== this.props.editorString) {
+      this.props.setView(Editor.view);
+    }
   }
   public componentWillUnmount() {
     // Remove listener to event keydown
