@@ -4,9 +4,9 @@
   "homepage": "http://vega.github.io/editor",
   "private": true,
   "devDependencies": {
-    "@types/node": "^10.5.2",
-    "@types/react": "^16.4.6",
-    "autoprefixer": "^8.6.5",
+    "@types/node": "^10.5.3",
+    "@types/react": "^16.4.7",
+    "autoprefixer": "^9.0.1",
     "awesome-typescript-loader": "^5.2.0",
     "css-loader": "^1.0.0",
     "gh-pages": "^1.2.0",
@@ -16,14 +16,14 @@
     "prettier": "1.13.7",
     "style-loader": "^0.21.0",
     "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.13.0",
+    "tslint-config-prettier": "^1.14.0",
     "tslint-eslint-rules": "^5.3.1",
     "typescript": "^2.9.2",
-    "vega-typings": "^0.3.30",
-    "webpack": "^4.16.1",
+    "vega-typings": "^0.3.36",
+    "webpack": "^4.16.2",
     "webpack-bundle-analyzer": "^2.13.1",
-    "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
   },
   "dependencies": {
     "ajv": "^6.5.2",
