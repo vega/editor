@@ -35,7 +35,8 @@
         {"name": "top-k-plot-with-others"},
         {"name": "binned-scatter-plot"},
         {"name": "contour-plot"},
-        {"name": "wheat-plot"}
+        {"name": "wheat-plot"},
+        {"name": "hypothetical-outcome-plots"}
     ],
     "Geographic Maps": [
         {"name": "county-unemployment"},
