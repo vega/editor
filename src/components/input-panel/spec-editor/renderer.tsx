@@ -6,66 +6,9 @@ import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { withRouter } from 'react-router-dom';
 import parser from 'vega-schema-url-parser';
-import addMarkdownProps from '../../../utils/markdownProps';
 
 import { Mode } from '../../../constants';
-
-const vegaLiteSchema = require('vega-lite/build/vega-lite-schema.json');
-const vegaSchema = require('vega/docs/vega-schema.json');
-
-addMarkdownProps(vegaSchema);
-addMarkdownProps(vegaLiteSchema);
-
-const schemas = {
-  [Mode.Vega]: [
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v3.json',
-    },
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v3.0.json',
-    },
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v3.1.json',
-    },
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v4.json',
-    },
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v4.0.json',
-    },
-  ],
-  [Mode.VegaLite]: [
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.json',
-    },
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.0.json',
-    },
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.1.json',
-    },
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.2.json',
-    },
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.3.json',
-    },
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v2.4.json',
-    },
-  ],
-};
+import { DEFAULT_SCHEMAS } from '../../../constants/schemas';
 
 function debounce(func, wait, immediate?) {
   let timeout;
@@ -108,6 +51,8 @@ const KEYCODES = {
 };
 
 class Editor extends React.Component<Props, {}> {
+  private monacoEditor: any;
+
   constructor(props) {
     super(props);
     this.handleKeydown = this.handleKeydown.bind(this);
@@ -141,12 +86,16 @@ class Editor extends React.Component<Props, {}> {
       this.props.history.push('/edited');
     }
   }
-  public editorWillMount(monaco) {
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+  public updateEditorJsonLanguageSchemas(schemas) {
+    this.monacoEditor.languages.json.jsonDefaults.setDiagnosticsOptions({
       allowComments: false,
-      schemas: schemas[this.props.mode],
+      schemas,
       validate: true,
     });
+  }
+  public editorWillMount(monaco) {
+    this.monacoEditor = monaco;
+    this.updateEditorJsonLanguageSchemas(DEFAULT_SCHEMAS[this.props.mode]);
 
     monaco.languages.registerDocumentFormattingEditProvider('json', {
       provideDocumentFormattingEdits(
@@ -183,14 +132,14 @@ class Editor extends React.Component<Props, {}> {
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeydown);
   }
-  public updateSpec(spec) {
+  public async updateSpec(spec) {
     let parsedMode = this.props.mode;
 
     try {
-      const schema = JSON.parse(spec).$schema;
+      const schemaUrl = JSON.parse(spec).$schema;
 
-      if (schema) {
-        switch (parser(schema).library) {
+      if (schemaUrl) {
+        switch (parser(schemaUrl).library) {
           case 'vega-lite':
             parsedMode = Mode.VegaLite;
             break;
@@ -199,6 +148,27 @@ class Editor extends React.Component<Props, {}> {
             break;
         }
       }
+
+      try {
+        const schema = await fetch(schemaUrl).then(r => r.json());
+        const schemas = DEFAULT_SCHEMAS[parsedMode].reduce((memo, item)=> {
+          if (item.uri !== schemaUrl) {
+            memo.push(item);
+          }else {
+            memo.push({
+              schema,
+              uri: schemaUrl
+            })
+          }
+          return memo;
+        }, []);
+
+        this.updateEditorJsonLanguageSchemas(schemas)
+
+      } catch (err) {
+        console.warn('Error fetching JSON schema',err);
+      }
+
     } catch (err) {
       console.warn('Error parsing JSON string', err);
     }

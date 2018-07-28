@@ -11,7 +11,7 @@ import { hash } from 'vega-lite/build/src/util';
 
 import * as EditorActions from '../actions/editor';
 import { LAYOUT, Mode } from '../constants';
-import { NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC } from '../constants/consts';
+import { NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC } from '../constants';
 import Header from './header';
 import InputPanel from './input-panel';
 import VizPane from './viz-pane';
@@ -96,8 +96,23 @@ class App extends React.Component<Props & { match: any; location: any }> {
         });
         break;
       case 'vega-lite':
-        text(`./spec/vega-lite/${name}.vl.json`, spec => {
-          this.props.setVegaLiteExample(name, spec);
+        text(`./spec/vega-lite/${name}.vl.json`, async spec => {
+          try {
+            // TODO: think about providing separate action for schema management with store
+            const schemaUrl = JSON.parse(spec).$schema;
+            let validationSchema;
+            console.warn(`Schema Url`, schemaUrl);
+            if (schemaUrl){
+              try {
+                validationSchema = await fetch(schemaUrl).then(r => r.json());
+              } catch (e) {
+                console.warn(e);
+              }
+            }
+            this.props.setVegaLiteExample(name, spec, validationSchema);
+          }catch (e) {
+            console.warn(e)
+          }
         });
         break;
       default:
@@ -159,8 +174,8 @@ const mapDispatchToProps = dispatch => {
     setVegaExample: (example: string, val) => {
       dispatch(EditorActions.setVegaExample(example, val));
     },
-    setVegaLiteExample: (example: string, val) => {
-      dispatch(EditorActions.setVegaLiteExample(example, val));
+    setVegaLiteExample: (example: string, val, validationSchema) => {
+      dispatch(EditorActions.setVegaLiteExample(example, val, validationSchema));
     },
     updateVegaLiteSpec: val => {
       dispatch(EditorActions.updateVegaLiteSpec(val));

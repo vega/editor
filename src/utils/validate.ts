@@ -10,9 +10,12 @@ ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 
 const vegaValidator = ajv.compile(require('vega/docs/vega-schema.json'));
-const vegaLiteValidator = ajv.compile(require('vega-lite/build/vega-lite-schema.json'));
+let vegaLiteValidator = ajv.compile(require('vega-lite/build/vega-lite-schema.json'));
 
-export function validateVegaLite(spec, logger) {
+export function validateVegaLite(spec, logger, validationSchema) {
+   if (validationSchema){
+     vegaLiteValidator = ajv.compile(validationSchema);
+  }
   const valid = vegaLiteValidator(spec);
   if (!valid) {
     for (const error of vegaLiteValidator.errors) {
