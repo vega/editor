@@ -1,4 +1,5 @@
 .data-dropdown {
+  display: inline-block;
   width: 150px;
   margin: 10px 0;
   text-align: center;
@@ -68,4 +69,31 @@
 .data-table::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.4);
   border-radius: 10px;
+}
+
+.data-viewer-header {
+  width: 100%;
+}
+
+.pagination {
+  display: inline-block;
+  float: right;
+  border-right: 1px solid #ddd;
+  user-select: none;
+}
+
+.pagination li {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-right: 0;
+  cursor: pointer;
+}
+
+.pagination a:focus {
+  outline: 0;
+}
+
+.pagination .active {
+  background: #ddd;
 }
