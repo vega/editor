@@ -23,7 +23,6 @@ export default class ErrorPane extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      dataSets: null,
       selectedData: 'root',
     };
     this.handleChange = this.handleChange.bind(this);
