@@ -13,14 +13,16 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  padding: 20px;
+  padding: 0 20px 15px 20px;
   height: 100%;
 }
 
 .data-table {
-  width: 100%;
+  max-width: 100%;
   overflow: auto;
   border: 1px solid #ddd;
+  border-right: 0;
+  border-bottom: 0;
   font-family: monospace;
 }
 
@@ -38,7 +40,7 @@
   text-align: right;
   overflow: hidden;
   max-width: 200px;
-  min-width: 25px;
+  min-width: 100px;
   height: 12px;
   white-space: nowrap;
 }

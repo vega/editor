@@ -15,10 +15,10 @@ interface Props {
 
 interface State {
   currentPage: number;
+  options: string[];
   pageCount: number;
   selectedData: string;
   table: string;
-  dataList: string[];
 }
 
 const OPTIONS = {
@@ -31,15 +31,14 @@ export default class ErrorPane extends React.Component<Props, State> {
     super(props);
     this.state = {
       currentPage: 0,
-      dataList: [],
+      options: [],
       pageCount: 1,
-      selectedData: 'root',
+      selectedData: '',
       table: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.formatData = this.formatData.bind(this);
-    this.getData = this.getData.bind(this);
   }
   public escapeHTML(data: string) {
     return data
@@ -63,7 +62,7 @@ export default class ErrorPane extends React.Component<Props, State> {
     const data = new Promise(resolve => {
       setTimeout(() => {
         resolve(this.props.view.data(name));
-      }, 100);
+      }, 200);
     });
     return data;
   }
@@ -82,21 +81,30 @@ export default class ErrorPane extends React.Component<Props, State> {
     return data;
   }
   public async renderViewer() {
+    const options = [];
     const dataList = this.getDataList();
-    if (!dataList.includes(this.state.selectedData)) {
-      this.setState({ selectedData: 'root' });
-    }
-    const data = (await this.getData(this.state.selectedData)) as any;
-    if (!data || !dataList) {
-      return;
-    }
-    const pageCount = Math.ceil(data.length / OPTIONS.perPage);
-    const table = this.generateTable(this.formatData(data));
-    this.setState({
-      dataList,
-      pageCount,
-      table,
+    dataList.push(dataList.shift());
+    dataList.map(key => {
+      options.push({
+        label: key,
+        value: key,
+      });
     });
+    if (this.state.selectedData && dataList.includes(this.state.selectedData)) {
+      const data = (await this.getData(this.state.selectedData)) as any;
+      if (!data || !dataList) {
+        return;
+      }
+      const pageCount = Math.ceil(data.length / OPTIONS.perPage);
+      const table = this.generateTable(this.formatData(data));
+      this.setState({
+        options,
+        pageCount,
+        table,
+      });
+    } else {
+      this.setState({ selectedData: options[0].label });
+    }
   }
   public generateTable(data: any) {
     if (isObject(data)) {
@@ -146,38 +154,40 @@ export default class ErrorPane extends React.Component<Props, State> {
     }
   }
   public render() {
-    const options = [];
-    this.state.dataList.map(key => {
-      options.push({
-        label: key,
-        value: key,
-      });
-    });
-    const select = (
-      <Select
-        className="data-dropdown"
-        value={{ label: this.state.selectedData }}
-        onChange={this.handleChange}
-        options={options}
-        clearable={false}
-        searchable={false}
-      />
-    );
+    let select;
+    let pagination;
+    if (this.state.options.length !== 0) {
+      select = (
+        <Select
+          className="data-dropdown"
+          value={{ label: this.state.selectedData }}
+          onChange={this.handleChange}
+          options={this.state.options}
+          clearable={false}
+          searchable={false}
+        />
+      );
+    }
+    if (this.state.pageCount > 1) {
+      pagination = (
+        <ReactPaginate
+          previousLabel={'<'}
+          nextLabel={'>'}
+          breakClassName={'break'}
+          pageCount={this.state.pageCount}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={3}
+          onPageChange={this.handlePageChange}
+          containerClassName={'pagination'}
+          activeClassName={'active'}
+        />
+      );
+    }
     return (
       <div className="data-viewer">
         <div className="data-viewer-header">
           {select}
-          <ReactPaginate
-            previousLabel={'<'}
-            nextLabel={'>'}
-            breakClassName={'break'}
-            pageCount={this.state.pageCount}
-            marginPagesDisplayed={1}
-            pageRangeDisplayed={3}
-            onPageChange={this.handlePageChange}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
-          />
+          {pagination}
         </div>
         <div className="data-table" dangerouslySetInnerHTML={{ __html: this.state.table }} />
       </div>
