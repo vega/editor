@@ -1,6 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
+import { ChevronDown, ChevronUp } from 'react-feather';
 import SplitPane from 'react-split-pane';
 
 import DataViewer from '../data-viewer';
@@ -82,6 +83,7 @@ export default class VizPane extends React.Component<Props, State> {
             Data Viewer
           </li>
         </ul>
+        {this.props.debugPane ? <ChevronDown /> : <ChevronUp />}
       </div>
     );
     return (
