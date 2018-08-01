@@ -84,10 +84,15 @@
 
 .pagination li {
   display: inline-block;
-  padding: 5px 10px;
   border: 1px solid #ddd;
   border-right: 0;
+  padding: 5px 0;
   cursor: pointer;
+}
+
+.pagination a,
+.pagination .break {
+  padding: 5px 10px;
 }
 
 .pagination a:focus {

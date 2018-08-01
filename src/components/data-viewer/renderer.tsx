@@ -9,6 +9,7 @@ import { isObject } from 'vega-util';
 import { View } from '../../constants';
 
 interface Props {
+  editorString: string;
   view: View;
 }
 
@@ -16,6 +17,8 @@ interface State {
   currentPage: number;
   pageCount: number;
   selectedData: string;
+  table: string;
+  dataList: string[];
 }
 
 const OPTIONS = {
@@ -28,12 +31,23 @@ export default class ErrorPane extends React.Component<Props, State> {
     super(props);
     this.state = {
       currentPage: 0,
+      dataList: [],
       pageCount: 1,
       selectedData: 'root',
+      table: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.formatData = this.formatData.bind(this);
+    this.getData = this.getData.bind(this);
+  }
+  public escapeHTML(data: string) {
+    return data
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
   public handleChange(option) {
     this.setState({ selectedData: option.value, currentPage: 0 });
@@ -46,7 +60,12 @@ export default class ErrorPane extends React.Component<Props, State> {
     return Object.keys(this.props.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data);
   }
   public getData(name: string) {
-    return this.props.view.data(name);
+    const data = new Promise(resolve => {
+      setTimeout(() => {
+        resolve(this.props.view.data(name));
+      }, 100);
+    });
+    return data;
   }
   public formatData(data: any) {
     const keys = Object.keys(data);
@@ -59,7 +78,25 @@ export default class ErrorPane extends React.Component<Props, State> {
         });
       });
     }
+
     return data;
+  }
+  public async renderViewer() {
+    const dataList = this.getDataList();
+    if (!dataList.includes(this.state.selectedData)) {
+      this.setState({ selectedData: 'root' });
+    }
+    const data = (await this.getData(this.state.selectedData)) as any;
+    if (!data || !dataList) {
+      return;
+    }
+    const pageCount = Math.ceil(data.length / OPTIONS.perPage);
+    const table = this.generateTable(this.formatData(data));
+    this.setState({
+      dataList,
+      pageCount,
+      table,
+    });
   }
   public generateTable(data: any) {
     if (isObject(data)) {
@@ -96,55 +133,45 @@ export default class ErrorPane extends React.Component<Props, State> {
 
     return table;
   }
-  public escapeHTML(data: string) {
-    return data
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+  public componentDidMount() {
+    this.renderViewer();
+  }
+  public componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.editorString !== this.props.editorString ||
+      prevState.selectedData !== this.state.selectedData ||
+      prevState.currentPage !== this.state.currentPage
+    ) {
+      this.renderViewer();
+    }
   }
   public render() {
-    let table;
-    let select;
-    let pageCount;
     const options = [];
-    const dataList = this.getDataList();
-    if (dataList) {
-      dataList.map(key => {
-        options.push({
-          label: key,
-          value: key,
-        });
+    this.state.dataList.map(key => {
+      options.push({
+        label: key,
+        value: key,
       });
-      select = (
-        <Select
-          className="data-dropdown"
-          value={{ label: this.state.selectedData }}
-          onChange={this.handleChange}
-          options={options}
-          clearable={false}
-          searchable={false}
-        />
-      );
-      if (dataList.includes(this.state.selectedData)) {
-        const data = this.getData(this.state.selectedData);
-        if (data) {
-          pageCount = Math.ceil(data.length / OPTIONS.perPage);
-          table = this.generateTable(this.formatData(data));
-        }
-      } else {
-        this.setState({ selectedData: 'root' });
-      }
-    }
+    });
+    const select = (
+      <Select
+        className="data-dropdown"
+        value={{ label: this.state.selectedData }}
+        onChange={this.handleChange}
+        options={options}
+        clearable={false}
+        searchable={false}
+      />
+    );
     return (
       <div className="data-viewer">
         <div className="data-viewer-header">
-          {select ? select : ''}
+          {select}
           <ReactPaginate
             previousLabel={'<'}
             nextLabel={'>'}
-            pageCount={pageCount}
+            breakClassName={'break'}
+            pageCount={this.state.pageCount}
             marginPagesDisplayed={1}
             pageRangeDisplayed={3}
             onPageChange={this.handlePageChange}
@@ -152,7 +179,7 @@ export default class ErrorPane extends React.Component<Props, State> {
             activeClassName={'active'}
           />
         </div>
-        <div className="data-table" dangerouslySetInnerHTML={{ __html: table }} />
+        <div className="data-table" dangerouslySetInnerHTML={{ __html: this.state.table }} />
       </div>
     );
   }
