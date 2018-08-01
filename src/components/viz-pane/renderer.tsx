@@ -11,7 +11,9 @@ import Toolbar from '../toolbar';
 
 interface Props {
   debugPane?: boolean;
+  debugPaneSize?: number;
 
+  setDebugPaneSize: (val: any) => void;
   toggleDebugPane: () => void;
 }
 
@@ -25,11 +27,26 @@ export default class VizPane extends React.Component<Props, State> {
     this.state = {
       logs: true,
     };
+    this.handleChange = this.handleChange.bind(this);
+  }
+  public handleChange(size: number) {
+    this.props.setDebugPaneSize(size);
+    if ((size > 25 && !this.props.debugPane) || (size === 25 && this.props.debugPane)) {
+      this.props.toggleDebugPane();
+    }
+  }
+  public componenDidUpdate() {
+    const debugPane = this.refs.debugPane as any;
+    if (debugPane.pane2.style.height > 25 && !this.props.debugPane) {
+      this.props.toggleDebugPane();
+    }
   }
   public render() {
     const debugPane = this.refs.debugPane as any;
     if (debugPane) {
-      debugPane.pane2.style.height = this.props.debugPane ? window.innerHeight * 0.4 + 'px' : '25px';
+      debugPane.pane2.style.height = this.props.debugPane
+        ? (this.props.debugPaneSize || window.innerHeight * 0.4) + 'px'
+        : '25px';
     }
     const container = (
       <div className="chart-container">
@@ -73,7 +90,8 @@ export default class VizPane extends React.Component<Props, State> {
         split="horizontal"
         primary="second"
         minSize={25}
-        defaultSize={25}
+        defaultSize={this.props.debugPaneSize || 25}
+        onChange={this.handleChange}
         paneStyle={{ display: 'flex' }}
       >
         {container}

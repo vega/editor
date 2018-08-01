@@ -7,11 +7,15 @@ import Renderer from './renderer';
 function mapStateToProps(state: State, ownProps) {
   return {
     debugPane: state.debugPane,
+    debugPaneSize: state.debugPaneSize,
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    setDebugPaneSize: val => {
+      dispatch(EditorActions.setDebugPaneSize(val));
+    },
     toggleDebugPane: () => {
       dispatch(EditorActions.toggleDebugPane());
     },

@@ -7,6 +7,7 @@ import {
   LOG_ERROR,
   PARSE_SPEC,
   SET_BASEURL,
+  SET_DEBUG_PANE_SIZE,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
   SET_MODE,
@@ -216,6 +217,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         view: action.view,
+      };
+    case SET_DEBUG_PANE_SIZE:
+      return {
+        ...state,
+        debugPaneSize: action.debugPaneSize,
       };
     default:
       return state;

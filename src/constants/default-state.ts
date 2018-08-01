@@ -6,6 +6,7 @@ export interface State {
   baseURL: string;
   compiledVegaSpec: boolean;
   debugPane: boolean;
+  debugPaneSize: number;
   editorString: string;
   error: Error;
   export: boolean;
@@ -27,6 +28,7 @@ export const DEFAULT_STATE: State = {
   baseURL: null,
   compiledVegaSpec: false,
   debugPane: false,
+  debugPaneSize: null,
   editorString: '{}',
   error: null,
   export: false,

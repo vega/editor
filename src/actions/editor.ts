@@ -5,6 +5,7 @@ export const FORMAT_SPEC: 'FORMAT_SPEC' = 'FORMAT_SPEC';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
 export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
 export const SET_BASEURL: 'SET_BASEURL' = 'SET_BASEURL';
+export const SET_DEBUG_PANE_SIZE: 'SET_DEBUG_PANE_SIZE' = 'SET_DEBUG_PANE_SIZE';
 export const SET_GIST_VEGA_LITE_SPEC: 'SET_GIST_VEGA_LITE_SPEC' = 'SET_GIST_VEGA_LITE_SPEC';
 export const SET_GIST_VEGA_SPEC: 'SET_GIST_VEGA_SPEC' = 'SET_GIST_VEGA_SPEC';
 export const SET_MODE: 'SET_MODE' = 'SET_MODE';
@@ -39,7 +40,8 @@ export type Action =
   | SetRenderer
   | SetBaseUrl
   | FormatSpec
-  | SetView;
+  | SetView
+  | SetDebugPaneSize;
 
 export function setMode(mode: Mode) {
   return {
@@ -192,3 +194,11 @@ export function setView(view: View) {
   };
 }
 export type SetView = ReturnType<typeof setView>;
+
+export function setDebugPaneSize(size: number) {
+  return {
+    debugPaneSize: size,
+    type: SET_DEBUG_PANE_SIZE,
+  };
+}
+export type SetDebugPaneSize = ReturnType<typeof setDebugPaneSize>;
