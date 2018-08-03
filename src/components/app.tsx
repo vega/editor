@@ -38,7 +38,8 @@ class App extends React.Component<Props & { match: any; location: any }> {
         }
         data.spec = stringify(parsed);
         if (data.spec || data.file) {
-          evt.source.postMessage(true, '*');
+          // FIXME: remove any
+          (evt as any).source.postMessage(true, '*');
         }
         if (data.spec) {
           if (data.mode.toUpperCase() === 'VEGA') {
