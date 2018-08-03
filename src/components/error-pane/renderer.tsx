@@ -32,7 +32,8 @@ export default class ErrorPane extends React.Component<Props> {
     if (list.length === 0) {
       list.push(
         <li key={'no error'}>
-          <span className="info">[Info] </span>No error or warnings
+          <span className="info">[Info] </span>
+          No error or warnings
         </li>
       );
     }
