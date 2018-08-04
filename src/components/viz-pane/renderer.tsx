@@ -36,7 +36,7 @@ export default class VizPane extends React.Component<Props, State> {
       this.props.toggleDebugPane();
     }
   }
-  public componenDidUpdate() {
+  public componentDidUpdate() {
     const debugPane = this.refs.debugPane as any;
     if (debugPane.pane2.style.height > 25 && !this.props.debugPane) {
       this.props.toggleDebugPane();
@@ -92,7 +92,7 @@ export default class VizPane extends React.Component<Props, State> {
         split="horizontal"
         primary="second"
         minSize={25}
-        defaultSize={this.props.debugPaneSize || 25}
+        defaultSize={this.props.debugPane ? this.props.debugPaneSize : 25}
         onChange={this.handleChange}
         paneStyle={{ display: 'flex' }}
       >

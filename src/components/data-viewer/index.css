@@ -1,8 +1,10 @@
 .data-dropdown {
   display: inline-flex;
+  position: relative;
   width: 150px;
   margin: 10px 0;
   text-align: center;
+  z-index: 1000;
 }
 
 .data-dropdown:focus {
@@ -125,6 +127,7 @@
 
 .tooltip:after {
   position: fixed;
+  z-index: -1;
   content: attr(data-tip);
   padding: 5px;
   border-radius: 3px;
