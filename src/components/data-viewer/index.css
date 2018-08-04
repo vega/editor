@@ -1,5 +1,5 @@
 .data-dropdown {
-  display: inline-block;
+  display: inline-flex;
   width: 150px;
   margin: 10px 0;
   text-align: center;
@@ -78,8 +78,7 @@
 }
 
 .pagination {
-  display: inline-block;
-  float: right;
+  display: inline-flex;
   border-right: 1px solid #ddd;
   user-select: none;
 }
@@ -103,4 +102,36 @@
 
 .pagination .active {
   background: #ddd;
+}
+
+.tooltip {
+  position: relative;
+  z-index: 100;
+  overflow: visible !important;
+  text-align: right;
+}
+
+.tooltip span {
+  float: right;
+}
+
+[data-tip]:before,
+[data-tip]:after {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-tip]:after {
+  content: attr(data-tip);
+  padding: 7px;
+  border-radius: 3px;
+  background: hsla(0, 0%, 20%, 0.9);
+  color: #fff;
+}
+
+[data-tip]:hover:before,
+[data-tip]:hover:after {
+  visibility: visible;
+  opacity: 1;
 }

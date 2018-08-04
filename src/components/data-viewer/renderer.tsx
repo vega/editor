@@ -130,7 +130,7 @@ export default class ErrorPane extends React.Component<Props, State> {
         // Width of table cell / average width of a char i.e 8px
         if (value && value.length > 24) {
           value = this.escapeHTML(value);
-          table += `<td>(...)</td>`;
+          table += `<td class="tooltip" data-tip="The field is too large to be displayed. Please use the view API (see JS console)."><span>(...)<span></td>`;
         } else {
           table += `<td>${value}</td>`;
         }
