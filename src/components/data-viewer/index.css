@@ -105,9 +105,10 @@
 }
 
 .tooltip {
-  position: relative;
-  z-index: 100;
+  max-width: 100px !important;
   overflow: visible !important;
+  position: relative;
+  z-index: 2;
   text-align: right;
 }
 
@@ -115,23 +116,24 @@
   float: right;
 }
 
-[data-tip]:before,
-[data-tip]:after {
+.tooltip:before,
+.tooltip:after {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
 }
 
-[data-tip]:after {
+.tooltip:after {
+  position: fixed;
   content: attr(data-tip);
-  padding: 7px;
+  padding: 5px;
   border-radius: 3px;
-  background: hsla(0, 0%, 20%, 0.9);
+  background: rgba(0, 0, 0, 0.75);
   color: #fff;
 }
 
-[data-tip]:hover:before,
-[data-tip]:hover:after {
+.tooltip:hover:before,
+.tooltip:hover:after {
   visibility: visible;
   opacity: 1;
 }
