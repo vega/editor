@@ -1,7 +1,6 @@
 .data-dropdown {
   display: inline-flex;
   position: relative;
-  width: 150px;
   margin: 10px 0;
   text-align: center;
   z-index: 1000;

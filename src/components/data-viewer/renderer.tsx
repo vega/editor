@@ -159,6 +159,7 @@ export default class ErrorPane extends React.Component<Props, State> {
     if (this.state.options.length !== 0) {
       select = (
         <Select
+          style={{ width: `${8 * this.state.selectedData.length + 100}px` }}
           className="data-dropdown"
           value={{ label: this.state.selectedData }}
           onChange={this.handleChange}
