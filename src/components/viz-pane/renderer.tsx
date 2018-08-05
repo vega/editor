@@ -4,6 +4,7 @@ import * as React from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import SplitPane from 'react-split-pane';
 
+import { View } from '../../constants';
 import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
@@ -14,6 +15,7 @@ interface Props {
   debugPane?: boolean;
   debugPaneSize?: number;
   logs?: boolean;
+  view?: View;
 
   setDebugPaneSize: (val: any) => void;
   showLogs: (val: any) => void;
@@ -94,7 +96,7 @@ export default class VizPane extends React.Component<Props> {
         {container}
         <div className="debug-pane">
           {debugPaneHeader}
-          {this.props.logs ? <ErrorPane /> : <DataViewer />}
+          {this.props.logs ? <ErrorPane /> : this.props.view ? <DataViewer /> : null}
         </div>
       </SplitPane>
     );

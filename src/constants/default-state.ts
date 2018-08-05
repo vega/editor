@@ -35,7 +35,7 @@ export const DEFAULT_STATE: State = {
   export: false,
   format: false,
   gist: null,
-  logs: true,
+  logs: false,
   mode: Mode.VegaLite,
   parse: false,
   renderer: 'canvas',
