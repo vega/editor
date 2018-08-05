@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { RefreshCw } from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
@@ -104,7 +105,9 @@ export default class DataViewer extends React.Component<Props, State> {
             clearable={false}
             searchable={false}
           />
-          <button onClick={this.handleReload}>↺ Refresh</button>
+          <button className="data-refresh" onClick={this.handleReload}>
+            <RefreshCw /> <span>Refresh</span>
+          </button>
           <div className="pagination-wrapper">{pagination}</div>
         </div>
         <ErrorBoundary>{table}</ErrorBoundary>

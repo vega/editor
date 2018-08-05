@@ -11,14 +11,14 @@
 }
 
 .data-viewer {
+  display: flex;
+  flex-direction: column;
   padding: 0 20px 15px 20px;
   height: 100%;
-  overflow: scroll;
 }
 
 .data-viewer-header {
   width: 100%;
-  display: flex;
   align-items: center;
 }
 
@@ -46,6 +46,8 @@
 }
 
 .pagination-wrapper {
+  display: inline-flex;
+  vertical-align: middle;
   flex: 1;
 }
 
@@ -59,6 +61,7 @@
   border-right: 0;
   padding: 5px 0;
   cursor: pointer;
+  user-select: none;
 }
 
 .pagination li:last-child {
@@ -82,16 +85,18 @@
   color: #ddd;
 }
 
-.data-viewer::-webkit-scrollbar {
-  width: 7px; /* for vertical scrollbars */
-  height: 7px; /* for horizontal scrollbars */
+.data-refresh {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
 }
 
-.data-viewer::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+.data-refresh span {
+  padding: 0 5px;
 }
 
-.data-viewer::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
+.data-refresh svg {
+  width: 18px;
+  height: 18px;
 }
