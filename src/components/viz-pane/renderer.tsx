@@ -13,19 +13,14 @@ import Toolbar from '../toolbar';
 interface Props {
   debugPane?: boolean;
   debugPaneSize?: number;
+  logs?: boolean;
 
   setDebugPaneSize: (val: any) => void;
+  showLogs: (val: any) => void;
   toggleDebugPane: () => void;
 }
 
-const defaultState = {
-  logs: true,
-};
-
-type State = Readonly<typeof defaultState>;
-
-export default class VizPane extends React.Component<Props, State> {
-  public readonly state = defaultState;
+export default class VizPane extends React.Component<Props> {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -61,23 +56,23 @@ export default class VizPane extends React.Component<Props, State> {
       <div className="debug-pane-header" onClick={e => this.props.toggleDebugPane()}>
         <ul className="tabs-nav">
           <li
-            className={this.state.logs ? 'active-tab' : ''}
+            className={this.props.logs ? 'active-tab' : ''}
             onClick={e => {
               if (this.props.debugPane) {
                 e.stopPropagation();
               }
-              this.setState({ logs: true });
+              this.props.showLogs(true);
             }}
           >
             Logs
           </li>
           <li
-            className={this.state.logs ? '' : 'active-tab'}
+            className={this.props.logs ? '' : 'active-tab'}
             onClick={e => {
               if (this.props.debugPane) {
                 e.stopPropagation();
               }
-              this.setState({ logs: false });
+              this.props.showLogs(false);
             }}
           >
             Data Viewer
@@ -99,7 +94,7 @@ export default class VizPane extends React.Component<Props, State> {
         {container}
         <div className="debug-pane">
           {debugPaneHeader}
-          {this.state.logs ? <ErrorPane /> : <DataViewer />}
+          {this.props.logs ? <ErrorPane /> : <DataViewer />}
         </div>
       </SplitPane>
     );

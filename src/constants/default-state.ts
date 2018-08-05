@@ -12,6 +12,7 @@ export interface State {
   export: boolean;
   format: boolean;
   gist: string;
+  logs: boolean;
   mode: Mode;
   parse: boolean;
   renderer: Renderer;
@@ -34,6 +35,7 @@ export const DEFAULT_STATE: State = {
   export: false,
   format: false,
   gist: null,
+  logs: true,
   mode: Mode.VegaLite,
   parse: false,
   renderer: 'canvas',

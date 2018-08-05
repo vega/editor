@@ -20,6 +20,7 @@ import {
   SetVegaExample,
   SetVegaLiteExample,
   SHOW_COMPILED_VEGA_SPEC,
+  SHOW_LOGS,
   SHOW_TOOLTIP,
   TOGGLE_AUTO_PARSE,
   TOGGLE_DEBUG_PANE,
@@ -222,6 +223,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         debugPaneSize: action.debugPaneSize,
+      };
+    case SHOW_LOGS:
+      return {
+        ...state,
+        logs: action.logs,
       };
     default:
       return state;

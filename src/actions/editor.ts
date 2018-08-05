@@ -14,6 +14,7 @@ export const SET_VEGA_EXAMPLE: 'SET_VEGA_EXAMPLE' = 'SET_VEGA_EXAMPLE';
 export const SET_VEGA_LITE_EXAMPLE: 'SET_VEGA_LITE_EXAMPLE' = 'SET_VEGA_LITE_EXAMPLE';
 export const SET_VIEW: 'SET_VIEW' = 'SET_VIEW';
 export const SHOW_COMPILED_VEGA_SPEC: 'SHOW_COMPILED_VEGA_SPEC' = 'SHOW_COMPILED_VEGA_SPEC';
+export const SHOW_LOGS: 'SHOW_LOGS' = 'SHOW_LOGS';
 export const SHOW_TOOLTIP: 'SHOW_TOOLTIP' = 'SHOW_TOOLTIP';
 export const TOGGLE_AUTO_PARSE: 'TOGGLE_AUTO_PARSE' = 'TOGGLE_AUTO_PARSE';
 export const TOGGLE_DEBUG_PANE: 'TOGGLE_DEBUG_PANE' = 'TOGGLE_DEBUG_PANE';
@@ -41,7 +42,8 @@ export type Action =
   | SetBaseUrl
   | FormatSpec
   | SetView
-  | SetDebugPaneSize;
+  | SetDebugPaneSize
+  | ShowLogs;
 
 export function setMode(mode: Mode) {
   return {
@@ -202,3 +204,11 @@ export function setDebugPaneSize(size: number) {
   };
 }
 export type SetDebugPaneSize = ReturnType<typeof setDebugPaneSize>;
+
+export function showLogs(value: boolean) {
+  return {
+    logs: value,
+    type: SHOW_LOGS,
+  };
+}
+export type ShowLogs = ReturnType<typeof showLogs>;
