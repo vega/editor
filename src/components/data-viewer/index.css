@@ -2,8 +2,8 @@
   display: inline-flex;
   position: relative;
   margin: 10px 0;
-  text-align: center;
   z-index: 1000;
+  width: 200px;
 }
 
 .data-dropdown:focus {
@@ -16,62 +16,6 @@
   flex-direction: column;
   padding: 0 20px 15px 20px;
   height: 100%;
-}
-
-.data-table {
-  max-width: 100%;
-  overflow: auto;
-  border: 1px solid #ddd;
-  border-right: 0;
-  border-bottom: 0;
-  font-family: monospace;
-}
-
-.data-table table {
-  width: 100%;
-  table-layout: auto;
-  border-collapse: collapse;
-}
-
-.data-table td,
-.data-table th {
-  border-bottom: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  padding: 8px;
-  text-align: right;
-  overflow: hidden;
-  max-width: 200px;
-  min-width: 100px;
-  height: 12px;
-  white-space: nowrap;
-}
-
-.data-table td {
-  color: #666;
-}
-
-.data-table td:hover {
-  color: #444;
-}
-
-.data-table th {
-  text-align: center;
-  border-bottom: 1px solid #444 !important;
-  color: #444;
-}
-
-.data-table::-webkit-scrollbar {
-  width: 7px; /* for vertical scrollbars */
-  height: 7px; /* for horizontal scrollbars */
-}
-
-.data-table::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.data-table::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
 }
 
 .data-viewer-header {

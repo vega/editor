@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 
-import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
