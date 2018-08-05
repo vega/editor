@@ -1,13 +1,23 @@
 .data-table {
+  width: fit-content;
   font-size: 0.9em;
   overflow: auto;
+  border-top: 1px solid #dfe2e5;
+  border-bottom: 1px solid #dfe2e5;
 }
 
 .data-table table {
-  border: 1px solid #dfe2e5;
   max-width: 100%;
   table-layout: auto;
   border-collapse: collapse;
+}
+
+.data-table tr:first-child > * {
+  border-top: 0;
+}
+
+.data-table tr:last-child > * {
+  border-bottom: 0;
 }
 
 .data-table th {
@@ -18,11 +28,11 @@
 
 .data-table td,
 .data-table th {
-  border: 1px solid #dfe2e5;
-  padding: 8px;
-  word-break: keep-all;
   min-width: 30px;
   color: #333;
+  padding: 8px;
+  word-break: keep-all;
+  border: 1px solid #dfe2e5;
 }
 
 tr:nth-child(even) {
