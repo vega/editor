@@ -9,7 +9,6 @@ import Table from '../table';
 import './index.css';
 
 interface Props {
-  editorString: string;
   view: View;
 }
 
@@ -52,10 +51,10 @@ export default class DataViewer extends React.Component<Props, State> {
   public render() {
     const datasets = this.getDatasets();
     if (datasets.length === 0) {
-      return <div className="data-viewer">Spec has no data.</div>;
+      return <div className="data-viewer">Spec has no data</div>;
     }
 
-    datasets.push(datasets.shift()); // move root to the end
+    datasets.push(datasets.shift()); // Move root to the end
 
     let selected = this.state.selectedData;
     if (datasets.indexOf(selected) < 0) {

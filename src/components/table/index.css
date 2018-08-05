@@ -12,18 +12,18 @@
   border-collapse: collapse;
 }
 
-.data-table tr:first-child > * {
+.data-table thead tr:first-child > * {
   border-top: 0;
+  border-bottom: 2px solid #dfe2e5;
 }
 
-.data-table tr:last-child > * {
+.data-table tbody tr:last-child > * {
   border-bottom: 0;
 }
 
 .data-table th {
   text-align: center;
-  border-bottom: 2px solid #dfe2e5;
-  background-color: #f6f8fa;
+  background: #f6f8fa;
 }
 
 .data-table td,

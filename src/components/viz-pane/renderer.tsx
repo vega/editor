@@ -22,6 +22,8 @@ interface Props {
   toggleDebugPane: () => void;
 }
 
+const MIN_PANE_HEIGHT = 25;
+
 export default class VizPane extends React.Component<Props> {
   constructor(props) {
     super(props);
@@ -29,13 +31,13 @@ export default class VizPane extends React.Component<Props> {
   }
   public handleChange(size: number) {
     this.props.setDebugPaneSize(size);
-    if ((size > 25 && !this.props.debugPane) || (size === 25 && this.props.debugPane)) {
+    if ((size > MIN_PANE_HEIGHT && !this.props.debugPane) || (size === MIN_PANE_HEIGHT && this.props.debugPane)) {
       this.props.toggleDebugPane();
     }
   }
   public componentDidUpdate() {
     const debugPane = this.refs.debugPane as any;
-    if (debugPane.pane2.style.height > 25 && !this.props.debugPane) {
+    if (debugPane.pane2.style.height > MIN_PANE_HEIGHT && !this.props.debugPane) {
       this.props.toggleDebugPane();
     }
   }
@@ -44,7 +46,7 @@ export default class VizPane extends React.Component<Props> {
     if (debugPane) {
       debugPane.pane2.style.height = this.props.debugPane
         ? (this.props.debugPaneSize || window.innerHeight * 0.4) + 'px'
-        : '25px';
+        : MIN_PANE_HEIGHT + 'px';
     }
     const container = (
       <div className="chart-container">
@@ -88,8 +90,8 @@ export default class VizPane extends React.Component<Props> {
         ref="debugPane"
         split="horizontal"
         primary="second"
-        minSize={25}
-        defaultSize={this.props.debugPane ? this.props.debugPaneSize : 25}
+        minSize={MIN_PANE_HEIGHT}
+        defaultSize={this.props.debugPane ? this.props.debugPaneSize : MIN_PANE_HEIGHT}
         onChange={this.handleChange}
         paneStyle={{ display: 'flex' }}
       >
