@@ -11,21 +11,46 @@
 }
 
 .data-viewer {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
   padding: 0 20px 15px 20px;
   height: 100%;
+  overflow: scroll;
 }
 
 .data-viewer-header {
   width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.data-viewer-header button {
+  font-size: 1em;
+  margin-left: 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  line-height: 31px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.data-viewer-header button:focus {
+  outline: none;
+}
+
+.data-viewer-header button:hover {
+  border-color: #aaa;
+}
+
+.data-viewer-header button:active {
+  background-color: #ddd;
+}
+
+.pagination-wrapper {
+  flex: 1;
 }
 
 .pagination {
-  display: inline-flex;
-  border-right: 1px solid #ddd;
-  user-select: none;
+  margin: 10px auto 10px auto;
 }
 
 .pagination li {
@@ -34,6 +59,10 @@
   border-right: 0;
   padding: 5px 0;
   cursor: pointer;
+}
+
+.pagination li:last-child {
+  border-right: 1px solid #ddd;
 }
 
 .pagination a,
@@ -49,37 +78,20 @@
   background: #ddd;
 }
 
-.tooltip {
-  max-width: 100px !important;
-  overflow: visible !important;
-  position: relative;
-  z-index: 2;
-  text-align: right;
+.pagination .disabled {
+  color: #ddd;
 }
 
-.tooltip span {
-  float: right;
+.data-viewer::-webkit-scrollbar {
+  width: 7px; /* for vertical scrollbars */
+  height: 7px; /* for horizontal scrollbars */
 }
 
-.tooltip:before,
-.tooltip:after {
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
+.data-viewer::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
 }
 
-.tooltip:after {
-  position: fixed;
-  z-index: -1;
-  content: attr(data-tip);
-  padding: 5px;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.75);
-  color: #fff;
-}
-
-.tooltip:hover:before,
-.tooltip:hover:after {
-  visibility: visible;
-  opacity: 1;
+.data-viewer::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
 }

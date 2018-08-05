@@ -3,6 +3,7 @@ import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
 import { View } from '../../constants';
+import ErrorBoundary from '../error-boundary';
 import Table from '../table';
 import './index.css';
 
@@ -11,73 +12,59 @@ interface Props {
   view: View;
 }
 
-interface State {
-  currentPage: number;
-  options: Array<{ label: string; value: string }>;
-  selectedData: string;
-}
+const initialState = {
+  currentPage: 0,
+  selectedData: '',
+};
 
-const ROWS_PER_PAGE = 10;
+type State = Readonly<typeof initialState>;
+
+const ROWS_PER_PAGE = 16;
 
 export default class DataViewer extends React.Component<Props, State> {
+  public readonly state: State = initialState;
+
   constructor(props) {
     super(props);
-    this.state = {
-      currentPage: 0,
-      options: [],
-      selectedData: '',
-    };
     this.handleChange = this.handleChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleReload = this.handleReload.bind(this);
   }
 
   public handleChange(option) {
     this.setState({ selectedData: option.value, currentPage: 0 });
   }
+
   public handlePageChange(option) {
     const selected = option.selected;
     this.setState({ currentPage: selected });
   }
+
+  public handleReload() {
+    this.forceUpdate();
+  }
+
   public getDatasets() {
     return Object.keys(this.props.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data);
   }
 
-  public setDatasetOptionsInState() {
-    const options = [];
-    const dataList = this.getDatasets();
-    dataList.push(dataList.shift()); // move root to the end
-    dataList.map(key => {
-      options.push({
-        label: key,
-        value: key,
-      });
-    });
-
-    this.setState({ options });
-  }
-
-  public componentDidMount() {
-    this.setDatasetOptionsInState();
-  }
-  public componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.editorString !== this.props.editorString ||
-      prevState.selectedData !== this.state.selectedData ||
-      prevState.currentPage !== this.state.currentPage
-    ) {
-      this.setDatasetOptionsInState();
-    }
-  }
   public render() {
-    if (this.state.options.length === 0) {
-      return <div>Spec has no data.</div>;
+    const datasets = this.getDatasets();
+    if (datasets.length === 0) {
+      return <div className="data-viewer">Spec has no data.</div>;
+    }
+
+    datasets.push(datasets.shift()); // move root to the end
+
+    let selected = this.state.selectedData;
+    if (datasets.indexOf(selected) < 0) {
+      selected = datasets[0];
     }
 
     let pagination;
 
-    const selectedData = this.state.selectedData || this.state.options[0].label;
+    const data = this.props.view.data(selected) || [];
 
-    const data = this.props.view.data(selectedData);
     const pageCount = Math.ceil(data.length / ROWS_PER_PAGE);
 
     if (pageCount > 1) {
@@ -106,19 +93,21 @@ export default class DataViewer extends React.Component<Props, State> {
     return (
       <div className="data-viewer">
         <div className="data-viewer-header">
-          <div style={{ display: 'inline-block' }}>
-            <Select
-              className="data-dropdown"
-              value={{ label: selectedData }}
-              onChange={this.handleChange}
-              options={this.state.options}
-              clearable={false}
-              searchable={false}
-            />
-          </div>
-          {pagination}
+          <Select
+            className="data-dropdown"
+            value={{ label: selected }}
+            onChange={this.handleChange}
+            options={datasets.map(d => ({
+              label: d,
+              value: d,
+            }))}
+            clearable={false}
+            searchable={false}
+          />
+          <button onClick={this.handleReload}>↺ Refresh</button>
+          <div className="pagination-wrapper">{pagination}</div>
         </div>
-        {table}
+        <ErrorBoundary>{table}</ErrorBoundary>
       </div>
     );
   }

@@ -38,12 +38,12 @@ interface State {
   invalidUrl?: boolean;
 }
 
-class Header extends React.Component<Props & { history: any }, State> {
+class Header extends React.Component<Props & { history: any }, Readonly<State>> {
+  public readonly state: State;
   private refGistForm: HTMLFormElement;
 
   constructor(props) {
     super(props);
-    // $FixMe - default state?
     this.state = {
       gist: {
         filename: '',

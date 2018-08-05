@@ -27,9 +27,9 @@ interface Props {
   setView: (val: any) => void;
 }
 
-interface State {
-  fullscreen: boolean;
-}
+const defaultState = { fullscreen: false };
+
+type State = Readonly<typeof defaultState>;
 
 const KEYCODES = {
   ESCAPE: 27,
@@ -38,10 +38,10 @@ const KEYCODES = {
 class Editor extends React.Component<Props, State> {
   public static view: View;
   public static pathname: string;
+  public readonly state: State = defaultState;
 
   constructor(props) {
     super(props);
-    this.state = { fullscreen: false };
     this.handleKeydown = this.handleKeydown.bind(this);
     this.onOpenPortal = this.onOpenPortal.bind(this);
     this.onClosePortal = this.onClosePortal.bind(this);

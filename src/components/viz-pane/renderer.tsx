@@ -18,16 +18,16 @@ interface Props {
   toggleDebugPane: () => void;
 }
 
-interface State {
-  logs: boolean;
-}
+const defaultState = {
+  logs: true,
+};
+
+type State = Readonly<typeof defaultState>;
 
 export default class VizPane extends React.Component<Props, State> {
+  public readonly state = defaultState;
   constructor(props) {
     super(props);
-    this.state = {
-      logs: true,
-    };
     this.handleChange = this.handleChange.bind(this);
   }
   public handleChange(size: number) {
