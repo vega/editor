@@ -19,6 +19,7 @@ class CompiledSpecDisplay extends React.PureComponent<Props, {}> {
           options={{
             automaticLayout: true,
             folding: true,
+            minimap: { enabled: false },
             readOnly: true,
             scrollBeyondLastLine: false,
             wordWrap: 'on',

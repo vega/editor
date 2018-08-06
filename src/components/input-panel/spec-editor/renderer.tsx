@@ -226,6 +226,7 @@ class Editor extends React.Component<Props, {}> {
             cursorBlinking: 'smooth',
             folding: true,
             lineNumbersMinChars: 4,
+            minimap: { enabled: false },
             scrollBeyondLastLine: false,
             wordWrap: 'on',
           }}
