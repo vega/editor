@@ -1,3 +1,7 @@
+.flex-start {
+  align-self: flex-start;
+}
+
 .header {
   display: flex;
   height: 60px;
@@ -105,10 +109,6 @@
 .modal-body::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.4);
   border-radius: 10px;
-}
-
-.gist-modal {
-  align-self: flex-start;
 }
 
 .close-button {

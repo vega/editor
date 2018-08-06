@@ -8,6 +8,7 @@ const mapStateToProps = (state: State, ownProps) => {
   return {
     autoParse: state.autoParse,
     mode: state.mode,
+    view: state.view,
   };
 };
 
