@@ -7,20 +7,23 @@ import {
   LOG_ERROR,
   PARSE_SPEC,
   SET_BASEURL,
+  SET_DEBUG_PANE_SIZE,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
   SET_MODE,
   SET_RENDERER,
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
+  SET_VIEW,
   SetGistVegaLiteSpec,
   SetGistVegaSpec,
   SetVegaExample,
   SetVegaLiteExample,
   SHOW_COMPILED_VEGA_SPEC,
-  SHOW_ERROR_PANE,
+  SHOW_LOGS,
   SHOW_TOOLTIP,
   TOGGLE_AUTO_PARSE,
+  TOGGLE_DEBUG_PANE,
   UPDATE_EDITOR_STRING,
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
@@ -126,6 +129,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         tooltip: true,
         vegaLiteSpec: {},
         vegaSpec: {},
+        view: null,
         warningsLogger: new LocalLogger(),
       };
     case PARSE_SPEC:
@@ -170,10 +174,10 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         compiledVegaSpec: !state.compiledVegaSpec,
       };
-    case SHOW_ERROR_PANE:
+    case TOGGLE_DEBUG_PANE:
       return {
         ...state,
-        errorPane: !state.errorPane,
+        debugPane: !state.debugPane,
       };
     case LOG_ERROR:
       return {
@@ -209,6 +213,21 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         format: action.format,
+      };
+    case SET_VIEW:
+      return {
+        ...state,
+        view: action.view,
+      };
+    case SET_DEBUG_PANE_SIZE:
+      return {
+        ...state,
+        debugPaneSize: action.debugPaneSize,
+      };
+    case SHOW_LOGS:
+      return {
+        ...state,
+        logs: action.logs,
       };
     default:
       return state;

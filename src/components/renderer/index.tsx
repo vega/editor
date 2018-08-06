@@ -4,21 +4,25 @@ import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
-function mapStateToProps(state: State, ownProps) {
+const mapStateToProps = (state: State, ownProps) => {
   return {
     baseURL: state.baseURL,
+    editorString: state.editorString,
     export: state.export,
     mode: state.mode,
     renderer: state.renderer,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
   };
-}
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     exportVega: val => {
       dispatch(EditorActions.exportVega(val));
+    },
+    setView: val => {
+      dispatch(EditorActions.setView(val));
     },
   };
 };

@@ -16,20 +16,20 @@ interface Props {
   renderer?: string;
 
   setRenderer: (val: any) => void;
-  showErrorPane: () => void;
+  toggleDebugPane: () => void;
 }
 
 export default class Toolbar extends React.Component<Props> {
   public showErrorAndWarnings() {
     if (this.props.error) {
       return (
-        <div className="error-indicator" onClick={e => this.props.showErrorPane()}>
+        <div className="error-indicator" onClick={e => this.props.toggleDebugPane()}>
           Error
         </div>
       );
     } else if (this.props.warningsLogger.warns.length > 0) {
       return (
-        <div className="warning-indicator" onClick={e => this.props.showErrorPane()}>
+        <div className="warning-indicator" onClick={e => this.props.toggleDebugPane()}>
           Warning
         </div>
       );

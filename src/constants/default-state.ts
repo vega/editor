@@ -1,16 +1,18 @@
 import { LocalLogger } from '../utils/logger';
-import { Mode, Renderer } from './consts';
+import { Mode, Renderer, View } from './consts';
 
 export interface State {
   autoParse: boolean;
   baseURL: string;
   compiledVegaSpec: boolean;
+  debugPane: boolean;
+  debugPaneSize: number;
   editorString: string;
   error: Error;
-  errorPane: boolean;
   export: boolean;
   format: boolean;
   gist: string;
+  logs: boolean;
   mode: Mode;
   parse: boolean;
   renderer: Renderer;
@@ -18,6 +20,7 @@ export interface State {
   tooltip: boolean;
   vegaLiteSpec: any;
   vegaSpec: any;
+  view: View;
   warningsLogger: LocalLogger;
 }
 
@@ -25,12 +28,14 @@ export const DEFAULT_STATE: State = {
   autoParse: true,
   baseURL: null,
   compiledVegaSpec: false,
+  debugPane: false,
+  debugPaneSize: null,
   editorString: '{}',
   error: null,
-  errorPane: false,
   export: false,
   format: false,
   gist: null,
+  logs: false,
   mode: Mode.VegaLite,
   parse: false,
   renderer: 'canvas',
@@ -38,5 +43,6 @@ export const DEFAULT_STATE: State = {
   tooltip: true,
   vegaLiteSpec: null,
   vegaSpec: {},
+  view: null,
   warningsLogger: new LocalLogger(),
 };

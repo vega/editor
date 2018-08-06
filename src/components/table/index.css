@@ -1,0 +1,55 @@
+.data-table {
+  width: fit-content;
+  max-width: 100%;
+  font-size: 0.9em;
+  overflow: auto;
+  border-top: 1px solid #dfe2e5;
+  border-bottom: 1px solid #dfe2e5;
+}
+
+.data-table table {
+  max-width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+.data-table thead tr:first-child > * {
+  border-top: 0;
+  border-bottom: 2px solid #dfe2e5;
+}
+
+.data-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.data-table th {
+  text-align: center;
+  background: #f6f8fa;
+}
+
+.data-table td,
+.data-table th {
+  min-width: 30px;
+  color: #333;
+  padding: 8px;
+  word-break: keep-all;
+  border: 1px solid #dfe2e5;
+}
+
+tr:nth-child(even) {
+  background-color: #f6f8fa;
+}
+
+.data-table::-webkit-scrollbar {
+  width: 7px; /* for vertical scrollbars */
+  height: 7px; /* for horizontal scrollbars */
+}
+
+.data-table::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.data-table::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+}

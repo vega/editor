@@ -1,3 +1,5 @@
+import * as vega from 'vega';
+
 export namespace Mode {
   export const Vega: 'vega' = 'vega';
   export const VegaLite: 'vega-lite' = 'vega-lite';
@@ -15,7 +17,7 @@ export const NAMES = {
   [Mode.VegaLite]: 'Vega-Lite',
 };
 
-export const LAYOUT = { HeaderHeight: 56 };
+export const LAYOUT = { HeaderHeight: 60 };
 
 export type Renderer = 'svg' | 'canvas';
 
@@ -26,3 +28,5 @@ export const VEGA_START_SPEC = `{
 export const VEGA_LITE_START_SPEC = `{
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json"
 }`;
+
+export type View = vega.View;

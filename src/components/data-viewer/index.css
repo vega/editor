@@ -1,0 +1,113 @@
+.data-dropdown {
+  display: inline-flex;
+  position: relative;
+  margin: 10px 0;
+  z-index: 1000;
+  width: 200px;
+}
+
+.data-dropdown:focus {
+  outline: 0;
+}
+
+.data-viewer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px 15px 20px;
+  height: 100%;
+}
+
+.data-viewer-header {
+  width: 100%;
+  align-items: center;
+}
+
+.data-viewer-header button {
+  font-size: 1em;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  line-height: 30px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.data-viewer-header button:focus {
+  outline: none;
+}
+
+.data-viewer-header button:hover {
+  border-color: #aaa;
+}
+
+.data-viewer-header button:active {
+  background-color: #ddd;
+}
+
+.pagination-wrapper {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.pagination {
+  padding: 0;
+}
+
+.pagination li:first-child {
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+}
+
+.pagination li:last-child {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.pagination li {
+  display: inline-block;
+  border: 1px solid #ddd;
+  border-right: 0;
+  padding: 8px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pagination li:last-child {
+  border-right: 1px solid #ddd;
+}
+
+.pagination a,
+.pagination .break {
+  padding: 8px 10px;
+}
+
+.pagination a:focus {
+  outline: 0;
+}
+
+.pagination .active {
+  background: #ddd;
+}
+
+.pagination .disabled {
+  color: #ddd;
+}
+
+.data-refresh {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  margin: 0 20px;
+}
+
+.data-refresh span {
+  padding: 0 5px;
+  font-size: 0.9em;
+}
+
+.data-refresh svg {
+  width: 15px;
+  height: 15px;
+  margin-left: 4px;
+}

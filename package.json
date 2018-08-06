@@ -38,6 +38,7 @@
     "react-feather": "^1.1.1",
     "react-ga": "2.5.3",
     "react-monaco-editor": "^0.17.2",
+    "react-paginate": "^5.2.3",
     "react-portal": "^4.1.5",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",

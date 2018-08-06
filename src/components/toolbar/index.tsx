@@ -18,8 +18,8 @@ const mapDispatchToProps = dispatch => {
     setRenderer: val => {
       dispatch(EditorActions.setRenderer(val));
     },
-    showErrorPane: () => {
-      dispatch(EditorActions.showErrorPane());
+    toggleDebugPane: () => {
+      dispatch(EditorActions.toggleDebugPane());
     },
   };
 };

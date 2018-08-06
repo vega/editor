@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
-import { Mode } from '../../constants';
+import { Mode, View } from '../../constants';
 import addProjections from '../../utils/addProjections';
 
 // Add additional projections
@@ -21,27 +21,27 @@ interface Props {
   export?: boolean;
   baseURL?: string;
   history?: any;
+  editorString?: string;
 
   exportVega: (val: any) => void;
+  setView: (val: any) => void;
 }
 
-interface State {
-  fullscreen: boolean;
-}
+const defaultState = { fullscreen: false };
+
+type State = Readonly<typeof defaultState>;
 
 const KEYCODES = {
   ESCAPE: 27,
 };
 
 class Editor extends React.Component<Props, State> {
-  public static view: vega.View;
+  public static view: View;
   public static pathname: string;
+  public readonly state: State = defaultState;
 
   constructor(props) {
     super(props);
-    this.state = {
-      fullscreen: false,
-    };
     this.handleKeydown = this.handleKeydown.bind(this);
     this.onOpenPortal = this.onOpenPortal.bind(this);
     this.onClosePortal = this.onClosePortal.bind(this);
@@ -76,6 +76,7 @@ class Editor extends React.Component<Props, State> {
 
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
+
     // Custom Loader
     loader.load = async (url, options) => {
       try {
@@ -105,9 +106,10 @@ class Editor extends React.Component<Props, State> {
       .renderer(props.renderer)
       .hover()
       .run();
+
     chart.style.width = 'auto';
 
-    vegaTooltip(Editor.view as any); // FIXME: remove as any
+    vegaTooltip(Editor.view);
 
     // Export visualization as SVG/PNG
     if (props.export) {
@@ -130,6 +132,7 @@ class Editor extends React.Component<Props, State> {
           throw new Error('Error in exporting: ' + err);
         });
     }
+
     (window as any).VEGA_DEBUG.view = Editor.view;
   }
   public componentDidMount() {
@@ -142,6 +145,7 @@ class Editor extends React.Component<Props, State> {
     if (params[params.length - 1] === 'view') {
       this.setState({ fullscreen: true });
     }
+    this.props.setView(Editor.view);
   }
   public componentDidUpdate(prevProps, prevState) {
     if (
@@ -152,6 +156,9 @@ class Editor extends React.Component<Props, State> {
       this.initView(this.props);
     }
     this.renderVega(this.props);
+    if (prevProps.editorString !== this.props.editorString) {
+      this.props.setView(Editor.view);
+    }
   }
   public componentWillUnmount() {
     // Remove listener to event keydown
