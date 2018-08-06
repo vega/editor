@@ -339,84 +339,82 @@ class Header extends React.Component<Props, State> {
     );
 
     const gist = closePortal => (
-      <div>
+      <div className="gist-content">
         <h2>Load Gist</h2>
-        <div className="gist-content">
-          <form ref={form => (this.refGistForm = form)}>
-            <div className="gist-input-container">
-              Gist Type:
+        <form ref={form => (this.refGistForm = form)}>
+          <div className="gist-input-container">
+            Gist Type:
+            <input
+              type="radio"
+              name="gist-type"
+              id="gist-type[vega]"
+              value="vega"
+              checked={this.state.gist.type === Mode.Vega}
+              onChange={this.updateGistType.bind(this)}
+            />
+            <label htmlFor="gist-type[vega]">Vega</label>
+            <input
+              type="radio"
+              name="gist-type"
+              id="gist-type[vega-lite]"
+              value="vega-lite"
+              checked={this.state.gist.type === Mode.VegaLite}
+              onChange={this.updateGistType.bind(this)}
+            />
+            <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
+          </div>
+          <div className="gist-input-container">
+            <label>
+              Gist URL
+              <div>
+                <small>
+                  Example:{' '}
+                  <span className="gist-url">
+                    {'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9'}
+                  </span>
+                </small>
+              </div>
               <input
-                type="radio"
-                name="gist-type"
-                id="gist-type[vega]"
-                value="vega"
-                checked={this.state.gist.type === Mode.Vega}
-                onChange={this.updateGistType.bind(this)}
+                required
+                className="gist-input"
+                type="text"
+                placeholder="Enter URL"
+                value={this.state.gist.url}
+                onChange={this.updateGistUrl.bind(this)}
               />
-              <label htmlFor="gist-type[vega]">Vega</label>
-              <input
-                type="radio"
-                name="gist-type"
-                id="gist-type[vega-lite]"
-                value="vega-lite"
-                checked={this.state.gist.type === Mode.VegaLite}
-                onChange={this.updateGistType.bind(this)}
-              />
-              <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
-            </div>
-            <div className="gist-input-container">
+            </label>
+          </div>
+          <div className="gist-optional">
+            <div className="gist-input-container gist-optional-input-container">
               <label>
-                Gist URL
-                <div>
-                  <small>
-                    Example:{' '}
-                    <span className="gist-url">
-                      {'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9'}
-                    </span>
-                  </small>
-                </div>
+                Revision (<small>optional</small>)
                 <input
-                  required
                   className="gist-input"
                   type="text"
-                  placeholder="Enter URL"
-                  value={this.state.gist.url}
-                  onChange={this.updateGistUrl.bind(this)}
+                  placeholder="Enter revision"
+                  value={this.state.gist.revision}
+                  onChange={this.updateGistRevision.bind(this)}
                 />
               </label>
             </div>
-            <div className="gist-optional">
-              <div className="gist-input-container gist-optional-input-container">
-                <label>
-                  Revision (<small>optional</small>)
-                  <input
-                    className="gist-input"
-                    type="text"
-                    placeholder="Enter revision"
-                    value={this.state.gist.revision}
-                    onChange={this.updateGistRevision.bind(this)}
-                  />
-                </label>
-              </div>
-              <div className="gist-input-container gist-optional-input-container">
-                <label>
-                  Filename (<small>optional</small>)
-                  <input
-                    className="gist-input"
-                    type="text"
-                    placeholder="Enter filename"
-                    value={this.state.gist.filename}
-                    onChange={this.updateGistFile.bind(this)}
-                  />
-                </label>
-              </div>
+            <div className="gist-input-container gist-optional-input-container">
+              <label>
+                Filename (<small>optional</small>)
+                <input
+                  className="gist-input"
+                  type="text"
+                  placeholder="Enter filename"
+                  value={this.state.gist.filename}
+                  onChange={this.updateGistFile.bind(this)}
+                />
+              </label>
             </div>
-            <div className="error-message">{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
-            <button type="button" className="gist-button" onClick={() => this.onSelectGist(closePortal)}>
-              Load
-            </button>
-          </form>
-        </div>
+          </div>
+          <div className="error-message">{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
+          <button type="button" className="gist-button" onClick={() => this.onSelectGist(closePortal)}>
+            Load
+          </button>
+        </form>
       </div>
     );
 
@@ -474,7 +472,7 @@ class Header extends React.Component<Props, State> {
               </span>,
               portal(
                 <div className="modal-background" onClick={closePortal}>
-                  <div className="modal" onClick={e => e.stopPropagation()}>
+                  <div className="modal gist-modal" onClick={e => e.stopPropagation()}>
                     <div className="modal-header">
                       <button className="close-button" onClick={closePortal}>
                         <X />

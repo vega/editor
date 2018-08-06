@@ -57,6 +57,9 @@
 }
 
 .modal-background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   background: rgba(0, 0, 0, 0.8);
   top: 0;
@@ -85,31 +88,48 @@
 
 .modal-body {
   padding: 0 30px 30px;
-  max-height: 90vh;
+  max-height: 88vh;
   overflow-y: auto;
   z-index: 9000;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 7px; /* for vertical scrollbars */
+  height: 7px; /* for horizontal scrollbars */
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+}
+
+.gist-modal {
+  align-self: flex-start;
 }
 
 .close-button {
   float: right;
   padding: 10px;
-  font-size: 14px;
   border: none;
   cursor: pointer;
   background: white;
 }
 
-.close-button:hover {
-  background: rgba(243, 240, 240, 0.63);
+.close-button:focus {
+  outline: 0;
 }
 
 .button-groups button {
+  width: 120px;
   font-size: 16px;
   padding: 5px 10px;
   background: white;
   border: solid 1px black;
   cursor: pointer;
-  width: 120px;
 }
 
 .button-groups button.selected {
@@ -186,7 +206,7 @@
 }
 
 .gist-content {
-  padding-left: 20px;
+  padding: 10px;
 }
 
 .gist-button {
