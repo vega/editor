@@ -119,6 +119,10 @@
   background: white;
 }
 
+.close-button:hover {
+  background: rgba(243, 240, 240, 0.63);
+}
+
 .close-button:focus {
   outline: 0;
 }
