@@ -1,5 +1,6 @@
 .data-table {
   width: fit-content;
+  max-width: 100%;
   font-size: 0.9em;
   overflow: auto;
   border-top: 1px solid #dfe2e5;
