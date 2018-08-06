@@ -10,6 +10,12 @@
   display: none;
 }
 
+.debug-pane {
+  width: 100%;
+  background: white;
+  padding-bottom: 20px;
+}
+
 .debug-pane-header {
   position: relative;
   width: 100%;
@@ -52,9 +58,4 @@
 .active-tab {
   background: #fff;
   color: #000;
-}
-
-.debug-pane {
-  width: 100%;
-  padding-bottom: 20px;
 }

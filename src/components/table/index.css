@@ -3,8 +3,7 @@
   max-width: 100%;
   font-size: 0.9em;
   overflow: auto;
-  border-top: 1px solid #dfe2e5;
-  border-bottom: 1px solid #dfe2e5;
+  border: 1px solid #dfe2e5;
 }
 
 .data-table table {
@@ -20,6 +19,16 @@
 
 .data-table tbody tr:last-child > * {
   border-bottom: 0;
+}
+
+.data-table tbody > * > td:first-child,
+.data-table thead > * > th:first-child {
+  border-left: 0;
+}
+
+.data-table tbody > * > td:last-child,
+.data-table thead > * > th:last-child {
+  border-right: 0;
 }
 
 .data-table th {

@@ -9,7 +9,7 @@ import Table from '../table';
 import './index.css';
 
 interface Props {
-  view: View;
+  view?: View;
 }
 
 const initialState = {
@@ -88,7 +88,11 @@ export default class DataViewer extends React.Component<Props, State> {
 
     const visibleData = data.slice(start, end);
 
-    const table = data.length ? <Table header={Object.keys(data[0])} data={visibleData} /> : <div>Empty table</div>;
+    const table = data.length ? (
+      <Table header={Object.keys(data[0])} data={visibleData} />
+    ) : (
+      <span className="error">The table appears empty. Try to refresh if you think there is data.</span>
+    );
 
     return (
       <div className="data-viewer">
