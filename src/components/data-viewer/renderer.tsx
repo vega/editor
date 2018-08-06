@@ -88,7 +88,11 @@ export default class DataViewer extends React.Component<Props, State> {
 
     const visibleData = data.slice(start, end);
 
-    const table = data.length ? <Table header={Object.keys(data[0])} data={visibleData} /> : <div>Empty table</div>;
+    const table = data.length ? (
+      <Table header={Object.keys(data[0])} data={visibleData} />
+    ) : (
+      <span className="error">No table found. Refresh button might help you.</span>
+    );
 
     return (
       <div className="data-viewer">
@@ -109,7 +113,7 @@ export default class DataViewer extends React.Component<Props, State> {
           </button>
           <div className="pagination-wrapper">{pagination}</div>
         </div>
-        {this.props.error ? <span class="error">Something is wrong. Check logs.</span> : table}
+        {this.props.error ? <span className="error">Something is wrong. Check logs.</span> : table}
       </div>
     );
   }
