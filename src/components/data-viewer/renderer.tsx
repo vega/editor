@@ -4,11 +4,11 @@ import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
 import { View } from '../../constants';
+import ErrorBoundary from '../error-boundary';
 import Table from '../table';
 import './index.css';
 
 interface Props {
-  error?: string;
   view?: View;
 }
 
@@ -91,7 +91,7 @@ export default class DataViewer extends React.Component<Props, State> {
     const table = data.length ? (
       <Table header={Object.keys(data[0])} data={visibleData} />
     ) : (
-      <span className="error">No table found. Refresh button might help you.</span>
+      <span className="error">There is no data for table. Try to refresh.</span>
     );
 
     return (
@@ -113,7 +113,7 @@ export default class DataViewer extends React.Component<Props, State> {
           </button>
           <div className="pagination-wrapper">{pagination}</div>
         </div>
-        {this.props.error ? <span className="error">Something is wrong. Check logs.</span> : table}
+        <ErrorBoundary>{table}</ErrorBoundary>
       </div>
     );
   }

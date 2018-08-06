@@ -5,7 +5,6 @@ import Renderer from './renderer';
 
 function mapStateToProps(state: State, ownProps) {
   return {
-    error: state.error,
     view: state.view,
   };
 }
