@@ -91,7 +91,7 @@ export default class DataViewer extends React.Component<Props, State> {
     const table = data.length ? (
       <Table header={Object.keys(data[0])} data={visibleData} />
     ) : (
-      <span className="error">There is no data for table. Try to refresh.</span>
+      <span className="error">The table appears empty. Try to refresh if you think there is data.</span>
     );
 
     return (
