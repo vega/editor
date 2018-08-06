@@ -4,12 +4,12 @@ import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
 import { View } from '../../constants';
-import ErrorBoundary from '../error-boundary';
 import Table from '../table';
 import './index.css';
 
 interface Props {
-  view: View;
+  error?: string;
+  view?: View;
 }
 
 const initialState = {
@@ -109,7 +109,7 @@ export default class DataViewer extends React.Component<Props, State> {
           </button>
           <div className="pagination-wrapper">{pagination}</div>
         </div>
-        <ErrorBoundary>{table}</ErrorBoundary>
+        {this.props.error ? <span class="error">Something is wrong. Check logs.</span> : table}
       </div>
     );
   }
