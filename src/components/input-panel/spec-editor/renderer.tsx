@@ -91,7 +91,8 @@ function debounce(func, wait, immediate?) {
 interface Props {
   autoParse?: boolean;
   format?: boolean;
-  history;
+  history: any;
+  match: any;
   mode: Mode;
   parse?: boolean;
   value?: string;
