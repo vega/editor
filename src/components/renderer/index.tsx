@@ -8,7 +8,6 @@ const mapStateToProps = (state: State, ownProps) => {
   return {
     baseURL: state.baseURL,
     editorString: state.editorString,
-    export: state.export,
     mode: state.mode,
     renderer: state.renderer,
     vegaLiteSpec: state.vegaLiteSpec,
@@ -18,9 +17,6 @@ const mapStateToProps = (state: State, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    exportVega: val => {
-      dispatch(EditorActions.exportVega(val));
-    },
     setView: val => {
       dispatch(EditorActions.setView(val));
     },

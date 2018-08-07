@@ -2,7 +2,7 @@ import 'react-select/dist/react-select.css';
 import './index.css';
 
 import * as React from 'react';
-import { Code, ExternalLink, FileText, Github, Grid, Play, Trash2, X } from 'react-feather';
+import { Code, ExternalLink, FileText, Github, Grid, Image, Map, Play, Trash2, X } from 'react-feather';
 import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
@@ -436,8 +436,28 @@ class Header extends React.Component<Props, State> {
     const exportContent = closePortal => (
       <div className="export-content">
         <h2>Export</h2>
-        <button onClick={() => this.exportViz('png')}>PNG</button>
-        <button onClick={() => this.exportViz('svg')}>SVG</button>
+        <div className="export-buttons">
+          <button
+            className="export-button"
+            onClick={() => {
+              this.exportViz('png');
+              closePortal();
+            }}
+          >
+            <Image />
+            <span>PNG</span>
+          </button>
+          <button
+            className="export-button"
+            onClick={() => {
+              this.exportViz('svg');
+              closePortal();
+            }}
+          >
+            <Map />
+            <span>SVG</span>
+          </button>
+        </div>
       </div>
     );
 
@@ -466,6 +486,7 @@ class Header extends React.Component<Props, State> {
                       </button>
                     </div>
                     <div className="modal-body">{exportContent(closePortal)}</div>
+                    <div className="modal-footer" />
                   </div>
                 </div>
               ),
@@ -501,6 +522,7 @@ class Header extends React.Component<Props, State> {
                       </button>
                     </div>
                     <div className="modal-body">{this.state.showVega ? vega(closePortal) : vegalite(closePortal)}</div>
+                    <div className="modal-footer" />
                   </div>
                 </div>
               ),
@@ -521,6 +543,7 @@ class Header extends React.Component<Props, State> {
                       </button>
                     </div>
                     <div className="modal-body">{gist(closePortal)}</div>
+                    <div className="modal-footer" />
                   </div>
                 </div>
               ),
