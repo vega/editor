@@ -2,12 +2,12 @@ import 'react-select/dist/react-select.css';
 import './index.css';
 
 import * as React from 'react';
-import { Code, ExternalLink, FileText, Github, Grid, Play, Trash2, X } from 'react-feather';
+import { Code, ExternalLink, FileText, Github, Grid, Image, Map, Play, Trash2, X } from 'react-feather';
 import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 
-import { Mode } from '../../constants';
+import { Mode, View } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 
@@ -15,6 +15,7 @@ interface Props {
   autoParse?: boolean;
   history: any;
   mode: Mode;
+  view: View;
 
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
@@ -55,7 +56,6 @@ class Header extends React.Component<Props, State> {
       invalidUrl: false,
       showVega: props.mode === Mode.Vega,
     };
-    this.onSelectVega = this.onSelectVega.bind(this);
   }
 
   public updateGist(gist) {
@@ -167,6 +167,21 @@ class Header extends React.Component<Props, State> {
     closePortal(); // Close the gist modal after it gets load
   }
 
+  // Export visualization as SVG/PNG
+  public async exportViz(ext: string) {
+    const url = await this.props.view.toImageURL(ext);
+    if (ext === 'png') {
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('target', '_blank');
+      link.setAttribute('download', 'visualization.' + ext);
+      link.dispatchEvent(new MouseEvent('click'));
+    } else {
+      const tab = window.open();
+      tab.document.write('<title>SVG</title><img src="' + url + '"/>');
+    }
+  }
+
   public componentWillReceiveProps(nextProps) {
     this.setState({
       gist: {
@@ -207,6 +222,13 @@ class Header extends React.Component<Props, State> {
       <div className="header-button">
         <Github className="header-icon" />
         {'Gist'}
+      </div>
+    );
+
+    const exportButton = (
+      <div className="header-button">
+        <ExternalLink className="header-icon" />
+        {'Export'}
       </div>
     );
 
@@ -260,13 +282,6 @@ class Header extends React.Component<Props, State> {
     );
 
     const splitClass = 'split-button' + (this.props.autoParse ? ' auto-run' : '');
-
-    const exportButton = (
-      <div className="header-button" onClick={() => this.props.exportVega(true)}>
-        <ExternalLink className="header-icon" />
-        {'Export'}
-      </div>
-    );
 
     const vega = closePortal => (
       <div className="vega">
@@ -418,6 +433,52 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
+    const exportContent = closePortal => (
+      <div className="export-content">
+        <h2>Export</h2>
+        <div className="export-buttons">
+          <button
+            className="export-button"
+            onClick={() => {
+              this.exportViz('png');
+              closePortal();
+            }}
+          >
+            <div>
+              <Image />
+              <span>PNG</span>
+            </div>
+            <p>
+              PNG is a bitmap image format which is made up of a fixed number of pixels. They have a fixed resolution
+              and cannot be scaled.
+            </p>
+          </button>
+          <button
+            className="export-button"
+            onClick={() => {
+              this.exportViz('svg');
+              closePortal();
+            }}
+          >
+            <div>
+              <Map />
+              <span>SVG</span>
+            </div>
+            <p>
+              SVG is a vector image format which uses geometric forms to represent different parts as discrete objects
+              and are infinitely scalable.
+            </p>
+          </button>
+        </div>
+        <div className="user-notes">
+          <p>
+            <strong>Note:</strong> To get a PDF, export SVG which you can save as PDF from the print window of your
+            browser.
+          </p>
+        </div>
+      </div>
+    );
+
     return (
       <div className="header">
         <section className="left-section">
@@ -428,7 +489,27 @@ class Header extends React.Component<Props, State> {
             {runButton}
             {autoRunToggle}
           </span>
-          <span>{exportButton}</span>
+
+          <PortalWithState closeOnEsc>
+            {({ openPortal, closePortal, isOpen, portal }) => [
+              <span key="0" onClick={openPortal}>
+                {exportButton}
+              </span>,
+              portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal flex-start" onClick={e => e.stopPropagation()}>
+                    <div className="modal-header">
+                      <button className="close-button" onClick={closePortal}>
+                        <X />
+                      </button>
+                    </div>
+                    <div className="modal-body">{exportContent(closePortal)}</div>
+                    <div className="modal-footer" />
+                  </div>
+                </div>
+              ),
+            ]}
+          </PortalWithState>
         </section>
         <section className="right-section">
           <PortalWithState closeOnEsc>
@@ -459,6 +540,7 @@ class Header extends React.Component<Props, State> {
                       </button>
                     </div>
                     <div className="modal-body">{this.state.showVega ? vega(closePortal) : vegalite(closePortal)}</div>
+                    <div className="modal-footer" />
                   </div>
                 </div>
               ),
@@ -472,13 +554,14 @@ class Header extends React.Component<Props, State> {
               </span>,
               portal(
                 <div className="modal-background" onClick={closePortal}>
-                  <div className="modal gist-modal" onClick={e => e.stopPropagation()}>
+                  <div className="modal flex-start" onClick={e => e.stopPropagation()}>
                     <div className="modal-header">
                       <button className="close-button" onClick={closePortal}>
                         <X />
                       </button>
                     </div>
                     <div className="modal-body">{gist(closePortal)}</div>
+                    <div className="modal-footer" />
                   </div>
                 </div>
               ),

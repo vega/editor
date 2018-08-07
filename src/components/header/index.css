@@ -1,3 +1,7 @@
+.flex-start {
+  align-self: flex-start;
+}
+
 .header {
   display: flex;
   height: 60px;
@@ -76,7 +80,13 @@
   width: 80%;
 }
 
-.modal-header {
+.modal h2 {
+  margin: 0;
+}
+
+.modal-header,
+.modal-footer {
+  height: 50px;
   z-index: 95;
 }
 
@@ -87,7 +97,7 @@
 }
 
 .modal-body {
-  padding: 0 30px 30px;
+  padding: 0 30px;
   max-height: 88vh;
   overflow-y: auto;
   z-index: 9000;
@@ -105,10 +115,6 @@
 .modal-body::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.4);
   border-radius: 10px;
-}
-
-.gist-modal {
-  align-self: flex-start;
 }
 
 .close-button {
@@ -356,6 +362,57 @@
   display: none;
 }
 
+.export-buttons {
+  margin-top: 20px;
+}
+
+.export-button {
+  width: 25%;
+  max-width: 420px;
+  min-width: 280px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  padding: 10px 20px;
+  margin-right: 40px;
+}
+
+.export-button:hover {
+  background: #ddd;
+}
+
+.export-button > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.export-button span {
+  padding-left: 8px;
+  font-size: 1.6em;
+  line-height: 50px;
+}
+
+.export-button p {
+  color: #333;
+  line-height: 1.2;
+}
+
+.export-button svg {
+  width: 30px;
+  height: 30px;
+}
+
+.user-notes p {
+  padding: 20px 0;
+}
 /* Media queries */
 @media only screen and (min-width: 960px) {
   .header-button svg,

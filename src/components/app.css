@@ -76,3 +76,7 @@ html {
   /* Need to override overflow because we can't set it on the pane. */
   overflow: visible !important;
 }
+
+button:focus {
+  outline: none;
+}

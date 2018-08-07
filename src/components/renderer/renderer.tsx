@@ -18,12 +18,10 @@ interface Props {
   vegaLiteSpec?: object;
   renderer?: string;
   mode?: Mode;
-  export?: boolean;
   baseURL?: string;
   history?: any;
   editorString?: string;
 
-  exportVega: (val: any) => void;
   setView: (val: any) => void;
 }
 
@@ -111,28 +109,6 @@ class Editor extends React.Component<Props, State> {
 
     vegaTooltip(Editor.view);
 
-    // Export visualization as SVG/PNG
-    if (props.export) {
-      const ext = props.renderer === 'canvas' ? 'png' : 'svg';
-      const url = Editor.view.toImageURL(ext);
-      url
-        .then(href => {
-          if (ext === 'png') {
-            const link = document.createElement('a');
-            link.setAttribute('href', href);
-            link.setAttribute('target', '_blank');
-            link.setAttribute('download', 'visualization.' + ext);
-            link.dispatchEvent(new MouseEvent('click'));
-          } else {
-            const tab = window.open();
-            tab.document.write('<title>SVG</title><img src="' + href + '"/>');
-          }
-        })
-        .catch(err => {
-          throw new Error('Error in exporting: ' + err);
-        });
-    }
-
     (window as any).VEGA_DEBUG.view = Editor.view;
   }
   public componentDidMount() {
@@ -163,11 +139,6 @@ class Editor extends React.Component<Props, State> {
   public componentWillUnmount() {
     // Remove listener to event keydown
     document.removeEventListener('keydown', this.handleKeydown);
-  }
-  public componentWillReceiveProps(nextProps) {
-    if (nextProps.export) {
-      this.props.exportVega(false);
-    }
   }
   public render() {
     return (
