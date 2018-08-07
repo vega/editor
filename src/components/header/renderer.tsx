@@ -497,7 +497,7 @@ class Header extends React.Component<Props, State> {
               </span>,
               portal(
                 <div className="modal-background" onClick={closePortal}>
-                  <div className="modal flex-start" onClick={e => e.stopPropagation()}>
+                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
                     <div className="modal-header">
                       <button className="close-button" onClick={closePortal}>
                         <X />
@@ -554,7 +554,7 @@ class Header extends React.Component<Props, State> {
               </span>,
               portal(
                 <div className="modal-background" onClick={closePortal}>
-                  <div className="modal flex-start" onClick={e => e.stopPropagation()}>
+                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
                     <div className="modal-header">
                       <button className="close-button" onClick={closePortal}>
                         <X />

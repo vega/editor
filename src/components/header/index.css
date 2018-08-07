@@ -1,5 +1,6 @@
-.flex-start {
+.modal-top {
   align-self: flex-start;
+  margin-top: 6vh;
 }
 
 .header {
