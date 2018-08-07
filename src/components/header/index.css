@@ -362,9 +362,6 @@
   display: none;
 }
 
-.export-content {
-}
-
 .export-buttons {
   margin-top: 20px;
 }
@@ -411,8 +408,8 @@
   height: 30px;
 }
 
-.user-notes li {
-  padding: 10px 20px;
+.user-notes p {
+  padding: 10px 0;
 }
 /* Media queries */
 @media only screen and (min-width: 960px) {
