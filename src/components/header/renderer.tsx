@@ -444,8 +444,14 @@ class Header extends React.Component<Props, State> {
               closePortal();
             }}
           >
-            <Image />
-            <span>PNG</span>
+            <div>
+              <Image />
+              <span>PNG</span>
+            </div>
+            <p>
+              PNG (Portable Network Graphics) is a raster or bitmap image file format which is made up of a fixed number
+              of pixels that form a complete image.
+            </p>
           </button>
           <button
             className="export-button"
@@ -454,9 +460,25 @@ class Header extends React.Component<Props, State> {
               closePortal();
             }}
           >
-            <Map />
-            <span>SVG</span>
+            <div>
+              <Map />
+              <span>SVG</span>
+            </div>
+            <p>
+              SVG (Scalable Vector Graphics) is a vector image file format which uses geometric forms to represent
+              different parts of the image as discrete objects.
+            </p>
           </button>
+        </div>
+        <div className="user-notes">
+          <h4>Notes</h4>
+          <ol>
+            <li>To get a PDF, export SVG followed by saving as PDF from the print window provided by browser.</li>
+            <li>
+              PNGs cannot be enlarged without distortion occurring while SVGs remain crisp and clear at any resolution
+              or size.
+            </li>
+          </ol>
         </div>
       </div>
     );

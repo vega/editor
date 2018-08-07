@@ -362,29 +362,58 @@
   display: none;
 }
 
+.export-content {
+}
+
 .export-buttons {
   margin-top: 20px;
 }
 
 .export-button {
+  max-width: 25%;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 0.9em;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
-  line-height: 30px;
   cursor: pointer;
   user-select: none;
-  padding: 5px 10px;
-  margin-right: 20px;
+  padding: 10px 20px;
+  margin-right: 40px;
+}
+
+.export-button:hover {
+  background: #ddd;
+}
+
+.export-button > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .export-button span {
   padding-left: 8px;
+  font-size: 1.6em;
+  line-height: 50px;
 }
 
+.export-button p {
+  color: #333;
+  line-height: 1.2;
+}
+
+.export-button svg {
+  width: 30px;
+  height: 30px;
+}
+
+.user-notes li {
+  padding: 10px 20px;
+}
 /* Media queries */
 @media only screen and (min-width: 960px) {
   .header-button svg,
