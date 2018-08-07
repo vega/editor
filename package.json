@@ -31,6 +31,7 @@
     "d3-request": "1.0.6",
     "history": "^4.7.2",
     "json-stringify-pretty-compact": "^1.2.0",
+    "lz-string": "^1.4.4",
     "monaco-editor": "^0.13.1",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",

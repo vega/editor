@@ -69,7 +69,7 @@ class App extends React.Component<Props & { match: any; location: any }> {
         this.setExample(parameter);
       } else if (parameter.username && parameter.id) {
         this.setGist(parameter);
-      } else if (parameter.mode) {
+      } else if (parameter.mode && !parameter.spec) {
         this.setEmptySpec(NAME_TO_MODE[parameter.mode]);
       }
     }

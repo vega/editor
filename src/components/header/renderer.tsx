@@ -1,18 +1,20 @@
 import 'react-select/dist/react-select.css';
 import './index.css';
 
+import LZString from 'lz-string';
 import * as React from 'react';
-import { Code, ExternalLink, FileText, Github, Grid, Image, Map, Play, Trash2, X } from 'react-feather';
+import { Code, ExternalLink, FileText, Github, Grid, Image, Link, Map, Play, Trash2, X } from 'react-feather';
 import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 
 import { Mode, View } from '../../constants';
-import { NAMES } from '../../constants/consts';
+import { NAME_TO_MODE, NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 
 interface Props {
   autoParse?: boolean;
+  editorString?: string;
   history: any;
   mode: Mode;
   view: View;
@@ -180,6 +182,11 @@ class Header extends React.Component<Props, State> {
       const tab = window.open();
       tab.document.write('<title>SVG</title><img src="' + url + '"/>');
     }
+  }
+
+  public exportURL() {
+    const serializedSpec = LZString.compressToEncodedURIComponent(this.props.editorString);
+    this.props.history.push(`/share/${NAME_TO_MODE[this.props.mode]}/${serializedSpec}`);
   }
 
   public componentWillReceiveProps(nextProps) {
@@ -463,6 +470,22 @@ class Header extends React.Component<Props, State> {
             <div>
               <Map />
               <span>SVG</span>
+            </div>
+            <p>
+              SVG is a vector image format which uses geometric forms to represent different parts as discrete objects
+              and are infinitely scalable.
+            </p>
+          </button>
+          <button
+            className="export-button"
+            onClick={() => {
+              this.exportURL();
+              closePortal();
+            }}
+          >
+            <div>
+              <Link />
+              <span>URL</span>
             </div>
             <p>
               SVG is a vector image format which uses geometric forms to represent different parts as discrete objects

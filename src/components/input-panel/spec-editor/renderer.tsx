@@ -1,6 +1,7 @@
 import './index.css';
 
 import stringify from 'json-stringify-pretty-compact';
+import LZString from 'lz-string';
 import Monaco from 'monaco-editor';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
@@ -142,6 +143,11 @@ class Editor extends React.Component<Props, {}> {
     }
   }
   public editorWillMount(monaco) {
+    const spec = LZString.decompressFromEncodedURIComponent(this.props.match.params.spec);
+    if (spec) {
+      this.updateSpec(spec);
+    }
+
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       allowComments: false,
       schemas: schemas[this.props.mode],
