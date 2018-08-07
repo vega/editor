@@ -4,8 +4,8 @@
   "homepage": "http://vega.github.io/editor",
   "private": true,
   "devDependencies": {
-    "@types/node": "^10.5.3",
-    "@types/react": "^16.4.7",
+    "@types/node": "^10.5.7",
+    "@types/react": "^16.4.8",
     "autoprefixer": "^9.0.1",
     "awesome-typescript-loader": "^5.2.0",
     "css-loader": "^1.0.0",
@@ -20,7 +20,7 @@
     "tslint-eslint-rules": "^5.3.1",
     "typescript": "^3.0.1",
     "vega-typings": "^0.3.36",
-    "webpack": "^4.16.2",
+    "webpack": "^4.16.5",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5"
@@ -38,7 +38,7 @@
     "react-feather": "^1.1.1",
     "react-ga": "2.5.3",
     "react-monaco-editor": "^0.17.2",
-    "react-paginate": "^5.2.3",
+    "react-paginate": "^5.2.4",
     "react-portal": "^4.1.5",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
@@ -51,9 +51,9 @@
     "tslib": "^1.9.3",
     "vega": "github:vega/vega#v4.2.0",
     "vega-datasets": "^1.19.0",
-    "vega-lite": "github:vega/vega-lite#v3.0.0-rc1",
+    "vega-lite": "github:vega/vega-lite#v3.0.0-rc2",
     "vega-schema-url-parser": "^1.1.0",
-    "vega-tooltip": "^0.12.0"
+    "vega-tooltip": "^0.13.0"
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --inline",
