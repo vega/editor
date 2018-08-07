@@ -76,7 +76,6 @@
 .modal {
   position: relative;
   background: white;
-  margin: 2vw auto;
   width: 80%;
 }
 
@@ -98,7 +97,7 @@
 
 .modal-body {
   padding: 0 30px;
-  max-height: 88vh;
+  max-height: 80vh;
   overflow-y: auto;
   z-index: 9000;
 }
