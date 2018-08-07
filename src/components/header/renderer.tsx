@@ -449,8 +449,8 @@ class Header extends React.Component<Props, State> {
               <span>PNG</span>
             </div>
             <p>
-              Portable Network Graphics (PNG) is a raster or bitmap image format which is made up of a fixed number of
-              pixels. PNGs cannot be enlarged without distortion occurring.
+              PNG is a bitmap image format which is made up of a fixed number of pixels. They have a fixed resolution
+              and cannot be scaled.
             </p>
           </button>
           <button
@@ -465,8 +465,8 @@ class Header extends React.Component<Props, State> {
               <span>SVG</span>
             </div>
             <p>
-              Scalable Vector Graphics (SVG) is a image format which uses geometric forms to represent different parts
-              as discrete objects. SVGs remain crisp and clear at any resolution or size.
+              SVG is a vector image format which uses geometric forms to represent different parts as discrete objects
+              and are infinitely scalable.
             </p>
           </button>
         </div>

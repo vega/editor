@@ -367,7 +367,9 @@
 }
 
 .export-button {
-  max-width: 25%;
+  width: 25%;
+  max-width: 420px;
+  min-width: 280px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
@@ -409,7 +411,7 @@
 }
 
 .user-notes p {
-  padding: 10px 0;
+  padding: 20px 0;
 }
 /* Media queries */
 @media only screen and (min-width: 960px) {
