@@ -197,7 +197,7 @@ class Header extends React.Component<Props, State> {
     const serializedSpec = LZString.compressToEncodedURIComponent(this.props.editorString);
     if (serializedSpec && this.props.history.location.pathname.indexOf(serializedSpec) === -1) {
       this.props.history.push(`/url/${NAME_TO_MODE[this.props.mode]}/${serializedSpec}`);
-      this.refs.exportedURL.innerHTML = document.location.href;
+      (this.refs.exportedURL as any).innerHTML = document.location.href;
       this.setState({ exportURL: document.location.href });
     }
   }
