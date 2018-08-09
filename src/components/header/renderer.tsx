@@ -186,7 +186,7 @@ class Header extends React.Component<Props, State> {
 
   public exportURL() {
     const serializedSpec = LZString.compressToEncodedURIComponent(this.props.editorString);
-    this.props.history.push(`/share/${NAME_TO_MODE[this.props.mode]}/${serializedSpec}`);
+    this.props.history.push(`/url/${NAME_TO_MODE[this.props.mode]}/${serializedSpec}`);
   }
 
   public componentWillReceiveProps(nextProps) {
@@ -440,17 +440,11 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
-    const exportContent = closePortal => (
+    const exportContent = (
       <div className="export-content">
         <h2>Export</h2>
         <div className="export-buttons">
-          <button
-            className="export-button"
-            onClick={() => {
-              this.exportViz('png');
-              closePortal();
-            }}
-          >
+          <button className="export-button" onClick={() => this.exportViz('png')}>
             <div>
               <Image />
               <span>PNG</span>
@@ -460,13 +454,7 @@ class Header extends React.Component<Props, State> {
               and cannot be scaled.
             </p>
           </button>
-          <button
-            className="export-button"
-            onClick={() => {
-              this.exportViz('svg');
-              closePortal();
-            }}
-          >
+          <button className="export-button" onClick={() => this.exportViz('svg')}>
             <div>
               <Map />
               <span>SVG</span>
@@ -476,13 +464,7 @@ class Header extends React.Component<Props, State> {
               and are infinitely scalable.
             </p>
           </button>
-          <button
-            className="export-button"
-            onClick={() => {
-              this.exportURL();
-              closePortal();
-            }}
-          >
+          <button className="export-button" onClick={() => this.exportURL()}>
             <div>
               <Link />
               <span>URL</span>
@@ -526,7 +508,7 @@ class Header extends React.Component<Props, State> {
                         <X />
                       </button>
                     </div>
-                    <div className="modal-body">{exportContent(closePortal)}</div>
+                    <div className="modal-body">{exportContent}</div>
                     <div className="modal-footer" />
                   </div>
                 </div>
