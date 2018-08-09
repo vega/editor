@@ -103,20 +103,6 @@
   z-index: 9000;
 }
 
-.modal-body::-webkit-scrollbar {
-  width: 7px; /* for vertical scrollbars */
-  height: 7px; /* for horizontal scrollbars */
-}
-
-.modal-body::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.modal-body::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
-}
-
 .close-button {
   float: right;
   padding: 10px;
@@ -413,6 +399,48 @@
 .user-notes p {
   padding: 20px 0;
 }
+
+.exported-url {
+  display: flex;
+}
+
+.exported-url span:first-child {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #ccc;
+  padding: 10px 5px;
+  overflow: auto;
+  white-space: nowrap;
+  user-select: all;
+  color: #666;
+}
+
+.exported-url span::selection {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.copy-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.copy-icon svg {
+  stroke: #000;
+}
+
+.copied {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  color: #33d9b2;
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
 /* Media queries */
 @media only screen and (min-width: 960px) {
   .header-button svg,
@@ -432,4 +460,19 @@
     right: 100px;
     margin-right: -105px;
   }
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 7px; /* for vertical scrollbars */
+  height: 7px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
 }

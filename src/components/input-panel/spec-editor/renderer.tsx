@@ -144,7 +144,7 @@ class Editor extends React.Component<Props, {}> {
     }
   }
   public editorWillMount(monaco) {
-    const spec = LZString.decompressFromEncodedURIComponent(this.props.match.params.spec);
+    const spec = LZString.decompressFromEncodedURIComponent(this.props.match.params.compressed);
     if (spec) {
       this.updateSpec(spec);
     }
