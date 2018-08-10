@@ -78,6 +78,7 @@
   position: relative;
   background: white;
   width: 80%;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .modal h2 {
@@ -349,7 +350,7 @@
 }
 
 .export-buttons {
-  margin-top: 20px;
+  margin: 20px 0;
 }
 
 .export-button {
@@ -439,6 +440,12 @@
 
 .visible {
   visibility: visible;
+}
+
+.user-pref {
+  display: flex;
+  align-items: center;
+  padding-top: 15px;
 }
 
 /* Media queries */
