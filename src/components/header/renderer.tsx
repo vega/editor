@@ -217,23 +217,36 @@ class Header extends React.Component<Props, State> {
   public exportURL() {
     const serializedSpec =
       LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullscreen ? '/view' : '');
-    if (serializedSpec) {
+    const exportedURL = this.refs.exportedURL as any;
+    if (exportedURL && serializedSpec) {
       this.props.history.push(`/url/${NAME_TO_MODE[this.props.mode]}/${serializedSpec}`);
-      (this.refs.exportedURL as any).innerHTML = document.location.href;
+      exportedURL.innerHTML = document.location.href;
       this.setState({ generatedURL: document.location.href });
+      // Visual Feedback
+      const wrapperURL = this.refs.wrapperURL as any;
+      wrapperURL.classList.add('pressed');
+      setTimeout(() => {
+        wrapperURL.classList.remove('pressed');
+      }, 250);
     }
   }
 
-  public previewURL() {
-    const win = window.open(document.location.href, '_blank');
-    win.focus();
-  }
-
-  public componentDidUpdate() {
+  public componentDidUpdate(prevProps, prevState) {
     if (this.state.copied) {
       setTimeout(() => {
         this.setState({ copied: false });
       }, 2500);
+    }
+    if (prevState.fullscreen !== this.state.fullscreen) {
+      this.exportURL();
+    }
+    // Use ... when URL overflows the container
+    const wrapperURL = this.refs.wrapperURL as any;
+    if (wrapperURL && wrapperURL.offsetWidth < wrapperURL.scrollWidth) {
+      const url = this.state.generatedURL;
+      const x = (url.length / wrapperURL.scrollWidth) * wrapperURL.offsetWidth * 0.5;
+      (this.refs.exportedURL as any).innerHTML =
+        url.slice(0, (2 * x) / 3) + '...' + url.slice(url.length - x / 3, url.length);
     }
   }
 
@@ -530,15 +543,6 @@ class Header extends React.Component<Props, State> {
     );
 
     const copiedClass = 'copied' + (this.state.copied ? ' visible' : '');
-    const previewButton = (
-      <button className="export-button" onClick={() => this.previewURL()}>
-        <div>
-          <Eye />
-          <span>Preview</span>
-        </div>
-        <p>You can preview the generated URL before sharing</p>
-      </button>
-    );
 
     const shareContent = (
       <div className="export-content">
@@ -552,25 +556,21 @@ class Header extends React.Component<Props, State> {
             onChange={this.handleCheck.bind(this)}
           />
         </div>
-        <div className="export-buttons">
-          <button className="export-button" onClick={() => this.exportURL()}>
-            <div>
-              <Save />
-              <span>Save</span>
-            </div>
-            <p>Shareable URL will be generated</p>
-          </button>
-          {this.state.generatedURL ? previewButton : ''}
-        </div>
         <div className="exported-url">
-          <span ref="exportedURL" />
+          <span ref="wrapperURL">
+            <a ref="exportedURL" href={this.state.generatedURL} target="_blank">
+              {this.state.generatedURL}
+            </a>
+          </span>
           <Clipboard
             className="copy-icon"
             data-clipboard-text={this.state.generatedURL}
-            button-title="Copy"
+            button-title="Copy to Clipboard"
             onSuccess={this.onCopy.bind(this)}
           >
-            <Copy size={20} />
+            <div className="copy-button">
+              <Copy size={20} /> <span>Copy</span>
+            </div>
           </Clipboard>
         </div>
         <div className={copiedClass}>Copied!</div>
@@ -609,8 +609,8 @@ class Header extends React.Component<Props, State> {
             ]}
           </PortalWithState>
 
-          <PortalWithState closeOnEsc>
-            {({ openPortal, closePortal, isOpen, portal }) => [
+          <PortalWithState closeOnEsc onOpen={this.exportURL.bind(this)}>
+            {({ openPortal, closePortal, onOpen, portal }) => [
               <span key="0" onClick={openPortal}>
                 {shareButton}
               </span>,

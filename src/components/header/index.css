@@ -406,18 +406,24 @@
 }
 
 .exported-url span:first-child {
-  width: 100%;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: auto;
   border: 1px solid #ccc;
   padding: 10px 5px;
-  overflow: auto;
+  overflow: hidden;
   white-space: nowrap;
   user-select: all;
-  color: #666;
 }
 
-.exported-url span::selection {
+.exported-url a::selection {
   background: rgba(0, 0, 0, 0.15);
+}
+
+.exported-url a {
+  color: #666;
 }
 
 .copy-icon {
@@ -434,7 +440,7 @@
   display: flex;
   justify-content: center;
   padding: 10px;
-  color: #33d9b2;
+  color: #1dd1a1;
   visibility: hidden;
 }
 
@@ -445,9 +451,35 @@
 .user-pref {
   display: flex;
   align-items: center;
-  padding-top: 15px;
+  padding: 20px 0;
 }
 
+.pressed {
+  box-shadow: 0 0 5px 1px steelblue;
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  padding: 10px 5px;
+  background: transparent;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 1.2em;
+}
+
+.copy-button span {
+  padding-left: 5px;
+}
+
+.copy-button:hover {
+  border-color: #aaa;
+}
+
+.copy-button:active {
+  background-color: #ddd;
+}
 /* Media queries */
 @media only screen and (min-width: 960px) {
   .header-button svg,
