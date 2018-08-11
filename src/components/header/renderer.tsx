@@ -545,7 +545,12 @@ class Header extends React.Component<Props, State> {
         <h2>Share</h2>
         <div className="user-pref">
           <label>Fullscreen: </label>
-          <input type="checkbox" name="fullscreen" onChange={this.handleCheck.bind(this)} />
+          <input
+            type="checkbox"
+            defaultChecked={this.state.fullscreen}
+            name="fullscreen"
+            onChange={this.handleCheck.bind(this)}
+          />
         </div>
         <div className="export-buttons">
           <button className="export-button" onClick={() => this.exportURL()}>
