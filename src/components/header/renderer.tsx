@@ -244,7 +244,7 @@ class Header extends React.Component<Props, State> {
     const wrapperURL = this.refs.wrapperURL as any;
     if (wrapperURL && wrapperURL.offsetWidth < wrapperURL.scrollWidth) {
       const url = this.state.generatedURL;
-      const x = (url.length / wrapperURL.scrollWidth) * wrapperURL.offsetWidth * 0.5;
+      const x = (url.length / wrapperURL.scrollWidth) * wrapperURL.offsetWidth * 0.9;
       (this.refs.exportedURL as any).innerHTML =
         url.slice(0, (2 * x) / 3) + '...' + url.slice(url.length - x / 3, url.length);
     }
@@ -562,18 +562,35 @@ class Header extends React.Component<Props, State> {
               {this.state.generatedURL}
             </a>
           </span>
-          <Clipboard
-            className="copy-icon"
-            data-clipboard-text={this.state.generatedURL}
-            button-title="Copy to Clipboard"
-            onSuccess={this.onCopy.bind(this)}
-          >
-            <div className="copy-button">
-              <Copy size={20} /> <span>Copy</span>
-            </div>
-          </Clipboard>
         </div>
-        <div className={copiedClass}>Copied!</div>
+        <Clipboard
+          className="copy-icon"
+          data-clipboard-text={this.state.generatedURL}
+          onSuccess={this.onCopy.bind(this)}
+        >
+          <div className="copy-button">
+            <Copy size={20} /> <span>Copy to Clipboard</span>
+          </div>
+          <div className={copiedClass}>Copied!</div>
+        </Clipboard>
+        <div className="byte-counter">
+          Bytes: {this.state.generatedURL.length}{' '}
+          <span className="warning">
+            {this.state.generatedURL.length > 2083 ? (
+              <span>
+                Warning:{' '}
+                <a
+                  href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
+                  target="_blank"
+                >
+                  URLs over 2083 bytes may not be supported in internet explorer.
+                </a>
+              </span>
+            ) : (
+              ''
+            )}
+          </span>
+        </div>
       </div>
     );
 
@@ -622,7 +639,7 @@ class Header extends React.Component<Props, State> {
                         <X />
                       </button>
                     </div>
-                    <div className="modal-body">{shareContent}</div>
+                    <div className="modal-body modal-hidden">{shareContent}</div>
                     <div className="modal-footer" />
                   </div>
                 </div>

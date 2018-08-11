@@ -104,6 +104,10 @@
   z-index: 9000;
 }
 
+.modal-hidden {
+  overflow: hidden;
+}
+
 .close-button {
   float: right;
   padding: 10px;
@@ -406,23 +410,18 @@
 }
 
 .exported-url span:first-child {
-  width: 90%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: auto;
-  border: 1px solid #ccc;
-  padding: 10px 5px;
+  width: 100%;
   overflow: hidden;
+  vertical-align: middle;
+  line-height: 25px;
   white-space: nowrap;
-  user-select: all;
 }
 
 .exported-url a::selection {
   background: rgba(0, 0, 0, 0.15);
 }
 
-.exported-url a {
+.export-content a {
   color: #666;
 }
 
@@ -430,6 +429,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
+  padding: 30px 0;
 }
 
 .copy-icon svg {
@@ -437,11 +437,10 @@
 }
 
 .copied {
-  display: flex;
-  justify-content: center;
-  padding: 10px;
-  color: #1dd1a1;
+  display: inline-flex;
+  padding: 0 20px;
   visibility: hidden;
+  font-size: 1.2em;
 }
 
 .visible {
@@ -451,7 +450,7 @@
 .user-pref {
   display: flex;
   align-items: center;
-  padding: 20px 0;
+  padding: 30px 0;
 }
 
 .pressed {
@@ -459,7 +458,7 @@
 }
 
 .copy-button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   padding: 10px 5px;
   background: transparent;
@@ -467,6 +466,8 @@
   cursor: pointer;
   border-radius: 4px;
   font-size: 1.2em;
+  vertical-align: middle;
+  line-height: 25px;
 }
 
 .copy-button span {
@@ -480,6 +481,16 @@
 .copy-button:active {
   background-color: #ddd;
 }
+
+.warning {
+  padding-left: 10px;
+}
+
+.warning,
+.warning a {
+  color: #f0ad4e;
+}
+
 /* Media queries */
 @media only screen and (min-width: 960px) {
   .header-button svg,
