@@ -176,6 +176,10 @@ acorn@^5.0.0, acorn@^5.3.0, acorn@^5.6.2:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.1.tgz#f095829297706a7c9776958c0afc8930a9b9d9d8"
 
+ajv-errors@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.0.tgz#ecf021fa108fd17dfb5e6b383f2dd233e31ffc59"
+
 ajv-keywords@^3.1.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.2.0.tgz#e86b819c602cf8821ad637413698f1dec021847a"
@@ -3050,10 +3054,6 @@ monaco-editor-webpack-plugin@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/monaco-editor-webpack-plugin/-/monaco-editor-webpack-plugin-1.5.1.tgz#2f2ff876d522e25042e5621bc81cb9eee6743010"
 
-monaco-editor@^0.13.1:
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.13.1.tgz#6b9ce20e4d1c945042d256825eb133cb23315a52"
-
 monaco-editor@^0.14.2:
   version "0.14.2"
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.14.2.tgz#6c41773639aef7ebce30202cd12a723074a88813"
@@ -3622,14 +3622,14 @@ postcss-load-config@^2.0.0:
     cosmiconfig "^4.0.0"
     import-cwd "^2.0.0"
 
-postcss-loader@^2.1.6:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-2.1.6.tgz#1d7dd7b17c6ba234b9bed5af13e0bea40a42d740"
+postcss-loader@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-3.0.0.tgz#6b97943e47c72d845fa9e03f273773d4e8dd6c2d"
   dependencies:
     loader-utils "^1.1.0"
-    postcss "^6.0.0"
+    postcss "^7.0.0"
     postcss-load-config "^2.0.0"
-    schema-utils "^0.4.0"
+    schema-utils "^1.0.0"
 
 postcss-modules-extract-imports@^1.2.0:
   version "1.2.0"
@@ -3662,7 +3662,7 @@ postcss-value-parser@^3.2.3, postcss-value-parser@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-3.3.0.tgz#87f38f9f18f774a4ab4c8a232f5c5ce8872a9d15"
 
-postcss@^6.0.0, postcss@^6.0.1, postcss@^6.0.23:
+postcss@^6.0.1, postcss@^6.0.23:
   version "6.0.23"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.23.tgz#61c82cc328ac60e677645f979054eb98bc0e3324"
   dependencies:
@@ -3670,7 +3670,7 @@ postcss@^6.0.0, postcss@^6.0.1, postcss@^6.0.23:
     source-map "^0.6.1"
     supports-color "^5.4.0"
 
-postcss@^7.0.2:
+postcss@^7.0.0, postcss@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.2.tgz#7b5a109de356804e27f95a960bef0e4d5bc9bb18"
   dependencies:
@@ -3682,9 +3682,9 @@ prepend-http@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
 
-prettier@^1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.14.0.tgz#847c235522035fd988100f1f43cf20a7d24f9372"
+prettier@^1.14.2:
+  version "1.14.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.14.2.tgz#0ac1c6e1a90baa22a62925f41963c841983282f9"
 
 pretty-error@^2.0.2:
   version "2.1.1"
@@ -3869,13 +3869,13 @@ react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
-react-monaco-editor@^0.17.2:
-  version "0.17.2"
-  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.17.2.tgz#6c85d291487f992a62ad71801d50a9339f43972e"
+react-monaco-editor@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.18.0.tgz#098d847733667905aee80a0cd2473e80ab7b1302"
   dependencies:
     "@types/react" "*"
-    monaco-editor "^0.13.1"
-    prop-types "^15.6.1"
+    monaco-editor "^0.14.2"
+    prop-types "^15.6.2"
 
 react-paginate@^5.2.4:
   version "5.2.4"
@@ -4225,11 +4225,19 @@ sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
-schema-utils@^0.4.0, schema-utils@^0.4.4, schema-utils@^0.4.5:
+schema-utils@^0.4.4, schema-utils@^0.4.5:
   version "0.4.6"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.4.6.tgz#dab4516a656310a964ca772bd3771819ba2b5cec"
   dependencies:
     ajv "^6.1.0"
+    ajv-keywords "^3.1.0"
+
+schema-utils@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-1.0.0.tgz#0b79a93204d7b600d4b2850d1f66c2a34951c770"
+  dependencies:
+    ajv "^6.1.0"
+    ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
 select-hose@^2.0.0:
@@ -4636,9 +4644,9 @@ strip-url-auth@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/strip-url-auth/-/strip-url-auth-1.0.1.tgz#22b0fa3a41385b33be3f331551bbb837fa0cd7ae"
 
-style-loader@^0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.21.0.tgz#68c52e5eb2afc9ca92b6274be277ee59aea3a852"
+style-loader@^0.22.1:
+  version "0.22.1"
+  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.22.1.tgz#901ea28aac78fcc00c5075585ac07d7ef3f87a52"
   dependencies:
     loader-utils "^1.1.0"
     schema-utils "^0.4.5"
@@ -5239,9 +5247,15 @@ vega-transforms@^2.2.0:
     vega-statistics "^1.2.1"
     vega-util "^1.7.0"
 
-vega-typings@*, vega-typings@^0.3.36, vega-typings@^0.3.38:
+vega-typings@*, vega-typings@^0.3.38:
   version "0.3.38"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.38.tgz#ee0c80e69ea6c463b6179900162c6109fcd87012"
+  dependencies:
+    vega-util "^1.7.0"
+
+vega-typings@^0.3.39:
+  version "0.3.39"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.39.tgz#6543badd259f377c7773cdcc40f28464acc1063e"
   dependencies:
     vega-util "^1.7.0"
 
