@@ -429,20 +429,38 @@
   background: rgba(0, 0, 0, 0.15);
 }
 
-.copy-clipboard {
+.share-buttons,
+.share-button {
   display: flex;
   align-items: center;
 }
 
-.copy-icon {
-  background: transparent;
-  border: none;
+.share-button {
+  font-size: 0.9em;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  line-height: 30px;
   cursor: pointer;
-  padding: 30px 0;
+  user-select: none;
+  vertical-align: middle;
+  margin: 30px 0;
 }
 
-.copy-icon svg {
+.share-button svg {
+  width: 22px;
+  height: 22px;
   stroke: #000;
+  padding-right: 5px;
+}
+
+.copy-icon {
+  margin-left: 20px;
+}
+
+.copy-icon span {
+  display: flex;
+  align-items: center;
 }
 
 .copied {
@@ -468,28 +486,11 @@
   color: #666 !important;
 }
 
-.copy-button {
-  display: flex;
-  align-items: center;
-  padding: 10px 5px;
-  background: transparent;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 1.2em;
-  vertical-align: middle;
-  line-height: 25px;
-}
-
-.copy-button span {
-  padding-left: 5px;
-}
-
-.copy-button:hover {
+.copy-icon:hover {
   border-color: #aaa;
 }
 
-.copy-button:active {
+.copy-icon:active {
   background-color: #ddd;
 }
 

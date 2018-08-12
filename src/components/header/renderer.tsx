@@ -4,7 +4,21 @@ import './index.css';
 import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
-import { Code, Copy, ExternalLink, FileText, Github, Grid, Image, Map, Play, Share2, Trash2, X } from 'react-feather';
+import {
+  Code,
+  Copy,
+  ExternalLink,
+  FileText,
+  Github,
+  Grid,
+  Image,
+  Link,
+  Map,
+  Play,
+  Share2,
+  Trash2,
+  X,
+} from 'react-feather';
 import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
@@ -212,6 +226,11 @@ class Header extends React.Component<Props, State> {
         exportedURL.classList.remove('pressed');
       }, 250);
     }
+  }
+
+  public previewURL() {
+    const win = window.open(this.state.generatedURL, '_blank');
+    win.focus();
   }
 
   public componentDidUpdate(prevProps, prevState) {
@@ -550,15 +569,20 @@ class Header extends React.Component<Props, State> {
             </a>
           </span>
         </div>
-        <div className="copy-clipboard">
+        <div className="share-buttons">
+          <button className="share-button" onClick={() => this.previewURL()}>
+            <Link />
+            <span>Open Link</span>
+          </button>
           <Clipboard
-            className="copy-icon"
+            className="share-button copy-icon"
             data-clipboard-text={this.state.generatedURL}
             onSuccess={this.onCopy.bind(this)}
           >
-            <div className="copy-button">
-              <Copy size={20} /> <span>Copy to Clipboard</span>
-            </div>
+            <span>
+              <Copy />
+              Copy to Clipboard
+            </span>
           </Clipboard>
           <div className={copiedClass}>Copied!</div>
         </div>
