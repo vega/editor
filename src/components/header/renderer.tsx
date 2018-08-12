@@ -148,7 +148,7 @@ class Header extends React.Component<Props, State> {
   }
 
   public handleCheck(event) {
-    event.target.checked ? this.setState({ fullscreen: true }) : this.setState({ fullscreen: false });
+    this.setState({ fullscreen: event.target.checked });
   }
 
   public async onSelectGist(closePortal) {
@@ -243,9 +243,9 @@ class Header extends React.Component<Props, State> {
     const wrapperURL = this.refs.wrapperURL as any;
     if (wrapperURL && wrapperURL.offsetWidth < wrapperURL.scrollWidth) {
       const url = this.state.generatedURL;
-      const x = (url.length / wrapperURL.scrollWidth) * wrapperURL.offsetWidth * 0.9;
+      const max = (url.length / wrapperURL.scrollWidth) * wrapperURL.offsetWidth * 0.9;
       (this.refs.exportedURL as any).innerHTML =
-        url.slice(0, (2 * x) / 3) + '...' + url.slice(url.length - x / 3, url.length);
+        url.slice(0, (2 * max) / 3) + '...' + url.slice(url.length - max / 3, url.length);
     }
   }
 
