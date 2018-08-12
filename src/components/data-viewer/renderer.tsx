@@ -19,7 +19,7 @@ const initialState = {
 
 type State = Readonly<typeof initialState>;
 
-const ROWS_PER_PAGE = 16;
+const ROWS_PER_PAGE = 50;
 
 export default class DataViewer extends React.Component<Props, State> {
   public readonly state: State = initialState;
