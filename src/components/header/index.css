@@ -409,12 +409,6 @@
   color: #000;
 }
 
-.share-content p {
-  margin-bottom: 0;
-  padding-bottom: 30px;
-  font-style: italic;
-}
-
 .exported-url {
   display: flex;
 }
