@@ -548,7 +548,7 @@ class Header extends React.Component<Props, State> {
       <div className="share-content">
         <h2>Share</h2>
         <p>We pack the Vega or Vega-Lite specification and an encoded string in the URL.</p>
-        <p>We use and LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
+        <p>We use LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
         <div className="user-pref">
           <label>
             Link opens visualization in fullscreen:
