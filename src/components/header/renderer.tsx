@@ -544,8 +544,6 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
-    const copiedClass = 'copied' + (this.state.copied ? ' visible' : '');
-
     const shareContent = (
       <div className="share-content">
         <h2>Share</h2>
@@ -584,10 +582,10 @@ class Header extends React.Component<Props, State> {
               Copy to Clipboard
             </span>
           </Clipboard>
-          <div className={copiedClass}>Copied!</div>
+          <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
         </div>
         <div className="byte-counter">
-          Bytes: {this.state.generatedURL.length}{' '}
+          Characters Count: {this.state.generatedURL.length}{' '}
           <span className="warning">
             {this.state.generatedURL.length > 2083 ? (
               <span>
@@ -596,7 +594,7 @@ class Header extends React.Component<Props, State> {
                   href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
                   target="_blank"
                 >
-                  URLs over 2083 bytes may not be supported in Internet Explorer.
+                  URLs over 2083 characters may not be supported in Internet Explorer.
                 </a>
               </span>
             ) : (

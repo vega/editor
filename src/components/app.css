@@ -87,3 +87,18 @@ select {
 button:focus {
   outline: none;
 }
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 7px; /* for vertical scrollbars */
+  height: 7px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+}
