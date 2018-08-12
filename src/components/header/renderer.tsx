@@ -534,7 +534,7 @@ class Header extends React.Component<Props, State> {
         <p>We use and LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
         <div className="user-pref">
           <label>
-            View in fullscreen:
+            Link opens visualization in fullscreen:
             <input
               type="checkbox"
               defaultChecked={this.state.fullscreen}
