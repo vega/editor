@@ -203,9 +203,9 @@ class Header extends React.Component<Props, State> {
       LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullscreen ? '/view' : '');
     const exportedURL = this.refs.exportedURL as any;
     if (exportedURL && serializedSpec) {
-      this.props.history.push(`/url/${NAME_TO_MODE[this.props.mode]}/${serializedSpec}`);
-      exportedURL.innerHTML = document.location.href;
-      this.setState({ generatedURL: document.location.href });
+      const url = document.location.origin + '/#/url/' + NAME_TO_MODE[this.props.mode] + '/' + serializedSpec;
+      exportedURL.innerHTML = url;
+      this.setState({ generatedURL: url });
       // Visual Feedback
       exportedURL.classList.add('pressed');
       setTimeout(() => {
