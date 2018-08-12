@@ -106,7 +106,7 @@ class Header extends React.Component<Props, State> {
   }
 
   public onSelectVega(name) {
-    this.props.history.push('/examples/vega/' + name);
+    this.props.history.push(`/examples/vega/${name}`);
   }
 
   public onSelectNewVega() {
@@ -114,7 +114,7 @@ class Header extends React.Component<Props, State> {
   }
 
   public onSelectVegaLite(name) {
-    this.props.history.push('/examples/vega-lite/' + name);
+    this.props.history.push(`/examples/vega-lite/${name}`);
   }
 
   public onSelectNewVegaLite() {
@@ -126,7 +126,7 @@ class Header extends React.Component<Props, State> {
   }
 
   public onSwitch(option) {
-    option.value === 'vega' ? this.onSelectNewVega() : this.onSelectNewVegaLite();
+    option.value === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
   }
 
   public onSelectRun(option) {
@@ -204,11 +204,11 @@ class Header extends React.Component<Props, State> {
       const link = document.createElement('a');
       link.setAttribute('href', url);
       link.setAttribute('target', '_blank');
-      link.setAttribute('download', 'visualization.' + ext);
+      link.setAttribute('download', `visualization.${ext}`);
       link.dispatchEvent(new MouseEvent('click'));
     } else {
       const tab = window.open();
-      tab.document.write('<title>SVG</title><img src="' + url + '"/>');
+      tab.document.write(`<title>SVG</title><img src="${url}" />`);
     }
   }
 
@@ -217,8 +217,7 @@ class Header extends React.Component<Props, State> {
       LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullscreen ? '/view' : '');
     const exportedURL = this.refs.exportedURL as any;
     if (exportedURL && serializedSpec) {
-      const url =
-        document.location.href.split('#')[0] + '#/url/' + NAME_TO_MODE[this.props.mode] + '/' + serializedSpec;
+      const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
       exportedURL.innerHTML = url;
       this.setState({ generatedURL: url });
       // Visual Feedback
