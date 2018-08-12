@@ -103,18 +103,8 @@
   z-index: 9000;
 }
 
-.modal-body::-webkit-scrollbar {
-  width: 7px; /* for vertical scrollbars */
-  height: 7px; /* for horizontal scrollbars */
-}
-
-.modal-body::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.modal-body::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
+.modal-hidden {
+  overflow: hidden;
 }
 
 .close-button {
@@ -363,7 +353,7 @@
 }
 
 .export-buttons {
-  margin-top: 20px;
+  margin: 20px 0;
 }
 
 .export-button {
@@ -413,6 +403,110 @@
 .user-notes p {
   padding: 20px 0;
 }
+
+.share-content a {
+  color: #000;
+}
+
+.share-content p {
+  line-height: 0.7;
+}
+
+.exported-url {
+  display: flex;
+}
+
+.exported-url span:first-child {
+  width: 100%;
+  overflow: hidden;
+  vertical-align: middle;
+  line-height: 25px;
+  white-space: nowrap;
+}
+
+.exported-url a::selection {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.share-buttons,
+.share-button {
+  display: flex;
+  align-items: center;
+}
+
+.share-button {
+  font-size: 0.9em;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  line-height: 30px;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  margin: 30px 0;
+}
+
+.share-button svg {
+  width: 22px;
+  height: 22px;
+  stroke: #000;
+  padding-right: 5px;
+}
+
+.copy-icon {
+  margin-left: 20px;
+}
+
+.copy-icon span {
+  display: flex;
+  align-items: center;
+}
+
+.copied {
+  padding: 0 20px;
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.user-pref label {
+  display: flex;
+  align-items: center;
+  padding: 20px 0 30px 0;
+}
+
+.user-pref input[type="checkbox"]:focus {
+  outline: 0;
+}
+
+.pressed {
+  color: #666 !important;
+}
+
+.share-button:hover {
+  border-color: #aaa;
+}
+
+.share-button:active {
+  background-color: #ddd;
+}
+
+.warning {
+  padding-left: 10px;
+}
+
+.warning,
+.warning a {
+  color: #f0ad4e;
+}
+
+.export-content > p {
+  padding: 30px 0 0 0;
+  margin: 0;
+}
+
 /* Media queries */
 @media only screen and (min-width: 960px) {
   .header-button svg,

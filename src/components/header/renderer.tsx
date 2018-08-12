@@ -1,18 +1,34 @@
 import 'react-select/dist/react-select.css';
 import './index.css';
 
+import LZString from 'lz-string';
 import * as React from 'react';
-import { Code, ExternalLink, FileText, Github, Grid, Image, Map, Play, Trash2, X } from 'react-feather';
+import Clipboard from 'react-clipboard.js';
+import {
+  Code,
+  Copy,
+  ExternalLink,
+  FileText,
+  Github,
+  Grid,
+  Image,
+  Link,
+  Map,
+  Play,
+  Share2,
+  Trash2,
+  X,
+} from 'react-feather';
 import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
-
 import { Mode, View } from '../../constants';
-import { NAMES } from '../../constants/consts';
+import { NAME_TO_MODE, NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 
 interface Props {
   autoParse?: boolean;
+  editorString?: string;
   history: any;
   mode: Mode;
   view: View;
@@ -24,6 +40,9 @@ interface Props {
 }
 
 interface State {
+  copied: boolean;
+  fullscreen: boolean;
+  generatedURL: string;
   gist: {
     filename: string;
     revision: string;
@@ -47,6 +66,9 @@ class Header extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      copied: false,
+      fullscreen: false,
+      generatedURL: '',
       gist: {
         filename: '',
         revision: '',
@@ -119,6 +141,14 @@ class Header extends React.Component<Props, State> {
     }
   }
 
+  public onCopy() {
+    this.setState({ copied: true });
+  }
+
+  public handleCheck(event) {
+    this.setState({ fullscreen: event.target.checked });
+  }
+
   public async onSelectGist(closePortal) {
     const type = this.state.gist.type;
     const url = this.state.gist.url.trim().toLowerCase();
@@ -182,6 +212,46 @@ class Header extends React.Component<Props, State> {
     }
   }
 
+  public exportURL() {
+    const serializedSpec =
+      LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullscreen ? '/view' : '');
+    const exportedURL = this.refs.exportedURL as any;
+    if (exportedURL && serializedSpec) {
+      const url = document.location.origin + '/#/url/' + NAME_TO_MODE[this.props.mode] + '/' + serializedSpec;
+      exportedURL.innerHTML = url;
+      this.setState({ generatedURL: url });
+      // Visual Feedback
+      exportedURL.classList.add('pressed');
+      setTimeout(() => {
+        exportedURL.classList.remove('pressed');
+      }, 250);
+    }
+  }
+
+  public previewURL() {
+    const win = window.open(this.state.generatedURL, '_blank');
+    win.focus();
+  }
+
+  public componentDidUpdate(prevProps, prevState) {
+    if (this.state.copied) {
+      setTimeout(() => {
+        this.setState({ copied: false });
+      }, 2500);
+    }
+    if (prevState.fullscreen !== this.state.fullscreen) {
+      this.exportURL();
+    }
+    // Use ... when URL overflows the container
+    const wrapperURL = this.refs.wrapperURL as any;
+    if (wrapperURL && wrapperURL.offsetWidth < wrapperURL.scrollWidth) {
+      const url = this.state.generatedURL;
+      const max = (url.length / wrapperURL.scrollWidth) * wrapperURL.offsetWidth * 0.9;
+      (this.refs.exportedURL as any).innerHTML =
+        url.slice(0, (2 * max) / 3) + '...' + url.slice(url.length - max / 3, url.length);
+    }
+  }
+
   public componentWillReceiveProps(nextProps) {
     this.setState({
       gist: {
@@ -229,6 +299,13 @@ class Header extends React.Component<Props, State> {
       <div className="header-button">
         <ExternalLink className="header-icon" />
         {'Export'}
+      </div>
+    );
+
+    const shareButton = (
+      <div className="header-button">
+        <Share2 className="header-icon" />
+        {'Share'}
       </div>
     );
 
@@ -433,36 +510,24 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
-    const exportContent = closePortal => (
+    const exportContent = (
       <div className="export-content">
         <h2>Export</h2>
         <div className="export-buttons">
-          <button
-            className="export-button"
-            onClick={() => {
-              this.exportViz('png');
-              closePortal();
-            }}
-          >
+          <button className="export-button" onClick={() => this.exportViz('png')}>
             <div>
               <Image />
-              <span>PNG</span>
+              <span>Download PNG</span>
             </div>
             <p>
               PNG is a bitmap image format which is made up of a fixed number of pixels. They have a fixed resolution
               and cannot be scaled.
             </p>
           </button>
-          <button
-            className="export-button"
-            onClick={() => {
-              this.exportViz('svg');
-              closePortal();
-            }}
-          >
+          <button className="export-button" onClick={() => this.exportViz('svg')}>
             <div>
               <Map />
-              <span>SVG</span>
+              <span>Open SVG</span>
             </div>
             <p>
               SVG is a vector image format which uses geometric forms to represent different parts as discrete objects
@@ -475,6 +540,67 @@ class Header extends React.Component<Props, State> {
             <strong>Note:</strong> To get a PDF, export SVG which you can save as PDF from the print window of your
             browser.
           </p>
+        </div>
+      </div>
+    );
+
+    const shareContent = (
+      <div className="share-content">
+        <h2>Share</h2>
+        <p>We pack the Vega or Vega-Lite specification and an encoded string in the URL.</p>
+        <p>We use LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
+        <div className="user-pref">
+          <label>
+            Link opens visualization in fullscreen:
+            <input
+              type="checkbox"
+              defaultChecked={this.state.fullscreen}
+              name="fullscreen"
+              onChange={this.handleCheck.bind(this)}
+            />
+          </label>
+        </div>
+        <div className="exported-url">
+          <span ref="wrapperURL">
+            <a ref="exportedURL" href={this.state.generatedURL} target="_blank">
+              {this.state.generatedURL}
+            </a>
+          </span>
+        </div>
+        <div className="share-buttons">
+          <button className="share-button" onClick={() => this.previewURL()}>
+            <Link />
+            <span>Open Link</span>
+          </button>
+          <Clipboard
+            className="share-button copy-icon"
+            data-clipboard-text={this.state.generatedURL}
+            onSuccess={this.onCopy.bind(this)}
+          >
+            <span>
+              <Copy />
+              Copy to Clipboard
+            </span>
+          </Clipboard>
+          <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
+        </div>
+        <div className="byte-counter">
+          Characters Count: {this.state.generatedURL.length}{' '}
+          <span className="warning">
+            {this.state.generatedURL.length > 2083 ? (
+              <span>
+                Warning:{' '}
+                <a
+                  href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
+                  target="_blank"
+                >
+                  URLs over 2083 characters may not be supported in Internet Explorer.
+                </a>
+              </span>
+            ) : (
+              ''
+            )}
+          </span>
         </div>
       </div>
     );
@@ -503,7 +629,28 @@ class Header extends React.Component<Props, State> {
                         <X />
                       </button>
                     </div>
-                    <div className="modal-body">{exportContent(closePortal)}</div>
+                    <div className="modal-body">{exportContent}</div>
+                    <div className="modal-footer" />
+                  </div>
+                </div>
+              ),
+            ]}
+          </PortalWithState>
+
+          <PortalWithState closeOnEsc onOpen={this.exportURL.bind(this)}>
+            {({ openPortal, closePortal, onOpen, portal }) => [
+              <span key="0" onClick={openPortal}>
+                {shareButton}
+              </span>,
+              portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
+                    <div className="modal-header">
+                      <button className="close-button" onClick={closePortal}>
+                        <X />
+                      </button>
+                    </div>
+                    <div className="modal-body modal-hidden">{shareContent}</div>
                     <div className="modal-footer" />
                   </div>
                 </div>
