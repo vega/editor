@@ -485,11 +485,11 @@
   color: #666 !important;
 }
 
-.copy-icon:hover {
+.share-button:hover {
   border-color: #aaa;
 }
 
-.copy-icon:active {
+.share-button:active {
   background-color: #ddd;
 }
 
