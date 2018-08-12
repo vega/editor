@@ -1,5 +1,5 @@
-import './index.css';
 import 'react-select/dist/react-select.css';
+import './index.css';
 
 import LZString from 'lz-string';
 import * as React from 'react';
