@@ -23,7 +23,7 @@
   padding: 0 10px;
   user-select: none;
   position: relative;
-  z-index: 1000;
+  z-index: 10;
   white-space: nowrap;
 }
 
@@ -71,7 +71,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 8000;
+  z-index: 15;
 }
 
 .modal {
@@ -87,7 +87,7 @@
 .modal-header,
 .modal-footer {
   height: 50px;
-  z-index: 95;
+  z-index: 20;
 }
 
 .modal-header:after {
@@ -100,7 +100,7 @@
   padding: 0 30px;
   max-height: 80vh;
   overflow-y: auto;
-  z-index: 9000;
+  z-index: 20;
 }
 
 .modal-hidden {
@@ -160,7 +160,7 @@
   left: 50%;
   transform: translateX(-50%);
   top: -16px;
-  z-index: 100;
+  z-index: 10;
 }
 
 .specType {
@@ -312,7 +312,7 @@
 
 .auto-run-toggle .Select-arrow-zone {
   position: relative;
-  z-index: 5000;
+  z-index: 12;
 }
 
 .auto-run-toggle {
