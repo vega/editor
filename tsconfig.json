@@ -15,5 +15,9 @@
     "importHelpers": true
   },
   "files": ["src/index.tsx"],
-  "include": ["node_modules/vega-lite/typings/*.d.ts"]
+  "include": ["node_modules/vega-lite/typings/*.d.ts"],
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": true,
+    "forceIsolatedModules": true
+  }
 }

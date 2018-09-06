@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const { CheckerPlugin } = require("awesome-typescript-loader");
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 module.exports = (env, argv) => {
   const config = {
@@ -13,13 +14,11 @@ module.exports = (env, argv) => {
       filename: "[name].bundle.js",
       chunkFilename: "[name].chunk.js",
       path: path.resolve(__dirname, "dist"),
-      pathinfo: false,
+      pathinfo: false
     },
 
     devtool:
-      argv.mode === "development"
-        ? "cheap-module-source-map"
-        : "source-map",
+      argv.mode === "development" ? "cheap-module-source-map" : "source-map",
 
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".json"]
@@ -34,7 +33,14 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.css$/,
-          use: ["style-loader", "css-loader",  { loader: "postcss-loader", options: { plugins: [require("autoprefixer")] } }]
+          use: [
+            "style-loader",
+            "css-loader",
+            {
+              loader: "postcss-loader",
+              options: { plugins: [require("autoprefixer")] }
+            }
+          ]
         }
       ]
     },
@@ -47,7 +53,8 @@ module.exports = (env, argv) => {
       new MonacoWebpackPlugin({
         languages: ["json"]
       }),
-      new CheckerPlugin()
+      new CheckerPlugin(),
+      new HardSourceWebpackPlugin()
     ],
 
     devServer: {
