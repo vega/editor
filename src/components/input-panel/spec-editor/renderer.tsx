@@ -168,7 +168,7 @@ class Editor extends React.Component<Props, {}> {
     });
   }
   public componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.manualParse && nextProps.parse) {
+    if (nextProps.parse) {
       this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
     }
