@@ -27,9 +27,9 @@ import { NAME_TO_MODE, NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 
 interface Props {
-  autoParse?: boolean;
   editorString?: string;
   history: any;
+  manualParse?: boolean;
   mode: Mode;
   view: View;
 
@@ -131,11 +131,11 @@ class Header extends React.Component<Props, State> {
 
   public onSelectRun(option) {
     if (option.value === 'auto') {
-      if (!this.props.autoParse) {
+      if (this.props.manualParse) {
         this.props.toggleAutoParse();
       }
     } else {
-      if (this.props.autoParse) {
+      if (!this.props.manualParse) {
         this.props.toggleAutoParse();
       }
     }
@@ -339,13 +339,13 @@ class Header extends React.Component<Props, State> {
       <div className="header-button" onClick={() => this.props.parseSpec(true)}>
         <Play className="header-icon" />
         {'Run'}
-        <span className="parse-mode">{this.props.autoParse ? 'Auto' : 'Manual'}</span>
+        <span className="parse-mode">{this.props.manualParse ? 'Manual' : 'Auto'}</span>
       </div>
     );
 
-    const runOptions = this.props.autoParse
-      ? [{ value: 'manual', label: 'Manual' }]
-      : [{ value: 'auto', label: 'Auto' }];
+    const runOptions = this.props.manualParse
+      ? [{ value: 'auto', label: 'Auto' }]
+      : [{ value: 'manual', label: 'Manual' }];
 
     const autoRunToggle = (
       <Select
@@ -358,7 +358,7 @@ class Header extends React.Component<Props, State> {
       />
     );
 
-    const splitClass = 'split-button' + (this.props.autoParse ? ' auto-run' : '');
+    const splitClass = 'split-button' + (this.props.manualParse ? '' : ' auto-run');
 
     const vega = closePortal => (
       <div className="vega">

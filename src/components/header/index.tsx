@@ -6,8 +6,8 @@ import Renderer from './renderer';
 
 const mapStateToProps = (state: State, ownProps) => {
   return {
-    autoParse: state.autoParse,
     editorString: state.editorString,
+    manualParse: state.manualParse,
     mode: state.mode,
     view: state.view,
   };

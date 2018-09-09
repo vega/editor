@@ -166,8 +166,8 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case TOGGLE_AUTO_PARSE:
       return {
         ...state,
-        autoParse: !state.autoParse,
-        parse: !state.autoParse,
+        manualParse: !state.manualParse,
+        parse: state.manualParse,
       };
     case SHOW_COMPILED_VEGA_SPEC:
       return {
