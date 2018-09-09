@@ -2,7 +2,6 @@ import { LocalLogger } from '../utils/logger';
 import { Mode, Renderer, View } from './consts';
 
 export interface State {
-  autoParse: boolean;
   baseURL: string;
   compiledVegaSpec: boolean;
   debugPane: boolean;
@@ -13,6 +12,7 @@ export interface State {
   format: boolean;
   gist: string;
   logs: boolean;
+  manualParse: boolean;
   mode: Mode;
   parse: boolean;
   renderer: Renderer;
@@ -25,7 +25,6 @@ export interface State {
 }
 
 export const DEFAULT_STATE: State = {
-  autoParse: true,
   baseURL: null,
   compiledVegaSpec: false,
   debugPane: false,
@@ -36,6 +35,7 @@ export const DEFAULT_STATE: State = {
   format: false,
   gist: null,
   logs: false,
+  manualParse: false,
   mode: Mode.VegaLite,
   parse: false,
   renderer: 'canvas',

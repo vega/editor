@@ -89,9 +89,9 @@ function debounce(func, wait, immediate?) {
 }
 
 interface Props {
-  autoParse?: boolean;
   format?: boolean;
   history: any;
+  manualParse?: boolean;
   match: any;
   mode: Mode;
   parse?: boolean;
@@ -118,7 +118,7 @@ class Editor extends React.Component<Props, {}> {
     this.editorDidMount = this.editorDidMount.bind(this);
   }
   public handleKeydown(e) {
-    if (!this.props.autoParse) {
+    if (this.props.manualParse) {
       if ((e.keyCode === KEYCODES.B || e.keyCode === KEYCODES.S) && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         this.props.parseSpec(true);
@@ -134,11 +134,8 @@ class Editor extends React.Component<Props, {}> {
     editor.focus();
   }
   public handleEditorChange(spec) {
-    if (this.props.autoParse) {
-      this.updateSpec(spec);
-    } else {
-      this.props.updateEditorString(spec);
-    }
+    this.props.manualParse ? this.props.updateEditorString(spec) : this.updateSpec(spec);
+
     if (this.props.history.location.pathname.indexOf('/edited') === -1) {
       this.props.history.push('/edited');
     }
@@ -171,7 +168,7 @@ class Editor extends React.Component<Props, {}> {
     });
   }
   public componentWillReceiveProps(nextProps: Props) {
-    if (!nextProps.autoParse && nextProps.parse) {
+    if (nextProps.manualParse && nextProps.parse) {
       this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
     }
