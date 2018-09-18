@@ -14,6 +14,7 @@ import Toolbar from '../toolbar';
 interface Props {
   debugPane?: boolean;
   debugPaneSize?: number;
+  error: Error;
   logs?: boolean;
   view?: View;
 
@@ -39,6 +40,9 @@ export default class VizPane extends React.Component<Props> {
     const debugPane = this.refs.debugPane as any;
     if (debugPane.pane2.style.height > MIN_PANE_HEIGHT && !this.props.debugPane) {
       this.props.toggleDebugPane();
+    }
+    if (this.props.error) {
+      this.props.showLogs(true);
     }
   }
   public render() {
