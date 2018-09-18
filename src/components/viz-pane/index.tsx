@@ -8,6 +8,7 @@ function mapStateToProps(state: State, ownProps) {
   return {
     debugPane: state.debugPane,
     debugPaneSize: state.debugPaneSize,
+    error: state.error,
     logs: state.logs,
     view: state.view,
   };
