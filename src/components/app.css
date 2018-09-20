@@ -25,16 +25,12 @@
   --spacing-unit: 30px;
 
   --dark-color: #24292e;
-  --primary-color: #eee;
-  --primary-light-color: #fff;
-  --primary-dark-color: #bcbcbc;
+  --primary-color: #f2f2f2;
+  --primary-light-color: #fcfcfc;
+  --primary-dark-color: #c7c7c7;
   --brand-color: #325;
   --error-color: #f44336;
   --warning-color: #ffc107;
-
-  --grey-color: #828282;
-  --grey-color-light: lighten(var(--grey-color), 15%);
-  --grey-color-dark: darken(var(--grey-color), 25%);
 }
 
 * {

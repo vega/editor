@@ -1,7 +1,8 @@
 .chart {
+  display: inline-block;
   background: white;
   padding: 10px;
-  display: inline-block;
+  border: 1px dashed var(--primary-dark-color);
 }
 
 .chart .vega-bindings {
