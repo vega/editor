@@ -21,7 +21,6 @@ import {
   SetVegaLiteExample,
   SHOW_COMPILED_VEGA_SPEC,
   SHOW_LOGS,
-  SHOW_TOOLTIP,
   TOGGLE_AUTO_PARSE,
   TOGGLE_DEBUG_PANE,
   UPDATE_EDITOR_STRING,
@@ -126,7 +125,6 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         mode: action.mode,
         parse: false,
         selectedExample: null,
-        tooltip: true,
         vegaLiteSpec: {},
         vegaSpec: {},
         view: null,
@@ -188,11 +186,6 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         editorString: action.editorString,
-      };
-    case SHOW_TOOLTIP:
-      return {
-        ...state,
-        tooltip: !state.tooltip,
       };
     case EXPORT_VEGA:
       return {

@@ -15,7 +15,6 @@ export const SET_VEGA_LITE_EXAMPLE: 'SET_VEGA_LITE_EXAMPLE' = 'SET_VEGA_LITE_EXA
 export const SET_VIEW: 'SET_VIEW' = 'SET_VIEW';
 export const SHOW_COMPILED_VEGA_SPEC: 'SHOW_COMPILED_VEGA_SPEC' = 'SHOW_COMPILED_VEGA_SPEC';
 export const SHOW_LOGS: 'SHOW_LOGS' = 'SHOW_LOGS';
-export const SHOW_TOOLTIP: 'SHOW_TOOLTIP' = 'SHOW_TOOLTIP';
 export const TOGGLE_AUTO_PARSE: 'TOGGLE_AUTO_PARSE' = 'TOGGLE_AUTO_PARSE';
 export const TOGGLE_DEBUG_PANE: 'TOGGLE_DEBUG_PANE' = 'TOGGLE_DEBUG_PANE';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
@@ -36,7 +35,6 @@ export type Action =
   | ToggleDebugPane
   | LogError
   | UpdateEditorString
-  | ShowTooltip
   | ExportVega
   | SetRenderer
   | SetBaseUrl
@@ -149,13 +147,6 @@ export function updateEditorString(editorString: string) {
   };
 }
 export type UpdateEditorString = ReturnType<typeof updateEditorString>;
-
-export function showTooltip() {
-  return {
-    type: SHOW_TOOLTIP,
-  };
-}
-export type ShowTooltip = ReturnType<typeof showTooltip>;
 
 export function exportVega(value: boolean) {
   return {

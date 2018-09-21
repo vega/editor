@@ -17,7 +17,6 @@ export interface State {
   parse: boolean;
   renderer: Renderer;
   selectedExample: string;
-  tooltip: boolean;
   vegaLiteSpec: any;
   vegaSpec: any;
   view: View;
@@ -40,7 +39,6 @@ export const DEFAULT_STATE: State = {
   parse: false,
   renderer: 'canvas',
   selectedExample: null,
-  tooltip: true,
   vegaLiteSpec: null,
   vegaSpec: {},
   view: null,
