@@ -11,8 +11,6 @@ const getVersion = (mode: Mode) => {
 
 interface Props {
   mode;
-  warningsLogger;
-  error?: string;
   renderer?: string;
 
   setRenderer: (val: any) => void;
@@ -20,25 +18,9 @@ interface Props {
 }
 
 export default class Toolbar extends React.Component<Props> {
-  public showErrorAndWarnings() {
-    if (this.props.error) {
-      return (
-        <div className="error-indicator" onClick={e => this.props.toggleDebugPane()}>
-          Error
-        </div>
-      );
-    } else if (this.props.warningsLogger.warns.length > 0) {
-      return (
-        <div className="warning-indicator" onClick={e => this.props.toggleDebugPane()}>
-          Warning
-        </div>
-      );
-    }
-  }
   public render() {
     return (
       <div className="toolbar">
-        {this.showErrorAndWarnings()}
         <div className="status">{`${NAMES[this.props.mode]} version ${getVersion(this.props.mode)}`}</div>
         <div
           className="renderer-toggle"
