@@ -17,17 +17,17 @@
 :root {
   --base-font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   --base-font-size: 1em;
-  --small-font-size: var(--base-font-size) * 0.8;
-  --large-font-size: var(--base-font-size) * 1.4;
+  --small-font-size: calc(var(--base-font-size) * 0.9);
+  --large-font-size: calc(var(--base-font-size) * 1.4);
 
   --base-line-height: 1;
 
-  --spacing-unit: 30px;
+  --spacing-unit: 5px;
 
   --dark-color: #24292e;
   --primary-color: #f2f2f2;
   --primary-light-color: #fcfcfc;
-  --primary-dark-color: #c7c7c7;
+  --primary-dark-color: #c5c5c5;
   --brand-color: #325;
   --error-color: #f44336;
   --warning-color: #ffc107;
@@ -68,8 +68,34 @@ html {
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
+/* Button styles */
 button:focus {
   outline: none;
+}
+
+.custom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--primary-light-color);
+  border: 1px solid var(--primary-dark-color);
+  border-radius: 4px;
+  padding: calc(2 * var(--spacing-unit)) calc(3 * var(--spacing-unit));
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-btn span {
+  font-size: var(--font-size);
+  padding-left: var(--spacing-unit);
+}
+
+.custom-btn:hover {
+  background: var(--primary-color);
+}
+
+.custom-btn:active {
+  background: var(--primary-dark-color);
 }
 
 /* Resizer styles */

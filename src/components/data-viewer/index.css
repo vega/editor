@@ -22,28 +22,6 @@
   align-items: center;
 }
 
-.data-viewer-header button {
-  font-size: 1em;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  line-height: 30px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.data-viewer-header button:focus {
-  outline: none;
-}
-
-.data-viewer-header button:hover {
-  border-color: #aaa;
-}
-
-.data-viewer-header button:active {
-  background-color: #ddd;
-}
-
 .pagination-wrapper {
   display: inline-flex;
   vertical-align: middle;
@@ -93,21 +71,8 @@
   color: #ddd;
 }
 
-.data-refresh {
+.refresh-btn {
   display: inline-flex;
-  justify-content: center;
-  align-items: center;
   vertical-align: middle;
-  margin: 0 20px;
-}
-
-.data-refresh span {
-  padding: 0 5px;
-  font-size: 0.9em;
-}
-
-.data-refresh svg {
-  width: 15px;
-  height: 15px;
-  margin-left: 4px;
+  margin: 0 calc(var(--spacing-unit) * 4);
 }

@@ -158,7 +158,7 @@ class Editor extends React.Component<Props, State> {
             <div className="chart fullscreen-chart">
               <div ref="fchart" />
               <button
-                className="fullscreen-close"
+                className="custom-btn fullscreen-close"
                 onClick={() => {
                   this.setState({ fullscreen: false }, this.onClosePortal);
                 }}
