@@ -17,7 +17,10 @@ export const NAMES = {
   [Mode.VegaLite]: 'Vega-Lite',
 };
 
-export const LAYOUT = { HeaderHeight: 60 };
+export const LAYOUT = {
+  HeaderHeight: 60,
+  MinPaneSize: 25,
+};
 
 export type Renderer = 'svg' | 'canvas';
 

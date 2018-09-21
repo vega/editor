@@ -1,5 +1,5 @@
 import { LocalLogger } from '../utils/logger';
-import { Mode, Renderer, View } from './consts';
+import { LAYOUT, Mode, Renderer, View } from './consts';
 
 export interface State {
   baseURL: string;
@@ -28,7 +28,7 @@ export const DEFAULT_STATE: State = {
   baseURL: null,
   compiledVegaSpec: false,
   debugPane: false,
-  debugPaneSize: null,
+  debugPaneSize: LAYOUT.MinPaneSize,
   editorString: '{}',
   error: null,
   export: false,

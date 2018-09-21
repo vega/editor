@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import SplitPane from 'react-split-pane';
 
-import { View } from '../../constants';
+import { LAYOUT, View } from '../../constants';
 import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
@@ -23,8 +23,6 @@ interface Props {
   toggleDebugPane: () => void;
 }
 
-const MIN_PANE_HEIGHT = 25;
-
 export default class VizPane extends React.Component<Props> {
   constructor(props) {
     super(props);
@@ -32,13 +30,13 @@ export default class VizPane extends React.Component<Props> {
   }
   public handleChange(size: number) {
     this.props.setDebugPaneSize(size);
-    if ((size > MIN_PANE_HEIGHT && !this.props.debugPane) || (size === MIN_PANE_HEIGHT && this.props.debugPane)) {
+    if ((size > LAYOUT.MinPaneSize && !this.props.debugPane) || (size === LAYOUT.MinPaneSize && this.props.debugPane)) {
       this.props.toggleDebugPane();
     }
   }
   public componentDidUpdate() {
     const debugPane = this.refs.debugPane as any;
-    if (debugPane.pane2.style.height > MIN_PANE_HEIGHT && !this.props.debugPane) {
+    if (debugPane.pane2.style.height > LAYOUT.MinPaneSize && !this.props.debugPane) {
       this.props.toggleDebugPane();
     }
     if (this.props.error) {
@@ -50,7 +48,7 @@ export default class VizPane extends React.Component<Props> {
     if (debugPane) {
       debugPane.pane2.style.height = this.props.debugPane
         ? (this.props.debugPaneSize || window.innerHeight * 0.4) + 'px'
-        : MIN_PANE_HEIGHT + 'px';
+        : LAYOUT.MinPaneSize + 'px';
     }
     const container = (
       <div className="chart-container">
@@ -94,8 +92,8 @@ export default class VizPane extends React.Component<Props> {
         ref="debugPane"
         split="horizontal"
         primary="second"
-        minSize={MIN_PANE_HEIGHT}
-        defaultSize={this.props.debugPane ? this.props.debugPaneSize : MIN_PANE_HEIGHT}
+        minSize={LAYOUT.MinPaneSize}
+        defaultSize={this.props.debugPane ? this.props.debugPaneSize : LAYOUT.MinPaneSize}
         onChange={this.handleChange}
         paneStyle={{ display: 'flex' }}
       >
