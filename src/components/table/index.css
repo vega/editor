@@ -3,7 +3,7 @@
   max-width: 100%;
   font-size: 0.9em;
   overflow: auto;
-  border: 1px solid #dfe2e5;
+  border: 1px solid var(--primary-dark-color);
 }
 
 .data-table table {
@@ -14,7 +14,7 @@
 
 .data-table thead tr:first-child > * {
   border-top: 0;
-  border-bottom: 2px solid #dfe2e5;
+  border-bottom: 2px solid var(--primary-dark-color);
 }
 
 .data-table tbody tr:last-child > * {
@@ -33,7 +33,7 @@
 
 .data-table th {
   text-align: center;
-  background: #f6f8fa;
+  background: var(--primary-color);
 }
 
 .data-table td,
@@ -42,11 +42,11 @@
   color: #333;
   padding: 8px;
   word-break: keep-all;
-  border: 1px solid #dfe2e5;
+  border: 1px solid var(--primary-dark-color);
 }
 
 .data-table tr:nth-child(even) {
-  background-color: #f6f8fa;
+  background-color: var(--primary-color);
 }
 
 .data-table::-webkit-scrollbar {

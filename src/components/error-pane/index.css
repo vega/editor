@@ -13,10 +13,14 @@
 .error-pane {
   overflow: auto;
   width: 100%;
+  padding: calc(2 * var(--spacing-unit));
 }
 
 .error-pane ul {
   list-style-type: none;
-  padding-left: 1em;
-  padding-right: 2em;
+  padding: calc(2 * var(--spacing-unit));
+}
+
+.error-pane li {
+  padding: calc(0.5 * var(--spacing-unit));
 }
