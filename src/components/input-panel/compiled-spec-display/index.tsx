@@ -10,7 +10,7 @@ interface Props {
   value;
 }
 
-class CompiledSpecDisplay extends React.PureComponent<Props, {}> {
+class CompiledSpecDisplay extends React.PureComponent<Props> {
   public render() {
     return (
       <div className={'sizeFixEditorParent full-height-wrapper'}>

@@ -10,6 +10,7 @@ import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
 import Toolbar from '../toolbar';
+import DebugPaneHeader from './debug-pane-header';
 
 interface Props {
   debugPane?: boolean;
@@ -58,35 +59,6 @@ export default class VizPane extends React.Component<Props> {
         <Toolbar />
       </div>
     );
-    const debugPaneHeader = (
-      <div className="debug-pane-header" onClick={e => this.props.toggleDebugPane()}>
-        <ul className="tabs-nav">
-          <li
-            className={this.props.logs ? 'active-tab' : ''}
-            onClick={e => {
-              if (this.props.debugPane) {
-                e.stopPropagation();
-              }
-              this.props.showLogs(true);
-            }}
-          >
-            Logs
-          </li>
-          <li
-            className={this.props.logs ? '' : 'active-tab'}
-            onClick={e => {
-              if (this.props.debugPane) {
-                e.stopPropagation();
-              }
-              this.props.showLogs(false);
-            }}
-          >
-            Data Viewer
-          </li>
-        </ul>
-        {this.props.debugPane ? <ChevronDown /> : <ChevronUp />}
-      </div>
-    );
     return (
       <SplitPane
         ref="debugPane"
@@ -99,7 +71,7 @@ export default class VizPane extends React.Component<Props> {
       >
         {container}
         <div className="debug-pane">
-          {debugPaneHeader}
+          <DebugPaneHeader />
           {this.props.logs ? <ErrorPane /> : this.props.view ? <DataViewer /> : null}
         </div>
       </SplitPane>
