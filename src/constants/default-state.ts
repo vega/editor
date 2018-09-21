@@ -1,5 +1,5 @@
 import { LocalLogger } from '../utils/logger';
-import { Mode, Renderer, View } from './consts';
+import { LAYOUT, Mode, Renderer, View } from './consts';
 
 export interface State {
   baseURL: string;
@@ -17,7 +17,6 @@ export interface State {
   parse: boolean;
   renderer: Renderer;
   selectedExample: string;
-  tooltip: boolean;
   vegaLiteSpec: any;
   vegaSpec: any;
   view: View;
@@ -28,7 +27,7 @@ export const DEFAULT_STATE: State = {
   baseURL: null,
   compiledVegaSpec: false,
   debugPane: false,
-  debugPaneSize: null,
+  debugPaneSize: LAYOUT.MinPaneSize,
   editorString: '{}',
   error: null,
   export: false,
@@ -40,7 +39,6 @@ export const DEFAULT_STATE: State = {
   parse: false,
   renderer: 'canvas',
   selectedExample: null,
-  tooltip: true,
   vegaLiteSpec: null,
   vegaSpec: {},
   view: null,

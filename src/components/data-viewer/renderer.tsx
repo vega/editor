@@ -1,3 +1,5 @@
+import './index.css';
+
 import * as React from 'react';
 import { RefreshCw } from 'react-feather';
 import ReactPaginate from 'react-paginate';
@@ -6,7 +8,6 @@ import * as vega from 'vega';
 import { View } from '../../constants';
 import ErrorBoundary from '../error-boundary';
 import Table from '../table';
-import './index.css';
 
 interface Props {
   view?: View;
