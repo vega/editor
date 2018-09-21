@@ -282,7 +282,7 @@ class Header extends React.Component<Props, State> {
     );
 
     const examplesButton = (
-      <div className="header-button">
+      <div className="header-btn">
         <Grid className="header-icon" />
         {'Examples'}
       </div>
@@ -296,14 +296,14 @@ class Header extends React.Component<Props, State> {
     );
 
     const exportButton = (
-      <div className="header-button">
+      <div className="header-btn">
         <ExternalLink className="header-icon" />
         {'Export'}
       </div>
     );
 
     const shareButton = (
-      <div className="header-button">
+      <div className="header-btn">
         <Share2 className="header-icon" />
         {'Share'}
       </div>
@@ -322,21 +322,21 @@ class Header extends React.Component<Props, State> {
     );
 
     const clearButton = (
-      <div className="header-button" onClick={() => this.onClear()}>
+      <div className="header-btn" onClick={() => this.onClear()}>
         <Trash2 className="header-icon" />
         {'Clear'}
       </div>
     );
 
     const formatButton = (
-      <div className="header-button" onClick={() => this.props.formatSpec(true)}>
+      <div className="header-btn" onClick={() => this.props.formatSpec(true)}>
         <Code className="header-icon" />
         {'Format'}
       </div>
     );
 
     const runButton = (
-      <div className="header-button" onClick={() => this.props.parseSpec(true)}>
+      <div className="header-btn" onClick={() => this.props.parseSpec(true)}>
         <Play className="header-icon" />
         {'Run'}
         <span className="parse-mode">{this.props.manualParse ? 'Manual' : 'Auto'}</span>
@@ -718,7 +718,7 @@ class Header extends React.Component<Props, State> {
           <span>{docsLink}</span>
 
           <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
-            <img height={32} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
+            <img height={21} alt="IDL Logo" src="idl-logo.png" />
           </a>
         </section>
       </div>

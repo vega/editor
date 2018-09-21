@@ -15,8 +15,11 @@
 
 /* Variables for root element */
 :root {
+  /* Root font size*/
+  font-size: 16px;
+
   --base-font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  --base-font-size: 1em;
+  --base-font-size: 1rem;
   --small-font-size: calc(var(--base-font-size) * 0.9);
   --large-font-size: calc(var(--base-font-size) * 1.4);
 
@@ -24,8 +27,10 @@
 
   --spacing-unit: 5px;
 
+  /* Colors */
+  --light-color: #dedede;
   --dark-color: #24292e;
-  --primary-color: #f2f2f2;
+  --primary-color: #f5f5f5;
   --primary-light-color: #fcfcfc;
   --primary-dark-color: #c5c5c5;
   --brand-color: #325;
@@ -80,13 +85,14 @@ button:focus {
   background: var(--primary-light-color);
   border: 1px solid var(--primary-dark-color);
   border-radius: 4px;
-  padding: calc(2 * var(--spacing-unit)) calc(3 * var(--spacing-unit));
+  padding: calc(2 * var(--spacing-unit));
   cursor: pointer;
   user-select: none;
+  text-decoration: none;
 }
 
 .custom-btn span {
-  font-size: var(--font-size);
+  font-size: var(--small-font-size);
   padding-left: var(--spacing-unit);
 }
 
@@ -158,10 +164,10 @@ button:focus {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--primary-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
+  background: var(--primary-dark-color);
+  border-radius: 8px;
 }

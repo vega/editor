@@ -1,6 +1,6 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import { ChevronDown, ChevronUp } from 'react-feather';
+import { ChevronDown, ChevronUp, Edit3 } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -39,8 +39,9 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
         <div className="editor-header" style={toggleStyleUp} onClick={this.props.showCompiledVegaSpec}>
           <span>Compiled Vega</span>
           <ChevronDown />
-          <button onClick={this.editVegaSpec} style={{ cursor: 'pointer' }}>
-            Edit Vega Spec
+          <button className="custom-btn edit-vega-btn" onClick={this.editVegaSpec}>
+            <Edit3 size={12} />
+            <span>{'Edit'}</span>
           </button>
         </div>
       );

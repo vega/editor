@@ -1,7 +1,7 @@
 .chart-container {
   width: 100%;
   height: 100%;
-  background: var(--primary-light-color);
+  background: var(--primary-color);
   padding: 10px;
   overflow: auto;
 }
@@ -24,7 +24,7 @@
   flex: 1;
   align-items: center;
   justify-content: space-between;
-  background: var(--primary-color);
+  background: var(--primary-dark-color);
   text-transform: uppercase;
   font-size: 12px;
   color: #666;

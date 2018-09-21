@@ -55,10 +55,10 @@
 }
 
 .data-table::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--primary-color);
 }
 
 .data-table::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
+  background: var(--primary-dark-color);
+  border-radius: 8px;
 }
