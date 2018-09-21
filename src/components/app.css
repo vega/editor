@@ -19,9 +19,6 @@
   font-size: 16px;
 
   --base-font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  --base-font-size: 1rem;
-  --small-font-size: calc(var(--base-font-size) * 0.9);
-  --large-font-size: calc(var(--base-font-size) * 1.4);
 
   --base-line-height: 1;
 
@@ -31,8 +28,8 @@
   --light-color: #dedede;
   --dark-color: #24292e;
   --primary-color: #f5f5f5;
-  --primary-light-color: #fcfcfc;
-  --primary-dark-color: #c5c5c5;
+  --primary-light-color: #ffffff;
+  --primary-dark-color: #d5d5d5;
   --brand-color: #325;
   --error-color: #f44336;
   --warning-color: #ffc107;
@@ -92,7 +89,6 @@ button:focus {
 }
 
 .custom-btn span {
-  font-size: var(--small-font-size);
   padding-left: var(--spacing-unit);
 }
 

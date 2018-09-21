@@ -148,17 +148,17 @@ class Editor extends React.Component<Props, State> {
         </div>
         <Maximize
           data-tip="Fullscreen"
-          className="fullscreen-open"
+          className="fs-open"
           onClick={() => {
             this.setState({ fullscreen: true }, this.onOpenPortal);
           }}
         />
         {this.state.fullscreen && (
           <Portal>
-            <div className="chart fullscreen-chart">
+            <div className="chart fs-chart">
               <div ref="fchart" />
               <button
-                className="custom-btn fullscreen-close"
+                className="custom-btn fs-edit"
                 onClick={() => {
                   this.setState({ fullscreen: false }, this.onClosePortal);
                 }}

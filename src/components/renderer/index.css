@@ -31,7 +31,7 @@
   margin-right: 4px;
 }
 
-.fullscreen-chart {
+.fs-chart {
   position: fixed;
   top: 0;
   left: 0;
@@ -43,18 +43,19 @@
   z-index: 15;
 }
 
-.fullscreen-chart > div {
+.fs-chart > div {
   margin: auto;
 }
 
-.fullscreen-open {
+.fs-open {
   position: absolute;
   top: 10px;
   right: 10px;
   cursor: pointer;
 }
 
-.fullscreen-close {
+.fs-edit {
+  font-size: 1rem;
   position: absolute;
   top: 20px;
   right: 20px;

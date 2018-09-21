@@ -7,7 +7,7 @@
   width: 100%;
   height: 25px;
   flex-shrink: 0;
-  background-color: var(--primary-color);
+  background: var(--light-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -16,4 +16,9 @@
 
 .editor-header.right-align {
   justify-content: flex-end;
+}
+
+.edit-vega-btn {
+  font-size: 0.8rem;
+  padding: calc(0.75 * var(--spacing-unit)) calc(2 * var(--spacing-unit));
 }
