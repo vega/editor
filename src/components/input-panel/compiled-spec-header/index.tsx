@@ -41,7 +41,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
           <ChevronDown />
           <button className="custom-btn edit-vega-btn" onClick={this.editVegaSpec}>
             <Edit3 size={12} />
-            <span>{'Edit'}</span>
+            <span>{'Edit Vega'}</span>
           </button>
         </div>
       );

@@ -47,7 +47,6 @@
   display: inline-flex;
   border: 1px solid var(--primary-dark-color);
   border-right: 0;
-  padding: 8px 10px;
   cursor: pointer;
   user-select: none;
 }
@@ -56,12 +55,16 @@
   border-right: 1px solid #ddd;
 }
 
+.pagination a {
+  padding: 8px 10px;
+}
+
 .pagination a:focus {
   outline: 0;
 }
 
 .pagination .active {
-  background: var(--primary-color);
+  background: var(--primary-dark-color);
 }
 
 .pagination .disabled {

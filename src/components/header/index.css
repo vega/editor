@@ -34,7 +34,8 @@
 
 .header-btn:hover,
 .docs-link:hover {
-  background: rgba(0, 0, 0, 0.08);
+  color: var(--dark-color);
+  background: var(--primary-dark-color);
 }
 
 .header section > span {
@@ -281,17 +282,23 @@
   width: 110px;
 }
 
-.mode-switcher.Select * {
-  background: #fff !important;
+.mode-switcher.Select *,
+.auto-run-toggle.Select * {
+  background: var(--dark-color) !important;
+  color: var(--light-color) !important;
+}
+
+.mode-switcher .Select-control {
+  border: 2px solid var(--light-color) !important;
 }
 
 .Select-control {
-  border-color: #d9d9d9 !important;
+  border-color: var(--primary-dark-color) !important;
   box-shadow: none !important;
 }
 
-.auto-run-toggle.Select-option {
-  background: #fff !important;
+.Select-option {
+  background: white !important;
 }
 
 .Select-option:hover {
@@ -339,7 +346,7 @@
   text-align: center;
   width: 43%;
   font-size: 10px;
-  color: var(--primary-dark-color);
+  color: var(--light-color);
 }
 
 .header-btn svg,

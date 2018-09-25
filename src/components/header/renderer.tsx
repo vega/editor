@@ -19,12 +19,12 @@ import {
   Trash2,
   X,
 } from 'react-feather';
-import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { Mode, View } from '../../constants';
 import { NAME_TO_MODE, NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
+import Modal from '../modal';
 
 interface Props {
   editorString?: string;
@@ -605,6 +605,17 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
+    const buttonGroup = (
+      <div className="button-groups">
+        <button className={this.state.showVega ? 'selected' : ''} onClick={() => this.setState({ showVega: true })}>
+          Vega
+        </button>
+        <button className={this.state.showVega ? '' : 'selected'} onClick={() => this.setState({ showVega: false })}>
+          Vega-Lite
+        </button>
+      </div>
+    );
+
     return (
       <div className="header">
         <section className="left-section">
@@ -616,105 +627,16 @@ class Header extends React.Component<Props, State> {
             {autoRunToggle}
           </span>
 
-          <PortalWithState closeOnEsc>
-            {({ openPortal, closePortal, isOpen, portal }) => [
-              <span key="0" onClick={openPortal}>
-                {exportButton}
-              </span>,
-              portal(
-                <div className="modal-background" onClick={closePortal}>
-                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
-                    <div className="modal-header">
-                      <button className="close-button" onClick={closePortal}>
-                        <X />
-                      </button>
-                    </div>
-                    <div className="modal-body">{exportContent}</div>
-                    <div className="modal-footer" />
-                  </div>
-                </div>
-              ),
-            ]}
-          </PortalWithState>
-
-          <PortalWithState closeOnEsc onOpen={this.exportURL.bind(this)}>
-            {({ openPortal, closePortal, onOpen, portal }) => [
-              <span key="0" onClick={openPortal}>
-                {shareButton}
-              </span>,
-              portal(
-                <div className="modal-background" onClick={closePortal}>
-                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
-                    <div className="modal-header">
-                      <button className="close-button" onClick={closePortal}>
-                        <X />
-                      </button>
-                    </div>
-                    <div className="modal-body modal-hidden">{shareContent}</div>
-                    <div className="modal-footer" />
-                  </div>
-                </div>
-              ),
-            ]}
-          </PortalWithState>
+          <Modal button={exportButton} content={exportContent} />
+          <Modal button={shareButton} content={shareContent} onOpen={this.exportURL.bind(this)} />
         </section>
         <section className="right-section">
-          <PortalWithState closeOnEsc>
-            {({ openPortal, closePortal, isOpen, portal }) => [
-              <span key="0" onClick={openPortal}>
-                {examplesButton}
-              </span>,
-              portal(
-                <div className="modal-background" onClick={closePortal}>
-                  <div className="modal" onClick={e => e.stopPropagation()}>
-                    <div className="modal-header">
-                      <div className="button-groups">
-                        <button
-                          className={this.state.showVega ? 'selected' : ''}
-                          onClick={() => this.setState({ showVega: true })}
-                        >
-                          Vega
-                        </button>
-                        <button
-                          className={this.state.showVega ? '' : 'selected'}
-                          onClick={() => this.setState({ showVega: false })}
-                        >
-                          Vega-Lite
-                        </button>
-                      </div>
-                      <button className="close-button" onClick={closePortal}>
-                        <X />
-                      </button>
-                    </div>
-                    <div className="modal-body">{this.state.showVega ? vega(closePortal) : vegalite(closePortal)}</div>
-                    <div className="modal-footer" />
-                  </div>
-                </div>
-              ),
-            ]}
-          </PortalWithState>
-
-          <PortalWithState closeOnEsc>
-            {({ openPortal, closePortal, isOpen, portal }) => [
-              <span key="0" onClick={openPortal}>
-                {gistButton}
-              </span>,
-              portal(
-                <div className="modal-background" onClick={closePortal}>
-                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
-                    <div className="modal-header">
-                      <button className="close-button" onClick={closePortal}>
-                        <X />
-                      </button>
-                    </div>
-                    <div className="modal-body">{gist(closePortal)}</div>
-                    <div className="modal-footer" />
-                  </div>
-                </div>
-              ),
-            ]}
-          </PortalWithState>
-
+          <Modal
+            button={examplesButton}
+            header={buttonGroup}
+            content={this.state.showVega ? vega('closePortal') : vegalite('closePortal')}
+          />
+          <Modal button={gistButton} content={gist('closePortal')} />
           <span>{docsLink}</span>
 
           <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">

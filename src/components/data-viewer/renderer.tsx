@@ -1,7 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight, RefreshCw } from 'react-feather';
+import { RefreshCw } from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
@@ -71,8 +71,8 @@ export default class DataViewer extends React.Component<Props, State> {
     if (pageCount > 1) {
       pagination = (
         <ReactPaginate
-          previousLabel={<ChevronLeft />}
-          nextLabel={<ChevronRight />}
+          previousLabel={'<'}
+          nextLabel={'>'}
           breakClassName={'break'}
           pageCount={pageCount}
           marginPagesDisplayed={1}
