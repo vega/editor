@@ -21,7 +21,7 @@
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.0.3",
     "vega-typings": "0.3.47",
-    "webpack": "^4.20.1",
+    "webpack": "4.19.0",
     "webpack-bundle-analyzer": "^3.0.2",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.9"
@@ -59,7 +59,7 @@
     "vega-tooltip": "^0.13.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development --hot --inline",
+    "start": "webpack-dev-server --mode development --hot",
     "build": "npm run clean && webpack --mode production --progress",
     "clean": "rm -rf dist",
     "postbuild": "rsync -r --ignore-existing public/* dist",
