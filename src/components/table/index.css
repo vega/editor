@@ -45,7 +45,7 @@
   border: 1px solid #dfe2e5;
 }
 
-tr:nth-child(even) {
+.data-table tr:nth-child(even) {
   background-color: #f6f8fa;
 }
 
