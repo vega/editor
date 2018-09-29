@@ -65,6 +65,10 @@ const schemas = {
       schema: vegaLiteSchema,
       uri: 'https://vega.github.io/schema/vega-lite/v2.4.json',
     },
+    {
+      schema: vegaLiteSchema,
+      uri: 'https://vega.github.io/schema/vega-lite/v3.json',
+    },
   ],
 };
 
