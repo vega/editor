@@ -508,14 +508,12 @@
 }
 
 /* Media queries */
-@media only screen and (min-width: 960px) {
+@media only screen and (min-width: 1200px) {
   .header-button svg,
   .docs-link svg {
     display: block;
   }
-}
 
-@media only screen and (min-width: 1200px) {
   .header-button,
   .header a {
     padding: 0 20px;
