@@ -9,7 +9,7 @@ import {
   Copy,
   ExternalLink,
   FileText,
-  Github,
+  GitHub,
   Grid,
   Image,
   Link,
@@ -290,7 +290,7 @@ class Header extends React.Component<Props, State> {
 
     const gistButton = (
       <div className="header-button">
-        <Github className="header-icon" />
+        <GitHub className="header-icon" />
         {'Gist'}
       </div>
     );
