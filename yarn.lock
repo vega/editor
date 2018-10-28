@@ -5190,9 +5190,9 @@ vega-lib@4.3.0:
     vega-voronoi "^3.0.0"
     vega-wordcloud "^3.0.0"
 
-"vega-lite@github:vega/vega-lite#v3.0.0-rc7":
-  version "3.0.0-rc7"
-  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/241221d2083b9f7f7ee771d8fc87f0aa17240087"
+"vega-lite@github:vega/vega-lite#v3.0.0-rc8":
+  version "3.0.0-rc8"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/a9fcd6d056c9f750c138a68fed67fbf2563be77f"
   dependencies:
     fast-deep-equal "^2.0.1"
     json-stable-stringify "^1.0.1"
