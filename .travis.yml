@@ -6,7 +6,6 @@ script:
   - yarn lint
   - yarn build
 before_deploy:
-  - brew install parallel
   - yarn generate-example-images
 cache: yarn
 deploy:
@@ -21,3 +20,7 @@ deploy:
   on:
     branch: master
     tags: true
+addons:
+  homebrew:
+    packages:
+      - parallel
