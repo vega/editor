@@ -1,4 +1,3 @@
-os: osx
 language: node_js
 node_js:
   - "10"
@@ -21,6 +20,6 @@ deploy:
     branch: master
     tags: true
 addons:
-  homebrew:
+  apt:
     packages:
       - parallel
