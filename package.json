@@ -1,11 +1,11 @@
 {
   "name": "vega-editor",
-  "version": "0.18.3",
+  "version": "0.19.0",
   "homepage": "http://vega.github.io/editor",
   "private": true,
   "devDependencies": {
-    "@types/react": "^16.4.18",
     "@types/node": "^10.12.6",
+    "@types/react": "^16.4.18",
     "autoprefixer": "^9.3.1",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^1.0.1",
