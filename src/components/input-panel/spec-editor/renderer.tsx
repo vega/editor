@@ -20,41 +20,13 @@ addMarkdownProps(vegaLiteSchema);
 const schemas = {
   [Mode.Vega]: [
     {
-      uri: 'https://vega.github.io/schema/vega/v3.json',
-    },
-    {
-      uri: 'https://vega.github.io/schema/vega/v3.0.json',
-    },
-    {
-      uri: 'https://vega.github.io/schema/vega/v3.1.json',
-    },
-    {
+      schema: vegaSchema,
       uri: 'https://vega.github.io/schema/vega/v4.json',
-    },
-    {
-      uri: 'https://vega.github.io/schema/vega/v4.0.json',
     },
   ],
   [Mode.VegaLite]: [
     {
-      uri: 'https://vega.github.io/schema/vega-lite/v2.json',
-    },
-    {
-      uri: 'https://vega.github.io/schema/vega-lite/v2.0.json',
-    },
-    {
-      uri: 'https://vega.github.io/schema/vega-lite/v2.1.json',
-    },
-    {
-      uri: 'https://vega.github.io/schema/vega-lite/v2.2.json',
-    },
-    {
-      uri: 'https://vega.github.io/schema/vega-lite/v2.3.json',
-    },
-    {
-      uri: 'https://vega.github.io/schema/vega-lite/v2.4.json',
-    },
-    {
+      schema: vegaLiteSchema,
       uri: 'https://vega.github.io/schema/vega-lite/v3.json',
     },
   ],
