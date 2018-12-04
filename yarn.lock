@@ -5238,18 +5238,18 @@ vega-lib@4.3.0:
     vega-voronoi "^3.0.0"
     vega-wordcloud "^3.0.0"
 
-"vega-lite@github:vega/vega-lite#v3.0.0-rc8":
-  version "3.0.0-rc8"
-  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/a9fcd6d056c9f750c138a68fed67fbf2563be77f"
+"vega-lite@github:vega/vega-lite#v3.0.0-rc9":
+  version "3.0.0-rc9"
+  resolved "https://codeload.github.com/vega/vega-lite/tar.gz/98b4592898006941f7c070e1fff44c03ee28aed6"
   dependencies:
     fast-deep-equal "^2.0.1"
     json-stable-stringify "^1.0.1"
     json-stringify-pretty-compact "^1.2.0"
     tslib "^1.9.3"
     vega-event-selector "^2.0.0"
-    vega-typings "0.3.48"
+    vega-typings "0.3.51"
     vega-util "^1.7.0"
-    yargs "^12.0.2"
+    yargs "^12.0.5"
 
 vega-loader@^3.0.1:
   version "3.1.0"
@@ -5351,13 +5351,6 @@ vega-typings@*, vega-typings@0.3.51:
   version "0.3.51"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.51.tgz#1e7a84ae3af4fcc0784b80d50a3e1df432b18141"
   integrity sha512-8UJnlGIZLDYzlLgMJVHO8Yb8yU7pYeNGnW8J7nxgyXqurowovmPM9fV+V49vzbQnZl4/Qq14wGqm9yM7iqZl8g==
-  dependencies:
-    vega-util "^1.7.0"
-
-vega-typings@0.3.48:
-  version "0.3.48"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.48.tgz#3da160c27cfc8338e3ffb682bccd9cd73ad3e3de"
-  integrity sha512-88dMuJuDzUyvqI0M2Vhzwl5QfWwXXXG8W1/sTtHTpQspPb+oJ1sKHKQ5ke2cUE24273nPgl+7JbaV8EAW7vxgw==
   dependencies:
     vega-util "^1.7.0"
 
@@ -5695,7 +5688,7 @@ yargs-parser@^11.1.1:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
-yargs@12, yargs@^12.0.2:
+yargs@12, yargs@^12.0.2, yargs@^12.0.5:
   version "12.0.5"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-12.0.5.tgz#05f5997b609647b64f66b81e3b4b10a368e7ad13"
   integrity sha512-Lhz8TLaYnxq/2ObqHDql8dX8CJi97oHxrjUcYtzKbbykPtVW9WB+poxI+NM2UIzsMgNCZTIf0AQwsjK5yMAqZw==
