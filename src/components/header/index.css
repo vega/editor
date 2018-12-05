@@ -278,47 +278,86 @@
   margin-bottom: 30px;
 }
 
-.mode-switcher {
-  width: 110px;
+.mode-switcher-wrapper {
+  width: 125px;
 }
 
-.Select * {
+/* Overriding default styles of React Select v2*/
+.mode-switcher__menu,
+.auto-run__menu {
+  box-shadow: none !important;
+  border: 1px solid #d9d9d9 !important;
+  border-top: 0 !important;
+}
+
+.mode-switcher__menu {
+  margin-top: 0 !important;
+}
+
+.auto-run__menu {
+  margin-top: 10px !important;
+}
+
+.auto-run__option {
   color: #000 !important;
 }
 
-.Select-control {
-  border-color: #d9d9d9 !important;
-  box-shadow: none !important;
+.auto-run__control {
+  border: none !important;
 }
 
-.Select-option.is-focused {
+.mode-switcher__control {
+  border-color: #d9d9d9 !important;
+}
+
+.mode-switcher__control--is-focused {
+  box-shadow: none !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.auto-run__control--is-focused {
+  box-shadow: 0 0 0 1px transparent !important;
+}
+
+.auto-run__option--is-focused,
+.mode-switcher__option--is-focused {
   background-color: #fff !important;
 }
 
-.Select-option:hover {
+.auto-run__menu,
+.mode-switcher__menu {
+  border-top-right-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+
+.auto-run__option:hover,
+.mode-switcher__option:hover {
   background-color: rgba(0, 0, 0, 0.08) !important;
 }
 
-.auto-run-toggle .Select-control,
-.auto-run-toggle .Select-input {
+.auto-run-wrapper .auto-run__control {
   background: transparent !important;
   border: none !important;
 }
 
-.auto-run-toggle .Select-control {
-  height: 60px;
-  padding-right: 15px;
-}
-
-.auto-run-toggle .Select-arrow-zone {
+.auto-run-wrapper .auto-run__indicator {
   position: relative;
   z-index: 12;
 }
 
-.auto-run-toggle {
+.auto-run-wrapper .auto-run__indicator-separator {
+  width: 0px;
+}
+
+.auto-run-wrapper {
   width: 120px;
   right: 90px;
   margin-right: -105px;
+}
+
+.split-button {
+  width: 120px;
 }
 
 .split-button > div:hover {
@@ -519,9 +558,9 @@
     padding: 0 20px;
   }
 
-  .auto-run-toggle {
+  .auto-run-wrapper {
     width: 120px;
-    right: 100px;
+    right: 98px;
     margin-right: -105px;
   }
 }
