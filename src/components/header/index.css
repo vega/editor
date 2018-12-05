@@ -286,6 +286,10 @@
   margin-top: 1px !important;
 }
 
+.auto-run__menu {
+  margin-top: 10px !important;
+}
+
 .auto-run__option {
   color: #000 !important;
 }
