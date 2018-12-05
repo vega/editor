@@ -282,8 +282,15 @@
   width: 125px;
 }
 
+.mode-switcher__menu,
+.auto-run__menu {
+  box-shadow: none !important;
+  border: 1px solid #d9d9d9 !important;
+  border-top: 0 !important;
+}
+
 .mode-switcher__menu {
-  margin-top: 1px !important;
+  margin-top: 0 !important;
 }
 
 .auto-run__menu {
@@ -303,7 +310,7 @@
 }
 
 .mode-switcher__control--is-focused {
-  box-shadow: 0 0 0 1px #d9d9d9 !important;
+  box-shadow: none !important;
   border-bottom-right-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
 }
