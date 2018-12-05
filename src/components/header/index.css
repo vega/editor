@@ -282,6 +282,7 @@
   width: 125px;
 }
 
+/* Overriding default styles of React Select v2*/
 .mode-switcher__menu,
 .auto-run__menu {
   box-shadow: none !important;
@@ -559,7 +560,7 @@
 
   .auto-run-wrapper {
     width: 120px;
-    right: 97px;
+    right: 98px;
     margin-right: -105px;
   }
 }
