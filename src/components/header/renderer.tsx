@@ -1,4 +1,3 @@
-import 'react-select/dist/react-select.css';
 import './index.css';
 
 import LZString from 'lz-string';
@@ -125,7 +124,7 @@ class Header extends React.Component<Props, State> {
     this.props.mode === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
   }
 
-  public onSwitch(option) {
+  public onSwitchMode(option) {
     option.value === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
   }
 
@@ -272,12 +271,13 @@ class Header extends React.Component<Props, State> {
 
     const modeSwitcher = (
       <Select
-        className="mode-switcher"
+        className="mode-switcher-wrapper"
+        classNamePrefix="mode-switcher"
         value={{ label: `${NAMES[this.props.mode]}` }}
         options={modeOptions}
-        clearable={false}
-        searchable={false}
-        onChange={this.onSwitch.bind(this)}
+        isClearable={false}
+        isSearchable={false}
+        onChange={this.onSwitchMode.bind(this)}
       />
     );
 
@@ -343,18 +343,17 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
-    const runOptions = this.props.manualParse
-      ? [{ value: 'auto', label: 'Auto' }]
-      : [{ value: 'manual', label: 'Manual' }];
+    const runOptions = this.props.manualParse ? [{ label: 'Auto' }] : [{ label: 'Manual' }];
 
     const autoRunToggle = (
       <Select
-        className="auto-run-toggle"
+        className="auto-run-wrapper"
+        classNamePrefix="auto-run"
         value={{ label: '' }}
         options={runOptions}
-        clearable={false}
-        searchable={false}
-        onChange={this.onSelectRun.bind(this)}
+        isClearable={false}
+        isSearchable={false}
+        onChange={this.props.toggleAutoParse}
       />
     );
 
