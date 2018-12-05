@@ -36,5 +36,5 @@ The Vega editor supports [React Developer Tools](https://github.com/facebook/rea
 
 ### Creating a release on gh-pages
 
-* Tag a new version with `yarn version`
+* Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature. 
 * Push the tag. Travis will automatically deploy the editor. 
