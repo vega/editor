@@ -282,6 +282,10 @@
   width: 125px;
 }
 
+.mode-switcher__menu-list {
+  margin-top: -10px;
+}
+
 .auto-run__option {
   color: #000 !important;
 }
@@ -299,6 +303,12 @@
 .auto-run__option--is-focused,
 .mode-switcher__option--is-focused {
   background-color: #fff !important;
+}
+
+.auto-run__menu,
+.mode-switcher__menu {
+  border-top-right-radius: 0 !important;
+  border-top-left-radius: 0 !important;
 }
 
 .auto-run__option:hover,
