@@ -128,18 +128,6 @@ class Header extends React.Component<Props, State> {
     option.value === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
   }
 
-  public onSelectRun(option) {
-    if (option.value === 'auto') {
-      if (this.props.manualParse) {
-        this.props.toggleAutoParse();
-      }
-    } else {
-      if (!this.props.manualParse) {
-        this.props.toggleAutoParse();
-      }
-    }
-  }
-
   public onCopy() {
     this.setState({ copied: true });
   }
