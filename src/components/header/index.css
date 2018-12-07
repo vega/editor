@@ -351,13 +351,14 @@
 }
 
 .auto-run-wrapper {
-  width: 120px;
-  right: 90px;
+  width: 80px;
+  right: 49px;
   margin-right: -105px;
+  padding-right: 5px;
 }
 
 .split-button {
-  width: 120px;
+  width: 80px;
 }
 
 .split-button > div:hover {
@@ -559,8 +560,12 @@
   }
 
   .auto-run-wrapper {
-    width: 120px;
+    width: 125px;
     right: 98px;
-    margin-right: -105px;
+    padding-right: 10px;
+  }
+
+  .split-button {
+    width: 125px;
   }
 }
