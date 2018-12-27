@@ -22,7 +22,7 @@ $ yarn start
 
 #### Docker
 
-If you'd like to use Docker, there's a Docker Compose setup that you can use:
+If you'd like to use [Docker](https://docs.docker.com/engine/docker-overview/), there's a [Docker Compose](https://docs.docker.com/compose/overview/) setup that you can use:
 
 1. Run the Docker Compose service:
 
