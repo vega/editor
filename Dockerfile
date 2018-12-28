@@ -6,8 +6,8 @@ EXPOSE 8080
 
 # Install rsync as it is a dependency of ./scripts/vendor.sh
 RUN apt-get update && \
-    apt-get install -y rsync && \
-    rm -rf /var/lib/apt/lists/*
+  apt-get install -y rsync && \
+  rm -rf /var/lib/apt/lists/*
 
 # Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile
 # https://docs.docker.com/engine/reference/builder/#workdir
@@ -18,7 +18,6 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 
 # For this project, additional files must also be copied as yarn hooks depend on them
-COPY data ./data
 COPY public ./public
 COPY scripts ./scripts
 
