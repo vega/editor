@@ -1,13 +1,11 @@
-FROM node:10
+FROM node:11-alpine
 
 # Informs Docker that the container listens on the specified port at runtime
 # https://docs.docker.com/engine/reference/builder/#expose
 EXPOSE 8080
 
 # Install rsync as it is a dependency of ./scripts/vendor.sh
-RUN apt-get update && \
-  apt-get install -y rsync && \
-  rm -rf /var/lib/apt/lists/*
+RUN apk add rsync bash
 
 # Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile
 # https://docs.docker.com/engine/reference/builder/#workdir
