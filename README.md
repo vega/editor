@@ -1,6 +1,6 @@
 # Vega Editor [![Build Status](https://travis-ci.org/vega/editor.svg?branch=master)](https://travis-ci.org/vega/editor)
 
-The **Vega editor** is a web application for authoring and testing [Vega](https://github.com/vega/vega) and [Vega-Lite](https://vega.github.io/vega-lite) visualizations. It includes a number of example specifications that showcase both the visual encodings and interaction techniques. It is deployed at https://vega.github.io/editor/. 
+The **Vega editor** is a web application for authoring and testing [Vega](https://github.com/vega/vega) and [Vega-Lite](https://vega.github.io/vega-lite) visualizations. It includes a number of example specifications that showcase both the visual encodings and interaction techniques. It is deployed at https://vega.github.io/editor/.
 
 ### Usage Instructions
 
@@ -30,7 +30,7 @@ If you'd like to use [Docker](https://docs.docker.com/engine/docker-overview/), 
 $ docker-compose up
 ```
 
-2. The local web server will be accessible from [http://localhost:8080](http://localhost:8080).
+2. The local web server will be accessible from [http://localhost:8080](http://localhost:8080). You can run yarn commands with `docker-compose run editor CMD`.
 
 ### Local Testing & Debugging
 
@@ -50,5 +50,5 @@ The Vega editor supports [React Developer Tools](https://github.com/facebook/rea
 
 ### Creating a release on gh-pages
 
-* Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature. 
-* Push the tag. Travis will automatically deploy the editor. 
+- Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature.
+- Push the tag. Travis will automatically deploy the editor.
