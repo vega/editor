@@ -1,8 +1,10 @@
-version: "3"
+version: "3.7"
 services:
   editor:
+    init: true
     build: .
     ports:
       - "8080:8080"
     volumes:
       - "./public:/usr/src/app/public"
+      - "./src:/usr/src/app/src"
