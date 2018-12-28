@@ -1,4 +1,4 @@
-FROM node
+FROM node:10
 
 # Informs Docker that the container listens on the specified port at runtime
 # https://docs.docker.com/engine/reference/builder/#expose
@@ -14,6 +14,7 @@ RUN apt-get update && \
 WORKDIR /usr/src/app
 
 # Copies the package.json and yarn.lock files first to ensure the cache is only invalidated when these files change
+# https://nodejs.org/en/docs/guides/nodejs-docker-webapp/#creating-a-dockerfile
 COPY package.json yarn.lock ./
 
 # For this project, additional files must also be copied as yarn hooks depend on them
