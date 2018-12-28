@@ -27,6 +27,8 @@ RUN yarn
 # Copy remaining files
 COPY . .
 
-# Sets the entrypoint to yarn and the default command to start
+# Sets the container executable (ENTRYPOINT) as yarn and the default argument (CMD) as start
+# https://docs.docker.com/engine/reference/builder/#entrypoint
+# https://docs.docker.com/engine/reference/builder/#cmd
 ENTRYPOINT ["yarn"]
 CMD ["start"]
