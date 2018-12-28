@@ -18,7 +18,7 @@ $ yarn
 $ yarn start
 ```
 
-3. The local web server will be accessible from (http://localhost:8080)[http://localhost:8080].
+3. The local web server will be accessible from [http://localhost:8080](http://localhost:8080).
 
 #### Docker
 
@@ -30,7 +30,7 @@ If you'd like to use [Docker](https://docs.docker.com/engine/docker-overview/), 
 $ docker-compose up
 ```
 
-2. The local web server will be accessible from (http://localhost:8080)[http://localhost:8080].
+2. The local web server will be accessible from [http://localhost:8080](http://localhost:8080).
 
 ### Local Testing & Debugging
 
