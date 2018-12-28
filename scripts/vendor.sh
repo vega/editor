@@ -12,7 +12,6 @@ if [ ! -d "$DATA" ]; then
   mkdir $DATA
 fi
 
-eval rsync -r "$CWD/data/*" $DATA
 eval rsync -r "$CWD/node_modules/vega-datasets/data/*" $DATA
 
 echo "Copy examples to '$SPEC'."
