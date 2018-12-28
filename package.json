@@ -60,7 +60,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --hot",
     "build": "npm run clean && webpack --mode production --progress",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist public/spec public/data",
     "postbuild": "rsync -r --ignore-existing public/* dist",
     "generate-example-images": "./scripts/generate-example-images.sh",
     "postinstall": "npm run vendor",
