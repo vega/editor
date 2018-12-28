@@ -67,7 +67,7 @@ module.exports = (env, argv) => {
       },
       progress: true,
       stats: "errors-only",
-      open: false,
+      open: true,
       contentBase: path.join(__dirname, "public"),
       watchContentBase: true,
       watchOptions: {
