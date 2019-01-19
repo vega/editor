@@ -3,27 +3,23 @@
   "data": {
     "values": [
       {
-        "lower_yield": 23.1311,
-        "upper_yield": 43.5522,
-        "center": 32.4,
+        "yield_error": 7.5522,
+        "yield_center": 32.4,
         "variety": "Glabron"
       },
       {
-        "lower_yield": 23.9503,
-        "upper_yield": 38.9775,
-        "center": 30.96667,
+        "yield_error": 6.9775,
+        "yield_center": 30.96667,
         "variety": "Manchuria"
       },
       {
-        "lower_yield": 24.7778,
-        "upper_yield": 46.9167,
-        "center": 33.966665,
+        "yield_error": 3.9167,
+        "yield_center": 33.966665,
         "variety": "No. 457"
       },
       {
-        "lower_yield": 21.7823,
-        "upper_yield": 48.9732,
-        "center": 30.45,
+        "yield_error": 11.9732,
+        "yield_center": 30.45,
         "variety": "No. 462"
       }
     ]
@@ -33,12 +29,12 @@
       "mark": "errorbar",
       "encoding": {
         "x": {
-          "field": "upper_yield",
+          "field": "yield_center",
           "type": "quantitative",
           "scale": {"zero": false},
           "title": "yield"
         },
-        "x2": {"field": "lower_yield", "type": "quantitative"},
+        "xError": {"field": "yield_error"},
         "y": {"field": "variety", "type": "ordinal"}
       }
     },
@@ -50,7 +46,7 @@
       },
       "encoding": {
         "x": {
-          "field": "center",
+          "field": "yield_center",
           "type": "quantitative"
         },
         "y": {"field": "variety", "type": "ordinal"}
