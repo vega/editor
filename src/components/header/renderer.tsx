@@ -4,6 +4,7 @@ import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
 import {
+  Book,
   Code,
   Copy,
   ExternalLink,
@@ -184,19 +185,47 @@ class Header extends React.Component<Props, State> {
     closePortal(); // Close the gist modal after it gets load
   }
 
-  // Export visualization as SVG/PNG
-  public async exportViz(ext: string) {
+  public async openViz(ext: string) {
     const url = await this.props.view.toImageURL(ext);
-    if (ext === 'png') {
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('target', '_blank');
-      link.setAttribute('download', `visualization.${ext}`);
-      link.dispatchEvent(new MouseEvent('click'));
-    } else {
-      const tab = window.open();
-      tab.document.write(`<title>SVG</title><img src="${url}" />`);
-    }
+    const tab = window.open(url);
+    tab.document.write(`<title>Chart</title><img src="${url}" />`);
+  }
+
+  public async downloadViz(ext: string) {
+    const url = await this.props.view.toImageURL(ext);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('target', '_blank');
+    link.setAttribute('download', `visualization.${ext}`);
+    link.dispatchEvent(new MouseEvent('click'));
+  }
+
+  public async downloadPDF() {
+    const svg = await this.props.view.toSVG();
+
+    const pdf = await fetch('https://api.cloudconvert.com/convert', {
+      method: 'post',
+      headers: {
+        'content-type': 'application/json; chartset=UTF-8',
+      },
+      body: JSON.stringify({
+        apikey: '7ZSKlPLjDB4RUaq5dvEvAQMG5GGwEeHH3qa7ixAr0KZtPxfwsKv81sc1SqFhlh7d',
+        inputformat: 'svg',
+        outputformat: 'pdf',
+        input: 'raw',
+        filename: 'chart.svg',
+        file: svg,
+      }),
+    });
+
+    const blob = await pdf.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('target', '_blank');
+    link.setAttribute('download', `visualization.pdf`);
+    link.dispatchEvent(new MouseEvent('click'));
   }
 
   public exportURL() {
@@ -501,7 +530,7 @@ class Header extends React.Component<Props, State> {
       <div className="export-content">
         <h2>Export</h2>
         <div className="export-buttons">
-          <button className="export-button" onClick={() => this.exportViz('png')}>
+          <button className="export-button" onClick={() => this.downloadViz('png')}>
             <div>
               <Image />
               <span>Download PNG</span>
@@ -511,21 +540,38 @@ class Header extends React.Component<Props, State> {
               and cannot be scaled.
             </p>
           </button>
-          <button className="export-button" onClick={() => this.exportViz('svg')}>
+          <button className="export-button" onClick={() => this.downloadViz('svg')}>
             <div>
               <Map />
-              <span>Open SVG</span>
+              <span>Download SVG</span>
             </div>
             <p>
               SVG is a vector image format which uses geometric forms to represent different parts as discrete objects
               and are infinitely scalable.
             </p>
           </button>
+          <button className="export-button" onClick={() => this.openViz('svg')}>
+            <div>
+              <Map />
+              <span>Open SVG</span>
+            </div>
+            <p>Open the SVG in your browser instead of downloading it.</p>
+          </button>
+          <button className="export-button" onClick={() => this.downloadPDF()}>
+            <div>
+              <Book />
+              <span>Download PDF</span>
+            </div>
+            <p>
+              <strong>Experimental!</strong>
+              <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
+              patient.
+            </p>
+          </button>
         </div>
         <div className="user-notes">
           <p>
-            <strong>Note:</strong> To get a PDF, export SVG which you can save as PDF from the print window of your
-            browser.
+            <strong>Note:</strong> To get a PDF, open the SVG which you can print as a PDF from your browser.
           </p>
         </div>
       </div>

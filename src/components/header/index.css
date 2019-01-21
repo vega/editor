@@ -393,17 +393,17 @@
 }
 
 .export-buttons {
-  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
 }
 
 .export-button {
-  width: 25%;
-  max-width: 420px;
+  flex: 1;
   min-width: 280px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   font-size: 0.9em;
   background: #fff;
   border: 1px solid #ccc;
@@ -433,6 +433,10 @@
 .export-button p {
   color: #333;
   line-height: 1.2;
+}
+
+.export-button p strong {
+  color: firebrick;
 }
 
 .export-button svg {
