@@ -81,7 +81,7 @@
 }
 
 .modal h2 {
-  margin: 0;
+  margin-top: 0;
 }
 
 .modal-header,
@@ -444,6 +444,13 @@
   height: 30px;
 }
 
+.export-button.disabled {
+  cursor: wait;
+  background: #eee;
+  filter: grayscale(80%);
+  opacity: 0.8;
+}
+
 .user-notes p {
   padding: 20px 0;
 }
@@ -518,15 +525,11 @@
 .user-pref label {
   display: flex;
   align-items: center;
-  padding: 20px 0 30px 0;
+  padding: 20px 0 0 0;
 }
 
 .user-pref input[type="checkbox"]:focus {
   outline: 0;
-}
-
-.pressed {
-  color: #666 !important;
 }
 
 .share-button:hover {

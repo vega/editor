@@ -201,6 +201,10 @@ class Header extends React.Component<Props, State> {
   }
 
   public async downloadPDF() {
+    // show that we are working
+    const dlButton = this.refs.downloadPDF as any;
+    dlButton.classList.add('disabled');
+
     const svg = await this.props.view.toSVG();
 
     const pdf = await fetch('https://api.cloudconvert.com/convert', {
@@ -226,21 +230,16 @@ class Header extends React.Component<Props, State> {
     link.setAttribute('target', '_blank');
     link.setAttribute('download', `visualization.pdf`);
     link.dispatchEvent(new MouseEvent('click'));
+
+    dlButton.classList.remove('disabled');
   }
 
   public exportURL() {
     const serializedSpec =
       LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullscreen ? '/view' : '');
-    const exportedURL = this.refs.exportedURL as any;
-    if (exportedURL && serializedSpec) {
+    if (serializedSpec) {
       const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
-      exportedURL.innerHTML = url;
       this.setState({ generatedURL: url });
-      // Visual Feedback
-      exportedURL.classList.add('pressed');
-      setTimeout(() => {
-        exportedURL.classList.remove('pressed');
-      }, 250);
     }
   }
 
@@ -257,14 +256,6 @@ class Header extends React.Component<Props, State> {
     }
     if (prevState.fullscreen !== this.state.fullscreen) {
       this.exportURL();
-    }
-    // Use ... when URL overflows the container
-    const wrapperURL = this.refs.wrapperURL as any;
-    if (wrapperURL && wrapperURL.offsetWidth < wrapperURL.scrollWidth) {
-      const url = this.state.generatedURL;
-      const max = (url.length / wrapperURL.scrollWidth) * wrapperURL.offsetWidth * 0.9;
-      (this.refs.exportedURL as any).innerHTML =
-        url.slice(0, (2 * max) / 3) + '...' + url.slice(url.length - max / 3, url.length);
     }
   }
 
@@ -557,7 +548,7 @@ class Header extends React.Component<Props, State> {
             </div>
             <p>Open the SVG in your browser instead of downloading it.</p>
           </button>
-          <button className="export-button" onClick={() => this.downloadPDF()}>
+          <button className="export-button" onClick={() => this.downloadPDF()} ref="downloadPDF">
             <div>
               <Book />
               <span>Download PDF</span>
@@ -593,13 +584,6 @@ class Header extends React.Component<Props, State> {
             />
           </label>
         </div>
-        <div className="exported-url">
-          <span ref="wrapperURL">
-            <a ref="exportedURL" href={this.state.generatedURL} target="_blank">
-              {this.state.generatedURL}
-            </a>
-          </span>
-        </div>
         <div className="share-buttons">
           <button className="share-button" onClick={() => this.previewURL()}>
             <Link />
@@ -618,7 +602,7 @@ class Header extends React.Component<Props, State> {
           <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
         </div>
         <div className="byte-counter">
-          Characters Count: {this.state.generatedURL.length}{' '}
+          Number of charaters in the URL: {this.state.generatedURL.length}{' '}
           <span className="warning">
             {this.state.generatedURL.length > 2083 ? (
               <span>

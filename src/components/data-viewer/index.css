@@ -1,5 +1,5 @@
 .data-dropdown {
-  display: inline-flex;
+  display: inline-block;
   position: relative;
   margin: 10px 0;
   z-index: 5;
@@ -27,9 +27,10 @@
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
-  line-height: 30px;
+  line-height: 33px;
   cursor: pointer;
   user-select: none;
+  margin: -2px 20px 0 20px;
 }
 
 .data-viewer-header button:focus {
@@ -98,7 +99,6 @@
   justify-content: center;
   align-items: center;
   vertical-align: middle;
-  margin: 0 20px;
 }
 
 .data-refresh span {
