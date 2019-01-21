@@ -23,7 +23,7 @@ import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { Mode, View } from '../../constants';
-import { NAME_TO_MODE, NAMES } from '../../constants/consts';
+import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 
 interface Props {
@@ -208,18 +208,18 @@ class Header extends React.Component<Props, State> {
     const svg = await this.props.view.toSVG();
 
     const pdf = await fetch('https://api.cloudconvert.com/convert', {
-      method: 'post',
+      body: JSON.stringify({
+        apikey: '7ZSKlPLjDB4RUaq5dvEvAQMG5GGwEeHH3qa7ixAr0KZtPxfwsKv81sc1SqFhlh7d',
+        file: svg,
+        filename: 'chart.svg',
+        input: 'raw',
+        inputformat: 'svg',
+        outputformat: 'pdf',
+      }),
       headers: {
         'content-type': 'application/json; chartset=UTF-8',
       },
-      body: JSON.stringify({
-        apikey: '7ZSKlPLjDB4RUaq5dvEvAQMG5GGwEeHH3qa7ixAr0KZtPxfwsKv81sc1SqFhlh7d',
-        inputformat: 'svg',
-        outputformat: 'pdf',
-        input: 'raw',
-        filename: 'chart.svg',
-        file: svg,
-      }),
+      method: 'post',
     });
 
     const blob = await pdf.blob();
