@@ -81,10 +81,17 @@ class App extends React.Component<Props & { match: any; location: any }> {
 
     const spec = gistData.files[parameter.filename].content;
 
+
     if (parameter.mode === 'vega') {
       this.props.setGistVegaSpec(gistUrl, spec);
     } else if (parameter.mode === 'vega-lite') {
-      this.props.setGistVegaLiteSpec(gistUrl, spec);
+      var jo = JSON.parse(spec);
+      if ((typeof jo.data !== "undefined") && (typeof jo.data !== "undefined")) {
+        var datafile = jo.data.url;
+        if (typeof gistData.files[datafile] !== "undefined") {
+            jo.data.url = gistData.files[datafile].raw_url;
+            this.props.setGistVegaLiteSpec(gistUrl, JSON.stringify(jo));
+        }
     }
   }
 
