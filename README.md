@@ -48,6 +48,10 @@ yarn link vega
 
 The Vega editor supports [React Developer Tools](https://github.com/facebook/react-devtools) and [Redux DevTools](https://github.com/zalmoxisus/redux-devtools-extension).
 
+### Contributing guidelines
+
+We welcoime contirbutions and promptly review pull requests. For instructions about how to contribute, please follow the [Vega-Lite contiributing guidelines](https://github.com/vega/vega-lite/blob/master/CONTRIBUTING.md).
+
 ### Creating a release on gh-pages
 
 - Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature.
