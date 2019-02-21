@@ -50,7 +50,7 @@ The Vega editor supports [React Developer Tools](https://github.com/facebook/rea
 
 ### Contributing guidelines
 
-We welcoime contirbutions and promptly review pull requests. For instructions about how to contribute, please follow the [Vega-Lite contiributing guidelines](https://github.com/vega/vega-lite/blob/master/CONTRIBUTING.md).
+We welcoime contirbutions and promptly review pull requests. For instructions about how to contribute, please follow the [Vega-Lite contributing guidelines](https://github.com/vega/vega-lite/blob/master/CONTRIBUTING.md).
 
 ### Creating a release on gh-pages
 
