@@ -20,7 +20,7 @@ module.exports = (env, argv) => {
       argv.mode === "development" ? "cheap-module-source-map" : "source-map",
 
     resolve: {
-      extensions: [".ts", ".tsx", ".js", ".json"]
+      extensions: [".ts", ".tsx", ".js", ".mjs", ".json"]
     },
 
     module: {

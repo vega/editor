@@ -12,7 +12,7 @@ import addMarkdownProps from '../../../utils/markdownProps';
 import { Mode } from '../../../constants';
 
 const vegaLiteSchema = require('vega-lite/build/vega-lite-schema.json');
-const vegaSchema = require('vega/docs/vega-schema.json');
+const vegaSchema = require('vega/build/vega-schema.json');
 
 addMarkdownProps(vegaSchema);
 addMarkdownProps(vegaLiteSchema);
