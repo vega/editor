@@ -6,15 +6,6 @@ set -e
 mkdir -p public/images/examples/vl
 mkdir -p public/images/examples/vg
 
-# Put `vega-lite.js` on the Node search path so the `vl2svg` script can
-# require it without needing it to be installed globally.
-export NODE_PATH=.
-
-echo "Building Vega"
-cd node_modules/vega
-yarn && yarn build
-cd ../..
-
 echo "Generating SVGs..."
 cd public;
 
