@@ -10,10 +10,43 @@ module.exports = (env, argv) => {
     },
 
     output: {
-      filename: "[name].bundle.js",
-      chunkFilename: "[name].chunk.js",
+      filename: "[name].js",
+      chunkFilename: "[name].js",
       path: path.resolve(__dirname, "dist"),
       pathinfo: false
+    },
+
+    optimization: {
+      splitChunks: {
+        chunks: "all",
+        maxInitialRequests: Infinity,
+        minSize: 0,
+        cacheGroups: {
+          vega: {
+            test: /vega/,
+            name: "vega",
+            priority: 10,
+            reuseExistingChunk: true
+          },
+          vl: {
+            test: /vega-lite/,
+            name: "vega-lite",
+            priority: 20,
+            reuseExistingChunk: true
+          },
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+            name: "vendor",
+            reuseExistingChunk: true
+          },
+          default: {
+            name: "default",
+            priority: -20,
+            reuseExistingChunk: true
+          }
+        }
+      }
     },
 
     devtool:

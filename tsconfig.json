@@ -18,6 +18,7 @@
   "include": ["node_modules/vega-lite/typings/*.d.ts"],
   "awesomeTypescriptLoaderOptions": {
     "useCache": true,
-    "forceIsolatedModules": true
+    "forceIsolatedModules": true,
+    "silent": true
   }
 }
