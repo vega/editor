@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # requires https://www.gnu.org/software/parallel/
 
 set -e

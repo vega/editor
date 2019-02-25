@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 DATA=public/data
 SPEC=public/spec
@@ -21,13 +23,14 @@ if [ ! -d "$SPEC" ]; then
 fi
 
 # without v!
-VEGA_VERSION=4.4.0  # 5.0.0-rc1
-VEGA_LITE_VERSION=3.0.0-rc12
+VEGA_VERSION=$(scripts/version.sh vega)
+VEGA_LITE_VERSION=$(scripts/version.sh vega-lite)
 
 pushd /tmp
-wget https://github.com/vega/vega/archive/v$VEGA_VERSION.tar.gz https://github.com/vega/vega-lite/archive/v$VEGA_LITE_VERSION.tar.gz
-tar xzf v$VEGA_VERSION.tar.gz vega-$VEGA_VERSION/docs
-tar xzf v$VEGA_LITE_VERSION.tar.gz vega-lite-$VEGA_LITE_VERSION/examples vega-lite-$VEGA_LITE_VERSION/_data
+wget https://github.com/vega/vega/archive/v$VEGA_VERSION.tar.gz -O vega.tar.gz
+wget https://github.com/vega/vega-lite/archive/v$VEGA_LITE_VERSION.tar.gz -O vl.tar.gz
+tar xzf vega.tar.gz vega-$VEGA_VERSION/docs
+tar xzf vl.tar.gz vega-lite-$VEGA_LITE_VERSION/examples vega-lite-$VEGA_LITE_VERSION/_data
 popd
 
 eval rsync -r "/tmp/vega-$VEGA_VERSION/docs/examples/*.vg.json" "$SPEC/vega"
