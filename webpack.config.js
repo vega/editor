@@ -49,6 +49,12 @@ module.exports = (env, argv) => {
       }
     },
 
+    performance: {
+      hints: false,
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000
+    },
+
     devtool:
       argv.mode === "development" ? "cheap-module-source-map" : "source-map",
 
