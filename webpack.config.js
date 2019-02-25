@@ -17,9 +17,11 @@ module.exports = (env, argv) => {
     },
 
     optimization: {
+      concatenateModules: false,
       splitChunks: {
         chunks: "all",
         maxInitialRequests: Infinity,
+        minChunks: Infinity,
         minSize: 0,
         cacheGroups: {
           vega: {
