@@ -21,7 +21,6 @@ module.exports = (env, argv) => {
       splitChunks: {
         chunks: "all",
         maxInitialRequests: Infinity,
-        minChunks: Infinity,
         minSize: 0,
         cacheGroups: {
           vega: {
