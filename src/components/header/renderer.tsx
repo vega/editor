@@ -43,6 +43,7 @@ interface Props {
 
 interface State {
   copied: boolean;
+  downloadVegaJSON: boolean;
   fullscreen: boolean;
   generatedURL: string;
   gist: {
@@ -53,7 +54,6 @@ interface State {
   };
   invalidUrl: boolean;
   showVega: boolean;
-  downloadVegaJSON: boolean;
 }
 
 const formatExampleName = (name: string) => {
@@ -70,6 +70,7 @@ class Header extends React.Component<Props, State> {
     super(props);
     this.state = {
       copied: false,
+      downloadVegaJSON: false,
       fullscreen: false,
       generatedURL: '',
       gist: {
@@ -80,7 +81,6 @@ class Header extends React.Component<Props, State> {
       },
       invalidUrl: false,
       showVega: props.mode === Mode.Vega,
-      downloadVegaJSON: false,
     };
   }
 
@@ -584,7 +584,7 @@ class Header extends React.Component<Props, State> {
               patient.
             </p>
           </button>
-          <button className="export-button" onClick={(e) => this.downloadJSON(e)}>
+          <button className="export-button" onClick={e => this.downloadJSON(e)}>
             <div>
               <Code />
               <span>Download JSON</span>

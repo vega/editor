@@ -9,9 +9,9 @@ const mapStateToProps = (state: State, ownProps) => {
     editorString: state.editorString,
     manualParse: state.manualParse,
     mode: state.mode,
-    view: state.view,
+    vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
-    vegaLiteSpec: state.vegaLiteSpec
+    view: state.view
   };
 };
 
