@@ -11,7 +11,7 @@ const mapStateToProps = (state: State, ownProps) => {
     mode: state.mode,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
-    view: state.view
+    view: state.view,
   };
 };
 

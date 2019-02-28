@@ -243,7 +243,12 @@ class Header extends React.Component<Props, State> {
   }
 
   public async downloadJSON(event) {
-    if (event.target && (event.target.matches('input') || event.target.matches('label') || event.target.matches('div.type-input-container'))) {
+    if (
+      event.target &&
+      (event.target.matches('input') ||
+        event.target.matches('label') ||
+        event.target.matches('div.type-input-container'))
+    ) {
       return;
     }
     const content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
@@ -589,9 +594,7 @@ class Header extends React.Component<Props, State> {
               <Code />
               <span>Download JSON</span>
             </div>
-            <p>
-              JSON is a lightweight data-interchange format.
-            </p>
+            <p>JSON is a lightweight data-interchange format.</p>
             <div className="type-input-container">
               Type:
               <input
@@ -670,8 +673,8 @@ class Header extends React.Component<Props, State> {
                 </a>
               </span>
             ) : (
-                ''
-              )}
+              ''
+            )}
           </span>
         </div>
       </div>
