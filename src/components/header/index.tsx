@@ -10,6 +10,8 @@ const mapStateToProps = (state: State, ownProps) => {
     manualParse: state.manualParse,
     mode: state.mode,
     view: state.view,
+    vegaSpec: state.vegaSpec,
+    vegaLiteSpec: state.vegaLiteSpec
   };
 };
 

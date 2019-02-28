@@ -32,6 +32,8 @@ interface Props {
   manualParse?: boolean;
   mode: Mode;
   view: View;
+  vegaSpec?: object;
+  vegaLiteSpec?: object;
 
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
@@ -51,6 +53,7 @@ interface State {
   };
   invalidUrl: boolean;
   showVega: boolean;
+  downloadVegaJSON: boolean;
 }
 
 const formatExampleName = (name: string) => {
@@ -77,6 +80,7 @@ class Header extends React.Component<Props, State> {
       },
       invalidUrl: false,
       showVega: props.mode === Mode.Vega,
+      downloadVegaJSON: false,
     };
   }
 
@@ -185,6 +189,10 @@ class Header extends React.Component<Props, State> {
     closePortal(); // Close the gist modal after it gets load
   }
 
+  public updateDownloadJSONType(event) {
+    this.setState({ downloadVegaJSON: event.currentTarget.value === 'vega' });
+  }
+
   public async openViz(ext: string) {
     const url = await this.props.view.toImageURL(ext);
     const tab = window.open(url);
@@ -232,6 +240,23 @@ class Header extends React.Component<Props, State> {
     link.dispatchEvent(new MouseEvent('click'));
 
     dlButton.classList.remove('disabled');
+  }
+
+  public async downloadJSON(event) {
+    if (event.target && (event.target.matches('input') || event.target.matches('label') || event.target.matches('div.type-input-container'))) {
+      return;
+    }
+    const content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
+    const filename = this.state.downloadVegaJSON ? 'visualization.vg.json' : 'visualization.vl.json';
+
+    const blob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('target', '_blank');
+    link.setAttribute('download', filename);
+    link.dispatchEvent(new MouseEvent('click'));
   }
 
   public exportURL() {
@@ -559,6 +584,36 @@ class Header extends React.Component<Props, State> {
               patient.
             </p>
           </button>
+          <button className="export-button" onClick={(e) => this.downloadJSON(e)}>
+            <div>
+              <Code />
+              <span>Download JSON</span>
+            </div>
+            <p>
+              JSON is a lightweight data-interchange format.
+            </p>
+            <div className="type-input-container">
+              Type:
+              <input
+                type="radio"
+                name="json-type"
+                id="json-type[vega]"
+                value="vega"
+                checked={this.state.downloadVegaJSON}
+                onChange={this.updateDownloadJSONType.bind(this)}
+              />
+              <label htmlFor="json-type[vega]">Vega</label>
+              <input
+                type="radio"
+                name="json-type"
+                id="json-type[vega-lite]"
+                value="vega-lite"
+                checked={!this.state.downloadVegaJSON}
+                onChange={this.updateDownloadJSONType.bind(this)}
+              />
+              <label htmlFor="json-type[vega-lite]">Vega Lite</label>
+            </div>
+          </button>
         </div>
         <div className="user-notes">
           <p>
@@ -615,8 +670,8 @@ class Header extends React.Component<Props, State> {
                 </a>
               </span>
             ) : (
-              ''
-            )}
+                ''
+              )}
           </span>
         </div>
       </div>
