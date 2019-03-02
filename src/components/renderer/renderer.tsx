@@ -90,7 +90,7 @@ class Editor extends React.Component<Props, State> {
     Editor.view = new vega.View(runtime, {
       loader,
       logLevel: vega.Warn,
-    });
+    }).hover();
   }
   public renderVega(props) {
     // Selecting chart for rendering vega
@@ -100,9 +100,8 @@ class Editor extends React.Component<Props, State> {
     Editor.pathname = window.location.hash.split('#')[1];
 
     Editor.view
-      .initialize(chart)
       .renderer(props.renderer)
-      .hover()
+      .initialize(chart)
       .run();
 
     chart.style.width = 'auto';
