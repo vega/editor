@@ -1,0 +1,16 @@
+.page-container {
+  width: 100vw;
+  height: 100%;
+  background-color: #dcdcdc;
+}
+
+.title {
+  text-align: center;
+  font-size: 60px;
+}
+
+.content {
+  text-align: center;
+  font-size: 30px;
+  font-family: "Comic Sans MS";
+}
