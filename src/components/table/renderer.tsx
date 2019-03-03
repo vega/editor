@@ -35,7 +35,7 @@ export default class Table extends React.PureComponent<Props> {
             </td>
           );
         } else {
-          return <td key={key}>{formatted === '{}' ? 'month date here' : formatted}</td>;
+          return <td key={key}>{formatted}</td>;
         }
       });
 
