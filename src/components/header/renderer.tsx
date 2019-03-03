@@ -735,7 +735,7 @@ class Header extends React.Component<Props, State> {
           <span>{docsLink}</span>
 
           <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
-            <img height={32} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
+            <img height={32} alt="IDL Logo" src="idl-logo.png" />
           </a>
         </section>
       </div>

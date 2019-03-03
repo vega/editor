@@ -24,7 +24,7 @@
 
 .data-viewer-header button {
   font-size: 1em;
-  background: #fff;
+  background: white;
   border: 1px solid #ccc;
   border-radius: 4px;
   line-height: 33px;
@@ -113,5 +113,5 @@
 }
 
 .error {
-  color: red;
+  color: var(--error-color);
 }

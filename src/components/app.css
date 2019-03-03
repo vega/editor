@@ -11,13 +11,34 @@
     U+FEFF, U+FFFD;
 }
 
+:root {
+  /* Root font size*/
+  font-size: 16px;
+
+  --base-font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+
+  --base-line-height: 1;
+
+  --spacing-unit: 5px;
+
+  /* Colors */
+  --light-color: #dedede;
+  --dark-color: #24292e;
+  --primary-color: #f5f5f5;
+  --primary-light-color: #ffffff;
+  --primary-dark-color: #d5d5d5;
+  --brand-color: #654ff0;
+  --error-color: #f44336;
+  --warning-color: #ffc107;
+}
+
 body,
 html {
   padding: 0;
   margin: 0;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: var(--base-font-family);
+  line-height: var(--base-line-height);
   overflow: hidden;
-  line-height: 1;
 }
 
 * {
@@ -77,13 +98,6 @@ html {
   overflow: visible !important;
 }
 
-button,
-input,
-textarea,
-select {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-}
-
 button:focus {
   outline: none;
 }
@@ -95,10 +109,10 @@ button:focus {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--primary-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
+  background: var(--primary-dark-color);
+  border-radius: 8px;
 }
