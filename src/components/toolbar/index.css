@@ -30,6 +30,10 @@
   cursor: default;
 }
 
+.report:active {
+  background: #fff;
+}
+
 .toolbar .debug-toggle {
   background: #399e39;
   color: white;

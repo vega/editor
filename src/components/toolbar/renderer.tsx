@@ -45,7 +45,21 @@ export default class Toolbar extends React.Component<Props> {
             location.href = 'https://github.com/vega/editor/issues/new';
           }}
         >
-          REPORT ISSUE
+          Report Issue
+        </div>
+        <div
+          className="report"
+          onClick={() => {
+            const dummy = document.createElement('input');
+            const text = window.location.href;
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+          }}
+        >
+          Copy Link
         </div>
         <div className="status">{`${NAMES[this.props.mode]} version ${getVersion(this.props.mode)}`}</div>
         <div
