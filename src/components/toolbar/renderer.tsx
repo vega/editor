@@ -39,6 +39,14 @@ export default class Toolbar extends React.Component<Props> {
     return (
       <div className="toolbar">
         {this.showErrorAndWarnings()}
+        <div
+          className="report"
+          onClick={() => {
+            location.href = 'https://github.com/vega/editor/issues/new';
+          }}
+        >
+          REPORT ISSUE
+        </div>
         <div className="status">{`${NAMES[this.props.mode]} version ${getVersion(this.props.mode)}`}</div>
         <div
           className="renderer-toggle"

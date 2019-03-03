@@ -24,6 +24,12 @@
   cursor: default;
 }
 
+.report {
+  background: #000;
+  color: white;
+  cursor: default;
+}
+
 .toolbar .debug-toggle {
   background: #399e39;
   color: white;
