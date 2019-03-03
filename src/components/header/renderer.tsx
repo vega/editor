@@ -60,8 +60,9 @@ const formatExampleName = (name: string) => {
     .join(' ');
 };
 
-class Header extends React.Component<Props, State> {
+class Header extends React.Component<Props & { location: any }, State> {
   private refGistForm: HTMLFormElement;
+  private refExamplesButton: HTMLSpanElement;
 
   constructor(props) {
     super(props);
@@ -78,6 +79,12 @@ class Header extends React.Component<Props, State> {
       invalidUrl: false,
       showVega: props.mode === Mode.Vega,
     };
+  }
+
+  public componentDidMount() {
+    if (this.props.location.pathname === '/examples') { this.refExamplesButton.click(); }
+    if (this.props.location.pathname === '/examples/vega') { this.refExamplesButton.click(); }
+    if (this.props.location.pathname === '/examples/vega-lite') { this.refExamplesButton.click(); }
   }
 
   public updateGist(gist) {
@@ -678,7 +685,13 @@ class Header extends React.Component<Props, State> {
         <section className="right-section">
           <PortalWithState closeOnEsc>
             {({ openPortal, closePortal, isOpen, portal }) => [
-              <span key="0" onClick={openPortal}>
+              <span
+                key="0"
+                ref={element => (this.refExamplesButton = element)}
+                onClick={() => {
+                  openPortal();
+                }}
+              >
                 {examplesButton}
               </span>,
               portal(

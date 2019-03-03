@@ -18,6 +18,9 @@ export default class AppShell extends React.Component<Props> {
         <Switch>
           <Route path="/" exact component={App} />
           <Route path="/edited" component={App} />
+          <Route exact path="/examples" component={App} />
+          <Route exact path="/examples/vega" component={App} />
+          <Route exact path="/examples/vega-lite" component={App} />
           <Route path="/gist/:mode/:username/:id/:revision/:filename" component={App} />
           <Route path="/examples/:mode/:example_name" component={App} />
           <Route path="/custom/:mode" component={App} />

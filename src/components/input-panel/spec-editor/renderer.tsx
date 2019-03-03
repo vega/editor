@@ -102,10 +102,6 @@ class Editor extends React.Component<Props, {}> {
 
     if (this.props.history.location.pathname.indexOf('/edited') === -1) {
       this.props.history.push('/edited');
-      window.onbeforeunload =e => {
-        e.preventDefault();
-        e.returnValue = false;
-      };
     }
   }
   public editorWillMount(monaco) {
