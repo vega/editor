@@ -187,8 +187,9 @@ class Header extends React.Component<Props, State> {
 
   public async openViz(ext: string) {
     const url = await this.props.view.toImageURL(ext);
-    const tab = window.open(url);
+    const tab = window.open('about:blank', '_blank');
     tab.document.write(`<title>Chart</title><img src="${url}" />`);
+    tab.document.close();
   }
 
   public async downloadViz(ext: string) {
