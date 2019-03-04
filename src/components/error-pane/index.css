@@ -1,9 +1,9 @@
 .error {
-  color: red;
+  color: var(--error-color);
 }
 
 .warning {
-  color: #f0ad4e;
+  color: var(--warning-color);
 }
 
 .info {

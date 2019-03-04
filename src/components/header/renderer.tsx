@@ -32,6 +32,7 @@ interface Props {
   manualParse?: boolean;
   mode: Mode;
   view: View;
+  showExample: boolean;
 
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
@@ -187,8 +188,9 @@ class Header extends React.Component<Props, State> {
 
   public async openViz(ext: string) {
     const url = await this.props.view.toImageURL(ext);
-    const tab = window.open(url);
+    const tab = window.open('about:blank', '_blank');
     tab.document.write(`<title>Chart</title><img src="${url}" />`);
+    tab.document.close();
   }
 
   public async downloadViz(ext: string) {
@@ -676,7 +678,7 @@ class Header extends React.Component<Props, State> {
           </PortalWithState>
         </section>
         <section className="right-section">
-          <PortalWithState closeOnEsc>
+          <PortalWithState closeOnEsc defaultOpen={this.props.showExample}>
             {({ openPortal, closePortal, isOpen, portal }) => [
               <span key="0" onClick={openPortal}>
                 {examplesButton}
@@ -735,7 +737,7 @@ class Header extends React.Component<Props, State> {
           <span>{docsLink}</span>
 
           <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
-            <img height={32} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
+            <img height={32} alt="IDL Logo" src="idl-logo.png" />
           </a>
         </section>
       </div>
