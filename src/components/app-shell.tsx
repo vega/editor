@@ -20,9 +20,8 @@ export default class AppShell extends React.Component<Props> {
           <Route path="/edited" component={App} />
           <Route path="/gist/:mode/:username/:id/:revision/:filename" component={App} />
           <Route path="/examples/:mode/:example_name" component={App} />
-          <Route path="/examples" component={() => <App showExample={true} />} />
-          <Route path="/examples/vega" component={() => <App showExample={true} />} />
-          <Route path="/examples/vega-lite" component={() => <App showExample={true} />} />
+          <Route path="/examples/:mode" component={({ match }) => <App showExample={true} {...match.params} />} />
+          <Route path="/examples" component={({ match }) => <App showExample={true} {...match.params} />} />
           <Route path="/custom/:mode" component={App} />
           <Route path="/url/:mode/:compressed" component={App} />
         </Switch>
