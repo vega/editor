@@ -32,6 +32,7 @@ interface Props {
   manualParse?: boolean;
   mode: Mode;
   view: View;
+  showExample: boolean;
 
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
@@ -677,7 +678,7 @@ class Header extends React.Component<Props, State> {
           </PortalWithState>
         </section>
         <section className="right-section">
-          <PortalWithState closeOnEsc>
+          <PortalWithState closeOnEsc defaultOpen={this.props.showExample}>
             {({ openPortal, closePortal, isOpen, portal }) => [
               <span key="0" onClick={openPortal}>
                 {examplesButton}

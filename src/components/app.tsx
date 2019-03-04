@@ -18,7 +18,7 @@ import VizPane from './viz-pane';
 
 type Props = ReturnType<typeof mapDispatchToProps>;
 
-class App extends React.Component<Props & { match: any; location: any }> {
+class App extends React.Component<Props & { match: any; location: any; showExample?: boolean }> {
   public componentDidMount() {
     window.addEventListener(
       'message',
@@ -119,7 +119,7 @@ class App extends React.Component<Props & { match: any; location: any }> {
     const w = window.innerWidth;
     return (
       <div className="app-container">
-        <Header />
+        <Header showExample={this.props.showExample} />
         <div
           style={{
             height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,
