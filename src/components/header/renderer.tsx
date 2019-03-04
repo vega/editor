@@ -153,19 +153,12 @@ class Header extends React.Component<Props, State> {
 
     const gistUrl = new URL(url, 'https://gist.github.com');
     const [username, gistId] = gistUrl.pathname.split('/').slice(1);
-    this.setState({
-      invalidUrl: false,
-    });
     const gistCommits = await fetch(`https://api.github.com/gists/${gistId}/commits`).then(r => {
+      this.setState({
+        invalidUrl: !r.ok,
+      });
       if (r.ok) {
-        this.setState({
-          invalidUrl: false,
-        });
         return r.json();
-      } else {
-        this.setState({
-          invalidUrl: true,
-        });
       }
     });
     if (revision.length === 0) {
