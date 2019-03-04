@@ -153,10 +153,19 @@ class Header extends React.Component<Props, State> {
 
     const gistUrl = new URL(url, 'https://gist.github.com');
     const [username, gistId] = gistUrl.pathname.split('/').slice(1);
-
+    const gistCommits = await fetch(`https://api.github.com/gists/${gistId}/commits`).then(r => {
+      if (r.ok) {
+        this.setState({
+          invalidUrl: false,
+        });
+        return r.json();
+      } else {
+        this.setState({
+          invalidUrl: true,
+        });
+      }
+    });
     if (revision.length === 0) {
-      const gistCommits = await fetch(`https://api.github.com/gists/${gistId}/commits`).then(r => r.json());
-
       revision = gistCommits[0].version;
     }
 
@@ -170,20 +179,21 @@ class Header extends React.Component<Props, State> {
       }
     }
 
-    this.props.history.push(`/gist/${type}/${username}/${gistId}/${revision}/${filename}`);
+    if (!this.state.invalidUrl) {
+      this.props.history.push(`/gist/${type}/${username}/${gistId}/${revision}/${filename}`);
+      this.setState({
+        gist: {
+          filename: '',
+          revision: '',
+          type: Mode.Vega,
+          url: '',
+        },
 
-    this.setState({
-      gist: {
-        filename: '',
-        revision: '',
-        type: Mode.Vega,
-        url: '',
-      },
+        invalidUrl: false,
+      });
 
-      invalidUrl: false,
-    });
-
-    closePortal(); // Close the gist modal after it gets load
+      closePortal(); // Close the gist modal after it gets load
+    }
   }
 
   public async openViz(ext: string) {
