@@ -153,6 +153,9 @@ class Header extends React.Component<Props, State> {
 
     const gistUrl = new URL(url, 'https://gist.github.com');
     const [username, gistId] = gistUrl.pathname.split('/').slice(1);
+    this.setState({
+      invalidUrl: false,
+    });
     const gistCommits = await fetch(`https://api.github.com/gists/${gistId}/commits`).then(r => {
       if (r.ok) {
         this.setState({
@@ -175,6 +178,9 @@ class Header extends React.Component<Props, State> {
       filename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
 
       if (filename === undefined) {
+        this.setState({
+          invalidUrl: true,
+        });
         throw Error();
       }
     }
