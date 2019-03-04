@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { isDate } from 'vega';
 import { formatValue } from 'vega-tooltip';
-import { isValidDate } from '../../utils/ValidateDate';
 import './index.css';
 
 interface Props {
@@ -19,7 +19,7 @@ export default class Table extends React.PureComponent<Props> {
       const rowNodes = this.props.header.map((field, j) => {
         let tooLong = false;
         let formatted = '';
-        if (!isValidDate(row[field])) {
+        if (!isDate(row[field])) {
           tooLong = this.formatValue(row[field]).tooLong;
           formatted = this.formatValue(row[field]).formatted;
         } else {
