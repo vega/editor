@@ -68,6 +68,11 @@ export default class VizPane extends React.Component<Props> {
         defaultSize={this.props.debugPane ? this.props.debugPaneSize : LAYOUT.MinPaneSize}
         onChange={this.handleChange}
         paneStyle={{ display: 'flex' }}
+        onDragFinished={() => {
+          if (this.props.debugPaneSize === 25) {
+            this.props.setDebugPaneSize(60);
+          }
+        }}
       >
         {container}
         <div className="debug-pane">
