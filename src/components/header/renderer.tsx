@@ -178,21 +178,10 @@ class Header extends React.Component<Props, State> {
         invalidRevision: false,
       });
     } else {
-      let i;
-      for (i = 0; i < responseGistCommits.length; i++) {
-        if (revision === responseGistCommits[i].version) {
-          break;
-        }
-      }
-      if (i === responseGistCommits.length) {
-        this.setState({
-          invalidRevision: true,
-        });
-      } else {
-        this.setState({
-          invalidRevision: false,
-        });
-      }
+      const revGistCommits = await fetch(`https://api.github.com/gists/${gistId}/${revision}`);
+      this.setState({
+        invalidRevision: !revGistCommits.ok,
+      });
     }
 
     const gistData = await fetch(`https://api.github.com/gists/${gistId}`).then(r => r.json());
