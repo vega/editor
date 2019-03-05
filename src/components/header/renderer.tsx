@@ -198,8 +198,8 @@ class Header extends React.Component<Props, State> {
         invalidFilename: false,
       });
     } else {
-      const xfilename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
-      if (this.state.gist.filename !== xfilename) {
+      const gistFilename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
+      if (this.state.gist.filename !== gistFilename) {
         this.setState({
           invalidFilename: true,
         });
