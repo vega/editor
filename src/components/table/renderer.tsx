@@ -1,12 +1,11 @@
-import './index.css';
-
 import * as React from 'react';
-import { isObject } from 'vega';
-import { escapeHTML, formatValue } from 'vega-tooltip';
+import { isDate } from 'vega';
+import { formatValue } from 'vega-tooltip';
+import './index.css';
 
 interface Props {
   header: string[];
-  data: object[];
+  data: any[];
 }
 
 const MAX_DEPTH = 2;
@@ -18,7 +17,15 @@ export default class Table extends React.PureComponent<Props> {
 
     const tableBody = this.props.data.map((row, i) => {
       const rowNodes = this.props.header.map((field, j) => {
-        const { tooLong, formatted } = this.formatValue(row[field]);
+        let tooLong = false;
+        let formatted = '';
+        if (!isDate(row[field])) {
+          tooLong = this.formatValue(row[field]).tooLong;
+          formatted = this.formatValue(row[field]).formatted;
+        } else {
+          tooLong = false;
+          formatted = new Date(row[field]).toUTCString();
+        }
         const key = `${field} ${j}`;
         if (tooLong) {
           return (
@@ -56,7 +63,6 @@ export default class Table extends React.PureComponent<Props> {
 
   private formatValue(value: any) {
     const formatted = formatValue(value, this.escapeHTML, MAX_DEPTH);
-
     if (formatted.length > MAX_LENGTH) {
       return { formatted: null, tooLong: true };
     }
