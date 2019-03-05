@@ -161,14 +161,10 @@ class Header extends React.Component<Props, State> {
     this.setState({
       invalidUrl: !gistCommits.ok,
     });
-    if (filename.length === 0 && this.state.invalidUrl) {
+    if (this.state.invalidUrl) {
       this.setState({
-        invalidFilename: false,
-      });
-    }
-    if (revision.length === 0 && this.state.invalidUrl) {
-      this.setState({
-        invalidRevision: false,
+        invalidFilename: filename.length !== 0,
+        invalidRevision: revision.length !== 0,
       });
     }
     const responseGistCommits = await gistCommits.json();
