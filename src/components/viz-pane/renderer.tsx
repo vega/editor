@@ -69,8 +69,11 @@ export default class VizPane extends React.Component<Props> {
         onChange={this.handleChange}
         paneStyle={{ display: 'flex' }}
         onDragFinished={() => {
-          if (this.props.debugPaneSize === 25) {
+          if (this.props.debugPaneSize === LAYOUT.MinPaneSize) {
             this.props.setDebugPaneSize(60);
+            // LAYOUT.MinPanelSize + some amount of width that'll be visible
+            // so that the user knows that the data viewer has poped up
+            // The Ideal Amount is 35 , can be reduced or increased depending on the UI
           }
         }}
       >
