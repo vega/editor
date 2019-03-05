@@ -3585,10 +3585,10 @@ monaco-editor-webpack-plugin@^1.7.0:
   dependencies:
     "@types/webpack" "^4.4.19"
 
-monaco-editor@^0.15.6:
-  version "0.15.6"
-  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.15.6.tgz#d63b3b06f86f803464f003b252627c3eb4a09483"
-  integrity sha512-JoU9V9k6KqT9R9Tiw1RTU8ohZ+Xnf9DMg6Ktqqw5hILumwmq7xqa/KLXw513uTUsWbhtnHoSJYYR++u3pkyxJg==
+monaco-editor@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.16.0.tgz#83538173c2427f62e0ea3e19a4864742ea457cd9"
+  integrity sha512-a0ZksW1C5gTXOOJR/guKwzYrLJkJtMqzPb/W81YFSFHwbZ/ecVWdNguUkuyUuchzeKJRwqcizgVx++G9wmfofQ==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -4473,10 +4473,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-clipboard.js@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/react-clipboard.js/-/react-clipboard.js-2.0.4.tgz#bc08765ce909190ab75743285831fa67239a0780"
-  integrity sha512-IF/wIvWT+WnQsUej+1NyQABD1vTYT6HuDUvkpU3cMaiWtMLimuHytca9XgyaHixecqH1o3VDZBSG0+FL8D4Nvg==
+react-clipboard.js@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/react-clipboard.js/-/react-clipboard.js-2.0.5.tgz#763963e17d5f19a15d97ea3ffcb79b0036f8d4e1"
+  integrity sha512-sKRs4lfAceM+d1sNXt0N2q11bVruBWmP82QbUUPabIXc+/qwyClaZmQWbkgROlDczJXymWeOwA9H786dNdsHXA==
   dependencies:
     "@types/clipboard" "^2.0.1"
     clipboard "^2.0.0"
@@ -4519,14 +4519,14 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-monaco-editor@0.24.1:
-  version "0.24.1"
-  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.24.1.tgz#8338cef7b2bc275c196fa9e3e308e11a1ff7deff"
-  integrity sha512-QVwR0B0JYGzdg8xaqVriH646Su0fOSvE2FaBB/q9ec1NnuPcJGu1YHcwunUKzej3JsUprGJ35jXStnT3QaoPFw==
+react-monaco-editor@0.25.1:
+  version "0.25.1"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.25.1.tgz#29215061da23d0e4ad7bf928d9403288d5be4e92"
+  integrity sha512-VLksQjt8fmeIZoET9fQgmR0sdCCBFaiss92MwW5JvgO3JfrnhHtrLBqrSQRjtbUmef1EmEKi4gZp5Mh0oidvVg==
   dependencies:
     "@types/react" "*"
-    monaco-editor "^0.15.6"
-    prop-types "^15.6.2"
+    monaco-editor "^0.16.0"
+    prop-types "^15.7.2"
 
 react-paginate@^6.3.0:
   version "6.3.0"
