@@ -5823,7 +5823,7 @@ vega-canvas@^1.2.0:
   resolved "https://registry.yarnpkg.com/vega-canvas/-/vega-canvas-1.2.1.tgz#ee0586e2a1f096f6a5d1710df61ef501562c2bd4"
   integrity sha512-k/S3EPeJ37D7fYDhv4sEg7fNWVpLheQY7flfLyAmJU7aSwCMgw8cZJi0CKHchJeculssfH+41NCqvRB1QtaJnw==
 
-vega-cli@^5.0.0:
+vega-cli@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/vega-cli/-/vega-cli-5.0.0.tgz#57f2c96774f1c673c4c2dc0cc238bdae29d9b356"
   integrity sha512-6cBfnx5HYI6I/32gt8dBXkUMOTr8St0Y3V5OOLYwwCULrPpTzXmCAHGj+gwAEz+LYWHsltSDzSyCELo31PpvpQ==
@@ -5926,7 +5926,7 @@ vega-hierarchy@^4.0.1:
     vega-dataflow "^5.1.0"
     vega-util "^1.8.0"
 
-vega-lite@^3.0.0-rc13:
+vega-lite@3.0.0-rc13:
   version "3.0.0-rc13"
   resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-3.0.0-rc13.tgz#e11167c8a425b1b62d968a54d9ef111db61b1a8b"
   integrity sha512-zFyjBejToJIyAorBxnpjYNXMMWF0TmeNNtblFJVr7dnuyiIgKDc+1mHT5Lxhepz+4Z/dEyPkKqSPAVQvTDkMLQ==

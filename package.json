@@ -52,9 +52,9 @@
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.3.0",
     "tslib": "^1.9.3",
-    "vega-cli": "^5.0.0",
+    "vega-cli": "5.0.0",
     "vega-datasets": "^1.22.0",
-    "vega-lite": "^3.0.0-rc13",
+    "vega-lite": "3.0.0-rc13",
     "vega-schema-url-parser": "^1.1.0",
     "vega-tooltip": "^0.16.0"
   },
