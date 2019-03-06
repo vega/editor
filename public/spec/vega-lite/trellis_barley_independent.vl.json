@@ -24,5 +24,6 @@
       "scale": {"rangeStep": 12}
     },
     "color": {"field": "year", "type": "nominal"}
-  }
+  },
+  "resolve": {"axis": {"x": "independent", "y": "independent"}}
 }
