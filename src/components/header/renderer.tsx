@@ -199,7 +199,6 @@ class Header extends React.Component<Props, State> {
         this.setState({
           invalidFilename: true,
         });
-        throw Error();
       } else {
         this.setState({
           invalidFilename: false,
