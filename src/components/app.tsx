@@ -6,8 +6,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import SplitPane from 'react-split-pane';
-import { util } from 'vega-lite';
-import { hash } from 'vega-lite/build/src/util';
+import { hash, mergeDeep } from 'vega-lite/build/src/util';
 
 import * as EditorActions from '../actions/editor';
 import { LAYOUT, Mode } from '../constants';
@@ -18,7 +17,7 @@ import VizPane from './viz-pane';
 
 type Props = ReturnType<typeof mapDispatchToProps>;
 
-class App extends React.Component<Props & { match: any; location: any }> {
+class App extends React.Component<Props & { match: any; location: any; showExample?: boolean }> {
   public componentDidMount() {
     window.addEventListener(
       'message',
@@ -34,7 +33,7 @@ class App extends React.Component<Props & { match: any; location: any }> {
         const parsed = JSON.parse(data.spec);
         // merging config into the spec
         if (data.config) {
-          util.mergeDeep(parsed, { config: data.config });
+          mergeDeep(parsed, { config: data.config });
         }
         data.spec = stringify(parsed);
         if (data.spec || data.file) {
@@ -119,7 +118,7 @@ class App extends React.Component<Props & { match: any; location: any }> {
     const w = window.innerWidth;
     return (
       <div className="app-container">
-        <Header />
+        <Header showExample={this.props.showExample} />
         <div
           style={{
             height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,

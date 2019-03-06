@@ -273,7 +273,7 @@
 .error-message {
   font-size: 12px;
   height: 10px;
-  color: red;
+  color: var(--error-color);
   margin-top: 5px;
   margin-bottom: 30px;
 }
@@ -405,7 +405,7 @@
   align-items: center;
   justify-content: left;
   font-size: 0.9em;
-  background: #fff;
+  background: white;
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
@@ -491,7 +491,7 @@
 
 .share-button {
   font-size: 0.9em;
-  background: #fff;
+  background: white;
   border: 1px solid #ccc;
   border-radius: 4px;
   line-height: 30px;

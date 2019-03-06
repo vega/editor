@@ -1,45 +1,46 @@
 {
   "name": "vega-editor",
-  "version": "0.25.2",
+  "version": "0.27.0",
   "homepage": "http://vega.github.io/editor",
   "private": true,
   "devDependencies": {
-    "@types/clipboard": "^2.0.1",
-    "@types/node": "^11.9.5",
-    "@types/react": "^16.8.5",
-    "autoprefixer": "^9.4.9",
+    "@types/node": "^11.10.4",
+    "@types/react": "^16.8.6",
+    "autoprefixer": "^9.4.10",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^2.1.0",
     "gh-pages": "^2.0.1",
     "html-webpack-plugin": "^3.2.0",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.5",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "postcss-loader": "^3.0.0",
     "prettier": "^1.16.4",
     "style-loader": "^0.23.1",
-    "tslint": "^5.13.0",
+    "tslint": "^5.13.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.3.3333",
-    "webpack": "4.29.5",
-    "webpack-bundle-analyzer": "^3.0.4",
+    "webpack": "4.29.6",
+    "webpack-bundle-analyzer": "^3.1.0",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
-    "ajv": "^6.9.2",
+    "ajv": "^6.10.0",
     "d3-geo-projection": "^2.6.0",
     "d3-request": "1.0.6",
     "history": "^4.7.2",
     "json-stringify-pretty-compact": "^2.0.0",
     "lz-string": "^1.4.4",
-    "monaco-editor": "^0.15.6",
+    "monaco-editor": "^0.16.0",
     "prop-types": "^15.7.2",
-    "react": "^16.8.3",
-    "react-clipboard.js": "^2.0.3",
-    "react-dom": "^16.8.3",
+    "react": "^16.8.4",
+    "react-clipboard.js": "^2.0.5",
+    "react-dom": "^16.8.4",
     "react-feather": "^1.1.6",
     "react-ga": "2.5.7",
-    "react-monaco-editor": "0.24.0",
+    "react-monaco-editor": "0.25.1",
     "react-paginate": "^6.3.0",
     "react-portal": "^4.2.0",
     "react-redux": "^6.0.1",
@@ -51,11 +52,26 @@
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.3.0",
     "tslib": "^1.9.3",
-    "vega-cli": "^5.0.0-rc3",
+    "vega-cli": "5.0.0",
     "vega-datasets": "^1.22.0",
-    "vega-lite": "^3.0.0-rc13",
+    "vega-lite": "3.0.0-rc14",
     "vega-schema-url-parser": "^1.1.0",
     "vega-tooltip": "^0.16.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "tslint --fix",
+      "git add"
+    ],
+    "*.{js,jsx,ts,tsx,css,scss}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --hot",

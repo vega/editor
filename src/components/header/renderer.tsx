@@ -34,7 +34,7 @@ interface Props {
   view: View;
   vegaSpec?: object;
   vegaLiteSpec?: object;
-
+  showExample: boolean;
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
   parseSpec: (val: any) => void;
@@ -156,11 +156,13 @@ class Header extends React.Component<Props, State> {
 
     const gistUrl = new URL(url, 'https://gist.github.com');
     const [username, gistId] = gistUrl.pathname.split('/').slice(1);
-
+    const gistCommits = await fetch(`https://api.github.com/gists/${gistId}/commits`);
+    this.setState({
+      invalidUrl: !gistCommits.ok,
+    });
+    const responseGistCommits = await gistCommits.json();
     if (revision.length === 0) {
-      const gistCommits = await fetch(`https://api.github.com/gists/${gistId}/commits`).then(r => r.json());
-
-      revision = gistCommits[0].version;
+      revision = responseGistCommits[0].version;
     }
 
     if (filename.length === 0) {
@@ -169,24 +171,28 @@ class Header extends React.Component<Props, State> {
       filename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
 
       if (filename === undefined) {
+        this.setState({
+          invalidUrl: true,
+        });
         throw Error();
       }
     }
 
-    this.props.history.push(`/gist/${type}/${username}/${gistId}/${revision}/${filename}`);
+    if (!this.state.invalidUrl) {
+      this.props.history.push(`/gist/${type}/${username}/${gistId}/${revision}/${filename}`);
+      this.setState({
+        gist: {
+          filename: '',
+          revision: '',
+          type: Mode.Vega,
+          url: '',
+        },
 
-    this.setState({
-      gist: {
-        filename: '',
-        revision: '',
-        type: Mode.Vega,
-        url: '',
-      },
+        invalidUrl: false,
+      });
 
-      invalidUrl: false,
-    });
-
-    closePortal(); // Close the gist modal after it gets load
+      closePortal(); // Close the gist modal after it gets load
+    }
   }
 
   public updateDownloadJSONType(event) {
@@ -195,8 +201,9 @@ class Header extends React.Component<Props, State> {
 
   public async openViz(ext: string) {
     const url = await this.props.view.toImageURL(ext);
-    const tab = window.open(url);
+    const tab = window.open('about:blank', '_blank');
     tab.document.write(`<title>Chart</title><img src="${url}" />`);
+    tab.document.close();
   }
 
   public async downloadViz(ext: string) {
@@ -734,7 +741,7 @@ class Header extends React.Component<Props, State> {
           </PortalWithState>
         </section>
         <section className="right-section">
-          <PortalWithState closeOnEsc>
+          <PortalWithState closeOnEsc defaultOpen={this.props.showExample}>
             {({ openPortal, closePortal, isOpen, portal }) => [
               <span key="0" onClick={openPortal}>
                 {examplesButton}
@@ -793,7 +800,7 @@ class Header extends React.Component<Props, State> {
           <span>{docsLink}</span>
 
           <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
-            <img height={32} alt="IDL Logo" src="https://vega.github.io/images/idl-logo.png" />
+            <img height={32} alt="IDL Logo" src="idl-logo.png" />
           </a>
         </section>
       </div>
