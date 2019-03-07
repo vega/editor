@@ -161,22 +161,18 @@ class Header extends React.Component<Props, State> {
     this.setState({
       invalidUrl: !gistCommits.ok,
     });
-    if (this.state.invalidUrl) {
-      this.setState({
-        invalidFilename: filename.length !== 0,
-        invalidRevision: revision.length !== 0,
-      });
-    }
     const responseGistCommits = await gistCommits.json();
     if (revision.length === 0) {
-      revision = responseGistCommits[0].version;
       this.setState({
+        invalidFilename: false,
         invalidRevision: false,
       });
+      revision = responseGistCommits[0].version;
     } else {
       const revGistCommits = await fetch(`https://api.github.com/gists/${gistId}/${revision}`);
       this.setState({
-        invalidRevision: !revGistCommits.ok,
+        invalidFilename: !this.state.invalidUrl,
+        invalidRevision: !(revGistCommits.ok || this.state.invalidUrl),
       });
     }
 
@@ -195,7 +191,7 @@ class Header extends React.Component<Props, State> {
       });
     } else {
       const gistFilename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
-      if (this.state.gist.filename !== gistFilename) {
+      if (this.state.gist.filename !== gistFilename && !this.state.invalidUrl) {
         this.setState({
           invalidFilename: true,
         });
@@ -205,7 +201,6 @@ class Header extends React.Component<Props, State> {
         });
       }
     }
-
     if (!(this.state.invalidUrl || this.state.invalidFilename || this.state.invalidRevision)) {
       this.props.history.push(`/gist/${type}/${username}/${gistId}/${revision}/${filename}`);
       this.setState({
