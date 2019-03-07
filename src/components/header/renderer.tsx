@@ -249,7 +249,7 @@ class Header extends React.Component<Props, State> {
     dlButton.classList.remove('disabled');
   }
 
-  public async downloadJSON(event) {
+  public downloadJSON(event) {
     if (
       event.target &&
       (event.target.matches('input') ||
