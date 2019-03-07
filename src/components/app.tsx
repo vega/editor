@@ -6,8 +6,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import SplitPane from 'react-split-pane';
-import { util } from 'vega-lite';
-import { hash } from 'vega-lite/build/src/util';
+import { hash, mergeDeep } from 'vega-lite/build/src/util';
 
 import * as EditorActions from '../actions/editor';
 import { LAYOUT, Mode } from '../constants';
@@ -34,7 +33,7 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
         const parsed = JSON.parse(data.spec);
         // merging config into the spec
         if (data.config) {
-          util.mergeDeep(parsed, { config: data.config });
+          mergeDeep(parsed, { config: data.config });
         }
         data.spec = stringify(parsed);
         if (data.spec || data.file) {
