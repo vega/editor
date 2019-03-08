@@ -451,6 +451,10 @@
   opacity: 0.8;
 }
 
+.export-button .type-input-container {
+  margin-top: 10px;
+}
+
 .user-notes p {
   padding: 20px 0;
 }
