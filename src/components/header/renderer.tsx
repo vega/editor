@@ -252,23 +252,23 @@ class Header extends React.Component<Props, State> {
   public downloadJSON(event) {
     if (
       event.target &&
-      (event.target.matches('input') ||
-        event.target.matches('label') ||
-        event.target.matches('div.type-input-container'))
+      (event.target.matches(`input`) ||
+        event.target.matches(`label`) ||
+        event.target.matches(`div.type-input-container`))
     ) {
       return;
     }
     const content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
-    const filename = this.state.downloadVegaJSON ? 'visualization.vg.json' : 'visualization.vl.json';
+    const filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
 
-    const blob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(content, null, 2)], { type: `application/json` });
     const url = window.URL.createObjectURL(blob);
 
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('target', '_blank');
-    link.setAttribute('download', filename);
-    link.dispatchEvent(new MouseEvent('click'));
+    const link = document.createElement(`a`);
+    link.setAttribute(`href`, url);
+    link.setAttribute(`target`, `_blank`);
+    link.setAttribute(`download`, filename);
+    link.dispatchEvent(new MouseEvent(`click`));
   }
 
   public exportURL() {
