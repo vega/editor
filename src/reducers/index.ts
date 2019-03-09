@@ -47,11 +47,28 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
       vegaSpec: spec,
     };
   } catch (e) {
+    const code = action.spec;
+    const pattern = /\d+/;
+    let errorMessage = e.message;
+    const charPos = errorMessage.match(pattern)[0];
+
+    if (!isNaN(charPos)) {
+      let line = 1;
+      let cursorPos = 0;
+
+      while (cursorPos < charPos && code.indexOf('\n', cursorPos) < charPos && code.indexOf('\n', cursorPos) > -1) {
+        const newlinePos = code.indexOf('\n', cursorPos);
+        line = line + 1;
+        cursorPos = newlinePos + 1;
+      }
+
+      errorMessage = `${errorMessage} and line ${line}`;
+    }
     console.warn(e);
 
     extend = {
       ...extend,
-      error: e.message,
+      error: errorMessage,
     };
   }
   return {
