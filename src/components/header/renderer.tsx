@@ -3,6 +3,7 @@ import './index.css';
 import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
+import ReactDOM from 'react-dom';
 import {
   Book,
   Code,
@@ -54,6 +55,7 @@ interface State {
   };
   invalidUrl: boolean;
   showVega: boolean;
+  scrollPosition: number;
 }
 
 const formatExampleName = (name: string) => {
@@ -65,7 +67,7 @@ const formatExampleName = (name: string) => {
 
 class Header extends React.Component<Props, State> {
   private refGistForm: HTMLFormElement;
-
+  private examplePortal = React.createRef<HTMLDivElement>();
   constructor(props) {
     super(props);
     this.state = {
@@ -80,6 +82,7 @@ class Header extends React.Component<Props, State> {
         url: '',
       },
       invalidUrl: false,
+      scrollPosition: 0,
       showVega: props.mode === Mode.Vega,
     };
   }
@@ -741,7 +744,18 @@ class Header extends React.Component<Props, State> {
           </PortalWithState>
         </section>
         <section className="right-section">
-          <PortalWithState closeOnEsc defaultOpen={this.props.showExample}>
+          <PortalWithState
+            closeOnEsc
+            defaultOpen={this.props.showExample}
+            onOpen={() => {
+              const node = ReactDOM.findDOMNode(this.examplePortal.current);
+              node.addEventListener('scroll', () => {
+                this.setState({
+                  scrollPosition: node.scrollTop,
+                });
+              });
+            }}
+          >
             {({ openPortal, closePortal, isOpen, portal }) => [
               <span key="0" onClick={openPortal}>
                 {examplesButton}
@@ -768,7 +782,9 @@ class Header extends React.Component<Props, State> {
                         <X />
                       </button>
                     </div>
-                    <div className="modal-body">{this.state.showVega ? vega(closePortal) : vegalite(closePortal)}</div>
+                    <div className="modal-body" ref={this.examplePortal}>
+                      {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
+                    </div>
                     <div className="modal-footer" />
                   </div>
                 </div>
