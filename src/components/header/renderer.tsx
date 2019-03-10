@@ -30,6 +30,7 @@ import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 interface Props {
   editorString?: string;
   history: any;
+  lastPosition: number;
   manualParse?: boolean;
   mode: Mode;
   view: View;
@@ -40,6 +41,7 @@ interface Props {
   formatSpec: (val: any) => void;
   parseSpec: (val: any) => void;
   toggleAutoParse: () => void;
+  setScrollPosition: (position: number) => void;
 }
 
 interface State {
@@ -749,11 +751,15 @@ class Header extends React.Component<Props, State> {
             defaultOpen={this.props.showExample}
             onOpen={() => {
               const node = ReactDOM.findDOMNode(this.examplePortal.current);
+              node.scrollTop = this.props.lastPosition;
               node.addEventListener('scroll', () => {
                 this.setState({
                   scrollPosition: node.scrollTop,
                 });
               });
+            }}
+            onClose={() => {
+              this.props.setScrollPosition(this.state.scrollPosition);
             }}
           >
             {({ openPortal, closePortal, isOpen, portal }) => [

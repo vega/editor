@@ -7,6 +7,7 @@ import Renderer from './renderer';
 const mapStateToProps = (state: State, ownProps) => {
   return {
     editorString: state.editorString,
+    lastPosition: state.lastPosition,
     manualParse: state.manualParse,
     mode: state.mode,
     vegaLiteSpec: state.vegaLiteSpec,
@@ -25,6 +26,9 @@ const mapDispatchToProps = dispatch => {
     },
     parseSpec: val => {
       dispatch(EditorActions.parseSpec(val));
+    },
+    setScrollPosition: position => {
+      dispatch(EditorActions.setScrollPosition(position));
     },
     toggleAutoParse: () => {
       dispatch(EditorActions.toggleAutoParse());

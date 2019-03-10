@@ -11,6 +11,7 @@ export interface State {
   export: boolean;
   format: boolean;
   gist: string;
+  lastPosition: number;
   logs: boolean;
   manualParse: boolean;
   mode: Mode;
@@ -33,6 +34,7 @@ export const DEFAULT_STATE: State = {
   export: false,
   format: false,
   gist: null,
+  lastPosition: 0,
   logs: false,
   manualParse: false,
   mode: Mode.VegaLite,
