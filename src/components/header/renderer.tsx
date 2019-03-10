@@ -668,7 +668,7 @@ class Header extends React.Component<Props, State> {
         </div>
         <div className="byte-counter">
           Number of charaters in the URL: {this.state.generatedURL.length}{' '}
-          <span className="warning">
+          <span className="url-warning">
             {this.state.generatedURL.length > 2083 ? (
               <span>
                 Warning:{' '}
