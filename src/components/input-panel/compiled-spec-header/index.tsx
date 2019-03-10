@@ -15,7 +15,7 @@ interface Props {
   compiledVegaSpec;
   history;
 
-  showCompiledVegaSpec: () => void;
+  toggleCompiledVegaSpec: () => void;
   updateVegaSpec: (value: any) => void;
 }
 
@@ -36,7 +36,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
         position: 'static',
       });
       return (
-        <div className="editor-header" style={toggleStyleUp} onClick={this.props.showCompiledVegaSpec}>
+        <div className="editor-header" style={toggleStyleUp} onClick={this.props.toggleCompiledVegaSpec}>
           <span>Compiled Vega</span>
           <ChevronDown />
           <button onClick={this.editVegaSpec} style={{ cursor: 'pointer' }}>
@@ -46,7 +46,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
       );
     } else {
       return (
-        <div onClick={this.props.showCompiledVegaSpec} className="editor-header" style={toggleStyle}>
+        <div onClick={this.props.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
           <span>Compiled Vega</span>
           <ChevronUp />
           <button onClick={this.editVegaSpec} style={{ zIndex: -1, opacity: 0, cursor: 'pointer' }}>
@@ -68,8 +68,8 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    showCompiledVegaSpec: () => {
-      dispatch(EditorActions.showCompiledVegaSpec());
+    toggleCompiledVegaSpec: () => {
+      dispatch(EditorActions.toggleCompiledVegaSpec());
     },
     updateVegaSpec: val => {
       dispatch(EditorActions.updateVegaSpec(val));
