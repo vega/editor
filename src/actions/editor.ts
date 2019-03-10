@@ -9,6 +9,7 @@ export const SET_DEBUG_PANE_SIZE: 'SET_DEBUG_PANE_SIZE' = 'SET_DEBUG_PANE_SIZE';
 export const SET_GIST_VEGA_LITE_SPEC: 'SET_GIST_VEGA_LITE_SPEC' = 'SET_GIST_VEGA_LITE_SPEC';
 export const SET_GIST_VEGA_SPEC: 'SET_GIST_VEGA_SPEC' = 'SET_GIST_VEGA_SPEC';
 export const SET_MODE: 'SET_MODE' = 'SET_MODE';
+export const SET_MODE_ONLY: 'SET_MODE_ONLY' = 'SET_MODE_ONLY';
 export const SET_RENDERER: 'SET_RENDERER' = 'SET_RENDERER';
 export const SET_VEGA_EXAMPLE: 'SET_VEGA_EXAMPLE' = 'SET_VEGA_EXAMPLE';
 export const SET_VEGA_LITE_EXAMPLE: 'SET_VEGA_LITE_EXAMPLE' = 'SET_VEGA_LITE_EXAMPLE';
@@ -23,6 +24,7 @@ export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
 
 export type Action =
   | SetMode
+  | SetModeOnly
   | ParseSpec
   | SetVegaExample
   | SetVegaLiteExample
@@ -50,6 +52,14 @@ export function setMode(mode: Mode) {
   };
 }
 export type SetMode = ReturnType<typeof setMode>;
+
+export function setModeOnly(mode: Mode) {
+  return {
+    mode,
+    type: SET_MODE_ONLY,
+  };
+}
+export type SetModeOnly = ReturnType<typeof setModeOnly>;
 
 export function parseSpec(value: boolean) {
   return {

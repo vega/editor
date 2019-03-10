@@ -19,7 +19,7 @@ import {
   Trash2,
   X,
 } from 'react-feather';
-import { PortalWithState } from 'react-portal';
+import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { Mode, View } from '../../constants';
@@ -32,8 +32,9 @@ interface Props {
   manualParse?: boolean;
   mode: Mode;
   view: View;
+  vegaSpec?: object;
+  vegaLiteSpec?: object;
   showExample: boolean;
-
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
   parseSpec: (val: any) => void;
@@ -42,6 +43,7 @@ interface Props {
 
 interface State {
   copied: boolean;
+  downloadVegaJSON: boolean;
   fullscreen: boolean;
   generatedURL: string;
   gist: {
@@ -54,6 +56,7 @@ interface State {
   invalidRevision: boolean;
   invalidUrl: boolean;
   showVega: boolean;
+  helpModalOpen: boolean;
 }
 
 const formatExampleName = (name: string) => {
@@ -70,6 +73,7 @@ class Header extends React.Component<Props, State> {
     super(props);
     this.state = {
       copied: false,
+      downloadVegaJSON: false,
       fullscreen: false,
       generatedURL: '',
       gist: {
@@ -80,6 +84,7 @@ class Header extends React.Component<Props, State> {
       },
       invalidFilename: false,
       invalidRevision: false,
+      helpModalOpen: false,
       invalidUrl: false,
       showVega: props.mode === Mode.Vega,
     };
@@ -140,6 +145,31 @@ class Header extends React.Component<Props, State> {
 
   public handleCheck(event) {
     this.setState({ fullscreen: event.target.checked });
+  }
+
+  public handleHelpModalOpen(event) {
+    if (
+      (event.keyCode === 222 && event.metaKey && !event.shiftKey) || // Handle key press in Mac
+      (event.keyCode === 191 && event.ctrlKey && event.shiftKey) // Handle Key press in PC
+    ) {
+      this.setState({
+        helpModalOpen: true,
+      });
+    }
+  }
+
+  public handleHelpModalCloseClick() {
+    this.setState({
+      helpModalOpen: false,
+    });
+  }
+
+  public handleHelpModalCloseEsc(event) {
+    if (event.keyCode === 27) {
+      this.setState({
+        helpModalOpen: false,
+      });
+    }
   }
 
   public async onSelectGist(closePortal) {
@@ -220,6 +250,10 @@ class Header extends React.Component<Props, State> {
     }
   }
 
+  public updateDownloadJSONType(event) {
+    this.setState({ downloadVegaJSON: event.currentTarget.value === 'vega' });
+  }
+
   public async openViz(ext: string) {
     const url = await this.props.view.toImageURL(ext);
     const tab = window.open('about:blank', '_blank');
@@ -270,6 +304,28 @@ class Header extends React.Component<Props, State> {
     dlButton.classList.remove('disabled');
   }
 
+  public downloadJSON(event) {
+    if (
+      event.target &&
+      (event.target.matches(`input`) ||
+        event.target.matches(`label`) ||
+        event.target.matches(`div.type-input-container`))
+    ) {
+      return;
+    }
+    const content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
+    const filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
+
+    const blob = new Blob([JSON.stringify(content, null, 2)], { type: `application/json` });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement(`a`);
+    link.setAttribute(`href`, url);
+    link.setAttribute(`target`, `_blank`);
+    link.setAttribute(`download`, filename);
+    link.dispatchEvent(new MouseEvent(`click`));
+  }
+
   public exportURL() {
     const serializedSpec =
       LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullscreen ? '/view' : '');
@@ -282,6 +338,11 @@ class Header extends React.Component<Props, State> {
   public previewURL() {
     const win = window.open(this.state.generatedURL, '_blank');
     win.focus();
+  }
+
+  public componentDidMount() {
+    document.addEventListener('keydown', this.handleHelpModalOpen.bind(this));
+    document.addEventListener('keyup', this.handleHelpModalCloseEsc.bind(this));
   }
 
   public componentDidUpdate(prevProps, prevState) {
@@ -601,6 +662,34 @@ class Header extends React.Component<Props, State> {
               patient.
             </p>
           </button>
+          <button className="export-button" onClick={e => this.downloadJSON(e)}>
+            <div>
+              <Code />
+              <span>Download JSON</span>
+            </div>
+            <p>JSON is a lightweight data-interchange format.</p>
+            <div className="type-input-container">
+              Type:
+              <input
+                type="radio"
+                name="json-type"
+                id="json-type[vega]"
+                value="vega"
+                checked={this.state.downloadVegaJSON}
+                onChange={this.updateDownloadJSONType.bind(this)}
+              />
+              <label htmlFor="json-type[vega]">Vega</label>
+              <input
+                type="radio"
+                name="json-type"
+                id="json-type[vega-lite]"
+                value="vega-lite"
+                checked={!this.state.downloadVegaJSON}
+                onChange={this.updateDownloadJSONType.bind(this)}
+              />
+              <label htmlFor="json-type[vega-lite]">Vega Lite</label>
+            </div>
+          </button>
         </div>
         <div className="user-notes">
           <p>
@@ -645,7 +734,7 @@ class Header extends React.Component<Props, State> {
         </div>
         <div className="byte-counter">
           Number of charaters in the URL: {this.state.generatedURL.length}{' '}
-          <span className="warning">
+          <span className="url-warning">
             {this.state.generatedURL.length > 2083 ? (
               <span>
                 Warning:{' '}
@@ -661,6 +750,21 @@ class Header extends React.Component<Props, State> {
             )}
           </span>
         </div>
+      </div>
+    );
+
+    const helpModal = (
+      <div>
+        <h2>Help</h2>
+        <h4>Keyboard Shortcuts</h4>
+        <ul className="keyboard-shortcuts">
+          <li>
+            <kbd>Ctrl</kbd> + <kbd>b</kbd> / <kbd>&#8984;</kbd> + <kbd>b</kbd>: Execute the code in manual mode
+          </li>
+          <li>
+            <kbd>Ctrl</kbd> + <kbd>?</kbd> / <kbd>&#8984;</kbd> + <kbd>'</kbd>: Open the help window
+          </li>
+        </ul>
       </div>
     );
 
@@ -773,6 +877,22 @@ class Header extends React.Component<Props, State> {
               ),
             ]}
           </PortalWithState>
+
+          {this.state.helpModalOpen && (
+            <Portal>
+              <div className="modal-background" onClick={this.handleHelpModalCloseClick.bind(this)}>
+                <div className="modal modal-top" onClick={e => e.stopPropagation()}>
+                  <div className="modal-header">
+                    <button className="close-button" onClick={this.handleHelpModalCloseClick.bind(this)}>
+                      <X />
+                    </button>
+                  </div>
+                  <div className="modal-body">{helpModal}</div>
+                  <div className="modal-footer" />
+                </div>
+              </div>
+            </Portal>
+          )}
 
           <span>{docsLink}</span>
 

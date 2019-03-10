@@ -55,6 +55,11 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
     );
 
     const parameter = this.props.match.params;
+    if (parameter.mode) {
+      if (parameter.mode === 'vega' || 'vega-lite') {
+        this.props.setModeOnly(parameter.mode);
+      }
+    }
     this.setSpecInUrl(parameter);
   }
   public componentWillReceiveProps(nextProps) {
@@ -152,6 +157,9 @@ const mapDispatchToProps = dispatch => {
     },
     setGistVegaSpec: (gist: string, spec) => {
       dispatch(EditorActions.setGistVegaSpec(gist, spec));
+    },
+    setModeOnly: mode => {
+      dispatch(EditorActions.setModeOnly(mode));
     },
     setRenderer: val => {
       dispatch(EditorActions.setRenderer(val));

@@ -11,6 +11,7 @@ import {
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
   SET_MODE,
+  SET_MODE_ONLY,
   SET_RENDERER,
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
@@ -129,6 +130,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         vegaSpec: {},
         view: null,
         warningsLogger: new LocalLogger(),
+      };
+    case SET_MODE_ONLY:
+      return {
+        ...state,
+        mode: action.mode,
       };
     case PARSE_SPEC:
       return {
