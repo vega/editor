@@ -56,7 +56,9 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
 
     const parameter = this.props.match.params;
     if (parameter.mode) {
-      this.props.setModeOnly(parameter.mode);
+      if (parameter.mode === 'vega' || 'vega-lite') {
+        this.props.setModeOnly(parameter.mode);
+      }
     }
     this.setSpecInUrl(parameter);
   }
