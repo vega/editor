@@ -48,23 +48,26 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
     };
   } catch (e) {
     const code = action.spec;
-    const pattern = /\d+/;
+    const pattern = /(position\s)(\d+)/;
     let errorMessage = e.message;
-    const charPos = errorMessage.match(pattern)[0];
+    let charPos = errorMessage.match(pattern);
 
-    if (!isNaN(charPos)) {
-      let line = 1;
-      let cursorPos = 0;
+    if (charPos !== null) {
+      charPos = charPos[2];
+      if (!isNaN(charPos)) {
+        let line = 1;
+        let cursorPos = 0;
 
-      while (cursorPos < charPos && code.indexOf('\n', cursorPos) < charPos && code.indexOf('\n', cursorPos) > -1) {
-        const newlinePos = code.indexOf('\n', cursorPos);
-        line = line + 1;
-        cursorPos = newlinePos + 1;
+        while (cursorPos < charPos && code.indexOf('\n', cursorPos) < charPos && code.indexOf('\n', cursorPos) > -1) {
+          const newlinePos = code.indexOf('\n', cursorPos);
+          line = line + 1;
+          cursorPos = newlinePos + 1;
+        }
+
+        errorMessage = `${errorMessage} and line ${line}`;
       }
-
-      errorMessage = `${errorMessage} and line ${line}`;
+      console.warn(e);
     }
-    console.warn(e);
 
     extend = {
       ...extend,
