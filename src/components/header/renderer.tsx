@@ -193,6 +193,7 @@ class Header extends React.Component<Props, State> {
     });
     const responseGistCommits = await gistCommits.json();
     if (revision.length === 0) {
+      // the url is invalid so we don't want to show errors for the revisiton and filename
       this.setState({
         invalidFilename: false,
         invalidRevision: false,
