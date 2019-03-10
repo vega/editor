@@ -544,12 +544,12 @@
   background-color: #ddd;
 }
 
-.warning {
+.url-warning {
   padding-left: 10px;
 }
 
-.warning,
-.warning a {
+.url-warning,
+.url-warning a {
   color: #f0ad4e;
 }
 
