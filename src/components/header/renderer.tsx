@@ -52,6 +52,8 @@ interface State {
     type: Mode;
     url: string;
   };
+  invalidFilename: boolean;
+  invalidRevision: boolean;
   invalidUrl: boolean;
   showVega: boolean;
   helpModalOpen: boolean;
@@ -80,6 +82,8 @@ class Header extends React.Component<Props, State> {
         type: props.mode,
         url: '',
       },
+      invalidFilename: false,
+      invalidRevision: false,
       helpModalOpen: false,
       invalidUrl: false,
       showVega: props.mode === Mode.Vega,
@@ -189,12 +193,22 @@ class Header extends React.Component<Props, State> {
     });
     const responseGistCommits = await gistCommits.json();
     if (revision.length === 0) {
+      // the url is invalid so we don't want to show errors for the revisiton and filename
+      this.setState({
+        invalidFilename: false,
+        invalidRevision: false,
+      });
       revision = responseGistCommits[0].version;
+    } else {
+      const revGistCommits = await fetch(`https://api.github.com/gists/${gistId}/${revision}`);
+      this.setState({
+        invalidFilename: !this.state.invalidUrl,
+        invalidRevision: !(revGistCommits.ok || this.state.invalidUrl),
+      });
     }
 
+    const gistData = await fetch(`https://api.github.com/gists/${gistId}`).then(r => r.json());
     if (filename.length === 0) {
-      const gistData = await fetch(`https://api.github.com/gists/${gistId}`).then(r => r.json());
-
       filename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
 
       if (filename === undefined) {
@@ -203,9 +217,22 @@ class Header extends React.Component<Props, State> {
         });
         throw Error();
       }
+      this.setState({
+        invalidFilename: false,
+      });
+    } else {
+      const gistFilename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
+      if (this.state.gist.filename !== gistFilename && !this.state.invalidUrl) {
+        this.setState({
+          invalidFilename: true,
+        });
+      } else {
+        this.setState({
+          invalidFilename: false,
+        });
+      }
     }
-
-    if (!this.state.invalidUrl) {
+    if (!(this.state.invalidUrl || this.state.invalidFilename || this.state.invalidRevision)) {
       this.props.history.push(`/gist/${type}/${username}/${gistId}/${revision}/${filename}`);
       this.setState({
         gist: {
@@ -215,6 +242,8 @@ class Header extends React.Component<Props, State> {
           url: '',
         },
 
+        invalidFilename: false,
+        invalidRevision: false,
         invalidUrl: false,
       });
 
@@ -551,6 +580,7 @@ class Header extends React.Component<Props, State> {
                 onChange={this.updateGistUrl.bind(this)}
               />
             </label>
+            <div className="error-message">{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
           </div>
           <div className="gist-optional">
             <div className="gist-input-container gist-optional-input-container">
@@ -564,6 +594,9 @@ class Header extends React.Component<Props, State> {
                   onChange={this.updateGistRevision.bind(this)}
                 />
               </label>
+              <div className="error-message">
+                {this.state.invalidRevision && <span>Please enter a valid revision.</span>}
+              </div>
             </div>
             <div className="gist-input-container gist-optional-input-container">
               <label>
@@ -576,9 +609,11 @@ class Header extends React.Component<Props, State> {
                   onChange={this.updateGistFile.bind(this)}
                 />
               </label>
+              <div className="error-message">
+                {this.state.invalidFilename && <span>Please enter a valid filename.</span>}
+              </div>
             </div>
           </div>
-          <div className="error-message">{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
           <button type="button" className="gist-button" onClick={() => this.onSelectGist(closePortal)}>
             Load
           </button>
