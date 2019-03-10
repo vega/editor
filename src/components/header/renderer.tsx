@@ -19,7 +19,7 @@ import {
   Trash2,
   X,
 } from 'react-feather';
-import { PortalWithState } from 'react-portal';
+import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { Mode, View } from '../../constants';
@@ -54,6 +54,7 @@ interface State {
   };
   invalidUrl: boolean;
   showVega: boolean;
+  helpModalOpen: boolean;
 }
 
 const formatExampleName = (name: string) => {
@@ -79,6 +80,7 @@ class Header extends React.Component<Props, State> {
         type: props.mode,
         url: '',
       },
+      helpModalOpen: false,
       invalidUrl: false,
       showVega: props.mode === Mode.Vega,
     };
@@ -139,6 +141,31 @@ class Header extends React.Component<Props, State> {
 
   public handleCheck(event) {
     this.setState({ fullscreen: event.target.checked });
+  }
+
+  public handleHelpModalOpen(event) {
+    if (
+      (event.keyCode === 222 && event.metaKey && !event.shiftKey) || // Handle key press in Mac
+      (event.keyCode === 191 && event.ctrlKey && event.shiftKey) // Handle Key press in PC
+    ) {
+      this.setState({
+        helpModalOpen: true,
+      });
+    }
+  }
+
+  public handleHelpModalCloseClick() {
+    this.setState({
+      helpModalOpen: false,
+    });
+  }
+
+  public handleHelpModalCloseEsc(event) {
+    if (event.keyCode === 27) {
+      this.setState({
+        helpModalOpen: false,
+      });
+    }
   }
 
   public async onSelectGist(closePortal) {
@@ -283,6 +310,11 @@ class Header extends React.Component<Props, State> {
   public previewURL() {
     const win = window.open(this.state.generatedURL, '_blank');
     win.focus();
+  }
+
+  public componentDidMount() {
+    document.addEventListener('keydown', this.handleHelpModalOpen.bind(this));
+    document.addEventListener('keyup', this.handleHelpModalCloseEsc.bind(this));
   }
 
   public componentDidUpdate(prevProps, prevState) {
@@ -687,6 +719,21 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
+    const helpModal = (
+      <div>
+        <h2>Help</h2>
+        <h4>Keyboard Shortcuts</h4>
+        <ul className="keyboard-shortcuts">
+          <li>
+            <kbd>Ctrl</kbd> + <kbd>b</kbd> / <kbd>&#8984;</kbd> + <kbd>b</kbd>: Execute the code in manual mode
+          </li>
+          <li>
+            <kbd>Ctrl</kbd> + <kbd>?</kbd> / <kbd>&#8984;</kbd> + <kbd>'</kbd>: Open the help window
+          </li>
+        </ul>
+      </div>
+    );
+
     return (
       <div className="header">
         <section className="left-section">
@@ -796,6 +843,22 @@ class Header extends React.Component<Props, State> {
               ),
             ]}
           </PortalWithState>
+
+          {this.state.helpModalOpen && (
+            <Portal>
+              <div className="modal-background" onClick={this.handleHelpModalCloseClick.bind(this)}>
+                <div className="modal modal-top" onClick={e => e.stopPropagation()}>
+                  <div className="modal-header">
+                    <button className="close-button" onClick={this.handleHelpModalCloseClick.bind(this)}>
+                      <X />
+                    </button>
+                  </div>
+                  <div className="modal-body">{helpModal}</div>
+                  <div className="modal-footer" />
+                </div>
+              </div>
+            </Portal>
+          )}
 
           <span>{docsLink}</span>
 
