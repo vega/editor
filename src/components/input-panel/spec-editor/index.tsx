@@ -21,6 +21,9 @@ const mapDispatchToProps = dispatch => {
     formatSpec: val => {
       dispatch(EditorActions.formatSpec(val));
     },
+    logError: err => {
+      dispatch(EditorActions.logError(err));
+    },
     parseSpec: val => {
       dispatch(EditorActions.parseSpec(val));
     },
