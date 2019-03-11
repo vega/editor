@@ -109,7 +109,7 @@ class Editor extends React.Component<Props, {}> {
     if (spec) {
       this.updateSpec(spec);
     } else {
-      throw new Error(`failed to decompress URL. Expected a specification, but received ${spec}`);
+      throw new Error(`Failed to decompress URL. Expected a specification, but received ${spec}`);
     }
 
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
