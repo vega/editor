@@ -773,13 +773,21 @@ class Header extends React.Component<Props, State> {
                       <div className="button-groups">
                         <button
                           className={this.state.showVega ? 'selected' : ''}
-                          onClick={() => this.setState({ showVega: true })}
+                          onClick={() => {
+                            this.setState({ showVega: true });
+                            const node = ReactDOM.findDOMNode(this.examplePortal.current);
+                            node.scrollTop = 0;
+                          }}
                         >
                           Vega
                         </button>
                         <button
                           className={this.state.showVega ? '' : 'selected'}
-                          onClick={() => this.setState({ showVega: false })}
+                          onClick={() => {
+                            this.setState({ showVega: false });
+                            const node = ReactDOM.findDOMNode(this.examplePortal.current);
+                            node.scrollTop = 0;
+                          }}
                         >
                           Vega-Lite
                         </button>
