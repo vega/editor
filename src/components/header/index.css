@@ -558,10 +558,6 @@
   margin: 0;
 }
 
-.keyboard-shortcuts li {
-  margin-bottom: 1em;
-}
-
 kbd {
   background-color: #fafbfc;
   border: 1px #c6cbd1 solid;
