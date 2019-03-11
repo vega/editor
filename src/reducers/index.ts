@@ -7,6 +7,7 @@ import {
   LOG_ERROR,
   PARSE_SPEC,
   SET_BASEURL,
+  SET_COMPILED_VEGA_PANE_SIZE,
   SET_DEBUG_PANE_SIZE,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
@@ -20,9 +21,9 @@ import {
   SetGistVegaSpec,
   SetVegaExample,
   SetVegaLiteExample,
-  SHOW_COMPILED_VEGA_SPEC,
   SHOW_LOGS,
   TOGGLE_AUTO_PARSE,
+  TOGGLE_COMPILED_VEGA_SPEC,
   TOGGLE_DEBUG_PANE,
   UPDATE_EDITOR_STRING,
   UPDATE_VEGA_LITE_SPEC,
@@ -173,7 +174,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         manualParse: !state.manualParse,
         parse: state.manualParse,
       };
-    case SHOW_COMPILED_VEGA_SPEC:
+    case TOGGLE_COMPILED_VEGA_SPEC:
       return {
         ...state,
         compiledVegaSpec: !state.compiledVegaSpec,
@@ -227,6 +228,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         logs: action.logs,
+      };
+    case SET_COMPILED_VEGA_PANE_SIZE:
+      return {
+        ...state,
+        compiledVegaPaneSize: action.compiledVegaPaneSize,
       };
     default:
       return state;

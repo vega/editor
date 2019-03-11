@@ -1,7 +1,6 @@
 import './index.css';
 
 import * as React from 'react';
-import { ChevronDown, ChevronUp } from 'react-feather';
 import SplitPane from 'react-split-pane';
 
 import { LAYOUT, View } from '../../constants';

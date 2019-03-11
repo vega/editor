@@ -3,7 +3,7 @@ import './index.css';
 import * as React from 'react';
 
 interface Props {
-  error?: string;
+  error?: Error;
 
   logError?: (err: any) => void;
   toggleDebugPane?: () => void;

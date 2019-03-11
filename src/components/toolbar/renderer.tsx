@@ -12,7 +12,7 @@ const getVersion = (mode: Mode) => {
 interface Props {
   mode;
   warningsLogger;
-  error?: string;
+  error?: Error;
   renderer?: string;
 
   setRenderer: (val: any) => void;

@@ -5,6 +5,7 @@ export const FORMAT_SPEC: 'FORMAT_SPEC' = 'FORMAT_SPEC';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
 export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
 export const SET_BASEURL: 'SET_BASEURL' = 'SET_BASEURL';
+export const SET_COMPILED_VEGA_PANE_SIZE: 'SET_COMPILED_VEGA_PANE_SIZE' = 'SET_COMPILED_VEGA_PANE_SIZE';
 export const SET_DEBUG_PANE_SIZE: 'SET_DEBUG_PANE_SIZE' = 'SET_DEBUG_PANE_SIZE';
 export const SET_GIST_VEGA_LITE_SPEC: 'SET_GIST_VEGA_LITE_SPEC' = 'SET_GIST_VEGA_LITE_SPEC';
 export const SET_GIST_VEGA_SPEC: 'SET_GIST_VEGA_SPEC' = 'SET_GIST_VEGA_SPEC';
@@ -14,9 +15,9 @@ export const SET_RENDERER: 'SET_RENDERER' = 'SET_RENDERER';
 export const SET_VEGA_EXAMPLE: 'SET_VEGA_EXAMPLE' = 'SET_VEGA_EXAMPLE';
 export const SET_VEGA_LITE_EXAMPLE: 'SET_VEGA_LITE_EXAMPLE' = 'SET_VEGA_LITE_EXAMPLE';
 export const SET_VIEW: 'SET_VIEW' = 'SET_VIEW';
-export const SHOW_COMPILED_VEGA_SPEC: 'SHOW_COMPILED_VEGA_SPEC' = 'SHOW_COMPILED_VEGA_SPEC';
 export const SHOW_LOGS: 'SHOW_LOGS' = 'SHOW_LOGS';
 export const TOGGLE_AUTO_PARSE: 'TOGGLE_AUTO_PARSE' = 'TOGGLE_AUTO_PARSE';
+export const TOGGLE_COMPILED_VEGA_SPEC: 'TOGGLE_COMPILED_VEGA_SPEC' = 'TOGGLE_COMPILED_VEGA_SPEC';
 export const TOGGLE_DEBUG_PANE: 'TOGGLE_DEBUG_PANE' = 'TOGGLE_DEBUG_PANE';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
@@ -33,7 +34,7 @@ export type Action =
   | SetGistVegaSpec
   | SetGistVegaLiteSpec
   | ToggleAutoParse
-  | ShowCompiledVegaSpec
+  | ToggleCompiledVegaSpec
   | ToggleDebugPane
   | LogError
   | UpdateEditorString
@@ -43,7 +44,8 @@ export type Action =
   | FormatSpec
   | SetView
   | SetDebugPaneSize
-  | ShowLogs;
+  | ShowLogs
+  | SetCompiledVegaPaneSize;
 
 export function setMode(mode: Mode) {
   return {
@@ -128,12 +130,12 @@ export function toggleAutoParse() {
 }
 export type ToggleAutoParse = ReturnType<typeof toggleAutoParse>;
 
-export function showCompiledVegaSpec() {
+export function toggleCompiledVegaSpec() {
   return {
-    type: SHOW_COMPILED_VEGA_SPEC,
+    type: TOGGLE_COMPILED_VEGA_SPEC,
   };
 }
-export type ShowCompiledVegaSpec = ReturnType<typeof showCompiledVegaSpec>;
+export type ToggleCompiledVegaSpec = ReturnType<typeof toggleCompiledVegaSpec>;
 
 export function toggleDebugPane() {
   return {
@@ -213,3 +215,12 @@ export function showLogs(value: boolean) {
   };
 }
 export type ShowLogs = ReturnType<typeof showLogs>;
+
+export function setCompiledVegaPaneSize(size: number) {
+  return {
+    compiledVegaPaneSize: size,
+    type: SET_COMPILED_VEGA_PANE_SIZE,
+  };
+}
+
+export type SetCompiledVegaPaneSize = ReturnType<typeof setCompiledVegaPaneSize>;
