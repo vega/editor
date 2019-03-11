@@ -113,7 +113,7 @@ class Editor extends React.Component<Props, State> {
   public componentDidMount() {
     this.initView(this.props);
     this.renderVega(this.props);
-    // Add Event Listner to f11 key
+    // Add Event Listener to cntrl+f11 key
     document.addEventListener('keydown', e => {
       // Keycode of f11 is 122
       if (e.keyCode === 122 && e.ctrlKey) {
