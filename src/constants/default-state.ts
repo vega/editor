@@ -4,6 +4,7 @@ import { LAYOUT, Mode, Renderer, View } from './consts';
 export interface State {
   baseURL: string;
   compiledVegaSpec: boolean;
+  compiledVegaPaneSize: number;
   debugPane: boolean;
   debugPaneSize: number;
   editorString: string;
@@ -25,6 +26,7 @@ export interface State {
 
 export const DEFAULT_STATE: State = {
   baseURL: null,
+  compiledVegaPaneSize: LAYOUT.MinPaneSize,
   compiledVegaSpec: false,
   debugPane: false,
   debugPaneSize: LAYOUT.MinPaneSize,
