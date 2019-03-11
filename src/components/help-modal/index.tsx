@@ -46,7 +46,7 @@ const HelpModal = () => {
         Vega Docs
       </a>
       <h2>Tips</h2>
-      1. You can access and debug vega view using your browsers developer console
+      1. You can access and debug VEGA view <code>(window.VEGA_DEBUG.view)</code> using your browser's developer console
     </div>
   );
 };
