@@ -29,6 +29,7 @@
   font-size: 12px;
   color: #666;
   user-select: none;
+  cursor: pointer;
 }
 
 .debug-pane-header svg {
