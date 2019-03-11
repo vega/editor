@@ -9,6 +9,7 @@ import {
   FileText,
   GitHub,
   Grid,
+  HelpCircle,
   Image,
   Link,
   Map,
@@ -415,6 +416,11 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
+    const HelpButton = (
+      <div className="header-button" onClick={() => this.setState(current => ({ ...current, helpModalOpen: true }))}>
+        <HelpCircle className="header-icon" />
+      </div>
+    );
     const docsLink = (
       <a
         className="docs-link"
@@ -808,6 +814,7 @@ class Header extends React.Component<Props, State> {
               ),
             ]}
           </PortalWithState>
+          {HelpButton}
         </section>
         <section className="right-section">
           <PortalWithState closeOnEsc defaultOpen={this.props.showExample}>

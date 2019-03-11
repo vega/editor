@@ -1,4 +1,5 @@
 import React from 'react';
+import { AlertCircle } from 'react-feather';
 import './index.css';
 
 const HelpModal = () => {
@@ -22,6 +23,7 @@ const HelpModal = () => {
         </li>
       </ul>
       <a href="https://github.com/vega/editor/issues/new" target="_blank" className="report-button">
+        <AlertCircle className="header-icon" />
         Report a Bug{' '}
       </a>
       <br />
