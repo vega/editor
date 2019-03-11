@@ -723,7 +723,7 @@ class Header extends React.Component<Props, State> {
       <div>
         <h2>Help</h2>
         <h4>Keyboard Shortcuts</h4>
-        <ul>
+        <ul className="keyboard-shortcuts">
           <li>
             <kbd>Ctrl</kbd> + <kbd>b</kbd> / <kbd>&#8984;</kbd> + <kbd>b</kbd>: Execute the code in manual mode
           </li>
