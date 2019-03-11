@@ -48,3 +48,21 @@ kbd {
   padding: 2px 5px;
   vertical-align: middle;
 }
+
+.link-to-docs {
+  display: inline-block;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+.link-to-docs:hover {
+  background-color: #eee;
+}
+
+.doc-image {
+  height: 20px;
+  margin: 0px 6px 0px 2px;
+}
