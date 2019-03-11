@@ -52,11 +52,11 @@ interface State {
     type: Mode;
     url: string;
   };
+  helpModalOpen: boolean;
   invalidFilename: boolean;
   invalidRevision: boolean;
   invalidUrl: boolean;
   showVega: boolean;
-  helpModalOpen: boolean;
 }
 
 const formatExampleName = (name: string) => {
@@ -82,9 +82,9 @@ class Header extends React.Component<Props, State> {
         type: props.mode,
         url: '',
       },
+      helpModalOpen: false,
       invalidFilename: false,
       invalidRevision: false,
-      helpModalOpen: false,
       invalidUrl: false,
       showVega: props.mode === Mode.Vega,
     };
