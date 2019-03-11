@@ -108,6 +108,8 @@ class Editor extends React.Component<Props, {}> {
     const spec = LZString.decompressFromEncodedURIComponent(this.props.match.params.compressed);
     if (spec) {
       this.updateSpec(spec);
+    } else {
+      throw new Error(`failed to decompress URL. Expected a specification, but received ${spec}`);
     }
 
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
