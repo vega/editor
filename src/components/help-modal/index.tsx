@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertCircle } from 'react-feather';
+import { AlertCircle, Slack, Twitter } from 'react-feather';
 import './index.css';
 
 const HelpModal = () => {
@@ -31,11 +31,11 @@ const HelpModal = () => {
       </a>
       <h2>Have a feedback? Let us know</h2>
       <a href="https://bit.ly/join-vega-slack" target="_blank" className="link-to-docs">
-        <img src="/images/utils/slack-logo-icon.png" className="doc-image" />
+        <Slack className="doc-image" />
         Join our slack channel
       </a>
       <a href="https://twitter.com/vega_vis" target="_blank" className="link-to-docs">
-        <img src="/images/utils/Twitter_Bird.svg.png" className="doc-image" />
+        <Twitter className="doc-image" />
         Follow us on twitter
       </a>
       <h2>References</h2>
