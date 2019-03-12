@@ -46,7 +46,9 @@ const HelpModal = () => {
         Vega Docs
       </a>
       <h2>Tips</h2>
-      1. You can access Vega, Vega-Lite, and the <a href="https://vega.github.io/vega/docs/api/view/">Vega view</a> at <code>(VEGA_DEBUG)</code> using your browser's developer console. 
+      1. You can access Vega, Vega-Lite, and the <a href="https://vega.github.io/vega/docs/api/view/">
+        Vega view
+      </a> at <code>(VEGA_DEBUG)</code> using your browser's developer console.
     </div>
   );
 };
