@@ -1,5 +1,3 @@
-import './index.css';
-
 import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
@@ -11,6 +9,7 @@ import {
   FileText,
   GitHub,
   Grid,
+  HelpCircle,
   Image,
   Link,
   Map,
@@ -25,6 +24,8 @@ import Select from 'react-select';
 import { Mode, View } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
+import HelpModal from '../help-modal/index';
+import './index.css';
 
 interface Props {
   editorString?: string;
@@ -52,11 +53,11 @@ interface State {
     type: Mode;
     url: string;
   };
+  helpModalOpen: boolean;
   invalidFilename: boolean;
   invalidRevision: boolean;
   invalidUrl: boolean;
   showVega: boolean;
-  helpModalOpen: boolean;
 }
 
 const formatExampleName = (name: string) => {
@@ -414,6 +415,11 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
+    const HelpButton = (
+      <div className="header-button" onClick={() => this.setState(current => ({ ...current, helpModalOpen: true }))}>
+        <HelpCircle className="header-icon" />
+      </div>
+    );
     const docsLink = (
       <a
         className="docs-link"
@@ -753,20 +759,7 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
-    const helpModal = (
-      <div>
-        <h2>Help</h2>
-        <h4>Keyboard Shortcuts</h4>
-        <ul className="keyboard-shortcuts">
-          <li>
-            <kbd>Ctrl</kbd> + <kbd>b</kbd> / <kbd>&#8984;</kbd> + <kbd>b</kbd>: Execute the code in manual mode
-          </li>
-          <li>
-            <kbd>Ctrl</kbd> + <kbd>?</kbd> / <kbd>&#8984;</kbd> + <kbd>'</kbd>: Open the help window
-          </li>
-        </ul>
-      </div>
-    );
+    const helpModal = <HelpModal />;
 
     return (
       <div className="header">
@@ -820,6 +813,7 @@ class Header extends React.Component<Props, State> {
               ),
             ]}
           </PortalWithState>
+          {HelpButton}
         </section>
         <section className="right-section">
           <PortalWithState closeOnEsc defaultOpen={this.props.showExample}>
