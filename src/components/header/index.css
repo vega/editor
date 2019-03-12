@@ -559,12 +559,19 @@
 }
 
 .export-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
 }
 
 .export-buttons button {
   margin: 8px;
+  flex-basis: 20%;
+  flex: auto;
+  width: 250px;
+  position: relative;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 /* Media queries */
