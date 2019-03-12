@@ -38,6 +38,10 @@
   background: rgba(0, 0, 0, 0.08);
 }
 
+.dark-background {
+  background: rgba(0, 0, 0, 0.08);
+}
+
 .header section > span {
   display: flex;
   align-items: center;

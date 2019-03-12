@@ -352,6 +352,17 @@ class Header extends React.Component<Props, State> {
   public componentDidMount() {
     document.addEventListener('keydown', this.handleHelpModalOpen.bind(this));
     document.addEventListener('keyup', this.handleHelpModalCloseEsc.bind(this));
+    document.addEventListener('keydown', e => {
+      // keycode for F key is 70
+      if (e.altKey && e.shiftKey && e.keyCode === 70) {
+        this.props.formatSpec(true);
+        const formatButton = document.querySelector('.format-button');
+        formatButton.classList.add('dark-background');
+        setTimeout(() => {
+          formatButton.classList.remove('dark-background');
+        }, 200);
+      }
+    });
   }
 
   public componentDidUpdate(prevProps, prevState) {
@@ -445,7 +456,7 @@ class Header extends React.Component<Props, State> {
     );
 
     const formatButton = (
-      <div className="header-button" onClick={() => this.props.formatSpec(true)}>
+      <div className="header-button format-button" onClick={() => this.props.formatSpec(true)}>
         <Code className="header-icon" />
         {'Format'}
       </div>
