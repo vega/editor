@@ -558,6 +558,15 @@
   margin: 0;
 }
 
+.export-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.export-buttons button {
+  margin: 8px;
+}
+
 /* Media queries */
 @media only screen and (min-width: 1200px) {
   .header-button svg,
