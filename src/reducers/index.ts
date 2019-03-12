@@ -14,6 +14,7 @@ import {
   SET_MODE,
   SET_MODE_ONLY,
   SET_RENDERER,
+  SET_SCROLL_POSITION,
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
   SET_VIEW,
@@ -136,6 +137,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         mode: action.mode,
+      };
+    case SET_SCROLL_POSITION:
+      return {
+        ...state,
+        lastPosition: action.position,
       };
     case PARSE_SPEC:
       return {

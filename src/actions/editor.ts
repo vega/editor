@@ -11,6 +11,7 @@ export const SET_GIST_VEGA_LITE_SPEC: 'SET_GIST_VEGA_LITE_SPEC' = 'SET_GIST_VEGA
 export const SET_GIST_VEGA_SPEC: 'SET_GIST_VEGA_SPEC' = 'SET_GIST_VEGA_SPEC';
 export const SET_MODE: 'SET_MODE' = 'SET_MODE';
 export const SET_MODE_ONLY: 'SET_MODE_ONLY' = 'SET_MODE_ONLY';
+export const SET_SCROLL_POSITION: 'SET_SCROLL_POSITION' = 'SET_SCROLL_POSITION';
 export const SET_RENDERER: 'SET_RENDERER' = 'SET_RENDERER';
 export const SET_VEGA_EXAMPLE: 'SET_VEGA_EXAMPLE' = 'SET_VEGA_EXAMPLE';
 export const SET_VEGA_LITE_EXAMPLE: 'SET_VEGA_LITE_EXAMPLE' = 'SET_VEGA_LITE_EXAMPLE';
@@ -26,6 +27,7 @@ export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
 export type Action =
   | SetMode
   | SetModeOnly
+  | SetScrollPosition
   | ParseSpec
   | SetVegaExample
   | SetVegaLiteExample
@@ -62,6 +64,14 @@ export function setModeOnly(mode: Mode) {
   };
 }
 export type SetModeOnly = ReturnType<typeof setModeOnly>;
+
+export function setScrollPosition(position: number) {
+  return {
+    position,
+    type: SET_SCROLL_POSITION,
+  };
+}
+export type SetScrollPosition = ReturnType<typeof setScrollPosition>;
 
 export function parseSpec(value: boolean) {
   return {
