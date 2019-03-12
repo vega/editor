@@ -394,11 +394,10 @@
 
 .export-buttons {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .export-button {
-  flex: 1;
   min-width: 280px;
   display: inline-flex;
   flex-direction: column;
@@ -412,6 +411,8 @@
   user-select: none;
   padding: 10px 20px;
   margin-right: 40px;
+  width: 30%;
+  margin: 1%;
 }
 
 .export-button:hover {
@@ -556,22 +557,6 @@
 .export-content > p {
   padding: 30px 0 0 0;
   margin: 0;
-}
-
-.export-buttons {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-}
-
-.export-buttons button {
-  margin: 8px;
-  flex-basis: 20%;
-  flex: auto;
-  width: 250px;
-  position: relative;
-  padding: 10px;
-  box-sizing: border-box;
 }
 
 /* Media queries */
