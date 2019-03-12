@@ -35,9 +35,8 @@ export default class VizPane extends React.Component<Props> {
     }
   }
   public componentDidUpdate() {
-    const debugPane = this.refs.debugPane as any;
-    if (debugPane.pane2.style.height > LAYOUT.MinPaneSize && !this.props.debugPane) {
-      this.props.toggleDebugPane();
+    if (this.props.debugPaneSize === 25) {
+      this.props.setDebugPaneSize(LAYOUT.MinPaneSize + 25);
     }
     if (this.props.error) {
       this.props.showLogs(true);

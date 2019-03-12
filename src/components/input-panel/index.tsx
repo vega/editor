@@ -34,10 +34,9 @@ class InputPanel extends React.Component<Props> {
     }
   }
   public componentDidUpdate() {
-    const compiledVegaPane = this.refs.compiledVegaPane as any;
     if (this.props.mode === Mode.VegaLite) {
-      if (compiledVegaPane.pane2.style.height > LAYOUT.MinPaneSize && !this.props.compiledVegaSpec) {
-        this.props.toggleCompiledVegaSpec();
+      if (this.props.compiledVegaPaneSize === 25) {
+        this.props.setCompiledVegaPaneSize(LAYOUT.MinPaneSize + 25);
       }
     }
   }
