@@ -155,7 +155,9 @@ class Header extends React.Component<Props, State> {
   }
 
   public handleCheck(event) {
-    this.setState({ fullscreen: event.target.checked });
+    this.setState({ fullscreen: event.target.checked }, () => {
+      this.exportURL();
+    });
   }
 
   public handleHelpModalOpen(event) {
@@ -369,9 +371,6 @@ class Header extends React.Component<Props, State> {
       setTimeout(() => {
         this.setState({ copied: false });
       }, 2500);
-    }
-    if (prevState.fullscreen !== this.state.fullscreen) {
-      this.exportURL();
     }
   }
 

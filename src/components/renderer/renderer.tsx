@@ -87,6 +87,11 @@ class Editor extends React.Component<Props, State> {
       }
     };
 
+    // finalize previous view so that memory can be freed
+    if (Editor.view) {
+      Editor.view.finalize();
+    }
+
     Editor.view = new vega.View(runtime, {
       loader,
       logLevel: vega.Warn,
