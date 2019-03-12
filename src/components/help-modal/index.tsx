@@ -6,8 +6,8 @@ const HelpModal = () => {
   return (
     <div className="parent">
       <div className="help-header">
-        <h2>Help</h2>
-        <h4>Keyboard Shortcuts</h4>
+        <h1 className="modal-header">Help</h1>
+        <h2 className="modal-title">Keyboard Shortcuts</h2>
         <ul className="keyboard-shortcuts">
           <li>
             <kbd>Ctrl</kbd> + <kbd>b</kbd> / <kbd>&#8984;</kbd> + <kbd>b</kbd>: Execute the code in manual mode
@@ -26,29 +26,33 @@ const HelpModal = () => {
             <kbd>Ctrl</kbd> + <kbd> f11 </kbd> / <kbd>&#8984;</kbd> + <kbd>f11</kbd>: Toggle Fullscreen Mode
           </li>
         </ul>
-        <a href="https://github.com/vega/editor/issues/new" target="_blank" className="report-button">
+        <a href="https://github.com/vega/editor/issues/new" target="_blank" className="report-button help-modal-link">
           <AlertCircle className="header-icon" />
           Report a Bug{' '}
         </a>
-        <h2>Have a feedback? Let us know</h2>
-        <a href="https://bit.ly/join-vega-slack" target="_blank" className="link-to-docs">
+        <h2 className="modal-title">Have a feedback? Let us know</h2>
+        <a href="https://bit.ly/join-vega-slack" target="_blank" className="link-to-docs help-modal-links">
           <Slack className="doc-image" />
           Join our slack channel
         </a>
-        <a href="https://twitter.com/vega_vis" target="_blank" className="link-to-docs">
+        <a href="https://twitter.com/vega_vis" target="_blank" className="link-to-docs help-modal-links">
           <Twitter className="doc-image" />
           Follow us on twitter
         </a>
-        <h2>References</h2>
-        <a href="https://vega.github.io/vega-lite/" target="_blank" className="link-to-docs">
+        <h2 className="modal-title">References</h2>
+        <a href="https://vega.github.io/vega-lite/" target="_blank" className="link-to-docs help-modal-links">
           Vega-lite Docs
         </a>
-        <a href="https://vega.github.io/vega/" target="_blank" className="link-to-docs">
+        <a href="https://vega.github.io/vega/" target="_blank" className="link-to-docs help-modal-links">
           Vega Docs
         </a>
-        <h2>Tips</h2>
-        <div className="tips">
-          1. You can access Vega, Vega-Lite, and the <a href="https://vega.github.io/vega/docs/api/view/"> Vega view</a>{' '}
+        <h2 className="modal-title">Tips</h2>
+        <div>
+          1. You can access Vega, Vega-Lite, and the{' '}
+          <a className="tips" href="https://vega.github.io/vega/docs/api/view/">
+            {' '}
+            Vega view
+          </a>{' '}
           at <code>(VEGA_DEBUG)</code> using your browser's developer console.
         </div>
       </div>
