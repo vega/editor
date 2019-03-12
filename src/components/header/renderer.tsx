@@ -56,6 +56,7 @@ interface State {
     type: Mode;
     url: string;
   };
+  gistLoadClicked: boolean;
   helpModalOpen: boolean;
   invalidFilename: boolean;
   invalidRevision: boolean;
@@ -87,6 +88,7 @@ class Header extends React.Component<Props, State> {
         type: props.mode,
         url: '',
       },
+      gistLoadClicked: false,
       helpModalOpen: false,
       invalidFilename: false,
       invalidRevision: false,
@@ -111,14 +113,23 @@ class Header extends React.Component<Props, State> {
 
   public updateGistUrl(event) {
     this.updateGist({ url: event.currentTarget.value });
+    this.setState({
+      invalidUrl: false,
+    });
   }
 
   public updateGistRevision(event) {
     this.updateGist({ revision: event.currentTarget.value });
+    this.setState({
+      invalidRevision: false,
+    });
   }
 
   public updateGistFile(event) {
     this.updateGist({ filename: event.currentTarget.value });
+    this.setState({
+      invalidFilename: false,
+    });
   }
 
   public onSelectVega(name) {
@@ -192,11 +203,15 @@ class Header extends React.Component<Props, State> {
 
       return;
     }
+    this.setState({
+      gistLoadClicked: true,
+    });
 
     const gistUrl = new URL(url, 'https://gist.github.com');
     const [username, gistId] = gistUrl.pathname.split('/').slice(1);
     const gistCommits = await fetch(`https://api.github.com/gists/${gistId}/commits`);
     this.setState({
+      gistLoadClicked: gistCommits.ok,
       invalidUrl: !gistCommits.ok,
     });
     const responseGistCommits = await gistCommits.json();
@@ -210,6 +225,7 @@ class Header extends React.Component<Props, State> {
     } else {
       const revGistCommits = await fetch(`https://api.github.com/gists/${gistId}/${revision}`);
       this.setState({
+        gistLoadClicked: revGistCommits.ok || this.state.invalidUrl,
         invalidFilename: !this.state.invalidUrl,
         invalidRevision: !(revGistCommits.ok || this.state.invalidUrl),
       });
@@ -221,6 +237,7 @@ class Header extends React.Component<Props, State> {
 
       if (filename === undefined) {
         this.setState({
+          gistLoadClicked: false,
           invalidUrl: true,
         });
         throw Error();
@@ -232,6 +249,7 @@ class Header extends React.Component<Props, State> {
       const gistFilename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
       if (this.state.gist.filename !== gistFilename && !this.state.invalidUrl) {
         this.setState({
+          gistLoadClicked: false,
           invalidFilename: true,
         });
       } else {
@@ -249,7 +267,7 @@ class Header extends React.Component<Props, State> {
           type: Mode.Vega,
           url: '',
         },
-
+        gistLoadClicked: true,
         invalidFilename: false,
         invalidRevision: false,
         invalidUrl: false,
@@ -573,7 +591,7 @@ class Header extends React.Component<Props, State> {
           <div className="gist-input-container">
             <label>
               Gist URL
-              <div>
+              <div style={{ marginTop: '2px' }}>
                 <small>
                   Example:{' '}
                   <span className="gist-url">
@@ -625,7 +643,7 @@ class Header extends React.Component<Props, State> {
             </div>
           </div>
           <button type="button" className="gist-button" onClick={() => this.onSelectGist(closePortal)}>
-            Load
+            {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
           </button>
         </form>
       </div>
@@ -881,7 +899,14 @@ class Header extends React.Component<Props, State> {
             ]}
           </PortalWithState>
 
-          <PortalWithState closeOnEsc>
+          <PortalWithState
+            closeOnEsc
+            onClose={() => {
+              this.setState({
+                gistLoadClicked: false,
+              });
+            }}
+          >
             {({ openPortal, closePortal, isOpen, portal }) => [
               <span key="0" onClick={openPortal}>
                 {gistButton}

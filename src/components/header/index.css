@@ -249,8 +249,6 @@
 }
 
 .gist-optional-input-container {
-  float: left;
-  width: 50%;
   box-sizing: border-box;
 }
 
@@ -268,14 +266,16 @@
   resize: none;
   font-size: 14px;
   padding: 5px;
+  margin-top: 3px;
 }
 
 .error-message {
   font-size: 12px;
-  height: 10px;
+  height: 5 px;
   color: var(--error-color);
-  margin-top: 5px;
-  margin-bottom: 30px;
+  margin-top: 3px;
+  margin-bottom: 5px;
+  float: right;
 }
 
 .mode-switcher-wrapper {
