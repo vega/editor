@@ -34,10 +34,9 @@ class InputPanel extends React.Component<Props> {
     }
   }
   public componentDidUpdate() {
-    const compiledVegaPane = this.refs.compiledVegaPane as any;
     if (this.props.mode === Mode.VegaLite) {
-      if (compiledVegaPane.pane2.style.height > LAYOUT.MinPaneSize && !this.props.compiledVegaSpec) {
-        this.props.toggleCompiledVegaSpec();
+      if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
+        this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
       }
     }
   }
@@ -74,10 +73,9 @@ class InputPanel extends React.Component<Props> {
           paneStyle={{ display: 'flex' }}
           onDragFinished={() => {
             if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-              this.props.setCompiledVegaPaneSize(LAYOUT.MinPaneSize + 35);
-              // LAYOUT.MinPanelSize + some amount of width that'll be visible
-              // so that the user knows that the data viewer has poped up
-              // The Ideal Amount is 35 , can be reduced or increased depending on the UI
+              this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
+              // Popping up the the compiled vega pane for the first time will set its
+              // height to 30% of the split pane. This can change depending on the UI.
             }
           }}
         >
