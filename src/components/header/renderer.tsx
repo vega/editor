@@ -82,9 +82,9 @@ class Header extends React.Component<Props, State> {
         type: props.mode,
         url: '',
       },
+      helpModalOpen: false,
       invalidFilename: false,
       invalidRevision: false,
-      helpModalOpen: false,
       invalidUrl: false,
       showVega: props.mode === Mode.Vega,
     };

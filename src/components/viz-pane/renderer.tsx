@@ -35,8 +35,8 @@ export default class VizPane extends React.Component<Props> {
     }
   }
   public componentDidUpdate() {
-    if (this.props.debugPaneSize === 25) {
-      this.props.setDebugPaneSize(200);
+    if (this.props.debugPaneSize === LAYOUT.MinPaneSize) {
+      this.props.setDebugPaneSize(LAYOUT.DebugPaneSize);
     }
     if (this.props.error) {
       this.props.showLogs(true);
@@ -68,9 +68,9 @@ export default class VizPane extends React.Component<Props> {
         paneStyle={{ display: 'flex' }}
         onDragFinished={() => {
           if (this.props.debugPaneSize === LAYOUT.MinPaneSize) {
-            this.props.setDebugPaneSize(200);
-            // Popping up the the debug panel for the first time will
-            // set its height to 200px. This can change depending on the UI.
+            this.props.setDebugPaneSize(LAYOUT.DebugPaneSize);
+            // Popping up the the debug panel for the first time will set its
+            // height to LAYOUT.DebugPaneSize. This can change depending on the UI.
           }
         }}
       >
