@@ -65,4 +65,10 @@ kbd {
 .doc-image {
   height: 20px;
   margin: 0px 6px 0px 2px;
+  vertical-align: sub;
+}
+
+.tips a {
+  display: inline-block;
+  margin: 0px;
 }
