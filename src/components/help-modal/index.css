@@ -76,17 +76,6 @@ kbd {
   vertical-align: sub;
 }
 
-.tips {
-  text-decoration: none;
-  color: black;
-  display: inline-block;
-  margin: 0px;
-  border: 1px solid black;
-  padding: 7px;
-  border-radius: 4px;
-  margin: 0 4px 0 4px;
-}
-
 .parent {
   overflow: hidden;
 }
