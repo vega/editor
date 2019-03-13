@@ -66,6 +66,10 @@ export default class DataViewer extends React.Component<Props, State> {
 
     const data = this.props.view.data(selected) || [];
 
+    this.props.view.addDataListener(selected, () => {
+      this.forceUpdate();
+    });
+
     const pageCount = Math.ceil(data.length / ROWS_PER_PAGE);
 
     if (pageCount > 1) {
