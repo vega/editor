@@ -46,14 +46,10 @@ const HelpModal = () => {
         <a href="https://vega.github.io/vega/" target="_blank" className="link-to-docs help-modal-links">
           Vega Docs
         </a>
-        <h2 className="modal-title">Tips</h2>
-        <div>
-          1. You can access Vega, Vega-Lite, and the{' '}
-          <a className="tips" href="https://vega.github.io/vega/docs/api/view/">
-            {' '}
-            Vega view
-          </a>{' '}
-          at <code>(VEGA_DEBUG)</code> using your browser's developer console.
+        <h2 className="modal-title">Tip</h2>
+        <div className="tips">
+          You can access Vega, Vega-Lite, and the <a href="https://vega.github.io/vega/docs/api/view/"> Vega view</a> at{' '}
+          <code>(VEGA_DEBUG)</code> using your browser's developer console.
         </div>
       </div>
     </div>
