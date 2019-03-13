@@ -394,11 +394,10 @@
 
 .export-buttons {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .export-button {
-  flex: 1;
   min-width: 280px;
   display: inline-flex;
   flex-direction: column;
@@ -412,6 +411,8 @@
   user-select: none;
   padding: 10px 20px;
   margin-right: 40px;
+  width: 30%;
+  margin: 1%;
 }
 
 .export-button:hover {
