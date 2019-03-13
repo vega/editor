@@ -1,5 +1,3 @@
-import './index.css';
-
 import * as React from 'react';
 import { Edit3, Maximize } from 'react-feather';
 import { Portal } from 'react-portal';
@@ -9,6 +7,7 @@ import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
 import { Mode, View } from '../../constants';
 import addProjections from '../../utils/addProjections';
+import './index.css';
 
 // Add additional projections
 addProjections(vega.projection);
@@ -21,6 +20,7 @@ interface Props {
   baseURL?: string;
   history?: any;
   editorString?: string;
+  location?: any;
 
   setView: (val: any) => void;
 }
@@ -118,6 +118,18 @@ class Editor extends React.Component<Props, State> {
   public componentDidMount() {
     this.initView(this.props);
     this.renderVega(this.props);
+    // Add Event Listener to cntrl+f11 key
+    document.addEventListener('keydown', e => {
+      // Keycode of f11 is 122
+      if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
+        this.setState(current => {
+          return {
+            ...current,
+            fullscreen: !current.fullscreen,
+          };
+        });
+      }
+    });
     // Add listener to event keydown
     document.addEventListener('keydown', this.handleKeydown);
     // Enter fullscreen mode if url ends with /view
