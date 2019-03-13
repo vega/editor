@@ -116,7 +116,7 @@ class Editor extends React.Component<Props, State> {
     // Add Event Listener to cntrl+f11 key
     document.addEventListener('keydown', e => {
       // Keycode of f11 is 122
-      if (e.keyCode === 122 && e.ctrlKey) {
+      if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
         this.setState(current => {
           return {
             ...current,
