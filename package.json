@@ -75,7 +75,7 @@
     ]
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development --hot",
+    "start": "webpack-dev-server --mode development --hot --open-page index.html",
     "start:production": "webpack-dev-server --mode production",
     "build": "npm run clean && npm run vendor && webpack --mode production --progress",
     "clean": "rm -rf dist public/spec public/data",
