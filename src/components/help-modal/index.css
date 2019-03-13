@@ -1,8 +1,11 @@
-a {
-  text-decoration: none;
-  display: block;
-  margin: 10px;
-  color: black;
+.modal-title {
+  margin: 7px;
+}
+
+.modal-header {
+  margin: 0px;
+  padding: 0px;
+  margin-left: 7px;
 }
 
 .keyboard-shortcuts li {
@@ -50,19 +53,23 @@ kbd {
 }
 
 .link-to-docs {
-  display: inline-block;
-  padding: 10px;
-  background-color: white;
-  color: black;
-  border: 1px solid black;
-  border-radius: 4px;
+  display: block;
+  padding: 8px;
+  margin-bottom: 6px;
 }
 
-.link-to-docs:hover {
-  background-color: #eee;
+.tips {
+  display: block;
+  padding: 8px;
+  margin-bottom: 1px;
 }
 
 .doc-image {
   height: 20px;
   margin: 0px 6px 0px 2px;
+  vertical-align: sub;
+}
+
+.parent {
+  overflow: hidden;
 }
