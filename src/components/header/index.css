@@ -34,7 +34,8 @@
 }
 
 .header-button:hover,
-.docs-link:hover {
+.docs-link:hover,
+.dark-background {
   background: rgba(0, 0, 0, 0.08);
 }
 
