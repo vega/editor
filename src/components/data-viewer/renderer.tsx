@@ -113,9 +113,6 @@ export default class DataViewer extends React.Component<Props, State> {
             clearable={false}
             searchable={false}
           />
-          <button className="data-refresh" onClick={this.handleReload}>
-            <RefreshCw /> <span>Refresh</span>
-          </button>
           <div className="pagination-wrapper">{pagination}</div>
         </div>
         <ErrorBoundary>{table}</ErrorBoundary>
