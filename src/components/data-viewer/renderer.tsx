@@ -11,6 +11,7 @@ import Table from '../table';
 
 interface Props {
   view?: View;
+  debugPane: boolean;
 }
 
 const initialState = {
@@ -66,9 +67,11 @@ export default class DataViewer extends React.Component<Props, State> {
 
     const data = this.props.view.data(selected) || [];
 
-    this.props.view.addDataListener(selected, () => {
-      this.forceUpdate();
-    });
+    if (this.props.debugPane) {
+      this.props.view.addDataListener(selected, () => {
+        this.forceUpdate();
+      });
+    }
 
     const pageCount = Math.ceil(data.length / ROWS_PER_PAGE);
 
@@ -113,9 +116,6 @@ export default class DataViewer extends React.Component<Props, State> {
             clearable={false}
             searchable={false}
           />
-          <button className="data-refresh" onClick={this.handleReload}>
-            <RefreshCw /> <span>Refresh</span>
-          </button>
           <div className="pagination-wrapper">{pagination}</div>
         </div>
         <ErrorBoundary>{table}</ErrorBoundary>

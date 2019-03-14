@@ -48,6 +48,7 @@
 .pagination-wrapper {
   display: inline-flex;
   vertical-align: middle;
+  margin-left: 5px;
 }
 
 .pagination {
