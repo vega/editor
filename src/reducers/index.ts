@@ -77,6 +77,7 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
       error: errorMessage,
     };
   }
+  const logger = { ...currLogger };
   return {
     ...state,
 
@@ -85,6 +86,7 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
     gist: null,
     mode: Mode.Vega,
     selectedExample: null,
+    warningsCount: (logger as any).warns.length,
     warningsLogger: currLogger,
 
     // extend with other changes
