@@ -22,6 +22,7 @@ export interface State {
   vegaLiteSpec: any;
   vegaSpec: any;
   view: View;
+  warningsCount: number;
   warningsLogger: LocalLogger;
 }
 
@@ -46,5 +47,6 @@ export const DEFAULT_STATE: State = {
   vegaLiteSpec: null,
   vegaSpec: {},
   view: null,
+  warningsCount: 0,
   warningsLogger: new LocalLogger(),
 };

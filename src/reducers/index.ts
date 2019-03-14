@@ -119,6 +119,7 @@ function parseVegaLite(
       error: e.message,
     };
   }
+  const logger = { ...currLogger };
   return {
     ...state,
 
@@ -127,6 +128,7 @@ function parseVegaLite(
     gist: null,
     mode: Mode.VegaLite,
     selectedExample: null,
+    warningsCount: (logger as any).warns.length,
     warningsLogger: currLogger,
 
     // extend with other changes
@@ -151,6 +153,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         vegaLiteSpec: {},
         vegaSpec: {},
         view: null,
+        warningsCount: 0,
         warningsLogger: new LocalLogger(),
       };
     case SET_MODE_ONLY:
