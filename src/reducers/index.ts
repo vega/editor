@@ -9,6 +9,7 @@ import {
   SET_BASEURL,
   SET_COMPILED_VEGA_PANE_SIZE,
   SET_DEBUG_PANE_SIZE,
+  SET_EDITOR_REFERENCE,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
   SET_MODE,
@@ -23,6 +24,8 @@ import {
   SetVegaExample,
   SetVegaLiteExample,
   SHOW_LOGS,
+  STORE_VEGA_LITE_VALUE,
+  STORE_VEGA_VALUE,
   TOGGLE_AUTO_PARSE,
   TOGGLE_COMPILED_VEGA_SPEC,
   TOGGLE_DEBUG_PANE,
@@ -264,6 +267,21 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         compiledVegaPaneSize: action.compiledVegaPaneSize,
+      };
+    case SET_EDITOR_REFERENCE:
+      return {
+        ...state,
+        editor: action.editor,
+      };
+    case STORE_VEGA_VALUE:
+      return {
+        ...state,
+        vegaString: action.vegaString,
+      };
+    case STORE_VEGA_LITE_VALUE:
+      return {
+        ...state,
+        vegaLiteString: action.vegaLiteString,
       };
     default:
       return state;

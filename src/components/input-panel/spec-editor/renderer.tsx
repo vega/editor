@@ -60,10 +60,13 @@ interface Props {
   mode: Mode;
   parse?: boolean;
   value?: string;
+  vegaValue?: string;
+  vegaLiteValue?: string;
 
   parseSpec: (val: any) => void;
   formatSpec: (val: any) => void;
   logError: (err: any) => void;
+  setEditorReference: (editor: object) => void;
   updateEditorString: (val: any) => void;
   updateVegaLiteSpec: (val: any) => void;
   updateVegaSpec: (val: any) => void;
@@ -154,6 +157,13 @@ class Editor extends React.Component<Props, {}> {
   }
   public componentDidMount() {
     document.addEventListener('keydown', this.handleKeydown);
+    const editor = this.refs.editor;
+    this.props.setEditorReference(editor);
+    if (this.props.mode === Mode.Vega) {
+      this.props.updateEditorString(this.props.vegaValue === '{}' ? this.props.value : this.props.vegaValue);
+    } else {
+      this.props.updateEditorString(this.props.vegaLiteValue === '{}' ? this.props.value : this.props.vegaLiteValue);
+    }
   }
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeydown);
@@ -186,7 +196,7 @@ class Editor extends React.Component<Props, {}> {
         this.props.updateVegaLiteSpec(spec);
         break;
       default:
-        console.exception(`Unknown mode:  ${parsedMode}`);
+        console.exception(`Unknown mode: ${parsedMode}`);
         break;
     }
   }

@@ -7,6 +7,7 @@ export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
 export const SET_BASEURL: 'SET_BASEURL' = 'SET_BASEURL';
 export const SET_COMPILED_VEGA_PANE_SIZE: 'SET_COMPILED_VEGA_PANE_SIZE' = 'SET_COMPILED_VEGA_PANE_SIZE';
 export const SET_DEBUG_PANE_SIZE: 'SET_DEBUG_PANE_SIZE' = 'SET_DEBUG_PANE_SIZE';
+export const SET_EDITOR_REFERENCE: 'SET_EDITOR_REFERENCE' = 'SET_EDITOR_REFERENCE';
 export const SET_GIST_VEGA_LITE_SPEC: 'SET_GIST_VEGA_LITE_SPEC' = 'SET_GIST_VEGA_LITE_SPEC';
 export const SET_GIST_VEGA_SPEC: 'SET_GIST_VEGA_SPEC' = 'SET_GIST_VEGA_SPEC';
 export const SET_MODE: 'SET_MODE' = 'SET_MODE';
@@ -23,6 +24,8 @@ export const TOGGLE_DEBUG_PANE: 'TOGGLE_DEBUG_PANE' = 'TOGGLE_DEBUG_PANE';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
+export const STORE_VEGA_VALUE: 'STORE_VEGA_VALUE' = 'STORE_VEGA_VALUE';
+export const STORE_VEGA_LITE_VALUE: 'STORE_VEGA_LITE_VALUE' = 'STORE_VEGA_LITE_VALUE';
 
 export type Action =
   | SetMode
@@ -47,7 +50,10 @@ export type Action =
   | SetView
   | SetDebugPaneSize
   | ShowLogs
-  | SetCompiledVegaPaneSize;
+  | SetCompiledVegaPaneSize
+  | SetEditorReference
+  | StoreVegaValue
+  | StoreVegaLiteValue;
 
 export function setMode(mode: Mode) {
   return {
@@ -234,3 +240,30 @@ export function setCompiledVegaPaneSize(size: number) {
 }
 
 export type SetCompiledVegaPaneSize = ReturnType<typeof setCompiledVegaPaneSize>;
+
+export function setEditorReference(editor: object) {
+  return {
+    editor,
+    type: SET_EDITOR_REFERENCE,
+  };
+}
+
+export type SetEditorReference = ReturnType<typeof setEditorReference>;
+
+export function storeVegaValue(vegaString: string) {
+  return {
+    type: STORE_VEGA_VALUE,
+    vegaString,
+  };
+}
+
+export type StoreVegaValue = ReturnType<typeof storeVegaValue>;
+
+export function storeVegaLiteValue(vegaLiteString: string) {
+  return {
+    type: STORE_VEGA_LITE_VALUE,
+    vegaLiteString,
+  };
+}
+
+export type StoreVegaLiteValue = ReturnType<typeof storeVegaLiteValue>;

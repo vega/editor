@@ -1,4 +1,5 @@
 import LZString from 'lz-string';
+import Monaco from 'monaco-editor';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
 import ReactDOM from 'react-dom';
@@ -22,6 +23,7 @@ import {
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
+
 import { Mode, View } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
@@ -29,20 +31,24 @@ import HelpModal from '../help-modal/index';
 import './index.css';
 
 interface Props {
+  editor?: object;
   editorString?: string;
   history: any;
   lastPosition: number;
   manualParse?: boolean;
   mode: Mode;
+  showExample: boolean;
   view: View;
   vegaSpec?: object;
   vegaLiteSpec?: object;
-  showExample: boolean;
+
   exportVega: (val: any) => void;
   formatSpec: (val: any) => void;
   parseSpec: (val: any) => void;
   toggleAutoParse: () => void;
   setScrollPosition: (position: number) => void;
+  storeVegaLiteValue: (val: string) => void;
+  storeVegaValue: (val: string) => void;
 }
 
 interface State {
@@ -137,6 +143,10 @@ class Header extends React.Component<Props, State> {
   }
 
   public onSelectNewVega() {
+    const editor = this.props.editor;
+    const key = 'editor';
+    const editorInstance = editor[key].getModel();
+    this.props.storeVegaLiteValue(editorInstance.getValue());
     this.props.history.push('/custom/vega');
   }
 
@@ -145,6 +155,10 @@ class Header extends React.Component<Props, State> {
   }
 
   public onSelectNewVegaLite() {
+    const editor = this.props.editor;
+    const key = 'editor';
+    const editorInstance = editor[key].getModel();
+    this.props.storeVegaValue(editorInstance.getValue());
     this.props.history.push('/custom/vega-lite');
   }
 

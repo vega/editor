@@ -13,6 +13,8 @@ const mapStateToProps = (state: State, ownProps) => {
     parse: state.parse,
     selectedExample: state.selectedExample,
     value: state.editorString,
+    vegaLiteValue: state.vegaLiteString,
+    vegaValue: state.vegaString,
   };
 };
 
@@ -26,6 +28,9 @@ const mapDispatchToProps = dispatch => {
     },
     parseSpec: val => {
       dispatch(EditorActions.parseSpec(val));
+    },
+    setEditorReference: editor => {
+      dispatch(EditorActions.setEditorReference(editor));
     },
     updateEditorString: val => {
       dispatch(EditorActions.updateEditorString(val));

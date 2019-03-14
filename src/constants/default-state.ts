@@ -7,6 +7,7 @@ export interface State {
   compiledVegaPaneSize: number;
   debugPane: boolean;
   debugPaneSize: number;
+  editor: object;
   editorString: string;
   error: Error;
   export: boolean;
@@ -20,7 +21,9 @@ export interface State {
   renderer: Renderer;
   selectedExample: string;
   vegaLiteSpec: any;
+  vegaLiteString: string;
   vegaSpec: any;
+  vegaString: string;
   view: View;
   warningsLogger: LocalLogger;
 }
@@ -31,6 +34,7 @@ export const DEFAULT_STATE: State = {
   compiledVegaSpec: false,
   debugPane: false,
   debugPaneSize: LAYOUT.MinPaneSize,
+  editor: {},
   editorString: '{}',
   error: null,
   export: false,
@@ -44,7 +48,9 @@ export const DEFAULT_STATE: State = {
   renderer: 'canvas',
   selectedExample: null,
   vegaLiteSpec: null,
+  vegaLiteString: '{}',
   vegaSpec: {},
+  vegaString: '{}',
   view: null,
   warningsLogger: new LocalLogger(),
 };
