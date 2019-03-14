@@ -1,6 +1,9 @@
 import React from 'react';
 import { AlertCircle, Slack, Twitter } from 'react-feather';
+import { version } from 'vega';
+import { version as VegaLiteVersion } from 'vega-lite';
 import './index.css';
+const pjson = require('../../../package.json');
 
 const HelpModal = () => {
   return (
@@ -33,11 +36,11 @@ const HelpModal = () => {
         <h2 className="modal-title">Have a feedback? Let us know</h2>
         <a href="https://bit.ly/join-vega-slack" target="_blank" className="link-to-docs help-modal-links">
           <Slack className="doc-image" />
-          Join our slack channel
+          Join our Slack channel
         </a>
         <a href="https://twitter.com/vega_vis" target="_blank" className="link-to-docs help-modal-links">
           <Twitter className="doc-image" />
-          Follow us on twitter
+          Follow us on Twitter
         </a>
         <h2 className="modal-title">References</h2>
         <a href="https://vega.github.io/vega-lite/" target="_blank" className="link-to-docs help-modal-links">
@@ -50,6 +53,11 @@ const HelpModal = () => {
         <div className="tips">
           You can access Vega, Vega-Lite, and the <a href="https://vega.github.io/vega/docs/api/view/"> Vega view</a> at{' '}
           <code>(VEGA_DEBUG)</code> using your browser's developer console.
+        </div>
+        <div className="version-viewer">
+          <div>Vega Version : {version}</div>
+          <div>Vega-lite Version : {VegaLiteVersion}</div>
+          <div>Editor Version : {pjson.version}</div>
         </div>
       </div>
     </div>

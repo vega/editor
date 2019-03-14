@@ -55,13 +55,13 @@ kbd {
 .link-to-docs {
   display: block;
   padding: 8px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .tips {
   display: block;
   padding: 8px;
-  margin-bottom: 1px;
+  margin-bottom: -1px;
 }
 
 .doc-image {
@@ -72,4 +72,16 @@ kbd {
 
 .parent {
   overflow: hidden;
+}
+
+.version-viewer {
+  display: flex;
+  flex-direction: row;
+  font-size: small;
+  position: absolute;
+  color: #777;
+}
+
+.version-viewer > div {
+  margin: 10px;
 }
