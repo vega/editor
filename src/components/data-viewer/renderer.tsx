@@ -34,6 +34,11 @@ export default class DataViewer extends React.Component<Props, State> {
   }
 
   public handleChange(option) {
+    if (this.state.selectedData !== '') {
+      this.props.view.removeDataListener(this.state.selectedData, () => {
+        /* */
+      });
+    }
     this.setState({ selectedData: option.value, currentPage: 0 });
   }
 
@@ -69,7 +74,8 @@ export default class DataViewer extends React.Component<Props, State> {
 
     if (this.props.debugPane) {
       this.props.view.addDataListener(selected, () => {
-        this.forceUpdate();
+        this.handleReload();
+        return;
       });
     }
 
