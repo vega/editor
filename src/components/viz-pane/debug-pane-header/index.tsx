@@ -8,6 +8,8 @@ import * as EditorActions from '../../../actions/editor';
 interface Props {
   debugPane?: boolean;
   logs?: boolean;
+  warningsLogger: any[];
+  warningsCount: number;
 
   showLogs: (val: any) => void;
   toggleDebugPane: () => void;
@@ -27,7 +29,7 @@ class DebugPaneHeader extends React.Component<Props> {
               this.props.showLogs(true);
             }}
           >
-            Logs
+            Logs ({this.props.warningsCount})
           </li>
           <li
             className={this.props.logs ? '' : 'active-tab'}
@@ -51,6 +53,8 @@ function mapStateToProps(state, ownProps) {
   return {
     debugPane: state.debugPane,
     logs: state.logs,
+    warningsCount: state.warningsCount,
+    warningsLogger: state.warningsLogger,
   };
 }
 

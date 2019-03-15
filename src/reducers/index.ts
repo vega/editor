@@ -81,6 +81,7 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
       error: errorMessage,
     };
   }
+  const logger = { ...currLogger };
   return {
     ...state,
 
@@ -89,6 +90,7 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
     gist: null,
     mode: Mode.Vega,
     selectedExample: null,
+    warningsCount: (logger as any).warns.length,
     warningsLogger: currLogger,
 
     // extend with other changes
@@ -124,6 +126,7 @@ function parseVegaLite(
       error: errorMessage,
     };
   }
+  const logger = { ...currLogger };
   return {
     ...state,
 
@@ -132,6 +135,7 @@ function parseVegaLite(
     gist: null,
     mode: Mode.VegaLite,
     selectedExample: null,
+    warningsCount: (logger as any).warns.length,
     warningsLogger: currLogger,
 
     // extend with other changes
@@ -156,6 +160,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         vegaLiteSpec: {},
         vegaSpec: {},
         view: null,
+        warningsCount: 0,
         warningsLogger: new LocalLogger(),
       };
     case SET_MODE_ONLY:
