@@ -3,11 +3,12 @@ import './index.css';
 import * as React from 'react';
 import SplitPane from 'react-split-pane';
 
-import { LAYOUT, View } from '../../constants';
+import { LAYOUT, NAVBAR, View } from '../../constants';
 import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
+import SignalViewer from '../signal-viewer';
 import Toolbar from '../toolbar';
 import DebugPaneHeader from './debug-pane-header';
 
@@ -17,6 +18,7 @@ interface Props {
   error: Error;
   logs?: boolean;
   view?: View;
+  navItem?: string;
 
   setDebugPaneSize: (val: any) => void;
   showLogs: (val: any) => void;
@@ -27,6 +29,26 @@ export default class VizPane extends React.Component<Props> {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.getComponent = this.getComponent.bind(this);
+  }
+  public componentDidMount() {
+    if (this.props.logs) {
+      this.props.showLogs(true);
+    }
+  }
+  public getComponent() {
+    if (this.props.view) {
+      switch (this.props.navItem) {
+        case NAVBAR.DataViewer:
+          return <DataViewer />;
+        case NAVBAR.SignalViewer:
+          return <SignalViewer />;
+        default:
+          return null;
+      }
+    } else {
+      return null;
+    }
   }
   public handleChange(size: number) {
     this.props.setDebugPaneSize(size);
@@ -77,7 +99,7 @@ export default class VizPane extends React.Component<Props> {
         {container}
         <div className="debug-pane">
           <DebugPaneHeader />
-          {this.props.logs ? <ErrorPane /> : this.props.view ? <DataViewer /> : null}
+          {this.props.logs ? <ErrorPane /> : this.getComponent()}
         </div>
       </SplitPane>
     );

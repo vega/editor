@@ -34,3 +34,9 @@ export const VEGA_LITE_START_SPEC = `{
 }`;
 
 export type View = vega.View;
+
+export const NAVBAR = {
+  DataViewer: 'DataViewer',
+  Logs: 'Logs',
+  SignalViewer: 'SignalViewer',
+};

@@ -1,5 +1,5 @@
 import { LocalLogger } from '../utils/logger';
-import { LAYOUT, Mode, Renderer, View } from './consts';
+import { LAYOUT, Mode, NAVBAR, Renderer, View } from './consts';
 
 export interface State {
   baseURL: string;
@@ -16,6 +16,7 @@ export interface State {
   logs: boolean;
   manualParse: boolean;
   mode: Mode;
+  navItem: string;
   parse: boolean;
   renderer: Renderer;
   selectedExample: string;
@@ -38,9 +39,10 @@ export const DEFAULT_STATE: State = {
   format: false,
   gist: null,
   lastPosition: 0,
-  logs: false,
+  logs: true,
   manualParse: false,
   mode: Mode.VegaLite,
+  navItem: NAVBAR.Logs,
   parse: false,
   renderer: 'canvas',
   selectedExample: null,

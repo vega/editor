@@ -20,6 +20,7 @@ export const SHOW_LOGS: 'SHOW_LOGS' = 'SHOW_LOGS';
 export const TOGGLE_AUTO_PARSE: 'TOGGLE_AUTO_PARSE' = 'TOGGLE_AUTO_PARSE';
 export const TOGGLE_COMPILED_VEGA_SPEC: 'TOGGLE_COMPILED_VEGA_SPEC' = 'TOGGLE_COMPILED_VEGA_SPEC';
 export const TOGGLE_DEBUG_PANE: 'TOGGLE_DEBUG_PANE' = 'TOGGLE_DEBUG_PANE';
+export const TOGGLE_NAV_BAR: 'TOGGLE_NAV_BAR' = 'TOGGLE_NAV_BAR';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
@@ -38,6 +39,7 @@ export type Action =
   | ToggleAutoParse
   | ToggleCompiledVegaSpec
   | ToggleDebugPane
+  | ToggleNavbar
   | LogError
   | UpdateEditorString
   | ExportVega
@@ -234,3 +236,12 @@ export function setCompiledVegaPaneSize(size: number) {
 }
 
 export type SetCompiledVegaPaneSize = ReturnType<typeof setCompiledVegaPaneSize>;
+
+export function toggleNavbar(value: string) {
+  return {
+    navItem: value,
+    type: TOGGLE_NAV_BAR,
+  };
+}
+
+export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
