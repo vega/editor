@@ -18,13 +18,6 @@
       "name": "Launch Chrome",
       "url": "http://localhost:8080",
       "webRoot": "${workspaceFolder}"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/--hot",
-      "outFiles": ["${workspaceFolder}/**/*.js"]
     }
   ]
 }
