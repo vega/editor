@@ -50,6 +50,7 @@ kbd {
   line-height: 10px;
   padding: 2px 5px;
   vertical-align: middle;
+  margin: 7px;
 }
 
 .link-to-docs {
