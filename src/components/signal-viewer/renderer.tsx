@@ -1,8 +1,13 @@
 import React from 'react';
 import * as vega from 'vega';
+
 import { View } from '../../constants';
+import Table from '../table';
 
 import './index.css';
+
+const key = '_signals';
+const header = ['Signal', 'Value'];
 
 interface Props {
   view?: View;
@@ -13,14 +18,37 @@ export default class SignalViewer extends React.Component<Props> {
   constructor(props) {
     super(props);
   }
+  public getValue(signalKey) {
+    let returnValue = '';
+    const currentValue = this.props.view[key][signalKey].value;
+    if (typeof currentValue === 'object') {
+      Object.keys(currentValue).map(value => {
+        returnValue += `${value}: ${currentValue[value]}, `;
+      });
+      return returnValue.slice(0, returnValue.length - 2);
+    }
+    return currentValue;
+  }
+  public getData() {
+    let values = [];
+
+    Object.keys(this.props.view[key]).map((signal, id) => {
+      values = [
+        ...values,
+        {
+          id,
+          [header[0]]: signal,
+          [header[1]]: this.getValue.bind(this)(signal),
+        },
+      ];
+    });
+    return values;
+  }
   public render() {
-    const key = '_signals';
+    const data = this.getData.bind(this)();
     return (
       <div className="signal-viewer">
-        <h3>Signals</h3>
-        {Object.keys(this.props.view[key]).map((signal, id) => (
-          <p key={id}>{signal}</p>
-        ))}
+        <Table header={header} data={data} />
       </div>
     );
   }
