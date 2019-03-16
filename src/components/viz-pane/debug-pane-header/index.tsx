@@ -19,6 +19,9 @@ interface Props {
 }
 
 class DebugPaneHeader extends React.Component<Props> {
+  public componentDidMount() {
+    this.props.showLogs(true);
+  }
   public render() {
     return (
       <div className="debug-pane-header" onClick={e => this.props.toggleDebugPane()}>

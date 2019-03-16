@@ -25,6 +25,13 @@ export default class SignalViewer extends React.Component<Props> {
       });
     });
   }
+  public componentWillUnmount() {
+    Object.keys(this.props.view[key]).map(signal => {
+      this.props.view.removeSignalListener(signal, () => {
+        // Do nothing
+      });
+    });
+  }
   public getValue(signalKey) {
     let returnValue = '';
     const currentValue = this.props.view.signal(signalKey);
