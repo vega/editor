@@ -20,7 +20,10 @@ interface Props {
 
 class DebugPaneHeader extends React.Component<Props> {
   public componentDidMount() {
-    this.props.showLogs(true);
+    if (this.props.logs) {
+      this.props.toggleNavbar(NAVBAR.Logs);
+      this.props.showLogs(true);
+    }
   }
   public render() {
     return (

@@ -6,7 +6,7 @@ import Table from '../table';
 
 import './index.css';
 
-const key = '_signals';
+const KEY = '_signals';
 const header = ['Signal', 'Value'];
 
 interface Props {
@@ -19,14 +19,14 @@ export default class SignalViewer extends React.Component<Props> {
     super(props);
   }
   public componentDidMount() {
-    Object.keys(this.props.view[key]).map(signal => {
+    Object.keys(this.props.view[KEY]).map(signal => {
       this.props.view.addSignalListener(signal, () => {
         this.forceUpdate();
       });
     });
   }
   public componentWillUnmount() {
-    Object.keys(this.props.view[key]).map(signal => {
+    Object.keys(this.props.view[KEY]).map(signal => {
       this.props.view.removeSignalListener(signal, () => {
         // Do nothing
       });
@@ -45,7 +45,7 @@ export default class SignalViewer extends React.Component<Props> {
   }
   public getData() {
     let values = [];
-    Object.keys(this.props.view[key]).map((signal, id) => {
+    Object.keys(this.props.view[KEY]).map((signal, id) => {
       values = [
         ...values,
         {
