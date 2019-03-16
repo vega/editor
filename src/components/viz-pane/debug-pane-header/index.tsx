@@ -24,7 +24,7 @@ class DebugPaneHeader extends React.Component<Props> {
       <div className="debug-pane-header" onClick={e => this.props.toggleDebugPane()}>
         <ul className="tabs-nav">
           <li
-            className={this.props.logs && 'active-tab'}
+            className={this.props.navItem === NAVBAR.Logs && 'active-tab'}
             onClick={e => {
               if (this.props.debugPane) {
                 e.stopPropagation();

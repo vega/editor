@@ -39,7 +39,7 @@ export const DEFAULT_STATE: State = {
   format: false,
   gist: null,
   lastPosition: 0,
-  logs: true,
+  logs: false,
   manualParse: false,
   mode: Mode.VegaLite,
   navItem: NAVBAR.Logs,
