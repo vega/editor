@@ -20,7 +20,7 @@ export default class SignalViewer extends React.Component<Props> {
   }
   public getValue(signalKey) {
     let returnValue = '';
-    const currentValue = this.props.view[key][signalKey].value;
+    const currentValue = this.props.view.signal(signalKey);
     if (typeof currentValue === 'object') {
       Object.keys(currentValue).map(value => {
         returnValue += `${value}: ${currentValue[value]}, `;
@@ -31,7 +31,6 @@ export default class SignalViewer extends React.Component<Props> {
   }
   public getData() {
     let values = [];
-
     Object.keys(this.props.view[key]).map((signal, id) => {
       values = [
         ...values,
