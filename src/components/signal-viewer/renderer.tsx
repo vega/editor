@@ -18,6 +18,13 @@ export default class SignalViewer extends React.Component<Props> {
   constructor(props) {
     super(props);
   }
+  public componentDidMount() {
+    Object.keys(this.props.view[key]).map(signal => {
+      this.props.view.addSignalListener(signal, () => {
+        this.forceUpdate();
+      });
+    });
+  }
   public getValue(signalKey) {
     let returnValue = '';
     const currentValue = this.props.view.signal(signalKey);
