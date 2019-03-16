@@ -35,7 +35,12 @@ export default class DataViewer extends React.Component<Props, State> {
   }
 
   public handleChange(option) {
-    this.setState({ selectedData: option.value, currentPage: 0 });
+    if (this.state.selections.length !== 0) {
+      this.props.view.removeDataListener(this.state.selections[0], () => {
+        /* */
+      });
+    }
+    this.setState({ selectedData: option.value, currentPage: 0, selections: [] });
   }
 
   public handlePageChange(option) {
