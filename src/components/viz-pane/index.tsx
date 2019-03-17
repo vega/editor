@@ -10,6 +10,7 @@ function mapStateToProps(state: State, ownProps) {
     debugPaneSize: state.debugPaneSize,
     error: state.error,
     logs: state.logs,
+    navItem: state.navItem,
     view: state.view,
   };
 }
@@ -24,6 +25,9 @@ const mapDispatchToProps = dispatch => {
     },
     toggleDebugPane: () => {
       dispatch(EditorActions.toggleDebugPane());
+    },
+    toggleNavbar: val => {
+      dispatch(EditorActions.toggleNavbar(val));
     },
   };
 };

@@ -26,6 +26,7 @@ import {
   TOGGLE_AUTO_PARSE,
   TOGGLE_COMPILED_VEGA_SPEC,
   TOGGLE_DEBUG_PANE,
+  TOGGLE_NAV_BAR,
   UPDATE_EDITOR_STRING,
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
@@ -269,6 +270,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         compiledVegaPaneSize: action.compiledVegaPaneSize,
+      };
+    case TOGGLE_NAV_BAR:
+      return {
+        ...state,
+        navItem: action.navItem,
       };
     default:
       return state;
