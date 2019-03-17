@@ -34,7 +34,7 @@
     "history": "^4.7.2",
     "json-stringify-pretty-compact": "^2.0.0",
     "lz-string": "^1.4.4",
-    "monaco-editor": "^0.16.0",
+    "monaco-editor": "^0.16.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-clipboard.js": "^2.0.5",
