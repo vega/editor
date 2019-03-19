@@ -1,28 +1,33 @@
 const shortcuts = [
   {
-    mac: '&#8984; + b',
+    mac: '⌘ + b',
     text: 'Execute the code in manual mode',
     windows: 'Ctrl + b',
   },
   {
-    mac: '&#8984; + ?',
+    mac: '⌘ + ?',
     text: 'Open the help window',
     windows: 'Ctrl + ?',
   },
   {
-    mac: '&#8984; + Space',
+    mac: '⌘ + Space',
     text: 'Open Intellisense',
     windows: 'Ctrl + Space',
   },
   {
-    mac: '&#8997; + &#8984; + b',
+    mac: '⌥ + ⌘ + b',
     text: 'Auto format',
     windows: 'Alt + shift + f',
   },
   {
-    mac: '&#8984; + f11',
+    mac: '⌘ + f11',
     text: 'Toggle Fullscreen Mode',
     windows: 'Ctrl + f11',
+  },
+  {
+    mac: 'f1',
+    text: `Access Editor's Command Pallete`,
+    windows: 'f1',
   },
 ];
 
