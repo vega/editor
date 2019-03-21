@@ -11,7 +11,6 @@ import Table from '../table';
 
 interface Props {
   view?: View;
-  debugPane: boolean;
 }
 
 const initialState = {
@@ -30,6 +29,7 @@ export default class DataViewer extends React.Component<Props, State> {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.dataChanged = this.dataChanged.bind(this);
   }
 
   public handleChange(option) {
@@ -50,22 +50,24 @@ export default class DataViewer extends React.Component<Props, State> {
 
     if (datasets.length) {
       this.setState({
-        selectedData: datasets[datasets.length - 1],
+        selectedData: datasets[1],
       });
     }
   }
 
+  public componentWillUnmount() {
+    if (this.state.selectedData) {
+      this.props.view.removeDataListener(this.state.selectedData, this.dataChanged);
+    }
+  }
+
   public componentDidUpdate(prevProps: Props, prevState: State) {
-    if (
-      this.props.view !== prevProps.view ||
-      this.state.selectedData !== prevState.selectedData ||
-      this.props.debugPane !== prevProps.debugPane
-    ) {
+    if (this.props.view !== prevProps.view || this.state.selectedData !== prevState.selectedData) {
       if (prevState.selectedData) {
         prevProps.view.removeDataListener(prevState.selectedData, this.dataChanged);
       }
 
-      if (this.props.debugPane && this.state.selectedData) {
+      if (this.state.selectedData) {
         this.props.view.addDataListener(this.state.selectedData, this.dataChanged);
       }
     }
