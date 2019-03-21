@@ -8,6 +8,7 @@ import { NAVBAR } from '../../../constants/consts';
 
 interface Props {
   debugPane?: boolean;
+  error?: string;
   logs?: boolean;
   warningsLogger: any[];
   warningsCount: number;
@@ -20,8 +21,7 @@ interface Props {
 
 class DebugPaneHeader extends React.Component<Props> {
   public componentDidMount() {
-    if (this.props.logs) {
-      this.props.toggleNavbar(NAVBAR.Logs);
+    if (this.props.logs || this.props.navItem === NAVBAR.Logs) {
       this.props.showLogs(true);
     }
   }
@@ -30,7 +30,7 @@ class DebugPaneHeader extends React.Component<Props> {
       <div className="debug-pane-header" onClick={e => this.props.toggleDebugPane()}>
         <ul className="tabs-nav">
           <li
-            className={this.props.navItem === NAVBAR.Logs && 'active-tab'}
+            className={this.props.logs ? 'active-tab' : undefined}
             onClick={e => {
               if (this.props.debugPane) {
                 e.stopPropagation();
@@ -41,30 +41,34 @@ class DebugPaneHeader extends React.Component<Props> {
           >
             Logs ({this.props.warningsCount})
           </li>
-          <li
-            className={this.props.navItem === NAVBAR.DataViewer && !this.props.logs && 'active-tab'}
-            onClick={e => {
-              if (this.props.debugPane) {
-                e.stopPropagation();
-              }
-              this.props.showLogs(false);
-              this.props.toggleNavbar(NAVBAR.DataViewer);
-            }}
-          >
-            Data Viewer
-          </li>
-          <li
-            className={this.props.navItem === NAVBAR.SignalViewer && !this.props.logs && 'active-tab'}
-            onClick={e => {
-              if (this.props.debugPane) {
-                e.stopPropagation();
-              }
-              this.props.showLogs(false);
-              this.props.toggleNavbar(NAVBAR.SignalViewer);
-            }}
-          >
-            Signal Viewer
-          </li>
+          {this.props.error === null && (
+            <li
+              className={!this.props.logs && this.props.navItem === NAVBAR.DataViewer ? 'active-tab' : undefined}
+              onClick={e => {
+                if (this.props.debugPane) {
+                  e.stopPropagation();
+                }
+                this.props.showLogs(false);
+                this.props.toggleNavbar(NAVBAR.DataViewer);
+              }}
+            >
+              Data Viewer
+            </li>
+          )}
+          {this.props.error === null && (
+            <li
+              className={!this.props.logs && this.props.navItem === NAVBAR.SignalViewer ? 'active-tab' : undefined}
+              onClick={e => {
+                if (this.props.debugPane) {
+                  e.stopPropagation();
+                }
+                this.props.showLogs(false);
+                this.props.toggleNavbar(NAVBAR.SignalViewer);
+              }}
+            >
+              Signal Viewer
+            </li>
+          )}
         </ul>
         {this.props.debugPane ? <ChevronDown /> : <ChevronUp />}
       </div>
@@ -75,6 +79,7 @@ class DebugPaneHeader extends React.Component<Props> {
 function mapStateToProps(state, ownProps) {
   return {
     debugPane: state.debugPane,
+    error: state.error,
     logs: state.logs,
     navItem: state.navItem,
     warningsCount: state.warningsCount,
