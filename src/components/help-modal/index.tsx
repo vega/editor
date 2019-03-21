@@ -32,6 +32,9 @@ const HelpModal = () => {
         <h1 className="modal-header">Help</h1>
         <h2 className="modal-title">Keyboard Shortcuts</h2>
         <ul className="keyboard-shortcuts">{keyBoardShortcuts}</ul>
+        <div className="note">
+          Note : You can use editor shortcuts using <kbd>f1</kbd>
+        </div>
         <a href="https://github.com/vega/editor/issues/new" target="_blank" className="report-button help-modal-link">
           <AlertCircle className="header-icon" />
           Report a Bug{' '}

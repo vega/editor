@@ -24,11 +24,6 @@ const shortcuts = [
     text: 'Toggle Fullscreen Mode',
     windows: 'Ctrl + f11',
   },
-  {
-    mac: 'f1',
-    text: `Access Editor's Command Pallete`,
-    windows: 'f1',
-  },
 ];
 
 export default shortcuts;

@@ -80,9 +80,14 @@ kbd {
   flex-direction: row;
   font-size: small;
   position: absolute;
+  bottom: 8px;
   color: #777;
 }
 
 .version-viewer > div {
   margin: 10px;
+}
+
+.note {
+  margin: 22px;
 }
