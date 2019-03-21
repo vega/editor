@@ -907,10 +907,10 @@ caniuse-lite@^1.0.30000939, caniuse-lite@^1.0.30000940:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000941.tgz#f0810802b2ab8d27f4b625d4769a610e24d5a42c"
   integrity sha512-4vzGb2MfZcO20VMPj1j6nRAixhmtlhkypM4fL4zhgzEucQIYiRzSqPcWIu1OF8i0FETD93FMIPWfUJCAcFvrqA==
 
-canvas@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/canvas/-/canvas-2.3.1.tgz#da0c8a916505aa34f9365d6b77d28b969241bfd0"
-  integrity sha512-jSxwf4V9AGD6t6yBC600xFZKjrfKTR0T0RUNlX/AODs/ifrfJHIQjFEK8iF2euNy6z7K3GNv82DJgTjYZZktqA==
+canvas@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/canvas/-/canvas-2.4.1.tgz#d3b40efc7c281006ca0ff9cc854aaa8b82abec7a"
+  integrity sha512-SaFomFqDuuuSTScTHQ7nXc5ea71Ieb8ctvwXjR7vzLsBMfp3euTv2xsTY70zIoC5r4sSQZYXv6tiHiORJ4y1vg==
   dependencies:
     nan "^2.12.1"
     node-pre-gyp "^0.11.0"
@@ -1339,7 +1339,7 @@ d3-array@1, d3-array@^1.1.1, d3-array@^1.2.0:
   resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.4.tgz#635ce4d5eea759f6f605863dbcfc30edc737f71f"
   integrity sha512-KHW6M86R+FUPYGb3R5XiYjXPq7VzwxZ22buHhAEVG5ztoEcZZMLov530mmccaqA1GghZArjQV46fuc8kUqhhHw==
 
-d3-array@^2.0.3:
+"d3-array@^1.2.0 || 2", d3-array@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-2.0.3.tgz#9c0531eda701e416f28a030e3d4e6179ba74f19f"
   integrity sha512-C7g4aCOoJa+/K5hPVqZLG8wjYHsTUROTk7Z1Ep9F4P5l+WVrvV0+6nAZ1wKTRLMhFWpGbozxUpyjIPZYAaLi+g==
@@ -1445,6 +1445,17 @@ d3-scale@^2.2.2:
   dependencies:
     d3-array "^1.2.0"
     d3-collection "1"
+    d3-format "1"
+    d3-interpolate "1"
+    d3-time "1"
+    d3-time-format "2"
+
+d3-scale@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-3.0.0.tgz#ddede1278ac3ea2bf3666de6ca625e20bed9b6c9"
+  integrity sha512-ktic5HBFlAZj2CN8CCl/p/JyY8bMQluN7+fA6ICE6yyoMOnSQAZ1Bb8/5LcNpNKMBMJge+5Vv4pWJhARYlQYFw==
+  dependencies:
+    d3-array "^1.2.0 || 2"
     d3-format "1"
     d3-interpolate "1"
     d3-time "1"
@@ -5808,13 +5819,13 @@ vega-canvas@^1.2.0:
   resolved "https://registry.yarnpkg.com/vega-canvas/-/vega-canvas-1.2.1.tgz#ee0586e2a1f096f6a5d1710df61ef501562c2bd4"
   integrity sha512-k/S3EPeJ37D7fYDhv4sEg7fNWVpLheQY7flfLyAmJU7aSwCMgw8cZJi0CKHchJeculssfH+41NCqvRB1QtaJnw==
 
-vega-cli@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/vega-cli/-/vega-cli-5.0.0.tgz#57f2c96774f1c673c4c2dc0cc238bdae29d9b356"
-  integrity sha512-6cBfnx5HYI6I/32gt8dBXkUMOTr8St0Y3V5OOLYwwCULrPpTzXmCAHGj+gwAEz+LYWHsltSDzSyCELo31PpvpQ==
+vega-cli@5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/vega-cli/-/vega-cli-5.3.1.tgz#8c55ee78777797f7fbfc6ccff875bac4eee23725"
+  integrity sha512-27SATgJ0KbPc95Spm4eoSNygCfgMW/6YMnZc3DYMUhjVlluw+dWHEY9al1BxcyoOzQTN9LPabuco9eouV4N7Zg==
   dependencies:
-    canvas "^2.3.1"
-    vega "5.0.0"
+    canvas "^2.4.1"
+    vega "5.3.1"
     yargs "13"
 
 vega-crossfilter@^4.0.1:
@@ -5834,19 +5845,28 @@ vega-dataflow@^5.1.0, vega-dataflow@^5.1.1:
     vega-loader "^4.0.0"
     vega-util "^1.8.0"
 
+vega-dataflow@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/vega-dataflow/-/vega-dataflow-5.2.1.tgz#82aa6a2aca5c61a6924b4561b6e3ab51bd473f8f"
+  integrity sha512-Yer0BlKVemxrlPwDF1p1z/dcMQZdzJNPAoVmp58GQsp4EyS4zW6yFOnMrLAxvU2SU6hywNbtL+7PBDVzzffgNw==
+  dependencies:
+    vega-loader "^4.0.0"
+    vega-util "^1.10.0"
+
 vega-datasets@^1.22.0:
   version "1.22.0"
   resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.22.0.tgz#a839f51ec5abb70ab0687e6dbf0ecd231558c605"
   integrity sha512-eeChIzCIBqn1bQY0nEzX0N7DkUEMhjF92qnjmfRfi0EkWG1sG9nGQbYKDGGOQcpVOXSFM8rEhTBTZfRvlL5KJg==
 
-vega-encode@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/vega-encode/-/vega-encode-4.1.2.tgz#0a23d886d2c873fa843af5f96e99078f19634682"
-  integrity sha512-L8tHVtgwXnXzSst3sV/EGoT/YrQDb28zbgPm8QNGwEOjSx/QV1n58fpCD/Rpjjb//jeVsw3+Hj6zP7uHG+AWHg==
+vega-encode@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/vega-encode/-/vega-encode-4.2.0.tgz#53c8c885f782562dfe99baf68d69ae7a9fb86d39"
+  integrity sha512-LFOM4ystQoyixEuk0pRdsYiam85dY9hxJbMECGwUiEm7BxWBhpa8YG8EFh165qK2CjUMqLxzysu5r8rj2Qmt3w==
   dependencies:
     d3-array "^2.0.3"
     d3-format "^1.3.2"
     d3-interpolate "^1.3.2"
+    d3-time-format "^2.1.3"
     vega-dataflow "^5.1.1"
     vega-scale "^4.1.0"
     vega-util "^1.8.0"
@@ -5863,6 +5883,13 @@ vega-expression@^2.5.0:
   dependencies:
     vega-util "^1.8.0"
 
+vega-expression@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/vega-expression/-/vega-expression-2.6.0.tgz#9955887b53b05da8e1d101c41a7ddce414edfb6d"
+  integrity sha512-c2FFrIfKtlTtLCR3BnZDm6O2ey7u+5YRukLnNobRe+hoiqeH86C2+FkjXotE63cYGj39R5OS+SK+VBSDz3bmVw==
+  dependencies:
+    vega-util "^1.8.0"
+
 vega-force@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/vega-force/-/vega-force-4.0.1.tgz#8b4f25701db132b75c2388a62665b1dc761181c9"
@@ -5872,18 +5899,18 @@ vega-force@^4.0.1:
     vega-dataflow "^5.1.0"
     vega-util "^1.8.0"
 
-vega-functions@^5.0.1, vega-functions@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/vega-functions/-/vega-functions-5.1.0.tgz#dba7cdb8950d8caacf3e8d96f9a7560922c9bece"
-  integrity sha512-s9GkZsB2AV37G/IY6nN5csmMD92/lQA3r8U4O2juIONYC/8xSEriaT6+jroE/zluFswst7bG38q2M0qhUdZfEA==
+vega-functions@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/vega-functions/-/vega-functions-5.2.0.tgz#1604a68198f235655118fed5296d50912f612b83"
+  integrity sha512-xqDvT/HFSaDCgFkq5r1VgwHG5wIeNSPQatMCR7MjqXH5y08JR5eGt4RMJAq4yiFvub1WlQo+wUPVLiOMt67cUg==
   dependencies:
     d3-array "^2.0.3"
     d3-color "^1.2.3"
     d3-format "^1.3.2"
     d3-geo "^1.11.3"
     d3-time-format "^2.1.3"
-    vega-dataflow "^5.1.1"
-    vega-expression "^2.5.0"
+    vega-dataflow "^5.2.1"
+    vega-expression "^2.6.0"
     vega-scale "^4.0.0"
     vega-scenegraph "^4.0.0"
     vega-selections "^5.0.0"
@@ -5911,10 +5938,10 @@ vega-hierarchy@^4.0.1:
     vega-dataflow "^5.1.0"
     vega-util "^1.8.0"
 
-vega-lite@3.0.0-rc14:
-  version "3.0.0-rc14"
-  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-3.0.0-rc14.tgz#f1fbc955d70227c6f04017c2d3b56c0332014d1e"
-  integrity sha512-yKh3E8yxdved1FcWQZXVuTvd2B5CiAORATxmaIVPIByREHx6raMsMQByFRoM1MVE4OiE7r++Um6sT3wNj0oykA==
+vega-lite@3.0.0-rc15:
+  version "3.0.0-rc15"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-3.0.0-rc15.tgz#cc575cd2b4a2262ac4e8ae56987c746696ee0e2a"
+  integrity sha512-wE1lU5fmbMlsw/YchxTZ5qfRmnsyhltWyUCyPvyfucyIJAEPSHqvAfrcWuY/Qq+XVs+vY52GvHJuZfGZLP7w6g==
   dependencies:
     "@types/clone" "^0.1.30"
     clone "^2.1.2"
@@ -5924,9 +5951,9 @@ vega-lite@3.0.0-rc14:
     tslib "^1.9.3"
     vega-event-selector "^2.0.0"
     vega-expression "^2.5.0"
-    vega-typings "0.5.5"
+    vega-typings "0.5.7"
     vega-util "^1.9.0"
-    yargs "^13.2.1"
+    yargs "^13.2.2"
 
 vega-loader@^4.0.0:
   version "4.0.0"
@@ -5939,17 +5966,17 @@ vega-loader@^4.0.0:
     topojson-client "^3.0.0"
     vega-util "^1.8.0"
 
-vega-parser@^5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-5.4.0.tgz#3828b75dae3b955eea7f4ff4cbcdfb0e9f2aeebe"
-  integrity sha512-vLeW37hOe2lZ0RsZ4157/gdQhPha9fM592ItdLDAT/BgLO2Xb0absCsp7wcxWoM4QEB+i/YKHUUp4nMGeI3IZQ==
+vega-parser@^5.6.1:
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-5.6.1.tgz#856dd51c4f49489f1636bb5f6d86c03e5d75a61b"
+  integrity sha512-vjmHo3Ftt01if+gOgbGlMfRhUJwFEsQnuDuaNFnZV3+qpnhL0tRguQA6+dX94+4KxQT7W0wq5iE0y3jnogCDQA==
   dependencies:
-    vega-dataflow "^5.1.1"
+    vega-dataflow "^5.2.1"
     vega-event-selector "^2.0.0"
-    vega-expression "^2.5.0"
-    vega-functions "^5.0.1"
-    vega-scale "^4.0.0"
-    vega-util "^1.8.0"
+    vega-expression "^2.6.0"
+    vega-functions "^5.2.0"
+    vega-scale "^4.1.1"
+    vega-util "^1.10.0"
 
 vega-projection@^1.2.1:
   version "1.2.1"
@@ -5976,6 +6003,17 @@ vega-scale@^4.0.0, vega-scale@^4.1.0:
     d3-scale "^2.2.2"
     d3-time "^1.0.11"
     vega-util "^1.8.0"
+
+vega-scale@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/vega-scale/-/vega-scale-4.1.1.tgz#32c93a1d4ec430c415d70ef6ce2af01c7de85384"
+  integrity sha512-mFGsSUuDrGT9MYRyWinwqla9u06w3/DAEJQrBqFFaL6g7BSggW/y2SiA+RyDdGQf2gU7VfunkaCK9Jt7I768rw==
+  dependencies:
+    d3-array "^2.0.3"
+    d3-interpolate "^1.3.2"
+    d3-scale "^3.0.0"
+    d3-time "^1.0.11"
+    vega-util "^1.10.0"
 
 vega-scenegraph@^4.0.0, vega-scenegraph@^4.1.0:
   version "4.1.0"
@@ -6008,6 +6046,13 @@ vega-statistics@^1.2.5, vega-statistics@^1.3.0:
   dependencies:
     d3-array "^2.0.3"
 
+vega-statistics@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/vega-statistics/-/vega-statistics-1.3.1.tgz#0b30d612bec5b94ad99a7cae8abf59b436fdac94"
+  integrity sha512-4GlQAlQKn2He9AhyM8brx0d9YKHPGwRzL0JPhgL9FmXOsi+2F7tJk+4P6UwhKHinRA/iroEQqtwzu6oFgZP0Gw==
+  dependencies:
+    d3-array "^2.0.3"
+
 vega-tooltip@^0.16.0:
   version "0.16.0"
   resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.16.0.tgz#fc9badb96aed437b8225d0a7216ec6d1e768ac6f"
@@ -6015,15 +6060,15 @@ vega-tooltip@^0.16.0:
   dependencies:
     vega-util "^1.7.1"
 
-vega-transforms@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/vega-transforms/-/vega-transforms-4.0.1.tgz#9a53b52b5d61b7b6440fe52b04635c6be4b92716"
-  integrity sha512-0dLl97J1mDHmUrNlsBv5xTME0koCiZ9aG5aIv+7cujTF4Y/lGSKIeX7z/weyPNWKSF7Y7PgAzzQ5vn5y24FgXQ==
+vega-transforms@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/vega-transforms/-/vega-transforms-4.0.2.tgz#67969776bc9c62b1c7ef5c42a53af351e17da73a"
+  integrity sha512-kP9e2MDnQQQJDiCj4p0KHq+MbMQq/UjOgKO4AomYguJRpciosT8StwXVrIYSK3CF7Dyvg7GxADN6nnxQfmUTwQ==
   dependencies:
     d3-array "^2.0.3"
-    vega-dataflow "^5.1.0"
-    vega-statistics "^1.2.5"
-    vega-util "^1.8.0"
+    vega-dataflow "^5.2.1"
+    vega-statistics "^1.3.1"
+    vega-util "^1.10.0"
 
 vega-typings@*:
   version "0.5.6"
@@ -6032,12 +6077,17 @@ vega-typings@*:
   dependencies:
     vega-util "^1.9.0"
 
-vega-typings@0.5.5:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.5.5.tgz#cf23dd89255f6aa994026096a09fc19ca90c38d0"
-  integrity sha512-X/WatND2LNIKag66peYQGIp53doT1PmYcZl4xOqhKiVLrw45rlc+rr5TV3phdlHrbCt/4JRAbS03GXsGkqY4jw==
+vega-typings@0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.5.7.tgz#476184e20b2f88190f6d4329ea74b13ae60fef97"
+  integrity sha512-rfNOC3O46L5E3e4DlLgXo3eok2oPAR4yHME7+ZF8VeMgjAbZZ7AQn0ckBK6NuwymArMN4kQGTWcv8SdKoJIC8Q==
   dependencies:
     vega-util "^1.9.0"
+
+vega-util@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.10.0.tgz#edfd8c04f1d269f903976c228820153902c270d4"
+  integrity sha512-fTGnTG7FhtTG9tiYDL3k5s8YHqB71Ml5+aC9B7eaBygeB8GKXBrcbTXLOzoCRxT3Jr5cRhr99PMBu0AkqmhBog==
 
 vega-util@^1.7.1, vega-util@^1.8.0, vega-util@^1.9.0:
   version "1.9.0"
@@ -6053,18 +6103,18 @@ vega-view-transforms@^4.3.0:
     vega-scenegraph "^4.1.0"
     vega-util "^1.8.0"
 
-vega-view@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/vega-view/-/vega-view-5.1.0.tgz#2594a95dc722f7956b7bf7949e52b638139f69b4"
-  integrity sha512-qJzQW5n4jcLRYs/1BzD8ayiOvb2DTeIdJ4ocroDbMp4XeCRicblttrZ8wrn4UwnuKsvymXmcpAojwXdjSRiofA==
+vega-view@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/vega-view/-/vega-view-5.2.1.tgz#8390de7bc2df06bc780c6840c5d698cb5bbf9ed1"
+  integrity sha512-Hra7IDfH4akUohk4doOdTQh0FkBygsRiLEg9fVGqpPveMdjC8/otUepkCZGoVHawc42nDd93F4tBjaojIWii8w==
   dependencies:
     d3-array "^2.0.3"
     d3-timer "^1.0.9"
-    vega-dataflow "^5.1.1"
-    vega-functions "^5.0.1"
+    vega-dataflow "^5.2.1"
+    vega-functions "^5.2.0"
     vega-runtime "^5.0.1"
     vega-scenegraph "^4.0.0"
-    vega-util "^1.8.0"
+    vega-util "^1.10.0"
 
 vega-voronoi@^4.0.1:
   version "4.0.1"
@@ -6086,31 +6136,31 @@ vega-wordcloud@^4.0.1:
     vega-statistics "^1.2.5"
     vega-util "^1.8.0"
 
-vega@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-5.0.0.tgz#15bd6cafe2e214efcc6911cd31c454088bac5971"
-  integrity sha512-tD26ko/cAdXyoR5ATFl+bCUOo388AGcAS3sGPAlRGfgD+ecR9UiDNy0EjL2k3uZT57y1FQGoifhwqix9IJM75A==
+vega@5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-5.3.1.tgz#62d2b795d5a38c8153713b59814b24356fd5a2bb"
+  integrity sha512-rROt1B6PPKSf52g/pZOrQv5ImkS+XEa7/dIJBP6vfdMS9mBlWXZm67WgqFGCz0z1uJXwPsvtcpEPh9DWvIEPdw==
   dependencies:
     vega-crossfilter "^4.0.1"
-    vega-dataflow "^5.1.1"
-    vega-encode "^4.1.2"
+    vega-dataflow "^5.2.1"
+    vega-encode "^4.2.0"
     vega-event-selector "^2.0.0"
-    vega-expression "^2.5.0"
+    vega-expression "^2.6.0"
     vega-force "^4.0.1"
-    vega-functions "^5.1.0"
+    vega-functions "^5.2.0"
     vega-geo "^4.0.1"
     vega-hierarchy "^4.0.1"
     vega-loader "^4.0.0"
-    vega-parser "^5.4.0"
+    vega-parser "^5.6.1"
     vega-projection "^1.2.1"
     vega-runtime "^5.0.1"
-    vega-scale "^4.1.0"
+    vega-scale "^4.1.1"
     vega-scenegraph "^4.1.0"
-    vega-statistics "^1.3.0"
-    vega-transforms "^4.0.1"
+    vega-statistics "^1.3.1"
+    vega-transforms "^4.0.2"
     vega-typings "*"
-    vega-util "^1.9.0"
-    vega-view "^5.1.0"
+    vega-util "^1.10.0"
+    vega-view "^5.2.1"
     vega-view-transforms "^4.3.0"
     vega-voronoi "^4.0.1"
     vega-wordcloud "^4.0.1"
@@ -6423,7 +6473,7 @@ yargs@12.0.2:
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^10.1.0"
 
-yargs@13, yargs@^13.2.1:
+yargs@13:
   version "13.2.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.2.1.tgz#c8888bcf24424bd4e5a834348366f6fcc37bb8d9"
   integrity sha512-HgY0xHGmPPakg6kEDufqxZuXVtvPZcipORC8O7S44iEnwsUmP+qnhReHc6d1dyeIZkrPmYFblh45Z2oeDn++fQ==
@@ -6457,6 +6507,23 @@ yargs@^12.0.4:
     which-module "^2.0.0"
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
+
+yargs@^13.2.2:
+  version "13.2.2"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.2.2.tgz#0c101f580ae95cea7f39d927e7770e3fdc97f993"
+  integrity sha512-WyEoxgyTD3w5XRpAQNYUB9ycVH/PQrToaTXdYXRdOXvEy1l19br+VJsc0vcO8PTGg5ro/l/GY7F/JMEBmI0BxA==
+  dependencies:
+    cliui "^4.0.0"
+    find-up "^3.0.0"
+    get-caller-file "^2.0.1"
+    os-locale "^3.1.0"
+    require-directory "^2.1.1"
+    require-main-filename "^2.0.0"
+    set-blocking "^2.0.0"
+    string-width "^3.0.0"
+    which-module "^2.0.0"
+    y18n "^4.0.0"
+    yargs-parser "^13.0.0"
 
 yup@^0.26.10:
   version "0.26.10"

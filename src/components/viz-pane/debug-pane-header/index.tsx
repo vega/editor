@@ -30,7 +30,7 @@ class DebugPaneHeader extends React.Component<Props> {
       <div className="debug-pane-header" onClick={e => this.props.toggleDebugPane()}>
         <ul className="tabs-nav">
           <li
-            className={this.props.navItem === NAVBAR.Logs && 'active-tab'}
+            className={this.props.navItem === NAVBAR.Logs ? 'active-tab' : null}
             onClick={e => {
               if (this.props.debugPane) {
                 e.stopPropagation();
@@ -42,7 +42,7 @@ class DebugPaneHeader extends React.Component<Props> {
             Logs ({this.props.warningsCount})
           </li>
           <li
-            className={this.props.navItem === NAVBAR.DataViewer && !this.props.logs && 'active-tab'}
+            className={this.props.navItem === NAVBAR.DataViewer && !this.props.logs ? 'active-tab' : null}
             onClick={e => {
               if (this.props.debugPane) {
                 e.stopPropagation();
@@ -54,7 +54,7 @@ class DebugPaneHeader extends React.Component<Props> {
             Data Viewer
           </li>
           <li
-            className={this.props.navItem === NAVBAR.SignalViewer && !this.props.logs && 'active-tab'}
+            className={this.props.navItem === NAVBAR.SignalViewer && !this.props.logs ? 'active-tab' : null}
             onClick={e => {
               if (this.props.debugPane) {
                 e.stopPropagation();
