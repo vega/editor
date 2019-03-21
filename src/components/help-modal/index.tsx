@@ -9,10 +9,10 @@ const pjson = require('../../../package.json');
 
 // Will generate keyboard shortcuts based on OS
 // 1. Check OS (isMac)
-// 2.Then get the shortcuts
-// 3.Map over shorcuts and render os specific
-// 4.Get shortcut , split it and map over it to render
-// 5.To add shortcuts goto utils/keyboardShortcuts.ts , changes will be reflected here
+// 2. Then get the shortcuts
+// 3. Map over shorcuts and render os specific
+// 4. Get shortcut, split it, and map over it to render
+// 5. To add shortcuts go to utils/keyboardShortcuts.ts, changes will be reflected here
 const keyBoardShortcuts = shortcuts.map(shortcut => {
   return isMac() ? (
     <li>
