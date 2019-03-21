@@ -33,7 +33,7 @@ export default class SignalRow extends React.Component<Props, State> {
   public getValue(signalKey) {
     let returnValue = '';
     const currentValue = this.props.view.signal(signalKey);
-    if (typeof currentValue === 'object') {
+    if (currentValue && typeof currentValue === 'object') {
       Object.keys(currentValue).map(value => {
         returnValue += `${value}: ${currentValue[value]}, `;
       });

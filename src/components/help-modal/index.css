@@ -50,6 +50,7 @@ kbd {
   line-height: 10px;
   padding: 2px 5px;
   vertical-align: middle;
+  margin: 7px;
 }
 
 .link-to-docs {
@@ -79,9 +80,14 @@ kbd {
   flex-direction: row;
   font-size: small;
   position: absolute;
+  bottom: 8px;
   color: #777;
 }
 
 .version-viewer > div {
   margin: 10px;
+}
+
+.note {
+  margin: 22px;
 }
