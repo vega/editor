@@ -1,7 +1,7 @@
 const shortcuts = [
   {
     mac: '⌘ + b',
-    text: 'Execute the code in manual mode',
+    text: 'Parse the specification and render visualization',
     windows: 'Ctrl + b',
   },
   {
@@ -11,7 +11,7 @@ const shortcuts = [
   },
   {
     mac: '⌘ + Space',
-    text: 'Open Intellisense',
+    text: 'Open Intellisense in the editor',
     windows: 'Ctrl + Space',
   },
   {
@@ -21,7 +21,7 @@ const shortcuts = [
   },
   {
     mac: '⌘ + f11',
-    text: 'Toggle Fullscreen Mode',
+    text: 'Toggle fullscreen mode',
     windows: 'Ctrl + f11',
   },
 ];
