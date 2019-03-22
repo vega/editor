@@ -167,6 +167,7 @@
 .specType {
   border-bottom: solid 1px #666;
   clear: left;
+  padding-bottom: 2px;
 }
 
 .itemGroup {
@@ -391,6 +392,10 @@
 .header-button svg,
 .docs-link svg {
   display: none;
+}
+
+.header-button.help svg {
+  display: block;
 }
 
 .export-buttons {

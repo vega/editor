@@ -450,7 +450,10 @@ class Header extends React.Component<Props, State> {
     );
 
     const HelpButton = (
-      <div className="header-button" onClick={() => this.setState(current => ({ ...current, helpModalOpen: true }))}>
+      <div
+        className="header-button help"
+        onClick={() => this.setState(current => ({ ...current, helpModalOpen: true }))}
+      >
         <HelpCircle className="header-icon" />
       </div>
     );
@@ -948,7 +951,6 @@ class Header extends React.Component<Props, State> {
                     </button>
                   </div>
                   <div className="modal-body">{helpModal}</div>
-                  <div className="modal-footer" />
                 </div>
               </div>
             </Portal>
