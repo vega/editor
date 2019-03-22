@@ -111,7 +111,8 @@ function parseVegaLite(
 
     validateVegaLite(spec, currLogger);
 
-    const vegaSpec = action.spec !== '{}' ? vl.compile(spec, { logger: currLogger }).spec : {};
+    // TODO: remove as any
+    const vegaSpec = action.spec !== '{}' ? vl.compile(spec, { logger: currLogger as any }).spec : {};
 
     extend = {
       ...extend,

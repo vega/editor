@@ -1,13 +1,12 @@
-import './index.css';
-
 import * as React from 'react';
-import { RefreshCw } from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
+import { debounce } from 'vega';
 import { View } from '../../constants';
 import ErrorBoundary from '../error-boundary';
 import Table from '../table';
+import './index.css';
 
 interface Props {
   view?: View;
@@ -25,11 +24,15 @@ const ROWS_PER_PAGE = 50;
 export default class DataViewer extends React.Component<Props, State> {
   public readonly state: State = initialState;
 
+  private debouncedDataChanged: () => void;
+
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
-    this.dataChanged = this.dataChanged.bind(this);
+    this.debouncedDataChanged = debounce(200, () => {
+      this.forceUpdate();
+    });
   }
 
   public handleChange(option) {
@@ -57,18 +60,18 @@ export default class DataViewer extends React.Component<Props, State> {
 
   public componentWillUnmount() {
     if (this.state.selectedData) {
-      this.props.view.removeDataListener(this.state.selectedData, this.dataChanged);
+      this.props.view.removeDataListener(this.state.selectedData, this.debouncedDataChanged);
     }
   }
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
     if (this.props.view !== prevProps.view || this.state.selectedData !== prevState.selectedData) {
       if (prevState.selectedData) {
-        prevProps.view.removeDataListener(prevState.selectedData, this.dataChanged);
+        prevProps.view.removeDataListener(prevState.selectedData, this.debouncedDataChanged);
       }
 
       if (this.state.selectedData) {
-        this.props.view.addDataListener(this.state.selectedData, this.dataChanged);
+        this.props.view.addDataListener(this.state.selectedData, this.debouncedDataChanged);
       }
     }
   }
@@ -138,9 +141,5 @@ export default class DataViewer extends React.Component<Props, State> {
         <ErrorBoundary>{table}</ErrorBoundary>
       </div>
     );
-  }
-
-  private dataChanged() {
-    this.forceUpdate();
   }
 }

@@ -3,7 +3,7 @@ import { NAVBAR } from '../../constants';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
-function mapStateToProps(state: State, ownProps) {
+function mapStateToProps(state: State) {
   return {
     view: state.view,
   };

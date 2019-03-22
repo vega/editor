@@ -4,8 +4,9 @@ import { Portal } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
+import { deepEqual } from 'vega-lite/build/src/util';
 import vegaTooltip from 'vega-tooltip';
-import { Mode, View } from '../../constants';
+import { Mode, Renderer, View } from '../../constants';
 import addProjections from '../../utils/addProjections';
 import './index.css';
 
@@ -15,14 +16,15 @@ addProjections(vega.projection);
 interface Props {
   vegaSpec?: object;
   vegaLiteSpec?: object;
-  renderer?: string;
+  renderer?: Renderer;
   mode?: Mode;
   baseURL?: string;
   history?: any;
   editorString?: string;
   location?: any;
+  view: View;
 
-  setView: (val: any) => void;
+  setView: (view: View) => void;
 }
 
 const defaultState = { fullscreen: false };
@@ -34,7 +36,6 @@ const KEYCODES = {
 };
 
 class Editor extends React.Component<Props, State> {
-  public static view: View;
   public static pathname: string;
   public readonly state: State = defaultState;
 
@@ -69,8 +70,8 @@ class Editor extends React.Component<Props, State> {
     }
   }
   // Initialize the view instance
-  public initView(props) {
-    const runtime = vega.parse(props.vegaSpec);
+  public initView() {
+    const runtime = vega.parse(this.props.vegaSpec);
 
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
@@ -88,36 +89,42 @@ class Editor extends React.Component<Props, State> {
     };
 
     // finalize previous view so that memory can be freed
-    if (Editor.view) {
-      Editor.view.finalize();
+    if (this.props.view) {
+      this.props.view.finalize();
     }
 
-    Editor.view = new vega.View(runtime, {
+    const view = new vega.View(runtime, {
       loader,
       logLevel: vega.Warn,
     }).hover();
+
+    (window as any).VEGA_DEBUG.view = this.props.view;
+
+    vegaTooltip(view);
+
+    this.props.setView(view);
   }
-  public renderVega(props) {
+  public renderVega() {
     // Selecting chart for rendering vega
     const chart = this.state.fullscreen ? (this.refs.fchart as any) : (this.refs.chart as any);
     chart.style.width = chart.getBoundingClientRect().width + 'px';
     // Parsing pathname from URL
     Editor.pathname = window.location.hash.split('#')[1];
 
-    Editor.view
-      .renderer(props.renderer)
-      .initialize(chart)
-      .run();
-
     chart.style.width = 'auto';
 
-    vegaTooltip(Editor.view);
+    if (!this.props.view) {
+      return;
+    }
 
-    (window as any).VEGA_DEBUG.view = Editor.view;
+    this.props.view
+      .renderer(this.props.renderer)
+      .initialize(chart)
+      .runAsync();
   }
   public componentDidMount() {
-    this.initView(this.props);
-    this.renderVega(this.props);
+    this.initView();
+    this.renderVega();
     // Add Event Listener to cntrl+f11 key
     document.addEventListener('keydown', e => {
       // Keycode of f11 is 122
@@ -137,20 +144,16 @@ class Editor extends React.Component<Props, State> {
     if (params[params.length - 1] === 'view') {
       this.setState({ fullscreen: true });
     }
-    this.props.setView(Editor.view);
   }
   public componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.vegaSpec !== this.props.vegaSpec ||
-      prevProps.vegaLiteSpec !== this.props.vegaLiteSpec ||
+      !deepEqual(prevProps.vegaSpec, this.props.vegaSpec) ||
+      !deepEqual(prevProps.vegaLiteSpec, this.props.vegaLiteSpec) ||
       prevProps.baseURL !== this.props.baseURL
     ) {
-      this.initView(this.props);
+      this.initView();
     }
-    this.renderVega(this.props);
-    if (prevProps.editorString !== this.props.editorString) {
-      this.props.setView(Editor.view);
-    }
+    this.renderVega();
   }
   public componentWillUnmount() {
     // Remove listener to event keydown

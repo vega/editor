@@ -1,15 +1,14 @@
-import './index.css';
-
 import stringify from 'json-stringify-pretty-compact';
 import LZString from 'lz-string';
 import Monaco from 'monaco-editor';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { withRouter } from 'react-router-dom';
+import { debounce } from 'vega';
 import parser from 'vega-schema-url-parser';
-import addMarkdownProps from '../../../utils/markdownProps';
-
 import { Mode } from '../../../constants';
+import addMarkdownProps from '../../../utils/markdownProps';
+import './index.css';
 
 const vegaLiteSchema = require('vega-lite/build/vega-lite-schema.json');
 const vegaSchema = require('vega/build/vega-schema.json');
@@ -31,26 +30,6 @@ const schemas = {
     },
   ],
 };
-
-function debounce(func, wait, immediate?) {
-  let timeout;
-  return function() {
-    const context = this;
-    const args = arguments;
-    const later = () => {
-      timeout = null;
-      if (!immediate) {
-        func.apply(context, args);
-      }
-    };
-    const callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) {
-      func.apply(context, args);
-    }
-  };
-}
 
 interface Props {
   format?: boolean;
@@ -206,7 +185,7 @@ class Editor extends React.Component<Props, {}> {
             wordWrap: 'on',
           }}
           value={this.props.value}
-          onChange={debounce(this.handleEditorChange, 700)}
+          onChange={debounce(700, this.handleEditorChange)}
           editorWillMount={this.editorWillMount}
           editorDidMount={this.editorDidMount}
         />
