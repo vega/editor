@@ -1,11 +1,7 @@
 import React from 'react';
-
 import { View } from '../../constants';
-import SignalRow from '../signal';
-
 import './index.css';
-
-const KEY = '_signals';
+import SignalRow from './signalRow';
 
 interface Props {
   view?: View;
@@ -24,7 +20,7 @@ export default class SignalViewer extends React.Component<Props> {
               <th>Signal</th>
               <th>Value</th>
             </tr>
-            {Object.keys(this.props.view[KEY]).map(signal => (
+            {Object.keys(this.props.view['_signals' as any]).map(signal => (
               <SignalRow key={signal} signal={signal} view={this.props.view} />
             ))}
           </tbody>

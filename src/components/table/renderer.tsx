@@ -8,8 +8,8 @@ interface Props {
   data: any[];
 }
 
-const MAX_DEPTH = 2;
-const MAX_LENGTH = 50;
+const MAX_DEPTH = 3;
+const MAX_LENGTH = 120;
 
 export default class Table extends React.PureComponent<Props> {
   public render() {
@@ -20,8 +20,8 @@ export default class Table extends React.PureComponent<Props> {
         let tooLong = false;
         let formatted = '';
         if (!isDate(row[field])) {
-          tooLong = this.formatValue(row[field]).tooLong;
-          formatted = this.formatValue(row[field]).formatted;
+          tooLong = formatValueLong(row[field]).tooLong;
+          formatted = formatValueLong(row[field]).formatted;
         } else {
           tooLong = false;
           formatted = new Date(row[field]).toUTCString();
@@ -52,21 +52,13 @@ export default class Table extends React.PureComponent<Props> {
       </div>
     );
   }
-  private escapeHTML(data: string | number) {
-    return String(data)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+}
+
+export function formatValueLong(value: any) {
+  const formatted = formatValue(value, d => String(d), MAX_DEPTH);
+  if (formatted.length > MAX_LENGTH) {
+    return { formatted: null, tooLong: true };
   }
 
-  private formatValue(value: any) {
-    const formatted = formatValue(value, this.escapeHTML, MAX_DEPTH);
-    if (formatted.length > MAX_LENGTH) {
-      return { formatted: null, tooLong: true };
-    }
-
-    return { formatted, tooLong: false };
-  }
+  return { formatted, tooLong: false };
 }

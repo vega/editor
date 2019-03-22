@@ -12,6 +12,7 @@ const mapStateToProps = (state: State, ownProps) => {
     renderer: state.renderer,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
+    view: state.view,
   };
 };
 

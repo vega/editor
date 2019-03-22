@@ -21,4 +21,8 @@ export class LocalLogger {
     this.debugs.push(...args);
     return this;
   }
+
+  public error(...args) {
+    throw new Error(...args);
+  }
 }

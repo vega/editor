@@ -12,9 +12,9 @@ import configureStore from './store/configure-store';
 declare global {
   interface Window {
     VEGA_DEBUG: {
-      vega?: {};
-      view?: any; // $FixMe
-      vl?: {};
+      vega?: typeof vega;
+      view?: vega.View;
+      vl?: typeof vl;
       VEGA_VERSION?: string;
       VEGA_LITE_VERSION?: string;
     };

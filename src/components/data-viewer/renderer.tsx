@@ -1,17 +1,15 @@
-import './index.css';
-
 import * as React from 'react';
-import { RefreshCw } from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
+import { debounce } from 'vega';
 import { View } from '../../constants';
 import ErrorBoundary from '../error-boundary';
 import Table from '../table';
+import './index.css';
 
 interface Props {
   view?: View;
-  debugPane: boolean;
 }
 
 const initialState = {
@@ -26,11 +24,15 @@ const ROWS_PER_PAGE = 50;
 export default class DataViewer extends React.Component<Props, State> {
   public readonly state: State = initialState;
 
+  private debouncedDataChanged: () => void;
+
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
-    this.handleReload = this.handleReload.bind(this);
+    this.debouncedDataChanged = debounce(200, () => {
+      this.forceUpdate();
+    });
   }
 
   public handleChange(option) {
@@ -42,12 +44,36 @@ export default class DataViewer extends React.Component<Props, State> {
     this.setState({ currentPage: selected });
   }
 
-  public handleReload() {
-    this.forceUpdate();
-  }
-
   public getDatasets() {
     return Object.keys(this.props.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data);
+  }
+
+  public componentDidMount() {
+    const datasets = this.getDatasets();
+
+    if (datasets.length) {
+      this.setState({
+        selectedData: datasets[1],
+      });
+    }
+  }
+
+  public componentWillUnmount() {
+    if (this.state.selectedData) {
+      this.props.view.removeDataListener(this.state.selectedData, this.debouncedDataChanged);
+    }
+  }
+
+  public componentDidUpdate(prevProps: Props, prevState: State) {
+    if (this.props.view !== prevProps.view || this.state.selectedData !== prevState.selectedData) {
+      if (prevState.selectedData) {
+        prevProps.view.removeDataListener(prevState.selectedData, this.debouncedDataChanged);
+      }
+
+      if (this.state.selectedData) {
+        this.props.view.addDataListener(this.state.selectedData, this.debouncedDataChanged);
+      }
+    }
   }
 
   public render() {
@@ -63,15 +89,9 @@ export default class DataViewer extends React.Component<Props, State> {
       selected = datasets[0];
     }
 
-    let pagination;
+    let pagination: ReactPaginate;
 
     const data = this.props.view.data(selected) || [];
-
-    if (this.props.debugPane) {
-      this.props.view.addDataListener(selected, () => {
-        this.forceUpdate();
-      });
-    }
 
     const pageCount = Math.ceil(data.length / ROWS_PER_PAGE);
 

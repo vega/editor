@@ -1,11 +1,19 @@
-.modal-title {
-  margin: 7px;
+.help-modal ul {
+  padding-left: 0;
+}
+
+.help-modal li {
+  list-style: none;
 }
 
 .modal-header {
   margin: 0px;
   padding: 0px;
-  margin-left: 7px;
+}
+
+.help-modal .doc-link {
+  display: block;
+  margin: 1em 0;
 }
 
 .keyboard-shortcuts li {
@@ -53,41 +61,20 @@ kbd {
   margin: 7px;
 }
 
-.link-to-docs {
-  display: block;
-  padding: 8px;
-  margin-bottom: 4px;
-}
-
-.tips {
-  display: block;
-  padding: 8px;
-  margin-bottom: -1px;
-}
-
 .doc-image {
   height: 20px;
   margin: 0px 6px 0px 2px;
   vertical-align: sub;
 }
 
-.parent {
-  overflow: hidden;
-}
-
 .version-viewer {
   display: flex;
   flex-direction: row;
   font-size: small;
-  position: absolute;
-  bottom: 8px;
   color: #777;
+  margin: 2em 0;
 }
 
-.version-viewer > div {
-  margin: 10px;
-}
-
-.note {
-  margin: 22px;
+.version-viewer div {
+  margin-right: 1em;
 }
