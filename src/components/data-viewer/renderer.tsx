@@ -65,7 +65,19 @@ export default class DataViewer extends React.Component<Props, State> {
   }
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
-    if (this.props.view !== prevProps.view || this.state.selectedData !== prevState.selectedData) {
+    if (this.props.view !== prevProps.view) {
+      this.setState(initialState);
+      return;
+    }
+    if (this.state.selectedData === '') {
+      const datasets = this.getDatasets();
+      if (datasets.length) {
+        this.setState({
+          selectedData: datasets[1],
+        });
+      }
+    }
+    if (this.state.selectedData !== '' && this.state.selectedData !== prevState.selectedData) {
       if (prevState.selectedData) {
         prevProps.view.removeDataListener(prevState.selectedData, this.debouncedDataChanged);
       }
