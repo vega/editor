@@ -30,7 +30,7 @@ export default class DataViewer extends React.Component<Props, State> {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
-    this.debouncedDataChanged = debounce(200, () => {
+    this.debouncedDataChanged = debounce(100, () => {
       this.forceUpdate();
     });
   }
@@ -48,14 +48,19 @@ export default class DataViewer extends React.Component<Props, State> {
     return Object.keys(this.props.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data);
   }
 
-  public componentDidMount() {
+  public setDefaultDataset() {
     const datasets = this.getDatasets();
 
     if (datasets.length) {
       this.setState({
+        currentPage: 0,
         selectedData: datasets[1],
       });
     }
+  }
+
+  public componentDidMount() {
+    this.setDefaultDataset();
   }
 
   public componentWillUnmount() {
@@ -65,14 +70,20 @@ export default class DataViewer extends React.Component<Props, State> {
   }
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
-    if (this.props.view !== prevProps.view || this.state.selectedData !== prevState.selectedData) {
+    if (this.props.view !== prevProps.view) {
+      // a new view has different dataset so let's reset everything
+      this.setState(initialState);
+      return;
+    }
+
+    if (this.state.selectedData === '') {
+      this.setDefaultDataset();
+    } else if (this.state.selectedData !== prevState.selectedData) {
       if (prevState.selectedData) {
-        prevProps.view.removeDataListener(prevState.selectedData, this.debouncedDataChanged);
+        this.props.view.removeDataListener(prevState.selectedData, this.debouncedDataChanged);
       }
 
-      if (this.state.selectedData) {
-        this.props.view.addDataListener(this.state.selectedData, this.debouncedDataChanged);
-      }
+      this.props.view.addDataListener(this.state.selectedData, this.debouncedDataChanged);
     }
   }
 
