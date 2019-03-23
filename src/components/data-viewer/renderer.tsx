@@ -48,14 +48,19 @@ export default class DataViewer extends React.Component<Props, State> {
     return Object.keys(this.props.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data);
   }
 
-  public componentDidMount() {
+  public setDefaultDataset() {
     const datasets = this.getDatasets();
 
     if (datasets.length) {
       this.setState({
+        currentPage: 0,
         selectedData: datasets[1],
       });
     }
+  }
+
+  public componentDidMount() {
+    this.setDefaultDataset();
   }
 
   public componentWillUnmount() {
@@ -70,12 +75,7 @@ export default class DataViewer extends React.Component<Props, State> {
       return;
     }
     if (this.state.selectedData === '') {
-      const datasets = this.getDatasets();
-      if (datasets.length) {
-        this.setState({
-          selectedData: datasets[1],
-        });
-      }
+      this.setDefaultDataset();
     }
     if (this.state.selectedData !== '' && this.state.selectedData !== prevState.selectedData) {
       if (prevState.selectedData) {
