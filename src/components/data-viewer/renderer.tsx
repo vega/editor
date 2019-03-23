@@ -80,10 +80,7 @@ export default class DataViewer extends React.Component<Props, State> {
       if (prevState.selectedData) {
         prevProps.view.removeDataListener(prevState.selectedData, this.debouncedDataChanged);
       }
-
-      if (this.state.selectedData) {
-        this.props.view.addDataListener(this.state.selectedData, this.debouncedDataChanged);
-      }
+      this.props.view.addDataListener(this.state.selectedData, this.debouncedDataChanged);
     }
   }
 
