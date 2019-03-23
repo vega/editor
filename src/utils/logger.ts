@@ -1,4 +1,6 @@
-export class LocalLogger {
+import { LoggerInterface } from 'vega';
+
+export class LocalLogger implements LoggerInterface {
   private readonly warns = [];
   private readonly infos = [];
   private readonly debugs = [];
@@ -7,22 +9,23 @@ export class LocalLogger {
     return this;
   }
 
-  public warn(...args) {
+  public warn(...args: any[]) {
     this.warns.push(...args);
     return this;
   }
 
-  public info(...args) {
+  public info(...args: any[]) {
     this.infos.push(...args);
     return this;
   }
 
-  public debug(...args) {
+  public debug(...args: any[]) {
     this.debugs.push(...args);
     return this;
   }
 
-  public error(...args) {
+  public error(...args: any[]) {
     throw new Error(...args);
+    return this;
   }
 }
