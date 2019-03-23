@@ -76,8 +76,7 @@ export default class DataViewer extends React.Component<Props, State> {
     }
     if (this.state.selectedData === '') {
       this.setDefaultDataset();
-    }
-    if (this.state.selectedData !== '' && this.state.selectedData !== prevState.selectedData) {
+    } else if (this.state.selectedData !== prevState.selectedData) {
       if (prevState.selectedData) {
         prevProps.view.removeDataListener(prevState.selectedData, this.debouncedDataChanged);
       }
