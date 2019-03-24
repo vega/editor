@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-
+import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
@@ -10,15 +10,14 @@ export function mapStateToProps(state: State, ownProps) {
   };
 }
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    logError: err => {
-      dispatch(EditorActions.logError(err));
+export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      logError: EditorActions.logError,
+      toggleDebugPane: EditorActions.toggleDebugPane,
     },
-    toggleDebugPane: () => {
-      dispatch(EditorActions.toggleDebugPane());
-    },
-  };
+    dispatch
+  );
 }
 
 export default connect(

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
+import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../../actions/editor';
 import { NAVBAR } from '../../../constants/consts';
 
@@ -87,18 +87,15 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    showLogs: val => {
-      dispatch(EditorActions.showLogs(val));
+export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      showLogs: EditorActions.showLogs,
+      toggleDebugPane: EditorActions.toggleDebugPane,
+      toggleNavbar: EditorActions.toggleNavbar,
     },
-    toggleDebugPane: () => {
-      dispatch(EditorActions.toggleDebugPane());
-    },
-    toggleNavbar: val => {
-      dispatch(EditorActions.toggleNavbar(val));
-    },
-  };
+    dispatch
+  );
 }
 
 export default withRouter(

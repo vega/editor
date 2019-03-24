@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { bindActionCreators, Dispatch } from 'redux';
 
 import * as EditorActions from '../../../actions/editor';
 
@@ -59,15 +60,14 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    toggleCompiledVegaSpec: () => {
-      dispatch(EditorActions.toggleCompiledVegaSpec());
+export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
+      updateVegaSpec: EditorActions.updateVegaSpec,
     },
-    updateVegaSpec: val => {
-      dispatch(EditorActions.updateVegaSpec(val));
-    },
-  };
+    dispatch
+  );
 }
 
 export default withRouter(

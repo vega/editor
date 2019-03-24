@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { View } from 'vega';
 import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
@@ -16,12 +17,13 @@ export function mapStateToProps(state: State, ownProps) {
   };
 }
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    setView: (val: View) => {
-      dispatch(EditorActions.setView(val));
+export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      setView: EditorActions.setView,
     },
-  };
+    dispatch
+  );
 }
 
 export default connect(

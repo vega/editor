@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-
+import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
@@ -15,21 +15,16 @@ export function mapStateToProps(state: State, ownProps) {
   };
 }
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    setDebugPaneSize: val => {
-      dispatch(EditorActions.setDebugPaneSize(val));
+export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      setDebugPaneSize: EditorActions.setDebugPaneSize,
+      showLogs: EditorActions.showLogs,
+      toggleDebugPane: EditorActions.toggleDebugPane,
+      toggleNavbar: EditorActions.toggleNavbar,
     },
-    showLogs: val => {
-      dispatch(EditorActions.showLogs(val));
-    },
-    toggleDebugPane: () => {
-      dispatch(EditorActions.toggleDebugPane());
-    },
-    toggleNavbar: val => {
-      dispatch(EditorActions.toggleNavbar(val));
-    },
-  };
+    dispatch
+  );
 }
 
 export default connect(
