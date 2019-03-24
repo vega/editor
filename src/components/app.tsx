@@ -49,9 +49,6 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
         if (data.renderer) {
           this.props.setRenderer(data.renderer);
         }
-        if (data.state) {
-          this.props.view.setState(data.state);
-        }
       },
       false
     );
