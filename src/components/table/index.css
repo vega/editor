@@ -53,17 +53,3 @@
 .data-table tr:nth-child(even) {
   background-color: #f6f8fa;
 }
-
-.data-table::-webkit-scrollbar {
-  width: 7px; /* for vertical scrollbars */
-  height: 7px; /* for horizontal scrollbars */
-}
-
-.data-table::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.data-table::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
-}

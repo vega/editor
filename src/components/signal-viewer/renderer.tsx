@@ -1,8 +1,10 @@
 import React from 'react';
 import * as vega from 'vega';
 import { mapStateToProps } from '.';
-import './index.css';
 import SignalRow from './signalRow';
+
+import '../table/index.css';
+import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
@@ -18,7 +20,7 @@ export default class SignalViewer extends React.Component<Props> {
   public render() {
     return (
       <div className="signal-viewer">
-        <div className="signal-table">
+        <div className="data-table">
           <table>
             <tbody>
               <tr>
