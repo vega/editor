@@ -1,10 +1,10 @@
 .signal-viewer {
-  margin: 10px 20px 15px 20px;
+  margin: 10px;
   width: fit-content;
   max-width: 100%;
-  max-height: 100%;
   font-size: 0.9em;
   overflow: auto;
+  flex: 1;
 }
 
 .signal-viewer table {

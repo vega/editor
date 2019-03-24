@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { isDate } from 'vega';
-import { formatValue } from 'vega-tooltip';
+import { isArray, isDate, isObject } from 'vega';
+import { stringify } from 'vega-tooltip';
 import './index.css';
 
 interface Props {
@@ -55,7 +55,7 @@ export default class Table extends React.PureComponent<Props> {
 }
 
 export function formatValueLong(value: any) {
-  const formatted = formatValue(value, d => String(d), MAX_DEPTH);
+  const formatted = value === undefined ? 'undefined' : stringify(value, MAX_DEPTH);
   if (formatted.length > MAX_LENGTH) {
     return { formatted: null, tooLong: true };
   }

@@ -16,6 +16,7 @@
 .error-pane {
   overflow: auto;
   width: 100%;
+  flex: 1;
 }
 
 .error-pane ul {

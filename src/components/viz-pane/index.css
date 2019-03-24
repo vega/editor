@@ -13,14 +13,15 @@
 .debug-pane {
   width: 100%;
   background: white;
+  display: flex;
+  flex-direction: column;
 }
 
 .debug-pane-header {
   position: relative;
   width: 100%;
-  height: 25px;
+  height: 30px;
   display: flex;
-  flex: 1;
   align-items: center;
   justify-content: space-between;
   background: #ebebeb;
