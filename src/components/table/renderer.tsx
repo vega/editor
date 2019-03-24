@@ -54,7 +54,7 @@ export default class Table extends React.PureComponent<Props> {
   }
 }
 
-export function formatValueLong(value: any) {
+function formatValueLong(value: any) {
   const formatted = value === undefined ? 'undefined' : stringify(value, MAX_DEPTH);
   if (formatted.length > MAX_LENGTH) {
     return { formatted: null, tooLong: true };

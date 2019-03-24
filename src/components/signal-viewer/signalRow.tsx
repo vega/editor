@@ -1,41 +1,31 @@
 import React from 'react';
-import { isDate } from 'vega';
+import { isArray, isObject, isString } from 'vega';
 import { View } from '../../constants';
-import { formatValueLong } from '../table/renderer';
 
+const MAX_LENGTH = 120;
 interface Props {
   view: View;
   signal: string;
 }
 
-interface State {
-  signalValue: string;
-}
-
-export default class SignalRow extends React.Component<Props, State> {
+export default class SignalRow extends React.Component<Props> {
   constructor(props) {
     super(props);
-    this.state = {
-      signalValue: this.props.view.signal(this.props.signal),
-    };
-    this.signalHandler = this.signalHandler.bind(this);
+    this.signalHandle = this.signalHandle.bind(this);
+  }
+  public signalHandle() {
+    this.forceUpdate();
   }
   public componentDidMount() {
-    this.props.view.addSignalListener(this.props.signal, this.signalHandler);
+    this.props.view.addSignalListener(this.props.signal, this.signalHandle);
   }
   public componentWillUnmount() {
-    this.props.view.removeSignalListener(this.props.signal, this.signalHandler);
+    this.props.view.removeSignalListener(this.props.signal, this.signalHandle);
   }
   public render() {
-    let tooLong = false;
-    let formatted = '';
-    if (!isDate(this.state.signalValue)) {
-      tooLong = formatValueLong(this.state.signalValue).tooLong;
-      formatted = formatValueLong(this.state.signalValue).formatted;
-    } else {
-      tooLong = false;
-      formatted = new Date(this.state.signalValue).toUTCString();
-    }
+    const value = formatValueLong(this.props.view.signal(this.props.signal));
+    const returnValue = value.returnValue;
+    const tooLong = value.tooLong;
     if (tooLong) {
       return (
         <tr>
@@ -49,15 +39,44 @@ export default class SignalRow extends React.Component<Props, State> {
       return (
         <tr>
           <td>{this.props.signal}</td>
-          <td key={this.props.signal}>{formatted}</td>
+          <td key={this.props.signal}>{returnValue}</td>
         </tr>
       );
     }
   }
+}
 
-  private signalHandler(signalName: string, currentValue) {
-    this.setState({
-      signalValue: currentValue,
+function formatValueLong(signalValue) {
+  let returnValue = '';
+  let tooLong = false;
+  if (isArray(signalValue)) {
+    returnValue = `[${signalValue.map(value => (isString(value) ? value : JSON.stringify(value))).join(', ')}]`;
+    tooLong = returnValue.length > MAX_LENGTH;
+  } else if (isObject(signalValue)) {
+    Object.keys(signalValue).map(key => {
+      if (isArray(signalValue[key])) {
+        let objValue = '';
+        signalValue[key].map(obj => {
+          Object.keys(obj).map(objKey => {
+            objValue += `(${key}: ${obj[objKey]})`;
+          });
+        });
+        returnValue += `${key}: ${objValue}`;
+      } else {
+        returnValue += `${key}: ${signalValue[key]}, `;
+      }
     });
+    returnValue = returnValue.slice(0, returnValue.length - 2);
+    tooLong = returnValue.length > MAX_LENGTH;
+  } else if (signalValue === null || signalValue === undefined) {
+    returnValue = signalValue;
+    tooLong = false;
+  } else {
+    returnValue = signalValue.toString();
+    tooLong = returnValue.length > MAX_LENGTH;
   }
+  return {
+    returnValue,
+    tooLong,
+  };
 }
