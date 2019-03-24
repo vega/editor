@@ -3,6 +3,7 @@ import './index.css';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import SplitPane from 'react-split-pane';
+import { bindActionCreators, Dispatch } from 'redux';
 
 import * as EditorActions from '../../actions/editor';
 import { LAYOUT, Mode } from '../../constants';
@@ -96,15 +97,14 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    setCompiledVegaPaneSize: val => {
-      dispatch(EditorActions.setCompiledVegaPaneSize(val));
+export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      setCompiledVegaPaneSize: EditorActions.setCompiledVegaPaneSize,
+      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
     },
-    toggleCompiledVegaSpec: () => {
-      dispatch(EditorActions.toggleCompiledVegaSpec());
-    },
-  };
+    dispatch
+  );
 }
 
 export default connect(

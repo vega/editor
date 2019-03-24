@@ -4,6 +4,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import SplitPane from 'react-split-pane';
+import { bindActionCreators, Dispatch } from 'redux';
 import { hash, mergeDeep } from 'vega-lite/build/src/util';
 import * as EditorActions from '../actions/editor';
 import { LAYOUT, Mode } from '../constants';
@@ -152,36 +153,21 @@ function mapStateToProps(state: State) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    setBaseUrl: val => {
-      dispatch(EditorActions.setBaseUrl(val));
+function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      setBaseUrl: EditorActions.setBaseUrl,
+      setGistVegaLiteSpec: EditorActions.setGistVegaLiteSpec,
+      setGistVegaSpec: EditorActions.setGistVegaSpec,
+      setModeOnly: EditorActions.setModeOnly,
+      setRenderer: EditorActions.setRenderer,
+      setVegaExample: EditorActions.setVegaExample,
+      setVegaLiteExample: EditorActions.setVegaLiteExample,
+      updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
+      updateVegaSpec: EditorActions.updateVegaSpec,
     },
-    setGistVegaLiteSpec: (gist: string, spec) => {
-      dispatch(EditorActions.setGistVegaLiteSpec(gist, spec));
-    },
-    setGistVegaSpec: (gist: string, spec) => {
-      dispatch(EditorActions.setGistVegaSpec(gist, spec));
-    },
-    setModeOnly: mode => {
-      dispatch(EditorActions.setModeOnly(mode));
-    },
-    setRenderer: val => {
-      dispatch(EditorActions.setRenderer(val));
-    },
-    setVegaExample: (example: string, val) => {
-      dispatch(EditorActions.setVegaExample(example, val));
-    },
-    setVegaLiteExample: (example: string, val) => {
-      dispatch(EditorActions.setVegaLiteExample(example, val));
-    },
-    updateVegaLiteSpec: val => {
-      dispatch(EditorActions.updateVegaLiteSpec(val));
-    },
-    updateVegaSpec: val => {
-      dispatch(EditorActions.updateVegaSpec(val));
-    },
-  };
+    dispatch
+  );
 }
 
 export default withRouter(
