@@ -1,12 +1,10 @@
 import React from 'react';
 import * as vega from 'vega';
-import { View } from '../../constants';
+import { mapStateToProps } from '.';
 import './index.css';
 import SignalRow from './signalRow';
 
-interface Props {
-  view?: View;
-}
+type Props = ReturnType<typeof mapStateToProps>;
 
 export default class SignalViewer extends React.Component<Props> {
   constructor(props) {

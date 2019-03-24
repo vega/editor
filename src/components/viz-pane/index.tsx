@@ -4,7 +4,7 @@ import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
-function mapStateToProps(state: State, ownProps) {
+export function mapStateToProps(state: State, ownProps) {
   return {
     debugPane: state.debugPane,
     debugPaneSize: state.debugPaneSize,
@@ -15,7 +15,7 @@ function mapStateToProps(state: State, ownProps) {
   };
 }
 
-const mapDispatchToProps = dispatch => {
+export function mapDispatchToProps(dispatch) {
   return {
     setDebugPaneSize: val => {
       dispatch(EditorActions.setDebugPaneSize(val));
@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(EditorActions.toggleNavbar(val));
     },
   };
-};
+}
 
 export default connect(
   mapStateToProps,

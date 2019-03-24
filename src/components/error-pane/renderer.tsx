@@ -1,11 +1,9 @@
 import './index.css';
 
 import * as React from 'react';
+import { mapStateToProps } from '.';
 
-interface Props {
-  error;
-  warningsLogger;
-}
+type Props = ReturnType<typeof mapStateToProps>;
 
 export default class ErrorPane extends React.Component<Props> {
   public render() {

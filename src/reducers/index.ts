@@ -158,7 +158,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         mode: action.mode,
         parse: false,
         selectedExample: null,
-        vegaLiteSpec: {},
+        vegaLiteSpec: null,
         vegaSpec: {},
         view: null,
         warningsCount: 0,

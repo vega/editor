@@ -1,5 +1,3 @@
-import './app.css';
-
 import { text } from 'd3-request';
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
@@ -7,15 +5,16 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import { hash, mergeDeep } from 'vega-lite/build/src/util';
-
 import * as EditorActions from '../actions/editor';
 import { LAYOUT, Mode } from '../constants';
 import { NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC } from '../constants/consts';
+import { State } from '../constants/default-state';
+import './app.css';
 import Header from './header';
 import InputPanel from './input-panel';
 import VizPane from './viz-pane';
 
-type Props = ReturnType<typeof mapDispatchToProps>;
+type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
 
 class App extends React.Component<Props & { match: any; location: any; showExample?: boolean }> {
   public componentDidMount() {
@@ -49,6 +48,9 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
         }
         if (data.renderer) {
           this.props.setRenderer(data.renderer);
+        }
+        if (data.state) {
+          this.props.view.setState(data.state);
         }
       },
       false
@@ -147,7 +149,13 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
   }
 }
 
-const mapDispatchToProps = dispatch => {
+function mapStateToProps(state: State) {
+  return {
+    view: state.view,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
   return {
     setBaseUrl: val => {
       dispatch(EditorActions.setBaseUrl(val));
@@ -177,11 +185,11 @@ const mapDispatchToProps = dispatch => {
       dispatch(EditorActions.updateVegaSpec(val));
     },
   };
-};
+}
 
 export default withRouter(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(App)
 );

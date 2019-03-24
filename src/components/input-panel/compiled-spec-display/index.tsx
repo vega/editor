@@ -6,9 +6,7 @@ import { connect } from 'react-redux';
 import { State } from '../../../constants/default-state';
 import CompiledSpecDisplayHeader from '../compiled-spec-header';
 
-interface Props {
-  value;
-}
+type Props = ReturnType<typeof mapStateToProps>;
 
 class CompiledSpecDisplay extends React.PureComponent<Props> {
   public render() {
@@ -34,7 +32,6 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
 
 function mapStateToProps(state: State, ownProps) {
   return {
-    compiledVegaSpec: state.compiledVegaSpec,
     value: state.vegaSpec,
   };
 }

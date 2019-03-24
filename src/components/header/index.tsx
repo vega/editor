@@ -4,7 +4,7 @@ import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
-const mapStateToProps = (state: State, ownProps) => {
+export function mapStateToProps(state: State, ownProps) {
   return {
     editorString: state.editorString,
     lastPosition: state.lastPosition,
@@ -14,9 +14,9 @@ const mapStateToProps = (state: State, ownProps) => {
     vegaSpec: state.vegaSpec,
     view: state.view,
   };
-};
+}
 
-const mapDispatchToProps = dispatch => {
+export function mapDispatchToProps(dispatch) {
   return {
     exportVega: val => {
       dispatch(EditorActions.exportVega(val));
@@ -27,14 +27,14 @@ const mapDispatchToProps = dispatch => {
     parseSpec: val => {
       dispatch(EditorActions.parseSpec(val));
     },
-    setScrollPosition: position => {
+    setScrollPosition: (position: number) => {
       dispatch(EditorActions.setScrollPosition(position));
     },
     toggleAutoParse: () => {
       dispatch(EditorActions.toggleAutoParse());
     },
   };
-};
+}
 
 export default connect(
   mapStateToProps,

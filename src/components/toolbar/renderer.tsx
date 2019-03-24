@@ -1,23 +1,15 @@
-import './index.css';
-
 import * as React from 'react';
 import * as vega from 'vega';
 import * as vl from 'vega-lite';
+import { mapDispatchToProps, mapStateToProps } from '.';
 import { Mode, NAMES } from '../../constants/consts';
+import './index.css';
 
 const getVersion = (mode: Mode) => {
   return mode === Mode.Vega ? vega.version : vl.version;
 };
 
-interface Props {
-  mode;
-  warningsLogger;
-  error?: Error;
-  renderer?: string;
-
-  setRenderer: (val: any) => void;
-  toggleDebugPane: () => void;
-}
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export default class Toolbar extends React.Component<Props> {
   public showErrorAndWarnings() {

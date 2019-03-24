@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-
+import { View } from 'vega';
 import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
-const mapStateToProps = (state: State, ownProps) => {
+export function mapStateToProps(state: State, ownProps) {
   return {
     baseURL: state.baseURL,
     editorString: state.editorString,
@@ -14,15 +14,15 @@ const mapStateToProps = (state: State, ownProps) => {
     vegaSpec: state.vegaSpec,
     view: state.view,
   };
-};
+}
 
-const mapDispatchToProps = dispatch => {
+export function mapDispatchToProps(dispatch) {
   return {
-    setView: val => {
+    setView: (val: View) => {
       dispatch(EditorActions.setView(val));
     },
   };
-};
+}
 
 export default connect(
   mapStateToProps,

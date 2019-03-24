@@ -1,13 +1,8 @@
+import * as React from 'react';
+import { mapDispatchToProps, mapStateToProps } from '.';
 import './index.css';
 
-import * as React from 'react';
-
-interface Props {
-  error?: Error;
-
-  logError?: (err: any) => void;
-  toggleDebugPane?: () => void;
-}
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export default class ErrorBoundary extends React.Component<Props> {
   public componentDidCatch(error, info) {

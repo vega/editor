@@ -1,9 +1,9 @@
 import { LoggerInterface } from 'vega';
 
 export class LocalLogger implements LoggerInterface {
-  private readonly warns = [];
-  private readonly infos = [];
-  private readonly debugs = [];
+  public readonly warns = [];
+  public readonly infos = [];
+  public readonly debugs = [];
 
   public level() {
     return this;

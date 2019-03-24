@@ -87,7 +87,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-const mapDispatchToProps = dispatch => {
+export function mapDispatchToProps(dispatch) {
   return {
     showLogs: val => {
       dispatch(EditorActions.showLogs(val));
@@ -99,7 +99,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(EditorActions.toggleNavbar(val));
     },
   };
-};
+}
 
 export default withRouter(
   connect(

@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-
+import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../../actions/editor';
 import { State } from '../../../constants/default-state';
 import Renderer from './renderer';
 
-const mapStateToProps = (state: State, ownProps) => {
+export function mapStateToProps(state: State, ownProps) {
   return {
     format: state.format,
     gist: state.gist,
@@ -14,30 +14,21 @@ const mapStateToProps = (state: State, ownProps) => {
     selectedExample: state.selectedExample,
     value: state.editorString,
   };
-};
+}
 
-const mapDispatchToProps = dispatch => {
-  return {
-    formatSpec: val => {
-      dispatch(EditorActions.formatSpec(val));
+export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      formatSpec: EditorActions.formatSpec,
+      logError: EditorActions.logError,
+      parseSpec: EditorActions.parseSpec,
+      updateEditorString: EditorActions.updateEditorString,
+      updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
+      updateVegaSpec: EditorActions.updateVegaSpec,
     },
-    logError: err => {
-      dispatch(EditorActions.logError(err));
-    },
-    parseSpec: val => {
-      dispatch(EditorActions.parseSpec(val));
-    },
-    updateEditorString: val => {
-      dispatch(EditorActions.updateEditorString(val));
-    },
-    updateVegaLiteSpec: val => {
-      dispatch(EditorActions.updateVegaLiteSpec(val));
-    },
-    updateVegaSpec: val => {
-      dispatch(EditorActions.updateVegaSpec(val));
-    },
-  };
-};
+    dispatch
+  );
+}
 
 export default connect(
   mapStateToProps,

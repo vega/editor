@@ -10,14 +10,7 @@ const toggleStyle = {
   cursor: 'pointer',
 };
 
-interface Props {
-  value;
-  compiledVegaSpec;
-  history;
-
-  toggleCompiledVegaSpec: () => void;
-  updateVegaSpec: (value: any) => void;
-}
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
 
 class CompiledSpecDisplayHeader extends React.Component<Props> {
   constructor(props) {
@@ -66,7 +59,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-const mapDispatchToProps = dispatch => {
+export function mapDispatchToProps(dispatch) {
   return {
     toggleCompiledVegaSpec: () => {
       dispatch(EditorActions.toggleCompiledVegaSpec());
@@ -75,7 +68,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(EditorActions.updateVegaSpec(val));
     },
   };
-};
+}
 
 export default withRouter(
   connect(

@@ -6,26 +6,14 @@ import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
 import { deepEqual } from 'vega-lite/build/src/util';
 import vegaTooltip from 'vega-tooltip';
-import { Mode, Renderer, View } from '../../constants';
+import { mapDispatchToProps, mapStateToProps } from '.';
 import addProjections from '../../utils/addProjections';
 import './index.css';
 
 // Add additional projections
 addProjections(vega.projection);
 
-interface Props {
-  vegaSpec?: object;
-  vegaLiteSpec?: object;
-  renderer?: Renderer;
-  mode?: Mode;
-  baseURL?: string;
-  history?: any;
-  editorString?: string;
-  location?: any;
-  view: View;
-
-  setView: (view: View) => void;
-}
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
 
 const defaultState = { fullscreen: false };
 

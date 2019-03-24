@@ -1,3 +1,5 @@
+import { Spec } from 'vega';
+import { TopLevelSpec as VlSpec } from 'vega-lite';
 import { LocalLogger } from '../utils/logger';
 import { LAYOUT, Mode, NAVBAR, Renderer, View } from './consts';
 
@@ -20,8 +22,8 @@ export interface State {
   parse: boolean;
   renderer: Renderer;
   selectedExample: string;
-  vegaLiteSpec: any;
-  vegaSpec: any;
+  vegaLiteSpec: VlSpec;
+  vegaSpec: Spec;
   view: View;
   warningsCount: number;
   warningsLogger: LocalLogger;

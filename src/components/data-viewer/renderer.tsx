@@ -3,14 +3,12 @@ import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
 import { debounce } from 'vega';
-import { View } from '../../constants';
+import { mapStateToProps } from '.';
 import ErrorBoundary from '../error-boundary';
 import Table from '../table';
 import './index.css';
 
-interface Props {
-  view?: View;
-}
+type Props = ReturnType<typeof mapStateToProps>;
 
 const initialState = {
   currentPage: 0,

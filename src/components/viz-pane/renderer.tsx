@@ -3,6 +3,7 @@ import './index.css';
 import * as React from 'react';
 import SplitPane from 'react-split-pane';
 
+import { mapDispatchToProps, mapStateToProps } from '.';
 import { LAYOUT, NAVBAR, View } from '../../constants';
 import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
@@ -12,18 +13,7 @@ import SignalViewer from '../signal-viewer';
 import Toolbar from '../toolbar';
 import DebugPaneHeader from './debug-pane-header';
 
-interface Props {
-  debugPane?: boolean;
-  debugPaneSize?: number;
-  error: Error;
-  logs?: boolean;
-  view?: View;
-  navItem?: string;
-
-  setDebugPaneSize: (val: any) => void;
-  showLogs: (val: any) => void;
-  toggleDebugPane: () => void;
-}
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export default class VizPane extends React.Component<Props> {
   constructor(props) {

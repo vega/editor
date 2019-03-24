@@ -6,6 +6,7 @@ import MonacoEditor from 'react-monaco-editor';
 import { withRouter } from 'react-router-dom';
 import { debounce } from 'vega';
 import parser from 'vega-schema-url-parser';
+import { mapDispatchToProps, mapStateToProps } from '.';
 import { Mode } from '../../../constants';
 import addMarkdownProps from '../../../utils/markdownProps';
 import './index.css';
@@ -31,22 +32,7 @@ const schemas = {
   ],
 };
 
-interface Props {
-  format?: boolean;
-  history: any;
-  manualParse?: boolean;
-  match: any;
-  mode: Mode;
-  parse?: boolean;
-  value?: string;
-
-  parseSpec: (val: any) => void;
-  formatSpec: (val: any) => void;
-  logError: (err: any) => void;
-  updateEditorString: (val: any) => void;
-  updateVegaLiteSpec: (val: any) => void;
-  updateVegaSpec: (val: any) => void;
-}
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any; match: any };
 
 const KEYCODES = {
   B: 66,

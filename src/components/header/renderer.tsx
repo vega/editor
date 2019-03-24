@@ -22,28 +22,15 @@ import {
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
-import { Mode, View } from '../../constants';
+import { mapDispatchToProps, mapStateToProps } from '.';
+import { Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 import HelpModal from '../help-modal/index';
 import './index.css';
 
-interface Props {
-  editorString?: string;
-  history: any;
-  lastPosition: number;
-  manualParse?: boolean;
-  mode: Mode;
-  view: View;
-  vegaSpec?: object;
-  vegaLiteSpec?: object;
-  showExample: boolean;
-  exportVega: (val: any) => void;
-  formatSpec: (val: any) => void;
-  parseSpec: (val: any) => void;
-  toggleAutoParse: () => void;
-  setScrollPosition: (position: number) => void;
-}
+type Props = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> & { history: any; showExample: boolean };
 
 interface State {
   copied: boolean;

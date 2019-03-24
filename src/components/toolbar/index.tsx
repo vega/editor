@@ -4,7 +4,7 @@ import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
 
-function mapStateToProps(state: State, ownProps) {
+export function mapStateToProps(state: State, ownProps) {
   return {
     error: state.error,
     mode: state.mode,
@@ -13,7 +13,7 @@ function mapStateToProps(state: State, ownProps) {
   };
 }
 
-const mapDispatchToProps = dispatch => {
+export function mapDispatchToProps(dispatch) {
   return {
     setRenderer: val => {
       dispatch(EditorActions.setRenderer(val));
@@ -22,7 +22,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(EditorActions.toggleDebugPane());
     },
   };
-};
+}
 
 export default connect(
   mapStateToProps,

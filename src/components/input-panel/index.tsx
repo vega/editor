@@ -96,7 +96,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-const mapDispatchToProps = dispatch => {
+export function mapDispatchToProps(dispatch) {
   return {
     setCompiledVegaPaneSize: val => {
       dispatch(EditorActions.setCompiledVegaPaneSize(val));
@@ -105,7 +105,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(EditorActions.toggleCompiledVegaSpec());
     },
   };
-};
+}
 
 export default connect(
   mapStateToProps,
