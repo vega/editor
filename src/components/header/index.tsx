@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-
+import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
@@ -16,24 +16,17 @@ export function mapStateToProps(state: State, ownProps) {
   };
 }
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    exportVega: val => {
-      dispatch(EditorActions.exportVega(val));
+export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      exportVega: EditorActions.exportVega,
+      formatSpec: EditorActions.formatSpec,
+      parseSpec: EditorActions.parseSpec,
+      setScrollPosition: EditorActions.setScrollPosition,
+      toggleAutoParse: EditorActions.toggleAutoParse,
     },
-    formatSpec: val => {
-      dispatch(EditorActions.formatSpec(val));
-    },
-    parseSpec: val => {
-      dispatch(EditorActions.parseSpec(val));
-    },
-    setScrollPosition: (position: number) => {
-      dispatch(EditorActions.setScrollPosition(position));
-    },
-    toggleAutoParse: () => {
-      dispatch(EditorActions.toggleAutoParse());
-    },
-  };
+    dispatch
+  );
 }
 
 export default connect(
