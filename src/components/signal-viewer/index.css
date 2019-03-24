@@ -1,42 +1,71 @@
 .signal-viewer {
-  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 10px 20px 15px 20px;
+}
+
+.signal-table {
   width: fit-content;
   max-width: 100%;
   font-size: 0.9em;
   overflow: auto;
-  flex: 1;
+  border: 1px solid #dfe2e5;
 }
 
-.signal-viewer table {
+.signal-table table {
   max-width: 100%;
   table-layout: auto;
   border-collapse: collapse;
 }
 
-.signal-viewer th tr:first-child > * {
+.signal-table th tr:first-child > * {
   border-top: 0;
   border-bottom: 2px solid #dfe2e5;
 }
 
-.signal-viewer th {
+.signal-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.signal-table tbody > * > td:first-child,
+.signal-table th > * > th:first-child {
+  border-left: 0;
+}
+
+.signal-table tbody > * > td:last-child,
+.signal-table th > * > th:last-child {
+  border-right: 0;
+}
+
+.signal-table th {
   text-align: center;
   background: #f6f8fa;
 }
 
-.signal-viewer td,
-.signal-viewer th {
+.signal-table td,
+.signal-table th {
   min-width: 30px;
   color: #333;
   padding: 8px;
-  word-break: break-all;
+  word-break: keep-all;
   border: 1px solid #dfe2e5;
 }
 
-.signal-viewer th,
-.signal-viewer td:first-child {
-  word-break: keep-all;
+.signal-table tr:nth-child(even) {
+  background-color: #f6f8fa;
 }
 
-.signal-viewer tr:nth-child(odd) {
-  background-color: #f6f8fa;
+.signal-table::-webkit-scrollbar {
+  width: 7px; /* for vertical scrollbars */
+  height: 7px; /* for horizontal scrollbars */
+}
+
+.signal-table::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.signal-table::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
 }

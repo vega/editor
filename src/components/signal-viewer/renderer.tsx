@@ -18,17 +18,19 @@ export default class SignalViewer extends React.Component<Props> {
   public render() {
     return (
       <div className="signal-viewer">
-        <table>
-          <tbody>
-            <tr>
-              <th>Signal</th>
-              <th>Value</th>
-            </tr>
-            {this.getSignals().map(signal => (
-              <SignalRow key={signal} signal={signal} view={this.props.view} />
-            ))}
-          </tbody>
-        </table>
+        <div className="signal-table">
+          <table>
+            <tbody>
+              <tr>
+                <th>Signal</th>
+                <th>Value</th>
+              </tr>
+              {this.getSignals().map(signal => (
+                <SignalRow key={signal} signal={signal} view={this.props.view} />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }
