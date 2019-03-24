@@ -13,11 +13,14 @@ const pjson = require('../../../package.json');
 // 3. Map over shorcuts and render os specific
 // 4. Get shortcut, split it, and map over it to render
 // 5. To add shortcuts go to utils/keyboardShortcuts.ts, changes will be reflected here
+
 const keyBoardShortcuts = shortcuts.map((shortcut, i) => {
   return (
     <li key={i}>
-      {(isMac() ? shortcut.mac : shortcut.windows).split(' ').map(key => (key === '+' ? '+' : <kbd>{key}</kbd>))}:{' '}
-      {shortcut.text}
+      {(isMac() ? shortcut.mac : shortcut.windows)
+        .split(' ')
+        .map(key => (key === '+' ? '+' : <kbd key={`${key}${i}`}>{key}</kbd>))}
+      : {shortcut.text}
     </li>
   );
 });
