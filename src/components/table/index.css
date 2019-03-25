@@ -7,7 +7,7 @@ table.editor-table {
 }
 
 table.editor-table thead tr:first-child > * {
-  border-bottom: 2px solid #dfe2e5;
+  border-bottom: 2px solid var(--light-color);
 }
 
 table.editor-table th {
@@ -21,7 +21,7 @@ table.editor-table th {
   color: #333;
   padding: 8px;
   word-break: break-all;
-  border: 1px solid #dfe2e5;
+  border: 1px solid var(--light-color);
 }
 
 table.editor-table th,
@@ -31,18 +31,4 @@ table.editor-table td:first-child {
 
 table.editor-table tr:nth-child(even) {
   background-color: #f6f8fa;
-}
-
-table.editor-table::-webkit-scrollbar {
-  width: 7px; /* for vertical scrollbars */
-  height: 7px; /* for horizontal scrollbars */
-}
-
-table.editor-table::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-table.editor-table::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
 }
