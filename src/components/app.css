@@ -116,3 +116,19 @@ button:focus {
   background: var(--primary-dark-color);
   border-radius: 8px;
 }
+
+.reset {
+  width: 50%;
+  min-width: 300px;
+  max-width: 600px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.reset button {
+  padding: 10px;
+  font-size: 1.1em;
+}
