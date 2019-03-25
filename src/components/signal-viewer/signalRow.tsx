@@ -20,6 +20,15 @@ export default class SignalRow extends React.Component<Props, State> {
     };
     this.signalHandler = this.signalHandler.bind(this);
   }
+  public componentDidUpdate(prevProps) {
+    if (prevProps.view !== this.props.view) {
+      prevProps.view.removeSignalListener(prevProps.signal, this.signalHandler);
+      this.props.view.addSignalListener(this.props.signal, this.signalHandler);
+      this.setState({
+        signalValue: this.props.view.signal(this.props.signal),
+      });
+    }
+  }
   public componentDidMount() {
     this.props.view.addSignalListener(this.props.signal, this.signalHandler);
   }
