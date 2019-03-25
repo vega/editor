@@ -42,7 +42,7 @@ export default class Table extends React.PureComponent<Props> {
     });
 
     return (
-      <div className="data-table">
+      <div className="editor-table">
         <table>
           <thead>
             <tr>{headerNodes}</tr>

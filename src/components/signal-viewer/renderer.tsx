@@ -20,7 +20,7 @@ export default class SignalViewer extends React.Component<Props> {
   public render() {
     return (
       <div className="signal-viewer">
-        <div className="data-table">
+        <div className="editor-table">
           <table>
             <tbody>
               <tr>
