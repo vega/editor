@@ -1,43 +1,22 @@
-.data-table {
-  width: fit-content;
-  max-width: 100%;
+table.editor-table {
   font-size: 0.9em;
-  overflow: auto;
-  border: 1px solid #dfe2e5;
-}
-
-.data-table table {
+  width: fit-content;
   max-width: 100%;
   table-layout: auto;
   border-collapse: collapse;
 }
 
-.data-table thead tr:first-child > * {
-  border-top: 0;
+table.editor-table thead tr:first-child > * {
   border-bottom: 2px solid #dfe2e5;
 }
 
-.data-table tbody tr:last-child > * {
-  border-bottom: 0;
-}
-
-.data-table tbody > * > td:first-child,
-.data-table thead > * > th:first-child {
-  border-left: 0;
-}
-
-.data-table tbody > * > td:last-child,
-.data-table thead > * > th:last-child {
-  border-right: 0;
-}
-
-.data-table th {
+table.editor-table th {
   text-align: center;
   background: #f6f8fa;
 }
 
-.data-table td,
-.data-table th {
+table.editor-table td,
+table.editor-table th {
   min-width: 30px;
   color: #333;
   padding: 8px;
@@ -45,25 +24,25 @@
   border: 1px solid #dfe2e5;
 }
 
-.data-table th,
-.data-table td:first-child {
+table.editor-table th,
+table.editor-table td:first-child {
   word-break: keep-all;
 }
 
-.data-table tr:nth-child(even) {
+table.editor-table tr:nth-child(even) {
   background-color: #f6f8fa;
 }
 
-.data-table::-webkit-scrollbar {
+table.editor-table::-webkit-scrollbar {
   width: 7px; /* for vertical scrollbars */
   height: 7px; /* for horizontal scrollbars */
 }
 
-.data-table::-webkit-scrollbar-track {
+table.editor-table::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.1);
 }
 
-.data-table::-webkit-scrollbar-thumb {
+table.editor-table::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.4);
   border-radius: 10px;
 }

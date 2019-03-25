@@ -2,41 +2,6 @@
   margin: 10px;
   width: fit-content;
   max-width: 100%;
-  font-size: 0.9em;
   overflow: auto;
   flex: 1;
-}
-
-.signal-viewer table {
-  max-width: 100%;
-  table-layout: auto;
-  border-collapse: collapse;
-}
-
-.signal-viewer th tr:first-child > * {
-  border-top: 0;
-  border-bottom: 2px solid #dfe2e5;
-}
-
-.signal-viewer th {
-  text-align: center;
-  background: #f6f8fa;
-}
-
-.signal-viewer td,
-.signal-viewer th {
-  min-width: 30px;
-  color: #333;
-  padding: 8px;
-  word-break: break-all;
-  border: 1px solid #dfe2e5;
-}
-
-.signal-viewer th,
-.signal-viewer td:first-child {
-  word-break: keep-all;
-}
-
-.signal-viewer tr:nth-child(odd) {
-  background-color: #f6f8fa;
 }

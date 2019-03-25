@@ -147,7 +147,9 @@ export default class DataViewer extends React.Component<Props, State> {
           />
           <div className="pagination-wrapper">{pagination}</div>
         </div>
-        <ErrorBoundary>{table}</ErrorBoundary>
+        <div className="data-table">
+          <ErrorBoundary>{table}</ErrorBoundary>
+        </div>
       </div>
     );
   }
