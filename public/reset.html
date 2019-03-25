@@ -8,13 +8,16 @@
     />
     <meta name="theme-color" content="#325" />
     <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
-    <title>Vega Editor Reset</title>
+    <title>Vega Editor</title>
+    <script>
+      function reset() {
+        window.localStorage.clear();
+      }
+    </script>
   </head>
   <body>
-    <div id="root">
-      Please clear the localStorage here :
-      <a href="localhost:8080/reset.html">localhost:8080/reset.html</a>, if the
-      site keeps on loading or crashes.
+    <div>
+      <button type="button" onclick="reset()">Click to Reset</button>
     </div>
   </body>
 </html>
