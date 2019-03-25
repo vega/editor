@@ -49,10 +49,10 @@ export default class DataViewer extends React.Component<Props, State> {
   public setDefaultDataset() {
     const datasets = this.getDatasets();
 
-    if (datasets.length > 1) {
+    if (datasets.length) {
       this.setState({
         currentPage: 0,
-        selectedData: datasets[1],
+        selectedData: datasets.length === 1 ? datasets[0] : datasets[1],
       });
     }
   }
