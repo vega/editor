@@ -41,8 +41,13 @@
   min-width: 30px;
   color: #333;
   padding: 8px;
-  word-break: keep-all;
+  word-break: break-all;
   border: 1px solid #dfe2e5;
+}
+
+.editor-table th,
+.editor-table td:first-child {
+  word-break: keep-all;
 }
 
 .editor-table tr:nth-child(even) {
