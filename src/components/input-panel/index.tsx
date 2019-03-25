@@ -1,24 +1,16 @@
-import './index.css';
-
 import * as React from 'react';
 import { connect } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import { bindActionCreators, Dispatch } from 'redux';
-
 import * as EditorActions from '../../actions/editor';
 import { LAYOUT, Mode } from '../../constants';
+import { State } from '../../constants/default-state';
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
+import './index.css';
 import SpecEditor from './spec-editor';
 
-interface Props {
-  compiledVegaSpec?: boolean;
-  compiledVegaPaneSize: number;
-  mode?: Mode;
-
-  setCompiledVegaPaneSize: (val: any) => void;
-  toggleCompiledVegaSpec: () => void;
-}
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class InputPanel extends React.Component<Props> {
   constructor(props) {
@@ -89,7 +81,7 @@ class InputPanel extends React.Component<Props> {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: State, ownProps) {
   return {
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     compiledVegaSpec: state.compiledVegaSpec,
