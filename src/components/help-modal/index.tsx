@@ -34,7 +34,11 @@ const HelpModal = () => {
       <p>
         Note : You can use editor shortcuts using <kbd>f1</kbd>
       </p>
-      <a href="https://github.com/vega/editor/issues/new" target="_blank" className="report-button help-modal-link">
+      <a
+        href={`https://github.com/vega/editor/issues/new?body=**Vega-Editor ${pjson.version}**`}
+        target="_blank"
+        className="report-button help-modal-link"
+      >
         <AlertCircle className="header-icon" />
         Report a Bug
       </a>
