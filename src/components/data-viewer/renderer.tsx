@@ -69,8 +69,15 @@ export default class DataViewer extends React.Component<Props, State> {
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
     if (this.props.view !== prevProps.view) {
-      // a new view has different dataset so let's reset everything
-      this.setState(initialState);
+      const datasets = this.getDatasets();
+
+      if (datasets.indexOf(this.state.selectedData) === -1) {
+        // the new view has different dataset so let's reset everything
+        this.setState(initialState);
+      } else {
+        // the new view has the same dataset so let's not change the state but add a new listener
+        this.props.view.addDataListener(this.state.selectedData, this.debouncedDataChanged);
+      }
       return;
     }
 
