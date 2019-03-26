@@ -7,8 +7,9 @@ import { LAYOUT, Mode } from '../../constants';
 import { State } from '../../constants/default-state';
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
-import './index.css';
 import SpecEditor from './spec-editor';
+
+import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -30,6 +31,9 @@ class InputPanel extends React.Component<Props> {
     if (this.props.mode === Mode.VegaLite) {
       if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
         this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
+      }
+      if (this.props.specEditorReference !== null) {
+        this.props.specEditorReference['editor' as any].layout({});
       }
     }
   }
@@ -86,6 +90,7 @@ function mapStateToProps(state: State, ownProps) {
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     compiledVegaSpec: state.compiledVegaSpec,
     mode: state.mode,
+    specEditorReference: state.specEditorReference,
   };
 }
 

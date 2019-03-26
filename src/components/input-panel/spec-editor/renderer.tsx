@@ -119,6 +119,7 @@ class Editor extends React.Component<Props, {}> {
   }
   public componentDidMount() {
     document.addEventListener('keydown', this.handleKeydown);
+    this.props.setSpecEditorReference(this.refs.editor);
   }
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeydown);

@@ -22,6 +22,7 @@ export interface State {
   parse: boolean;
   renderer: Renderer;
   selectedExample: string;
+  specEditorReference: any;
   vegaLiteSpec: VlSpec;
   vegaSpec: Spec;
   view: View;
@@ -48,6 +49,7 @@ export const DEFAULT_STATE: State = {
   parse: false,
   renderer: 'canvas',
   selectedExample: null,
+  specEditorReference: null,
   vegaLiteSpec: null,
   vegaSpec: {},
   view: null,

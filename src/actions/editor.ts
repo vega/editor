@@ -7,6 +7,7 @@ export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
 export const SET_BASEURL: 'SET_BASEURL' = 'SET_BASEURL';
 export const SET_COMPILED_VEGA_PANE_SIZE: 'SET_COMPILED_VEGA_PANE_SIZE' = 'SET_COMPILED_VEGA_PANE_SIZE';
 export const SET_DEBUG_PANE_SIZE: 'SET_DEBUG_PANE_SIZE' = 'SET_DEBUG_PANE_SIZE';
+export const SET_SPEC_EDIOTR_REFERENCE: 'SET_SPEC_EDIOTR_REFERENCE' = 'SET_SPEC_EDIOTR_REFERENCE';
 export const SET_GIST_VEGA_LITE_SPEC: 'SET_GIST_VEGA_LITE_SPEC' = 'SET_GIST_VEGA_LITE_SPEC';
 export const SET_GIST_VEGA_SPEC: 'SET_GIST_VEGA_SPEC' = 'SET_GIST_VEGA_SPEC';
 export const SET_MODE: 'SET_MODE' = 'SET_MODE';
@@ -49,7 +50,8 @@ export type Action =
   | SetView
   | SetDebugPaneSize
   | ShowLogs
-  | SetCompiledVegaPaneSize;
+  | SetCompiledVegaPaneSize
+  | SetSpecEditorReference;
 
 export function setMode(mode: Mode) {
   return {
@@ -245,3 +247,12 @@ export function toggleNavbar(value: string) {
 }
 
 export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
+
+export function setSpecEditorReference(value: any) {
+  return {
+    specEditorReference: value,
+    type: SET_SPEC_EDIOTR_REFERENCE,
+  };
+}
+
+export type SetSpecEditorReference = ReturnType<typeof setSpecEditorReference>;
