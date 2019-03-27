@@ -6006,10 +6006,10 @@ vega-hierarchy@^4.0.1:
     vega-dataflow "^5.1.0"
     vega-util "^1.8.0"
 
-vega-lite@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-3.0.0.tgz#1993085be1517cfd2fa35860731f821518cb4eda"
-  integrity sha512-m6dxqB2Nc7uOms+d5EZRsPjmKHmcZIkBGNEC7BJ7X5P0zg53ZjauIEFf8/LqiTh/H8c68QC62wyt7kPkxZsG3g==
+vega-lite@3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-3.0.2.tgz#2e1c47d7663b56174f6b5adf6d575c9c6516a275"
+  integrity sha512-u0EWmsNpca1BIQeLsfGgfq4o6QwJQm9u+CpAkzLm6RWkLYfzDumC8jkdf6gZqLFwf1nXpw7tc3jL6o8PCXdjkA==
   dependencies:
     "@types/clone" "~0.1.30"
     "@types/fast-json-stable-stringify" "^2.0.0"
