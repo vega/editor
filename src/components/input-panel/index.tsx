@@ -63,6 +63,7 @@ class InputPanel extends React.Component<Props> {
           minSize={LAYOUT.MinPaneSize}
           defaultSize={this.props.compiledVegaSpec ? this.props.compiledVegaPaneSize : LAYOUT.MinPaneSize}
           onChange={this.handleChange}
+          pane1Style={{ minHeight: '0px' }}
           paneStyle={{ display: 'flex' }}
           onDragFinished={() => {
             if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
