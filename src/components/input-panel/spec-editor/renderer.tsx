@@ -87,21 +87,6 @@ class Editor extends React.Component<Props, {}> {
       schemas: schemas[this.props.mode],
       validate: true,
     });
-
-    monaco.languages.registerDocumentFormattingEditProvider('json', {
-      provideDocumentFormattingEdits(
-        model: Monaco.editor.ITextModel,
-        options: Monaco.languages.FormattingOptions,
-        token: Monaco.CancellationToken
-      ): Monaco.languages.TextEdit[] {
-        return [
-          {
-            range: model.getFullModelRange(),
-            text: stringify(JSON.parse(model.getValue())),
-          },
-        ];
-      },
-    });
   }
   public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.parse) {
