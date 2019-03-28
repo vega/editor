@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isArray, isDate, isObject } from 'vega';
+import { isDate, isFunction } from 'vega';
 import { stringify } from 'vega-tooltip';
 import './index.css';
 
@@ -53,7 +53,8 @@ export default class Table extends React.PureComponent<Props> {
 }
 
 export function formatValueLong(value: any) {
-  const formatted = value === undefined ? 'undefined' : stringify(value, MAX_DEPTH);
+  const formatted =
+    value === undefined ? 'undefined' : isFunction(value) ? value.toString() : stringify(value, MAX_DEPTH);
   if (formatted.length > MAX_LENGTH) {
     return { formatted: null, tooLong: true };
   }

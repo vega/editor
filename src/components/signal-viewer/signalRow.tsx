@@ -39,8 +39,14 @@ export default class SignalRow extends React.Component<Props, State> {
     let tooLong = false;
     let formatted = '';
     if (!isDate(this.state.signalValue)) {
-      tooLong = formatValueLong(this.state.signalValue).tooLong;
-      formatted = formatValueLong(this.state.signalValue).formatted;
+      const formatValue = formatValueLong(this.state.signalValue);
+      if (formatValue !== undefined) {
+        tooLong = formatValue.tooLong;
+        formatted = formatValue.formatted;
+      } else {
+        tooLong = false;
+        formatted = 'undefined';
+      }
     } else {
       tooLong = false;
       formatted = new Date(this.state.signalValue).toUTCString();
