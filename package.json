@@ -4,7 +4,7 @@
   "homepage": "http://vega.github.io/editor",
   "private": true,
   "devDependencies": {
-    "@types/node": "^11.11.6",
+    "@types/node": "^11.12.1",
     "autoprefixer": "^9.5.0",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^2.1.1",
@@ -26,7 +26,7 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
-    "@types/react": "^16.8.8",
+    "@types/react": "^16.8.10",
     "@types/react-redux": "^7.0.5",
     "ajv": "^6.10.0",
     "d3-geo-projection": "^2.6.0",
@@ -36,9 +36,9 @@
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.16.2",
     "prop-types": "^15.7.2",
-    "react": "^16.8.5",
+    "react": "^16.8.6",
     "react-clipboard.js": "^2.0.7",
-    "react-dom": "^16.8.5",
+    "react-dom": "^16.8.6",
     "react-feather": "^1.1.6",
     "react-ga": "2.5.7",
     "react-monaco-editor": "0.25.1",
@@ -54,7 +54,7 @@
     "redux-thunk": "^2.3.0",
     "tslib": "^1.9.3",
     "vega-cli": "5.3.2",
-    "vega-datasets": "^1.23.0",
+    "vega-datasets": "^1.24.1",
     "vega-lite": "3.0.3",
     "vega-schema-url-parser": "^1.1.0",
     "vega-tooltip": "^0.17.0"
