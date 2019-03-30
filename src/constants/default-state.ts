@@ -1,7 +1,7 @@
 import { Spec } from 'vega';
 import { TopLevelSpec as VlSpec } from 'vega-lite';
 import { LocalLogger } from '../utils/logger';
-import { LAYOUT, Mode, NAVBAR, Renderer, View } from './consts';
+import { LAYOUT, Mode, NAVBAR, Renderer, VEGA_LITE_START_SPEC, View } from './consts';
 
 export interface State {
   baseURL: string;
@@ -35,7 +35,7 @@ export const DEFAULT_STATE: State = {
   compiledVegaSpec: false,
   debugPane: false,
   debugPaneSize: LAYOUT.MinPaneSize,
-  editorString: '{}',
+  editorString: VEGA_LITE_START_SPEC,
   error: null,
   export: false,
   format: false,
