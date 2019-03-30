@@ -591,7 +591,13 @@ class Header extends React.Component<Props, State> {
           </div>
           <div className="gist-input-container">
             <label>
-              Gist URL
+              Gist URL (
+              <small>
+                <a href="https://gist.github.com/" target="_blank">
+                  Jump to Gist
+                </a>
+              </small>
+              )
               <div style={{ marginTop: '2px' }}>
                 <small>
                   Example:{' '}
