@@ -566,7 +566,12 @@ class Header extends React.Component<Props, State> {
 
     const gist = closePortal => (
       <div className="gist-content">
-        <h2>Load Gist</h2>
+        <h2>
+          Load{' '}
+          <a href="https://gist.github.com/" target="_blank">
+            Gist
+          </a>
+        </h2>
         <form ref={form => (this.refGistForm = form)}>
           <div className="gist-input-container">
             Gist Type:
