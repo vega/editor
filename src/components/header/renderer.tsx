@@ -594,7 +594,7 @@ class Header extends React.Component<Props, State> {
               Gist URL (
               <small>
                 <a href="https://gist.github.com/" target="_blank">
-                  Jump to Gist
+                  gist
                 </a>
               </small>
               )
