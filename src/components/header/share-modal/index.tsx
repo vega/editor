@@ -7,29 +7,9 @@ import Renderer from './renderer';
 export function mapStateToProps(state: State, ownProps) {
   return {
     editorString: state.editorString,
-    // lastPosition: state.lastPosition,
-    // manualParse: state.manualParse,
     mode: state.mode,
-    // vegaLiteSpec: state.vegaLiteSpec,
-    // vegaSpec: state.vegaSpec,
     view: state.view,
   };
 }
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      exportVega: EditorActions.exportVega,
-      formatSpec: EditorActions.formatSpec,
-      parseSpec: EditorActions.parseSpec,
-      setScrollPosition: EditorActions.setScrollPosition,
-      toggleAutoParse: EditorActions.toggleAutoParse,
-    },
-    dispatch
-  );
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Renderer);
+export default connect(mapStateToProps)(Renderer);

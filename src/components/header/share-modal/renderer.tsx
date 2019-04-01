@@ -50,6 +50,10 @@ class ShareModal extends React.Component<Props, State> {
     });
   }
 
+  public componentDidMount() {
+    this.exportURL();
+  }
+
   public componentDidUpdate(prevProps, prevState) {
     if (this.state.copied) {
       setTimeout(() => {

@@ -5,14 +5,12 @@ import ReactDOM from 'react-dom';
 import {
   Book,
   Code,
-  Copy,
   ExternalLink,
   FileText,
   GitHub,
   Grid,
   HelpCircle,
   Image,
-  Link,
   Map,
   Play,
   Share2,
@@ -34,10 +32,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> & { history: any; showExample: boolean };
 
 interface State {
-  copied: boolean;
   downloadVegaJSON: boolean;
-  fullscreen: boolean;
-  generatedURL: string;
   gist: {
     filename: string;
     revision: string;
@@ -66,10 +61,7 @@ class Header extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      copied: false,
       downloadVegaJSON: false,
-      fullscreen: false,
-      generatedURL: '',
       gist: {
         filename: '',
         revision: '',
@@ -142,16 +134,6 @@ class Header extends React.Component<Props, State> {
 
   public onSwitchMode(option) {
     option.value === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
-  }
-
-  public onCopy() {
-    this.setState({ copied: true });
-  }
-
-  public handleCheck(event) {
-    this.setState({ fullscreen: event.target.checked }, () => {
-      this.exportURL();
-    });
   }
 
   public handleHelpModalOpen(event) {
@@ -341,20 +323,6 @@ class Header extends React.Component<Props, State> {
     link.dispatchEvent(new MouseEvent(`click`));
   }
 
-  public exportURL() {
-    const serializedSpec =
-      LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullscreen ? '/view' : '');
-    if (serializedSpec) {
-      const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
-      this.setState({ generatedURL: url });
-    }
-  }
-
-  public previewURL() {
-    const win = window.open(this.state.generatedURL, '_blank');
-    win.focus();
-  }
-
   public componentDidMount() {
     document.addEventListener('keydown', this.handleHelpModalOpen.bind(this));
     document.addEventListener('keyup', this.handleHelpModalCloseEsc.bind(this));
@@ -369,14 +337,6 @@ class Header extends React.Component<Props, State> {
         }, 200);
       }
     });
-  }
-
-  public componentDidUpdate(prevProps, prevState) {
-    if (this.state.copied) {
-      setTimeout(() => {
-        this.setState({ copied: false });
-      }, 2500);
-    }
   }
 
   public componentWillReceiveProps(nextProps) {
@@ -735,62 +695,7 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
-    // const shareContent = (
-    //   <div className="share-content">
-    //     <h2>Share</h2>
-    //     <p>We pack the Vega or Vega-Lite specification and an encoded string in the URL.</p>
-    //     <p>We use LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
-    //     <div className="user-pref">
-    //       <label>
-    //         Link opens visualization in fullscreen:
-    //         <input
-    //           type="checkbox"
-    //           defaultChecked={this.state.fullscreen}
-    //           name="fullscreen"
-    //           onChange={this.handleCheck.bind(this)}
-    //         />
-    //       </label>
-    //     </div>
-    //     <div className="share-buttons">
-    //       <button className="share-button" onClick={() => this.previewURL()}>
-    //         <Link />
-    //         <span>Open Link</span>
-    //       </button>
-    //       <Clipboard
-    //         className="share-button copy-icon"
-    //         data-clipboard-text={this.state.generatedURL}
-    //         onSuccess={this.onCopy.bind(this)}
-    //       >
-    //         <span>
-    //           <Copy />
-    //           Copy to Clipboard
-    //         </span>
-    //       </Clipboard>
-    //       <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
-    //     </div>
-    //     <div className="byte-counter">
-    //       Number of charaters in the URL: {this.state.generatedURL.length}{' '}
-    //       <span className="url-warning">
-    //         {this.state.generatedURL.length > 2083 ? (
-    //           <span>
-    //             Warning:{' '}
-    //             <a
-    //               href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
-    //               target="_blank"
-    //             >
-    //               URLs over 2083 characters may not be supported in Internet Explorer.
-    //             </a>
-    //           </span>
-    //         ) : (
-    //           ''
-    //         )}
-    //       </span>
-    //     </div>
-    //   </div>
-    // );
-
     const shareContent = <ShareModal />;
-
     const helpModal = <HelpModal />;
 
     return (
@@ -825,7 +730,7 @@ class Header extends React.Component<Props, State> {
             ]}
           </PortalWithState>
 
-          <PortalWithState closeOnEsc onOpen={this.exportURL.bind(this)}>
+          <PortalWithState closeOnEsc>
             {({ openPortal, closePortal, onOpen, portal }) => [
               <span key="0" onClick={openPortal}>
                 {shareButton}
