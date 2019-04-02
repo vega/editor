@@ -110,6 +110,17 @@ class Editor extends React.Component<Props, State> {
       .initialize(chart)
       .runAsync();
   }
+
+  public handlePopState(event) {
+    const pathname = Editor.pathname;
+    const urlarray = pathname.split('/');
+    const lastword = urlarray[urlarray.length - 1];
+    event.preventDefault();
+    if (this.state.fullscreen && lastword === 'view') {
+      this.setState({ fullscreen: false });
+    }
+  }
+
   public componentDidMount() {
     this.initView();
     this.renderVega();
@@ -132,6 +143,9 @@ class Editor extends React.Component<Props, State> {
     if (params[params.length - 1] === 'view') {
       this.setState({ fullscreen: true });
     }
+    // Handle browser back button
+    this.handlePopState = this.handlePopState.bind(this);
+    window.onpopstate = this.handlePopState;
   }
   public componentDidUpdate(prevProps, prevState) {
     if (
@@ -144,6 +158,8 @@ class Editor extends React.Component<Props, State> {
     this.renderVega();
   }
   public componentWillUnmount() {
+    // Remove browser back listner
+    window.onpopstate = null;
     // Remove listener to event keydown
     document.removeEventListener('keydown', this.handleKeydown);
   }
