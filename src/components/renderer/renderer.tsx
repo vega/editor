@@ -116,7 +116,7 @@ class Editor extends React.Component<Props, State> {
     const urlarray = pathname.split('/');
     const lastword = urlarray[urlarray.length - 1];
     event.preventDefault();
-    if (this.state.fullscreen && lastword === 'view') {
+    if (lastword === 'view') {
       this.setState({ fullscreen: false });
     }
   }
