@@ -118,6 +118,7 @@ class Editor extends React.Component<Props, State> {
     event.preventDefault();
     if (lastword === 'view') {
       this.setState({ fullscreen: false });
+      this.onClosePortal();
     }
   }
 
