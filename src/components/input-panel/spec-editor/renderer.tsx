@@ -21,7 +21,7 @@ const schemas = {
   [Mode.Vega]: [
     {
       schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v4.json',
+      uri: 'https://vega.github.io/schema/vega/v5.json',
     },
   ],
   [Mode.VegaLite]: [
