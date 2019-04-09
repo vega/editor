@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Book, Code, Image, Map } from 'react-feather';
 import { withRouter } from 'react-router-dom';
 import { mapStateToProps } from '.';
+import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;
 

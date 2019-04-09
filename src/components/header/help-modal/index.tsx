@@ -2,10 +2,10 @@ import React from 'react';
 import { AlertCircle, Slack, Twitter } from 'react-feather';
 import { version } from 'vega';
 import { version as VegaLiteVersion } from 'vega-lite';
-import isMac from '../../utils/isMac';
-import shortcuts from '../../utils/keyboardShortcuts';
+import isMac from '../../../utils/isMac';
+import shortcuts from '../../../utils/keyboardShortcuts';
 import './index.css';
-const pjson = require('../../../package.json');
+const pjson = require('../../../../package.json');
 
 // Will generate keyboard shortcuts based on OS
 // 1. Check OS (isMac)
