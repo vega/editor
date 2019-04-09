@@ -1,6 +1,4 @@
-import LZString from 'lz-string';
 import * as React from 'react';
-import Clipboard from 'react-clipboard.js';
 import ReactDOM from 'react-dom';
 import { Code, ExternalLink, FileText, GitHub, Grid, HelpCircle, Play, Share2, Trash2, X } from 'react-feather';
 import { Portal, PortalWithState } from 'react-portal';
@@ -10,8 +8,8 @@ import { mapDispatchToProps, mapStateToProps } from '.';
 import { Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
-import HelpModal from '../help-modal/index';
 import ExportModal from './export-modal/index';
+import HelpModal from './help-modal/index';
 import './index.css';
 import ShareModal from './share-modal/index';
 
