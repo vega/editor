@@ -67,6 +67,10 @@
   margin-top: 10px;
 }
 
+.export-button .type-input-container input {
+  margin-left: 1em;
+}
+
 .exported-url {
   display: flex;
 }
