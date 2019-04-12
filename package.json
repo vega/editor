@@ -1,6 +1,6 @@
 {
   "name": "vega-editor",
-  "version": "0.29.3",
+  "version": "0.29.4",
   "homepage": "http://vega.github.io/editor",
   "private": true,
   "devDependencies": {
