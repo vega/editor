@@ -9,6 +9,7 @@ import { Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 import ExportModal from './export-modal/index';
+import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
 import './index.css';
 import ShareModal from './share-modal/index';
@@ -416,97 +417,7 @@ class Header extends React.Component<Props, State> {
       </div>
     );
 
-    const gist = closePortal => (
-      <div className="gist-content">
-        <h2>
-          Load{' '}
-          <a href="https://gist.github.com/" target="_blank">
-            Gist
-          </a>
-        </h2>
-        <form ref={form => (this.refGistForm = form)}>
-          <div className="gist-input-container">
-            Gist Type:
-            <input
-              type="radio"
-              name="gist-type"
-              id="gist-type[vega]"
-              value="vega"
-              checked={this.state.gist.type === Mode.Vega}
-              onChange={this.updateGistType.bind(this)}
-            />
-            <label htmlFor="gist-type[vega]">Vega</label>
-            <input
-              type="radio"
-              name="gist-type"
-              id="gist-type[vega-lite]"
-              value="vega-lite"
-              checked={this.state.gist.type === Mode.VegaLite}
-              onChange={this.updateGistType.bind(this)}
-            />
-            <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
-          </div>
-          <div className="gist-input-container">
-            <label>
-              Gist URL
-              <div style={{ marginTop: '2px' }}>
-                <small>
-                  Example:{' '}
-                  <span className="gist-url">
-                    {'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9'}
-                  </span>
-                </small>
-              </div>
-              <input
-                required
-                className="gist-input"
-                type="text"
-                placeholder="Enter URL"
-                value={this.state.gist.url}
-                onChange={this.updateGistUrl.bind(this)}
-              />
-            </label>
-            <div className="error-message">{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
-          </div>
-          <div className="gist-optional">
-            <div className="gist-input-container gist-optional-input-container">
-              <label>
-                Revision (<small>optional</small>)
-                <input
-                  className="gist-input"
-                  type="text"
-                  placeholder="Enter revision"
-                  value={this.state.gist.revision}
-                  onChange={this.updateGistRevision.bind(this)}
-                />
-              </label>
-              <div className="error-message">
-                {this.state.invalidRevision && <span>Please enter a valid revision.</span>}
-              </div>
-            </div>
-            <div className="gist-input-container gist-optional-input-container">
-              <label>
-                Filename (<small>optional</small>)
-                <input
-                  className="gist-input"
-                  type="text"
-                  placeholder="Enter filename"
-                  value={this.state.gist.filename}
-                  onChange={this.updateGistFile.bind(this)}
-                />
-              </label>
-              <div className="error-message">
-                {this.state.invalidFilename && <span>Please enter a valid filename.</span>}
-              </div>
-            </div>
-          </div>
-          <button type="button" className="gist-button" onClick={() => this.onSelectGist(closePortal)}>
-            {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
-          </button>
-        </form>
-      </div>
-    );
-
+    const gist = closePortal => <GistModal closePortal={() => closePortal()} />;
     const exportContent = <ExportModal />;
     const shareContent = <ShareModal />;
     const helpModal = <HelpModal />;
