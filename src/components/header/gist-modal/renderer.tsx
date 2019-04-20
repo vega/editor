@@ -156,6 +156,17 @@ class GistModal extends React.Component<Props, State> {
     }
   }
 
+  public componentWillReceiveProps(nextProps) {
+    this.setState({
+      gist: {
+        filename: '',
+        revision: '',
+        type: nextProps.mode,
+        url: '',
+      },
+    });
+  }
+
   public render() {
     return (
       <div className="gist-content">
