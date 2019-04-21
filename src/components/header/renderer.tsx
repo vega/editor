@@ -1,3 +1,4 @@
+import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { Code, ExternalLink, FileText, GitHub, Grid, HelpCircle, Play, Share2, Trash2, X } from 'react-feather';
@@ -42,6 +43,13 @@ class Header extends React.Component<Props, State> {
     };
   }
 
+  public editVegaSpec() {
+    if (this.props.history.location.pathname.indexOf('/edited') === -1) {
+      this.props.history.push('/edited');
+    }
+    this.props.updateVegaSpec(stringify(this.props.vegaSpec));
+  }
+
   public onSelectVega(name) {
     this.props.history.push(`/examples/vega/${name}`);
   }
@@ -63,7 +71,7 @@ class Header extends React.Component<Props, State> {
   }
 
   public onSwitchMode(option) {
-    option.value === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
+    option.value === Mode.Vega ? this.editVegaSpec() : this.onSelectNewVegaLite();
   }
 
   public handleHelpModalOpen(event) {
