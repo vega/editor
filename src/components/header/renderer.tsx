@@ -43,13 +43,6 @@ class Header extends React.Component<Props, State> {
     };
   }
 
-  // public editVegaSpec() {
-  //   if (this.props.history.location.pathname.indexOf('/edited') === -1) {
-  //     this.props.history.push('/edited');
-  //   }
-  //   this.props.updateVegaSpec(stringify(this.props.vegaSpec));
-  // }
-
   public onSelectVega(name) {
     this.props.history.push(`/examples/vega/${name}`);
   }
