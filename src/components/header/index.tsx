@@ -6,7 +6,6 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State, ownProps) {
   return {
-    compiledVegaSpec: state.compiledVegaSpec,
     editorString: state.editorString,
     lastPosition: state.lastPosition,
     manualParse: state.manualParse,
