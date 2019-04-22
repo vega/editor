@@ -1,3 +1,4 @@
+import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { Code, ExternalLink, FileText, GitHub, Grid, HelpCircle, Play, Share2, Trash2, X } from 'react-feather';
@@ -63,7 +64,7 @@ class Header extends React.Component<Props, State> {
   }
 
   public onSwitchMode(option) {
-    option.value === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
+    option.value === Mode.Vega ? this.props.updateVegaSpec(stringify(this.props.vegaSpec)) : this.onSelectNewVegaLite();
   }
 
   public handleHelpModalOpen(event) {
