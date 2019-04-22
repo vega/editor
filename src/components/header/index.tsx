@@ -24,6 +24,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       parseSpec: EditorActions.parseSpec,
       setScrollPosition: EditorActions.setScrollPosition,
       toggleAutoParse: EditorActions.toggleAutoParse,
+      updateVegaSpec: EditorActions.updateVegaSpec,
     },
     dispatch
   );
