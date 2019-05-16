@@ -4,7 +4,7 @@ import * as React from 'react';
 import SplitPane from 'react-split-pane';
 
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { LAYOUT, NAVBAR, View } from '../../constants';
+import { LAYOUT, NAVBAR } from '../../constants';
 import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
@@ -77,6 +77,7 @@ export default class VizPane extends React.Component<Props> {
         minSize={LAYOUT.MinPaneSize}
         defaultSize={this.props.debugPane ? this.props.debugPaneSize : LAYOUT.MinPaneSize}
         onChange={this.handleChange}
+        pane1Style={{ minHeight: `${LAYOUT.MinPaneSize}px` }}
         paneStyle={{ display: 'flex' }}
         onDragStarted={() => {
           if (this.props.navItem === NAVBAR.Logs) {
