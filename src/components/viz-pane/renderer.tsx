@@ -77,7 +77,7 @@ export default class VizPane extends React.Component<Props> {
         minSize={LAYOUT.MinPaneSize}
         defaultSize={this.props.debugPane ? this.props.debugPaneSize : LAYOUT.MinPaneSize}
         onChange={this.handleChange}
-        pane1Style={{ minHeight: `${LAYOUT.MinUpperPaneHeight}px` }}
+        pane1Style={{ minHeight: `${LAYOUT.MinPaneSize}px` }}
         paneStyle={{ display: 'flex' }}
         onDragStarted={() => {
           if (this.props.navItem === NAVBAR.Logs) {

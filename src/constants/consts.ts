@@ -21,7 +21,6 @@ export const LAYOUT = {
   DebugPaneSize: 200,
   HeaderHeight: 60,
   MinPaneSize: 30,
-  MinUpperPaneHeight: 70,
 };
 
 export type Renderer = 'svg' | 'canvas';
