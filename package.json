@@ -23,7 +23,7 @@
     "webpack": "4.31.0",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.2",
-    "webpack-dev-server": "^3.3.1"
+    "webpack-dev-server": "^3.4.1"
   },
   "dependencies": {
     "@types/react": "^16.8.17",
@@ -53,7 +53,7 @@
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.3.0",
     "tslib": "^1.9.3",
-    "vega-cli": "5.3.5",
+    "vega-cli": "5.4.0",
     "vega-datasets": "^1.25.0",
     "vega-lite": "3.2.1",
     "vega-schema-url-parser": "^1.1.0",
