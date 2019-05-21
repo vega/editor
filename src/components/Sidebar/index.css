@@ -1,0 +1,535 @@
+.modal-top {
+  align-self: flex-start;
+  margin-top: 6vh;
+}
+
+.header {
+  display: flex;
+  height: 60px;
+  justify-content: space-between;
+  border-bottom: solid 2px rgba(0, 0, 0, 0.2);
+}
+
+.header-button,
+.header a {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  justify-content: center;
+  color: #000;
+  text-decoration: none;
+  padding: 0 10px;
+  user-select: none;
+  position: relative;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.header a.idl-logo {
+  padding: 10px;
+  margin: 0;
+  border: none;
+}
+
+.header-button:hover,
+.docs-link:hover,
+.dark-background {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.header section > span {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  height: 100%;
+  padding: 0 5px;
+}
+
+.header-icon {
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.header section {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.docs-link {
+  align-self: flex-end;
+}
+
+.modal-background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.8);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 15;
+}
+
+.modal {
+  position: relative;
+  background: white;
+  width: 80%;
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.modal-header,
+.modal-footer {
+  height: 50px;
+  z-index: 20;
+}
+
+.modal-header:after {
+  display: table;
+  content: "";
+  clear: both;
+}
+
+.modal-body {
+  padding: 0 30px;
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 20;
+}
+
+.modal-hidden {
+  overflow: hidden;
+}
+
+.close-button {
+  float: right;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  background: white;
+}
+
+.close-button:hover {
+  background: rgba(243, 240, 240, 0.63);
+}
+
+.close-button:focus {
+  outline: 0;
+}
+
+.button-groups button {
+  width: 120px;
+  font-size: 16px;
+  padding: 5px 10px;
+  background: white;
+  border: solid 1px black;
+  cursor: pointer;
+}
+
+.button-groups button.selected {
+  background: rgb(92, 64, 141);
+  color: white;
+}
+
+.button-groups button:first-of-type {
+  border-radius: 15px 0 0 15px;
+  border-right: none;
+}
+
+.button-groups button:last-of-type {
+  border-radius: 0 15px 15px 0;
+}
+
+.button-groups button:not(.selected):hover {
+  background: #f7f5f5;
+  color: black;
+}
+
+.button-groups button:focus {
+  outline: none;
+}
+
+.button-groups {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -16px;
+  z-index: 10;
+}
+
+.specType {
+  border-bottom: solid 1px #666;
+  clear: left;
+  padding-bottom: 2px;
+}
+
+.itemGroup {
+  margin-top: 20px;
+}
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.item {
+  padding: 12.5px;
+  cursor: pointer;
+  max-width: 120px;
+  text-align: center;
+  line-height: 12px;
+}
+
+.item .img {
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 95px;
+  height: 80px;
+  background-color: white;
+}
+
+.item .name {
+  margin-top: 3px;
+  padding-top: 5px;
+  border-top: solid 1px #666;
+  font-size: 12px;
+}
+
+.item:hover {
+  background: rgba(243, 240, 240, 0.63);
+}
+
+.gist-content {
+  padding: 10px;
+}
+
+.gist-button {
+  background: rgb(100, 80, 150);
+  color: white;
+  border: 1px solid #a9a9a9;
+  cursor: pointer;
+  height: 30px;
+  outline: none;
+  font-size: 16px;
+  float: right;
+  padding: 0 20px;
+}
+
+.gist-button:hover {
+  background: rgb(92, 64, 141);
+  color: white;
+}
+
+.gist-text {
+  margin-top: 30px;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.gist-url {
+  font-size: 12px;
+  font-style: italic;
+  color: rgb(6, 69, 173);
+}
+
+.gist-input-container {
+  margin-top: 20px;
+}
+
+.gist-optional:after {
+  display: table;
+  content: "";
+  clear: both;
+}
+
+.gist-optional-input-container {
+  box-sizing: border-box;
+}
+
+.gist-input-container input[type="radio"] {
+  margin-left: 10px;
+}
+
+.gist-input-container input:checked + label {
+  text-decoration: underline;
+}
+
+.gist-input {
+  display: block;
+  width: 100%;
+  resize: none;
+  font-size: 14px;
+  padding: 5px;
+  margin-top: 3px;
+}
+
+.error-message {
+  font-size: 12px;
+  height: 5 px;
+  color: var(--error-color);
+  margin-top: 3px;
+  margin-bottom: 5px;
+  float: right;
+}
+
+.mode-switcher-wrapper {
+  width: 125px;
+}
+
+/* Overriding default styles of React Select v2*/
+.mode-switcher__menu,
+.auto-run__menu {
+  box-shadow: none !important;
+  border: 1px solid #d9d9d9 !important;
+  border-top: 0 !important;
+}
+
+.mode-switcher__menu {
+  margin-top: 0 !important;
+}
+
+.auto-run__menu {
+  margin-top: 10px !important;
+}
+
+.auto-run__option {
+  color: #000 !important;
+}
+
+.auto-run__control {
+  border: none !important;
+}
+
+.mode-switcher__control {
+  border-color: #d9d9d9 !important;
+}
+
+.mode-switcher__control--is-focused {
+  box-shadow: none !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.auto-run__control--is-focused {
+  box-shadow: 0 0 0 1px transparent !important;
+}
+
+.auto-run__option--is-focused,
+.mode-switcher__option--is-focused {
+  background-color: #fff !important;
+}
+
+.auto-run__menu,
+.mode-switcher__menu {
+  border-top-right-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+
+.auto-run__option:hover,
+.mode-switcher__option:hover {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.auto-run-wrapper .auto-run__control {
+  background: transparent !important;
+  border: none !important;
+}
+
+.auto-run-wrapper .auto-run__indicator {
+  position: relative;
+  z-index: 12;
+}
+
+.auto-run-wrapper .auto-run__indicator-separator {
+  width: 0px;
+}
+
+.auto-run-wrapper {
+  width: 80px;
+  right: 49px;
+  margin-right: -105px;
+  padding-right: 5px;
+}
+
+.split-button {
+  width: 80px;
+}
+
+.split-button > div:hover {
+  background: transparent;
+}
+
+.split-button:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.auto-run .header-button {
+  opacity: 0.4;
+}
+
+.auto-run .parse-mode {
+  color: #000;
+}
+
+.parse-mode {
+  position: absolute;
+  bottom: 5px;
+  right: 12px;
+  text-align: center;
+  width: 43%;
+  font-size: 10px;
+  color: #aaa;
+}
+
+.header-button svg,
+.docs-link svg {
+  display: none;
+}
+
+.header-button.help svg {
+  display: block;
+}
+
+.share-content a {
+  color: #000;
+}
+
+.share-content p {
+  line-height: 0.7;
+}
+
+.exported-url {
+  display: flex;
+}
+
+.exported-url span:first-child {
+  width: 100%;
+  overflow: hidden;
+  vertical-align: middle;
+  line-height: 25px;
+  white-space: nowrap;
+}
+
+.exported-url a::selection {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.share-buttons,
+.share-button {
+  display: flex;
+  align-items: center;
+}
+
+.share-button {
+  font-size: 0.9em;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  line-height: 30px;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  margin: 30px 0;
+}
+
+.share-button svg {
+  width: 22px;
+  height: 22px;
+  stroke: #000;
+  padding-right: 5px;
+}
+
+.copy-icon {
+  margin-left: 20px;
+}
+
+.copy-icon span {
+  display: flex;
+  align-items: center;
+}
+
+.copied {
+  padding: 0 20px;
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.user-pref label {
+  display: flex;
+  align-items: center;
+  padding: 20px 0 0 0;
+}
+
+.user-pref input[type="checkbox"]:focus {
+  outline: 0;
+}
+
+.share-button:hover {
+  border-color: #aaa;
+}
+
+.share-button:active {
+  background-color: #ddd;
+}
+
+.url-warning {
+  padding-left: 10px;
+}
+
+.url-warning,
+.url-warning a {
+  color: #f0ad4e;
+}
+
+/* Media queries */
+@media only screen and (min-width: 1200px) {
+  .header-button svg,
+  .docs-link svg {
+    display: block;
+  }
+
+  .header-button,
+  .header a {
+    padding: 0 20px;
+  }
+
+  .auto-run-wrapper {
+    width: 125px;
+    right: 98px;
+    padding-right: 10px;
+  }
+
+  .split-button {
+    width: 125px;
+  }
+}
+
+.settings {
+  height: 81vh;
+  width: 50vw;
+  position: absolute;
+  top: 60px;
+  background-color: #f7f6f6;
+  transform: translateX(100%);
+  transition: all 0.3s;
+  color: black;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+.open {
+  transform: translateX(0);
+  transition: all 0.3s;
+}

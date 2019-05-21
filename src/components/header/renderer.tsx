@@ -1,7 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Code, ExternalLink, FileText, GitHub, Grid, HelpCircle, Play, Share2, Trash2, X } from 'react-feather';
+import { Code, ExternalLink, FileText, GitHub, Grid, HelpCircle, Menu, Play, Share2, Trash2, X } from 'react-feather';
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
@@ -9,6 +9,7 @@ import { mapDispatchToProps, mapStateToProps } from '.';
 import { Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
+import Sidebar from '../Sidebar/index';
 import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
@@ -434,6 +435,7 @@ class Header extends React.Component<Props, State> {
             <img height={32} alt="IDL Logo" src="idl-logo.png" />
           </a>
         </section>
+        <Sidebar />
       </div>
     );
   }
