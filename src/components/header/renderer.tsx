@@ -73,7 +73,6 @@ class Header extends React.Component<Props, State> {
   }
 
   public handleHelpModalToggle(event, openPortal, closePortal, isOpen) {
-    console.log(this._listnerAttached);
     if (this._listnerAttached) {
       return;
     }
@@ -93,7 +92,7 @@ class Header extends React.Component<Props, State> {
     });
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     window.removeEventListener('keydown', () => console.log('Listner Removed'));
     this._listnerAttached = false;
   }
