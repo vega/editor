@@ -34,13 +34,10 @@ class InputPanel extends React.Component<Props> {
     }
   }
   public getInnerPanes() {
-    const innerPanes = [<SpecEditor key="editor" />];
-    if (this.props.mode === Mode.VegaLite) {
-      if (this.props.compiledVegaSpec) {
-        innerPanes.push(<CompiledSpecDisplay key="compiled" />);
-      } else {
-        innerPanes.push(<CompiledSpecHeader key="compiledSpecHeader" />);
-      }
+    const innerPanes = [<SpecEditor key="editor" />, <CompiledSpecHeader key="compiledSpecHeader" />];
+    if (this.props.compiledVegaSpec) {
+      innerPanes.pop();
+      innerPanes.push(<CompiledSpecDisplay key="compiled" />);
     }
     return innerPanes;
   }

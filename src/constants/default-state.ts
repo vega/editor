@@ -1,7 +1,7 @@
 import { Spec } from 'vega';
 import { TopLevelSpec as VlSpec } from 'vega-lite';
 import { LocalLogger } from '../utils/logger';
-import { LAYOUT, Mode, NAVBAR, Renderer, VEGA_LITE_START_SPEC, View } from './consts';
+import { LAYOUT, Mode, NAVBAR, Renderer, SIDEPANE, VEGA_LITE_START_SPEC, View } from './consts';
 
 export interface State {
   baseURL: string;
@@ -19,6 +19,7 @@ export interface State {
   manualParse: boolean;
   mode: Mode;
   navItem: string;
+  sidePaneItem: string;
   parse: boolean;
   renderer: Renderer;
   selectedExample: string;
@@ -27,6 +28,7 @@ export interface State {
   view: View;
   warningsCount: number;
   warningsLogger: LocalLogger;
+  theme: any;
 }
 
 export const DEFAULT_STATE: State = {
@@ -48,6 +50,8 @@ export const DEFAULT_STATE: State = {
   parse: false,
   renderer: 'canvas',
   selectedExample: null,
+  sidePaneItem: SIDEPANE.CompiledVega,
+  theme: {},
   vegaLiteSpec: null,
   vegaSpec: {},
   view: null,

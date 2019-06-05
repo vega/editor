@@ -1,4 +1,5 @@
 import * as vl from 'vega-lite';
+import { SET_SIDEPANE_ITEM } from './../actions/editor';
 
 import {
   Action,
@@ -8,6 +9,7 @@ import {
   PARSE_SPEC,
   SET_BASEURL,
   SET_COMPILED_VEGA_PANE_SIZE,
+  SET_CURRENT_THEME,
   SET_DEBUG_PANE_SIZE,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
@@ -18,6 +20,7 @@ import {
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
   SET_VIEW,
+  SetCurrentTheme,
   SetGistVegaLiteSpec,
   SetGistVegaSpec,
   SetVegaExample,
@@ -275,6 +278,16 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         navItem: action.navItem,
+      };
+    case SET_CURRENT_THEME:
+      return {
+        ...state,
+        theme: action.theme,
+      };
+    case SET_SIDEPANE_ITEM:
+      return {
+        ...state,
+        sidePaneItem: action.sidePaneItem,
       };
     default:
       return state;
