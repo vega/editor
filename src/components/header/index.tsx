@@ -8,6 +8,7 @@ export function mapStateToProps(state: State, ownProps) {
   return {
     configEditorString: state.configEditorString,
     editorRef: state.editorRef,
+    isAuthenticated: state.isAuthenticated,
     lastPosition: state.lastPosition,
     manualParse: state.manualParse,
     mode: state.mode,
@@ -23,9 +24,11 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       clearConfig: EditorActions.clearConfig,
       exportVega: EditorActions.exportVega,
+      isLoggedIn: EditorActions.isLoggedIn,
       parseSpec: EditorActions.parseSpec,
       setConfig: EditorActions.setConfig,
       setConfigEditorString: EditorActions.setConfigEditorString,
+      receiveCurrentUser: EditorActions.receiveCurrentUser,
       setScrollPosition: EditorActions.setScrollPosition,
       setSettingsState: EditorActions.setSettingsState,
       setThemeName: EditorActions.setThemeName,

@@ -297,6 +297,55 @@
   padding: 3px 0;
 }
 
+.header-button .header-icon {
+  display: none;
+}
+
+.sign-in {
+  font-size: 0.9em;
+  background: black;
+  color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  line-height: 30px;
+  cursor: pointer;
+  user-select: none;
+  margin: 30px 10px 30px 0;
+  display: flex;
+  align-items: center;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  z-index: 10000000;
+  cursor: pointer;
+}
+
+.profile-img {
+  width: 35px;
+  border-radius: 50%;
+}
+
+.profile-options {
+  position: fixed;
+  width: 150px;
+  background-color: white;
+  border: 1px solid #ccc;
+  top: 50px;
+  right: 10px;
+  z-index: 1;
+  border-radius: 3px;
+}
+
+.sign-out {
+  font-size: 1.1em;
+  width: inherit;
+  background-color: inherit;
+  border: inherit;
+  cursor: pointer;
+}
+
 /* Media queries */
 @media only screen and (min-width: 1000px) {
   .header-button .header-icon {

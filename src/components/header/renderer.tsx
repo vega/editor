@@ -9,6 +9,8 @@ import { mapDispatchToProps, mapStateToProps } from '.';
 import { KEYCODES, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
+import Sidebar from '../sidebar/index';
+import { getCookie } from '../../utils/getCookie';
 import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
@@ -19,9 +21,12 @@ type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> & { showExample: () => {} } & RouteComponentProps;
 
 interface State {
+  open: boolean;
   showVega: boolean;
   scrollPosition: number;
 }
+
+const url = 'https://vega.now.sh/';
 
 const formatExampleName = (name: string) => {
   return name
@@ -37,9 +42,46 @@ class Header extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      open: false,
       scrollPosition: 0,
       showVega: props.mode === Mode.Vega,
     };
+  }
+
+  public componentDidMount() {
+    const tagName = ['IMG', 'svg', 'circle'];
+    window.addEventListener('click', e => {
+      const key = 'tagName';
+      if (tagName.includes(e.target[key])) {
+        this.setState({
+          open: !this.state.open,
+        });
+      } else {
+        this.setState({
+          open: false,
+        });
+      }
+    });
+
+    const cookieName = 'vegasessid';
+    const cookieValue = encodeURIComponent(getCookie(cookieName));
+    fetch(`${url}auth/github/check`, {
+      credentials: 'include',
+      headers: {
+        Cookie: `${cookieName}=${cookieValue}`,
+      },
+      method: 'get',
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(json => {
+        this.props.isLoggedIn(json.isAuthenticated);
+      })
+      .catch(err => {
+        // console.error(err);
+        this.props.isLoggedIn(false);
+      });
   }
 
   public onSelectVega(name) {
@@ -163,6 +205,25 @@ class Header extends React.PureComponent<Props, State> {
         <Terminal className="header-icon" />
         {'Commands'}
       </div>
+    );
+
+    const auth = this.props.isAuthenticated ? (
+      <form action={`${url}auth/github/logout`} method="get">
+        <div className="profile-container">
+          <img className="profile-img" src="https://avatars3.githubusercontent.com/u/35191225?s=460&v=4" />
+          {this.state.open && (
+            <div className="profile-options">
+              <input className="sign-out" type="submit" value="Logout" onClick={e => e.stopPropagation()} />
+            </div>
+          )}
+        </div>
+      </form>
+    ) : (
+      <form action={`${url}auth/github`} method="get">
+        <button className="sign-in" type="submit">
+          Login with <GitHub />
+        </button>
+      </form>
     );
 
     const runOptions = this.props.manualParse ? [{ label: 'Auto' }] : [{ label: 'Manual' }];
@@ -428,6 +489,7 @@ class Header extends React.PureComponent<Props, State> {
             }}
           </PortalWithState>
           {settingsButton}
+          {auth}
         </section>
       </div>
     );

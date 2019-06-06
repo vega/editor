@@ -1,6 +1,8 @@
 import { Config } from 'vega-themes/build/config';
 import { Mode, Renderer, View } from '../constants';
 
+export const AUTHENTICATE: 'AUTHENTICATE' = 'AUTHENTICATE';
+export const RECEIVE_CURRENT_USER: 'RECEIVE_CURRENT_USER' = 'RECEIVE_CURRENT_USER';
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
 export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
@@ -38,6 +40,7 @@ export const MERGE_CONFIG_SPEC: 'MERGE_CONFIG_SPEC' = 'MERGE_CONFIG_SPEC';
 export const EXTRACT_CONFIG_SPEC: 'EXTRACT_CONFIG_SPEC' = 'EXTRACT_CONFIG_SPEC';
 
 export type Action =
+  | ReceiveCurrentUser
   | SetMode
   | SetModeOnly
   | SetScrollPosition
@@ -356,6 +359,7 @@ export function mergeConfigSpec() {
 }
 
 export type MergeConfigSpec = ReturnType<typeof mergeConfigSpec>;
+
 export function extractConfigSpec() {
   return {
     type: EXTRACT_CONFIG_SPEC,
@@ -363,3 +367,12 @@ export function extractConfigSpec() {
 }
 
 export type ExtractConfigSpec = ReturnType<typeof extractConfigSpec>;
+
+export function receiveCurrentUser(user: any) {
+  return {
+    type: RECEIVE_CURRENT_USER,
+    user,
+  };
+}
+
+export type ReceiveCurrentUser = ReturnType<typeof receiveCurrentUser>;
