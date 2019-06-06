@@ -72,11 +72,7 @@ class Header extends React.Component<Props, State> {
     });
   }
 
-  public handleHelpModalToggle(event, openPortal, closePortal, isOpen) {
-    if (this._listnerAttached) {
-      return;
-    }
-
+  public handleHelpModalToggle(Toggleevent, openPortal, closePortal, isOpen) {
     window.addEventListener('keydown', event => {
       if (
         (event.keyCode === 222 && event.metaKey && !event.shiftKey) || // Handle key press in Mac
@@ -93,7 +89,7 @@ class Header extends React.Component<Props, State> {
   }
 
   public componentWillUnmount() {
-    window.removeEventListener('keydown', () => console.log('Listner Removed'));
+    window.removeEventListener('keydown', () => {});
     this._listnerAttached = false;
   }
   public render() {
@@ -327,7 +323,9 @@ class Header extends React.Component<Props, State> {
 
           <PortalWithState closeOnEsc>
             {({ openPortal, closePortal, isOpen, portal }) => {
-              !this._listnerAttached && this.handleHelpModalToggle(event, openPortal, closePortal, isOpen);
+              if (!this._listnerAttached) {
+                this.handleHelpModalToggle(event, openPortal, closePortal, isOpen);
+              }
 
               return [
                 <span key="0" onClick={openPortal}>
