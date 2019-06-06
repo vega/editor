@@ -5,6 +5,7 @@ import { LocalLogger } from '../utils/logger';
 import { LAYOUT, Mode, NAVBAR, Renderer, SIDEPANE, VEGA_LITE_START_SPEC, View } from './consts';
 
 export interface State {
+  isAuthenticated: boolean;
   baseURL: string;
   compiledVegaSpec: boolean;
   compiledVegaPaneSize: number;
@@ -52,6 +53,7 @@ export const DEFAULT_STATE: State = {
   export: false,
   gist: null,
   hoverEnable: 'auto',
+  isAuthenticated: false,
   lastPosition: 0,
   logLevel: 'Warn',
   logs: false,
