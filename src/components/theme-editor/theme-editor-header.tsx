@@ -6,10 +6,11 @@ import * as themes from 'vega-themes';
 import * as EditorActions from '../../actions/editor';
 import './theme-editor.css';
 
-class ThemeEditorHeader extends React.Component<any, any> {
+class ConfigEditorHeader extends React.Component<any, any> {
   public render() {
     return (
       <div className="theme-header" style={{ position: 'static' }}>
+        <div id="theme-heading">Theme :</div>
         <select
           onClick={e => e.stopPropagation()}
           id="theme_select"
@@ -44,4 +45,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
 export default connect(
   undefined,
   mapDispatchToProps
-)(ThemeEditorHeader);
+)(ConfigEditorHeader);

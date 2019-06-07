@@ -2,7 +2,7 @@ import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { connect } from 'react-redux';
-import ThemeEditor from '../../theme-editor/index';
+import ConfigEditor from '../../theme-editor/index';
 
 import { Mode, SIDEPANE } from '../../../constants';
 import { State } from '../../../constants/default-state';
@@ -31,7 +31,7 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
             />
           </>
         ) : (
-          <ThemeEditor />
+          <ConfigEditor />
         )}
       </div>
     );

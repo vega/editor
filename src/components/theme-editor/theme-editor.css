@@ -15,3 +15,9 @@
   position: absolute;
   right: 6px;
 }
+
+#theme-heading {
+  position: absolute;
+  right: 114px;
+  text-transform: none;
+}

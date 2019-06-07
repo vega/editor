@@ -1,14 +1,12 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import { ChevronDown, ChevronUp } from 'react-feather';
+import { ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
 import { bindActionCreators, Dispatch } from 'redux';
-
 import * as EditorActions from '../../../actions/editor';
 import { Mode, SIDEPANE } from '../../../constants';
-import ThemeEditorHeader from '../../theme-editor/theme-editor-header';
+import ConfigEditorHeader from '../../theme-editor/theme-editor-header';
 
 const toggleStyle = {
   cursor: 'pointer',
@@ -50,13 +48,13 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
               </li>
             ) : null}
             <li
-              className={this.props.sidePaneItem === SIDEPANE.Theme ? 'active-tab' : undefined}
+              className={this.props.sidePaneItem === SIDEPANE.Config ? 'active-tab' : undefined}
               onClick={e => {
-                if (this.props.sidePaneItem === SIDEPANE.Theme) {
+                if (this.props.sidePaneItem === SIDEPANE.Config) {
                   e.stopPropagation();
                 }
                 e.stopPropagation();
-                this.props.setSidePaneItem(SIDEPANE.Theme);
+                this.props.setSidePaneItem(SIDEPANE.Config);
               }}
             >
               Theme Settings
@@ -69,7 +67,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
             </button>
           ) : (
             <>
-              <ThemeEditorHeader />
+              <ConfigEditorHeader />
             </>
           )}
         </div>

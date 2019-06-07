@@ -5,10 +5,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { debounce } from 'vega';
 import * as EditorActions from '../../actions/editor';
-import ThemeEditorHeader from './theme-editor-header';
 import './theme-editor.css';
 
-class ThemeEditor extends React.Component<any, any> {
+class ConfigEditor extends React.Component<any, any> {
   public handleEditorChange = spec => {
     this.props.setCurrentTheme(JSON.parse(spec));
     (document.getElementById('theme_select') as any).value = 'custom';
@@ -16,7 +15,6 @@ class ThemeEditor extends React.Component<any, any> {
   public render() {
     return (
       <div className="sizeFixEditorParent full-height-wrapper">
-        {/* <ThemeEditorHeader arrowToggle={this.props.arrowToggle} /> */}
         <MonacoEditor
           options={{
             automaticLayout: true,
@@ -27,7 +25,7 @@ class ThemeEditor extends React.Component<any, any> {
             scrollBeyondLastLine: false,
             wordWrap: 'on',
           }}
-          ref="themeEditor"
+          ref="ConfigEditor"
           language="json"
           onChange={debounce(700, this.handleEditorChange)}
           value={stringify(this.props.theme)}
@@ -55,4 +53,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ThemeEditor);
+)(ConfigEditor);

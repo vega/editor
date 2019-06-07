@@ -43,5 +43,5 @@ export const NAVBAR = {
 
 export const SIDEPANE = {
   CompiledVega: 'CompiledVega',
-  Theme: 'Theme',
+  Config: 'Config',
 };
