@@ -33,7 +33,7 @@ const formatExampleName = (name: string) => {
 class Header extends React.Component<Props, State> {
   private refGistForm: HTMLFormElement;
   private examplePortal = React.createRef<HTMLDivElement>();
-  private _listnerAttached: boolean = false;
+  private listnerAttached: boolean = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -84,13 +84,15 @@ class Header extends React.Component<Props, State> {
           closePortal();
         }
       }
-      this._listnerAttached = true;
+      this.listnerAttached = true;
     });
   }
 
   public componentWillUnmount() {
-    window.removeEventListener('keydown', () => {});
-    this._listnerAttached = false;
+    window.removeEventListener('keydown', () => {
+      return;
+    });
+    this.listnerAttached = false;
   }
   public render() {
     const modeOptions =
@@ -323,7 +325,7 @@ class Header extends React.Component<Props, State> {
 
           <PortalWithState closeOnEsc>
             {({ openPortal, closePortal, isOpen, portal }) => {
-              if (!this._listnerAttached) {
+              if (!this.listnerAttached) {
                 this.handleHelpModalToggle(event, openPortal, closePortal, isOpen);
               }
 
