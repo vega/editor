@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+
 import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../../actions/editor';
 import { Mode, SIDEPANE } from '../../../constants';
