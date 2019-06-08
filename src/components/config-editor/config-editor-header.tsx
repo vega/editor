@@ -7,6 +7,9 @@ import * as EditorActions from '../../actions/editor';
 import './config-editor.css';
 
 class ConfigEditorHeader extends React.Component<any, any> {
+  public componentDidMount() {
+    (document.getElementById('config-select') as any).value = this.props.themeName;
+  }
   public render() {
     return (
       <div className="config-header" style={{ position: 'static' }}>
@@ -17,6 +20,7 @@ class ConfigEditorHeader extends React.Component<any, any> {
           onChange={e => {
             e.stopPropagation();
             this.props.setCurrentTheme(themes[e.target.value]);
+            this.props.setCurrentThemeName(e.target.value);
           }}
         >
           <option value="custom">Custom</option>
@@ -37,12 +41,19 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setCurrentTheme: EditorActions.setCurrentTheme,
+      setCurrentThemeName: EditorActions.setCurrentThemeName,
     },
     dispatch
   );
 }
 
+function mapStateToProps(state) {
+  return {
+    themeName: state.themeName,
+  };
+}
+
 export default connect(
-  undefined,
+  mapStateToProps,
   mapDispatchToProps
 )(ConfigEditorHeader);

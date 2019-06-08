@@ -25,6 +25,7 @@ export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRIN
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
 export const SET_CURRENT_THEME: 'SET_CURRENT_THEME' = 'SET_CURRENT_THEME';
+export const SET_CURRENT_THEME_NAME: 'SET_CURRENT_THEME_NAME' = 'SET_CURRENT_THEME_NAME';
 export const SET_SIDEPANE_ITEM: 'SET_SIDEPANE_ITEM' = 'SET_SIDEPANE_ITEM';
 
 export type Action =
@@ -53,6 +54,7 @@ export type Action =
   | ShowLogs
   | SetCompiledVegaPaneSize
   | SetCurrentTheme
+  | SetCurrentThemeName
   | SetSidePaneItem;
 
 export function setMode(mode: Mode) {
@@ -252,12 +254,21 @@ export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
 
 export function setCurrentTheme(value: string) {
   return {
-    theme: value,
+    themeConfig: value,
     type: SET_CURRENT_THEME,
   };
 }
 
 export type SetCurrentTheme = ReturnType<typeof setCurrentTheme>;
+
+export function setCurrentThemeName(value: string) {
+  return {
+    themeName: value,
+    type: SET_CURRENT_THEME_NAME,
+  };
+}
+
+export type SetCurrentThemeName = ReturnType<typeof setCurrentThemeName>;
 
 export function setSidePaneItem(value: string) {
   return {

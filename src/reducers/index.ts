@@ -1,5 +1,5 @@
 import * as vl from 'vega-lite';
-import { SET_SIDEPANE_ITEM } from './../actions/editor';
+import { SET_CURRENT_THEME_NAME, SET_SIDEPANE_ITEM } from './../actions/editor';
 
 import {
   Action,
@@ -282,7 +282,12 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case SET_CURRENT_THEME:
       return {
         ...state,
-        theme: action.theme,
+        themeConfig: action.themeConfig,
+      };
+    case SET_CURRENT_THEME_NAME:
+      return {
+        ...state,
+        themeName: action.themeName,
       };
     case SET_SIDEPANE_ITEM:
       return {

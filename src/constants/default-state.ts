@@ -28,7 +28,8 @@ export interface State {
   view: View;
   warningsCount: number;
   warningsLogger: LocalLogger;
-  theme: any;
+  themeConfig: any;
+  themeName: string;
 }
 
 export const DEFAULT_STATE: State = {
@@ -51,7 +52,8 @@ export const DEFAULT_STATE: State = {
   renderer: 'canvas',
   selectedExample: null,
   sidePaneItem: SIDEPANE.CompiledVega,
-  theme: {},
+  themeConfig: {},
+  themeName: 'custom',
   vegaLiteSpec: null,
   vegaSpec: {},
   view: null,

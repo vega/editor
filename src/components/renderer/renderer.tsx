@@ -60,7 +60,7 @@ class Editor extends React.Component<any, State> {
   }
   // Initialize the view instance
   public initView() {
-    const runtime = vega.parse(this.props.vegaSpec, this.props.theme);
+    const runtime = vega.parse(this.props.vegaSpec, this.props.themeConfig);
 
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
@@ -186,7 +186,7 @@ class Editor extends React.Component<any, State> {
 
 function MapStateToProps(state) {
   return {
-    theme: state.theme,
+    themeConfig: state.themeConfig,
   };
 }
 

@@ -28,7 +28,7 @@ class ConfigEditor extends React.Component<any, any> {
           ref="ConfigEditor"
           language="json"
           onChange={debounce(700, this.handleEditorChange)}
-          value={stringify(this.props.theme)}
+          value={stringify(this.props.themeConfig)}
         />
       </div>
     );
@@ -37,7 +37,7 @@ class ConfigEditor extends React.Component<any, any> {
 
 function mapStateToProps(state, ownProps) {
   return {
-    theme: state.theme,
+    themeConfig: state.themeConfig,
   };
 }
 
