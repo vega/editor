@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { debounce } from 'vega';
 import * as EditorActions from '../../actions/editor';
-import './theme-editor.css';
+import './config-editor.css';
 
 class ConfigEditor extends React.Component<any, any> {
   public handleEditorChange = spec => {

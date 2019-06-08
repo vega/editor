@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../../actions/editor';
 import { Mode, SIDEPANE } from '../../../constants';
-import ConfigEditorHeader from '../../theme-editor/theme-editor-header';
+import ConfigEditorHeader from '../../config-editor/config-editor-header';
 
 const toggleStyle = {
   cursor: 'pointer',
@@ -76,7 +76,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
     } else {
       return (
         <div onClick={this.props.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
-          <span>{this.props.mode === Mode.VegaLite ? 'Compiled Vega And' : null} Theme Support</span>
+          <span>{this.props.mode === Mode.VegaLite ? 'Compiled Vega and' : null} Theme Support</span>
           <ChevronUp />
           <button onClick={this.editVegaSpec} style={{ zIndex: -1, opacity: 0, cursor: 'pointer' }}>
             Edit Vega Spec

@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as themes from 'vega-themes';
 import * as EditorActions from '../../actions/editor';
-import './theme-editor.css';
+import './config-editor.css';
 
 class ConfigEditorHeader extends React.Component<any, any> {
   public render() {
     return (
-      <div className="theme-header" style={{ position: 'static' }}>
-        <div id="theme-heading">Theme :</div>
+      <div className="config-header" style={{ position: 'static' }}>
+        <div id="config-heading">Theme :</div>
         <select
           onClick={e => e.stopPropagation()}
-          id="theme_select"
+          id="config-select"
           onChange={e => {
             e.stopPropagation();
             this.props.setCurrentTheme(themes[e.target.value]);

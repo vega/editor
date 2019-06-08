@@ -1,4 +1,4 @@
-.theme-header {
+.config-header {
   font-size: 12px;
   position: relative;
   width: 100%;
@@ -11,12 +11,12 @@
   padding: 0 10px;
 }
 
-.theme-header > select {
+.config-header > select {
   position: absolute;
   right: 6px;
 }
 
-#theme-heading {
+#config-heading {
   position: absolute;
   right: 114px;
   text-transform: none;
