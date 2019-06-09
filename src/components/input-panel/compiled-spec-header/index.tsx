@@ -58,7 +58,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
                 this.props.setSidePaneItem(SIDEPANE.Config);
               }}
             >
-              Theme Settings
+              Config
             </li>
           </ul>
 
@@ -76,7 +76,7 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
     } else {
       return (
         <div onClick={this.props.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
-          <span>{this.props.mode === Mode.VegaLite ? 'Compiled Vega and' : null} Theme Support</span>
+          <span>{this.props.mode === Mode.VegaLite ? 'Compiled Vega and' : null} Config</span>
           <ChevronUp />
           <button onClick={this.editVegaSpec} style={{ zIndex: -1, opacity: 0, cursor: 'pointer' }}>
             Edit Vega Spec

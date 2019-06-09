@@ -60,7 +60,7 @@ class Editor extends React.Component<any, State> {
   }
   // Initialize the view instance
   public initView() {
-    const runtime = vega.parse(this.props.vegaSpec, this.props.themeConfig);
+    const runtime = vega.parse(this.props.vegaSpec, this.props.config);
 
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
@@ -139,7 +139,7 @@ class Editor extends React.Component<any, State> {
       !deepEqual(prevProps.vegaSpec, this.props.vegaSpec) ||
       !deepEqual(prevProps.vegaLiteSpec, this.props.vegaLiteSpec) ||
       prevProps.baseURL !== this.props.baseURL ||
-      !deepEqual(prevProps.theme, this.props.theme)
+      !deepEqual(prevProps.config, this.props.config)
     ) {
       this.initView();
     }
@@ -186,7 +186,7 @@ class Editor extends React.Component<any, State> {
 
 function MapStateToProps(state) {
   return {
-    themeConfig: state.themeConfig,
+    config: state.config,
   };
 }
 

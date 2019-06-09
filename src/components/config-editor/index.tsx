@@ -9,8 +9,8 @@ import './config-editor.css';
 
 class ConfigEditor extends React.Component<any, any> {
   public handleEditorChange = spec => {
-    this.props.setCurrentTheme(JSON.parse(spec));
-    (document.getElementById('theme_select') as any).value = 'custom';
+    this.props.setCurrentConfig(JSON.parse(spec));
+    (document.getElementById('config-select') as any).value = 'custom';
   };
   public render() {
     return (
@@ -28,7 +28,7 @@ class ConfigEditor extends React.Component<any, any> {
           ref="ConfigEditor"
           language="json"
           onChange={debounce(700, this.handleEditorChange)}
-          value={stringify(this.props.themeConfig)}
+          value={stringify(this.props.config)}
         />
       </div>
     );
@@ -37,14 +37,14 @@ class ConfigEditor extends React.Component<any, any> {
 
 function mapStateToProps(state, ownProps) {
   return {
-    themeConfig: state.themeConfig,
+    config: state.config,
   };
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
-      setCurrentTheme: EditorActions.setCurrentTheme,
+      setCurrentConfig: EditorActions.setCurrentConfig,
     },
     dispatch
   );

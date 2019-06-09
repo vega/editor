@@ -24,7 +24,7 @@ export const TOGGLE_NAV_BAR: 'TOGGLE_NAV_BAR' = 'TOGGLE_NAV_BAR';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
-export const SET_CURRENT_THEME: 'SET_CURRENT_THEME' = 'SET_CURRENT_THEME';
+export const SET_CURRENT_CONFIG: 'SET_CURRENT_CONFIG' = 'SET_CURRENT_CONFIG';
 export const SET_CURRENT_THEME_NAME: 'SET_CURRENT_THEME_NAME' = 'SET_CURRENT_THEME_NAME';
 export const SET_SIDEPANE_ITEM: 'SET_SIDEPANE_ITEM' = 'SET_SIDEPANE_ITEM';
 
@@ -53,7 +53,7 @@ export type Action =
   | SetDebugPaneSize
   | ShowLogs
   | SetCompiledVegaPaneSize
-  | SetCurrentTheme
+  | SetCurrentConfig
   | SetCurrentThemeName
   | SetSidePaneItem;
 
@@ -252,14 +252,14 @@ export function toggleNavbar(value: string) {
 
 export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
 
-export function setCurrentTheme(value: string) {
+export function setCurrentConfig(value: string) {
   return {
-    themeConfig: value,
-    type: SET_CURRENT_THEME,
+    config: value,
+    type: SET_CURRENT_CONFIG,
   };
 }
 
-export type SetCurrentTheme = ReturnType<typeof setCurrentTheme>;
+export type SetCurrentConfig = ReturnType<typeof setCurrentConfig>;
 
 export function setCurrentThemeName(value: string) {
   return {

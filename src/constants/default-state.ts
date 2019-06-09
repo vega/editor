@@ -7,6 +7,7 @@ export interface State {
   baseURL: string;
   compiledVegaSpec: boolean;
   compiledVegaPaneSize: number;
+  config: any;
   debugPane: boolean;
   debugPaneSize: number;
   editorString: string;
@@ -28,7 +29,6 @@ export interface State {
   view: View;
   warningsCount: number;
   warningsLogger: LocalLogger;
-  themeConfig: any;
   themeName: string;
 }
 
@@ -36,6 +36,7 @@ export const DEFAULT_STATE: State = {
   baseURL: null,
   compiledVegaPaneSize: LAYOUT.MinPaneSize,
   compiledVegaSpec: false,
+  config: {},
   debugPane: false,
   debugPaneSize: LAYOUT.MinPaneSize,
   editorString: VEGA_LITE_START_SPEC,
@@ -52,7 +53,6 @@ export const DEFAULT_STATE: State = {
   renderer: 'canvas',
   selectedExample: null,
   sidePaneItem: SIDEPANE.CompiledVega,
-  themeConfig: {},
   themeName: 'custom',
   vegaLiteSpec: null,
   vegaSpec: {},
