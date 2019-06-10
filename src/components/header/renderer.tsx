@@ -20,7 +20,6 @@ type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> & { history: any; showExample: boolean };
 
 interface State {
-  helpModalOpen: boolean;
   showVega: boolean;
   scrollPosition: number;
 }
@@ -35,10 +34,10 @@ const formatExampleName = (name: string) => {
 class Header extends React.Component<Props, State> {
   private refGistForm: HTMLFormElement;
   private examplePortal = React.createRef<HTMLDivElement>();
+  private listnerAttached: boolean = false;
   constructor(props) {
     super(props);
     this.state = {
-      helpModalOpen: false,
       scrollPosition: 0,
       showVega: props.mode === Mode.Vega,
     };
@@ -68,37 +67,34 @@ class Header extends React.Component<Props, State> {
     option.value === Mode.Vega ? this.props.updateVegaSpec(stringify(this.props.vegaSpec)) : this.onSelectNewVegaLite();
   }
 
-  public handleHelpModalOpen(event) {
-    if (
-      (event.keyCode === 222 && event.metaKey && !event.shiftKey) || // Handle key press in Mac
-      (event.keyCode === 191 && event.ctrlKey && event.shiftKey) // Handle Key press in PC
-    ) {
-      this.setState({
-        helpModalOpen: true,
-      });
-    }
-  }
-
-  public handleHelpModalCloseClick() {
-    this.setState({
-      helpModalOpen: false,
-    });
-  }
-
-  public handleHelpModalCloseEsc(event) {
-    if (event.keyCode === 27) {
-      this.setState({
-        helpModalOpen: false,
-      });
-    }
-  }
-
   public componentWillReceiveProps(nextProps) {
     this.setState({
       showVega: nextProps.mode === Mode.Vega,
     });
   }
 
+  public handleHelpModalToggle(Toggleevent, openPortal, closePortal, isOpen) {
+    window.addEventListener('keydown', event => {
+      if (
+        (event.keyCode === 222 && event.metaKey && !event.shiftKey) || // Handle key press in Mac
+        (event.keyCode === 191 && event.ctrlKey && event.shiftKey) // Handle Key press in PC
+      ) {
+        if (!isOpen) {
+          openPortal();
+        } else {
+          closePortal();
+        }
+      }
+      this.listnerAttached = true;
+    });
+  }
+
+  public componentWillUnmount() {
+    window.removeEventListener('keydown', () => {
+      return;
+    });
+    this.listnerAttached = false;
+  }
   public render() {
     const modeOptions =
       this.props.mode === Mode.Vega
@@ -146,10 +142,7 @@ class Header extends React.Component<Props, State> {
     );
 
     const HelpButton = (
-      <div
-        className="header-button help"
-        onClick={() => this.setState(current => ({ ...current, helpModalOpen: true }))}
-      >
+      <div className="header-button help" onClick={() => this.setState(current => ({ ...current }))}>
         <HelpCircle className="header-icon" />
       </div>
     );
@@ -330,7 +323,35 @@ class Header extends React.Component<Props, State> {
               ),
             ]}
           </PortalWithState>
-          {HelpButton}
+
+          <PortalWithState closeOnEsc>
+            {({ openPortal, closePortal, isOpen, portal }) => {
+              if (!this.listnerAttached) {
+                this.handleHelpModalToggle(event, openPortal, closePortal, isOpen);
+              }
+
+              return [
+                <span key="0" onClick={openPortal}>
+                  {HelpButton}
+                </span>,
+                portal(
+                  <div className="modal-background" onClick={closePortal}>
+                    <div className="modal modal-top" onClick={e => e.stopPropagation()}>
+                      <div className="modal-header">
+                        <button className="close-button" onClick={closePortal}>
+                          <X />
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <HelpModal />
+                      </div>
+                      <div className="modal-footer" />
+                    </div>
+                  </div>
+                ),
+              ];
+            }}
+          </PortalWithState>
         </section>
         <section className="right-section">
           <PortalWithState
@@ -413,21 +434,6 @@ class Header extends React.Component<Props, State> {
               ),
             ]}
           </PortalWithState>
-
-          {this.state.helpModalOpen && (
-            <Portal>
-              <div className="modal-background" onClick={this.handleHelpModalCloseClick.bind(this)}>
-                <div className="modal modal-top" onClick={e => e.stopPropagation()}>
-                  <div className="modal-header">
-                    <button className="close-button" onClick={this.handleHelpModalCloseClick.bind(this)}>
-                      <X />
-                    </button>
-                  </div>
-                  <div className="modal-body">{helpModal}</div>
-                </div>
-              </div>
-            </Portal>
-          )}
 
           <span>{docsLink}</span>
 

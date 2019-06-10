@@ -6,8 +6,8 @@ const ajv = new Ajv({
   schemaId: 'auto',
 });
 
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
+ajv.addFormat('color-hex', () => true);
 
 const vegaValidator = ajv.compile(require('vega/build/vega-schema.json'));
 const vegaLiteValidator = ajv.compile(require('vega-lite/build/vega-lite-schema.json'));
