@@ -34,13 +34,10 @@ class InputPanel extends React.Component<Props> {
     }
   }
   public getInnerPanes() {
-    const innerPanes = [<SpecEditor key="editor" />];
-    if (this.props.mode === Mode.VegaLite) {
-      if (this.props.compiledVegaSpec) {
-        innerPanes.push(<CompiledSpecDisplay key="compiled" />);
-      } else {
-        innerPanes.push(<CompiledSpecHeader key="compiledSpecHeader" />);
-      }
+    const innerPanes = [<SpecEditor key="editor" />, <CompiledSpecHeader key="compiledSpecHeader" />];
+    if (this.props.compiledVegaSpec) {
+      innerPanes.pop();
+      innerPanes.push(<CompiledSpecDisplay key="compiled" />);
     }
     return innerPanes;
   }
@@ -54,31 +51,28 @@ class InputPanel extends React.Component<Props> {
         : LAYOUT.MinPaneSize + 'px';
     }
 
-    if (this.props.mode === Mode.VegaLite) {
-      return (
-        <SplitPane
-          ref="compiledVegaPane"
-          split="horizontal"
-          primary="second"
-          minSize={LAYOUT.MinPaneSize}
-          defaultSize={this.props.compiledVegaSpec ? this.props.compiledVegaPaneSize : LAYOUT.MinPaneSize}
-          onChange={this.handleChange}
-          pane1Style={{ minHeight: `${LAYOUT.MinPaneSize}px` }}
-          paneStyle={{ display: 'flex' }}
-          onDragFinished={() => {
-            if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-              this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
-              // Popping up the the compiled vega pane for the first time will set its
-              // height to 30% of the split pane. This can change depending on the UI.
-            }
-          }}
-        >
-          {innerPanes}
-        </SplitPane>
-      );
-    } else {
-      return <div className={'full-height-wrapper'}>{innerPanes}</div>;
-    }
+    // f (this.props.mode === Mode.VegaLite) {
+    return (
+      <SplitPane
+        ref="compiledVegaPane"
+        split="horizontal"
+        primary="second"
+        minSize={LAYOUT.MinPaneSize}
+        defaultSize={this.props.compiledVegaSpec ? this.props.compiledVegaPaneSize : LAYOUT.MinPaneSize}
+        onChange={this.handleChange}
+        pane1Style={{ minHeight: `${LAYOUT.MinPaneSize}px` }}
+        paneStyle={{ display: 'flex' }}
+        onDragFinished={() => {
+          if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
+            this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
+            // Popping up the the compiled vega pane for the first time will set its
+            // height to 30% of the split pane. This can change depending on the UI.
+          }
+        }}
+      >
+        {innerPanes}
+      </SplitPane>
+    );
   }
 }
 

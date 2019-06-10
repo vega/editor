@@ -40,3 +40,8 @@ export const NAVBAR = {
   Logs: 'Logs',
   SignalViewer: 'SignalViewer',
 };
+
+export const SIDEPANE = {
+  CompiledVega: 'CompiledVega',
+  Config: 'Config',
+};

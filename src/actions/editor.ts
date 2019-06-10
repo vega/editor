@@ -24,6 +24,9 @@ export const TOGGLE_NAV_BAR: 'TOGGLE_NAV_BAR' = 'TOGGLE_NAV_BAR';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
+export const SET_CONFIG: 'SET_CONFIG' = 'SET_CONFIG';
+export const SET_THEME_NAME: 'SET_THEME_NAME' = 'SET_THEME_NAME';
+export const SET_SIDEPANE_ITEM: 'SET_SIDEPANE_ITEM' = 'SET_SIDEPANE_ITEM';
 
 export type Action =
   | SetMode
@@ -49,7 +52,10 @@ export type Action =
   | SetView
   | SetDebugPaneSize
   | ShowLogs
-  | SetCompiledVegaPaneSize;
+  | SetCompiledVegaPaneSize
+  | SetConfig
+  | SetThemeName
+  | SetSidePaneItem;
 
 export function setMode(mode: Mode) {
   return {
@@ -245,3 +251,30 @@ export function toggleNavbar(value: string) {
 }
 
 export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
+
+export function setConfig(value: string) {
+  return {
+    config: value,
+    type: SET_CONFIG,
+  };
+}
+
+export type SetConfig = ReturnType<typeof setConfig>;
+
+export function setThemeName(value: string) {
+  return {
+    themeName: value,
+    type: SET_THEME_NAME,
+  };
+}
+
+export type SetThemeName = ReturnType<typeof setThemeName>;
+
+export function setSidePaneItem(value: string) {
+  return {
+    sidePaneItem: value,
+    type: SET_SIDEPANE_ITEM,
+  };
+}
+
+export type SetSidePaneItem = ReturnType<typeof setSidePaneItem>;

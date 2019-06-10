@@ -12,3 +12,8 @@
 .full-height-wrapper .react-monaco-editor-container {
   flex: 1;
 }
+
+.edit-vega {
+  position: absolute;
+  right: 6px;
+}

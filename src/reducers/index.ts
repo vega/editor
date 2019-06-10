@@ -1,5 +1,4 @@
 import * as vl from 'vega-lite';
-
 import {
   Action,
   EXPORT_VEGA,
@@ -8,6 +7,7 @@ import {
   PARSE_SPEC,
   SET_BASEURL,
   SET_COMPILED_VEGA_PANE_SIZE,
+  SET_CONFIG,
   SET_DEBUG_PANE_SIZE,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
@@ -37,6 +37,7 @@ import { DEFAULT_STATE, Mode } from '../constants';
 import { State } from '../constants/default-state';
 import { LocalLogger } from '../utils/logger';
 import { validateVega, validateVegaLite } from '../utils/validate';
+import { SET_SIDEPANE_ITEM, SET_THEME_NAME } from './../actions/editor';
 
 function errorLine(code: string, error: string) {
   const pattern = /(position\s)(\d+)/;
@@ -275,6 +276,21 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         navItem: action.navItem,
+      };
+    case SET_CONFIG:
+      return {
+        ...state,
+        config: action.config,
+      };
+    case SET_THEME_NAME:
+      return {
+        ...state,
+        themeName: action.themeName,
+      };
+    case SET_SIDEPANE_ITEM:
+      return {
+        ...state,
+        sidePaneItem: action.sidePaneItem,
       };
     default:
       return state;

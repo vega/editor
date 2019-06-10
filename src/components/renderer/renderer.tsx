@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Edit3, Maximize } from 'react-feather';
 import { Portal } from 'react-portal';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
@@ -13,7 +14,7 @@ import './index.css';
 // Add additional projections
 addProjections(vega.projection);
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
+type Props = ReturnType<typeof MapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
 
 const defaultState = { fullscreen: false };
 
@@ -23,7 +24,7 @@ const KEYCODES = {
   ESCAPE: 27,
 };
 
-class Editor extends React.Component<Props, State> {
+class Editor extends React.Component<any, State> {
   public static pathname: string;
   public readonly state: State = defaultState;
 
@@ -59,7 +60,7 @@ class Editor extends React.Component<Props, State> {
   }
   // Initialize the view instance
   public initView() {
-    const runtime = vega.parse(this.props.vegaSpec);
+    const runtime = vega.parse(this.props.vegaSpec, this.props.config);
 
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
@@ -137,7 +138,8 @@ class Editor extends React.Component<Props, State> {
     if (
       !deepEqual(prevProps.vegaSpec, this.props.vegaSpec) ||
       !deepEqual(prevProps.vegaLiteSpec, this.props.vegaLiteSpec) ||
-      prevProps.baseURL !== this.props.baseURL
+      prevProps.baseURL !== this.props.baseURL ||
+      !deepEqual(prevProps.config, this.props.config)
     ) {
       this.initView();
     }
@@ -182,4 +184,10 @@ class Editor extends React.Component<Props, State> {
   }
 }
 
-export default withRouter(Editor);
+function MapStateToProps(state) {
+  return {
+    config: state.config,
+  };
+}
+
+export default withRouter(connect(MapStateToProps)(Editor));
