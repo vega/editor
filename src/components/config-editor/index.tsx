@@ -9,7 +9,7 @@ import './config-editor.css';
 
 class ConfigEditor extends React.Component<any, any> {
   public handleEditorChange = spec => {
-    this.props.setCurrentConfig(JSON.parse(spec));
+    this.props.setConfig(JSON.parse(spec));
     (document.getElementById('config-select') as any).value = 'custom';
   };
   public render() {
@@ -44,7 +44,7 @@ function mapStateToProps(state, ownProps) {
 export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
-      setCurrentConfig: EditorActions.setCurrentConfig,
+      setConfig: EditorActions.setConfig,
     },
     dispatch
   );

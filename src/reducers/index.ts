@@ -9,7 +9,7 @@ import {
   PARSE_SPEC,
   SET_BASEURL,
   SET_COMPILED_VEGA_PANE_SIZE,
-  SET_CURRENT_CONFIG,
+  SET_CONFIG,
   SET_DEBUG_PANE_SIZE,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
@@ -20,7 +20,7 @@ import {
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
   SET_VIEW,
-  SetCurrentConfig,
+  SetConfig,
   SetGistVegaLiteSpec,
   SetGistVegaSpec,
   SetVegaExample,
@@ -279,7 +279,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         navItem: action.navItem,
       };
-    case SET_CURRENT_CONFIG:
+    case SET_CONFIG:
       return {
         ...state,
         config: action.config,
