@@ -20,7 +20,7 @@ class ConfigEditorHeader extends React.Component<any, any> {
           onChange={e => {
             e.stopPropagation();
             this.props.setConfig(themes[e.target.value]);
-            this.props.setCurrentThemeName(e.target.value);
+            this.props.setThemeName(e.target.value);
           }}
         >
           <option value="custom">Custom</option>
@@ -41,7 +41,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setConfig: EditorActions.setConfig,
-      setCurrentThemeName: EditorActions.setCurrentThemeName,
+      setThemeName: EditorActions.setThemeName,
     },
     dispatch
   );

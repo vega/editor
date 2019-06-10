@@ -1,6 +1,4 @@
 import * as vl from 'vega-lite';
-import { SET_CURRENT_THEME_NAME, SET_SIDEPANE_ITEM } from './../actions/editor';
-
 import {
   Action,
   EXPORT_VEGA,
@@ -20,7 +18,6 @@ import {
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
   SET_VIEW,
-  SetConfig,
   SetGistVegaLiteSpec,
   SetGistVegaSpec,
   SetVegaExample,
@@ -40,6 +37,7 @@ import { DEFAULT_STATE, Mode } from '../constants';
 import { State } from '../constants/default-state';
 import { LocalLogger } from '../utils/logger';
 import { validateVega, validateVegaLite } from '../utils/validate';
+import { SET_SIDEPANE_ITEM, SET_THEME_NAME } from './../actions/editor';
 
 function errorLine(code: string, error: string) {
   const pattern = /(position\s)(\d+)/;
@@ -284,7 +282,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         config: action.config,
       };
-    case SET_CURRENT_THEME_NAME:
+    case SET_THEME_NAME:
       return {
         ...state,
         themeName: action.themeName,
