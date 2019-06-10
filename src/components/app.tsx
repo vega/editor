@@ -13,6 +13,7 @@ import { State } from '../constants/default-state';
 import './app.css';
 import Header from './header';
 import InputPanel from './input-panel';
+import Sidebar from './Sidebar';
 import VizPane from './viz-pane';
 
 type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
@@ -139,7 +140,17 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
             pane2Style={{ overflow: 'scroll' }}
           >
             <InputPanel />
-            <VizPane />
+            <SplitPane
+              split="vertical"
+              minSize={300}
+              defaultSize={w * 0.4}
+              pane1Style={{ display: 'flex' }}
+              className="main-pane"
+              pane2Style={{ overflow: 'scroll' }}
+            >
+              <VizPane />
+              <Sidebar />
+            </SplitPane>
           </SplitPane>
         </div>
       </div>

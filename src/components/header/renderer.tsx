@@ -441,7 +441,6 @@ class Header extends React.Component<Props, State> {
             <img height={32} alt="IDL Logo" src="idl-logo.png" />
           </a>
         </section>
-        <Sidebar />
       </div>
     );
   }

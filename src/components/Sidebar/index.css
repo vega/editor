@@ -29,8 +29,7 @@
 .settings {
   height: 81vh;
   width: 50vw;
-  position: absolute;
-  top: 60px;
+  display: block;
   background-color: #f7f6f6;
   transform: translateX(100%);
   transition: all 0.3s;
