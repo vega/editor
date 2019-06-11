@@ -8,7 +8,7 @@ export default class Sidebar extends Component {
     const classNames = this.state.isOpen ? 'settings open' : 'settings';
     return (
       <div>
-        <div>Testing Phase...</div>
+        <div />
       </div>
     );
   }

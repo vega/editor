@@ -142,10 +142,10 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
             <InputPanel />
             <SplitPane
               split="vertical"
-              minSize={300}
-              defaultSize={w * 0.4}
+              minSize={w * 0.4}
+              maxSize={w * 0.4}
               pane1Style={{ display: 'flex' }}
-              className="main-pane"
+              className="settings-pane"
               pane2Style={{ overflow: 'scroll' }}
             >
               <VizPane />
