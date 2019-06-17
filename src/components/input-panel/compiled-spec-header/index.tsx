@@ -1,6 +1,6 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import { ChevronUp } from 'react-feather';
+import { ChevronDown, ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -61,6 +61,8 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
               Config
             </li>
           </ul>
+
+          <ChevronDown />
 
           {this.props.sidePaneItem === SIDEPANE.CompiledVega && this.props.mode === Mode.VegaLite ? (
             <button className="edit-vega" onClick={this.editVegaSpec} style={{ zIndex: 0, cursor: 'pointer' }}>
