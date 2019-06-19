@@ -6,7 +6,7 @@ import * as themes from 'vega-themes';
 import * as EditorActions from '../../actions/editor';
 import './config-editor.css';
 
-class ConfigEditorHeader extends React.Component<any, any> {
+class ConfigEditorHeader extends React.PureComponent<any, any> {
   public componentDidMount() {
     (document.getElementById('config-select') as any).value = this.props.themeName;
   }

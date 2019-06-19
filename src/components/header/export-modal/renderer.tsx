@@ -10,7 +10,7 @@ interface State {
   downloadVegaJSON: boolean;
 }
 
-class ExportModal extends React.Component<Props, State> {
+class ExportModal extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

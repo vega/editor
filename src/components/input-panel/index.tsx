@@ -12,7 +12,7 @@ import SpecEditor from './spec-editor';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-class InputPanel extends React.Component<Props> {
+class InputPanel extends React.PureComponent<Props> {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);

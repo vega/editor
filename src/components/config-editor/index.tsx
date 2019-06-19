@@ -7,7 +7,7 @@ import { debounce } from 'vega';
 import * as EditorActions from '../../actions/editor';
 import './config-editor.css';
 
-class ConfigEditor extends React.Component<any, any> {
+class ConfigEditor extends React.PureComponent<any, any> {
   public handleEditorChange = spec => {
     this.props.setConfig(JSON.parse(spec));
     (document.getElementById('config-select') as any).value = 'custom';

@@ -30,7 +30,7 @@ const formatExampleName = (name: string) => {
     .join(' ');
 };
 
-class Header extends React.Component<Props, State> {
+class Header extends React.PureComponent<Props, State> {
   private refGistForm: HTMLFormElement;
   private examplePortal = React.createRef<HTMLDivElement>();
   private listnerAttached: boolean = false;

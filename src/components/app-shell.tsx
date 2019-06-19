@@ -8,7 +8,7 @@ interface Props {
   logPageView: () => void;
 }
 
-export default class AppShell extends React.Component<Props> {
+export default class AppShell extends React.PureComponent<Props> {
   public componentDidUpdate() {
     this.props.logPageView();
   }

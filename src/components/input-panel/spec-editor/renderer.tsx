@@ -39,7 +39,7 @@ const KEYCODES = {
   S: 83,
 };
 
-class Editor extends React.Component<Props, {}> {
+class Editor extends React.PureComponent<Props, {}> {
   constructor(props) {
     super(props);
     this.handleKeydown = this.handleKeydown.bind(this);

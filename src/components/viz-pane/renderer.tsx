@@ -15,7 +15,7 @@ import DebugPaneHeader from './debug-pane-header';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-export default class VizPane extends React.Component<Props> {
+export default class VizPane extends React.PureComponent<Props> {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);

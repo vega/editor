@@ -18,7 +18,7 @@ interface State {
   invalidRevision: boolean;
   invalidUrl: boolean;
 }
-class GistModal extends React.Component<Props, State> {
+class GistModal extends React.PureComponent<Props, State> {
   private refGistForm: HTMLFormElement;
   constructor(props) {
     super(props);

@@ -24,7 +24,7 @@ const KEYCODES = {
   ESCAPE: 27,
 };
 
-class Editor extends React.Component<any, State> {
+class Editor extends React.PureComponent<any, State> {
   public static pathname: string;
   public readonly state: State = defaultState;
 

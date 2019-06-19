@@ -12,7 +12,7 @@ interface State {
   signalValue: string;
 }
 
-export default class SignalRow extends React.Component<Props, State> {
+export default class SignalRow extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

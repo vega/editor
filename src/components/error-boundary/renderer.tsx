@@ -4,7 +4,7 @@ import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-export default class ErrorBoundary extends React.Component<Props> {
+export default class ErrorBoundary extends React.PureComponent<Props> {
   public componentDidCatch(error, info) {
     this.props.logError(error.toString());
   }

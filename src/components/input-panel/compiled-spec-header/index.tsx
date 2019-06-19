@@ -15,7 +15,7 @@ const toggleStyle = {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
 
-class CompiledSpecDisplayHeader extends React.Component<Props> {
+class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   constructor(props) {
     super(props);
     this.editVegaSpec = this.editVegaSpec.bind(this);
