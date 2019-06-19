@@ -120,6 +120,26 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
     }
   }
 
+  // public getVizPane() {
+  //   const w = window.innerWidth - 300;
+  //   if (this.props.settingState) {
+  //     return (
+  //       <SplitPane
+  //         split="vertical"
+  //         minSize={w * 0.4}
+  //         maxSize={w * 0.4}
+  //         pane1Style={{ display: 'flex' }}
+  //         className="settings-pane"
+  //         pane2Style={{ overflow: 'scroll' }}
+  //       >
+
+  //         <Sidebar />
+  //       </SplitPane>
+  //     );
+  //   }
+  //   return <VizPane />;
+  // }
+
   public render() {
     const w = window.innerWidth;
     return (
@@ -128,8 +148,8 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
         <div
           style={{
             height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,
-            position: 'relative',
           }}
+          className="main-panel"
         >
           <SplitPane
             split="vertical"
@@ -138,20 +158,12 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
             pane1Style={{ display: 'flex' }}
             className="main-pane"
             pane2Style={{ overflow: 'scroll' }}
+            style={{ position: 'relative' }}
           >
             <InputPanel />
-            <SplitPane
-              split="vertical"
-              minSize={w * 0.4}
-              maxSize={w * 0.4}
-              pane1Style={{ display: 'flex' }}
-              className="settings-pane"
-              pane2Style={{ overflow: 'scroll' }}
-            >
-              <VizPane />
-              <Sidebar />
-            </SplitPane>
+            <VizPane />
           </SplitPane>
+          {this.props.settingState && <div className="settings" />}
         </div>
       </div>
     );
@@ -161,6 +173,7 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
 function mapStateToProps(state: State) {
   return {
     view: state.view,
+    settingState: state.settingState,
   };
 }
 

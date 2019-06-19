@@ -5,7 +5,9 @@ import { Code, ExternalLink, FileText, GitHub, Grid, HelpCircle, Menu, Play, Sha
 import { Portal, PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
-import { mapDispatchToProps, mapStateToProps } from '.';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import * as EditorActions from '../../actions/editor';
 import { Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
@@ -15,9 +17,6 @@ import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
 import './index.css';
 import ShareModal from './share-modal/index';
-
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & { history: any; showExample: boolean };
 
 interface State {
   showVega: boolean;
@@ -31,7 +30,7 @@ const formatExampleName = (name: string) => {
     .join(' ');
 };
 
-class Header extends React.Component<Props, State> {
+class Header extends React.Component<any, State> {
   private refGistForm: HTMLFormElement;
   private examplePortal = React.createRef<HTMLDivElement>();
   private listnerAttached: boolean = false;
@@ -89,6 +88,10 @@ class Header extends React.Component<Props, State> {
     });
   }
 
+  public handleSettingsClick() {
+    this.props.setSettingState(!this.props.settingState);
+  }
+
   public componentWillUnmount() {
     window.removeEventListener('keydown', () => {
       return;
@@ -124,6 +127,13 @@ class Header extends React.Component<Props, State> {
       <div className="header-button">
         <GitHub className="header-icon" />
         {'Gist'}
+      </div>
+    );
+
+    const settingsButton = (
+      <div className="header-button">
+        <Menu className="header-icon" />
+        {'Settings'}
       </div>
     );
 
@@ -436,6 +446,7 @@ class Header extends React.Component<Props, State> {
           </PortalWithState>
 
           <span>{docsLink}</span>
+          <span onClick={() => this.handleSettingsClick()}>{settingsButton}</span>
 
           <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
             <img height={32} alt="IDL Logo" src="idl-logo.png" />
@@ -446,4 +457,24 @@ class Header extends React.Component<Props, State> {
   }
 }
 
-export default withRouter(Header);
+function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      setSettingState: EditorActions.setSettingState,
+    },
+    dispatch
+  );
+}
+
+function mapStateToProps(state) {
+  return {
+    settingState: state.settingState,
+  };
+}
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Header)
+);

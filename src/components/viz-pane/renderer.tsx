@@ -12,6 +12,7 @@ import Renderer from '../renderer';
 import SignalViewer from '../signal-viewer';
 import Toolbar from '../toolbar';
 import DebugPaneHeader from './debug-pane-header';
+import Sidebar from '../Sidebar';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -93,6 +94,7 @@ export default class VizPane extends React.Component<Props> {
         }}
       >
         {container}
+
         <div className="debug-pane">
           <DebugPaneHeader />
           {this.props.logs ? <ErrorPane /> : this.getComponent()}

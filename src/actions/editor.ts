@@ -24,6 +24,7 @@ export const TOGGLE_NAV_BAR: 'TOGGLE_NAV_BAR' = 'TOGGLE_NAV_BAR';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
+export const SET_SETTING_STATE: 'SET_SETTING_STATE' = 'SET_SETTING_STATE';
 
 export type Action =
   | SetMode
@@ -49,7 +50,8 @@ export type Action =
   | SetView
   | SetDebugPaneSize
   | ShowLogs
-  | SetCompiledVegaPaneSize;
+  | SetCompiledVegaPaneSize
+  | SetSettingState;
 
 export function setMode(mode: Mode) {
   return {
@@ -245,3 +247,12 @@ export function toggleNavbar(value: string) {
 }
 
 export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
+
+export function setSettingState(value: Boolean) {
+  return {
+    settinggState: value,
+    type: SET_SETTING_STATE,
+  };
+}
+
+export type SetSettingState = ReturnType<typeof setSettingState>;

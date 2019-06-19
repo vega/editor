@@ -103,8 +103,12 @@ html {
 }
 
 .settings-pane > .Pane2 {
-  border: 1px solid #3b3b3b;
-  border-radius: 2px;
+  /* order: 1px solid #3b3b3b;
+  border-radius: 2px; */
+}
+
+.hide {
+  display: none;
 }
 
 button:focus {
@@ -140,4 +144,15 @@ button:focus {
 .reset button {
   padding: 10px;
   font-size: 1.1em;
+}
+
+.main-panel {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.settings {
+  width: 270px;
+  background: white;
 }

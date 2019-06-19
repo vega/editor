@@ -1,3 +1,4 @@
+import { SET_SETTING_STATE } from './../actions/editor';
 import * as vl from 'vega-lite';
 
 import {
@@ -275,6 +276,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         navItem: action.navItem,
+      };
+    case SET_SETTING_STATE:
+      return {
+        ...state,
+        settingState: action.settinggState,
       };
     default:
       return state;
