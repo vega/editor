@@ -18,6 +18,8 @@ import VizPane from './viz-pane';
 type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
 
 class App extends React.PureComponent<Props & { match: any; location: any; showExample?: boolean }> {
+
+  public w = window.innerWidth;
   public componentDidMount() {
     window.addEventListener(
       'message',
@@ -118,9 +120,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
       this.props.updateVegaLiteSpec(VEGA_LITE_START_SPEC);
     }
   }
-
   public render() {
-    const w = window.innerWidth;
     return (
       <div className="app-container">
         <Header showExample={this.props.showExample} />
@@ -133,7 +133,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
           <SplitPane
             split="vertical"
             minSize={300}
-            defaultSize={w * 0.4}
+            defaultSize={this.w * 0.4}
             pane1Style={{ display: 'flex' }}
             className="main-pane"
             pane2Style={{ overflow: 'scroll' }}
