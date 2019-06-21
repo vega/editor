@@ -151,8 +151,3 @@ button:focus {
   display: flex;
   flex-direction: row;
 }
-
-.settings {
-  width: 270px;
-  background: white;
-}

@@ -163,7 +163,7 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
             <InputPanel />
             <VizPane />
           </SplitPane>
-          {this.props.settingState && <div className="settings" />}
+          {this.props.settingState && <Sidebar />}
         </div>
       </div>
     );
@@ -172,8 +172,8 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
 
 function mapStateToProps(state: State) {
   return {
-    view: state.view,
     settingState: state.settingState,
+    view: state.view,
   };
 }
 
