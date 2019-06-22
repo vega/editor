@@ -18,7 +18,6 @@ import VizPane from './viz-pane';
 type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
 
 class App extends React.PureComponent<Props & { match: any; location: any; showExample?: boolean }> {
-
   public w = window.innerWidth;
   public componentDidMount() {
     window.addEventListener(
