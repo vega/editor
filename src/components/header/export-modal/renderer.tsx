@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Book, Code, Image, Map } from 'react-feather';
 import { withRouter } from 'react-router-dom';
+import { mergeDeep } from 'vega-lite/build/src/util';
 import { mapStateToProps } from '.';
 import './index.css';
 
@@ -8,6 +9,7 @@ type Props = ReturnType<typeof mapStateToProps>;
 
 interface State {
   downloadVegaJSON: boolean;
+  includeConfig: boolean;
 }
 
 class ExportModal extends React.PureComponent<Props, State> {
@@ -15,6 +17,7 @@ class ExportModal extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       downloadVegaJSON: false,
+      includeConfig: false,
     };
   }
 
@@ -68,6 +71,12 @@ class ExportModal extends React.PureComponent<Props, State> {
     dlButton.classList.remove('disabled');
   }
 
+  public updateIncludeConfig(e) {
+    this.setState({
+      includeConfig: e.target.checked,
+    });
+  }
+
   public downloadJSON(event) {
     if (
       event.target &&
@@ -77,10 +86,15 @@ class ExportModal extends React.PureComponent<Props, State> {
     ) {
       return;
     }
-    const content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
+    let content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
     const filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
+    if (this.state.includeConfig) {
+      content = mergeDeep(content, { config: this.props.config });
+    }
 
-    const blob = new Blob([JSON.stringify(content, null, 2)], { type: `application/json` });
+    const blob = new Blob([JSON.stringify(content, null, 2)], {
+      type: `application/json`,
+    });
     const url = window.URL.createObjectURL(blob);
 
     const link = document.createElement(`a`);
@@ -163,6 +177,15 @@ class ExportModal extends React.PureComponent<Props, State> {
                 onChange={this.updateDownloadJSONType.bind(this)}
               />
               <label htmlFor="json-type[vega-lite]">Vega Lite</label>
+              <input
+                type="checkbox"
+                name="config-include"
+                id="config-include"
+                value="config-select"
+                checked={this.state.includeConfig}
+                onChange={this.updateIncludeConfig.bind(this)}
+              />
+              <label htmlFor="config-select">Config</label>
             </div>
           </button>
         </div>

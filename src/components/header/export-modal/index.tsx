@@ -4,6 +4,7 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State, ownProps) {
   return {
+    config: state.config,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
     view: state.view,
