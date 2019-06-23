@@ -1,12 +1,25 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Code, ExternalLink, FileText, GitHub, Grid, HelpCircle, Menu, Play, Share2, Trash2, X } from 'react-feather';
+import {
+  Code,
+  ExternalLink,
+  FileText,
+  GitHub,
+  Grid,
+  HelpCircle,
+  Menu,
+  Play,
+  Settings,
+  Share2,
+  Trash2,
+  X,
+} from 'react-feather';
 import { Portal, PortalWithState } from 'react-portal';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { bindActionCreators, Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import * as EditorActions from '../../actions/editor';
 import { Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
@@ -131,8 +144,8 @@ class Header extends React.Component<any, State> {
     );
 
     const settingsButton = (
-      <div className="header-button">
-        <Menu className="header-icon" />
+      <div className="header-button settings-button">
+        <Settings className="header-icon" />
         {'Settings'}
       </div>
     );
