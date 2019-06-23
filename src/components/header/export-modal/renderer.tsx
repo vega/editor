@@ -88,7 +88,7 @@ class ExportModal extends React.PureComponent<Props, State> {
     }
     let content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
     const filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
-    if (this.state.includeConfig) {
+    if (this.state.includeConfig && !content.config) {
       content = mergeDeep(content, { config: this.props.config });
     }
 
