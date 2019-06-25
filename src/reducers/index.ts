@@ -456,7 +456,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case RECEIVE_CURRENT_USER:
       return {
         ...state,
-        user: action.user,
+        profileUrl: action.profileUrl,
       };
     default:
       return state;

@@ -77,6 +77,9 @@ class Header extends React.PureComponent<Props, State> {
       })
       .then(json => {
         this.props.isLoggedIn(json.isAuthenticated);
+        if (json.profileUrl !== undefined) {
+          this.props.receiveCurrentUser(json.profileUrl);
+        }
       })
       .catch(err => {
         // console.error(err);
@@ -210,7 +213,7 @@ class Header extends React.PureComponent<Props, State> {
     const auth = this.props.isAuthenticated ? (
       <form action={`${url}auth/github/logout`} method="get">
         <div className="profile-container">
-          <img className="profile-img" src="https://avatars3.githubusercontent.com/u/35191225?s=460&v=4" />
+          <img className="profile-img" src={this.props.profileUrl} />
           {this.state.open && (
             <div className="profile-options">
               <input className="sign-out" type="submit" value="Logout" onClick={e => e.stopPropagation()} />

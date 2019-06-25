@@ -27,6 +27,7 @@ export interface State {
   navItem: string;
   sidePaneItem: string;
   parse: boolean;
+  profileUrl: string;
   renderer: Renderer;
   selectedExample: string;
   settings: boolean;
@@ -61,6 +62,7 @@ export const DEFAULT_STATE: State = {
   mode: Mode.VegaLite,
   navItem: NAVBAR.Logs,
   parse: false,
+  profileUrl: '',
   renderer: 'canvas',
   selectedExample: null,
   settings: false,
