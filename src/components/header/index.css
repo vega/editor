@@ -334,16 +334,23 @@
   border: 1px solid #ccc;
   top: 50px;
   right: 10px;
-  z-index: 1;
+  z-index: 10;
   border-radius: 3px;
+  padding: 0.4em;
+  cursor: default;
 }
 
 .sign-out {
   font-size: 1.1em;
-  width: inherit;
-  background-color: inherit;
-  border: inherit;
+  background-color: transparent;
+  padding: inherit;
+  width: 100%;
+  border: none;
   cursor: pointer;
+}
+
+.sign-out:hover {
+  background-color: #f5f5f5;
 }
 
 /* Media queries */
