@@ -13,6 +13,7 @@ export function mapStateToProps(state: State, ownProps) {
     manualParse: state.manualParse,
     mode: state.mode,
     settings: state.settings,
+    profileUrl: state.profileUrl,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
     view: state.view,
