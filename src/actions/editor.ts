@@ -368,9 +368,9 @@ export function extractConfigSpec() {
 
 export type ExtractConfigSpec = ReturnType<typeof extractConfigSpec>;
 
-export function receiveCurrentUser(profileUrl: string) {
+export function receiveCurrentUser(profilePicUrl: string) {
   return {
-    profileUrl,
+    profilePicUrl,
     type: RECEIVE_CURRENT_USER,
   };
 }
