@@ -86,19 +86,13 @@ class ExportModal extends React.PureComponent<Props, State> {
     ) {
       return;
     }
-    let content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
+    const content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
     const filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
 
-    let config = {};
-
-    // Check if the content has the config(i.e spec.config)
-    if (content.config) {
-      // Merge the spec.config and the custom config
-      config = mergeDeep(this.props.config, content.config);
-    }
-
     if (this.state.includeConfig) {
-      content = mergeDeep(content, { config });
+      const Newcontent = mergeDeep({ config: this.props.config }, content as any);
+      delete content.config;
+      content.config = Newcontent.config;
     }
 
     const blob = new Blob([JSON.stringify(content, null, 2)], {
