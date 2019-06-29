@@ -28,8 +28,8 @@
 
 .toggleWrapper {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 10%;
+  left: 30%;
   overflow: hidden;
   -webkit-transform: translate3d(-50%, -50%, 0);
   transform: translate3d(-50%, -50%, 0);
@@ -44,7 +44,7 @@
   position: relative;
   width: 120px;
   height: 50px;
-  background: #d21626;
+  background: #66b317;
   border-radius: 5px;
   -webkit-transition: all 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
   transition: all 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
@@ -59,13 +59,13 @@
   transition: all 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 .toggle:before {
-  content: "OFF";
-  left: 20px;
-  color: #d21626;
+  content: "Canvas";
+  left: 12px;
+  color: #66b317;
 }
 .toggle:after {
-  content: "ON";
-  right: 20px;
+  content: "SVG";
+  right: 15px;
   color: #fff;
 }
 .toggle__handler {

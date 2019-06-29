@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Select from 'react-select';
 import './index.css';
 
 export default class Sidebar extends Component {
@@ -6,12 +7,8 @@ export default class Sidebar extends Component {
     return (
       <div className="settings">
         <div className="renderer-switch">
-          <div className="toggleWrapper">
-            <input type="checkbox" id="dn" className="dn" />
-            <label htmlFor="dn" className="toggle">
-              <span className="toggle__handler" />
-            </label>
-          </div>
+          Renderer :
+          <Select className="data-dropdown" clearable={false} searchable={false} />
         </div>
       </div>
     );
