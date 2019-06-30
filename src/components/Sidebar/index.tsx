@@ -7,8 +7,18 @@ export default class Sidebar extends Component {
     return (
       <div className="settings">
         <div className="renderer-switch">
-          Renderer :
-          <Select className="data-dropdown" clearable={false} searchable={false} />
+          <span className="renderer">Renderer:</span>
+          <div>
+            <Select className="renderer-dropdown" clearable={false} searchable={false} />
+          </div>
+        </div>
+        <div className="tooltips">
+          <input type="checkbox" name="" id="tooltip" />
+          <label htmlFor="tooltip">Tooltips</label>
+        </div>
+        <div className="hover-enable">
+          <input type="checkbox" name="" id="hover-enable" />
+          <label htmlFor="hover-enable">Hover Enable</label>
         </div>
       </div>
     );
