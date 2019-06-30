@@ -158,6 +158,26 @@ class ExportModal extends React.PureComponent<Props, State> {
       <div className="export-content">
         <h2>Export</h2>
         <div className="export-buttons">
+          <Clipboard className="export-button export-url" data-clipboard-text={this.state.generatedURL}>
+            <div>
+              <Share2 />
+              <span>Get URL</span>
+            </div>
+            <p>
+              We pack the Vega or Vega-Lite specification and an encoded string in the URL. We use LZ-based compression
+              algorithm and preserve indentation, newlines, and other whitespace.
+            </p>
+            <label>
+              Fullscreen mode:
+              <input
+                type="checkbox"
+                defaultChecked={this.state.fullScreen}
+                name="fullscreen"
+                onChange={this.handleCheck.bind(this)}
+              />
+            </label>
+            <p>URL length: {this.state.generatedURL.length}</p>
+          </Clipboard>
           <button className="export-button" onClick={() => this.downloadViz('png')}>
             <div>
               <Image />
@@ -224,26 +244,6 @@ class ExportModal extends React.PureComponent<Props, State> {
               <label htmlFor="json-type[vega-lite]">Vega Lite</label>
             </div>
           </button>
-          <Clipboard className="export-button export-url" data-clipboard-text={this.state.generatedURL}>
-            <div>
-              <Share2 />
-              <span>Get URL</span>
-            </div>
-            <p>
-              We pack the Vega or Vega-Lite specification and an encoded string in the URL. We use LZ-based compression
-              algorithm and preserve indentation, newlines, and other whitespace.
-            </p>
-            <label>
-              Fullscreen mode:
-              <input
-                type="checkbox"
-                defaultChecked={this.state.fullScreen}
-                name="fullscreen"
-                onChange={this.handleCheck.bind(this)}
-              />
-            </label>
-            <p>URL length: {this.state.generatedURL.length}</p>
-          </Clipboard>
         </div>
         <div className="user-notes">
           <p>
