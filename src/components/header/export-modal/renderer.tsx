@@ -90,8 +90,12 @@ class ExportModal extends React.PureComponent<Props, State> {
     const filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
 
     if (this.state.includeConfig) {
+      // The second arguement takes the priority , the content is of higher priority
+      // The config appears on top of the spec because its passed as first arguement
       const newContent = mergeDeep({ config: this.props.config }, content as any);
+      // delete the config from the content
       delete content.config;
+      // add the new config
       content.config = newContent.config;
     }
 
