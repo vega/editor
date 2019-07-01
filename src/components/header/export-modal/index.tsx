@@ -4,6 +4,8 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State, ownProps) {
   return {
+    editorString: state.editorString,
+    mode: state.mode,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
     view: state.view,
