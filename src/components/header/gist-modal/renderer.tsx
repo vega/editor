@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { mapStateToProps } from '.';
 import { Mode } from '../../../constants';
-import '../index.css';
+import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & { history: any; closePortal: any };
 
