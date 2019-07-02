@@ -1,0 +1,72 @@
+.gist-content {
+  padding: 10px;
+}
+
+.gist-button {
+  background: rgb(100, 80, 150);
+  color: white;
+  border: 1px solid #a9a9a9;
+  cursor: pointer;
+  height: 30px;
+  outline: none;
+  font-size: 16px;
+  float: right;
+  padding: 0 20px;
+}
+
+.gist-button:hover {
+  background: rgb(92, 64, 141);
+  color: white;
+}
+
+.gist-text {
+  margin-top: 30px;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.gist-url {
+  font-size: 12px;
+  font-style: italic;
+  color: rgb(6, 69, 173);
+}
+
+.gist-input-container {
+  margin-top: 20px;
+}
+
+.gist-optional:after {
+  display: table;
+  content: "";
+  clear: both;
+}
+
+.gist-optional-input-container {
+  box-sizing: border-box;
+}
+
+.gist-input-container input[type="radio"] {
+  margin-left: 10px;
+}
+
+.gist-input-container input:checked + label {
+  text-decoration: underline;
+}
+
+.gist-input {
+  display: block;
+  width: 100%;
+  resize: none;
+  font-size: 14px;
+  padding: 5px;
+  margin-top: 3px;
+}
+
+.error-message {
+  font-size: 12px;
+  height: 5 px;
+  color: var(--error-color);
+  margin-top: 3px;
+  margin-bottom: 5px;
+  float: right;
+}
