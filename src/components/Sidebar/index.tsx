@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Select from 'react-select';
+import { bindActionCreators, Dispatch } from 'redux';
+import * as EditorActions from '../../actions/editor';
 import './index.css';
 
-export default class Sidebar extends Component {
+class Sidebar extends Component<any, any> {
   public render() {
+    const renderOptions = this.props.renderer === 'svg' ? [{ label: 'canvas' }] : [{ label: 'svg' }];
     return (
       <div className="settings">
         <div className="renderer-switch">
           <span className="renderer">Renderer:</span>
           <div>
-            <Select className="renderer-dropdown" clearable={false} searchable={false} />
+            <Select
+              className="renderer-dropdown"
+              value={{ label: this.props.renderer }}
+              options={renderOptions}
+              isClearable={false}
+              isSearchable={false}
+              onChange={e => this.props.setRenderer(e.label)}
+            />
           </div>
         </div>
         <div className="tooltips">
@@ -24,3 +35,22 @@ export default class Sidebar extends Component {
     );
   }
 }
+
+export function mapStateToProps(state) {
+  return {
+    renderer: state.renderer,
+  };
+}
+
+export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      setRenderer: EditorActions.setRenderer,
+    },
+    dispatch
+  );
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Sidebar);
