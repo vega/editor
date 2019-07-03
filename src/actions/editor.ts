@@ -1,3 +1,4 @@
+import { Config } from 'vega-themes/build/config';
 import { Mode, Renderer, View } from '../constants';
 
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
@@ -252,7 +253,7 @@ export function toggleNavbar(value: string) {
 
 export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
 
-export function setConfig(value: string) {
+export function setConfig(value: Config) {
   return {
     config: value,
     type: SET_CONFIG,

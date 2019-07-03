@@ -30,7 +30,7 @@
   background: #ddd;
 }
 
-.export-button > div {
+.export-button .header-text {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,6 +45,8 @@
 .export-button p {
   color: #333;
   line-height: 1.2;
+  text-align: left;
+  width: 100%;
 }
 
 .export-button p strong {
@@ -63,11 +65,14 @@
   opacity: 0.8;
 }
 
-.export-button .type-input-container {
+.input-container {
+  width: 100%;
   margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
 }
 
-.export-button .type-input-container input {
+.input-container input {
   margin-left: 1em;
 }
 

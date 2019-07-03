@@ -27,7 +27,7 @@ class ExportModal extends React.PureComponent<Props, State> {
       downloadVegaJSON: false,
       fullScreen: false,
       generatedURL: '',
-      includeConfig: false,
+      includeConfig: true,
       interval: null,
       popSnackbar: false,
     };
@@ -111,14 +111,8 @@ class ExportModal extends React.PureComponent<Props, State> {
     const content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
     const filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
 
-    if (this.state.includeConfig) {
-      // The second arguement takes the priority , the content is of higher priority
-      // The config appears on top of the spec because its passed as first arguement
-      const newContent = mergeDeep({ config: this.props.config }, content as any);
-      // delete the config from the content
-      delete content.config;
-      // add the new config
-      content.config = newContent.config;
+    if (this.state.includeConfig && this.props.config) {
+      content.config = mergeDeep(this.props.config, content.config);
     }
 
     const blob = new Blob([JSON.stringify(content, null, 2)], {
@@ -180,7 +174,7 @@ class ExportModal extends React.PureComponent<Props, State> {
         <h2>Export</h2>
         <div className="export-buttons">
           <Clipboard className="export-button export-url" data-clipboard-text={this.state.generatedURL}>
-            <div>
+            <div className="header-text">
               <Share2 />
               <span>Get URL</span>
             </div>
@@ -188,19 +182,21 @@ class ExportModal extends React.PureComponent<Props, State> {
               We pack the Vega or Vega-Lite specification and an encoded string in the URL. We use LZ-based compression
               algorithm and preserve indentation, newlines, and other whitespace.
             </p>
-            <label>
-              Fullscreen mode:
-              <input
-                type="checkbox"
-                defaultChecked={this.state.fullScreen}
-                name="fullscreen"
-                onChange={this.handleCheck.bind(this)}
-              />
-            </label>
+            <div className="input-container">
+              <label>
+                Fullscreen mode:
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.fullScreen}
+                  name="fullscreen"
+                  onChange={this.handleCheck.bind(this)}
+                />
+              </label>
+            </div>
             <p>URL length: {this.state.generatedURL.length}</p>
           </Clipboard>
           <button className="export-button" onClick={() => this.downloadViz('png')}>
-            <div>
+            <div className="header-text">
               <Image />
               <span>Download PNG</span>
             </div>
@@ -210,7 +206,7 @@ class ExportModal extends React.PureComponent<Props, State> {
             </p>
           </button>
           <button className="export-button" onClick={() => this.downloadViz('svg')}>
-            <div>
+            <div className="header-text">
               <Map />
               <span>Download SVG</span>
             </div>
@@ -220,14 +216,14 @@ class ExportModal extends React.PureComponent<Props, State> {
             </p>
           </button>
           <button className="export-button" onClick={() => this.openViz('svg')}>
-            <div>
+            <div className="header-text">
               <Map />
               <span>Open SVG</span>
             </div>
             <p>Open the SVG in your browser instead of downloading it.</p>
           </button>
           <button className="export-button" onClick={() => this.downloadPDF()} ref="downloadPDF">
-            <div>
+            <div className="header-text">
               <Book />
               <span>Download PDF</span>
             </div>
@@ -238,40 +234,48 @@ class ExportModal extends React.PureComponent<Props, State> {
             </p>
           </button>
           <button className="export-button" onClick={e => this.downloadJSON(e)}>
-            <div>
+            <div className="header-text">
               <Code />
               <span>Download JSON</span>
             </div>
             <p>JSON is a lightweight data-interchange format.</p>
-            <div className="type-input-container">
+            <div className="input-container">
               Type:
-              <input
-                type="radio"
-                name="json-type"
-                id="json-type[vega]"
-                value="vega"
-                checked={this.state.downloadVegaJSON}
-                onChange={this.updateDownloadJSONType.bind(this)}
-              />
-              <label htmlFor="json-type[vega]">Vega</label>
-              <input
-                type="radio"
-                name="json-type"
-                id="json-type[vega-lite]"
-                value="vega-lite"
-                checked={!this.state.downloadVegaJSON}
-                onChange={this.updateDownloadJSONType.bind(this)}
-              />
-              <label htmlFor="json-type[vega-lite]">Vega Lite</label>
-              <input
-                type="checkbox"
-                name="config-include"
-                id="config-include"
-                value="config-select"
-                checked={this.state.includeConfig}
-                onChange={this.updateIncludeConfig.bind(this)}
-              />
-              <label htmlFor="config-select">Config</label>
+              <label>
+                <input
+                  type="radio"
+                  name="json-type"
+                  id="json-type[vega]"
+                  value="vega"
+                  checked={this.state.downloadVegaJSON}
+                  onChange={this.updateDownloadJSONType.bind(this)}
+                />{' '}
+                Vega
+              </label>
+              <label htmlFor="json-type[vega-lite]">
+                <input
+                  type="radio"
+                  name="json-type"
+                  id="json-type[vega-lite]"
+                  value="vega-lite"
+                  checked={!this.state.downloadVegaJSON}
+                  onChange={this.updateDownloadJSONType.bind(this)}
+                />
+                Vega Lite
+              </label>
+            </div>
+            <div className="input-container">
+              <label>
+                Include config:
+                <input
+                  type="checkbox"
+                  name="config-include"
+                  id="config-include"
+                  value="config-select"
+                  checked={this.state.includeConfig}
+                  onChange={this.updateIncludeConfig.bind(this)}
+                />
+              </label>
             </div>
           </button>
         </div>

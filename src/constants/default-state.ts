@@ -1,5 +1,6 @@
 import { Spec } from 'vega';
 import { TopLevelSpec as VlSpec } from 'vega-lite';
+import { Config } from 'vega-themes/build/config';
 import { LocalLogger } from '../utils/logger';
 import { LAYOUT, Mode, NAVBAR, Renderer, SIDEPANE, VEGA_LITE_START_SPEC, View } from './consts';
 
@@ -7,7 +8,7 @@ export interface State {
   baseURL: string;
   compiledVegaSpec: boolean;
   compiledVegaPaneSize: number;
-  config: any;
+  config: Config;
   debugPane: boolean;
   debugPaneSize: number;
   editorString: string;
