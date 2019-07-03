@@ -3,6 +3,7 @@ import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
 import { Book, Code, Image, Map, Save, Share2 } from 'react-feather';
 import { withRouter } from 'react-router-dom';
+import { mergeDeep } from 'vega-lite/build/src/util';
 import { mapStateToProps } from '.';
 import './index.css';
 
@@ -11,6 +12,7 @@ type Props = ReturnType<typeof mapStateToProps>;
 interface State {
   copied: boolean;
   downloadVegaJSON: boolean;
+  includeConfig: boolean;
   fullScreen: boolean;
   generatedURL: string;
   interval: any;
@@ -25,6 +27,7 @@ class ExportModal extends React.PureComponent<Props, State> {
       downloadVegaJSON: false,
       fullScreen: false,
       generatedURL: '',
+      includeConfig: false,
       interval: null,
       popSnackbar: false,
     };
@@ -90,6 +93,12 @@ class ExportModal extends React.PureComponent<Props, State> {
     dlButton.classList.remove('disabled');
   }
 
+  public updateIncludeConfig(e) {
+    this.setState({
+      includeConfig: e.target.checked,
+    });
+  }
+
   public downloadJSON(event) {
     if (
       event.target &&
@@ -102,7 +111,19 @@ class ExportModal extends React.PureComponent<Props, State> {
     const content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
     const filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
 
-    const blob = new Blob([JSON.stringify(content, null, 2)], { type: `application/json` });
+    if (this.state.includeConfig) {
+      // The second arguement takes the priority , the content is of higher priority
+      // The config appears on top of the spec because its passed as first arguement
+      const newContent = mergeDeep({ config: this.props.config }, content as any);
+      // delete the config from the content
+      delete content.config;
+      // add the new config
+      content.config = newContent.config;
+    }
+
+    const blob = new Blob([JSON.stringify(content, null, 2)], {
+      type: `application/json`,
+    });
     const url = window.URL.createObjectURL(blob);
 
     const link = document.createElement(`a`);
@@ -242,6 +263,15 @@ class ExportModal extends React.PureComponent<Props, State> {
                 onChange={this.updateDownloadJSONType.bind(this)}
               />
               <label htmlFor="json-type[vega-lite]">Vega Lite</label>
+              <input
+                type="checkbox"
+                name="config-include"
+                id="config-include"
+                value="config-select"
+                checked={this.state.includeConfig}
+                onChange={this.updateIncludeConfig.bind(this)}
+              />
+              <label htmlFor="config-select">Config</label>
             </div>
           </button>
         </div>
