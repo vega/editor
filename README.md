@@ -1,4 +1,4 @@
-# Vega Editor [![Build Status](https://travis-ci.org/vega/editor.svg?branch=master)](https://travis-ci.org/vega/editor)
+# Vega Editor [![Build Status](https://travis-ci.org/vega/editor.svg?branch=master)](https://travis-ci.org/vega/editor) [![Greenkeeper badge](https://badges.greenkeeper.io/vega/editor.svg)](https://greenkeeper.io/)
 
 The **Vega editor** is a web application for authoring and testing [Vega](https://github.com/vega/vega) and [Vega-Lite](https://vega.github.io/vega-lite) visualizations. It includes a number of example specifications that showcase both the visual encodings and interaction techniques. It is deployed at https://vega.github.io/editor/.
 
