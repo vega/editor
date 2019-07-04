@@ -39,7 +39,7 @@
     "react": "^16.8.6",
     "react-clipboard.js": "^2.0.13",
     "react-dom": "^16.8.6",
-    "react-feather": "^1.1.6",
+    "react-feather": "^2.0.3",
     "react-ga": "2.6.0",
     "react-monaco-editor": "0.26.2",
     "react-paginate": "^6.3.0",
