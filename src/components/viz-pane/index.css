@@ -32,8 +32,8 @@
   cursor: pointer;
 }
 
-.debug-pane-header svg {
-  margin: 0 auto;
+.editor-header .down-button-svg {
+  margin: 50% 50%;
 }
 
 .tabs-nav {

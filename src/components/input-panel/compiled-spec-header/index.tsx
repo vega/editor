@@ -62,7 +62,9 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
             </li>
           </ul>
 
-          <ChevronDown />
+          <div className="down-button-svg">
+            <ChevronDown />
+          </div>
 
           {this.props.sidePaneItem === SIDEPANE.CompiledVega && this.props.mode === Mode.VegaLite ? (
             <button className="edit-vega" onClick={this.editVegaSpec} style={{ zIndex: 0, cursor: 'pointer' }}>
