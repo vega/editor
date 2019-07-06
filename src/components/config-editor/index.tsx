@@ -9,7 +9,11 @@ import './config-editor.css';
 
 class ConfigEditor extends React.PureComponent<any, any> {
   public handleEditorChange = spec => {
-    this.props.setConfig(JSON.parse(spec));
+    if (spec === '') {
+      this.props.setConfig({});
+    } else {
+      this.props.setConfig(JSON.parse(spec));
+    }
     (document.getElementById('config-select') as any).value = 'custom';
   };
   public render() {
