@@ -22,6 +22,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       formatSpec: EditorActions.formatSpec,
       logError: EditorActions.logError,
       parseSpec: EditorActions.parseSpec,
+      setEditorReference: EditorActions.setEditorReference,
       updateEditorString: EditorActions.updateEditorString,
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
       updateVegaSpec: EditorActions.updateVegaSpec,

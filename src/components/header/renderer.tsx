@@ -1,7 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Code, ExternalLink, FileText, GitHub, Grid, HelpCircle, Play, Trash2, X } from 'react-feather';
+import { ExternalLink, GitHub, Grid, HelpCircle, Play, Terminal, X } from 'react-feather';
 import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
@@ -45,20 +45,12 @@ class Header extends React.PureComponent<Props, State> {
     this.props.history.push(`/examples/vega/${name}`);
   }
 
-  public onSelectNewVega() {
-    this.props.history.push('/custom/vega');
-  }
-
   public onSelectVegaLite(name) {
     this.props.history.push(`/examples/vega-lite/${name}`);
   }
 
   public onSelectNewVegaLite() {
     this.props.history.push('/custom/vega-lite');
-  }
-
-  public onClear() {
-    this.props.mode === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
   }
 
   public onSwitchMode(option) {
@@ -85,6 +77,10 @@ class Header extends React.PureComponent<Props, State> {
       }
       this.listnerAttached = true;
     });
+  }
+
+  public openCommandPalette() {
+    this.props.editorRef.trigger('', 'editor.action.quickCommand');
   }
 
   public componentWillUnmount() {
@@ -137,37 +133,19 @@ class Header extends React.PureComponent<Props, State> {
         <HelpCircle className="header-icon" />
       </div>
     );
-    const docsLink = (
-      <a
-        className="docs-link"
-        href={`https://vega.github.io/${this.props.mode}/docs/`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <FileText className="header-icon" />
-        {NAMES[this.props.mode]} Docs
-      </a>
-    );
-
-    const clearButton = (
-      <div className="header-button" onClick={() => this.onClear()}>
-        <Trash2 className="header-icon" />
-        {'Clear'}
-      </div>
-    );
-
-    const formatButton = (
-      <div className="header-button format-button" onClick={() => this.props.formatSpec(true)}>
-        <Code className="header-icon" />
-        {'Format'}
-      </div>
-    );
 
     const runButton = (
       <div className="header-button" onClick={() => this.props.parseSpec(true)}>
         <Play className="header-icon" />
         {'Run'}
         <span className="parse-mode">{this.props.manualParse ? 'Manual' : 'Auto'}</span>
+      </div>
+    );
+
+    const optionsButton = (
+      <div className="header-button" onClick={this.openCommandPalette.bind(this)}>
+        <Terminal className="header-icon" />
+        {'Options'}
       </div>
     );
 
@@ -265,12 +243,11 @@ class Header extends React.PureComponent<Props, State> {
       <div className="header">
         <section className="left-section">
           <span>{modeSwitcher}</span>
-          <span>{clearButton}</span>
-          <span>{formatButton}</span>
           <span ref="splitButton" className={splitClass}>
             {runButton}
             {autoRunToggle}
           </span>
+          <span>{optionsButton}</span>
 
           <PortalWithState closeOnEsc>
             {({ openPortal, closePortal, isOpen, portal }) => [
@@ -294,35 +271,26 @@ class Header extends React.PureComponent<Props, State> {
           </PortalWithState>
 
           <PortalWithState closeOnEsc>
-            {({ openPortal, closePortal, isOpen, portal }) => {
-              if (!this.listnerAttached) {
-                this.handleHelpModalToggle(event, openPortal, closePortal, isOpen);
-              }
-
-              return [
-                <span key="0" onClick={openPortal}>
-                  {HelpButton}
-                </span>,
-                portal(
-                  <div className="modal-background" onClick={closePortal}>
-                    <div className="modal modal-top" onClick={e => e.stopPropagation()}>
-                      <div className="modal-header">
-                        <button className="close-button" onClick={closePortal}>
-                          <X />
-                        </button>
-                      </div>
-                      <div className="modal-body">
-                        <HelpModal />
-                      </div>
-                      <div className="modal-footer" />
+            {({ openPortal, closePortal, isOpen, portal }) => [
+              <span key="0" onClick={openPortal}>
+                {gistButton}
+              </span>,
+              portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
+                    <div className="modal-header">
+                      <button className="close-button" onClick={closePortal}>
+                        <X />
+                      </button>
                     </div>
+                    <div className="modal-body">{gist(closePortal)}</div>
+                    <div className="modal-footer" />
                   </div>
-                ),
-              ];
-            }}
+                </div>
+              ),
+            ]}
           </PortalWithState>
-        </section>
-        <section className="right-section">
+
           <PortalWithState
             closeOnEsc
             defaultOpen={this.props.showExample}
@@ -382,33 +350,36 @@ class Header extends React.PureComponent<Props, State> {
               ),
             ]}
           </PortalWithState>
+        </section>
 
+        <section className="right-section">
           <PortalWithState closeOnEsc>
-            {({ openPortal, closePortal, isOpen, portal }) => [
-              <span key="0" onClick={openPortal}>
-                {gistButton}
-              </span>,
-              portal(
-                <div className="modal-background" onClick={closePortal}>
-                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
-                    <div className="modal-header">
-                      <button className="close-button" onClick={closePortal}>
-                        <X />
-                      </button>
+            {({ openPortal, closePortal, isOpen, portal }) => {
+              if (!this.listnerAttached) {
+                this.handleHelpModalToggle(event, openPortal, closePortal, isOpen);
+              }
+              return [
+                <span key="0" onClick={openPortal}>
+                  {HelpButton}
+                </span>,
+                portal(
+                  <div className="modal-background" onClick={closePortal}>
+                    <div className="modal modal-top" onClick={e => e.stopPropagation()}>
+                      <div className="modal-header">
+                        <button className="close-button" onClick={closePortal}>
+                          <X />
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <HelpModal />
+                      </div>
+                      <div className="modal-footer" />
                     </div>
-                    <div className="modal-body">{gist(closePortal)}</div>
-                    <div className="modal-footer" />
                   </div>
-                </div>
-              ),
-            ]}
+                ),
+              ];
+            }}
           </PortalWithState>
-
-          <span>{docsLink}</span>
-
-          <a className="idl-logo" href="https://idl.cs.washington.edu/" target="_blank" rel="noopener noreferrer">
-            <img height={32} alt="IDL Logo" src="idl-logo.png" />
-          </a>
         </section>
       </div>
     );

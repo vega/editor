@@ -41,6 +41,7 @@ class Editor extends React.PureComponent<Props, {}> {
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.editorWillMount = this.editorWillMount.bind(this);
     this.editorDidMount = this.editorDidMount.bind(this);
+    this.onSelectNewVegaLite = this.onSelectNewVegaLite.bind(this);
   }
   public handleKeydown(e) {
     if (this.props.manualParse) {
@@ -55,7 +56,31 @@ class Editor extends React.PureComponent<Props, {}> {
       }
     }
   }
+
+  public onSelectNewVega() {
+    this.props.history.push('/custom/vega');
+  }
+
+  public onSelectNewVegaLite() {
+    this.props.history.push('/custom/vega-lite');
+  }
+
+  public onClear() {
+    this.props.mode === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
+  }
+
   public editorDidMount(editor) {
+    editor.addAction(
+      (() => {
+        return {
+          id: 'CLEAR_EDITOR',
+          label: 'Clear Editor',
+          run: () => {
+            this.onClear();
+          },
+        };
+      })()
+    );
     editor.focus();
   }
   public handleEditorChange(spec) {
@@ -114,6 +139,7 @@ class Editor extends React.PureComponent<Props, {}> {
   }
   public componentDidMount() {
     document.addEventListener('keydown', this.handleKeydown);
+    this.props.setEditorReference(this.refs.editor);
   }
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeydown);

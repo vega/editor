@@ -11,6 +11,7 @@ export interface State {
   config: Config;
   debugPane: boolean;
   debugPaneSize: number;
+  editorRef: any;
   editorString: string;
   error: Error;
   export: boolean;
@@ -40,6 +41,7 @@ export const DEFAULT_STATE: State = {
   config: {},
   debugPane: false,
   debugPaneSize: LAYOUT.MinPaneSize,
+  editorRef: null,
   editorString: VEGA_LITE_START_SPEC,
   error: null,
   export: false,

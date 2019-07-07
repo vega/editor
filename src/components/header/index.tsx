@@ -6,6 +6,7 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State, ownProps) {
   return {
+    editorRef: state.editorRef,
     lastPosition: state.lastPosition,
     manualParse: state.manualParse,
     mode: state.mode,

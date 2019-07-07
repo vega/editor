@@ -9,6 +9,7 @@ import {
   SET_COMPILED_VEGA_PANE_SIZE,
   SET_CONFIG,
   SET_DEBUG_PANE_SIZE,
+  SET_EDITOR_REFERENCE,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
   SET_MODE,
@@ -291,6 +292,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         sidePaneItem: action.sidePaneItem,
+      };
+    case SET_EDITOR_REFERENCE:
+      return {
+        ...state,
+        editorRef: action.editorRef,
       };
     default:
       return state;
