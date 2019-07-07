@@ -15,26 +15,18 @@
   display: flex;
   height: 100%;
   align-items: center;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   justify-content: center;
   color: #000;
   text-decoration: none;
-  padding: 0 10px;
   user-select: none;
   position: relative;
   z-index: 10;
   white-space: nowrap;
 }
 
-.header a.idl-logo {
-  padding: 10px;
-  margin: 0;
-  border: none;
-}
-
 .header-button:hover,
-.docs-link:hover,
 .dark-background {
   background: rgba(0, 0, 0, 0.08);
 }
@@ -42,24 +34,17 @@
 .header section > span {
   display: flex;
   align-items: center;
-  margin: auto;
   height: 100%;
-  padding: 0 5px;
 }
 
 .header-icon {
-  margin-right: 5px;
+  margin: 0 5px;
   vertical-align: middle;
 }
 
 .header section {
   display: flex;
   align-items: center;
-  margin: 0 10px;
-}
-
-.docs-link {
-  align-self: flex-end;
 }
 
 .modal-background {
@@ -209,6 +194,8 @@
 
 .mode-switcher-wrapper {
   width: 125px;
+  margin: 0 4px;
+  font-size: 14px;
 }
 
 /* Overriding default styles of React Select v2*/
@@ -316,8 +303,7 @@
   color: #aaa;
 }
 
-.header-button svg,
-.docs-link svg {
+.header-button svg {
   display: none;
 }
 
@@ -422,14 +408,13 @@
 
 /* Media queries */
 @media only screen and (min-width: 1200px) {
-  .header-button svg,
-  .docs-link svg {
+  .header-button svg {
     display: block;
   }
 
   .header-button,
   .header a {
-    padding: 0 20px;
+    padding: 0 17px;
   }
 
   .auto-run-wrapper {
