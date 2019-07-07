@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { debounce } from 'vega';
 import parser from 'vega-schema-url-parser';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { Mode } from '../../../constants';
+import { KEYCODES, Mode } from '../../../constants';
 import addMarkdownProps from '../../../utils/markdownProps';
 import './index.css';
 
@@ -33,11 +33,6 @@ const schemas = {
 };
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any; match: any };
-
-const KEYCODES = {
-  B: 66,
-  S: 83,
-};
 
 class Editor extends React.PureComponent<Props, {}> {
   constructor(props) {
