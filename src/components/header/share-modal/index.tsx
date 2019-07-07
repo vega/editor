@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import * as EditorActions from '../../../actions/editor';
 import { State } from '../../../constants/default-state';
 import Renderer from './renderer';
 
 export function mapStateToProps(state: State, ownProps) {
   return {
-    config: state.config,
-    vegaLiteSpec: state.vegaLiteSpec,
-    vegaSpec: state.vegaSpec,
+    editorString: state.editorString,
+    mode: state.mode,
     view: state.view,
   };
 }

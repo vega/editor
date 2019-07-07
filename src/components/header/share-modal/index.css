@@ -1,0 +1,59 @@
+.share-content a {
+  color: #000;
+}
+
+.share-content p {
+  line-height: 0.7;
+}
+
+.share-button:hover {
+  border-color: #aaa;
+}
+
+.share-button:active {
+  background-color: #ddd;
+}
+
+.share-buttons,
+.share-button {
+  display: flex;
+  align-items: center;
+}
+
+.share-button {
+  font-size: 0.9em;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  line-height: 30px;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  margin: 30px 10px 30px 0;
+}
+
+.share-button svg {
+  width: 22px;
+  height: 22px;
+  stroke: #000;
+  padding-right: 5px;
+}
+
+.user-pref label {
+  display: flex;
+  align-items: center;
+  padding: 20px 0 0 0;
+}
+
+.user-pref input[type="checkbox"]:focus {
+  outline: 0;
+}
+
+.url-warning {
+  padding-left: 10px;
+}
+
+.url-warning,
+.url-warning a {
+  color: #f0ad4e;
+}

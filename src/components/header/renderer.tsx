@@ -1,7 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { ExternalLink, GitHub, Grid, HelpCircle, Play, Terminal, X } from 'react-feather';
+import { ExternalLink, GitHub, Grid, HelpCircle, Play, Share2, Terminal, X } from 'react-feather';
 import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
@@ -13,6 +13,7 @@ import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
 import './index.css';
+import ShareModal from './share-modal/index';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> & { history: any; showExample: boolean };
@@ -128,6 +129,13 @@ class Header extends React.PureComponent<Props, State> {
       </div>
     );
 
+    const shareButton = (
+      <div className="header-button">
+        <Share2 className="header-icon" />
+        {'Share'}
+      </div>
+    );
+
     const HelpButton = (
       <div className="header-button help" onClick={() => this.setState(current => ({ ...current }))}>
         <HelpCircle className="header-icon" />
@@ -237,6 +245,7 @@ class Header extends React.PureComponent<Props, State> {
 
     const gist = closePortal => <GistModal closePortal={() => closePortal()} />;
     const exportContent = <ExportModal />;
+    const shareContent = <ShareModal />;
     const helpModal = <HelpModal />;
 
     return (
@@ -271,9 +280,9 @@ class Header extends React.PureComponent<Props, State> {
           </PortalWithState>
 
           <PortalWithState closeOnEsc>
-            {({ openPortal, closePortal, isOpen, portal }) => [
+            {({ openPortal, closePortal, onOpen, portal }) => [
               <span key="0" onClick={openPortal}>
-                {gistButton}
+                {shareButton}
               </span>,
               portal(
                 <div className="modal-background" onClick={closePortal}>
@@ -283,7 +292,7 @@ class Header extends React.PureComponent<Props, State> {
                         <X />
                       </button>
                     </div>
-                    <div className="modal-body">{gist(closePortal)}</div>
+                    <div className="modal-body modal-hidden">{shareContent}</div>
                     <div className="modal-footer" />
                   </div>
                 </div>
