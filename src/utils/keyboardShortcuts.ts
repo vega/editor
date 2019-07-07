@@ -15,11 +15,6 @@ const shortcuts = [
     windows: 'Ctrl + Space',
   },
   {
-    mac: '⌥ + ⌘ + b',
-    text: 'Auto format',
-    windows: 'Alt + shift + f',
-  },
-  {
     mac: '⌘ + f11',
     text: 'Toggle fullscreen mode',
     windows: 'Ctrl + f11',
