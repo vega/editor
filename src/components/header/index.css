@@ -66,20 +66,9 @@
   width: 80%;
 }
 
-.modal h2 {
-  margin-top: 0;
-}
-
-.modal-header,
 .modal-footer {
   height: 50px;
   z-index: 20;
-}
-
-.modal-header:after {
-  display: table;
-  content: "";
-  clear: both;
 }
 
 .modal-body {

@@ -7,13 +7,16 @@
 }
 
 .modal-header {
-  margin: 0px;
-  padding: 0px;
+  margin: 10px 0 20px 0;
+}
+
+.help-modal h2 {
+  margin: 16px 0 12px 0;
 }
 
 .help-modal .doc-link {
   display: block;
-  margin: 1em 0;
+  margin-bottom: 8px;
 }
 
 .keyboard-shortcuts li {
