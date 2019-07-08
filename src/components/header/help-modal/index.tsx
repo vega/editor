@@ -31,7 +31,7 @@ const HelpModal = () => {
       <h1 className="modal-header">Help</h1>
       <h2>Keyboard Shortcuts</h2>
       <ul className="keyboard-shortcuts">{keyBoardShortcuts}</ul>
-      <p>Note : You can use editor shortcuts using via clicking the 'Commands' button</p>
+      <p>Note: You can use editor shortcuts by clicking the 'Commands' button</p>
       <a
         href={`https://github.com/vega/editor/issues/new?body=**Vega-Editor ${pjson.version}**`}
         target="_blank"
