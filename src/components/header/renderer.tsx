@@ -153,7 +153,7 @@ class Header extends React.PureComponent<Props, State> {
     const optionsButton = (
       <div className="header-button" onClick={this.openCommandPalette.bind(this)}>
         <Terminal className="header-icon" />
-        {'Options'}
+        {'Commands'}
       </div>
     );
 
@@ -293,6 +293,27 @@ class Header extends React.PureComponent<Props, State> {
                       </button>
                     </div>
                     <div className="modal-body modal-hidden">{shareContent}</div>
+                    <div className="modal-footer" />
+                  </div>
+                </div>
+              ),
+            ]}
+          </PortalWithState>
+
+          <PortalWithState closeOnEsc>
+            {({ openPortal, closePortal, isOpen, portal }) => [
+              <span key="0" onClick={openPortal}>
+                {gistButton}
+              </span>,
+              portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
+                    <div className="modal-header">
+                      <button className="close-button" onClick={closePortal}>
+                        <X />
+                      </button>
+                    </div>
+                    <div className="modal-body">{gist(closePortal)}</div>
                     <div className="modal-footer" />
                   </div>
                 </div>
