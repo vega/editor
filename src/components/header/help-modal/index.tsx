@@ -29,6 +29,13 @@ const HelpModal = () => {
   return (
     <div className="help-modal">
       <h1 className="modal-header">Help</h1>
+      <h2>References</h2>
+      <a href="https://vega.github.io/vega-lite/" target="_blank" className="doc-link">
+        Vega-lite Docs
+      </a>
+      <a href="https://vega.github.io/vega/" target="_blank" className="doc-link">
+        Vega Docs
+      </a>
       <h2>Keyboard Shortcuts</h2>
       <ul className="keyboard-shortcuts">{keyBoardShortcuts}</ul>
       <p>Note: You can use editor shortcuts by clicking the 'Commands' button</p>
@@ -39,13 +46,6 @@ const HelpModal = () => {
       >
         <AlertCircle className="header-icon" />
         Report a Bug
-      </a>
-      <h2>References</h2>
-      <a href="https://vega.github.io/vega-lite/" target="_blank" className="doc-link">
-        Vega-lite Docs
-      </a>
-      <a href="https://vega.github.io/vega/" target="_blank" className="doc-link">
-        Vega Docs
       </a>
       <h2>Send us your feedback</h2>
       <a href="https://bit.ly/join-vega-slack" target="_blank" className="doc-link">
