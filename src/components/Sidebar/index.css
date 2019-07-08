@@ -1,9 +1,12 @@
 .settings {
   position: absolute;
-  height: 100vh;
+  height: 80vh;
   right: 0px;
   width: 270px;
   background: white;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  box-shadow: -5px 9px 7px -4px rgba(0, 0, 0, 0.6);
 }
 
 @media screen and (min-width: 1400px) {
