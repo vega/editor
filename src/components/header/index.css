@@ -325,6 +325,10 @@
   display: block;
 }
 
+.header-icon.help-icon {
+  margin: 0px;
+}
+
 .share-content a {
   color: #000;
 }
