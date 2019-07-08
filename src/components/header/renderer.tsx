@@ -134,7 +134,7 @@ class Header extends React.PureComponent<Props, State> {
 
     const HelpButton = (
       <div className="header-button help" onClick={() => this.setState(current => ({ ...current }))}>
-        <HelpCircle className="header-icon help-icon" />
+        <HelpCircle className="header-icon" />
       </div>
     );
     const docsLink = (
