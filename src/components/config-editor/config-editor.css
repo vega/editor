@@ -1,23 +1,7 @@
 .config-header {
-  font-size: 12px;
-  position: relative;
-  width: 100%;
-  height: 30px;
-  flex-shrink: 0;
-  background-color: #e6e6e6;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
+  text-transform: none;
 }
 
 .config-header > select {
-  position: absolute;
-  right: 6px;
-}
-
-#config-heading {
-  position: absolute;
-  right: 114px;
-  text-transform: none;
+  margin-left: 6px;
 }
