@@ -9,6 +9,7 @@ export interface State {
   compiledVegaSpec: boolean;
   compiledVegaPaneSize: number;
   config: Config;
+  configEditorString: string;
   debugPane: boolean;
   debugPaneSize: number;
   editorString: string;
@@ -38,6 +39,7 @@ export const DEFAULT_STATE: State = {
   compiledVegaPaneSize: LAYOUT.MinPaneSize,
   compiledVegaSpec: false,
   config: {},
+  configEditorString: '',
   debugPane: false,
   debugPaneSize: LAYOUT.MinPaneSize,
   editorString: VEGA_LITE_START_SPEC,
