@@ -38,7 +38,7 @@
 }
 
 .header-icon {
-  margin: 0 5px;
+  margin: 0 5px 0 0;
   vertical-align: middle;
 }
 
@@ -221,6 +221,10 @@
   border-bottom-left-radius: 0 !important;
 }
 
+.mode-switcher__single-value {
+  overflow: initial !important;
+}
+
 .auto-run__control--is-focused {
   box-shadow: 0 0 0 1px transparent !important;
 }
@@ -263,6 +267,8 @@
 }
 
 .split-button {
+  display: flex;
+  justify-content: center;
   width: 80px;
 }
 
@@ -294,11 +300,6 @@
 
 .header-button svg {
   display: none;
-}
-
-.header-button.help svg {
-  display: block;
-  margin: 0px;
 }
 
 .share-content a {
