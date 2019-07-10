@@ -32,7 +32,7 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
         position: 'static',
       });
       return (
-        <div className="editor-header debug-pane-header" onClick={e => this.props.toggleCompiledVegaSpec()}>
+        <div className="editor-header pane-header" onClick={e => this.props.toggleCompiledVegaSpec()}>
           <ul className="tabs-nav">
             {this.props.mode === Mode.VegaLite ? (
               <li
@@ -62,8 +62,6 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
             </li>
           </ul>
 
-          <ChevronDown />
-
           {this.props.sidePaneItem === SIDEPANE.CompiledVega && this.props.mode === Mode.VegaLite ? (
             <button className="edit-vega" onClick={this.editVegaSpec} style={{ zIndex: 0, cursor: 'pointer' }}>
               Edit Vega Spec
@@ -73,16 +71,20 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
               <ConfigEditorHeader />
             </>
           )}
+
+          <ChevronDown />
         </div>
       );
     } else {
       return (
         <div onClick={this.props.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
           <span>{this.props.mode === Mode.VegaLite ? 'Compiled Vega and' : null} Config</span>
-          <ChevronUp />
+
           <button onClick={this.editVegaSpec} style={{ zIndex: -1, opacity: 0, cursor: 'pointer' }}>
             Edit Vega Spec
           </button>
+
+          <ChevronUp />
         </div>
       );
     }

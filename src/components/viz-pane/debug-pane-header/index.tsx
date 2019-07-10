@@ -27,7 +27,7 @@ class DebugPaneHeader extends React.PureComponent<Props> {
   }
   public render() {
     return (
-      <div className="debug-pane-header" onClick={e => this.props.toggleDebugPane()}>
+      <div className="pane-header" onClick={e => this.props.toggleDebugPane()}>
         <ul className="tabs-nav">
           <li
             className={this.props.logs ? 'active-tab' : undefined}
