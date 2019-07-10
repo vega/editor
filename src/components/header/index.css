@@ -198,6 +198,9 @@
   box-shadow: none !important;
   border: 1px solid #d9d9d9 !important;
   border-top: 0 !important;
+  position: absolute !important;
+  right: -4px !important;
+  width: 84px !important;
 }
 
 .mode-switcher__menu {
@@ -397,8 +400,14 @@
   .header-button .header-icon {
     display: block;
   }
+
   .auto-run-wrapper {
     width: 90px;
+  }
+
+  .auto-run__menu {
+    right: -5px !important;
+    width: 110px !important;
   }
 
   .split-button {
