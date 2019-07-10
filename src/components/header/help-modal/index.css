@@ -38,6 +38,8 @@
   font-weight: bold;
   font-size: 9pt;
   outline: none;
+  display: flex;
+  align-items: center;
 }
 
 .report-button:hover {

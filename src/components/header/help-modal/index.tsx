@@ -45,7 +45,7 @@ const HelpModal = () => {
         className="report-button help-modal-link"
       >
         <AlertCircle className="header-icon" />
-        Report a Bug
+        <span>Report a Bug</span>
       </a>
       <h2>Send us your feedback</h2>
       <a href="https://bit.ly/join-vega-slack" target="_blank" className="doc-link">
