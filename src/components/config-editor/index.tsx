@@ -10,6 +10,7 @@ import './config-editor.css';
 class ConfigEditor extends React.PureComponent<any, any> {
   public handleEditorChange = spec => {
     this.props.setConfigEditorString(spec);
+    this.props.setThemeName('custom');
     (document.getElementById('config-select') as any).value = 'custom';
     if (spec === '') {
       this.props.setConfig({});
@@ -52,6 +53,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       setConfig: EditorActions.setConfig,
       setConfigEditorString: EditorActions.setConfigEditorString,
+      setThemeName: EditorActions.setThemeName,
     },
     dispatch
   );
