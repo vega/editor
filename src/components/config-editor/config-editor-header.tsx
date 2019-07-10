@@ -13,8 +13,8 @@ class ConfigEditorHeader extends React.PureComponent<any, any> {
   }
   public render() {
     return (
-      <div className="config-header" style={{ position: 'static' }}>
-        <div id="config-heading">Theme :</div>
+      <label className="config-header">
+        Theme:
         <select
           onClick={e => e.stopPropagation()}
           id="config-select"
@@ -34,7 +34,7 @@ class ConfigEditorHeader extends React.PureComponent<any, any> {
             );
           })}
         </select>
-      </div>
+      </label>
     );
   }
 }

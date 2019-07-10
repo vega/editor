@@ -8,6 +8,7 @@ import * as vega from 'vega';
 import { deepEqual } from 'vega-lite/build/src/util';
 import vegaTooltip from 'vega-tooltip';
 import { mapDispatchToProps, mapStateToProps } from '.';
+import { KEYCODES } from '../../constants';
 import addProjections from '../../utils/addProjections';
 import './index.css';
 
@@ -19,10 +20,6 @@ type Props = ReturnType<typeof MapStateToProps> & ReturnType<typeof mapDispatchT
 const defaultState = { fullscreen: false };
 
 type State = Readonly<typeof defaultState>;
-
-const KEYCODES = {
-  ESCAPE: 27,
-};
 
 class Editor extends React.PureComponent<any, State> {
   public static pathname: string;

@@ -6,7 +6,7 @@ import { PortalWithState } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { Mode } from '../../constants';
+import { KEYCODES, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 import ExportModal from './export-modal/index';
@@ -74,8 +74,8 @@ class Header extends React.PureComponent<Props, State> {
   public handleHelpModalToggle(Toggleevent, openPortal, closePortal, isOpen) {
     window.addEventListener('keydown', event => {
       if (
-        (event.keyCode === 222 && event.metaKey && !event.shiftKey) || // Handle key press in Mac
-        (event.keyCode === 191 && event.ctrlKey && event.shiftKey) // Handle Key press in PC
+        (event.keyCode === KEYCODES.SINGLE_QUOTE && event.metaKey && !event.shiftKey) || // Handle key press in Mac
+        (event.keyCode === KEYCODES.SLASH && event.ctrlKey && event.shiftKey) // Handle Key press in PC
       ) {
         if (!isOpen) {
           openPortal();

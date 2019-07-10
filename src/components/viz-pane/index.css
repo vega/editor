@@ -17,9 +17,7 @@
   flex-direction: column;
 }
 
-.debug-pane-header {
-  position: relative;
-  width: 100%;
+.pane-header {
   height: 30px;
   display: flex;
   align-items: center;
@@ -32,12 +30,11 @@
   cursor: pointer;
 }
 
-.debug-pane-header svg {
-  margin: 0 auto;
+.pane-header svg {
+  margin-right: 4px;
 }
 
 .tabs-nav {
-  position: absolute;
   height: 100%;
   list-style: none;
   padding: 0;
