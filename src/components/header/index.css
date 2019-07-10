@@ -17,13 +17,13 @@
   align-items: center;
   font-size: 13px;
   cursor: pointer;
-  justify-content: center;
   color: #000;
   text-decoration: none;
   user-select: none;
   position: relative;
   z-index: 10;
   white-space: nowrap;
+  padding: 0px 17px;
 }
 
 .header-button:hover,
@@ -39,7 +39,7 @@
 
 .header-icon {
   margin: 0 5px 0 0;
-  vertical-align: middle;
+  width: 20px;
 }
 
 .header section {
@@ -187,6 +187,11 @@
   font-size: 14px;
 }
 
+.run-button {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Overriding default styles of React Select v2*/
 .mode-switcher__menu,
 .auto-run__menu {
@@ -260,7 +265,7 @@
 }
 
 .auto-run-wrapper {
-  width: 80px;
+  width: 90px;
   right: 49px;
   margin-right: -105px;
   padding-right: 5px;
@@ -268,8 +273,8 @@
 
 .split-button {
   display: flex;
-  justify-content: center;
   width: 80px;
+  margin-left: 12px;
 }
 
 .split-button > div:hover {
@@ -280,25 +285,18 @@
   background: rgba(0, 0, 0, 0.08);
 }
 
-.auto-run .header-button {
-  opacity: 0.4;
-}
-
-.auto-run .parse-mode {
-  color: #000;
+.parse-label {
+  padding: 3px 0;
 }
 
 .parse-mode {
-  position: absolute;
-  bottom: 5px;
-  right: 12px;
   text-align: center;
-  width: 43%;
   font-size: 10px;
-  color: #aaa;
+  color: #666;
+  padding: 3px 0;
 }
 
-.header-button svg {
+.header-button .header-icon {
   display: none;
 }
 
@@ -398,22 +396,14 @@
 
 /* Media queries */
 @media only screen and (min-width: 1200px) {
-  .header-button svg {
+  .header-button .header-icon {
     display: block;
   }
-
-  .header-button,
-  .header a {
-    padding: 0 17px;
-  }
-
   .auto-run-wrapper {
-    width: 125px;
-    right: 98px;
-    padding-right: 10px;
+    width: 90px;
   }
 
   .split-button {
-    width: 125px;
+    width: 100px;
   }
 }

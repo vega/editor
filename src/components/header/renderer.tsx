@@ -143,14 +143,6 @@ class Header extends React.PureComponent<Props, State> {
       </div>
     );
 
-    const runButton = (
-      <div className="header-button" onClick={() => this.props.parseSpec(true)}>
-        <Play className="header-icon" />
-        {'Run'}
-        <span className="parse-mode">{this.props.manualParse ? 'Manual' : 'Auto'}</span>
-      </div>
-    );
-
     const optionsButton = (
       <div className="header-button" onClick={this.openCommandPalette.bind(this)}>
         <Terminal className="header-icon" />
@@ -172,6 +164,16 @@ class Header extends React.PureComponent<Props, State> {
       />
     );
 
+    const runButton = (
+      <div className="header-button" onClick={() => this.props.parseSpec(true)}>
+        <Play className="header-icon" />
+        <div className="run-button">
+          <span className="parse-label">Run</span>
+          <span className="parse-mode">{this.props.manualParse ? 'Manual' : 'Auto'}</span>
+        </div>
+        {autoRunToggle}
+      </div>
+    );
     const splitClass = 'split-button' + (this.props.manualParse ? '' : ' auto-run');
 
     const vega = closePortal => (
@@ -255,7 +257,6 @@ class Header extends React.PureComponent<Props, State> {
           <span>{modeSwitcher}</span>
           <span ref="splitButton" className={splitClass}>
             {runButton}
-            {autoRunToggle}
           </span>
           <span>{optionsButton}</span>
 
