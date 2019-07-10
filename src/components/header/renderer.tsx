@@ -254,11 +254,11 @@ class Header extends React.PureComponent<Props, State> {
     return (
       <div className="header">
         <section className="left-section">
-          <span>{modeSwitcher}</span>
+          {modeSwitcher}
           <span ref="splitButton" className={splitClass}>
             {runButton}
           </span>
-          <span>{optionsButton}</span>
+          {optionsButton}
 
           <PortalWithState closeOnEsc>
             {({ openPortal, closePortal, isOpen, portal }) => [

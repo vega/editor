@@ -183,7 +183,7 @@
 
 .mode-switcher-wrapper {
   width: 125px;
-  margin: 0 4px;
+  margin: 0 8px;
   font-size: 14px;
 }
 
@@ -272,9 +272,7 @@
 }
 
 .split-button {
-  display: flex;
-  width: 80px;
-  margin-left: 12px;
+  width: 84px;
 }
 
 .split-button > div:hover {
@@ -395,7 +393,7 @@
 }
 
 /* Media queries */
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 900px) {
   .header-button .header-icon {
     display: block;
   }
@@ -404,6 +402,6 @@
   }
 
   .split-button {
-    width: 100px;
+    width: 110px;
   }
 }
