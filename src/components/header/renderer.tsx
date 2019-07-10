@@ -164,7 +164,13 @@ class Header extends React.PureComponent<Props, State> {
     );
 
     const runButton = (
-      <div className="header-button" onClick={() => this.props.parseSpec(true)}>
+      <div
+        className="header-button"
+        onClick={() => {
+          this.props.setConfig(JSON.parse(this.props.configEditorString));
+          this.props.parseSpec(true);
+        }}
+      >
         <Play className="header-icon" />
         {'Run'}
         <span className="parse-mode">{this.props.manualParse ? 'Manual' : 'Auto'}</span>

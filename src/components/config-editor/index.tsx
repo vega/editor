@@ -12,6 +12,9 @@ class ConfigEditor extends React.PureComponent<any, any> {
     this.props.setConfigEditorString(spec);
     this.props.setThemeName('custom');
     (document.getElementById('config-select') as any).value = 'custom';
+    if (this.props.manualParse) {
+      return;
+    }
     if (spec === '') {
       this.props.setConfig({});
     } else {
@@ -45,6 +48,7 @@ function mapStateToProps(state, ownProps) {
   return {
     config: state.config,
     configEditorString: state.configEditorString,
+    manualParse: state.manualParse,
   };
 }
 
