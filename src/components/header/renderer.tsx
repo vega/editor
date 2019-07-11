@@ -19,6 +19,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> & { history: any; showExample: boolean };
 
 interface State {
+  menuIsOpen: boolean;
   showVega: boolean;
   scrollPosition: number;
 }
@@ -37,6 +38,7 @@ class Header extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      menuIsOpen: false,
       scrollPosition: 0,
       showVega: props.mode === Mode.Vega,
     };
@@ -89,6 +91,11 @@ class Header extends React.PureComponent<Props, State> {
       return;
     });
     this.listnerAttached = false;
+  }
+  public handleRun() {
+    this.setState({
+      menuIsOpen: !this.state.menuIsOpen,
+    });
   }
   public render() {
     const modeOptions =
@@ -161,6 +168,7 @@ class Header extends React.PureComponent<Props, State> {
         isClearable={false}
         isSearchable={false}
         onChange={this.props.toggleAutoParse}
+        menuIsOpen={this.state.menuIsOpen}
       />
     );
 
@@ -171,7 +179,6 @@ class Header extends React.PureComponent<Props, State> {
           <span className="parse-label">Run</span>
           <span className="parse-mode">{this.props.manualParse ? 'Manual' : 'Auto'}</span>
         </div>
-        {autoRunToggle}
       </div>
     );
     const splitClass = 'split-button' + (this.props.manualParse ? '' : ' auto-run');
@@ -255,8 +262,9 @@ class Header extends React.PureComponent<Props, State> {
       <div className="header">
         <section className="left-section">
           {modeSwitcher}
-          <span ref="splitButton" className={splitClass}>
+          <span ref="splitButton" className={splitClass} onClick={this.handleRun.bind(this)}>
             {runButton}
+            {autoRunToggle}
           </span>
           {optionsButton}
 

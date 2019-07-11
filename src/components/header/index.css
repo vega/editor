@@ -190,6 +190,8 @@
 .run-button {
   display: flex;
   flex-direction: column;
+  width: 30px;
+  align-items: center;
 }
 
 /* Overriding default styles of React Select v2*/
@@ -198,9 +200,6 @@
   box-shadow: none !important;
   border: 1px solid #d9d9d9 !important;
   border-top: 0 !important;
-  position: absolute !important;
-  right: -4px !important;
-  width: 84px !important;
 }
 
 .mode-switcher__menu {
@@ -268,10 +267,10 @@
 }
 
 .auto-run-wrapper {
-  width: 90px;
-  right: 49px;
+  width: 85px;
+  right: 64px;
   margin-right: -105px;
-  padding-right: 5px;
+  padding-right: 7px;
 }
 
 .split-button {
@@ -406,8 +405,8 @@
   }
 
   .auto-run__menu {
-    right: -5px !important;
-    width: 110px !important;
+    right: 5px !important;
+    width: 111px !important;
   }
 
   .split-button {
