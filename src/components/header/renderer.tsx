@@ -166,6 +166,7 @@ class Header extends React.PureComponent<Props, State> {
     const runButton = (
       <div
         className="header-button"
+        id="run-button"
         onClick={() => {
           if (this.props.configEditorString === '') {
             this.props.setConfig({});
@@ -210,6 +211,7 @@ class Header extends React.PureComponent<Props, State> {
                     <div
                       key={j}
                       onClick={() => {
+                        document.getElementById('run-button').click();
                         this.onSelectVega(spec.name);
                         closePortal();
                       }}
@@ -244,6 +246,7 @@ class Header extends React.PureComponent<Props, State> {
                           <div
                             key={k}
                             onClick={() => {
+                              document.getElementById('run-button').click();
                               this.onSelectVegaLite(spec.name);
                               closePortal();
                             }}
