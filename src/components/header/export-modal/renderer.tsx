@@ -1,7 +1,5 @@
-import LZString from 'lz-string';
 import * as React from 'react';
-import Clipboard from 'react-clipboard.js';
-import { Book, Code, Image, Map, Save, Share2 } from 'react-feather';
+import { Book, Code, Image, Map } from 'react-feather';
 import { withRouter } from 'react-router-dom';
 import { mergeDeep } from 'vega-lite/build/src/util';
 import { mapStateToProps } from '.';
@@ -10,37 +8,17 @@ import './index.css';
 type Props = ReturnType<typeof mapStateToProps>;
 
 interface State {
-  copied: boolean;
   downloadVegaJSON: boolean;
   includeConfig: boolean;
-  fullScreen: boolean;
-  generatedURL: string;
-  interval: any;
-  popSnackbar: boolean;
 }
 
 class ExportModal extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      copied: false,
       downloadVegaJSON: false,
-      fullScreen: false,
-      generatedURL: '',
       includeConfig: true,
-      interval: null,
-      popSnackbar: false,
     };
-  }
-
-  public componentDidMount() {
-    document.getElementsByClassName('export-url')[0].addEventListener('click', e => {
-      const KEY = 'nodeName';
-      if (e.target[KEY] !== 'INPUT') {
-        this.onCopy();
-      }
-    });
-    this.exportURL();
   }
 
   public async downloadViz(ext: string) {
@@ -132,70 +110,11 @@ class ExportModal extends React.PureComponent<Props, State> {
     this.setState({ downloadVegaJSON: event.currentTarget.value === 'vega' });
   }
 
-  public exportURL() {
-    const serializedSpec =
-      LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullScreen ? '/view' : '');
-    if (serializedSpec) {
-      const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
-      this.setState({ generatedURL: url });
-    }
-  }
-
-  public handleCheck(event) {
-    this.setState({ fullScreen: event.target.checked }, () => {
-      this.exportURL();
-    });
-  }
-
-  public onCopy() {
-    this.setState(
-      {
-        copied: true,
-        popSnackbar: true,
-      },
-      () => {
-        if (this.state.interval) {
-          clearTimeout(this.state.interval);
-        }
-        this.setState({
-          interval: setTimeout(() => {
-            this.setState({
-              interval: null,
-              popSnackbar: false,
-            });
-          }, 3000),
-        });
-      }
-    );
-  }
-
   public render() {
     return (
       <div className="export-content">
         <h2>Export</h2>
         <div className="export-buttons">
-          <Clipboard className="export-button export-url" data-clipboard-text={this.state.generatedURL}>
-            <div className="header-text">
-              <Share2 />
-              <span>Get URL</span>
-            </div>
-            <p>
-              We pack the Vega or Vega-Lite specification and an encoded string in the URL. We use LZ-based compression
-              algorithm and preserve indentation, newlines, and other whitespace.
-            </p>
-            <div className="input-container">
-              <label>
-                Fullscreen mode:
-                <input
-                  type="checkbox"
-                  defaultChecked={this.state.fullScreen}
-                  name="fullscreen"
-                  onChange={this.handleCheck.bind(this)}
-                />
-              </label>
-            </div>
-            <p>URL length: {this.state.generatedURL.length}</p>
-          </Clipboard>
           <button className="export-button" onClick={() => this.downloadViz('png')}>
             <div className="header-text">
               <Image />
@@ -285,18 +204,6 @@ class ExportModal extends React.PureComponent<Props, State> {
             <strong>Note:</strong> To get a PDF, open the SVG which you can print as a PDF from your browser.
           </p>
         </div>
-        {this.state.generatedURL.length > 2083 && (
-          <span>
-            Warning:{' '}
-            <a
-              href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
-              target="_blank"
-            >
-              URLs over 2083 characters may not be supported in Internet Explorer.
-            </a>
-          </span>
-        )}
-        {this.state.popSnackbar && <div className="snackbar">Copied!</div>}
       </div>
     );
   }

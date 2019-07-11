@@ -12,10 +12,10 @@ export interface State {
   configEditorString: string;
   debugPane: boolean;
   debugPaneSize: number;
+  editorRef: any;
   editorString: string;
   error: Error;
   export: boolean;
-  format: boolean;
   gist: string;
   lastPosition: number;
   logs: boolean;
@@ -42,10 +42,10 @@ export const DEFAULT_STATE: State = {
   configEditorString: '',
   debugPane: false,
   debugPaneSize: LAYOUT.MinPaneSize,
+  editorRef: null,
   editorString: VEGA_LITE_START_SPEC,
   error: null,
   export: false,
-  format: false,
   gist: null,
   lastPosition: 0,
   logs: false,

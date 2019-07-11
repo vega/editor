@@ -17,24 +17,16 @@
   align-items: center;
   font-size: 14px;
   cursor: pointer;
-  justify-content: center;
   color: #000;
   text-decoration: none;
-  padding: 0 10px;
   user-select: none;
   position: relative;
   z-index: 10;
   white-space: nowrap;
-}
-
-.header a.idl-logo {
-  padding: 10px;
-  margin: 0;
-  border: none;
+  padding: 0px 17px;
 }
 
 .header-button:hover,
-.docs-link:hover,
 .dark-background {
   background: rgba(0, 0, 0, 0.08);
 }
@@ -42,24 +34,17 @@
 .header section > span {
   display: flex;
   align-items: center;
-  margin: auto;
   height: 100%;
-  padding: 0 5px;
 }
 
 .header-icon {
-  margin-right: 5px;
-  vertical-align: middle;
+  margin: 0 5px 0 0;
+  width: 20px;
 }
 
 .header section {
   display: flex;
   align-items: center;
-  margin: 0 10px;
-}
-
-.docs-link {
-  align-self: flex-end;
 }
 
 .modal-background {
@@ -81,20 +66,9 @@
   width: 80%;
 }
 
-.modal h2 {
-  margin-top: 0;
-}
-
-.modal-header,
 .modal-footer {
   height: 50px;
   z-index: 20;
-}
-
-.modal-header:after {
-  display: table;
-  content: "";
-  clear: both;
 }
 
 .modal-body {
@@ -209,6 +183,15 @@
 
 .mode-switcher-wrapper {
   width: 125px;
+  margin: 0 8px;
+  font-size: 14px;
+}
+
+.run-button {
+  display: flex;
+  flex-direction: column;
+  width: 30px;
+  align-items: center;
 }
 
 /* Overriding default styles of React Select v2*/
@@ -243,6 +226,10 @@
   box-shadow: none !important;
   border-bottom-right-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
+}
+
+.mode-switcher__single-value {
+  overflow: initial !important;
 }
 
 .auto-run__control--is-focused {
@@ -280,14 +267,14 @@
 }
 
 .auto-run-wrapper {
-  width: 80px;
-  right: 49px;
+  width: 85px;
+  right: 64px;
   margin-right: -105px;
-  padding-right: 5px;
+  padding-right: 7px;
 }
 
 .split-button {
-  width: 80px;
+  width: 84px;
 }
 
 .split-button > div:hover {
@@ -298,32 +285,19 @@
   background: rgba(0, 0, 0, 0.08);
 }
 
-.auto-run .header-button {
-  opacity: 0.4;
-}
-
-.auto-run .parse-mode {
-  color: #000;
+.parse-label {
+  padding: 3px 0;
 }
 
 .parse-mode {
-  position: absolute;
-  bottom: 5px;
-  right: 12px;
   text-align: center;
-  width: 43%;
   font-size: 10px;
-  color: #aaa;
+  color: #666;
+  padding: 3px 0;
 }
 
-.header-button svg,
-.docs-link svg {
+.header-button .header-icon {
   display: none;
-}
-
-.header-button.help svg {
-  display: block;
-  margin: 0px;
 }
 
 .share-content a {
@@ -421,24 +395,21 @@
 }
 
 /* Media queries */
-@media only screen and (min-width: 1200px) {
-  .header-button svg,
-  .docs-link svg {
+@media only screen and (min-width: 900px) {
+  .header-button .header-icon {
     display: block;
   }
 
-  .header-button,
-  .header a {
-    padding: 0 20px;
+  .auto-run-wrapper {
+    width: 90px;
   }
 
-  .auto-run-wrapper {
-    width: 125px;
-    right: 98px;
-    padding-right: 10px;
+  .auto-run__menu {
+    right: 5px !important;
+    width: 111px !important;
   }
 
   .split-button {
-    width: 125px;
+    width: 110px;
   }
 }

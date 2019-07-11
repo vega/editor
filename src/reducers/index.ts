@@ -2,7 +2,6 @@ import * as vl from 'vega-lite';
 import {
   Action,
   EXPORT_VEGA,
-  FORMAT_SPEC,
   LOG_ERROR,
   PARSE_SPEC,
   SET_BASEURL,
@@ -10,6 +9,7 @@ import {
   SET_CONFIG,
   SET_CONFIG_EDITOR_STRING,
   SET_DEBUG_PANE_SIZE,
+  SET_EDITOR_REFERENCE,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
   SET_MODE,
@@ -155,7 +155,6 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         compiledVegaSpec: false,
         editorString: '{}',
         export: false,
-        format: false,
         gist: null,
         mode: action.mode,
         parse: false,
@@ -248,11 +247,6 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         baseURL: action.baseURL,
       };
-    case FORMAT_SPEC:
-      return {
-        ...state,
-        format: action.format,
-      };
     case SET_VIEW:
       return {
         ...state,
@@ -297,6 +291,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         configEditorString: action.configEditorString,
+      };
+    case SET_EDITOR_REFERENCE:
+      return {
+        ...state,
+        editorRef: action.editorRef,
       };
     default:
       return state;
