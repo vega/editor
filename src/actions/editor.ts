@@ -2,7 +2,6 @@ import { Config } from 'vega-themes/build/config';
 import { Mode, Renderer, View } from '../constants';
 
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
-export const FORMAT_SPEC: 'FORMAT_SPEC' = 'FORMAT_SPEC';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
 export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
 export const SET_BASEURL: 'SET_BASEURL' = 'SET_BASEURL';
@@ -50,7 +49,6 @@ export type Action =
   | ExportVega
   | SetRenderer
   | SetBaseUrl
-  | FormatSpec
   | SetView
   | SetDebugPaneSize
   | ShowLogs
@@ -204,14 +202,6 @@ export function setBaseUrl(baseURL: string) {
   };
 }
 export type SetBaseUrl = ReturnType<typeof setBaseUrl>;
-
-export function formatSpec(value: boolean) {
-  return {
-    format: value,
-    type: FORMAT_SPEC,
-  };
-}
-export type FormatSpec = ReturnType<typeof formatSpec>;
 
 export function setView(view: View) {
   return {

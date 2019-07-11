@@ -128,14 +128,6 @@ class Editor extends React.PureComponent<Props, {}> {
       this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
     }
-    if (nextProps.format) {
-      this.props.formatSpec(false);
-    }
-  }
-  public componentDidUpdate() {
-    if (this.props.format) {
-      (this.refs.editor as any).editor.getAction('editor.action.formatDocument').run();
-    }
   }
   public componentDidMount() {
     document.addEventListener('keydown', this.handleKeydown);

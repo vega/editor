@@ -20,7 +20,6 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       exportVega: EditorActions.exportVega,
-      formatSpec: EditorActions.formatSpec,
       parseSpec: EditorActions.parseSpec,
       setScrollPosition: EditorActions.setScrollPosition,
       toggleAutoParse: EditorActions.toggleAutoParse,
