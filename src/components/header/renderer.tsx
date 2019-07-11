@@ -167,7 +167,11 @@ class Header extends React.PureComponent<Props, State> {
       <div
         className="header-button"
         onClick={() => {
-          this.props.setConfig(JSON.parse(this.props.configEditorString));
+          if (this.props.configEditorString === '') {
+            this.props.setConfig({});
+          } else {
+            this.props.setConfig(JSON.parse(this.props.configEditorString));
+          }
           this.props.parseSpec(true);
         }}
       >

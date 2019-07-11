@@ -20,9 +20,12 @@ class ConfigEditorHeader extends React.PureComponent<any, any> {
           id="config-select"
           onChange={e => {
             e.stopPropagation();
-            this.props.setConfig(themes[e.target.value]);
-            this.props.setThemeName(e.target.value);
             this.props.setConfigEditorString(stringify(themes[e.target.value]));
+            this.props.setThemeName(e.target.value);
+            if (this.props.manualParse) {
+              return;
+            }
+            this.props.setConfig(themes[e.target.value]);
           }}
         >
           <option value="custom">Custom</option>
@@ -52,6 +55,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
 
 function mapStateToProps(state) {
   return {
+    manualParse: state.manualParse,
     themeName: state.themeName,
   };
 }
