@@ -39,7 +39,7 @@ export const DEFAULT_STATE: State = {
   compiledVegaPaneSize: LAYOUT.MinPaneSize,
   compiledVegaSpec: false,
   config: {},
-  configEditorString: '',
+  configEditorString: '{}',
   debugPane: false,
   debugPaneSize: LAYOUT.MinPaneSize,
   editorRef: null,
