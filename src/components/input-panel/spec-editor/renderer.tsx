@@ -126,6 +126,7 @@ class Editor extends React.PureComponent<Props, {}> {
   public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.parse) {
       this.updateSpec(nextProps.value);
+      this.props.setConfig(JSON.parse(nextProps.configEditorString));
       this.props.parseSpec(false);
     }
   }

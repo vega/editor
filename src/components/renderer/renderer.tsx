@@ -55,6 +55,7 @@ class Editor extends React.PureComponent<any, State> {
       this.setState({ fullscreen: false }, this.onClosePortal);
     }
   }
+
   // Initialize the view instance
   public initView() {
     const runtime = vega.parse(this.props.vegaSpec, this.props.config);
@@ -184,6 +185,7 @@ class Editor extends React.PureComponent<any, State> {
 function MapStateToProps(state) {
   return {
     config: state.config,
+    manualParse: state.manualParse,
   };
 }
 
