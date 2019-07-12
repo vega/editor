@@ -19,6 +19,11 @@ const shortcuts = [
     text: 'Toggle fullscreen mode',
     windows: 'Ctrl + f11',
   },
+  {
+    mac: '⌘ + Shift + o',
+    text: `Navigate to a symbol in the specification whilst focussing on editor`,
+    windows: 'Ctrl + Shift + o',
+  },
 ];
 
 export default shortcuts;
