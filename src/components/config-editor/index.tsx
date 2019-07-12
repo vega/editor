@@ -5,18 +5,18 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { debounce } from 'vega';
 import * as EditorActions from '../../actions/editor';
-import { runConfig } from '../app';
 import './config-editor.css';
 
 class ConfigEditor extends React.PureComponent<any, any> {
   public handleEditorChange = spec => {
+    const newSpec = spec === '' ? '{}' : spec;
     this.props.setConfigEditorString(spec);
     this.props.setThemeName('custom');
     (document.getElementById('config-select') as any).value = 'custom';
     if (this.props.manualParse) {
       return;
     }
-    runConfig(spec,this.props.setConfig);
+    this.props.setConfig(JSON.parse(this.props.configEditorString));
   };
   public render() {
     return (

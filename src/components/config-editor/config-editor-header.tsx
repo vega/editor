@@ -22,9 +22,6 @@ class ConfigEditorHeader extends React.PureComponent<any, any> {
             e.stopPropagation();
             this.props.setConfigEditorString(stringify(themes[e.target.value]));
             this.props.setThemeName(e.target.value);
-            if (this.props.manualParse) {
-              return;
-            }
             this.props.setConfig(themes[e.target.value]);
           }}
         >

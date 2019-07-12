@@ -9,7 +9,6 @@ import { mapDispatchToProps, mapStateToProps } from '.';
 import { KEYCODES, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
-import { runConfig } from '../app';
 import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
@@ -171,7 +170,7 @@ class Header extends React.PureComponent<Props, State> {
         id="run-button"
         onClick={() => {
           this.props.parseSpec(true);
-          runConfig(this.props.configEditorString, this.props.setConfig);
+          this.props.setConfig(JSON.parse(this.props.configEditorString));
         }}
       >
         <Play className="header-icon" />
