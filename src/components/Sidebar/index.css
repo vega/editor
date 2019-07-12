@@ -1,12 +1,13 @@
 .settings {
   position: absolute;
-  height: 80vh;
+  height: 100vh;
   right: 0px;
-  width: 270px;
+  width: 300px;
   background: white;
   border: 1px solid transparent;
   border-radius: 2px;
   box-shadow: -5px 9px 7px -4px rgba(0, 0, 0, 0.6);
+  font-size: 14px;
 }
 
 @media screen and (min-width: 1400px) {
@@ -32,6 +33,8 @@
   margin: 29px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
 }
 
 .renderer-dropdown {
@@ -39,17 +42,20 @@
   margin-left: 10px;
 }
 
-.renderer {
-  font-size: large;
-}
-
 .tooltips {
   width: 150px;
-  margin: 29px;
-  margin-left: 36px;
+  margin: 25px;
 }
 .hover-enable {
   width: 150px;
-  margin: 29px;
-  margin-left: 36px;
+  margin: 25px;
+}
+
+.small-text {
+  margin: 0px;
+  padding: 0px;
+  display: block;
+  font-size: small;
+  color: #777;
+  margin: 12px 29px;
 }
