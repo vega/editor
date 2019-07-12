@@ -17,6 +17,12 @@ import VizPane from './viz-pane';
 
 type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
 
+// runConfig accepts the configEditor string as first arg
+// and configSetter as second arguement
+export const runConfig = (config: string, setConfig) => {
+  config === '' ? setConfig({}) : setConfig(JSON.parse(config));
+};
+
 class App extends React.PureComponent<Props & { match: any; location: any; showExample?: boolean }> {
   public w = window.innerWidth;
   public componentDidMount() {
@@ -95,6 +101,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
 
   public setExample(parameter: { example_name: string; mode: string }) {
     const name = parameter.example_name;
+    runConfig(this.props.configEditorString, this.props.setConfig);
     switch (parameter.mode) {
       case 'vega':
         text(`./spec/vega/${name}.vg.json`, spec => {
@@ -148,6 +155,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
 
 function mapStateToProps(state: State) {
   return {
+    configEditorString: state.configEditorString,
     view: state.view,
   };
 }
@@ -156,6 +164,7 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setBaseUrl: EditorActions.setBaseUrl,
+      setConfig: EditorActions.setConfig,
       setGistVegaLiteSpec: EditorActions.setGistVegaLiteSpec,
       setGistVegaSpec: EditorActions.setGistVegaSpec,
       setModeOnly: EditorActions.setModeOnly,

@@ -9,6 +9,7 @@ import { mapDispatchToProps, mapStateToProps } from '.';
 import { KEYCODES, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
+import { runConfig } from '../app';
 import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
@@ -169,12 +170,8 @@ class Header extends React.PureComponent<Props, State> {
         className="header-button"
         id="run-button"
         onClick={() => {
-          if (this.props.configEditorString === '') {
-            this.props.setConfig({});
-          } else {
-            this.props.setConfig(JSON.parse(this.props.configEditorString));
-          }
           this.props.parseSpec(true);
+          runConfig(this.props.configEditorString, this.props.setConfig);
         }}
       >
         <Play className="header-icon" />
@@ -199,7 +196,6 @@ class Header extends React.PureComponent<Props, State> {
                     <div
                       key={j}
                       onClick={() => {
-                        document.getElementById('run-button').click();
                         this.onSelectVega(spec.name);
                         closePortal();
                       }}
@@ -234,7 +230,6 @@ class Header extends React.PureComponent<Props, State> {
                           <div
                             key={k}
                             onClick={() => {
-                              document.getElementById('run-button').click();
                               this.onSelectVegaLite(spec.name);
                               closePortal();
                             }}
