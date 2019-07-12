@@ -301,18 +301,25 @@
   display: none;
 }
 
+.auth-button-container {
+  margin: 0 8px;
+}
+
 .sign-in {
   font-size: 0.9em;
   background: black;
   color: white;
   border: 1px solid #ccc;
   border-radius: 4px;
-  line-height: 30px;
   cursor: pointer;
   user-select: none;
-  margin: 30px 10px 30px 0;
   display: flex;
   align-items: center;
+  padding: 6px;
+}
+
+.sign-in-text {
+  padding-right: 6px;
 }
 
 .profile-container {
@@ -329,19 +336,19 @@
 
 .profile-options {
   position: fixed;
-  width: 150px;
+  width: 130px;
   background-color: white;
   border: 1px solid #ccc;
-  top: 50px;
-  right: 10px;
+  top: 48px;
+  right: 6px;
   z-index: 10;
   border-radius: 3px;
-  padding: 0.4em;
+  padding: 0.3em;
   cursor: default;
 }
 
 .sign-out {
-  font-size: 1.1em;
+  font-size: 17px;
   background-color: transparent;
   padding: inherit;
   width: 100%;

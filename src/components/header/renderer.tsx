@@ -208,23 +208,28 @@ class Header extends React.PureComponent<Props, State> {
       </div>
     );
 
-    const auth = this.props.isAuthenticated ? (
-      <form action={`${url}auth/github/logout`} method="get">
-        <div className="profile-container">
-          <img className="profile-img" src={this.props.profilePicUrl} />
-          {this.state.open && (
-            <div className="profile-options">
-              <input className="sign-out" type="submit" value="Logout" onClick={e => e.stopPropagation()} />
+    const authButton = (
+      <div className="auth-button-container">
+        {this.props.isAuthenticated ? (
+          <form action={`${url}auth/github/logout`} method="get">
+            <div className="profile-container">
+              <img className="profile-img" src={this.props.profilePicUrl} />
+              {this.state.open && (
+                <div className="profile-options">
+                  <input className="sign-out" type="submit" value="Logout" onClick={e => e.stopPropagation()} />
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </form>
-    ) : (
-      <form action={`${url}auth/github`} method="get">
-        <button className="sign-in" type="submit">
-          Login with <GitHub />
-        </button>
-      </form>
+          </form>
+        ) : (
+          <form action={`${url}auth/github`} method="get">
+            <button className="sign-in" type="submit">
+              <span className="sign-in-text">Login with</span>
+              <GitHub />
+            </button>
+          </form>
+        )}
+      </div>
     );
 
     const runOptions = this.props.manualParse ? [{ label: 'Auto' }] : [{ label: 'Manual' }];
@@ -490,7 +495,7 @@ class Header extends React.PureComponent<Props, State> {
             }}
           </PortalWithState>
           {settingsButton}
-          {auth}
+          {authButton}
         </section>
       </div>
     );
