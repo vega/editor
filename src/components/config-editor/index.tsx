@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { debounce } from 'vega';
 import * as EditorActions from '../../actions/editor';
+import { runConfig } from '../app';
 import './config-editor.css';
 
 class ConfigEditor extends React.PureComponent<any, any> {
@@ -15,11 +16,7 @@ class ConfigEditor extends React.PureComponent<any, any> {
     if (this.props.manualParse) {
       return;
     }
-    if (spec === '') {
-      this.props.setConfig({});
-    } else {
-      this.props.setConfig(JSON.parse(spec));
-    }
+    runConfig(spec,this.props.setConfig);
   };
   public render() {
     return (
