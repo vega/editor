@@ -9,14 +9,14 @@ import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
+import Sidebar from '../Sidebar';
 import SignalViewer from '../signal-viewer';
 import Toolbar from '../toolbar';
 import DebugPaneHeader from './debug-pane-header';
-import Sidebar from '../Sidebar';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-export default class VizPane extends React.Component<Props> {
+export default class VizPane extends React.PureComponent<Props> {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);

@@ -40,3 +40,16 @@ export const NAVBAR = {
   Logs: 'Logs',
   SignalViewer: 'SignalViewer',
 };
+
+export const SIDEPANE = {
+  CompiledVega: 'CompiledVega',
+  Config: 'Config',
+};
+
+export const KEYCODES = {
+  B: 66,
+  ESCAPE: 27,
+  S: 83,
+  SINGLE_QUOTE: 222,
+  SLASH: 191,
+};

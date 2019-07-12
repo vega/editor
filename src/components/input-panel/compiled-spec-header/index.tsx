@@ -3,9 +3,11 @@ import * as React from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { bindActionCreators, Dispatch } from 'redux';
 
+import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../../actions/editor';
+import { Mode, SIDEPANE } from '../../../constants';
+import ConfigEditorHeader from '../../config-editor/config-editor-header';
 
 const toggleStyle = {
   cursor: 'pointer',
@@ -13,7 +15,7 @@ const toggleStyle = {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
 
-class CompiledSpecDisplayHeader extends React.Component<Props> {
+class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   constructor(props) {
     super(props);
     this.editVegaSpec = this.editVegaSpec.bind(this);
@@ -30,22 +32,59 @@ class CompiledSpecDisplayHeader extends React.Component<Props> {
         position: 'static',
       });
       return (
-        <div className="editor-header" style={toggleStyleUp} onClick={this.props.toggleCompiledVegaSpec}>
-          <span>Compiled Vega</span>
+        <div className="editor-header pane-header" onClick={e => this.props.toggleCompiledVegaSpec()}>
+          <ul className="tabs-nav">
+            {this.props.mode === Mode.VegaLite ? (
+              <li
+                className={this.props.sidePaneItem === SIDEPANE.CompiledVega ? 'active-tab' : undefined}
+                onClick={e => {
+                  if (this.props.sidePaneItem === SIDEPANE.CompiledVega) {
+                    e.stopPropagation();
+                  }
+                  e.stopPropagation();
+                  this.props.setSidePaneItem(SIDEPANE.CompiledVega);
+                }}
+              >
+                Compiled Vega
+              </li>
+            ) : null}
+            <li
+              className={this.props.sidePaneItem === SIDEPANE.Config ? 'active-tab' : undefined}
+              onClick={e => {
+                if (this.props.sidePaneItem === SIDEPANE.Config) {
+                  e.stopPropagation();
+                }
+                e.stopPropagation();
+                this.props.setSidePaneItem(SIDEPANE.Config);
+              }}
+            >
+              Config
+            </li>
+          </ul>
+
+          {this.props.sidePaneItem === SIDEPANE.CompiledVega && this.props.mode === Mode.VegaLite ? (
+            <button className="edit-vega" onClick={this.editVegaSpec} style={{ zIndex: 0, cursor: 'pointer' }}>
+              Edit Vega Spec
+            </button>
+          ) : (
+            <>
+              <ConfigEditorHeader />
+            </>
+          )}
+
           <ChevronDown />
-          <button onClick={this.editVegaSpec} style={{ cursor: 'pointer' }}>
-            Edit Vega Spec
-          </button>
         </div>
       );
     } else {
       return (
         <div onClick={this.props.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
-          <span>Compiled Vega</span>
-          <ChevronUp />
+          <span>{this.props.mode === Mode.VegaLite ? 'Compiled Vega and' : null} Config</span>
+
           <button onClick={this.editVegaSpec} style={{ zIndex: -1, opacity: 0, cursor: 'pointer' }}>
             Edit Vega Spec
           </button>
+
+          <ChevronUp />
         </div>
       );
     }
@@ -56,6 +95,7 @@ function mapStateToProps(state, ownProps) {
   return {
     compiledVegaSpec: state.compiledVegaSpec,
     mode: state.mode,
+    sidePaneItem: state.sidePaneItem,
     value: state.vegaSpec,
   };
 }
@@ -63,6 +103,7 @@ function mapStateToProps(state, ownProps) {
 export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
+      setSidePaneItem: EditorActions.setSidePaneItem,
       toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
       updateVegaSpec: EditorActions.updateVegaSpec,
     },

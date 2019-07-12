@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { debounce } from 'vega';
 import parser from 'vega-schema-url-parser';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { Mode } from '../../../constants';
+import { KEYCODES, Mode } from '../../../constants';
 import addMarkdownProps from '../../../utils/markdownProps';
 import './index.css';
 
@@ -34,18 +34,14 @@ const schemas = {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any; match: any };
 
-const KEYCODES = {
-  B: 66,
-  S: 83,
-};
-
-class Editor extends React.Component<Props, {}> {
+class Editor extends React.PureComponent<Props, {}> {
   constructor(props) {
     super(props);
     this.handleKeydown = this.handleKeydown.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.editorWillMount = this.editorWillMount.bind(this);
     this.editorDidMount = this.editorDidMount.bind(this);
+    this.onSelectNewVegaLite = this.onSelectNewVegaLite.bind(this);
   }
   public handleKeydown(e) {
     if (this.props.manualParse) {
@@ -60,7 +56,31 @@ class Editor extends React.Component<Props, {}> {
       }
     }
   }
+
+  public onSelectNewVega() {
+    this.props.history.push('/custom/vega');
+  }
+
+  public onSelectNewVegaLite() {
+    this.props.history.push('/custom/vega-lite');
+  }
+
+  public onClear() {
+    this.props.mode === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
+  }
+
   public editorDidMount(editor) {
+    editor.addAction(
+      (() => {
+        return {
+          id: 'CLEAR_EDITOR',
+          label: 'Clear Editor',
+          run: () => {
+            this.onClear();
+          },
+        };
+      })()
+    );
     editor.focus();
   }
   public handleEditorChange(spec) {
@@ -108,17 +128,10 @@ class Editor extends React.Component<Props, {}> {
       this.updateSpec(nextProps.value);
       this.props.parseSpec(false);
     }
-    if (nextProps.format) {
-      this.props.formatSpec(false);
-    }
-  }
-  public componentDidUpdate() {
-    if (this.props.format) {
-      (this.refs.editor as any).editor.getAction('editor.action.formatDocument').run();
-    }
   }
   public componentDidMount() {
     document.addEventListener('keydown', this.handleKeydown);
+    this.props.setEditorReference(this.refs.editor);
   }
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeydown);

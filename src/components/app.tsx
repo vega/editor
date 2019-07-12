@@ -18,7 +18,8 @@ import VizPane from './viz-pane';
 
 type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
 
-class App extends React.Component<Props & { match: any; location: any; showExample?: boolean }> {
+class App extends React.PureComponent<Props & { match: any; location: any; showExample?: boolean }> {
+  public w = window.innerWidth;
   public componentDidMount() {
     window.addEventListener(
       'message',
@@ -130,29 +131,7 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
       this.props.updateVegaLiteSpec(VEGA_LITE_START_SPEC);
     }
   }
-
-  // public getVizPane() {
-  //   const w = window.innerWidth - 300;
-  //   if (this.props.settingState) {
-  //     return (
-  //       <SplitPane
-  //         split="vertical"
-  //         minSize={w * 0.4}
-  //         maxSize={w * 0.4}
-  //         pane1Style={{ display: 'flex' }}
-  //         className="settings-pane"
-  //         pane2Style={{ overflow: 'scroll' }}
-  //       >
-
-  //         <Sidebar />
-  //       </SplitPane>
-  //     );
-  //   }
-  //   return <VizPane />;
-  // }
-
   public render() {
-    const w = window.innerWidth;
     return (
       <div className="app-container">
         <Header showExample={this.props.showExample} />
@@ -165,7 +144,7 @@ class App extends React.Component<Props & { match: any; location: any; showExamp
           <SplitPane
             split="vertical"
             minSize={300}
-            defaultSize={w * 0.4}
+            defaultSize={this.w * 0.4}
             pane1Style={{ display: 'flex' }}
             className="main-pane"
             pane2Style={{ overflow: 'scroll' }}

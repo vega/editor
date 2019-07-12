@@ -29,18 +29,23 @@ const HelpModal = () => {
   return (
     <div className="help-modal">
       <h1 className="modal-header">Help</h1>
+      <h2>References</h2>
+      <a href="https://vega.github.io/vega-lite/" target="_blank" className="doc-link">
+        Vega-Lite Docs
+      </a>
+      <a href="https://vega.github.io/vega/" target="_blank" className="doc-link">
+        Vega Docs
+      </a>
       <h2>Keyboard Shortcuts</h2>
       <ul className="keyboard-shortcuts">{keyBoardShortcuts}</ul>
-      <p>
-        Note : You can use editor shortcuts using <kbd>f1</kbd>
-      </p>
+      <p>Note: You can use editor shortcuts by clicking the 'Commands' button</p>
       <a
         href={`https://github.com/vega/editor/issues/new?body=**Vega-Editor ${pjson.version}**`}
         target="_blank"
         className="report-button help-modal-link"
       >
         <AlertCircle className="header-icon" />
-        Report a Bug
+        <span>Report a Bug</span>
       </a>
       <h2>Send us your feedback</h2>
       <a href="https://bit.ly/join-vega-slack" target="_blank" className="doc-link">
@@ -50,13 +55,6 @@ const HelpModal = () => {
       <a href="https://twitter.com/vega_vis" target="_blank" className="doc-link">
         <Twitter className="doc-image" />
         Follow us on Twitter
-      </a>
-      <h2>References</h2>
-      <a href="https://vega.github.io/vega-lite/" target="_blank" className="doc-link">
-        Vega-lite Docs
-      </a>
-      <a href="https://vega.github.io/vega/" target="_blank" className="doc-link">
-        Vega Docs
       </a>
       <h2>Tip</h2>
       <p>

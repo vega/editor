@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { mapStateToProps } from '.';
 import { Mode } from '../../../constants';
-import '../index.css';
+import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & { history: any; closePortal: any };
 
@@ -18,7 +18,7 @@ interface State {
   invalidRevision: boolean;
   invalidUrl: boolean;
 }
-class GistModal extends React.Component<Props, State> {
+class GistModal extends React.PureComponent<Props, State> {
   private refGistForm: HTMLFormElement;
   constructor(props) {
     super(props);

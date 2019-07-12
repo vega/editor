@@ -6,7 +6,7 @@ import SignalRow from './signalRow';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
-export default class SignalViewer extends React.Component<Props> {
+export default class SignalViewer extends React.PureComponent<Props> {
   constructor(props) {
     super(props);
   }

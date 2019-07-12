@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Book, Code, Image, Map } from 'react-feather';
 import { withRouter } from 'react-router-dom';
+import { mergeDeep } from 'vega-lite/build/src/util';
 import { mapStateToProps } from '.';
 import './index.css';
 
@@ -8,13 +9,15 @@ type Props = ReturnType<typeof mapStateToProps>;
 
 interface State {
   downloadVegaJSON: boolean;
+  includeConfig: boolean;
 }
 
-class ExportModal extends React.Component<Props, State> {
+class ExportModal extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
       downloadVegaJSON: false,
+      includeConfig: true,
     };
   }
 
@@ -68,6 +71,12 @@ class ExportModal extends React.Component<Props, State> {
     dlButton.classList.remove('disabled');
   }
 
+  public updateIncludeConfig(e) {
+    this.setState({
+      includeConfig: e.target.checked,
+    });
+  }
+
   public downloadJSON(event) {
     if (
       event.target &&
@@ -77,10 +86,17 @@ class ExportModal extends React.Component<Props, State> {
     ) {
       return;
     }
-    const content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
+    let content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
     const filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
 
-    const blob = new Blob([JSON.stringify(content, null, 2)], { type: `application/json` });
+    if (this.state.includeConfig && this.props.config) {
+      content = { ...content };
+      content.config = mergeDeep({}, this.props.config, content.config);
+    }
+
+    const blob = new Blob([JSON.stringify(content, null, 2)], {
+      type: `application/json`,
+    });
     const url = window.URL.createObjectURL(blob);
 
     const link = document.createElement(`a`);
@@ -100,7 +116,7 @@ class ExportModal extends React.Component<Props, State> {
         <h2>Export</h2>
         <div className="export-buttons">
           <button className="export-button" onClick={() => this.downloadViz('png')}>
-            <div>
+            <div className="header-text">
               <Image />
               <span>Download PNG</span>
             </div>
@@ -110,7 +126,7 @@ class ExportModal extends React.Component<Props, State> {
             </p>
           </button>
           <button className="export-button" onClick={() => this.downloadViz('svg')}>
-            <div>
+            <div className="header-text">
               <Map />
               <span>Download SVG</span>
             </div>
@@ -120,14 +136,14 @@ class ExportModal extends React.Component<Props, State> {
             </p>
           </button>
           <button className="export-button" onClick={() => this.openViz('svg')}>
-            <div>
+            <div className="header-text">
               <Map />
               <span>Open SVG</span>
             </div>
             <p>Open the SVG in your browser instead of downloading it.</p>
           </button>
           <button className="export-button" onClick={() => this.downloadPDF()} ref="downloadPDF">
-            <div>
+            <div className="header-text">
               <Book />
               <span>Download PDF</span>
             </div>
@@ -138,31 +154,48 @@ class ExportModal extends React.Component<Props, State> {
             </p>
           </button>
           <button className="export-button" onClick={e => this.downloadJSON(e)}>
-            <div>
+            <div className="header-text">
               <Code />
               <span>Download JSON</span>
             </div>
             <p>JSON is a lightweight data-interchange format.</p>
-            <div className="type-input-container">
+            <div className="input-container">
               Type:
-              <input
-                type="radio"
-                name="json-type"
-                id="json-type[vega]"
-                value="vega"
-                checked={this.state.downloadVegaJSON}
-                onChange={this.updateDownloadJSONType.bind(this)}
-              />
-              <label htmlFor="json-type[vega]">Vega</label>
-              <input
-                type="radio"
-                name="json-type"
-                id="json-type[vega-lite]"
-                value="vega-lite"
-                checked={!this.state.downloadVegaJSON}
-                onChange={this.updateDownloadJSONType.bind(this)}
-              />
-              <label htmlFor="json-type[vega-lite]">Vega Lite</label>
+              <label>
+                <input
+                  type="radio"
+                  name="json-type"
+                  id="json-type[vega]"
+                  value="vega"
+                  checked={this.state.downloadVegaJSON}
+                  onChange={this.updateDownloadJSONType.bind(this)}
+                />{' '}
+                Vega
+              </label>
+              <label htmlFor="json-type[vega-lite]">
+                <input
+                  type="radio"
+                  name="json-type"
+                  id="json-type[vega-lite]"
+                  value="vega-lite"
+                  checked={!this.state.downloadVegaJSON}
+                  onChange={this.updateDownloadJSONType.bind(this)}
+                />
+                Vega Lite
+              </label>
+            </div>
+            <div className="input-container">
+              <label>
+                Include config:
+                <input
+                  type="checkbox"
+                  name="config-include"
+                  id="config-include"
+                  value="config-select"
+                  checked={this.state.includeConfig}
+                  onChange={this.updateIncludeConfig.bind(this)}
+                />
+              </label>
             </div>
           </button>
         </div>

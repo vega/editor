@@ -11,7 +11,7 @@ const getVersion = (mode: Mode) => {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-export default class Toolbar extends React.Component<Props> {
+export default class Toolbar extends React.PureComponent<Props> {
   public showErrorAndWarnings() {
     if (this.props.error) {
       return (

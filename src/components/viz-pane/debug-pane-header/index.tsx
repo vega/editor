@@ -19,7 +19,7 @@ interface Props {
   toggleNavbar: (val: string) => void;
 }
 
-class DebugPaneHeader extends React.Component<Props> {
+class DebugPaneHeader extends React.PureComponent<Props> {
   public componentDidMount() {
     if (this.props.logs || this.props.navItem === NAVBAR.Logs) {
       this.props.showLogs(true);
@@ -27,7 +27,7 @@ class DebugPaneHeader extends React.Component<Props> {
   }
   public render() {
     return (
-      <div className="debug-pane-header" onClick={e => this.props.toggleDebugPane()}>
+      <div className="pane-header" onClick={e => this.props.toggleDebugPane()}>
         <ul className="tabs-nav">
           <li
             className={this.props.logs ? 'active-tab' : undefined}

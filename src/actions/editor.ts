@@ -1,12 +1,13 @@
+import { Config } from 'vega-themes/build/config';
 import { Mode, Renderer, View } from '../constants';
 
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
-export const FORMAT_SPEC: 'FORMAT_SPEC' = 'FORMAT_SPEC';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
 export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
 export const SET_BASEURL: 'SET_BASEURL' = 'SET_BASEURL';
 export const SET_COMPILED_VEGA_PANE_SIZE: 'SET_COMPILED_VEGA_PANE_SIZE' = 'SET_COMPILED_VEGA_PANE_SIZE';
 export const SET_DEBUG_PANE_SIZE: 'SET_DEBUG_PANE_SIZE' = 'SET_DEBUG_PANE_SIZE';
+export const SET_EDITOR_REFERENCE: 'SET_EDITOR_REFERENCE' = 'SET_EDITOR_REFERENCE';
 export const SET_GIST_VEGA_LITE_SPEC: 'SET_GIST_VEGA_LITE_SPEC' = 'SET_GIST_VEGA_LITE_SPEC';
 export const SET_GIST_VEGA_SPEC: 'SET_GIST_VEGA_SPEC' = 'SET_GIST_VEGA_SPEC';
 export const SET_MODE: 'SET_MODE' = 'SET_MODE';
@@ -25,6 +26,9 @@ export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRIN
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
 export const SET_SETTING_STATE: 'SET_SETTING_STATE' = 'SET_SETTING_STATE';
+export const SET_CONFIG: 'SET_CONFIG' = 'SET_CONFIG';
+export const SET_THEME_NAME: 'SET_THEME_NAME' = 'SET_THEME_NAME';
+export const SET_SIDEPANE_ITEM: 'SET_SIDEPANE_ITEM' = 'SET_SIDEPANE_ITEM';
 
 export type Action =
   | SetMode
@@ -46,12 +50,15 @@ export type Action =
   | ExportVega
   | SetRenderer
   | SetBaseUrl
-  | FormatSpec
   | SetView
   | SetDebugPaneSize
   | ShowLogs
   | SetCompiledVegaPaneSize
-  | SetSettingState;
+  | SetSettingState
+  | SetConfig
+  | SetThemeName
+  | SetSidePaneItem
+  | SetEditorReference;
 
 export function setMode(mode: Mode) {
   return {
@@ -198,14 +205,6 @@ export function setBaseUrl(baseURL: string) {
 }
 export type SetBaseUrl = ReturnType<typeof setBaseUrl>;
 
-export function formatSpec(value: boolean) {
-  return {
-    format: value,
-    type: FORMAT_SPEC,
-  };
-}
-export type FormatSpec = ReturnType<typeof formatSpec>;
-
 export function setView(view: View) {
   return {
     type: SET_VIEW,
@@ -248,11 +247,46 @@ export function toggleNavbar(value: string) {
 
 export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
 
-export function setSettingState(value: Boolean) {
+export function setSettingState(value: boolean) {
   return {
-    settinggState: value,
+    settingState: value,
     type: SET_SETTING_STATE,
   };
 }
 
 export type SetSettingState = ReturnType<typeof setSettingState>;
+export function setConfig(value: Config) {
+  return {
+    config: value,
+    type: SET_CONFIG,
+  };
+}
+
+export type SetConfig = ReturnType<typeof setConfig>;
+
+export function setThemeName(value: string) {
+  return {
+    themeName: value,
+    type: SET_THEME_NAME,
+  };
+}
+
+export type SetThemeName = ReturnType<typeof setThemeName>;
+
+export function setSidePaneItem(value: string) {
+  return {
+    sidePaneItem: value,
+    type: SET_SIDEPANE_ITEM,
+  };
+}
+
+export type SetSidePaneItem = ReturnType<typeof setSidePaneItem>;
+
+export function setEditorReference(editorRef: any) {
+  return {
+    editorRef: (editorRef as any).editor,
+    type: SET_EDITOR_REFERENCE,
+  };
+}
+
+export type SetEditorReference = ReturnType<typeof setEditorReference>;

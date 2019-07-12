@@ -5,7 +5,7 @@ import { mapStateToProps } from '.';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
-export default class ErrorPane extends React.Component<Props> {
+export default class ErrorPane extends React.PureComponent<Props> {
   public render() {
     const list = [];
     if (this.props.error) {

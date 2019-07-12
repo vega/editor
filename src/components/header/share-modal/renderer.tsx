@@ -14,7 +14,7 @@ interface State {
   generatedURL: string;
 }
 
-class ShareModal extends React.Component<Props, State> {
+class ShareModal extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
