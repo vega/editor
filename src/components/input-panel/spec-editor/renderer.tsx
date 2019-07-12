@@ -136,7 +136,7 @@ class Editor extends React.PureComponent<Props, {}> {
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeydown);
   }
-  public updateSpec(spec) {
+  public updateSpec(spec: string) {
     let parsedMode = this.props.mode;
 
     try {
