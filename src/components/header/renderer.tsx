@@ -165,7 +165,13 @@ class Header extends React.PureComponent<Props, State> {
     );
 
     const runButton = (
-      <div className="header-button" onClick={() => this.props.parseSpec(true)}>
+      <div
+        className="header-button"
+        id="run-button"
+        onClick={() => {
+          this.props.parseSpec(true);
+        }}
+      >
         <Play className="header-icon" />
         <div className="run-button">
           <span className="parse-label">Run</span>

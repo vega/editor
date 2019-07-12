@@ -7,6 +7,7 @@ import {
   SET_BASEURL,
   SET_COMPILED_VEGA_PANE_SIZE,
   SET_CONFIG,
+  SET_CONFIG_EDITOR_STRING,
   SET_DEBUG_PANE_SIZE,
   SET_EDITOR_REFERENCE,
   SET_GIST_VEGA_LITE_SPEC,
@@ -285,6 +286,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         sidePaneItem: action.sidePaneItem,
+      };
+    case SET_CONFIG_EDITOR_STRING:
+      return {
+        ...state,
+        configEditorString: action.configEditorString,
       };
     case SET_EDITOR_REFERENCE:
       return {
