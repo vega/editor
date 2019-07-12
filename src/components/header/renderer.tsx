@@ -170,7 +170,6 @@ class Header extends React.PureComponent<Props, State> {
         id="run-button"
         onClick={() => {
           this.props.parseSpec(true);
-          this.props.setConfig(JSON.parse(this.props.configEditorString));
         }}
       >
         <Play className="header-icon" />

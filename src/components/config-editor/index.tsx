@@ -10,7 +10,7 @@ import './config-editor.css';
 class ConfigEditor extends React.PureComponent<any, any> {
   public handleEditorChange = spec => {
     const newSpec = spec === '' ? '{}' : spec;
-    this.props.setConfigEditorString(spec);
+    this.props.setConfigEditorString(newSpec);
     this.props.setThemeName('custom');
     (document.getElementById('config-select') as any).value = 'custom';
     if (this.props.manualParse) {
