@@ -21,7 +21,7 @@ const shortcuts = [
   },
   {
     mac: '⌘ + Shift + o',
-    text: `Navigate to a symbol in the specification whilst focussing on editor`,
+    text: `Navigate to a symbol in the specification`,
     windows: 'Ctrl + Shift + o',
   },
 ];
