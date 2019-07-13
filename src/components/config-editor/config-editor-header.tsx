@@ -1,6 +1,5 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import { ChevronDown, ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as themes from 'vega-themes';

@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View } from 'vega';
 import * as EditorActions from '../../actions/editor';
 import { State } from '../../constants/default-state';
 import Renderer from './renderer';
@@ -8,6 +7,7 @@ import Renderer from './renderer';
 export function mapStateToProps(state: State, ownProps) {
   return {
     baseURL: state.baseURL,
+    config: state.config,
     editorString: state.editorString,
     hoverEnable: state.hoverEnable,
     logLevel: state.logLevel,
