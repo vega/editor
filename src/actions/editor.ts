@@ -30,6 +30,9 @@ export const SET_CONFIG: 'SET_CONFIG' = 'SET_CONFIG';
 export const SET_THEME_NAME: 'SET_THEME_NAME' = 'SET_THEME_NAME';
 export const SET_SIDEPANE_ITEM: 'SET_SIDEPANE_ITEM' = 'SET_SIDEPANE_ITEM';
 export const SET_CONFIG_EDITOR_STRING: 'SET_CONFIG_EDITOR_STRING' = 'SET_CONFIG_EDITOR_STRING';
+export const SET_LOG_LEVEL: 'SET_LOG_LEVEL' = 'SET_LOG_LEVEL';
+export const SET_HOVER: 'SET_HOVER' = 'SET_HOVER';
+export const SET_TOOLTIP: 'SET_TOOLTIP' = 'SET_TOOLTIP';
 
 export type Action =
   | SetMode
@@ -60,7 +63,10 @@ export type Action =
   | SetConfigEditorString
   | SetThemeName
   | SetSidePaneItem
-  | SetEditorReference;
+  | SetEditorReference
+  | SetLogLevel
+  | SetHover
+  | SetTooltip;
 
 export function setMode(mode: Mode) {
   return {
@@ -301,3 +307,29 @@ export function setEditorReference(editorRef: any) {
 }
 
 export type SetEditorReference = ReturnType<typeof setEditorReference>;
+
+export function setLogLevel(logLevel: string) {
+  return {
+    logLevel,
+    type: SET_LOG_LEVEL,
+  };
+}
+
+export type SetLogLevel = ReturnType<typeof setLogLevel>;
+
+export function setHover(hover: boolean) {
+  return {
+    hoverEnable: hover,
+    type: SET_HOVER,
+  };
+}
+
+export type SetHover = ReturnType<typeof setHover>;
+export function setTooltip(tooltip: boolean) {
+  return {
+    tooltipEnable: tooltip,
+    type: SET_TOOLTIP,
+  };
+}
+
+export type SetTooltip = ReturnType<typeof setTooltip>;

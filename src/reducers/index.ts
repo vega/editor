@@ -38,8 +38,14 @@ import { DEFAULT_STATE, Mode } from '../constants';
 import { State } from '../constants/default-state';
 import { LocalLogger } from '../utils/logger';
 import { validateVega, validateVegaLite } from '../utils/validate';
-import { SET_SETTING_STATE } from './../actions/editor';
-import { SET_SIDEPANE_ITEM, SET_THEME_NAME } from './../actions/editor';
+import {
+  SET_HOVER,
+  SET_LOG_LEVEL,
+  SET_SETTING_STATE,
+  SET_SIDEPANE_ITEM,
+  SET_THEME_NAME,
+  SET_TOOLTIP,
+} from './../actions/editor';
 
 function errorLine(code: string, error: string) {
   const pattern = /(position\s)(\d+)/;
@@ -302,6 +308,21 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         editorRef: action.editorRef,
+      };
+    case SET_LOG_LEVEL:
+      return {
+        ...state,
+        logLevel: action.logLevel,
+      };
+    case SET_HOVER:
+      return {
+        ...state,
+        hoverEnable: action.hoverEnable,
+      };
+    case SET_TOOLTIP:
+      return {
+        ...state,
+        tooltipEnable: action.tooltipEnable,
       };
     default:
       return state;

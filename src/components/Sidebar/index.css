@@ -2,11 +2,11 @@
   position: absolute;
   height: 100vh;
   right: 0px;
-  width: 300px;
   background: white;
   border: 1px solid transparent;
   border-radius: 2px;
   box-shadow: -5px 9px 7px -4px rgba(0, 0, 0, 0.6);
+  width: 290px;
   font-size: 14px;
 }
 
@@ -15,21 +15,27 @@
     width: 270px;
     background: white;
     position: inherit;
+    width: 290px;
+    font-size: 14px;
   }
 }
 @media screen and (min-width: 1600px) {
   .settings {
     width: 270px;
     background: white;
+    width: 290px;
+    font-size: 14px;
   }
 }
 @media screen and (min-width: 1900px) {
   .settings {
     width: 270px;
     background: white;
+    width: 290px;
+    font-size: 14px;
   }
 }
-.renderer-switch {
+.select-container {
   margin: 29px;
   display: flex;
   align-items: center;
@@ -37,18 +43,32 @@
   margin-bottom: 2px;
 }
 
-.renderer-dropdown {
+.renderer-dropdown-wrapper,
+.log-level-dropdown-wrapper {
   width: 150px;
   margin-left: 10px;
 }
 
-.tooltips {
-  width: 150px;
-  margin: 25px;
+.renderer-dropdown__option,
+.log-level-dropdown__option {
+  background-color: white !important;
+  color: black !important;
 }
+.renderer-dropdown__option:hover,
+.log-level-dropdown__option:hover {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.tooltips,
 .hover-enable {
   width: 150px;
   margin: 25px;
+  display: flex;
+  align-items: center;
+}
+.tooltips > label,
+.hover-enable > label {
+  margin-left: 2px;
 }
 
 .small-text {

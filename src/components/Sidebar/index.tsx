@@ -6,16 +6,22 @@ import * as EditorActions from '../../actions/editor';
 import './index.css';
 
 class Sidebar extends Component<any, any> {
+  public logOptions = () => {
+    let options = [{ label: 'None' }, { label: 'Warn' }, { label: 'Info' }, { label: 'Debug' }];
+    options = options.filter(o => o.label !== this.props.logLevel);
+    return options;
+  };
   public render() {
     const renderOptions = this.props.renderer === 'svg' ? [{ label: 'canvas' }] : [{ label: 'svg' }];
     return (
       <div className="settings">
         <section>
-          <div className="renderer-switch">
-            <span className="renderer">Renderer:</span>
+          <div className="select-container">
+            <span>Renderer:</span>
             <div>
               <Select
-                className="renderer-dropdown"
+                className="renderer-dropdown-wrapper"
+                classNamePrefix="renderer-dropdown"
                 value={{ label: this.props.renderer }}
                 options={renderOptions}
                 isClearable={false}
@@ -25,23 +31,39 @@ class Sidebar extends Component<any, any> {
             </div>
           </div>
           <div className="small-text">Sets the renderer</div>
-          <div className="renderer-switch">
+          <div className="select-container">
             <span>Log Level:</span>
             <div>
               <Select
-                className="renderer-dropdown"
-                value={{ label: 'None' }}
-                options={[{ label: 'Warn' }, { label: 'Info' }, { label: 'Debug' }]}
+                className="log-level-dropdown-wrapper"
+                classNamePrefix="log-level-dropdown"
+                value={{ label: this.props.logLevel }}
+                options={this.logOptions()}
+                onChange={e => this.props.setLogLevel(e.label)}
+                isClearable={false}
+                isSearchable={false}
               />
             </div>
           </div>
           <div className="small-text">Sets the log level</div>
           <div className="tooltips">
-            <input type="checkbox" name="" id="tooltip" />
+            <input
+              onChange={e => this.props.setTooltip(e.target.checked)}
+              type="checkbox"
+              name=""
+              id="tooltip"
+              checked={this.props.tooltipEnable}
+            />
             <label htmlFor="tooltip">Tooltips</label>
           </div>
           <div className="hover-enable">
-            <input type="checkbox" name="" id="hover-enable" />
+            <input
+              onChange={e => this.props.setHover(e.target.checked)}
+              type="checkbox"
+              name=""
+              id="hover-enable"
+              checked={this.props.hoverEnable}
+            />
             <label htmlFor="hover-enable">Hover Enable</label>
           </div>
         </section>
@@ -52,14 +74,20 @@ class Sidebar extends Component<any, any> {
 
 export function mapStateToProps(state) {
   return {
+    hoverEnable: state.hoverEnable,
+    logLevel: state.logLevel,
     renderer: state.renderer,
+    tooltipEnable: state.tooltipEnable,
   };
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
+      setHover: EditorActions.setHover,
+      setLogLevel: EditorActions.setLogLevel,
       setRenderer: EditorActions.setRenderer,
+      setTooltip: EditorActions.setTooltip,
     },
     dispatch
   );

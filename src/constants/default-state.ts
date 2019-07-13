@@ -17,6 +17,8 @@ export interface State {
   error: Error;
   export: boolean;
   gist: string;
+  hoverEnable: boolean;
+  logLevel: string;
   lastPosition: number;
   logs: boolean;
   manualParse: boolean;
@@ -27,6 +29,7 @@ export interface State {
   renderer: Renderer;
   selectedExample: string;
   settingState: boolean;
+  tooltipEnable: boolean;
   vegaLiteSpec: VlSpec;
   vegaSpec: Spec;
   view: View;
@@ -48,7 +51,9 @@ export const DEFAULT_STATE: State = {
   error: null,
   export: false,
   gist: null,
+  hoverEnable: true,
   lastPosition: 0,
+  logLevel: 'Warn',
   logs: false,
   manualParse: false,
   mode: Mode.VegaLite,
@@ -59,6 +64,7 @@ export const DEFAULT_STATE: State = {
   settingState: true,
   sidePaneItem: SIDEPANE.CompiledVega,
   themeName: 'custom',
+  tooltipEnable: true,
   vegaLiteSpec: null,
   vegaSpec: {},
   view: null,
