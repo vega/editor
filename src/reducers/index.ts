@@ -101,19 +101,31 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
   };
 }
 
-function parseVegaLite(
-  state: State,
-  action: SetVegaLiteExample | UpdateVegaLiteSpec | SetGistVegaLiteSpec,
-  extend = {}
-) {
+function parseVegaLite(state: State, action: any, extend = {}) {
   const currLogger = new LocalLogger();
 
   try {
+    // if we are setting the spec we don't pass the config
+    // add the previous config from the state
+    if (!action.config) {
+      action.config = state.config;
+    }
+
+    // if we are setting the config we don't pass the spec
+    // add the previous spec from the state
+    if (!action.spec) {
+      action.spec = state.editorString;
+    }
+
     const spec = JSON.parse(action.spec);
 
+    const options = {
+      config: action.config,
+      logger: currLogger,
+    };
     validateVegaLite(spec, currLogger);
 
-    const vegaSpec = action.spec !== '{}' ? vl.compile(spec, { logger: currLogger }).spec : {};
+    const vegaSpec = action.spec !== '{}' ? vl.compile(spec, options).spec : {};
 
     extend = {
       ...extend,
@@ -273,10 +285,13 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         navItem: action.navItem,
       };
     case SET_CONFIG:
-      return {
-        ...state,
+      return parseVegaLite(state, action, {
         config: action.config,
-      };
+      });
+    // return {
+    //   ...state,
+    //   config: action.config,
+    // };
     case SET_THEME_NAME:
       return {
         ...state,

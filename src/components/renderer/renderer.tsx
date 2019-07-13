@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
+import * as vl from 'vega-lite';
 import { deepEqual } from 'vega-lite/build/src/util';
 import vegaTooltip from 'vega-tooltip';
 import { mapDispatchToProps, mapStateToProps } from '.';
@@ -59,7 +60,6 @@ class Editor extends React.PureComponent<any, State> {
   // Initialize the view instance
   public initView() {
     const runtime = vega.parse(this.props.vegaSpec, this.props.config);
-
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
 
