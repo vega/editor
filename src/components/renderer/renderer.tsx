@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Edit3, Maximize } from 'react-feather';
 import { Portal } from 'react-portal';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
@@ -15,13 +14,13 @@ import './index.css';
 // Add additional projections
 addProjections(vega.projection);
 
-type Props = ReturnType<typeof MapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
 
 const defaultState = { fullscreen: false };
 
 type State = Readonly<typeof defaultState>;
 
-class Editor extends React.PureComponent<any, State> {
+class Editor extends React.PureComponent<Props, State> {
   public static pathname: string;
   public readonly state: State = defaultState;
 
@@ -182,11 +181,4 @@ class Editor extends React.PureComponent<any, State> {
   }
 }
 
-function MapStateToProps(state) {
-  return {
-    config: state.config,
-    manualParse: state.manualParse,
-  };
-}
-
-export default withRouter(connect(MapStateToProps)(Editor));
+export default withRouter(Editor);
