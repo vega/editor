@@ -126,6 +126,7 @@ class Editor extends React.PureComponent<Props, {}> {
   public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.parse) {
       this.updateSpec(nextProps.value);
+      this.props.setConfig(JSON.parse(nextProps.configEditorString));
       this.props.parseSpec(false);
     }
   }
@@ -136,7 +137,7 @@ class Editor extends React.PureComponent<Props, {}> {
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeydown);
   }
-  public updateSpec(spec) {
+  public updateSpec(spec: string) {
     let parsedMode = this.props.mode;
 
     try {

@@ -107,6 +107,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
 
   public setExample(parameter: { example_name: string; mode: string }) {
     const name = parameter.example_name;
+    this.props.setConfig(JSON.parse(this.props.configEditorString));
     switch (parameter.mode) {
       case 'vega':
         text(`./spec/vega/${name}.vg.json`, spec => {
@@ -162,6 +163,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
 
 function mapStateToProps(state: State) {
   return {
+    configEditorString: state.configEditorString,
     settingState: state.settingState,
     view: state.view,
   };
@@ -171,6 +173,7 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setBaseUrl: EditorActions.setBaseUrl,
+      setConfig: EditorActions.setConfig,
       setGistVegaLiteSpec: EditorActions.setGistVegaLiteSpec,
       setGistVegaSpec: EditorActions.setGistVegaSpec,
       setModeOnly: EditorActions.setModeOnly,

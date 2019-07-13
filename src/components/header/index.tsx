@@ -6,6 +6,7 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State, ownProps) {
   return {
+    configEditorString: state.configEditorString,
     editorRef: state.editorRef,
     lastPosition: state.lastPosition,
     manualParse: state.manualParse,
@@ -22,6 +23,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       exportVega: EditorActions.exportVega,
       parseSpec: EditorActions.parseSpec,
+      setConfig: EditorActions.setConfig,
       setScrollPosition: EditorActions.setScrollPosition,
       setSettingState: EditorActions.setSettingState,
       toggleAutoParse: EditorActions.toggleAutoParse,

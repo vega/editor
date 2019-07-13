@@ -9,8 +9,14 @@ import './config-editor.css';
 
 class ConfigEditor extends React.PureComponent<any, any> {
   public handleEditorChange = spec => {
-    this.props.setConfig(JSON.parse(spec));
+    const newSpec = spec === '' ? '{}' : spec;
+    this.props.setConfigEditorString(newSpec);
+    this.props.setThemeName('custom');
     (document.getElementById('config-select') as any).value = 'custom';
+    if (this.props.manualParse) {
+      return;
+    }
+    this.props.setConfig(JSON.parse(this.props.configEditorString));
   };
   public render() {
     return (
@@ -28,7 +34,7 @@ class ConfigEditor extends React.PureComponent<any, any> {
           ref="ConfigEditor"
           language="json"
           onChange={debounce(700, this.handleEditorChange)}
-          value={stringify(this.props.config)}
+          value={this.props.configEditorString}
         />
       </div>
     );
@@ -38,6 +44,8 @@ class ConfigEditor extends React.PureComponent<any, any> {
 function mapStateToProps(state, ownProps) {
   return {
     config: state.config,
+    configEditorString: state.configEditorString,
+    manualParse: state.manualParse,
   };
 }
 
@@ -45,6 +53,8 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setConfig: EditorActions.setConfig,
+      setConfigEditorString: EditorActions.setConfigEditorString,
+      setThemeName: EditorActions.setThemeName,
     },
     dispatch
   );
