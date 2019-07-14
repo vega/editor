@@ -3,38 +3,23 @@
   height: 100vh;
   right: 0px;
   background: white;
-  border: 1px solid transparent;
-  border-radius: 2px;
   box-shadow: -5px 9px 7px -4px rgba(0, 0, 0, 0.6);
   width: 290px;
   font-size: 14px;
 }
 
-@media screen and (min-width: 1400px) {
+@media screen and (min-width: 1000px) {
   .settings {
     width: 270px;
     background: white;
     position: inherit;
     width: 290px;
     font-size: 14px;
+    box-shadow: unset;
+    border-left: solid 2px rgba(0, 0, 0, 0.2);
   }
 }
-@media screen and (min-width: 1600px) {
-  .settings {
-    width: 270px;
-    background: white;
-    width: 290px;
-    font-size: 14px;
-  }
-}
-@media screen and (min-width: 1900px) {
-  .settings {
-    width: 270px;
-    background: white;
-    width: 290px;
-    font-size: 14px;
-  }
-}
+
 .select-container {
   margin: 29px;
   display: flex;

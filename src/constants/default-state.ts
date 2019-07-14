@@ -61,7 +61,7 @@ export const DEFAULT_STATE: State = {
   parse: false,
   renderer: 'canvas',
   selectedExample: null,
-  settingState: true,
+  settingState: false,
   sidePaneItem: SIDEPANE.CompiledVega,
   themeName: 'custom',
   tooltipEnable: true,
