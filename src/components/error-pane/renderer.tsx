@@ -12,7 +12,7 @@ export default class ErrorPane extends React.PureComponent<Props> {
       list.push(
         <li key={0}>
           <span className="error">[Error] </span>
-          {this.props.error}
+          {this.props.error.message}
         </li>
       );
     }

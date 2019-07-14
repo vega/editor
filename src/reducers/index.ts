@@ -63,7 +63,11 @@ function errorLine(code: string, error: string) {
   }
 }
 
-function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGistVegaSpec, extend = {}) {
+function parseVega(
+  state: State,
+  action: SetVegaExample | UpdateVegaSpec | SetGistVegaSpec,
+  extend: Partial<State> = {}
+) {
   const currLogger = new LocalLogger();
 
   try {
@@ -81,7 +85,7 @@ function parseVega(state: State, action: SetVegaExample | UpdateVegaSpec | SetGi
 
     extend = {
       ...extend,
-      error: errorMessage,
+      error: new Error(errorMessage),
     };
   }
   const logger = { ...currLogger };
@@ -138,7 +142,7 @@ function parseVegaLite(state: State, action: any, extend = {}) {
 
     extend = {
       ...extend,
-      error: errorMessage,
+      error: new Error(errorMessage),
     };
   }
   const logger = { ...currLogger };
