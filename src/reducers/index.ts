@@ -63,11 +63,7 @@ function errorLine(code: string, error: string) {
   }
 }
 
-function parseVega(
-  state: State,
-  action: SetVegaExample | UpdateVegaSpec | SetGistVegaSpec,
-  extend: Partial<State> = {}
-) {
+function parseVega(state: State, action: any, extend: Partial<State> = {}) {
   const currLogger = new LocalLogger();
 
   try {
@@ -289,13 +285,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         navItem: action.navItem,
       };
     case SET_CONFIG:
-      return parseVegaLite(state, action, {
-        config: action.config,
-      });
-    // return {
-    //   ...state,
-    //   config: action.config,
-    // };
+      return state.mode === Mode.VegaLite
+        ? parseVegaLite(state, action, {
+            config: action.config,
+          })
+        : { ...state, config: action.config };
     case SET_THEME_NAME:
       return {
         ...state,

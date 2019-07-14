@@ -8,7 +8,7 @@ import * as vl from 'vega-lite';
 import { deepEqual } from 'vega-lite/build/src/util';
 import vegaTooltip from 'vega-tooltip';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { KEYCODES } from '../../constants';
+import { KEYCODES, Mode } from '../../constants';
 import addProjections from '../../utils/addProjections';
 import './index.css';
 
@@ -58,7 +58,10 @@ class Editor extends React.PureComponent<Props, State> {
 
   // Initialize the view instance
   public initView() {
-    const runtime = vega.parse(this.props.vegaSpec, this.props.config);
+    let runtime = vega.parse(this.props.vegaSpec, this.props.config);
+    if (this.props.mode === Mode.VegaLite) {
+      runtime = vega.parse(this.props.vegaSpec);
+    }
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
 
@@ -136,7 +139,8 @@ class Editor extends React.PureComponent<Props, State> {
       !deepEqual(prevProps.vegaSpec, this.props.vegaSpec) ||
       !deepEqual(prevProps.vegaLiteSpec, this.props.vegaLiteSpec) ||
       prevProps.baseURL !== this.props.baseURL ||
-      !deepEqual(prevProps.config, this.props.config)
+      !deepEqual(prevProps.config, this.props.config) ||
+      !deepEqual(prevProps.mode, this.props.mode)
     ) {
       this.initView();
     }
