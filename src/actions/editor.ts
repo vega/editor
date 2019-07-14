@@ -1,7 +1,6 @@
 import { Config } from 'vega-themes/build/config';
 import { Mode, Renderer, View } from '../constants';
 
-export const AUTHENTICATE: 'AUTHENTICATE' = 'AUTHENTICATE';
 export const RECEIVE_CURRENT_USER: 'RECEIVE_CURRENT_USER' = 'RECEIVE_CURRENT_USER';
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
@@ -368,8 +367,10 @@ export function extractConfigSpec() {
 
 export type ExtractConfigSpec = ReturnType<typeof extractConfigSpec>;
 
-export function receiveCurrentUser(profilePicUrl: string) {
+export function receiveCurrentUser(isAuthenticated: boolean, name?: string, profilePicUrl?: string) {
   return {
+    isAuthenticated,
+    name,
     profilePicUrl,
     type: RECEIVE_CURRENT_USER,
   };

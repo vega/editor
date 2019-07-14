@@ -6,7 +6,7 @@ import { PortalWithState } from 'react-portal';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { KEYCODES, Mode } from '../../constants';
+import { BACKEND_URL, COOKIE_NAME, KEYCODES, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
 import Sidebar from '../sidebar/index';
@@ -25,8 +25,6 @@ interface State {
   showVega: boolean;
   scrollPosition: number;
 }
-
-const url = 'https://vega.now.sh/';
 
 const formatExampleName = (name: string) => {
   return name
@@ -63,12 +61,11 @@ class Header extends React.PureComponent<Props, State> {
       }
     });
 
-    const cookieName = 'vegasessid';
-    const cookieValue = encodeURIComponent(getCookie(cookieName));
-    fetch(`${url}auth/github/check`, {
+    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
+    fetch(`${BACKEND_URL}auth/github/check`, {
       credentials: 'include',
       headers: {
-        Cookie: `${cookieName}=${cookieValue}`,
+        Cookie: `${COOKIE_NAME}=${cookieValue}`,
       },
       method: 'get',
     })
@@ -76,12 +73,11 @@ class Header extends React.PureComponent<Props, State> {
         return res.json();
       })
       .then(json => {
-        this.props.isLoggedIn(json.isAuthenticated);
-        this.props.receiveCurrentUser(json.profilePicUrl);
+        const { isAuthenticated, name, profilePicUrl } = json;
+        this.props.receiveCurrentUser(isAuthenticated, name, profilePicUrl);
       })
       .catch(err => {
         // console.error(err);
-        this.props.isLoggedIn(false);
       });
   }
 
@@ -211,7 +207,7 @@ class Header extends React.PureComponent<Props, State> {
     const authButton = (
       <div className="auth-button-container">
         {this.props.isAuthenticated ? (
-          <form action={`${url}auth/github/logout`} method="get">
+          <form action={`${BACKEND_URL}auth/github/logout`} method="get">
             <div className="profile-container">
               <img className="profile-img" src={this.props.profilePicUrl} />
               {this.state.open && (
@@ -222,7 +218,7 @@ class Header extends React.PureComponent<Props, State> {
             </div>
           </form>
         ) : (
-          <form action={`${url}auth/github`} method="get">
+          <form action={`${BACKEND_URL}auth/github`} method="get">
             <button className="sign-in" type="submit">
               <span className="sign-in-text">Login with</span>
               <GitHub />

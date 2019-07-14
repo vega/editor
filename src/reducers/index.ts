@@ -6,7 +6,6 @@ import { TopLevelSpec } from 'vega-lite/src/spec';
 import {
   Action,
   CLEAR_CONFIG,
-  AUTHENTICATE,
   EXPORT_VEGA,
   EXTRACT_CONFIG_SPEC,
   ExtractConfigSpec,
@@ -456,6 +455,8 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case RECEIVE_CURRENT_USER:
       return {
         ...state,
+        isAuthenticated: action.isAuthenticated,
+        name: action.name,
         profilePicUrl: action.profilePicUrl,
       };
     default:
