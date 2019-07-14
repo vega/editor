@@ -53,3 +53,7 @@ export const KEYCODES = {
   SINGLE_QUOTE: 222,
   SLASH: 191,
 };
+
+export const BACKEND_URL = 'https://vega.now.sh/';
+
+export const COOKIE_NAME = 'vegasessid';
