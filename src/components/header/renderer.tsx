@@ -128,7 +128,10 @@ class Header extends React.PureComponent<Props, State> {
     );
 
     const settingsButton = (
-      <div className="header-button" onClick={() => this.props.setSettingState(!this.props.settingState)}>
+      <div
+        className="header-button settings-button"
+        onClick={() => this.props.setSettingState(!this.props.settingState)}
+      >
         <Settings className="header-icon" />
         {'Settings'}
       </div>

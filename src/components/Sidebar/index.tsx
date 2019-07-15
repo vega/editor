@@ -6,6 +6,27 @@ import * as EditorActions from '../../actions/editor';
 import './index.css';
 
 class Sidebar extends Component<any, any> {
+  public componentDidMount() {
+    if (window.innerWidth > 1000) {
+      return;
+    }
+    document.addEventListener(
+      'click',
+      event => {
+        if (
+          (event.target as any).closest('.settings') ||
+          (event.target as any).closest('.settings-button') ||
+          (event.target as any).classList.contains('log-level-dropdown__option') ||
+          (event.target as any).classList.contains('renderer-dropdown__option')
+        ) {
+          return;
+        }
+        this.props.setSettingState(false);
+      },
+      false
+    );
+  }
+
   public logOptions = () => {
     let options = [{ label: 'None' }, { label: 'Warn' }, { label: 'Info' }, { label: 'Debug' }];
     options = options.filter(o => o.label !== this.props.logLevel);
@@ -87,6 +108,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setHover: EditorActions.setHover,
       setLogLevel: EditorActions.setLogLevel,
       setRenderer: EditorActions.setRenderer,
+      setSettingState: EditorActions.setSettingState,
       setTooltip: EditorActions.setTooltip,
     },
     dispatch
