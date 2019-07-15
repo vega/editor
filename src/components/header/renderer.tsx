@@ -211,8 +211,12 @@ class Header extends React.PureComponent<Props, State> {
             <div className="profile-container">
               <img className="profile-img" src={this.props.profilePicUrl} />
               {this.state.open && (
-                <div className="profile-options">
-                  <input className="sign-out" type="submit" value="Logout" onClick={e => e.stopPropagation()} />
+                <div className="profile-menu">
+                  <div className="welcome">Welcome!</div>
+                  <div className="whoami">{this.props.name}</div>
+                  <div className="profile-options">
+                    <input className="sign-out" type="submit" value="Logout" onClick={e => e.stopPropagation()} />
+                  </div>
                 </div>
               )}
             </div>
