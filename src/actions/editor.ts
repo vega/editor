@@ -325,6 +325,7 @@ export function setHover(hover: boolean) {
 }
 
 export type SetHover = ReturnType<typeof setHover>;
+
 export function setTooltip(tooltip: boolean) {
   return {
     tooltipEnable: tooltip,

@@ -63,17 +63,6 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
       }
     }
     this.setSpecInUrl(parameter);
-
-    // document.addEventListener('click', e => {
-    //   if (window.innerWidth < 1400) {
-    //     // width for smaller monitors
-    //     // Attaching an event to the entire body and when the user click outisde the settings panel ,
-    //     // it automatically closes for smaller monitors
-    //     if ((e.target as any).className !== 'settings' && !(e.target as any).className.includes('settings-button')) {
-    //       this.props.setSettingState(false);
-    //     }
-    //   }
-    // });
   }
   public componentWillReceiveProps(nextProps) {
     if (hash(this.props.match.params) !== hash(nextProps.match.params)) {
