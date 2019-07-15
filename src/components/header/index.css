@@ -307,8 +307,8 @@
 
 .sign-in {
   font-size: 0.9em;
-  background: black;
-  color: white;
+  background: white;
+  color: black;
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
@@ -334,7 +334,7 @@
   border-radius: 50%;
 }
 
-.profile-options {
+.profile-menu {
   position: fixed;
   width: 130px;
   background-color: white;
@@ -343,17 +343,34 @@
   right: 6px;
   z-index: 10;
   border-radius: 3px;
-  padding: 0.3em;
   cursor: default;
 }
 
+.welcome {
+  font-size: 0.7em;
+  color: #6e6e6e;
+  margin: 1em 0 0.5em 0.6em;
+}
+
+.whoami {
+  font-size: 0.9em;
+  padding: 0.5em 0 1em 0.5em;
+  /* padding-bottom: 0.5em; */
+  border-bottom: 1px solid #ccc;
+}
+
+.profile-options {
+  margin: 0.5em 0;
+}
+
 .sign-out {
-  font-size: 17px;
+  font-size: 16px;
   background-color: transparent;
-  padding: inherit;
+  padding: 0.3em 0 0.3em 0.5em;
   width: 100%;
   border: none;
   cursor: pointer;
+  text-align: left;
 }
 
 .sign-out:hover {
