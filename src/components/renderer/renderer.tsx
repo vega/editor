@@ -58,9 +58,13 @@ class Editor extends React.PureComponent<Props, State> {
 
   // Initialize the view instance
   public initView() {
-    let runtime = vega.parse(this.props.vegaSpec, this.props.config);
+    let runtime = null;
     if (this.props.mode === Mode.VegaLite) {
+      // In vl mode , we compile vega-lite spec along with config to vega
       runtime = vega.parse(this.props.vegaSpec);
+    } else {
+      // in vega mode the config is passed as a 2nd arg
+      runtime = vega.parse(this.props.vegaSpec, this.props.config);
     }
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);

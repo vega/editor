@@ -109,22 +109,13 @@ function parseVegaLite(state: State, action: any, extend: Partial<State> = {}) {
   const currLogger = new LocalLogger();
 
   try {
-    // if we are setting the spec we don't pass the config
-    // add the previous config from the state
-    if (!action.config) {
-      action.config = state.config;
-    }
-
-    // if we are setting the config we don't pass the spec
-    // add the previous spec from the state
     if (!action.spec) {
       action.spec = state.editorString;
     }
-
-    const spec = JSON.parse(action.spec);
+    const spec = JSON.parse(action.spec || state.editorString);
 
     const options = {
-      config: action.config,
+      config: action.config || state.config,
       logger: currLogger,
     };
     validateVegaLite(spec, currLogger);
