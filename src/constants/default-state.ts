@@ -1,8 +1,13 @@
-import { Spec } from 'vega';
+import { EncodeEntryName ,Spec} from 'vega';
 import { TopLevelSpec as VlSpec } from 'vega-lite';
 import { Config } from 'vega-themes/build/config';
 import { LocalLogger } from '../utils/logger';
 import { LAYOUT, Mode, NAVBAR, Renderer, SIDEPANE, VEGA_LITE_START_SPEC, View } from './consts';
+
+export interface Hover {
+  hoverSet?: EncodeEntryName;
+  updateSet?: EncodeEntryName;
+}
 
 export interface State {
   baseURL: string;
@@ -17,7 +22,7 @@ export interface State {
   error: Error;
   export: boolean;
   gist: string;
-  hoverEnable: boolean;
+  hoverEnable: boolean | Hover;
   logLevel: string;
   lastPosition: number;
   logs: boolean;

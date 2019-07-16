@@ -11,7 +11,7 @@ import { mapDispatchToProps, mapStateToProps } from '.';
 import { KEYCODES, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
-import Sidebar from '../Sidebar/index';
+import Sidebar from '../sidebar/index';
 import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
