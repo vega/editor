@@ -13,7 +13,7 @@ import { State } from '../constants/default-state';
 import './app.css';
 import Header from './header';
 import InputPanel from './input-panel';
-import Sidebar from './sidebar';
+import Sidebar from './Sidebar';
 import VizPane from './viz-pane';
 
 type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;

@@ -9,7 +9,7 @@ import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
-import Sidebar from '../sidebar';
+import Sidebar from '../Sidebar';
 import SignalViewer from '../signal-viewer';
 import DebugPaneHeader from './debug-pane-header';
 
