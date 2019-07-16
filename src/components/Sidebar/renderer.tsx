@@ -3,7 +3,6 @@ import Select from 'react-select';
 import './index.css';
 
 class Sidebar extends Component<any, any> {
-
   private listenerAttached = false;
   public constructor(props) {
     super(props);
@@ -86,9 +85,8 @@ class Sidebar extends Component<any, any> {
             />
             <label htmlFor="tooltip">Tooltips</label>
           </div>
-          <div className="small-text">Enables the default tooltip handler</div>
           <div className="small-text">
-            Refer : <a href="https://github.com/vega/vega-tooltip">Vega Tooltip</a>
+            Enables default <a href="https://github.com/vega/vega-tooltip">Vega Tooltip</a> handler
           </div>
           <div className="hover-enable">
             <input
@@ -98,10 +96,9 @@ class Sidebar extends Component<any, any> {
               id="hover-enable"
               checked={this.props.hoverEnable}
             />
-            <label htmlFor="hover-enable">Enable Hover Processing</label>
-          </div>
-          <div className="small-text">
-            Refer : <a href="https://vega.github.io/vega/docs/api/view/#view_hover">Vega Docs</a>
+            <label htmlFor="hover-enable">
+              Enable <a href="https://vega.github.io/vega/docs/api/view/#view_hover">Hover</a> Event Processing
+            </label>
           </div>
         </section>
       </div>
