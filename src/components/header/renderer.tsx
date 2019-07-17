@@ -47,10 +47,10 @@ class Header extends React.PureComponent<Props, State> {
   }
 
   public componentDidMount() {
-    const tagName = ['IMG'];
+    const className = ['profile-img', 'arrow-down', 'profile-container'];
     window.addEventListener('click', e => {
-      const key = 'tagName';
-      if (tagName.includes(e.target[key])) {
+      const key = 'className';
+      if (className.includes(e.target[key])) {
         this.setState({
           open: !this.state.open,
         });
@@ -210,6 +210,7 @@ class Header extends React.PureComponent<Props, State> {
           <form action={`${BACKEND_URL}auth/github/logout`} method="get">
             <div className="profile-container">
               <img className="profile-img" src={this.props.profilePicUrl} />
+              <span className="arrow-down"></span>
               {this.state.open && (
                 <div className="profile-menu">
                   <div className="welcome">Welcome!</div>
