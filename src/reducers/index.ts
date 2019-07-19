@@ -1,6 +1,7 @@
 import * as vl from 'vega-lite';
 import { TopLevelSpec } from 'vega-lite';
 
+import { Config } from 'vega-lite/src/config';
 import {
   Action,
   EXPORT_VEGA,
@@ -21,6 +22,7 @@ import {
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
   SET_VIEW,
+  SetConfig,
   SetGistVegaLiteSpec,
   SetGistVegaSpec,
   SetVegaExample,
@@ -35,9 +37,7 @@ import {
   UPDATE_VEGA_SPEC,
   UpdateVegaLiteSpec,
   UpdateVegaSpec,
-  SetConfig,
 } from '../actions/editor';
-import { Config } from 'vega-themes/build/config';
 import { DEFAULT_STATE, Mode } from '../constants';
 import { State } from '../constants/default-state';
 import { LocalLogger } from '../utils/logger';
@@ -120,14 +120,15 @@ function parseVegaLite(
   let config: Config;
   try {
     switch (action.type) {
+      case SET_CONFIG:
+        spec = state.editorString;
+        config = action.config as Config;
+        break;
       case SET_VEGA_LITE_EXAMPLE:
       case SET_GIST_VEGA_LITE_SPEC:
       case UPDATE_VEGA_LITE_SPEC:
         spec = action.spec;
-        config = state.config;
-      case SET_CONFIG:
-        config = action.config;
-        spec = state.editorString;
+        config = state.config as Config;
     }
 
     const vegaLiteSpec: TopLevelSpec = JSON.parse(spec);
@@ -136,7 +137,7 @@ function parseVegaLite(
       config,
       logger: currLogger,
     };
-    validateVegaLite(spec, currLogger);
+    validateVegaLite(vegaLiteSpec, currLogger);
 
     const vegaSpec = spec !== '{}' ? vl.compile(vegaLiteSpec, options).spec : {};
 
