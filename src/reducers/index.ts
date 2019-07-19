@@ -117,18 +117,18 @@ function parseVegaLite(
   const currLogger = new LocalLogger();
 
   let spec: string;
-  let config: Config;
+  let config;
   try {
     switch (action.type) {
       case SET_CONFIG:
         spec = state.editorString;
-        config = action.config as Config;
+        config = action.config;
         break;
       case SET_VEGA_LITE_EXAMPLE:
       case SET_GIST_VEGA_LITE_SPEC:
       case UPDATE_VEGA_LITE_SPEC:
         spec = action.spec;
-        config = state.config as Config;
+        config = state.config;
     }
 
     const vegaLiteSpec: TopLevelSpec = JSON.parse(spec);
