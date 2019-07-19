@@ -60,10 +60,9 @@ class Editor extends React.PureComponent<Props, State> {
   public initView() {
     let runtime = null;
     if (this.props.mode === Mode.VegaLite) {
-      // In vl mode , we compile vega-lite spec along with config to vega
+      // In vl mode, we compile Vega-Lite spec along with config to Vega spec
       runtime = vega.parse(this.props.vegaSpec);
     } else {
-      // in vega mode the config is passed as a 2nd arg
       runtime = vega.parse(this.props.vegaSpec, this.props.config);
     }
     const loader = vega.loader();
@@ -81,7 +80,7 @@ class Editor extends React.PureComponent<Props, State> {
       }
     };
 
-    // finalize previous view so that memory can be freed
+    // Finalize previous view so that memory can be freed
     if (this.props.view) {
       this.props.view.finalize();
     }
