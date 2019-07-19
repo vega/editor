@@ -90,7 +90,7 @@ class Editor extends React.PureComponent<Props, State> {
       logLevel: vega.Warn,
     }).hover();
 
-    (window as any).VEGA_DEBUG.view = this.props.view;
+    (window as any).VEGA_DEBUG.view = view;
 
     vegaTooltip(view);
 
