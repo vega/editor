@@ -139,7 +139,7 @@ function parseVegaLite(
     };
     validateVegaLite(vegaLiteSpec, currLogger);
 
-    const vegaSpec = spec !== '{}' ? vl.compile(vegaLiteSpec, options as any).spec : {};
+    const vegaSpec = spec !== '{}' ? vl.compile(vegaLiteSpec, options).spec : {};
 
     extend = {
       ...extend,
