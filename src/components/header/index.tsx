@@ -23,6 +23,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       exportVega: EditorActions.exportVega,
       parseSpec: EditorActions.parseSpec,
       setConfig: EditorActions.setConfig,
+      setConfigEditorString: EditorActions.setConfigEditorString,
       setScrollPosition: EditorActions.setScrollPosition,
       toggleAutoParse: EditorActions.toggleAutoParse,
       updateVegaSpec: EditorActions.updateVegaSpec,
