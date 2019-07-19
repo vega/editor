@@ -1,4 +1,6 @@
 import * as vl from 'vega-lite';
+import { TopLevelSpec } from 'vega-lite';
+
 import {
   Action,
   EXPORT_VEGA,
@@ -33,7 +35,9 @@ import {
   UPDATE_VEGA_SPEC,
   UpdateVegaLiteSpec,
   UpdateVegaSpec,
+  SetConfig,
 } from '../actions/editor';
+import { Config } from 'vega-themes/build/config';
 import { DEFAULT_STATE, Mode } from '../constants';
 import { State } from '../constants/default-state';
 import { LocalLogger } from '../utils/logger';
@@ -105,30 +109,44 @@ function parseVega(
   };
 }
 
-function parseVegaLite(state: State, action: any, extend: Partial<State> = {}) {
+function parseVegaLite(
+  state: State,
+  action: SetVegaLiteExample | UpdateVegaLiteSpec | SetGistVegaLiteSpec | SetConfig,
+  extend: Partial<State> = {}
+) {
   const currLogger = new LocalLogger();
 
+  let spec: string;
+  let config: Config;
   try {
-    if (!action.spec) {
-      action.spec = state.editorString;
+    switch (action.type) {
+      case SET_VEGA_LITE_EXAMPLE:
+      case SET_GIST_VEGA_LITE_SPEC:
+      case UPDATE_VEGA_LITE_SPEC:
+        spec = action.spec;
+        config = state.config;
+      case SET_CONFIG:
+        config = action.config;
+        spec = state.editorString;
     }
-    const spec = JSON.parse(action.spec);
+
+    const vegaLiteSpec: TopLevelSpec = JSON.parse(spec);
 
     const options = {
-      config: action.config || state.config,
+      config,
       logger: currLogger,
     };
     validateVegaLite(spec, currLogger);
 
-    const vegaSpec = action.spec !== '{}' ? vl.compile(spec, options).spec : {};
+    const vegaSpec = spec !== '{}' ? vl.compile(vegaLiteSpec, options).spec : {};
 
     extend = {
       ...extend,
-      vegaLiteSpec: spec,
+      vegaLiteSpec,
       vegaSpec,
     };
   } catch (e) {
-    const errorMessage = errorLine(action.spec, e.message);
+    const errorMessage = errorLine(spec, e.message);
     console.warn(e);
 
     extend = {
@@ -140,7 +158,7 @@ function parseVegaLite(state: State, action: any, extend: Partial<State> = {}) {
   return {
     ...state,
 
-    editorString: action.spec,
+    editorString: spec,
     error: null,
     gist: null,
     mode: Mode.VegaLite,
