@@ -112,7 +112,7 @@ function parseVegaLite(state: State, action: any, extend: Partial<State> = {}) {
     if (!action.spec) {
       action.spec = state.editorString;
     }
-    const spec = JSON.parse(action.spec || state.editorString);
+    const spec = JSON.parse(action.spec);
 
     const options = {
       config: action.config || state.config,
