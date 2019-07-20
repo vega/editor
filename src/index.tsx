@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 import * as vega from 'vega';
 import * as vl from 'vega-lite';
+import setupMonaco from './utils/monaco';
 
 import AppShell from './components/app-shell';
 import configureStore from './store/configure-store';
@@ -35,6 +36,8 @@ function logPageView() {
   ReactGA.set({ page: window.location.pathname + window.location.search });
   ReactGA.pageview(window.location.pathname + window.location.search);
 }
+
+setupMonaco();
 
 const store = configureStore();
 
