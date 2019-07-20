@@ -1,6 +1,5 @@
-import stringify from 'json-stringify-pretty-compact';
 import LZString from 'lz-string';
-import Monaco from 'monaco-editor';
+import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { withRouter } from 'react-router-dom';
@@ -8,34 +7,12 @@ import { debounce } from 'vega';
 import parser from 'vega-schema-url-parser';
 import { mapDispatchToProps, mapStateToProps } from '.';
 import { KEYCODES, Mode } from '../../../constants';
-import addMarkdownProps from '../../../utils/markdownProps';
 import './index.css';
-
-const vegaLiteSchema = require('vega-lite/build/vega-lite-schema.json');
-const vegaSchema = require('vega/build/vega-schema.json');
-
-addMarkdownProps(vegaSchema);
-addMarkdownProps(vegaLiteSchema);
-
-const schemas = {
-  [Mode.Vega]: [
-    {
-      schema: vegaSchema,
-      uri: 'https://vega.github.io/schema/vega/v5.json',
-    },
-  ],
-  [Mode.VegaLite]: [
-    {
-      schema: vegaLiteSchema,
-      uri: 'https://vega.github.io/schema/vega-lite/v3.json',
-    },
-  ],
-};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any; match: any };
 
 class Editor extends React.PureComponent<Props, {}> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.handleKeydown = this.handleKeydown.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
@@ -69,7 +46,7 @@ class Editor extends React.PureComponent<Props, {}> {
     this.props.mode === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
   }
 
-  public editorDidMount(editor) {
+  public editorDidMount(editor: Monaco.editor.IStandaloneCodeEditor, monaco: typeof Monaco) {
     editor.addAction(
       (() => {
         return {
@@ -81,8 +58,10 @@ class Editor extends React.PureComponent<Props, {}> {
         };
       })()
     );
+
     editor.focus();
   }
+
   public handleEditorChange(spec) {
     this.props.manualParse ? this.props.updateEditorString(spec) : this.updateSpec(spec);
 
@@ -90,7 +69,8 @@ class Editor extends React.PureComponent<Props, {}> {
       this.props.history.push('/edited');
     }
   }
-  public editorWillMount(monaco) {
+
+  public editorWillMount(monaco: typeof Monaco) {
     const compressed = this.props.match.params.compressed;
     if (compressed) {
       const spec = LZString.decompressFromEncodedURIComponent(compressed);
@@ -100,29 +80,8 @@ class Editor extends React.PureComponent<Props, {}> {
         this.props.logError(`Failed to decompress URL. Expected a specification, but received ${spec}`);
       }
     }
-
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-      allowComments: false,
-      enableSchemaRequest: true,
-      schemas: schemas[this.props.mode],
-      validate: true,
-    });
-
-    monaco.languages.registerDocumentFormattingEditProvider('json', {
-      provideDocumentFormattingEdits(
-        model: Monaco.editor.ITextModel,
-        options: Monaco.languages.FormattingOptions,
-        token: Monaco.CancellationToken
-      ): Monaco.languages.TextEdit[] {
-        return [
-          {
-            range: model.getFullModelRange(),
-            text: stringify(JSON.parse(model.getValue())),
-          },
-        ];
-      },
-    });
   }
+
   public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.parse) {
       this.updateSpec(nextProps.value);
@@ -130,13 +89,16 @@ class Editor extends React.PureComponent<Props, {}> {
       this.props.parseSpec(false);
     }
   }
+
   public componentDidMount() {
     document.addEventListener('keydown', this.handleKeydown);
     this.props.setEditorReference(this.refs.editor);
   }
+
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeydown);
   }
+
   public updateSpec(spec: string) {
     let parsedMode = this.props.mode;
 
@@ -176,6 +138,8 @@ class Editor extends React.PureComponent<Props, {}> {
           ref="editor"
           language="json"
           options={{
+            autoClosingBrackets: 'never',
+            autoClosingQuotes: 'never',
             automaticLayout: true,
             cursorBlinking: 'smooth',
             folding: true,
