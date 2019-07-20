@@ -142,6 +142,7 @@ class Editor extends React.PureComponent<Props, State> {
       prevProps.baseURL !== this.props.baseURL ||
       !deepEqual(prevProps.config, this.props.config) ||
       !deepEqual(prevProps.logLevel, this.props.logLevel) ||
+      !deepEqual(prevProps.mode, this.props.mode) ||
       !deepEqual(prevProps.hoverEnable, this.props.hoverEnable) ||
       !deepEqual(prevProps.tooltipEnable, this.props.tooltipEnable)
     ) {
