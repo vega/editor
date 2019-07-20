@@ -63,11 +63,13 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     }
     this.setSpecInUrl(parameter);
   }
+
   public componentWillReceiveProps(nextProps) {
     if (hash(this.props.match.params) !== hash(nextProps.match.params)) {
       this.setSpecInUrl(nextProps.match.params);
     }
   }
+
   public setSpecInUrl(parameter) {
     if (parameter) {
       if (parameter.example_name) {
@@ -79,6 +81,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
       }
     }
   }
+
   public async setGist(parameter: { mode: string; username: string; id: string; revision: string; filename: string }) {
     const gistUrl = `https://api.github.com/gists/${parameter.id}/${parameter.revision}`;
 
