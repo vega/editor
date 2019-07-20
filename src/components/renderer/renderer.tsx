@@ -86,7 +86,7 @@ class Editor extends React.PureComponent<Props, State> {
       logLevel: vega[this.props.logLevel],
     }).hover();
 
-    (window as any).VEGA_DEBUG.view = this.props.view;
+    (window as any).VEGA_DEBUG.view = view;
 
     if (this.props.tooltipEnable) {
       vegaTooltip(view);
