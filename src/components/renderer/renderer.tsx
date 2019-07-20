@@ -7,7 +7,7 @@ import * as vega from 'vega';
 import { deepEqual } from 'vega-lite/build/src/util';
 import vegaTooltip from 'vega-tooltip';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { KEYCODES } from '../../constants';
+import { KEYCODES, Mode } from '../../constants';
 import addProjections from '../../utils/addProjections';
 import './index.css';
 
@@ -79,8 +79,9 @@ class Editor extends React.PureComponent<Props, State> {
       this.props.view.finalize();
     }
 
+    const hover = typeof this.props.hoverEnable === 'boolean' ? this.props.hoverEnable : this.props.mode === Mode.Vega;
     const view = new vega.View(runtime, {
-      hover: this.props.hoverEnable,
+      hover,
       loader,
       logLevel: vega[this.props.logLevel],
     }).hover();

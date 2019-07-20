@@ -7,6 +7,7 @@ class Sidebar extends Component<any, any> {
   public constructor(props) {
     super(props);
     this.handleOutSideClick = this.handleOutSideClick.bind(this);
+    this.setHover = this.setHover.bind(this);
   }
   public componentDidMount() {
     document.body.addEventListener('click', this.handleOutSideClick, true);
@@ -40,8 +41,27 @@ class Sidebar extends Component<any, any> {
     options = options.filter(o => o.label !== this.props.logLevel);
     return options;
   };
+
+  public hoverOptions = () => {
+    let options = [{ label: 'default' }, { label: 'on' }, { label: 'off' }];
+    options = options.filter(o => o.label !== this.props.hoverEnable);
+    return options;
+  };
+
+  public setHover(e) {
+    let newHover: boolean | string = 'defualt';
+    switch (e.label) {
+      case 'on':
+        newHover = true;
+        break;
+      case 'off':
+        newHover = false;
+    }
+    this.props.setHover(newHover);
+  }
   public render() {
     const renderOptions = this.props.renderer === 'svg' ? [{ label: 'canvas' }] : [{ label: 'svg' }];
+    const hover = typeof this.props.hoverEnable !== 'boolean' ? 'default' : this.props.hoverEnable ? 'on' : 'off';
     return (
       <div className="settings">
         <section>
@@ -75,6 +95,23 @@ class Sidebar extends Component<any, any> {
             </div>
           </div>
           <div className="small-text">Sets the log level</div>
+          <div className="select-container">
+            <span>Hover :</span>
+            <div className="hover-enable-select">
+              <Select
+                className="hover-enable-dropdown-wrapper"
+                classNamePrefix="hover-enable-dropdown"
+                value={{ label: hover }}
+                options={this.hoverOptions()}
+                onChange={this.setHover}
+                isClearable={false}
+                isSearchable={false}
+              />
+            </div>
+          </div>
+          <div className="small-text">
+            Enable <a href="https://vega.github.io/vega/docs/api/view/#view_hover">Hover</a> Event Processing
+          </div>
           <div className="tooltips">
             <input
               onChange={e => this.props.setTooltip(e.target.checked)}
@@ -87,18 +124,6 @@ class Sidebar extends Component<any, any> {
           </div>
           <div className="small-text">
             Enables default <a href="https://github.com/vega/vega-tooltip">Vega Tooltip</a> handler
-          </div>
-          <div className="hover-enable">
-            <input
-              onChange={e => this.props.setHover(e.target.checked)}
-              type="checkbox"
-              name=""
-              id="hover-enable"
-              checked={this.props.hoverEnable}
-            />
-            <label htmlFor="hover-enable">
-              Enable <a href="https://vega.github.io/vega/docs/api/view/#view_hover">Hover</a> Event Processing
-            </label>
           </div>
         </section>
       </div>

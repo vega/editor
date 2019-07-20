@@ -29,18 +29,21 @@
 }
 
 .renderer-dropdown-wrapper,
-.log-level-dropdown-wrapper {
+.log-level-dropdown-wrapper,
+.hover-enable-dropdown-wrapper {
   width: 150px;
   margin-left: 10px;
 }
 
 .renderer-dropdown__option,
-.log-level-dropdown__option {
+.log-level-dropdown__option,
+.hover-enable-dropdown__option {
   background-color: white !important;
   color: black !important;
 }
 .renderer-dropdown__option:hover,
-.log-level-dropdown__option:hover {
+.log-level-dropdown__option:hover,
+.hover-enable-dropdown__option:hover {
   background-color: rgba(0, 0, 0, 0.08) !important;
 }
 
