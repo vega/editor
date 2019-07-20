@@ -47,6 +47,12 @@
   background-color: rgba(0, 0, 0, 0.08) !important;
 }
 
+.renderer-dropdown__single-value,
+.log-level-dropdown__single-value,
+.hover-enable-dropdown_-single-value {
+  line-height: normal !important;
+}
+
 .tooltips,
 .hover-enable {
   width: 150px;
