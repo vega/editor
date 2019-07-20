@@ -1,9 +1,11 @@
+import stringify from 'json-stringify-pretty-compact';
 import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
 import { Copy, Link } from 'react-feather';
 import { withRouter } from 'react-router-dom';
 import { mapStateToProps } from '.';
+import { Mode } from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;
@@ -25,8 +27,15 @@ class ShareModal extends React.PureComponent<Props, State> {
   }
 
   public exportURL() {
+    let spec;
+    if (this.props.mode === Mode.VegaLite) {
+      spec = this.props.vegaLiteSpec;
+    } else {
+      spec = this.props.vegaSpec;
+    }
+    spec.config = this.props.config;
     const serializedSpec =
-      LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullScreen ? '/view' : '');
+      LZString.compressToEncodedURIComponent(stringify(spec)) + (this.state.fullScreen ? '/view' : '');
     if (serializedSpec) {
       const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
       this.setState({ generatedURL: url });
