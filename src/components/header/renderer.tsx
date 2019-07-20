@@ -58,6 +58,7 @@ class Header extends React.PureComponent<Props, State> {
     option.value === Mode.Vega ? this.props.updateVegaSpec(stringify(this.props.vegaSpec)) : this.onSelectNewVegaLite();
     this.props.setConfig({});
     this.props.setConfigEditorString('{}');
+    this.props.setThemeName('custom');
   }
 
   public componentWillReceiveProps(nextProps) {
