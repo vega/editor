@@ -349,11 +349,36 @@
   width: 130px;
   background-color: white;
   border: 1px solid #ccc;
-  top: 44px;
+  top: 61px;
   right: 6px;
   z-index: 10;
   border-radius: 3px;
   cursor: default;
+}
+
+.profile-menu::before,
+.profile-menu::after {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  content: "";
+  bottom: 111px;
+  right: 27px;
+}
+
+.profile-menu::before {
+  border-top: 12px solid transparent;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 12px solid #ccc;
+  right: 26px;
+}
+
+.profile-menu::after {
+  border-top: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid white;
 }
 
 .welcome {
@@ -370,13 +395,13 @@
 }
 
 .profile-options {
-  margin: 0.5em 0;
+  margin: 0.3em 0;
 }
 
 .sign-out {
   font-size: 16px;
   background-color: transparent;
-  padding: 0.3em 0 0.3em 0.5em;
+  padding: 0.6em 0 0.6em 0.5em;
   width: 100%;
   border: none;
   cursor: pointer;
