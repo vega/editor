@@ -249,9 +249,9 @@ export function toggleNavbar(value: string) {
 
 export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
 
-export function setConfig(value: Config) {
+export function setConfig(value: string) {
   return {
-    config: value,
+    configEditorString: value,
     type: SET_CONFIG,
   };
 }

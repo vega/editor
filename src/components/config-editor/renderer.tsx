@@ -14,7 +14,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     if (this.props.manualParse) {
       return;
     }
-    this.props.setConfig(JSON.parse(this.props.configEditorString));
+    this.props.setConfig(this.props.configEditorString);
   };
 
   public render() {
