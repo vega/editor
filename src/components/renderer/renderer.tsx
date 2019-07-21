@@ -4,7 +4,7 @@ import { Portal } from 'react-portal';
 import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
-import * as vl from 'vega-lite';
+import { Runtime } from 'vega';
 import { deepEqual } from 'vega-lite/build/src/util';
 import vegaTooltip from 'vega-tooltip';
 import { mapDispatchToProps, mapStateToProps } from '.';
@@ -58,7 +58,7 @@ class Editor extends React.PureComponent<Props, State> {
 
   // Initialize the view instance
   public initView() {
-    let runtime = null;
+    let runtime: Runtime;
     if (this.props.mode === Mode.VegaLite) {
       // In vl mode, we compile Vega-Lite spec along with config to Vega spec
       runtime = vega.parse(this.props.vegaSpec);
