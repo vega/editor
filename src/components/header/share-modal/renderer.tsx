@@ -27,15 +27,8 @@ class ShareModal extends React.PureComponent<Props, State> {
   }
 
   public exportURL() {
-    let spec;
-    if (this.props.mode === Mode.VegaLite) {
-      spec = this.props.vegaLiteSpec;
-    } else {
-      spec = this.props.vegaSpec;
-    }
-    spec.config = this.props.config;
     const serializedSpec =
-      LZString.compressToEncodedURIComponent(stringify(spec)) + (this.state.fullScreen ? '/view' : '');
+      LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullScreen ? '/view' : '');
     if (serializedSpec) {
       const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
       this.setState({ generatedURL: url });
