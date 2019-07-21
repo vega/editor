@@ -29,6 +29,7 @@ export const SET_CONFIG: 'SET_CONFIG' = 'SET_CONFIG';
 export const SET_THEME_NAME: 'SET_THEME_NAME' = 'SET_THEME_NAME';
 export const SET_SIDEPANE_ITEM: 'SET_SIDEPANE_ITEM' = 'SET_SIDEPANE_ITEM';
 export const SET_CONFIG_EDITOR_STRING: 'SET_CONFIG_EDITOR_STRING' = 'SET_CONFIG_EDITOR_STRING';
+export const CLEAR_CONFIG: 'CLEAR_CONFIG' = 'CLEAR_CONFIG';
 
 export type Action =
   | SetMode
@@ -58,7 +59,8 @@ export type Action =
   | SetConfigEditorString
   | SetThemeName
   | SetSidePaneItem
-  | SetEditorReference;
+  | SetEditorReference
+  | ClearConfig;
 
 export function setMode(mode: Mode) {
   return {
@@ -291,3 +293,11 @@ export function setEditorReference(editorRef: any) {
 }
 
 export type SetEditorReference = ReturnType<typeof setEditorReference>;
+
+export function clearConfig() {
+  return {
+    type: CLEAR_CONFIG,
+  };
+}
+
+export type ClearConfig = ReturnType<typeof clearConfig>;

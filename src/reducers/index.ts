@@ -1,8 +1,8 @@
 import * as vl from 'vega-lite';
-
 import { Config } from 'vega-lite/src/config';
 import {
   Action,
+  CLEAR_CONFIG,
   EXPORT_VEGA,
   LOG_ERROR,
   PARSE_SPEC,
@@ -322,6 +322,13 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         editorRef: action.editorRef,
+      };
+    case CLEAR_CONFIG:
+      return {
+        ...state,
+        config: {},
+        configEditorString: '{}',
+        themeName: 'custom',
       };
     default:
       return state;
