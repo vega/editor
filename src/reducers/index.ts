@@ -116,21 +116,22 @@ function parseVegaLite(
   const currLogger = new LocalLogger();
 
   let spec: string;
-  let config: Config;
+  let configEditorString: string;
   try {
     switch (action.type) {
       case SET_CONFIG:
         spec = state.editorString;
-        config = action.config as Config;
+        configEditorString = action.configEditorString;
         break;
       case SET_VEGA_LITE_EXAMPLE:
       case SET_GIST_VEGA_LITE_SPEC:
       case UPDATE_VEGA_LITE_SPEC:
         spec = action.spec;
-        config = state.config as Config;
+        configEditorString = state.configEditorString;
     }
 
     const vegaLiteSpec: vl.TopLevelSpec = JSON.parse(spec);
+    const config: Config = JSON.parse(configEditorString);
 
     const options = {
       config,
@@ -167,6 +168,29 @@ function parseVegaLite(
     warningsLogger: currLogger,
 
     // extend with other changes
+    ...extend,
+  };
+}
+
+function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {}) {
+  let config: Config;
+  try {
+    config = JSON.parse(action.configEditorString);
+  } catch (e) {
+    const errorMessage = errorLine(action.configEditorString, e.message);
+    console.warn(e);
+
+    extend = {
+      ...extend,
+      error: new Error(errorMessage),
+    };
+  }
+  return {
+    ...state,
+    config,
+    error: null,
+
+    // extend
     ...extend,
   };
 }
@@ -300,9 +324,9 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case SET_CONFIG:
       return state.mode === Mode.VegaLite
         ? parseVegaLite(state, action, {
-            config: action.config,
+            configEditorString: action.configEditorString,
           })
-        : { ...state, config: action.config };
+        : parseConfig(state, action);
     case SET_THEME_NAME:
       return {
         ...state,
