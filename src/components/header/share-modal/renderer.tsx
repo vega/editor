@@ -1,11 +1,9 @@
-import stringify from 'json-stringify-pretty-compact';
 import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
 import { Copy, Link } from 'react-feather';
 import { withRouter } from 'react-router-dom';
 import { mapStateToProps } from '.';
-import { Mode } from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;
