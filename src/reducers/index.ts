@@ -1,5 +1,4 @@
 import * as vl from 'vega-lite';
-import { TopLevelSpec } from 'vega-lite';
 
 import { Config } from 'vega-lite/src/config';
 import {
@@ -131,7 +130,7 @@ function parseVegaLite(
         config = state.config as Config;
     }
 
-    const vegaLiteSpec: TopLevelSpec = JSON.parse(spec);
+    const vegaLiteSpec: vl.TopLevelSpec = JSON.parse(spec);
 
     const options = {
       config,
