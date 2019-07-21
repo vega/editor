@@ -7,14 +7,12 @@ import * as EditorActions from '../../actions/editor';
 import './config-editor.css';
 
 class ConfigEditorHeader extends React.PureComponent<any, any> {
-  public componentDidMount() {
-    (document.getElementById('config-select') as any).value = this.props.themeName;
-  }
   public render() {
     return (
       <label className="config-header">
         Theme:
         <select
+          value={this.props.themeName}
           onClick={e => e.stopPropagation()}
           id="config-select"
           onChange={e => {
