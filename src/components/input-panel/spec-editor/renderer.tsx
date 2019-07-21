@@ -20,6 +20,7 @@ class Editor extends React.PureComponent<Props, {}> {
     this.editorDidMount = this.editorDidMount.bind(this);
     this.onSelectNewVegaLite = this.onSelectNewVegaLite.bind(this);
   }
+
   public handleKeydown(e) {
     if (this.props.manualParse) {
       if ((e.keyCode === KEYCODES.B || e.keyCode === KEYCODES.S) && (e.ctrlKey || e.metaKey)) {
@@ -131,6 +132,7 @@ class Editor extends React.PureComponent<Props, {}> {
         break;
     }
   }
+
   public render() {
     return (
       <div className={'full-height-wrapper'}>
