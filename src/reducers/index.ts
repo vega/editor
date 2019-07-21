@@ -1,5 +1,5 @@
 import * as vl from 'vega-lite';
-// import { Config } from 'vega-lite/src/config';
+import { Config } from 'vega-lite/src/config';
 import {
   Action,
   CLEAR_CONFIG,
@@ -131,7 +131,7 @@ function parseVegaLite(
     }
 
     const vegaLiteSpec: vl.TopLevelSpec = JSON.parse(spec);
-    const config = JSON.parse(configEditorString);
+    const config: Config = JSON.parse(configEditorString);
 
     const options = {
       config,
@@ -173,7 +173,7 @@ function parseVegaLite(
 }
 
 function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {}) {
-  let config;
+  let config: Config;
   try {
     config = JSON.parse(action.configEditorString);
   } catch (e) {
