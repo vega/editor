@@ -67,8 +67,7 @@
   white-space: nowrap;
 }
 
-.small-text {
-  margin: 0px;
+.settings-description {
   padding: 0px;
   display: block;
   font-size: small;

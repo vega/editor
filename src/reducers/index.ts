@@ -331,7 +331,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case SET_SETTING_STATE:
       return {
         ...state,
-        settingState: action.settingState,
+        settingsState: action.settingsState,
       };
     case SET_CONFIG:
       return state.mode === Mode.VegaLite

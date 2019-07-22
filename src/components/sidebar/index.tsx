@@ -18,7 +18,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setHover: EditorActions.setHover,
       setLogLevel: EditorActions.setLogLevel,
       setRenderer: EditorActions.setRenderer,
-      setSettingState: EditorActions.setSettingState,
+      setSettingsState: EditorActions.setSettingsState,
       setTooltip: EditorActions.setTooltip,
     },
     dispatch

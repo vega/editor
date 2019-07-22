@@ -6,22 +6,22 @@ class Sidebar extends Component<any, any> {
   private listenerAttached = false;
   public constructor(props) {
     super(props);
-    this.handleOutSideClick = this.handleOutSideClick.bind(this);
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.setHover = this.setHover.bind(this);
   }
   public componentDidMount() {
-    document.body.addEventListener('click', this.handleOutSideClick, true);
+    document.body.addEventListener('click', this.handleOutsideClick, true);
     window.addEventListener('resize', () => {
       if (this.listenerAttached && window.innerWidth > 1000) {
-        document.body.removeEventListener('click', this.handleOutSideClick, true);
+        document.body.removeEventListener('click', this.handleOutsideClick, true);
       }
       if (!this.listenerAttached && window.innerWidth < 1000) {
-        document.body.addEventListener('click', this.handleOutSideClick, true);
+        document.body.addEventListener('click', this.handleOutsideClick, true);
       }
     });
   }
 
-  public handleOutSideClick(event) {
+  public handleOutsideClick(event) {
     if (!this.listenerAttached && window.innerWidth < 1000) {
       if (
         (event.target as any).closest('.settings') ||
@@ -31,7 +31,7 @@ class Sidebar extends Component<any, any> {
       ) {
         return;
       }
-      this.props.setSettingState(false);
+      this.props.setSettingsState(false);
       this.listenerAttached = true;
     }
   }
@@ -49,7 +49,7 @@ class Sidebar extends Component<any, any> {
   };
 
   public setHover(e) {
-    let newHover: boolean | string = 'defualt';
+    let newHover: boolean | 'defualt' = 'defualt';
     switch (e.label) {
       case 'on':
         newHover = true;
@@ -79,7 +79,7 @@ class Sidebar extends Component<any, any> {
               />
             </div>
           </div>
-          <div className="small-text">Sets the renderer</div>
+          <div className="settings-description">Sets the renderer</div>
           <div className="select-container">
             <span>Log Level:</span>
             <div>
@@ -94,7 +94,7 @@ class Sidebar extends Component<any, any> {
               />
             </div>
           </div>
-          <div className="small-text">Sets the log level</div>
+          <div className="settings-description">Sets the log level</div>
           <div className="select-container">
             <span>Hover :</span>
             <div className="hover-enable-select">
@@ -109,7 +109,7 @@ class Sidebar extends Component<any, any> {
               />
             </div>
           </div>
-          <div className="small-text">
+          <div className="settings-description">
             Enable <a href="https://vega.github.io/vega/docs/api/view/#view_hover">Hover</a> Event Processing
           </div>
           <div className="tooltips">
@@ -122,7 +122,7 @@ class Sidebar extends Component<any, any> {
             />
             <label htmlFor="tooltip">Tooltips</label>
           </div>
-          <div className="small-text">
+          <div className="settings-description">
             Enables default <a href="https://github.com/vega/vega-tooltip">Vega Tooltip</a> handler
           </div>
         </section>

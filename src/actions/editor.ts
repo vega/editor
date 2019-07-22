@@ -59,7 +59,7 @@ export type Action =
   | SetDebugPaneSize
   | ShowLogs
   | SetCompiledVegaPaneSize
-  | SetSettingState
+  | SetsettingsState
   | SetConfig
   | SetConfigEditorString
   | SetThemeName
@@ -257,14 +257,14 @@ export function toggleNavbar(value: string) {
 
 export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
 
-export function setSettingState(value: boolean) {
+export function setSettingsState(value: boolean) {
   return {
-    settingState: value,
+    settingsState: value,
     type: SET_SETTING_STATE,
   };
 }
 
-export type SetSettingState = ReturnType<typeof setSettingState>;
+export type SetsettingsState = ReturnType<typeof setSettingsState>;
 
 export function setConfig(value: string) {
   return {
@@ -320,7 +320,7 @@ export function setLogLevel(logLevel: string) {
 
 export type SetLogLevel = ReturnType<typeof setLogLevel>;
 
-export function setHover(hover: boolean) {
+export function setHover(hover: boolean | 'default') {
   return {
     hoverEnable: hover,
     type: SET_HOVER,

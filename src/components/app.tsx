@@ -146,7 +146,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
             <InputPanel />
             <VizPane />
           </SplitPane>
-          {this.props.settingState && <Sidebar />}
+          {this.props.settingsState && <Sidebar />}
         </div>
       </div>
     );
@@ -156,7 +156,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
 function mapStateToProps(state: State) {
   return {
     configEditorString: state.configEditorString,
-    settingState: state.settingState,
+    settingsState: state.settingsState,
     view: state.view,
   };
 }
@@ -170,7 +170,7 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setGistVegaSpec: EditorActions.setGistVegaSpec,
       setModeOnly: EditorActions.setModeOnly,
       setRenderer: EditorActions.setRenderer,
-      setSettingState: EditorActions.setSettingState,
+      setSettingsState: EditorActions.setSettingsState,
       setVegaExample: EditorActions.setVegaExample,
       setVegaLiteExample: EditorActions.setVegaLiteExample,
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,

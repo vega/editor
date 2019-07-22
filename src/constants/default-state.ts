@@ -28,7 +28,7 @@ export interface State {
   parse: boolean;
   renderer: Renderer;
   selectedExample: string;
-  settingState: boolean;
+  settingsState: boolean;
   tooltipEnable: boolean;
   vegaLiteSpec: VlSpec;
   vegaSpec: Spec;
@@ -61,7 +61,7 @@ export const DEFAULT_STATE: State = {
   parse: false,
   renderer: 'canvas',
   selectedExample: null,
-  settingState: false,
+  settingsState: false,
   sidePaneItem: SIDEPANE.CompiledVega,
   themeName: 'custom',
   tooltipEnable: true,

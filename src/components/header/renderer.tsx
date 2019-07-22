@@ -84,7 +84,7 @@ class Header extends React.PureComponent<Props, State> {
   }
 
   public handleSettingsClick() {
-    this.props.setSettingState(!this.props.settingState);
+    this.props.setSettingsState(!this.props.settingsState);
   }
   public openCommandPalette() {
     this.props.editorRef.trigger('', 'editor.action.quickCommand');
@@ -131,7 +131,7 @@ class Header extends React.PureComponent<Props, State> {
     const settingsButton = (
       <div
         className="header-button settings-button"
-        onClick={() => this.props.setSettingState(!this.props.settingState)}
+        onClick={() => this.props.setSettingsState(!this.props.settingsState)}
       >
         <Settings className="header-icon" />
         {'Settings'}
