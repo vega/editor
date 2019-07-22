@@ -97,7 +97,7 @@ class Sidebar extends Component<any, any> {
               />
             </div>
           </div>
-          <div className="settings-description">Sets the renderer</div>
+          <div className="settings-description">Set renderer</div>
           <div className="select-container">
             <span>Log Level:</span>
             <div>
@@ -112,7 +112,7 @@ class Sidebar extends Component<any, any> {
               />
             </div>
           </div>
-          <div className="settings-description">Sets the log level</div>
+          <div className="settings-description">Set log level</div>
           <div className="select-container">
             <span>Hover :</span>
             <div className="hover-enable-select">
@@ -141,7 +141,7 @@ class Sidebar extends Component<any, any> {
             <label htmlFor="tooltip">Tooltips</label>
           </div>
           <div className="settings-description">
-            Enables default <a href="https://github.com/vega/vega-tooltip">Vega Tooltip</a> handler
+            Enable default <a href="https://github.com/vega/vega-tooltip">Vega Tooltip</a> handler
           </div>
         </section>
       </div>

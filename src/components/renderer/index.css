@@ -2,6 +2,7 @@
   background: white;
   padding: 10px;
   display: inline-block;
+  margin-right: 10px;
 }
 
 .chart .vega-bindings {
