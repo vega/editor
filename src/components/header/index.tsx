@@ -11,7 +11,7 @@ export function mapStateToProps(state: State, ownProps) {
     lastPosition: state.lastPosition,
     manualParse: state.manualParse,
     mode: state.mode,
-    settingsState: state.settingsState,
+    settings: state.settings,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
     view: state.view,

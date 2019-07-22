@@ -146,7 +146,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
             <InputPanel />
             <VizPane />
           </SplitPane>
-          {this.props.settingsState && <Sidebar />}
+          {this.props.settings && <Sidebar />}
         </div>
       </div>
     );
@@ -156,7 +156,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
 function mapStateToProps(state: State) {
   return {
     configEditorString: state.configEditorString,
-    settingsState: state.settingsState,
+    settings: state.settings,
     view: state.view,
   };
 }

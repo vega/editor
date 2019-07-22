@@ -4,7 +4,6 @@ import './index.css';
 
 class Sidebar extends Component<any, any> {
   private listnerAttached = false;
-  private escListnerAttached = false;
   public constructor(props) {
     super(props);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
@@ -61,12 +60,14 @@ class Sidebar extends Component<any, any> {
 
   public hoverOptions = () => {
     let options = [{ label: 'default' }, { label: 'on' }, { label: 'off' }];
-    options = options.filter(o => o.label !== this.props.hoverEnable);
+    const selected =
+      typeof this.props.hoverEnable !== 'boolean' ? this.props.hoverEnable : this.props.hoverEnable ? 'on' : 'off';
+    options = options.filter(o => o.label !== selected);
     return options;
   };
 
   public setHover(e) {
-    let newHover: boolean | 'defualt' = 'defualt';
+    let newHover: boolean | 'default' = 'default';
     switch (e.label) {
       case 'on':
         newHover = true;

@@ -44,7 +44,7 @@ import { validateVega, validateVegaLite } from '../utils/validate';
 import {
   SET_HOVER,
   SET_LOG_LEVEL,
-  SET_SETTING_STATE,
+  SET_SETTINGS,
   SET_SIDEPANE_ITEM,
   SET_THEME_NAME,
   SET_TOOLTIP,
@@ -328,10 +328,10 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         navItem: action.navItem,
       };
-    case SET_SETTING_STATE:
+    case SET_SETTINGS:
       return {
         ...state,
-        settingsState: action.settingsState,
+        settings: action.settings,
       };
     case SET_CONFIG:
       return state.mode === Mode.VegaLite

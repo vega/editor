@@ -25,7 +25,7 @@ export const TOGGLE_NAV_BAR: 'TOGGLE_NAV_BAR' = 'TOGGLE_NAV_BAR';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
-export const SET_SETTING_STATE: 'SET_SETTING_STATE' = 'SET_SETTING_STATE';
+export const SET_SETTINGS: 'SET_SETTINGS' = 'SET_SETTINGS';
 export const SET_CONFIG: 'SET_CONFIG' = 'SET_CONFIG';
 export const SET_THEME_NAME: 'SET_THEME_NAME' = 'SET_THEME_NAME';
 export const SET_SIDEPANE_ITEM: 'SET_SIDEPANE_ITEM' = 'SET_SIDEPANE_ITEM';
@@ -259,8 +259,8 @@ export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
 
 export function setSettingsState(value: boolean) {
   return {
-    settingsState: value,
-    type: SET_SETTING_STATE,
+    settings: value,
+    type: SET_SETTINGS,
   };
 }
 
