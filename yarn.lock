@@ -4696,10 +4696,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-monaco-editor@^0.27.0:
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.27.0.tgz#2dbf47b8fd4d8e4763934051f07291d9b128bb89"
-  integrity sha512-Im40xO4DuFlQ6kVcSBHC+p70fD/5aErUy1uyLT9RZ4nlehn6BOPpwmcw/2IN/LfMvy8X4WmLuuvrNftBZLH+vA==
+react-monaco-editor@^0.28.0:
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.28.0.tgz#c69e8d0b5eaefddef73a535a69257c85d48feee9"
+  integrity sha512-sRgAMcuRr+EpGZQDiEUFJyevLKo8km87Y3PDjuGrZGvZ/vL10XhYo509uY5xLFG3SLFk3tgjUWteWqxkVyTm1w==
   dependencies:
     "@types/react" "^16.8.23"
     prop-types "^15.7.2"
