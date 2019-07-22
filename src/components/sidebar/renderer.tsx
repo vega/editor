@@ -39,11 +39,12 @@ class Sidebar extends Component<any, any> {
 
   public handleOutsideClick(event) {
     if (!this.listnerAttached && window.innerWidth < 1000) {
+      const target: any = event.target;
       if (
-        (event.target as any).closest('.settings') ||
-        (event.target as any).closest('.settings-button') ||
-        (event.target as any).classList.contains('log-level-dropdown__option') ||
-        (event.target as any).classList.contains('renderer-dropdown__option')
+        target.closest('.settings') ||
+        target.closest('.settings-button') ||
+        target.classList.contains('log-level-dropdown__option') ||
+        target.classList.contains('renderer-dropdown__option')
       ) {
         return;
       }
@@ -59,7 +60,7 @@ class Sidebar extends Component<any, any> {
   };
 
   public hoverOptions = () => {
-    let options = [{ label: 'default' }, { label: 'on' }, { label: 'off' }];
+    let options = [{ label: 'auto' }, { label: 'on' }, { label: 'off' }];
     const selected =
       typeof this.props.hoverEnable !== 'boolean' ? this.props.hoverEnable : this.props.hoverEnable ? 'on' : 'off';
     options = options.filter(o => o.label !== selected);
@@ -67,7 +68,7 @@ class Sidebar extends Component<any, any> {
   };
 
   public setHover(e) {
-    let newHover: boolean | 'default' = 'default';
+    let newHover: boolean | 'auto' = 'auto';
     switch (e.label) {
       case 'on':
         newHover = true;
@@ -79,7 +80,7 @@ class Sidebar extends Component<any, any> {
   }
   public render() {
     const renderOptions = this.props.renderer === 'svg' ? [{ label: 'canvas' }] : [{ label: 'svg' }];
-    const hover = typeof this.props.hoverEnable !== 'boolean' ? 'default' : this.props.hoverEnable ? 'on' : 'off';
+    const hover = typeof this.props.hoverEnable !== 'boolean' ? 'auto' : this.props.hoverEnable ? 'on' : 'off';
     return (
       <div className="settings">
         <section>

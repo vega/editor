@@ -320,7 +320,7 @@ export function setLogLevel(logLevel: string) {
 
 export type SetLogLevel = ReturnType<typeof setLogLevel>;
 
-export function setHover(hover: boolean | 'default') {
+export function setHover(hover: boolean | 'auto') {
   return {
     hoverEnable: hover,
     type: SET_HOVER,

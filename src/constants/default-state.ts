@@ -17,7 +17,7 @@ export interface State {
   error: Error;
   export: boolean;
   gist: string;
-  hoverEnable: boolean | 'default';
+  hoverEnable: boolean | 'auto';
   logLevel: string;
   lastPosition: number;
   logs: boolean;
@@ -51,7 +51,7 @@ export const DEFAULT_STATE: State = {
   error: null,
   export: false,
   gist: null,
-  hoverEnable: 'default',
+  hoverEnable: 'auto',
   lastPosition: 0,
   logLevel: 'Warn',
   logs: false,
