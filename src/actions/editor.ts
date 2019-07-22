@@ -59,7 +59,7 @@ export type Action =
   | SetDebugPaneSize
   | ShowLogs
   | SetCompiledVegaPaneSize
-  | SetsettingsState
+  | SetSettingsState
   | SetConfig
   | SetConfigEditorString
   | SetThemeName
@@ -264,7 +264,7 @@ export function setSettingsState(value: boolean) {
   };
 }
 
-export type SetsettingsState = ReturnType<typeof setSettingsState>;
+export type SetSettingsState = ReturnType<typeof setSettingsState>;
 
 export function setConfig(value: string) {
   return {
