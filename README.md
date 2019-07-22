@@ -4,7 +4,7 @@ The **Vega editor** is a web application for authoring and testing [Vega](https:
 
 ## Editor is stuck
 
-you can reset the Vega Editor by going to https://vega.github.io/editor/#/reset and clicking the button.
+You can reset the Vega Editor by going to https://vega.github.io/editor/#/reset and clicking the reset button. This will reset the saved editor state. 
 
 ## Usage Instructions
 

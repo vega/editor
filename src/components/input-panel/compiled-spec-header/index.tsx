@@ -24,6 +24,7 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
     if (this.props.history.location.pathname.indexOf('/edited') === -1) {
       this.props.history.push('/edited');
     }
+    this.props.clearConfig();
     this.props.updateVegaSpec(stringify(this.props.value));
   }
   public render() {
@@ -103,6 +104,7 @@ function mapStateToProps(state, ownProps) {
 export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
+      clearConfig: EditorActions.clearConfig,
       setSidePaneItem: EditorActions.setSidePaneItem,
       toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
       updateVegaSpec: EditorActions.updateVegaSpec,

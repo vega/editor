@@ -1,6 +1,8 @@
 import * as vl from 'vega-lite';
+import { Config } from 'vega-lite/src/config';
 import {
   Action,
+  CLEAR_CONFIG,
   EXPORT_VEGA,
   LOG_ERROR,
   PARSE_SPEC,
@@ -19,6 +21,7 @@ import {
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
   SET_VIEW,
+  SetConfig,
   SetGistVegaLiteSpec,
   SetGistVegaSpec,
   SetVegaExample,
@@ -114,25 +117,44 @@ function parseVega(
 
 function parseVegaLite(
   state: State,
-  action: SetVegaLiteExample | UpdateVegaLiteSpec | SetGistVegaLiteSpec,
+  action: SetVegaLiteExample | UpdateVegaLiteSpec | SetGistVegaLiteSpec | SetConfig,
   extend: Partial<State> = {}
 ) {
   const currLogger = new LocalLogger();
 
+  let spec: string;
+  let configEditorString: string;
   try {
-    const spec = JSON.parse(action.spec);
+    switch (action.type) {
+      case SET_CONFIG:
+        spec = state.editorString;
+        configEditorString = action.configEditorString;
+        break;
+      case SET_VEGA_LITE_EXAMPLE:
+      case SET_GIST_VEGA_LITE_SPEC:
+      case UPDATE_VEGA_LITE_SPEC:
+        spec = action.spec;
+        configEditorString = state.configEditorString;
+    }
 
-    validateVegaLite(spec, currLogger);
+    const vegaLiteSpec: vl.TopLevelSpec = JSON.parse(spec);
+    const config: Config = JSON.parse(configEditorString);
 
-    const vegaSpec = action.spec !== '{}' ? vl.compile(spec, { logger: currLogger }).spec : {};
+    const options = {
+      config,
+      logger: currLogger,
+    };
+    validateVegaLite(vegaLiteSpec, currLogger);
+
+    const vegaSpec = spec !== '{}' ? vl.compile(vegaLiteSpec, options).spec : {};
 
     extend = {
       ...extend,
-      vegaLiteSpec: spec,
+      vegaLiteSpec,
       vegaSpec,
     };
   } catch (e) {
-    const errorMessage = errorLine(action.spec, e.message);
+    const errorMessage = errorLine(spec, e.message);
     console.warn(e);
 
     extend = {
@@ -144,7 +166,7 @@ function parseVegaLite(
   return {
     ...state,
 
-    editorString: action.spec,
+    editorString: spec,
     error: null,
     gist: null,
     mode: Mode.VegaLite,
@@ -153,6 +175,29 @@ function parseVegaLite(
     warningsLogger: currLogger,
 
     // extend with other changes
+    ...extend,
+  };
+}
+
+function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {}) {
+  let config: Config;
+  try {
+    config = JSON.parse(action.configEditorString);
+  } catch (e) {
+    const errorMessage = errorLine(action.configEditorString, e.message);
+    console.warn(e);
+
+    extend = {
+      ...extend,
+      error: new Error(errorMessage),
+    };
+  }
+  return {
+    ...state,
+    config,
+    error: null,
+
+    // extend
     ...extend,
   };
 }
@@ -289,10 +334,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         settingState: action.settingState,
       };
     case SET_CONFIG:
-      return {
-        ...state,
-        config: action.config,
-      };
+      return state.mode === Mode.VegaLite
+        ? parseVegaLite(state, action, {
+            configEditorString: action.configEditorString,
+          })
+        : parseConfig(state, action);
     case SET_THEME_NAME:
       return {
         ...state,
@@ -327,6 +373,13 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         tooltipEnable: action.tooltipEnable,
+      };
+    case CLEAR_CONFIG:
+      return {
+        ...state,
+        config: {},
+        configEditorString: '{}',
+        themeName: 'custom',
       };
     default:
       return state;

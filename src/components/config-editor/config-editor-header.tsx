@@ -7,21 +7,19 @@ import * as EditorActions from '../../actions/editor';
 import './config-editor.css';
 
 class ConfigEditorHeader extends React.PureComponent<any, any> {
-  public componentDidMount() {
-    (document.getElementById('config-select') as any).value = this.props.themeName;
-  }
   public render() {
     return (
       <label className="config-header">
         Theme:
         <select
+          value={this.props.themeName}
           onClick={e => e.stopPropagation()}
           id="config-select"
           onChange={e => {
             e.stopPropagation();
             this.props.setConfigEditorString(stringify(themes[e.target.value]));
             this.props.setThemeName(e.target.value);
-            this.props.setConfig(themes[e.target.value]);
+            this.props.setConfig(stringify(themes[e.target.value]));
           }}
         >
           <option value="custom">Custom</option>

@@ -99,7 +99,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
 
   public setExample(parameter: { example_name: string; mode: string }) {
     const name = parameter.example_name;
-    this.props.setConfig(JSON.parse(this.props.configEditorString));
+    this.props.setConfig(this.props.configEditorString);
     switch (parameter.mode) {
       case 'vega':
         text(`./spec/vega/${name}.vg.json`, spec => {

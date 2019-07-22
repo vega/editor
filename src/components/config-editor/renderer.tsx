@@ -11,11 +11,10 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     const newSpec = spec === '' ? '{}' : spec;
     this.props.setConfigEditorString(newSpec);
     this.props.setThemeName('custom');
-    (document.getElementById('config-select') as any).value = 'custom';
     if (this.props.manualParse) {
       return;
     }
-    this.props.setConfig(JSON.parse(this.props.configEditorString));
+    this.props.setConfig(this.props.configEditorString);
   };
 
   public render() {

@@ -33,6 +33,7 @@ export const SET_CONFIG_EDITOR_STRING: 'SET_CONFIG_EDITOR_STRING' = 'SET_CONFIG_
 export const SET_LOG_LEVEL: 'SET_LOG_LEVEL' = 'SET_LOG_LEVEL';
 export const SET_HOVER: 'SET_HOVER' = 'SET_HOVER';
 export const SET_TOOLTIP: 'SET_TOOLTIP' = 'SET_TOOLTIP';
+export const CLEAR_CONFIG: 'CLEAR_CONFIG' = 'CLEAR_CONFIG';
 
 export type Action =
   | SetMode
@@ -66,7 +67,8 @@ export type Action =
   | SetEditorReference
   | SetLogLevel
   | SetHover
-  | SetTooltip;
+  | SetTooltip
+  | ClearConfig;
 
 export function setMode(mode: Mode) {
   return {
@@ -263,9 +265,10 @@ export function setSettingState(value: boolean) {
 }
 
 export type SetSettingState = ReturnType<typeof setSettingState>;
-export function setConfig(value: Config) {
+
+export function setConfig(value: string) {
   return {
-    config: value,
+    configEditorString: value,
     type: SET_CONFIG,
   };
 }
@@ -334,3 +337,10 @@ export function setTooltip(tooltip: boolean) {
 }
 
 export type SetTooltip = ReturnType<typeof setTooltip>;
+export function clearConfig() {
+  return {
+    type: CLEAR_CONFIG,
+  };
+}
+
+export type ClearConfig = ReturnType<typeof clearConfig>;
