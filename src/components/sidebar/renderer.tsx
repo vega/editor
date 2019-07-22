@@ -3,26 +3,43 @@ import Select from 'react-select';
 import './index.css';
 
 class Sidebar extends Component<any, any> {
-  private listenerAttached = false;
+  private listnerAttached = false;
+  private escListnerAttached = false;
   public constructor(props) {
     super(props);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    this.handleEscClick = this.handleEscClick.bind(this);
     this.setHover = this.setHover.bind(this);
   }
   public componentDidMount() {
+    // add click event listner depending on the screen size
     document.body.addEventListener('click', this.handleOutsideClick, true);
+
+    // add escape event listner depending on the screen size
+    window.addEventListener('keydown', this.handleEscClick, true);
+
+    // remove or add event listeners if the window is resized;
     window.addEventListener('resize', () => {
-      if (this.listenerAttached && window.innerWidth > 1000) {
+      if (this.listnerAttached && window.innerWidth > 1000) {
         document.body.removeEventListener('click', this.handleOutsideClick, true);
       }
-      if (!this.listenerAttached && window.innerWidth < 1000) {
+      if (!this.listnerAttached && window.innerWidth < 1000) {
         document.body.addEventListener('click', this.handleOutsideClick, true);
       }
     });
   }
 
+  public handleEscClick(event) {
+    // check if the window size is greater than 1000(threshold)
+    if (window.innerWidth > 1000) {
+      if (event.key === 'Escape') {
+        this.props.setSettingsState(false);
+      }
+    }
+  }
+
   public handleOutsideClick(event) {
-    if (!this.listenerAttached && window.innerWidth < 1000) {
+    if (!this.listnerAttached && window.innerWidth < 1000) {
       if (
         (event.target as any).closest('.settings') ||
         (event.target as any).closest('.settings-button') ||
@@ -32,7 +49,7 @@ class Sidebar extends Component<any, any> {
         return;
       }
       this.props.setSettingsState(false);
-      this.listenerAttached = true;
+      this.listnerAttached = true;
     }
   }
 
