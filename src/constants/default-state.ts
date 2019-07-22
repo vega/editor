@@ -1,4 +1,4 @@
-import { EncodeEntryName, Spec } from 'vega';
+import { Spec } from 'vega';
 import { TopLevelSpec as VlSpec } from 'vega-lite';
 import { Config } from 'vega-themes/build/config';
 import { LocalLogger } from '../utils/logger';
