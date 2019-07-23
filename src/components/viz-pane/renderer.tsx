@@ -9,8 +9,8 @@ import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
+import Sidebar from '../sidebar';
 import SignalViewer from '../signal-viewer';
-import Toolbar from '../toolbar';
 import DebugPaneHeader from './debug-pane-header';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -66,7 +66,6 @@ export default class VizPane extends React.PureComponent<Props> {
         <ErrorBoundary>
           <Renderer />
         </ErrorBoundary>
-        <Toolbar />
       </div>
     );
     return (
@@ -93,6 +92,7 @@ export default class VizPane extends React.PureComponent<Props> {
         }}
       >
         {container}
+
         <div className="debug-pane">
           <DebugPaneHeader />
           {this.props.logs ? <ErrorPane /> : this.getComponent()}

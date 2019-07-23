@@ -41,7 +41,14 @@ import { DEFAULT_STATE, Mode } from '../constants';
 import { State } from '../constants/default-state';
 import { LocalLogger } from '../utils/logger';
 import { validateVega, validateVegaLite } from '../utils/validate';
-import { SET_SIDEPANE_ITEM, SET_THEME_NAME } from './../actions/editor';
+import {
+  SET_HOVER,
+  SET_LOG_LEVEL,
+  SET_SETTINGS,
+  SET_SIDEPANE_ITEM,
+  SET_THEME_NAME,
+  SET_TOOLTIP,
+} from './../actions/editor';
 
 function errorLine(code: string, error: string) {
   const pattern = /(position\s)(\d+)/;
@@ -88,7 +95,7 @@ function parseVega(
 
     extend = {
       ...extend,
-      error: new Error(errorMessage),
+      error: { message: errorMessage },
     };
   }
   const logger = { ...currLogger };
@@ -152,7 +159,7 @@ function parseVegaLite(
 
     extend = {
       ...extend,
-      error: new Error(errorMessage),
+      error: { message: errorMessage },
     };
   }
   const logger = { ...currLogger };
@@ -182,7 +189,7 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
 
     extend = {
       ...extend,
-      error: new Error(errorMessage),
+      error: { message: errorMessage },
     };
   }
   return {
@@ -321,6 +328,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         navItem: action.navItem,
       };
+    case SET_SETTINGS:
+      return {
+        ...state,
+        settings: action.settings,
+      };
     case SET_CONFIG:
       return state.mode === Mode.VegaLite
         ? parseVegaLite(state, action, {
@@ -346,6 +358,21 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         editorRef: action.editorRef,
+      };
+    case SET_LOG_LEVEL:
+      return {
+        ...state,
+        logLevel: action.logLevel,
+      };
+    case SET_HOVER:
+      return {
+        ...state,
+        hoverEnable: action.hoverEnable,
+      };
+    case SET_TOOLTIP:
+      return {
+        ...state,
+        tooltipEnable: action.tooltipEnable,
       };
     case CLEAR_CONFIG:
       return {

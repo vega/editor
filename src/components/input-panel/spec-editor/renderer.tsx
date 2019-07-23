@@ -78,7 +78,7 @@ class Editor extends React.PureComponent<Props, {}> {
       if (spec) {
         this.updateSpec(spec);
       } else {
-        this.props.logError(`Failed to decompress URL. Expected a specification, but received ${spec}`);
+        this.props.logError(new Error(`Failed to decompress URL. Expected a specification, but received ${spec}`));
       }
     }
   }

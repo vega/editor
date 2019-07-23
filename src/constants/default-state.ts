@@ -14,9 +14,11 @@ export interface State {
   debugPaneSize: number;
   editorRef: any;
   editorString: string;
-  error: Error;
+  error: { message: string }; // don't put Error here since we can't serialize it
   export: boolean;
   gist: string;
+  hoverEnable: boolean | 'auto';
+  logLevel: string;
   lastPosition: number;
   logs: boolean;
   manualParse: boolean;
@@ -26,6 +28,8 @@ export interface State {
   parse: boolean;
   renderer: Renderer;
   selectedExample: string;
+  settings: boolean;
+  tooltipEnable: boolean;
   vegaLiteSpec: VlSpec;
   vegaSpec: Spec;
   view: View;
@@ -47,7 +51,9 @@ export const DEFAULT_STATE: State = {
   error: null,
   export: false,
   gist: null,
+  hoverEnable: 'auto',
   lastPosition: 0,
+  logLevel: 'Warn',
   logs: false,
   manualParse: false,
   mode: Mode.VegaLite,
@@ -55,8 +61,10 @@ export const DEFAULT_STATE: State = {
   parse: false,
   renderer: 'canvas',
   selectedExample: null,
+  settings: false,
   sidePaneItem: SIDEPANE.CompiledVega,
   themeName: 'custom',
+  tooltipEnable: true,
   vegaLiteSpec: null,
   vegaSpec: {},
   view: null,

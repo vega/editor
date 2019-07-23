@@ -11,6 +11,7 @@ export function mapStateToProps(state: State, ownProps) {
     error: state.error,
     logs: state.logs,
     navItem: state.navItem,
+    settings: state.settings,
     view: state.view,
   };
 }

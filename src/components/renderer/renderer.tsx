@@ -84,14 +84,18 @@ class Editor extends React.PureComponent<Props, State> {
       this.props.view.finalize();
     }
 
+    const hover = typeof this.props.hoverEnable === 'boolean' ? this.props.hoverEnable : this.props.mode === Mode.Vega;
     const view = new vega.View(runtime, {
+      hover,
       loader,
-      logLevel: vega.Warn,
+      logLevel: vega[this.props.logLevel],
     }).hover();
 
     (window as any).VEGA_DEBUG.view = view;
 
-    vegaTooltip(view);
+    if (this.props.tooltipEnable) {
+      vegaTooltip(view);
+    }
 
     this.props.setView(view);
   }
@@ -142,7 +146,10 @@ class Editor extends React.PureComponent<Props, State> {
       !deepEqual(prevProps.vegaLiteSpec, this.props.vegaLiteSpec) ||
       prevProps.baseURL !== this.props.baseURL ||
       !deepEqual(prevProps.config, this.props.config) ||
-      !deepEqual(prevProps.mode, this.props.mode)
+      !deepEqual(prevProps.logLevel, this.props.logLevel) ||
+      !deepEqual(prevProps.mode, this.props.mode) ||
+      !deepEqual(prevProps.hoverEnable, this.props.hoverEnable) ||
+      !deepEqual(prevProps.tooltipEnable, this.props.tooltipEnable)
     ) {
       this.initView();
     }

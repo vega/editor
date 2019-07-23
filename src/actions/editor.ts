@@ -25,10 +25,14 @@ export const TOGGLE_NAV_BAR: 'TOGGLE_NAV_BAR' = 'TOGGLE_NAV_BAR';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
 export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
+export const SET_SETTINGS: 'SET_SETTINGS' = 'SET_SETTINGS';
 export const SET_CONFIG: 'SET_CONFIG' = 'SET_CONFIG';
 export const SET_THEME_NAME: 'SET_THEME_NAME' = 'SET_THEME_NAME';
 export const SET_SIDEPANE_ITEM: 'SET_SIDEPANE_ITEM' = 'SET_SIDEPANE_ITEM';
 export const SET_CONFIG_EDITOR_STRING: 'SET_CONFIG_EDITOR_STRING' = 'SET_CONFIG_EDITOR_STRING';
+export const SET_LOG_LEVEL: 'SET_LOG_LEVEL' = 'SET_LOG_LEVEL';
+export const SET_HOVER: 'SET_HOVER' = 'SET_HOVER';
+export const SET_TOOLTIP: 'SET_TOOLTIP' = 'SET_TOOLTIP';
 export const CLEAR_CONFIG: 'CLEAR_CONFIG' = 'CLEAR_CONFIG';
 
 export type Action =
@@ -55,11 +59,15 @@ export type Action =
   | SetDebugPaneSize
   | ShowLogs
   | SetCompiledVegaPaneSize
+  | SetSettingsState
   | SetConfig
   | SetConfigEditorString
   | SetThemeName
   | SetSidePaneItem
   | SetEditorReference
+  | SetLogLevel
+  | SetHover
+  | SetTooltip
   | ClearConfig;
 
 export function setMode(mode: Mode) {
@@ -167,9 +175,9 @@ export function toggleDebugPane() {
 }
 export type ToggleDebugPane = ReturnType<typeof toggleDebugPane>;
 
-export function logError(err) {
+export function logError(err: Error) {
   return {
-    error: err,
+    error: { message: err.message },
     type: LOG_ERROR,
   };
 }
@@ -249,6 +257,15 @@ export function toggleNavbar(value: string) {
 
 export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
 
+export function setSettingsState(value: boolean) {
+  return {
+    settings: value,
+    type: SET_SETTINGS,
+  };
+}
+
+export type SetSettingsState = ReturnType<typeof setSettingsState>;
+
 export function setConfig(value: string) {
   return {
     configEditorString: value,
@@ -294,6 +311,32 @@ export function setEditorReference(editorRef: any) {
 
 export type SetEditorReference = ReturnType<typeof setEditorReference>;
 
+export function setLogLevel(logLevel: string) {
+  return {
+    logLevel,
+    type: SET_LOG_LEVEL,
+  };
+}
+
+export type SetLogLevel = ReturnType<typeof setLogLevel>;
+
+export function setHover(hover: boolean | 'auto') {
+  return {
+    hoverEnable: hover,
+    type: SET_HOVER,
+  };
+}
+
+export type SetHover = ReturnType<typeof setHover>;
+
+export function setTooltip(tooltip: boolean) {
+  return {
+    tooltipEnable: tooltip,
+    type: SET_TOOLTIP,
+  };
+}
+
+export type SetTooltip = ReturnType<typeof setTooltip>;
 export function clearConfig() {
   return {
     type: CLEAR_CONFIG,

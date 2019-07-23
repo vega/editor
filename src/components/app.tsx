@@ -13,6 +13,7 @@ import { State } from '../constants/default-state';
 import './app.css';
 import Header from './header';
 import InputPanel from './input-panel';
+import Sidebar from './sidebar';
 import VizPane from './viz-pane';
 
 type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
@@ -130,8 +131,8 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
         <div
           style={{
             height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,
-            position: 'relative',
           }}
+          className="main-panel"
         >
           <SplitPane
             split="vertical"
@@ -140,10 +141,12 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
             pane1Style={{ display: 'flex' }}
             className="main-pane"
             pane2Style={{ overflow: 'scroll' }}
+            style={{ position: 'relative' }}
           >
             <InputPanel />
             <VizPane />
           </SplitPane>
+          {this.props.settings && <Sidebar />}
         </div>
       </div>
     );
@@ -153,6 +156,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
 function mapStateToProps(state: State) {
   return {
     configEditorString: state.configEditorString,
+    settings: state.settings,
     view: state.view,
   };
 }
@@ -166,6 +170,7 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setGistVegaSpec: EditorActions.setGistVegaSpec,
       setModeOnly: EditorActions.setModeOnly,
       setRenderer: EditorActions.setRenderer,
+      setSettingsState: EditorActions.setSettingsState,
       setVegaExample: EditorActions.setVegaExample,
       setVegaLiteExample: EditorActions.setVegaLiteExample,
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,

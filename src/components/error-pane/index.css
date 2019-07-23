@@ -1,14 +1,14 @@
-.error {
+.error-pane .error {
   color: var(--error-color);
   line-height: 25px;
 }
 
-.warning {
+.error-pane .warning {
   color: var(--warning-color);
   line-height: 25px;
 }
 
-.info {
+.error-pane .info {
   color: #399e39;
   line-height: 25px;
 }

@@ -8,8 +8,12 @@ export function mapStateToProps(state: State, ownProps) {
   return {
     baseURL: state.baseURL,
     config: state.config,
+    editorString: state.editorString,
+    hoverEnable: state.hoverEnable,
+    logLevel: state.logLevel,
     mode: state.mode,
     renderer: state.renderer,
+    tooltipEnable: state.tooltipEnable,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
     view: state.view,

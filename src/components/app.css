@@ -98,6 +98,10 @@ html {
   overflow: visible !important;
 }
 
+.hide {
+  display: none;
+}
+
 button:focus {
   outline: none;
 }
@@ -131,4 +135,10 @@ button:focus {
 .reset button {
   padding: 10px;
   font-size: 1.1em;
+}
+
+.main-panel {
+  position: relative;
+  display: flex;
+  flex-direction: row;
 }
