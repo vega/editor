@@ -17,9 +17,14 @@ class ConfigEditorHeader extends React.PureComponent<any, any> {
           id="config-select"
           onChange={e => {
             e.stopPropagation();
-            this.props.setConfigEditorString(stringify(themes[e.target.value]));
+            if (e.target.value === 'custom') {
+              this.props.setConfig('{}');
+              this.props.setConfigEditorString('{}');
+            } else {
+              this.props.setConfig(stringify(themes[e.target.value]));
+              this.props.setConfigEditorString(stringify(themes[e.target.value]));
+            }
             this.props.setThemeName(e.target.value);
-            this.props.setConfig(stringify(themes[e.target.value]));
           }}
         >
           <option value="custom">Custom</option>
