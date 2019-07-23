@@ -39,7 +39,14 @@ class DebugPaneHeader extends React.PureComponent<Props> {
               this.props.toggleNavbar(NAVBAR.Logs);
             }}
           >
-            Logs ({this.props.warningsCount})
+            <span className="logs-text">Logs</span>
+            {this.props.error ? (
+              <span className="error">(Error)</span>
+            ) : this.props.warningsCount > 0 ? (
+              <span className="warnings-count">({this.props.warningsCount})</span>
+            ) : (
+              ''
+            )}
           </li>
           {this.props.error === null && (
             <li

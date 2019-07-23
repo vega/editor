@@ -95,7 +95,7 @@ function parseVega(
 
     extend = {
       ...extend,
-      error: new Error(errorMessage),
+      error: { message: errorMessage },
     };
   }
   const logger = { ...currLogger };
@@ -159,7 +159,7 @@ function parseVegaLite(
 
     extend = {
       ...extend,
-      error: new Error(errorMessage),
+      error: { message: errorMessage },
     };
   }
   const logger = { ...currLogger };
@@ -189,7 +189,7 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
 
     extend = {
       ...extend,
-      error: new Error(errorMessage),
+      error: { message: errorMessage },
     };
   }
   return {

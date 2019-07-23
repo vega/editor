@@ -175,9 +175,9 @@ export function toggleDebugPane() {
 }
 export type ToggleDebugPane = ReturnType<typeof toggleDebugPane>;
 
-export function logError(err) {
+export function logError(err: Error) {
   return {
-    error: err,
+    error: { message: err.message },
     type: LOG_ERROR,
   };
 }

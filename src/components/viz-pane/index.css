@@ -30,8 +30,20 @@
   cursor: pointer;
 }
 
+.pane-header .logs-text {
+  margin-right: 4px;
+}
+
 .pane-header svg {
   margin-right: 4px;
+}
+
+.pane-header .error {
+  font-weight: bold;
+}
+
+.pane-header .warnings-count {
+  color: var(--warning-color);
 }
 
 .tabs-nav {

@@ -14,7 +14,7 @@ export interface State {
   debugPaneSize: number;
   editorRef: any;
   editorString: string;
-  error: Error;
+  error: { message: string }; // don't put Error here since we can't serialize it
   export: boolean;
   gist: string;
   hoverEnable: boolean | 'auto';
