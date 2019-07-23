@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import './index.css';
 
+/**
+ * Window size in pizels after which we make the settings panel a popover.
+ */
+const SIZE_THRESHOLD = 1000;
+
 class Sidebar extends Component<any, any> {
   private listnerAttached = false;
   public constructor(props) {
@@ -19,18 +24,18 @@ class Sidebar extends Component<any, any> {
 
     // remove or add event listeners if the window is resized;
     window.addEventListener('resize', () => {
-      if (this.listnerAttached && window.innerWidth > 1000) {
+      if (this.listnerAttached && window.innerWidth > SIZE_THRESHOLD) {
         document.body.removeEventListener('click', this.handleOutsideClick, true);
       }
-      if (!this.listnerAttached && window.innerWidth < 1000) {
+      if (!this.listnerAttached && window.innerWidth <= SIZE_THRESHOLD) {
         document.body.addEventListener('click', this.handleOutsideClick, true);
       }
     });
   }
 
   public handleEscClick(event) {
-    // check if the window size is greater than 1000(threshold)
-    if (window.innerWidth > 1000) {
+    // check if the window size is smaller than 1000(threshold)
+    if (window.innerWidth <= SIZE_THRESHOLD) {
       if (event.key === 'Escape') {
         this.props.setSettingsState(false);
       }
@@ -38,7 +43,7 @@ class Sidebar extends Component<any, any> {
   }
 
   public handleOutsideClick(event) {
-    if (!this.listnerAttached && window.innerWidth < 1000) {
+    if (!this.listnerAttached && window.innerWidth <= SIZE_THRESHOLD) {
       const target: any = event.target;
       if (
         target.closest('.settings') ||
@@ -98,7 +103,7 @@ class Sidebar extends Component<any, any> {
               />
             </div>
           </div>
-          <div className="settings-description">Set renderer</div>
+          <div className="settings-description">Set Vega renderer.</div>
           <div className="select-container">
             <span>Log Level:</span>
             <div>
@@ -113,7 +118,7 @@ class Sidebar extends Component<any, any> {
               />
             </div>
           </div>
-          <div className="settings-description">Set log level</div>
+          <div className="settings-description">Set log level for Vega.</div>
           <div className="select-container">
             <span>Hover :</span>
             <div className="hover-enable-select">
@@ -129,7 +134,8 @@ class Sidebar extends Component<any, any> {
             </div>
           </div>
           <div className="settings-description">
-            Enable <a href="https://vega.github.io/vega/docs/api/view/#view_hover">Hover</a> Event Processing
+            Enable or disable <a href="https://vega.github.io/vega/docs/api/view/#view_hover">hover</a> event
+            processing. In "auto" mode, Vega-Lite disables hover event processing.
           </div>
           <div className="tooltips">
             <input
@@ -142,7 +148,7 @@ class Sidebar extends Component<any, any> {
             <label htmlFor="tooltip">Tooltips</label>
           </div>
           <div className="settings-description">
-            Enable default <a href="https://github.com/vega/vega-tooltip">Vega Tooltip</a> handler
+            Enable the default <a href="https://github.com/vega/vega-tooltip">Vega Tooltip</a> handler.
           </div>
         </section>
       </div>

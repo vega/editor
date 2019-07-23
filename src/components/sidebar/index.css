@@ -1,21 +1,18 @@
 .settings {
-  position: absolute;
-  height: 100vh;
-  right: 0px;
-  background: white;
-  box-shadow: -5px 9px 7px -4px rgba(0, 0, 0, 0.6);
+  border-left: solid 1px rgba(0, 0, 0, 0.2);
   width: 290px;
   font-size: 14px;
 }
 
-@media screen and (min-width: 1000px) {
+@media only screen and (max-width: 1000px) {
   .settings {
+    position: absolute;
+    height: 100%;
+    right: 0px;
+    top: -2px;
     background: white;
-    position: inherit;
-    width: 290px;
-    font-size: 14px;
-    box-shadow: unset;
-    border-left: solid 1px rgba(0, 0, 0, 0.2);
+    box-shadow: -2px 4px 10px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 4px 0 0 4px;
   }
 }
 
@@ -69,6 +66,10 @@
 .settings-description {
   display: block;
   font-size: small;
-  color: #777;
+  color: #666;
   margin: 12px 29px;
+}
+
+.settings-description a {
+  color: #333;
 }
