@@ -148,7 +148,11 @@ class Sidebar extends Component<any, any> {
             <label htmlFor="tooltip">Tooltips</label>
           </div>
           <div className="settings-description">
-            Enable the default <a href="https://github.com/vega/vega-tooltip">Vega Tooltip</a> handler.
+            Enable the default{' '}
+            <a href="https://github.com/vega/vega-tooltip" target="_blank">
+              Vega Tooltip
+            </a>{' '}
+            handler.
           </div>
         </section>
       </div>
