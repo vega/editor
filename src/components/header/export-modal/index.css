@@ -74,6 +74,10 @@
 
 .input-container input {
   margin-left: 1em;
+  vertical-align: middle;
+}
+.input-container label {
+  white-space: nowrap;
 }
 
 .exported-url {
