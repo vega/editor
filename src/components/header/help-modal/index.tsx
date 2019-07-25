@@ -63,7 +63,7 @@ const HelpModal = () => {
       </p>
       <div className="version-viewer">
         <div>Vega Version : {version}</div>
-        <div>Vega-lite Version : {VegaLiteVersion}</div>
+        <div>Vega-Lite Version : {VegaLiteVersion}</div>
         <div>Editor Version : {pjson.version}</div>
       </div>
     </div>
