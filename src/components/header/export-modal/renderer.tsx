@@ -190,7 +190,7 @@ class ExportModal extends React.PureComponent<Props, State> {
                     checked={!this.state.downloadVegaJSON}
                     onChange={this.updateDownloadJSONType.bind(this)}
                   />
-                  Vega Lite
+                  Vega-Lite
                 </label>
               </div>
             )}
