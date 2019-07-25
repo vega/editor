@@ -196,7 +196,7 @@ class ExportModal extends React.PureComponent<Props, State> {
             )}
             <div className="input-container">
               {this.state.downloadVegaJSON ? (
-                <div>The compiled Vega includes the config</div>
+                <div>The compiled Vega includes the config.</div>
               ) : (
                 <label>
                   Include config:
