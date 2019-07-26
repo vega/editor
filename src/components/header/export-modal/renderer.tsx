@@ -196,19 +196,22 @@ class ExportModal extends React.PureComponent<Props, State> {
             )}
             <div className="input-container">
               {this.state.downloadVegaJSON ? (
-                <div>The compiled Vega includes the config.</div>
+                <div>The compiled Vega includes the config and is formatted.</div>
               ) : (
-                <label>
-                  Include config:
-                  <input
-                    type="checkbox"
-                    name="config-include"
-                    id="config-include"
-                    value="config-select"
-                    checked={this.state.includeConfig}
-                    onChange={this.updateIncludeConfig.bind(this)}
-                  />
-                </label>
+                <div>
+                  <label>
+                    Include config:
+                    <input
+                      type="checkbox"
+                      name="config-include"
+                      id="config-include"
+                      value="config-select"
+                      checked={this.state.includeConfig}
+                      onChange={this.updateIncludeConfig.bind(this)}
+                    />
+                  </label>
+                  {this.state.includeConfig && <div>The downloaded spec will be formatted. </div>}
+                </div>
               )}
             </div>
           </button>
