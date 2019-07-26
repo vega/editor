@@ -2,6 +2,7 @@ import React from 'react';
 import { AlertCircle, Slack, Twitter } from 'react-feather';
 import { version } from 'vega';
 import { version as VegaLiteVersion } from 'vega-lite';
+import { version as ToolTipVersion } from 'vega-tooltip';
 import isMac from '../../../utils/isMac';
 import shortcuts from '../../../utils/keyboardShortcuts';
 import './index.css';
@@ -64,6 +65,7 @@ const HelpModal = () => {
       <div className="version-viewer">
         <div>Vega Version : {version}</div>
         <div>Vega-Lite Version : {VegaLiteVersion}</div>
+        <div>Vega-Tooltip Version: {ToolTipVersion}</div>
         <div>Editor Version : {pjson.version}</div>
       </div>
     </div>
