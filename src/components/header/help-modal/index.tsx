@@ -1,8 +1,8 @@
 import React from 'react';
 import { AlertCircle, Slack, Twitter } from 'react-feather';
-import { version } from 'vega';
-import { version as VegaLiteVersion } from 'vega-lite';
-import { version as tooltipVersion } from 'vega-tooltip';
+import { version as vg_version } from 'vega';
+import { version as vl_version } from 'vega-lite';
+import { version as tooltip_version } from 'vega-tooltip';
 import isMac from '../../../utils/isMac';
 import shortcuts from '../../../utils/keyboardShortcuts';
 import './index.css';
@@ -63,9 +63,9 @@ const HelpModal = () => {
         <code>(VEGA_DEBUG)</code> using your browser's developer console.
       </p>
       <div className="version-viewer">
-        <div>Vega Version : {version}</div>
-        <div>Vega-Lite Version : {VegaLiteVersion}</div>
-        <div>Vega-Tooltip Version : {tooltipVersion}</div>
+        <div>Vega Version : {vg_version}</div>
+        <div>Vega-Lite Version : {vl_version}</div>
+        <div>Vega-Tooltip Version : {tooltip_version}</div>
         <div>Editor Version : {pjson.version}</div>
       </div>
     </div>
