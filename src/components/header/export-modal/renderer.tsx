@@ -3,6 +3,7 @@ import { Book, Code, Image, Map } from 'react-feather';
 import { withRouter } from 'react-router-dom';
 import { mergeDeep } from 'vega-lite/build/src/util';
 import { mapStateToProps } from '.';
+import { Mode } from '../../../constants/consts';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;
@@ -86,8 +87,15 @@ class ExportModal extends React.PureComponent<Props, State> {
     ) {
       return;
     }
-    let content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
-    const filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
+    let content;
+    let filename: string;
+    if (this.props.mode === Mode.Vega) {
+      content = this.props.vegaSpec;
+      filename = `visualization.vg.json`;
+    } else {
+      content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
+      filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
+    }
 
     if (this.state.includeConfig && this.props.config) {
       content = { ...content };
@@ -159,43 +167,52 @@ class ExportModal extends React.PureComponent<Props, State> {
               <span>Download JSON</span>
             </div>
             <p>JSON is a lightweight data-interchange format.</p>
+            {this.props.mode === Mode.VegaLite && (
+              <div className="input-container">
+                Type:
+                <label>
+                  <input
+                    type="radio"
+                    name="json-type"
+                    id="json-type[vega]"
+                    value="vega"
+                    checked={this.state.downloadVegaJSON}
+                    onChange={this.updateDownloadJSONType.bind(this)}
+                  />{' '}
+                  Compiled Vega
+                </label>
+                <label htmlFor="json-type[vega-lite]">
+                  <input
+                    type="radio"
+                    name="json-type"
+                    id="json-type[vega-lite]"
+                    value="vega-lite"
+                    checked={!this.state.downloadVegaJSON}
+                    onChange={this.updateDownloadJSONType.bind(this)}
+                  />
+                  Vega-Lite
+                </label>
+              </div>
+            )}
             <div className="input-container">
-              Type:
-              <label>
-                <input
-                  type="radio"
-                  name="json-type"
-                  id="json-type[vega]"
-                  value="vega"
-                  checked={this.state.downloadVegaJSON}
-                  onChange={this.updateDownloadJSONType.bind(this)}
-                />{' '}
-                Vega
-              </label>
-              <label htmlFor="json-type[vega-lite]">
-                <input
-                  type="radio"
-                  name="json-type"
-                  id="json-type[vega-lite]"
-                  value="vega-lite"
-                  checked={!this.state.downloadVegaJSON}
-                  onChange={this.updateDownloadJSONType.bind(this)}
-                />
-                Vega Lite
-              </label>
-            </div>
-            <div className="input-container">
-              <label>
-                Include config:
-                <input
-                  type="checkbox"
-                  name="config-include"
-                  id="config-include"
-                  value="config-select"
-                  checked={this.state.includeConfig}
-                  onChange={this.updateIncludeConfig.bind(this)}
-                />
-              </label>
+              {this.state.downloadVegaJSON ? (
+                <div>The compiled Vega includes the config and is formatted.</div>
+              ) : (
+                <div>
+                  <label>
+                    Include config:
+                    <input
+                      type="checkbox"
+                      name="config-include"
+                      id="config-include"
+                      value="config-select"
+                      checked={this.state.includeConfig}
+                      onChange={this.updateIncludeConfig.bind(this)}
+                    />
+                  </label>
+                  {this.state.includeConfig && <div>The downloaded spec will be formatted. </div>}
+                </div>
+              )}
             </div>
           </button>
         </div>
