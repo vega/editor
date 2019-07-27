@@ -56,30 +56,46 @@
 }
 
 .modal {
-  padding: 15px 5px 15px 20px;
   position: relative;
   background: white;
   width: 80%;
+  align-self: flex-start;
+  margin-top: 6vh;
 }
 
 .modal-body {
-  padding-right: 30px;
+  padding: 30px;
+  position: relative;
   max-height: 80vh;
   overflow-y: auto;
   z-index: 20;
 }
 
+.modal-hidden {
+  overflow: hidden;
+}
+
+.modal-body h1 {
+  font-size: 1.8em;
+}
+
+.modal-body h1:first-child {
+  margin-top: 0;
+}
+
 .close-button {
-  float: right;
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  right: 0;
   padding: 10px;
   border: none;
   cursor: pointer;
-  background: white;
-  margin-left: 5px;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .close-button:hover {
-  background: rgba(243, 240, 240, 0.63);
+  background: rgba(243, 240, 240, 1);
 }
 
 .close-button:focus {

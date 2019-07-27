@@ -1,11 +1,7 @@
-.export-content > p {
-  padding: 30px 0 0 0;
-  margin: 0;
-}
-
 .export-buttons {
   display: flex;
   flex-wrap: wrap;
+  margin-left: -1%;
 }
 
 .export-button {

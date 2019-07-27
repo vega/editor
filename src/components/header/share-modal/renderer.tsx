@@ -64,8 +64,8 @@ class ShareModal extends React.PureComponent<Props, State> {
 
   public render() {
     return (
-      <div className="share-content">
-        <h2>Share</h2>
+      <>
+        <h1>Share</h1>
         <p>We pack the Vega or Vega-Lite specification and an encoded string in the URL.</p>
         <p>We use LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
         <div>
@@ -110,7 +110,7 @@ class ShareModal extends React.PureComponent<Props, State> {
             </>
           )}
         </span>
-      </div>
+      </>
     );
   }
 }

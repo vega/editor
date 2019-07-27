@@ -11,7 +11,7 @@
 }
 
 .help-modal h2 {
-  margin: 16px 0 12px 0;
+  margin: 26px 0 14px 0;
 }
 
 .help-modal .doc-link {
@@ -24,9 +24,9 @@
 }
 
 .report-button {
-  position: fixed;
-  right: 16%;
-  bottom: 15%;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
   color: #444444;
   background: #f3f3f3;
   border: 1px #dadada solid;
