@@ -84,22 +84,6 @@
   white-space: nowrap;
 }
 
-.exported-url {
-  display: flex;
-}
-
-.exported-url span:first-child {
-  width: 100%;
-  overflow: hidden;
-  vertical-align: middle;
-  line-height: 25px;
-  white-space: nowrap;
-}
-
-.exported-url a::selection {
-  background: rgba(0, 0, 0, 0.15);
-}
-
 .user-notes p {
   padding: 20px 0;
 }

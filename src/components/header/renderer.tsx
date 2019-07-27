@@ -290,14 +290,13 @@ class Header extends React.PureComponent<Props, State> {
               </span>,
               portal(
                 <div className="modal-background" onClick={closePortal}>
-                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
-                    <div className="modal-header">
+                  <div className="modal" onClick={e => e.stopPropagation()}>
+                    <div>
                       <button className="close-button" onClick={closePortal}>
                         <X />
                       </button>
                     </div>
                     <div className="modal-body">{exportContent}</div>
-                    <div className="modal-footer" />
                   </div>
                 </div>
               ),
@@ -311,14 +310,13 @@ class Header extends React.PureComponent<Props, State> {
               </span>,
               portal(
                 <div className="modal-background" onClick={closePortal}>
-                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
-                    <div className="modal-header">
+                  <div className="modal" onClick={e => e.stopPropagation()}>
+                    <div>
                       <button className="close-button" onClick={closePortal}>
                         <X />
                       </button>
                     </div>
-                    <div className="modal-body modal-hidden">{shareContent}</div>
-                    <div className="modal-footer" />
+                    <div className="modal-body">{shareContent}</div>
                   </div>
                 </div>
               ),
@@ -332,14 +330,13 @@ class Header extends React.PureComponent<Props, State> {
               </span>,
               portal(
                 <div className="modal-background" onClick={closePortal}>
-                  <div className="modal modal-top" onClick={e => e.stopPropagation()}>
-                    <div className="modal-header">
+                  <div className="modal" onClick={e => e.stopPropagation()}>
+                    <div>
                       <button className="close-button" onClick={closePortal}>
                         <X />
                       </button>
                     </div>
                     <div className="modal-body">{gist(closePortal)}</div>
-                    <div className="modal-footer" />
                   </div>
                 </div>
               ),
@@ -369,7 +366,7 @@ class Header extends React.PureComponent<Props, State> {
               portal(
                 <div className="modal-background" onClick={closePortal}>
                   <div className="modal" onClick={e => e.stopPropagation()}>
-                    <div className="modal-header">
+                    <div>
                       <div className="button-groups">
                         <button
                           className={this.state.showVega ? 'selected' : ''}
@@ -399,7 +396,6 @@ class Header extends React.PureComponent<Props, State> {
                     <div className="modal-body" ref={this.examplePortal}>
                       {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
                     </div>
-                    <div className="modal-footer" />
                   </div>
                 </div>
               ),
@@ -419,8 +415,8 @@ class Header extends React.PureComponent<Props, State> {
                 </span>,
                 portal(
                   <div className="modal-background" onClick={closePortal}>
-                    <div className="modal modal-top" onClick={e => e.stopPropagation()}>
-                      <div className="modal-header">
+                    <div className="modal" onClick={e => e.stopPropagation()}>
+                      <div>
                         <button className="close-button" onClick={closePortal}>
                           <X />
                         </button>
@@ -428,7 +424,6 @@ class Header extends React.PureComponent<Props, State> {
                       <div className="modal-body">
                         <HelpModal />
                       </div>
-                      <div className="modal-footer" />
                     </div>
                   </div>
                 ),

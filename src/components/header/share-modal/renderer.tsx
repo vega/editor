@@ -64,12 +64,12 @@ class ShareModal extends React.PureComponent<Props, State> {
 
   public render() {
     return (
-      <div className="share-content">
+      <div>
         <h2>Share</h2>
         <p>We pack the Vega or Vega-Lite specification and an encoded string in the URL.</p>
         <p>We use LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
-        <div className="user-pref">
-          <label>
+        <div>
+          <label className="user-pref">
             Link opens visualization in fullscreen:
             <input
               type="checkbox"
@@ -96,24 +96,20 @@ class ShareModal extends React.PureComponent<Props, State> {
           </Clipboard>
           <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
         </div>
-        <div className="byte-counter">
-          Number of charaters in the URL: {this.state.generatedURL.length}{' '}
-          <span className="url-warning">
-            {this.state.generatedURL.length > 2083 ? (
-              <span>
-                Warning:{' '}
-                <a
-                  href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
-                  target="_blank"
-                >
-                  URLs over 2083 characters may not be supported in Internet Explorer.
-                </a>
-              </span>
-            ) : (
-              ''
-            )}
-          </span>
-        </div>
+        Number of charaters in the URL: {this.state.generatedURL.length}{' '}
+        <span className="url-warning">
+          {this.state.generatedURL.length > 2083 && (
+            <>
+              Warning:{' '}
+              <a
+                href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
+                target="_blank"
+              >
+                URLs over 2083 characters may not be supported in Internet Explorer.
+              </a>
+            </>
+          )}
+        </span>
       </div>
     );
   }
