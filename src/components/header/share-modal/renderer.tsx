@@ -39,9 +39,18 @@ class ShareModal extends React.PureComponent<Props, State> {
   }
 
   public onCopy() {
-    this.setState({
-      copied: true,
-    });
+    if (!this.state.copied) {
+      this.setState(
+        {
+          copied: true,
+        },
+        () => {
+          setTimeout(() => {
+            this.setState({ copied: false });
+          }, 2500);
+        }
+      );
+    }
   }
 
   public handleCheck(event) {
@@ -52,14 +61,6 @@ class ShareModal extends React.PureComponent<Props, State> {
 
   public componentDidMount() {
     this.exportURL();
-  }
-
-  public componentDidUpdate(prevProps, prevState) {
-    if (this.state.copied) {
-      setTimeout(() => {
-        this.setState({ copied: false });
-      }, 2500);
-    }
   }
 
   public render() {
