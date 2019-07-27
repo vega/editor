@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ArrowUpCircle, ChevronDown, ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
 import { bindActionCreators, Dispatch } from 'redux';
 import { mergeDeep } from 'vega-lite/build/src/util';
 import * as EditorActions from '../../../actions/editor';
@@ -105,13 +106,17 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
           )}
 
           <ArrowUpCircle
-            data-tip="merge config into spec"
+            data-tip
+            data-for="mergeConfig"
             onClick={e => {
               e.stopPropagation();
               this.handleMergeConfig(e);
             }}
           />
           <ChevronDown />
+          <ReactTooltip id="mergeConfig" effect="solid">
+            <span style={{ textTransform: 'lowercase' }}>merge config into spec</span>
+          </ReactTooltip>
         </div>
       );
     } else {
