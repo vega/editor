@@ -25,12 +25,10 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   public handleMergeConfig(e) {
     e.stopPropagation();
 
-    // check if the configEditorStringisEmpty
     if (this.props.configEditorString === '{}') {
       return;
     }
 
-    // merge config into spec
     try {
       const spec = JSON.parse(this.props.editorString);
       const config = JSON.parse(this.props.configEditorString);
@@ -41,10 +39,8 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
       }
       this.props.updateEditorString(stringify(spec));
 
-      // clear config
       this.props.clearConfig();
 
-      // run the config if auto mode is selected
       if (!this.props.manualParse) {
         this.props.parseSpec(true);
       }
@@ -115,7 +111,7 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
           />
           <ChevronDown />
           <ReactTooltip id="mergeConfig" effect="solid">
-            <span style={{ textTransform: 'lowercase' }}>merge config into spec</span>
+            <span style={{ textTransform: 'none' }}>Merge config into spec</span>
           </ReactTooltip>
         </div>
       );
