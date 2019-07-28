@@ -1,6 +1,6 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import { ArrowUpCircle, ChevronDown, ChevronUp } from 'react-feather';
+import { ArrowDownCircle, ArrowUpCircle, ChevronDown, ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
@@ -25,7 +25,13 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   public handleMergeConfig(e) {
     e.stopPropagation();
 
+    const confirmation = confirm('The spec will be formatted on merge.');
+    if (!confirmation) {
+      return;
+    }
+
     if (this.props.configEditorString === '{}') {
+      this.props.parseSpec(true);
       return;
     }
 
@@ -40,14 +46,34 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
       this.props.updateEditorString(stringify(spec));
 
       this.props.clearConfig();
+    } catch (e) {
+      console.warn(e);
+    }
 
-      if (!this.props.manualParse) {
-        this.props.parseSpec(true);
+    this.props.parseSpec(true);
+  }
+
+  public handleExtractConfig() {
+    const confirmation = confirm('The spec and config will be formatted.');
+    if (!confirmation) {
+      return;
+    }
+
+    try {
+      const spec = JSON.parse(this.props.editorString);
+      let config = JSON.parse(this.props.configEditorString);
+      if (spec.config) {
+        config = mergeDeep(config, spec.config);
+        delete spec.config;
+        this.props.updateEditorString(stringify(spec));
+        this.props.setConfigEditorString(stringify(config));
       }
     } catch (e) {
       console.warn(e);
     }
+    this.props.parseSpec(true);
   }
+
   public editVegaSpec() {
     if (this.props.history.location.pathname.indexOf('/edited') === -1) {
       this.props.history.push('/edited');
@@ -109,9 +135,22 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
               this.handleMergeConfig(e);
             }}
           />
+
+          <ArrowDownCircle
+            data-tip
+            data-for="extractConfig"
+            onClick={e => {
+              e.stopPropagation();
+              this.handleExtractConfig();
+            }}
+          />
+
           <ChevronDown />
           <ReactTooltip id="mergeConfig" effect="solid">
             <span style={{ textTransform: 'none' }}>Merge config into spec</span>
+          </ReactTooltip>
+          <ReactTooltip id="extractConfig" effect="solid">
+            <span style={{ textTransform: 'none' }}>Extract config from spec</span>
           </ReactTooltip>
         </div>
       );
