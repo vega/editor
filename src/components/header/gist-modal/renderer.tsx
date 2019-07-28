@@ -169,13 +169,13 @@ class GistModal extends React.PureComponent<Props, State> {
 
   public render() {
     return (
-      <div className="gist-content">
-        <h2>
+      <>
+        <h1>
           Load{' '}
           <a href="https://gist.github.com/" target="_blank">
             Gist
           </a>
-        </h2>
+        </h1>
         <form ref={form => (this.refGistForm = form)}>
           <div className="gist-input-container">
             Gist Type:
@@ -256,7 +256,7 @@ class GistModal extends React.PureComponent<Props, State> {
             {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
           </button>
         </form>
-      </div>
+      </>
     );
   }
 }

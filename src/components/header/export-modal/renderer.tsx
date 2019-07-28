@@ -120,8 +120,8 @@ class ExportModal extends React.PureComponent<Props, State> {
 
   public render() {
     return (
-      <div className="export-content">
-        <h2>Export</h2>
+      <>
+        <h1>Export</h1>
         <div className="export-buttons">
           <button className="export-button" onClick={() => this.downloadViz('png')}>
             <div className="header-text">
@@ -221,7 +221,7 @@ class ExportModal extends React.PureComponent<Props, State> {
             <strong>Note:</strong> To get a PDF, open the SVG which you can print as a PDF from your browser.
           </p>
         </div>
-      </div>
+      </>
     );
   }
 }
