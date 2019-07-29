@@ -117,6 +117,7 @@ class Editor extends React.PureComponent<Props, State> {
       .initialize(chart)
       .runAsync();
   }
+
   public componentDidMount() {
     this.initView();
     this.renderVega();
@@ -139,7 +140,24 @@ class Editor extends React.PureComponent<Props, State> {
     if (params[params.length - 1] === 'view') {
       this.setState({ fullscreen: true });
     }
+
+    window.addEventListener(
+      'popstate',
+      event => {
+        const pathname = window.location.href;
+        const urlarray = pathname.split('/');
+        const lastword = urlarray[urlarray.length - 1];
+        event.preventDefault();
+        if (lastword === 'view') {
+          this.setState({ fullscreen: true });
+        } else {
+          this.setState({ fullscreen: false });
+        }
+      },
+      { passive: true }
+    );
   }
+
   public componentDidUpdate(prevProps, prevState) {
     if (
       !deepEqual(prevProps.vegaSpec, this.props.vegaSpec) ||
