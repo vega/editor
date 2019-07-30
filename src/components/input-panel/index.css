@@ -17,4 +17,11 @@
   border: 0;
   background: unset;
   cursor: pointer;
+  padding: 0;
+  margin-left: 5px;
+}
+
+.merge-toolbar button svg {
+  vertical-align: middle;
+  margin: 0;
 }
