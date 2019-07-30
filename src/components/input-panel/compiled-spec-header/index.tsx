@@ -2,8 +2,7 @@ import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../../actions/editor';
 import { Mode, SIDEPANE } from '../../../constants';
@@ -13,7 +12,7 @@ const toggleStyle = {
   cursor: 'pointer',
 };
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
 class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   constructor(props) {

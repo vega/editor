@@ -5,7 +5,7 @@ import { mapDispatchToProps, mapStateToProps } from '.';
 import { SIDEPANE } from '../../constants';
 import './config-editor.css';
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any; match: any };
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export default class ConfigEditor extends React.PureComponent<Props> {
   public handleEditorChange = spec => {
