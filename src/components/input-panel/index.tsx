@@ -39,11 +39,10 @@ class InputPanel extends React.PureComponent<Props> {
     const innerPanes = [
       <div key="editor" className="full-height-wrapper">
         <SpecEditorHeader key="specEditorHeader" />
-        {this.props.sidePaneItem === SIDEPANE.Editor ? (
-          <SpecEditor key="editor" />
-        ) : (
-          <ConfigEditor key="configEditor" />
-        )}
+
+        <SpecEditor key="editor" />
+
+        <ConfigEditor key="configEditor" />
       </div>,
     ];
     if (this.props.mode === Mode.VegaLite) {

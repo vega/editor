@@ -2,6 +2,7 @@ import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { debounce } from 'vega';
 import { mapDispatchToProps, mapStateToProps } from '.';
+import { SIDEPANE } from '../../constants';
 import './config-editor.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any; match: any };
@@ -19,7 +20,10 @@ export default class ConfigEditor extends React.PureComponent<Props> {
 
   public render() {
     return (
-      <div className="sizeFixEditorParent full-height-wrapper">
+      <div
+        style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : '' }}
+        className="sizeFixEditorParent full-height-wrapper"
+      >
         <MonacoEditor
           options={{
             autoClosingBrackets: 'never',

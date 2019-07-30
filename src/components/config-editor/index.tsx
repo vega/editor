@@ -10,6 +10,7 @@ export function mapStateToProps(state: State, ownProps) {
     config: state.config,
     configEditorString: state.configEditorString,
     manualParse: state.manualParse,
+    sidePaneItem: state.sidePaneItem,
   };
 }
 
