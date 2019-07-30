@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { mapStateToProps } from '.';
 import { Mode } from '../../../constants';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps> & { history: any; closePortal: any };
+type Props = ReturnType<typeof mapStateToProps> & { closePortal: () => void } & RouteComponentProps;
 
 interface State {
   gist: {
@@ -18,6 +18,7 @@ interface State {
   invalidRevision: boolean;
   invalidUrl: boolean;
 }
+
 class GistModal extends React.PureComponent<Props, State> {
   private refGistForm: HTMLFormElement;
   constructor(props) {
