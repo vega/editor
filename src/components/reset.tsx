@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './app.css';
 
-class Reset extends React.PureComponent<{ history: any }> {
+class Reset extends React.PureComponent<RouteComponentProps> {
   public handleClick() {
     window.localStorage.clear();
     window.location.href = window.location.pathname;

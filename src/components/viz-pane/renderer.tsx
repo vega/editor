@@ -27,6 +27,9 @@ export default class VizPane extends React.PureComponent<Props> {
     }
   }
   public getComponent() {
+    if (!this.props.debugPane) {
+      return null;
+    }
     if (this.props.view) {
       switch (this.props.navItem) {
         case NAVBAR.DataViewer:
