@@ -139,7 +139,7 @@
   left: 50%;
   transform: translateX(-50%);
   top: -16px;
-  z-index: 10;
+  z-index: 21;
 }
 
 .specType {
