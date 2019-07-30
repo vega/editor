@@ -14,7 +14,8 @@ import './index.css';
 // Add additional projections
 addProjections(vega.projection);
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
+type Props = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> & { history: any } & { location: { pathname: string } };
 
 const defaultState = { fullscreen: false };
 
@@ -23,6 +24,7 @@ type State = Readonly<typeof defaultState>;
 class Editor extends React.PureComponent<Props, State> {
   public static pathname: string;
   public readonly state: State = defaultState;
+  public unlisten: any;
 
   constructor(props) {
     super(props);
@@ -119,6 +121,18 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public componentDidMount() {
+    this.unlisten = this.props.history.listen(location => {
+      if (location && location.pathname.endsWith('view')) {
+        this.setState({
+          fullscreen: true,
+        });
+      } else {
+        this.setState({
+          fullscreen: false,
+        });
+      }
+    });
+
     this.initView();
     this.renderVega();
     // Add Event Listener to ctrl+f11 key
@@ -140,22 +154,6 @@ class Editor extends React.PureComponent<Props, State> {
     if (params[params.length - 1] === 'view') {
       this.setState({ fullscreen: true });
     }
-
-    window.addEventListener(
-      'popstate',
-      event => {
-        const pathname = window.location.href;
-        const urlarray = pathname.split('/');
-        const lastword = urlarray[urlarray.length - 1];
-        event.preventDefault();
-        if (lastword === 'view') {
-          this.setState({ fullscreen: true });
-        } else {
-          this.setState({ fullscreen: false });
-        }
-      },
-      { passive: true }
-    );
   }
 
   public componentDidUpdate(prevProps, prevState) {
@@ -176,6 +174,7 @@ class Editor extends React.PureComponent<Props, State> {
   public componentWillUnmount() {
     // Remove listener to event keydown
     document.removeEventListener('keydown', this.handleKeydown);
+    this.unlisten();
   }
   public render() {
     return (
