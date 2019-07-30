@@ -28,6 +28,7 @@
   "dependencies": {
     "@types/react": "^16.8.23",
     "@types/react-redux": "^7.1.1",
+    "@types/react-router-dom": "^4.3.4",
     "ajv": "^6.10.2",
     "d3-geo-projection": "^2.7.0",
     "d3-request": "1.0.6",

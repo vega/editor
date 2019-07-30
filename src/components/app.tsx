@@ -2,7 +2,7 @@ import { text } from 'd3-request';
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import { bindActionCreators, Dispatch } from 'redux';
 import { hash, mergeDeep } from 'vega-lite/build/src/util';
@@ -16,7 +16,7 @@ import InputPanel from './input-panel';
 import Sidebar from './sidebar';
 import VizPane from './viz-pane';
 
-type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
+type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps> & RouteComponentProps;
 
 class App extends React.PureComponent<Props & { match: any; location: any; showExample?: boolean }> {
   public w = window.innerWidth;

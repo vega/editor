@@ -3,15 +3,12 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { ExternalLink, GitHub, Grid, HelpCircle, Play, Settings, Share2, Terminal, X } from 'react-feather';
 import { PortalWithState } from 'react-portal';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Select from 'react-select';
-import { bindActionCreators, Dispatch } from 'redux';
 import { mapDispatchToProps, mapStateToProps } from '.';
 import { KEYCODES, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
-import Sidebar from '../sidebar/index';
 import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
@@ -19,7 +16,8 @@ import './index.css';
 import ShareModal from './share-modal/index';
 
 type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & { history: any; showExample: boolean };
+  ReturnType<typeof mapDispatchToProps> & { showExample: () => {} } & RouteComponentProps;
+
 interface State {
   showVega: boolean;
   scrollPosition: number;
