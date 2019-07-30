@@ -24,26 +24,20 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
     return (
       <div className={'sizeFixEditorParent full-height-wrapper'}>
         <CompiledSpecDisplayHeader />
-        {this.props.sidePaneItem === SIDEPANE.CompiledVega && this.props.mode === Mode.VegaLite ? (
-          <>
-            <MonacoEditor
-              height={this.props.compiledVegaPaneSize - LAYOUT.MinPaneSize}
-              options={{
-                automaticLayout: true,
-                folding: true,
-                minimap: { enabled: false },
-                readOnly: true,
-                scrollBeyondLastLine: false,
-                wordWrap: 'on',
-              }}
-              language="json"
-              value={stringify(this.props.value)}
-              editorDidMount={e => (this.editor = e)}
-            />
-          </>
-        ) : (
-          <ConfigEditor />
-        )}
+        <MonacoEditor
+          height={this.props.compiledVegaPaneSize - LAYOUT.MinPaneSize}
+          options={{
+            automaticLayout: true,
+            folding: true,
+            minimap: { enabled: false },
+            readOnly: true,
+            scrollBeyondLastLine: false,
+            wordWrap: 'on',
+          }}
+          language="json"
+          value={stringify(this.props.value)}
+          editorDidMount={e => (this.editor = e)}
+        />
       </div>
     );
   }

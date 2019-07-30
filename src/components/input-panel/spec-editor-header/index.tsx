@@ -15,46 +15,44 @@ const toggleStyle = {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
 
-class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
-  constructor(props) {
-    super(props);
-    this.editVegaSpec = this.editVegaSpec.bind(this);
-  }
-  public editVegaSpec() {
-    if (this.props.history.location.pathname.indexOf('/edited') === -1) {
-      this.props.history.push('/edited');
-    }
-    this.props.clearConfig();
-    this.props.updateVegaSpec(stringify(this.props.value));
-  }
+class SpecEditorHeader extends React.PureComponent<Props> {
   public render() {
-    if (this.props.compiledVegaSpec) {
-      const toggleStyleUp = Object.assign({}, toggleStyle, {
-        position: 'static',
-      });
-      return (
-        <div className="editor-header" style={toggleStyleUp} onClick={this.props.toggleCompiledVegaSpec}>
-          <span>Compiled Vega</span>
-          <button onClick={this.editVegaSpec} style={{ cursor: 'pointer' }}>
-            Edit Vega Spec
-          </button>
+    const toggleStyleUp = Object.assign({}, toggleStyle, {
+      position: 'static',
+    });
+    return (
+      <div className="editor-header pane-header" onClick={e => this.props.toggleCompiledVegaSpec()}>
+        <ul className="tabs-nav">
+          <li
+            className={this.props.sidePaneItem === SIDEPANE.Editor ? 'active-tab' : undefined}
+            onClick={e => {
+              if (this.props.sidePaneItem === SIDEPANE.Editor) {
+                e.stopPropagation();
+              }
+              e.stopPropagation();
+              this.props.setSidePaneItem(SIDEPANE.Editor);
+            }}
+          >
+            {this.props.mode}
+          </li>
 
-          <ChevronDown />
-        </div>
-      );
-    } else {
-      return (
-        <div onClick={this.props.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
-          <span>Compiled Vega</span>
+          <li
+            className={this.props.sidePaneItem === SIDEPANE.Config ? 'active-tab' : undefined}
+            onClick={e => {
+              if (this.props.sidePaneItem === SIDEPANE.Config) {
+                e.stopPropagation();
+              }
+              e.stopPropagation();
+              this.props.setSidePaneItem(SIDEPANE.Config);
+            }}
+          >
+            Config
+          </li>
+        </ul>
 
-          <button onClick={this.editVegaSpec} style={{ zIndex: -1, opacity: 0, cursor: 'pointer' }}>
-            Edit Vega Spec
-          </button>
-
-          <ChevronUp />
-        </div>
-      );
-    }
+        {this.props.sidePaneItem === SIDEPANE.Config && <ConfigEditorHeader />}
+      </div>
+    );
   }
 }
 
@@ -83,5 +81,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(CompiledSpecDisplayHeader)
+  )(SpecEditorHeader)
 );
