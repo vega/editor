@@ -128,31 +128,34 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
           )}
 
           {this.props.sidePaneItem === SIDEPANE.Config && (
-            <>
-              <ArrowUpCircle
-                data-tip
-                data-for="mergeConfig"
-                onClick={e => {
-                  e.stopPropagation();
-                  this.handleMergeConfig(e);
-                }}
-              />
-
-              <ArrowDownCircle
-                data-tip
-                data-for="extractConfig"
-                onClick={e => {
-                  e.stopPropagation();
-                  this.handleExtractConfig();
-                }}
-              />
+            <div className="merge-toolbar">
+              <button>
+                <ArrowUpCircle
+                  data-tip
+                  data-for="mergeConfig"
+                  onClick={e => {
+                    e.stopPropagation();
+                    this.handleMergeConfig(e);
+                  }}
+                />
+              </button>
+              <button>
+                <ArrowDownCircle
+                  data-tip
+                  data-for="extractConfig"
+                  onClick={e => {
+                    e.stopPropagation();
+                    this.handleExtractConfig();
+                  }}
+                />
+              </button>
               <ReactTooltip id="mergeConfig" effect="solid">
                 <span style={{ textTransform: 'none' }}>Merge config into spec</span>
               </ReactTooltip>
               <ReactTooltip id="extractConfig" effect="solid">
                 <span style={{ textTransform: 'none' }}>Extract config from spec</span>
               </ReactTooltip>
-            </>
+            </div>
           )}
 
           <ChevronDown />
