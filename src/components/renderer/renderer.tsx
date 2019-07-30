@@ -1,3 +1,4 @@
+import { UnregisterCallback } from 'history';
 import * as React from 'react';
 import { Edit3, Maximize } from 'react-feather';
 import { Portal } from 'react-portal';
@@ -23,7 +24,7 @@ type State = Readonly<typeof defaultState>;
 class Editor extends React.PureComponent<Props, State> {
   public static pathname: string;
   public readonly state: State = defaultState;
-  public unlisten: any;
+  public unlisten: UnregisterCallback;
 
   constructor(props) {
     super(props);
