@@ -14,8 +14,7 @@ import './index.css';
 // Add additional projections
 addProjections(vega.projection);
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & { history: any } & { location: { pathname: string } };
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
 
 const defaultState = { fullscreen: false };
 
