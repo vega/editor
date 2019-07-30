@@ -1,3 +1,4 @@
+import { UnregisterCallback } from 'history';
 import * as React from 'react';
 import { Edit3, Maximize } from 'react-feather';
 import { Portal } from 'react-portal';
@@ -23,6 +24,7 @@ type State = Readonly<typeof defaultState>;
 class Editor extends React.PureComponent<Props, State> {
   public static pathname: string;
   public readonly state: State = defaultState;
+  public unlisten: UnregisterCallback;
 
   constructor(props) {
     super(props);
@@ -117,7 +119,20 @@ class Editor extends React.PureComponent<Props, State> {
       .initialize(chart)
       .runAsync();
   }
+
   public componentDidMount() {
+    this.unlisten = this.props.history.listen(location => {
+      if (location && location.pathname.endsWith('view')) {
+        this.setState({
+          fullscreen: true,
+        });
+      } else {
+        this.setState({
+          fullscreen: false,
+        });
+      }
+    });
+
     this.initView();
     this.renderVega();
     // Add Event Listener to ctrl+f11 key
@@ -140,6 +155,7 @@ class Editor extends React.PureComponent<Props, State> {
       this.setState({ fullscreen: true });
     }
   }
+
   public componentDidUpdate(prevProps, prevState) {
     if (
       !deepEqual(prevProps.vegaSpec, this.props.vegaSpec) ||
@@ -158,6 +174,7 @@ class Editor extends React.PureComponent<Props, State> {
   public componentWillUnmount() {
     // Remove listener to event keydown
     document.removeEventListener('keydown', this.handleKeydown);
+    this.unlisten();
   }
   public render() {
     return (
