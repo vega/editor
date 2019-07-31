@@ -95,7 +95,6 @@ class InputPanel extends React.PureComponent<Props> {
         onChange={this.handleChange}
         pane1Style={{ minHeight: `${LAYOUT.MinPaneSize}px` }}
         paneStyle={{ display: 'flex' }}
-        pane2Style={{ display: this.props.mode === Mode.VegaLite ? '' : 'none' }}
         onDragFinished={() => {
           if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
             this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
