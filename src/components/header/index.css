@@ -71,10 +71,6 @@
   z-index: 20;
 }
 
-.modal-hidden {
-  overflow: hidden;
-}
-
 .modal-body h1 {
   font-size: 1.8em;
 }
@@ -91,7 +87,7 @@
   padding: 10px;
   border: none;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 1);
 }
 
 .close-button:hover {

@@ -314,7 +314,7 @@ class Header extends React.PureComponent<Props, State> {
                         <X />
                       </button>
                     </div>
-                    <div className="modal-body modal-hidden">{shareContent}</div>
+                    <div className="modal-body">{shareContent}</div>
                   </div>
                 </div>
               ),
