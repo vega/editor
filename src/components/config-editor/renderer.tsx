@@ -1,3 +1,4 @@
+import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { debounce } from 'vega';
@@ -8,6 +9,7 @@ import './config-editor.css';
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export default class ConfigEditor extends React.PureComponent<Props> {
+  public editor: Monaco.editor.IStandaloneCodeEditor;
   public handleEditorChange = spec => {
     const newSpec = spec === '' ? '{}' : spec;
     this.props.setConfigEditorString(newSpec);
@@ -17,6 +19,17 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     }
     this.props.setConfig(this.props.configEditorString);
   };
+
+  public handleEditorMount(e) {
+    this.editor = e;
+    this.editor.focus();
+  }
+
+  public componentWillReceiveProps(nextProps) {
+    if (nextProps.sidePaneItem === SIDEPANE.Config) {
+      this.editor.focus();
+    }
+  }
 
   public render() {
     return (
@@ -40,6 +53,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
           language="json"
           onChange={debounce(700, this.handleEditorChange)}
           value={this.props.configEditorString}
+          editorDidMount={e => this.handleEditorMount(e)}
         />
       </div>
     );

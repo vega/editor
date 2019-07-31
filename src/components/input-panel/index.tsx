@@ -35,6 +35,25 @@ class InputPanel extends React.PureComponent<Props> {
       }
     }
   }
+
+  public componentDidMount() {
+    if (this.props.mode === Mode.Vega) {
+      const pane2 = (this.refs.compiledVegaPane as any).pane2;
+      pane2.style.display = 'none';
+    }
+  }
+
+  public componentWillReceiveProps(nextProps) {
+    if (nextProps.mode !== this.props.mode) {
+      const pane2 = (this.refs.compiledVegaPane as any).pane2;
+      if (nextProps.mode === Mode.Vega) {
+        pane2.style.display = 'none';
+      } else {
+        pane2.style.display = 'flex';
+      }
+    }
+  }
+
   public getInnerPanes() {
     const innerPanes = [
       <div key="editor" className="full-height-wrapper">
@@ -45,13 +64,12 @@ class InputPanel extends React.PureComponent<Props> {
         <ConfigEditor key="configEditor" />
       </div>,
     ];
-    if (this.props.mode === Mode.VegaLite) {
-      if (this.props.compiledVegaSpec) {
-        innerPanes.push(<CompiledSpecDisplay key="compiled" />);
-      } else {
-        innerPanes.push(<CompiledSpecHeader key="compiledSpecHeader" />);
-      }
+    if (this.props.compiledVegaSpec) {
+      innerPanes.push(<CompiledSpecDisplay key="compiled" />);
+    } else {
+      innerPanes.push(<CompiledSpecHeader key="compiledSpecHeader" />);
     }
+
     return innerPanes;
   }
   public render() {
@@ -63,31 +81,32 @@ class InputPanel extends React.PureComponent<Props> {
         : LAYOUT.MinPaneSize + 'px';
     }
 
-    if (this.props.mode === Mode.VegaLite) {
-      return (
-        <SplitPane
-          ref="compiledVegaPane"
-          split="horizontal"
-          primary="second"
-          minSize={LAYOUT.MinPaneSize}
-          defaultSize={this.props.compiledVegaSpec ? this.props.compiledVegaPaneSize : LAYOUT.MinPaneSize}
-          onChange={this.handleChange}
-          pane1Style={{ minHeight: `${LAYOUT.MinPaneSize}px` }}
-          paneStyle={{ display: 'flex' }}
-          onDragFinished={() => {
-            if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-              this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
-              // Popping up the the compiled vega pane for the first time will set its
-              // height to 30% of the split pane. This can change depending on the UI.
-            }
-          }}
-        >
-          {innerPanes}
-        </SplitPane>
-      );
-    } else {
-      return <div className={'full-height-wrapper'}>{innerPanes}</div>;
-    }
+    return (
+      // ! Never make this conditional based on modes
+      // ! we will loose support for undo across modes
+      // ! because the editor will be unmounted
+      <SplitPane
+        ref="compiledVegaPane"
+        split="horizontal"
+        primary="second"
+        className="editor-spitPane"
+        minSize={LAYOUT.MinPaneSize}
+        defaultSize={this.props.compiledVegaSpec ? this.props.compiledVegaPaneSize : LAYOUT.MinPaneSize}
+        onChange={this.handleChange}
+        pane1Style={{ minHeight: `${LAYOUT.MinPaneSize}px` }}
+        paneStyle={{ display: 'flex' }}
+        pane2Style={{ display: this.props.mode === Mode.VegaLite ? '' : 'none' }}
+        onDragFinished={() => {
+          if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
+            this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
+            // Popping up the the compiled vega pane for the first time will set its
+            // height to 30% of the split pane. This can change depending on the UI.
+          }
+        }}
+      >
+        {innerPanes}
+      </SplitPane>
+    );
   }
 }
 

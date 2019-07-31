@@ -14,6 +14,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   RouteComponentProps<{ compressed: string }>;
 
 class Editor extends React.PureComponent<Props, {}> {
+  public editor: Monaco.editor.IStandaloneCodeEditor;
   constructor(props: Props) {
     super(props);
     this.handleKeydown = this.handleKeydown.bind(this);
@@ -61,7 +62,7 @@ class Editor extends React.PureComponent<Props, {}> {
         };
       })()
     );
-
+    this.editor = editor;
     editor.focus();
   }
 
@@ -86,6 +87,9 @@ class Editor extends React.PureComponent<Props, {}> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.sidepaneItem === SIDEPANE.Editor) {
+      this.editor.focus();
+    }
     if (nextProps.parse) {
       this.updateSpec(nextProps.value);
       this.props.setConfig(nextProps.configEditorString);
