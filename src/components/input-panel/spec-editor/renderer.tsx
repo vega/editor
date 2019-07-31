@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { debounce } from 'vega';
 import parser from 'vega-schema-url-parser';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { KEYCODES, Mode } from '../../../constants';
+import { KEYCODES, Mode, SIDEPANE } from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -137,7 +137,10 @@ class Editor extends React.PureComponent<Props, {}> {
 
   public render() {
     return (
-      <div className={'full-height-wrapper'}>
+      <div
+        className={'full-height-wrapper'}
+        style={{ display: this.props.sidepaneItem === SIDEPANE.Editor ? '' : 'none' }}
+      >
         <MonacoEditor
           ref="editor"
           language="json"

@@ -32,45 +32,11 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
         position: 'static',
       });
       return (
-        <div className="editor-header pane-header" onClick={e => this.props.toggleCompiledVegaSpec()}>
-          <ul className="tabs-nav">
-            {this.props.mode === Mode.VegaLite ? (
-              <li
-                className={this.props.sidePaneItem === SIDEPANE.CompiledVega ? 'active-tab' : undefined}
-                onClick={e => {
-                  if (this.props.sidePaneItem === SIDEPANE.CompiledVega) {
-                    e.stopPropagation();
-                  }
-                  e.stopPropagation();
-                  this.props.setSidePaneItem(SIDEPANE.CompiledVega);
-                }}
-              >
-                Compiled Vega
-              </li>
-            ) : null}
-            <li
-              className={this.props.sidePaneItem === SIDEPANE.Config ? 'active-tab' : undefined}
-              onClick={e => {
-                if (this.props.sidePaneItem === SIDEPANE.Config) {
-                  e.stopPropagation();
-                }
-                e.stopPropagation();
-                this.props.setSidePaneItem(SIDEPANE.Config);
-              }}
-            >
-              Config
-            </li>
-          </ul>
-
-          {this.props.sidePaneItem === SIDEPANE.CompiledVega && this.props.mode === Mode.VegaLite ? (
-            <button className="edit-vega" onClick={this.editVegaSpec} style={{ zIndex: 0, cursor: 'pointer' }}>
-              Edit Vega Spec
-            </button>
-          ) : (
-            <>
-              <ConfigEditorHeader />
-            </>
-          )}
+        <div className="editor-header" style={toggleStyleUp} onClick={this.props.toggleCompiledVegaSpec}>
+          <span>Compiled Vega</span>
+          <button onClick={this.editVegaSpec} style={{ cursor: 'pointer' }}>
+            Edit Vega Spec
+          </button>
 
           <ChevronDown />
         </div>
@@ -78,7 +44,7 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
     } else {
       return (
         <div onClick={this.props.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
-          <span>{this.props.mode === Mode.VegaLite ? 'Compiled Vega and' : null} Config</span>
+          <span>Compiled Vega</span>
 
           <button onClick={this.editVegaSpec} style={{ zIndex: -1, opacity: 0, cursor: 'pointer' }}>
             Edit Vega Spec
