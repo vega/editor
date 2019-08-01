@@ -12,7 +12,7 @@ export function mapStateToProps(state: State, ownProps) {
     mode: state.mode,
     parse: state.parse,
     selectedExample: state.selectedExample,
-    sidepaneItem: state.sidePaneItem,
+    sidePaneItem: state.sidePaneItem,
     value: state.editorString,
   };
 }

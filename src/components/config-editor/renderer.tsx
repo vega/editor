@@ -10,7 +10,7 @@ type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchT
 
 export default class ConfigEditor extends React.PureComponent<Props> {
   public editor: Monaco.editor.IStandaloneCodeEditor;
-  public handleEditorChange = spec => {
+  public handleEditorChange = (spec: string) => {
     const newSpec = spec === '' ? '{}' : spec;
     this.props.setConfigEditorString(newSpec);
     this.props.setThemeName('custom');
@@ -25,9 +25,18 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     this.editor.focus();
   }
 
+  public componentDidMount() {
+    if (this.props.sidePaneItem === SIDEPANE.Config) {
+      this.props.setEditorReference(this.refs.ConfigEditor);
+    }
+  }
+
   public componentWillReceiveProps(nextProps) {
     if (nextProps.sidePaneItem === SIDEPANE.Config) {
       this.editor.focus();
+      if (nextProps.sidePaneItem === SIDEPANE.Config) {
+        this.props.setEditorReference(this.refs.ConfigEditor);
+      }
     }
   }
 

@@ -87,8 +87,11 @@ class Editor extends React.PureComponent<Props, {}> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.sidepaneItem === SIDEPANE.Editor) {
+    if (nextProps.sidePaneItem === SIDEPANE.Editor) {
       this.editor.focus();
+      if (nextProps.sidePaneItem === SIDEPANE.Editor) {
+        this.props.setEditorReference(this.refs.editor);
+      }
     }
     if (nextProps.parse) {
       this.updateSpec(nextProps.value);
@@ -99,7 +102,9 @@ class Editor extends React.PureComponent<Props, {}> {
 
   public componentDidMount() {
     document.addEventListener('keydown', this.handleKeydown);
-    this.props.setEditorReference(this.refs.editor);
+    if (this.props.sidePaneItem === SIDEPANE.Editor) {
+      this.props.setEditorReference(this.refs.editor);
+    }
   }
 
   public componentWillUnmount() {
@@ -143,7 +148,7 @@ class Editor extends React.PureComponent<Props, {}> {
     return (
       <div
         className={'full-height-wrapper'}
-        style={{ display: this.props.sidepaneItem === SIDEPANE.Editor ? '' : 'none' }}
+        style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none' }}
       >
         <MonacoEditor
           ref="editor"

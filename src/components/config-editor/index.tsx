@@ -19,6 +19,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       setConfig: EditorActions.setConfig,
       setConfigEditorString: EditorActions.setConfigEditorString,
+      setEditorReference: EditorActions.setEditorReference,
       setThemeName: EditorActions.setThemeName,
     },
     dispatch
