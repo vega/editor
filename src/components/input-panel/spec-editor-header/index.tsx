@@ -5,6 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../../actions/editor';
 import { SIDEPANE } from '../../../constants';
 import ConfigEditorHeader from '../../config-editor/config-editor-header';
+import './index.css';
 
 const toggleStyle = {
   cursor: 'pointer',
@@ -18,7 +19,7 @@ class SpecEditorHeader extends React.PureComponent<Props> {
       position: 'static',
     });
     return (
-      <div className="editor-header pane-header" onClick={e => this.props.toggleCompiledVegaSpec()}>
+      <div className="editor-header pane-header spec-editor-header">
         <ul className="tabs-nav">
           <li
             className={this.props.sidePaneItem === SIDEPANE.Editor ? 'active-tab' : undefined}

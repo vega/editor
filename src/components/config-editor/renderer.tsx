@@ -89,7 +89,9 @@ export default class ConfigEditor extends React.PureComponent<Props> {
       },
     });
     this.editor = editor;
-    this.editor.focus();
+    if (this.props.sidePaneItem === SIDEPANE.Config) {
+      this.editor.focus();
+    }
   }
 
   public componentDidMount() {
@@ -101,9 +103,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
   public componentWillReceiveProps(nextProps) {
     if (nextProps.sidePaneItem === SIDEPANE.Config) {
       this.editor.focus();
-      if (nextProps.sidePaneItem === SIDEPANE.Config) {
-        this.props.setEditorReference(this.refs.ConfigEditor);
-      }
+      this.props.setEditorReference(this.refs.ConfigEditor);
     }
   }
 

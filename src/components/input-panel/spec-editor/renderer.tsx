@@ -64,7 +64,9 @@ class Editor extends React.PureComponent<Props, {}> {
     );
 
     this.editor = editor;
-    editor.focus();
+    if (this.props.sidePaneItem === SIDEPANE.Editor) {
+      editor.focus();
+    }
   }
 
   public handleEditorChange(spec) {
@@ -90,9 +92,7 @@ class Editor extends React.PureComponent<Props, {}> {
   public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.sidePaneItem === SIDEPANE.Editor) {
       this.editor.focus();
-      if (nextProps.sidePaneItem === SIDEPANE.Editor) {
-        this.props.setEditorReference(this.refs.editor);
-      }
+      this.props.setEditorReference(this.refs.editor);
     }
     if (nextProps.parse) {
       this.updateSpec(nextProps.value);
