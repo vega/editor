@@ -19,7 +19,7 @@ class SpecEditorHeader extends React.PureComponent<Props> {
       position: 'static',
     });
     return (
-      <div className=" spec-editor-header editor-header pane-header ">
+      <div className="editor-header spec-editor-header">
         <ul className="tabs-nav">
           <li
             className={this.props.sidePaneItem === SIDEPANE.Editor ? 'active-tab' : undefined}
