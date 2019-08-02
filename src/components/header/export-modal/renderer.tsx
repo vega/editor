@@ -123,48 +123,34 @@ class ExportModal extends React.PureComponent<Props, State> {
       <>
         <h1>Export</h1>
         <div className="export-buttons">
-          <button className="export-button" onClick={() => this.downloadViz('png')}>
+          <div className="export-button-container" onClick={() => this.downloadViz('png')}>
             <div className="header-text">
               <Image />
-              <span>Download PNG</span>
+              <span>PNG</span>
             </div>
             <p>
               PNG is a bitmap image format which is made up of a fixed number of pixels. They have a fixed resolution
               and cannot be scaled.
             </p>
-          </button>
-          <button className="export-button" onClick={() => this.downloadViz('svg')}>
-            <div className="header-text">
-              <Map />
-              <span>Download SVG</span>
-            </div>
-            <p>
-              SVG is a vector image format which uses geometric forms to represent different parts as discrete objects
-              and are infinitely scalable.
-            </p>
-          </button>
-          <button className="export-button" onClick={() => this.openViz('svg')}>
-            <div className="header-text">
-              <Map />
-              <span>Open SVG</span>
-            </div>
-            <p>Open the SVG in your browser instead of downloading it.</p>
-          </button>
-          <button className="export-button" onClick={() => this.downloadPDF()} ref="downloadPDF">
+            <button className="export-button">Download </button>
+          </div>
+
+          <div className="export-button-container" onClick={() => this.downloadPDF()} ref="downloadPDF">
             <div className="header-text">
               <Book />
-              <span>Download PDF</span>
+              <span>PDF</span>
             </div>
             <p>
               <strong>Experimental!</strong>
               <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
               patient. Your chart is sent to an <a href="https://cloudconvert.com/">external service</a> for processing.
             </p>
-          </button>
-          <button className="export-button" onClick={e => this.downloadJSON(e)}>
+            <button className="export-button">Download</button>
+          </div>
+          <div className="export-button-container" onClick={e => this.downloadJSON(e)}>
             <div className="header-text">
               <Code />
-              <span>Download JSON</span>
+              <span>JSON</span>
             </div>
             <p>JSON is a lightweight data-interchange format.</p>
             {this.props.mode === Mode.VegaLite && (
@@ -214,7 +200,20 @@ class ExportModal extends React.PureComponent<Props, State> {
                 </div>
               )}
             </div>
-          </button>
+            <button className="export-button">Download</button>
+          </div>
+          <div className="export-button-container" onClick={() => this.downloadViz('svg')}>
+            <div className="header-text">
+              <Map />
+              <span>SVG</span>
+            </div>
+            <p>
+              SVG is a vector image format which uses geometric forms to represent different parts as discrete objects
+              and are infinitely scalable.
+            </p>
+            <button className="export-button">Open</button>
+            <button className="export-button">Download</button>
+          </div>
         </div>
         <div className="user-notes">
           <p>
