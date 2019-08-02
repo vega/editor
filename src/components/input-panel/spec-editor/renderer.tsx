@@ -51,17 +51,12 @@ class Editor extends React.PureComponent<Props, {}> {
   }
 
   public editorDidMount(editor: Monaco.editor.IStandaloneCodeEditor, monaco: typeof Monaco) {
-    editor.addAction(
-      (() => {
-        return {
-          id: 'CLEAR_EDITOR',
-          label: 'Clear Editor',
-          run: () => {
-            this.onClear();
-          },
-        };
-      })()
-    );
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      id: 'CLEAR_EDITOR',
+      label: 'Clear Spec',
+      run: this.onClear.bind(this),
+    });
 
     this.editor = editor;
     if (this.props.sidePaneItem === SIDEPANE.Editor) {

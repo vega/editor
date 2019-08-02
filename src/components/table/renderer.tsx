@@ -9,11 +9,15 @@ interface Props {
 }
 
 const MAX_DEPTH = 3;
-const MAX_LENGTH = 120;
+const MAX_LENGTH = 150;
 
 export default class Table extends React.PureComponent<Props> {
   public render() {
-    const headerNodes = this.props.header.map(h => <th key={h}>{h}</th>);
+    const headerNodes = this.props.header.map(h => (
+      <th title={h} key={h}>
+        {h}
+      </th>
+    ));
 
     const tableBody = this.props.data.map((row, i) => {
       const rowNodes = this.props.header.map((field, j) => {

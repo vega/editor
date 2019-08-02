@@ -1,8 +1,6 @@
 table.editor-table {
   font-size: 0.9em;
-  width: fit-content;
-  max-width: 100%;
-  table-layout: auto;
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
@@ -13,20 +11,18 @@ table.editor-table thead tr:first-child > * {
 table.editor-table th {
   text-align: center;
   background: #f6f8fa;
+  min-width: 50px;
+}
+
+table.editor-table td {
+  word-break: break-all;
 }
 
 table.editor-table td,
 table.editor-table th {
-  min-width: 30px;
   color: #333;
   padding: 8px;
-  word-break: break-all;
   border: 1px solid var(--light-color);
-}
-
-table.editor-table th,
-table.editor-table td:first-child {
-  word-break: keep-all;
 }
 
 table.editor-table tr:nth-child(even) {

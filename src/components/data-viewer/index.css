@@ -16,6 +16,7 @@
   flex-direction: column;
   padding: 0 20px 15px 20px;
   flex: 1;
+  height: 100%;
 }
 
 .data-viewer-header {
