@@ -124,13 +124,13 @@ function extractConfig(state: State, action: ExtractConfigSpec) {
     if (spec.config) {
       config = mergeDeep(config, spec.config);
       delete spec.config;
-      return {
-        ...state,
-        configEditorString: stringify(config),
-        editorString: stringify(spec),
-        parse: true,
-      };
     }
+    return {
+      ...state,
+      configEditorString: stringify(config),
+      editorString: stringify(spec),
+      parse: true,
+    };
   } catch (e) {
     console.warn(e);
     return {
