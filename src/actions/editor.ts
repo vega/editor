@@ -34,6 +34,8 @@ export const SET_LOG_LEVEL: 'SET_LOG_LEVEL' = 'SET_LOG_LEVEL';
 export const SET_HOVER: 'SET_HOVER' = 'SET_HOVER';
 export const SET_TOOLTIP: 'SET_TOOLTIP' = 'SET_TOOLTIP';
 export const CLEAR_CONFIG: 'CLEAR_CONFIG' = 'CLEAR_CONFIG';
+export const MERGE_CONFIG_SPEC: 'MERGE_CONFIG_SPEC' = 'MERGE_CONFIG_SPEC';
+export const EXTRACT_CONFIG_SPEC: 'EXTRACT_CONFIG_SPEC' = 'EXTRACT_CONFIG_SPEC';
 
 export type Action =
   | SetMode
@@ -68,7 +70,9 @@ export type Action =
   | SetLogLevel
   | SetHover
   | SetTooltip
-  | ClearConfig;
+  | ClearConfig
+  | MergeConfigSpec
+  | ExtractConfigSpec;
 
 export function setMode(mode: Mode) {
   return {
@@ -344,3 +348,18 @@ export function clearConfig() {
 }
 
 export type ClearConfig = ReturnType<typeof clearConfig>;
+
+export function mergeConfigSpec() {
+  return {
+    type: MERGE_CONFIG_SPEC,
+  };
+}
+
+export type MergeConfigSpec = ReturnType<typeof mergeConfigSpec>;
+export function extractConfigSpec() {
+  return {
+    type: EXTRACT_CONFIG_SPEC,
+  };
+}
+
+export type ExtractConfigSpec = ReturnType<typeof extractConfigSpec>;

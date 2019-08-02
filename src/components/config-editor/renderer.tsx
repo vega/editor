@@ -1,12 +1,17 @@
+import stringify from 'json-stringify-pretty-compact';
+import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { debounce } from 'vega';
+import { mergeDeep } from 'vega-lite/build/src/util';
 import { mapDispatchToProps, mapStateToProps } from '.';
+import { SIDEPANE } from '../../constants';
 import './config-editor.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export default class ConfigEditor extends React.PureComponent<Props> {
+  public editor: Monaco.editor.IStandaloneCodeEditor;
   public handleEditorChange = (spec: string) => {
     const newSpec = spec === '' ? '{}' : spec;
     this.props.setConfigEditorString(newSpec);
@@ -17,9 +22,63 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     this.props.setConfig(this.props.configEditorString);
   };
 
+  public handleMergeConfig() {
+    const confirmation = confirm('The spec will be formatted on merge.');
+    if (!confirmation) {
+      return;
+    }
+    this.props.mergeConfigSpec();
+  }
+  public handleExtractConfig() {
+    const confirmation = confirm('The spec and config will be formatted.');
+    if (!confirmation) {
+      return;
+    }
+
+    this.props.extractConfig();
+  }
+
+  public handleEditorMount(editor: Monaco.editor.IStandaloneCodeEditor) {
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 0,
+      id: 'MERGE_CONFIG',
+      label: 'Merge Config Into Spec',
+      run: this.handleMergeConfig.bind(this),
+    });
+
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 1,
+      id: 'EXTRACT_CONFIG',
+      label: 'Extract Config From Spec',
+      run: this.handleExtractConfig.bind(this),
+    });
+    this.editor = editor;
+    if (this.props.sidePaneItem === SIDEPANE.Config) {
+      this.editor.focus();
+    }
+  }
+
+  public componentDidMount() {
+    if (this.props.sidePaneItem === SIDEPANE.Config) {
+      this.props.setEditorReference(this.refs.ConfigEditor);
+    }
+  }
+
+  public componentWillReceiveProps(nextProps) {
+    if (nextProps.sidePaneItem === SIDEPANE.Config) {
+      this.editor.focus();
+      this.props.setEditorReference(this.refs.ConfigEditor);
+    }
+  }
+
   public render() {
     return (
-      <div className="sizeFixEditorParent full-height-wrapper">
+      <div
+        style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : '' }}
+        className="sizeFixEditorParent full-height-wrapper"
+      >
         <MonacoEditor
           options={{
             autoClosingBrackets: 'never',
@@ -36,6 +95,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
           language="json"
           onChange={debounce(700, this.handleEditorChange)}
           value={this.props.configEditorString}
+          editorDidMount={e => this.handleEditorMount(e)}
         />
       </div>
     );

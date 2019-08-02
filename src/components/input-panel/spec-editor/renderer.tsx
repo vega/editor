@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { debounce } from 'vega';
 import parser from 'vega-schema-url-parser';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { KEYCODES, Mode } from '../../../constants';
+import { KEYCODES, Mode, SIDEPANE } from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -14,6 +14,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   RouteComponentProps<{ compressed: string }>;
 
 class Editor extends React.PureComponent<Props, {}> {
+  public editor: Monaco.editor.IStandaloneCodeEditor;
   constructor(props: Props) {
     super(props);
     this.handleKeydown = this.handleKeydown.bind(this);
@@ -37,6 +38,22 @@ class Editor extends React.PureComponent<Props, {}> {
     }
   }
 
+  public handleMergeConfig() {
+    const confirmation = confirm('The spec will be formatted on merge.');
+    if (!confirmation) {
+      return;
+    }
+    this.props.mergeConfigSpec();
+  }
+  public handleExtractConfig() {
+    const confirmation = confirm('The spec and config will be formatted.');
+    if (!confirmation) {
+      return;
+    }
+
+    this.props.extractConfigSpec();
+  }
+
   public onSelectNewVega() {
     this.props.history.push('/custom/vega');
   }
@@ -50,19 +67,33 @@ class Editor extends React.PureComponent<Props, {}> {
   }
 
   public editorDidMount(editor: Monaco.editor.IStandaloneCodeEditor, monaco: typeof Monaco) {
-    editor.addAction(
-      (() => {
-        return {
-          id: 'CLEAR_EDITOR',
-          label: 'Clear Editor',
-          run: () => {
-            this.onClear();
-          },
-        };
-      })()
-    );
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      id: 'CLEAR_EDITOR',
+      label: 'Clear Spec',
+      run: this.onClear.bind(this),
+    });
 
-    editor.focus();
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 0,
+      id: 'MERGE_CONFIG',
+      label: 'Merge Config Into Spec',
+      run: this.handleMergeConfig.bind(this),
+    });
+
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 1,
+      id: 'EXTRACT_CONFIG',
+      label: 'Extract Config From Spec',
+      run: this.handleExtractConfig.bind(this),
+    });
+    this.editor = editor;
+
+    if (this.props.sidePaneItem === SIDEPANE.Editor) {
+      editor.focus();
+    }
   }
 
   public handleEditorChange(spec: string) {
@@ -86,6 +117,10 @@ class Editor extends React.PureComponent<Props, {}> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.sidePaneItem === SIDEPANE.Editor) {
+      this.editor.focus();
+      this.props.setEditorReference(this.refs.editor);
+    }
     if (nextProps.parse) {
       this.updateSpec(nextProps.value);
       this.props.setConfig(nextProps.configEditorString);
@@ -95,7 +130,9 @@ class Editor extends React.PureComponent<Props, {}> {
 
   public componentDidMount() {
     document.addEventListener('keydown', this.handleKeydown);
-    this.props.setEditorReference(this.refs.editor);
+    if (this.props.sidePaneItem === SIDEPANE.Editor) {
+      this.props.setEditorReference(this.refs.editor);
+    }
   }
 
   public componentWillUnmount() {
@@ -137,7 +174,10 @@ class Editor extends React.PureComponent<Props, {}> {
 
   public render() {
     return (
-      <div className={'full-height-wrapper'}>
+      <div
+        className={'full-height-wrapper'}
+        style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none' }}
+      >
         <MonacoEditor
           ref="editor"
           language="json"

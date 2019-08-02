@@ -42,8 +42,8 @@ export const NAVBAR = {
 };
 
 export const SIDEPANE = {
-  CompiledVega: 'CompiledVega',
   Config: 'Config',
+  Editor: 'Editor',
 };
 
 export const KEYCODES = {

@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as EditorActions from '../../actions/editor';
-import { LAYOUT, Mode } from '../../constants';
+import { LAYOUT, Mode, SIDEPANE } from '../../constants';
 import { State } from '../../constants/default-state';
+import ConfigEditor from '../config-editor';
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
 import './index.css';
 import SpecEditor from './spec-editor';
+import SpecEditorHeader from './spec-editor-header';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -33,17 +35,45 @@ class InputPanel extends React.PureComponent<Props> {
       }
     }
   }
-  public getInnerPanes() {
-    const innerPanes = [<SpecEditor key="editor" />, <CompiledSpecHeader key="compiledSpecHeader" />];
-    if (this.props.compiledVegaSpec) {
-      innerPanes.pop();
-      innerPanes.push(<CompiledSpecDisplay key="compiled" />);
+
+  public componentDidMount() {
+    if (this.props.mode === Mode.Vega) {
+      const pane2 = (this.refs.compiledVegaPane as any).pane2;
+      pane2.style.display = 'none';
     }
+  }
+
+  public componentWillReceiveProps(nextProps) {
+    if (nextProps.mode !== this.props.mode) {
+      const pane2 = (this.refs.compiledVegaPane as any).pane2;
+      if (nextProps.mode === Mode.Vega) {
+        pane2.style.display = 'none';
+      } else {
+        pane2.style.display = 'flex';
+      }
+    }
+  }
+
+  public getInnerPanes() {
+    const innerPanes = [
+      <div key="editor" className="full-height-wrapper">
+        <SpecEditorHeader key="specEditorHeader" />
+
+        <SpecEditor key="editor" />
+
+        <ConfigEditor key="configEditor" />
+      </div>,
+    ];
+    if (this.props.compiledVegaSpec) {
+      innerPanes.push(<CompiledSpecDisplay key="compiled" />);
+    } else {
+      innerPanes.push(<CompiledSpecHeader key="compiledSpecHeader" />);
+    }
+
     return innerPanes;
   }
   public render() {
     const innerPanes = this.getInnerPanes();
-
     const compiledVegaPane = this.refs.compiledVegaPane as any;
     if (compiledVegaPane) {
       compiledVegaPane.pane2.style.height = this.props.compiledVegaSpec
@@ -51,12 +81,15 @@ class InputPanel extends React.PureComponent<Props> {
         : LAYOUT.MinPaneSize + 'px';
     }
 
-    // f (this.props.mode === Mode.VegaLite) {
     return (
+      // ! Never make this conditional based on modes
+      // ! we will loose support for undo across modes
+      // ! because the editor will be unmounted
       <SplitPane
         ref="compiledVegaPane"
         split="horizontal"
         primary="second"
+        className="editor-spitPane"
         minSize={LAYOUT.MinPaneSize}
         defaultSize={this.props.compiledVegaSpec ? this.props.compiledVegaPaneSize : LAYOUT.MinPaneSize}
         onChange={this.handleChange}
@@ -81,6 +114,7 @@ function mapStateToProps(state: State, ownProps) {
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     compiledVegaSpec: state.compiledVegaSpec,
     mode: state.mode,
+    sidePaneItem: state.sidePaneItem,
   };
 }
 
