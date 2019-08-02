@@ -137,20 +137,6 @@ class ExportModal extends React.PureComponent<Props, State> {
             </button>
           </div>
 
-          <div className="export-button-container" ref="downloadPDF">
-            <div className="header-text">
-              <Book />
-              <span>PDF</span>
-            </div>
-            <p>
-              <strong>Experimental!</strong>
-              <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
-              patient. Your chart is sent to an <a href="https://cloudconvert.com/">external service</a> for processing.
-            </p>
-            <button onClick={() => this.downloadPDF()} className="export-button">
-              Download
-            </button>
-          </div>
           <div className="export-button-container">
             <div className="header-text">
               <Code />
@@ -220,7 +206,21 @@ class ExportModal extends React.PureComponent<Props, State> {
             <button onClick={() => this.openViz('svg')} className="export-button">
               Open
             </button>
-            <button onClick={() => this.downloadViz('svg')} className="export-button">
+            <button style={{ marginTop: 9 }} onClick={() => this.downloadViz('svg')} className="export-button">
+              Download
+            </button>
+          </div>
+          <div className="export-button-container" ref="downloadPDF">
+            <div className="header-text">
+              <Book />
+              <span>PDF</span>
+            </div>
+            <p>
+              <strong>Experimental!</strong>
+              <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
+              patient. Your chart is sent to an <a href="https://cloudconvert.com/">external service</a> for processing.
+            </p>
+            <button onClick={() => this.downloadPDF()} className="export-button">
               Download
             </button>
           </div>

@@ -25,6 +25,7 @@
   cursor: pointer;
   padding: 10px 20px;
   margin: 1%;
+  margin-top: 25px;
 }
 
 .export-button:hover {
@@ -48,6 +49,7 @@
   line-height: 1.2;
   text-align: left;
   width: 100%;
+  margin: 0;
 }
 
 .export-button-container p strong {
