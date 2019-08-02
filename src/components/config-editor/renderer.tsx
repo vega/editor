@@ -74,19 +74,19 @@ export default class ConfigEditor extends React.PureComponent<Props> {
 
   public handleEditorMount(editor: Monaco.editor.IStandaloneCodeEditor) {
     editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 0,
       id: 'MERGE_CONFIG',
-      label: 'Merge config into spec',
-      run: () => {
-        this.handleMergeConfig();
-      },
+      label: 'Merge Config Into Spec',
+      run: this.handleMergeConfig.bind(this),
     });
 
     editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 1,
       id: 'EXTRACT_CONFIG',
-      label: 'Extract config from spec',
-      run: () => {
-        this.handleExtractConfig();
-      },
+      label: 'Extract Config From Spec',
+      run: this.handleExtractConfig.bind(this),
     });
     this.editor = editor;
     this.editor.focus();
