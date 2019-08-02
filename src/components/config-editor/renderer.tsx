@@ -7,7 +7,7 @@ import './config-editor.css';
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export default class ConfigEditor extends React.PureComponent<Props> {
-  public handleEditorChange = spec => {
+  public handleEditorChange = (spec: string) => {
     const newSpec = spec === '' ? '{}' : spec;
     this.props.setConfigEditorString(newSpec);
     this.props.setThemeName('custom');
