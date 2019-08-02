@@ -98,7 +98,7 @@ export default class VizPane extends React.PureComponent<Props> {
 
         <div className="debug-pane">
           <DebugPaneHeader />
-          {this.props.logs ? <ErrorPane /> : this.getComponent()}
+          {this.props.logs && this.props.navItem === NAVBAR.Logs ? <ErrorPane /> : this.getComponent()}
         </div>
       </SplitPane>
     );

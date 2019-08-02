@@ -30,7 +30,9 @@ class DebugPaneHeader extends React.PureComponent<Props> {
       <div className="pane-header" onClick={e => this.props.toggleDebugPane()}>
         <ul className="tabs-nav">
           <li
-            className={this.props.logs ? 'active-tab' : undefined}
+            className={
+              this.props.error || (this.props.logs && this.props.navItem === NAVBAR.Logs) ? 'active-tab' : undefined
+            }
             onClick={e => {
               if (this.props.debugPane) {
                 e.stopPropagation();
@@ -50,7 +52,7 @@ class DebugPaneHeader extends React.PureComponent<Props> {
           </li>
           {this.props.error === null && (
             <li
-              className={!this.props.logs && this.props.navItem === NAVBAR.DataViewer ? 'active-tab' : undefined}
+              className={this.props.navItem === NAVBAR.DataViewer ? 'active-tab' : undefined}
               onClick={e => {
                 if (this.props.debugPane) {
                   e.stopPropagation();
@@ -64,7 +66,7 @@ class DebugPaneHeader extends React.PureComponent<Props> {
           )}
           {this.props.error === null && (
             <li
-              className={!this.props.logs && this.props.navItem === NAVBAR.SignalViewer ? 'active-tab' : undefined}
+              className={this.props.navItem === NAVBAR.SignalViewer ? 'active-tab' : undefined}
               onClick={e => {
                 if (this.props.debugPane) {
                   e.stopPropagation();
