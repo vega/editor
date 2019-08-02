@@ -23,7 +23,9 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       clearConfig: EditorActions.clearConfig,
+      extractConfigSpec: EditorActions.extractConfigSpec,
       logError: EditorActions.logError,
+      mergeConfigSpec: EditorActions.mergeConfigSpec,
       parseSpec: EditorActions.parseSpec,
       setConfig: EditorActions.setConfig,
       setEditorReference: EditorActions.setEditorReference,

@@ -1,10 +1,16 @@
+import stringify from 'json-stringify-pretty-compact';
 import * as vl from 'vega-lite';
+import { mergeDeep } from 'vega-lite/build/src/util';
 import { Config } from 'vega-lite/src/config';
+import { TopLevelSpec } from 'vega-lite/src/spec';
 import {
   Action,
   CLEAR_CONFIG,
   EXPORT_VEGA,
+  EXTRACT_CONFIG_SPEC,
+  ExtractConfigSpec,
   LOG_ERROR,
+  MergeConfigSpec,
   PARSE_SPEC,
   SET_BASEURL,
   SET_COMPILED_VEGA_PANE_SIZE,
@@ -42,6 +48,7 @@ import { State } from '../constants/default-state';
 import { LocalLogger } from '../utils/logger';
 import { validateVega, validateVegaLite } from '../utils/validate';
 import {
+  MERGE_CONFIG_SPEC,
   SET_HOVER,
   SET_LOG_LEVEL,
   SET_SETTINGS,
@@ -73,6 +80,65 @@ function errorLine(code: string, error: string) {
   }
 }
 
+function mergeConfig(state: State, action: MergeConfigSpec) {
+  if (state.configEditorString === '{}') {
+    return {
+      ...state,
+      parse: true,
+    };
+  }
+
+  let spec: TopLevelSpec;
+  let config: Config;
+  try {
+    spec = JSON.parse(state.editorString);
+    config = JSON.parse(state.configEditorString);
+    if (spec.config) {
+      spec.config = mergeDeep(config, spec.config);
+    } else {
+      spec.config = config;
+    }
+    return {
+      ...state,
+      config: {},
+      configEditorString: '{}',
+      editorString: stringify(spec),
+      parse: true,
+      themeName: 'custom',
+    };
+  } catch (e) {
+    console.warn(e);
+    return {
+      ...state,
+      parse: true,
+    };
+  }
+}
+
+function extractConfig(state: State, action: ExtractConfigSpec) {
+  let spec: TopLevelSpec;
+  let config: Config;
+  try {
+    spec = JSON.parse(state.editorString);
+    config = JSON.parse(state.configEditorString);
+    if (spec.config) {
+      config = mergeDeep(config, spec.config);
+      delete spec.config;
+      return {
+        ...state,
+        configEditorString: stringify(config),
+        editorString: stringify(spec),
+        parse: true,
+      };
+    }
+  } catch (e) {
+    console.warn(e);
+    return {
+      ...state,
+      parse: true,
+    };
+  }
+}
 function parseVega(
   state: State,
   action: SetVegaExample | UpdateVegaSpec | SetGistVegaSpec,
@@ -381,6 +447,10 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         configEditorString: '{}',
         themeName: 'custom',
       };
+    case MERGE_CONFIG_SPEC:
+      return mergeConfig(state, action);
+    case EXTRACT_CONFIG_SPEC:
+      return extractConfig(state, action);
     default:
       return state;
   }

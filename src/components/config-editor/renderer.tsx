@@ -27,49 +27,15 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     if (!confirmation) {
       return;
     }
-
-    if (this.props.configEditorString === '{}') {
-      this.props.parseSpec(true);
-      return;
-    }
-
-    try {
-      const spec = JSON.parse(this.props.editorString);
-      const config = JSON.parse(this.props.configEditorString);
-      if (spec.config) {
-        spec.config = mergeDeep(config, spec.config);
-      } else {
-        spec.config = config;
-      }
-      this.props.updateEditorString(stringify(spec));
-
-      this.props.clearConfig();
-    } catch (e) {
-      console.warn(e);
-    }
-
-    this.props.parseSpec(true);
+    this.props.mergeConfigSpec();
   }
-
   public handleExtractConfig() {
     const confirmation = confirm('The spec and config will be formatted.');
     if (!confirmation) {
       return;
     }
 
-    try {
-      const spec = JSON.parse(this.props.editorString);
-      let config = JSON.parse(this.props.configEditorString);
-      if (spec.config) {
-        config = mergeDeep(config, spec.config);
-        delete spec.config;
-        this.props.updateEditorString(stringify(spec));
-        this.props.setConfigEditorString(stringify(config));
-      }
-    } catch (e) {
-      console.warn(e);
-    }
-    this.props.parseSpec(true);
+    this.props.extractConfig();
   }
 
   public handleEditorMount(editor: Monaco.editor.IStandaloneCodeEditor) {

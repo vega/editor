@@ -38,6 +38,22 @@ class Editor extends React.PureComponent<Props, {}> {
     }
   }
 
+  public handleMergeConfig() {
+    const confirmation = confirm('The spec will be formatted on merge.');
+    if (!confirmation) {
+      return;
+    }
+    this.props.mergeConfigSpec();
+  }
+  public handleExtractConfig() {
+    const confirmation = confirm('The spec and config will be formatted.');
+    if (!confirmation) {
+      return;
+    }
+
+    this.props.extractConfigSpec();
+  }
+
   public onSelectNewVega() {
     this.props.history.push('/custom/vega');
   }
@@ -57,6 +73,26 @@ class Editor extends React.PureComponent<Props, {}> {
       label: 'Clear Spec',
       run: this.onClear.bind(this),
     });
+
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 0,
+      id: 'MERGE_CONFIG',
+      label: 'Merge Config Into Spec',
+      run: this.handleMergeConfig.bind(this),
+    });
+
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 1,
+      id: 'EXTRACT_CONFIG',
+      label: 'Extract Config From Spec',
+      run: this.handleExtractConfig.bind(this),
+    });
+    this.editor = editor;
+    if (this.props.sidePaneItem === SIDEPANE.Config) {
+      this.editor.focus();
+    }
 
     this.editor = editor;
     if (this.props.sidePaneItem === SIDEPANE.Editor) {
