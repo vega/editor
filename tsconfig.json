@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "es2015",
-    "lib": ["es2017", "dom"],
+    "lib": ["esnext", "dom"],
     "moduleResolution": "node",
     "declaration": false,
     "noImplicitAny": false,
@@ -11,8 +11,7 @@
     "jsx": "react",
     "suppressImplicitAnyIndexErrors": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "importHelpers": true
+    "allowSyntheticDefaultImports": true
   },
   "files": ["src/index.tsx"],
   "include": ["node_modules/vega-lite/typings/*.d.ts"],
