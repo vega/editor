@@ -90,11 +90,7 @@ class Editor extends React.PureComponent<Props, {}> {
       run: this.handleExtractConfig.bind(this),
     });
     this.editor = editor;
-    if (this.props.sidePaneItem === SIDEPANE.Config) {
-      this.editor.focus();
-    }
 
-    this.editor = editor;
     if (this.props.sidePaneItem === SIDEPANE.Editor) {
       editor.focus();
     }
