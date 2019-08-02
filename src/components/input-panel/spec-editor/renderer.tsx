@@ -62,6 +62,7 @@ class Editor extends React.PureComponent<Props, {}> {
         };
       })()
     );
+
     this.editor = editor;
     editor.focus();
   }
