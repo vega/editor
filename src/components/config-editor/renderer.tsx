@@ -1,9 +1,7 @@
-import stringify from 'json-stringify-pretty-compact';
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { debounce } from 'vega';
-import { mergeDeep } from 'vega-lite/build/src/util';
 import { mapDispatchToProps, mapStateToProps } from '.';
 import { SIDEPANE } from '../../constants';
 import './config-editor.css';
