@@ -96,7 +96,7 @@ class Editor extends React.PureComponent<Props, {}> {
     }
   }
 
-  public handleEditorChange(spec) {
+  public handleEditorChange(spec: string) {
     this.props.manualParse ? this.props.updateEditorString(spec) : this.updateSpec(spec);
 
     if (this.props.history.location.pathname.indexOf('/edited') === -1) {
