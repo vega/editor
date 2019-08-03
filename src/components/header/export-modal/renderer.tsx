@@ -206,7 +206,7 @@ class ExportModal extends React.PureComponent<Props, State> {
             <button onClick={() => this.openViz('svg')} className="export-button">
               Open
             </button>
-            <button style={{ marginTop: 9 }} onClick={() => this.downloadViz('svg')} className="export-button">
+            <button onClick={() => this.downloadViz('svg')} className="export-button download">
               Download
             </button>
           </div>
