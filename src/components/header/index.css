@@ -35,6 +35,7 @@
 .header-icon {
   margin: 0 5px 0 0;
   width: 20px;
+  display: none;
 }
 
 .header section {
