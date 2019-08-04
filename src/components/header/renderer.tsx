@@ -269,7 +269,6 @@ class Header extends React.PureComponent<Props, State> {
     const gist = closePortal => <GistModal closePortal={() => closePortal()} />;
     const exportContent = <ExportModal />;
     const shareContent = <ShareModal />;
-    const helpModal = <HelpModal />;
 
     return (
       <div className="header">

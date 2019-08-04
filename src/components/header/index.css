@@ -26,6 +26,10 @@
   background: rgba(0, 0, 0, 0.08);
 }
 
+.header-button .header-icon {
+  display: none;
+}
+
 .header section > span {
   display: flex;
   align-items: center;
@@ -273,7 +277,7 @@
 }
 
 .split-button {
-  width: 84px;
+  width: 70px;
 }
 
 .split-button > div:hover {
