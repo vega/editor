@@ -8,7 +8,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { hash, mergeDeep } from 'vega-lite/build/src/util';
 import * as EditorActions from '../actions/editor';
 import { LAYOUT, Mode } from '../constants';
-import { NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC } from '../constants/consts';
+import { NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC } from '../constants/consts';
 import { State } from '../constants/default-state';
 import './app.css';
 import Header from './header';
@@ -100,6 +100,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
   public setExample(parameter: { example_name: string; mode: string }) {
     const name = parameter.example_name;
     this.props.setConfig(this.props.configEditorString);
+    this.props.setSidePaneItem(SIDEPANE.Editor);
     switch (parameter.mode) {
       case 'vega':
         text(`./spec/vega/${name}.vg.json`, spec => {
@@ -171,6 +172,7 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setModeOnly: EditorActions.setModeOnly,
       setRenderer: EditorActions.setRenderer,
       setSettingsState: EditorActions.setSettingsState,
+      setSidePaneItem: EditorActions.setSidePaneItem,
       setVegaExample: EditorActions.setVegaExample,
       setVegaLiteExample: EditorActions.setVegaLiteExample,
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
