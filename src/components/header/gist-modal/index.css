@@ -1,3 +1,20 @@
+.gist-split {
+  display: flex;
+}
+
+.personal-gist {
+  flex: 1;
+}
+
+.load-gist {
+  flex: 1;
+}
+
+.privacy-toggle {
+  display: flex;
+  align-items: center;
+}
+
 .gist-button {
   background: rgb(100, 80, 150);
   color: white;

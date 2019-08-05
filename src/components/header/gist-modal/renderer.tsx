@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { mapStateToProps } from '.';
-import { Mode } from '../../../constants';
+import { BACKEND_URL, COOKIE_NAME, Mode } from '../../../constants';
+import { getCookie } from '../../../utils/getCookie';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & { closePortal: () => void } & RouteComponentProps;
@@ -17,6 +18,8 @@ interface State {
   invalidFilename: boolean;
   invalidRevision: boolean;
   invalidUrl: boolean;
+  personalGist: any;
+  private: boolean;
 }
 
 class GistModal extends React.PureComponent<Props, State> {
@@ -34,7 +37,39 @@ class GistModal extends React.PureComponent<Props, State> {
       invalidFilename: false,
       invalidRevision: false,
       invalidUrl: false,
+      personalGist: [],
+      private: false,
     };
+  }
+
+  public componentDidMount() {
+    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
+    fetch(`${BACKEND_URL}gists/user`, {
+      credentials: 'include',
+      headers: {
+        Cookie: `${COOKIE_NAME}=${cookieValue}`,
+      },
+      method: 'get',
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(json => {
+        if (this.props.isAuthenticated) {
+          this.setState({
+            personalGist: json,
+          });
+        }
+      })
+      .catch(err => {
+        // console.error(err);
+      });
+  }
+
+  public privacyToggle() {
+    this.setState({
+      private: !this.state.private,
+    });
   }
 
   public updateGist(gist) {
@@ -168,96 +203,136 @@ class GistModal extends React.PureComponent<Props, State> {
     });
   }
 
+  public preview(id, file) {
+    this.updateGist({
+      filename: file,
+      url: `https://gist.github.com/${this.props.handle}/${id}`,
+    });
+  }
+
   public render() {
     return (
-      <>
+      <div>
         <h1>
           Load{' '}
           <a href="https://gist.github.com/" target="_blank">
             Gist
           </a>
         </h1>
-        <form ref={form => (this.refGistForm = form)}>
-          <div className="gist-input-container">
-            Gist Type:
-            <input
-              type="radio"
-              name="gist-type"
-              id="gist-type[vega]"
-              value="vega"
-              checked={this.state.gist.type === Mode.Vega}
-              onChange={this.updateGistType.bind(this)}
-            />
-            <label htmlFor="gist-type[vega]">Vega</label>
-            <input
-              type="radio"
-              name="gist-type"
-              id="gist-type[vega-lite]"
-              value="vega-lite"
-              checked={this.state.gist.type === Mode.VegaLite}
-              onChange={this.updateGistType.bind(this)}
-            />
-            <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
-          </div>
-          <div className="gist-input-container">
-            <label>
-              Gist URL
-              <div style={{ marginTop: '2px' }}>
-                <small>
-                  Example:{' '}
-                  <span className="gist-url">
-                    {'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9'}
-                  </span>
-                </small>
-              </div>
+        <div className="gist-split">
+          <div className="personal-gist">
+            <h3>Your GISTS</h3>
+            <div className="privacy-toggle">
+              <label htmlFor="privacy">Show private gists: </label>
               <input
-                required
-                className="gist-input"
-                type="text"
-                placeholder="Enter URL"
-                value={this.state.gist.url}
-                onChange={this.updateGistUrl.bind(this)}
+                type="checkbox"
+                name="privacy"
+                id="privacy"
+                checked={this.state.private}
+                onChange={this.privacyToggle.bind(this)}
               />
-            </label>
-            <div className="error-message">{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
-          </div>
-          <div className="gist-optional">
-            <div className="gist-input-container gist-optional-input-container">
-              <label>
-                Revision (<small>optional</small>)
-                <input
-                  className="gist-input"
-                  type="text"
-                  placeholder="Enter revision"
-                  value={this.state.gist.revision}
-                  onChange={this.updateGistRevision.bind(this)}
-                />
-              </label>
-              <div className="error-message">
-                {this.state.invalidRevision && <span>Please enter a valid revision.</span>}
-              </div>
             </div>
-            <div className="gist-input-container gist-optional-input-container">
-              <label>
-                Filename (<small>optional</small>)
-                <input
-                  className="gist-input"
-                  type="text"
-                  placeholder="Enter filename"
-                  value={this.state.gist.filename}
-                  onChange={this.updateGistFile.bind(this)}
-                />
-              </label>
-              <div className="error-message">
-                {this.state.invalidFilename && <span>Please enter a valid filename.</span>}
-              </div>
-            </div>
+            <ol>
+              {this.props.isAuthenticated &&
+                this.state.personalGist
+                  .filter(gist => gist.isPublic || this.state.private)
+                  .map(gist => (
+                    <li>
+                      {gist.title}
+                      <ul>
+                        {gist.spec.map(spec => (
+                          <li onClick={() => this.preview(gist.name, spec.name)}>{spec.name}</li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+            </ol>
           </div>
-          <button type="button" className="gist-button" onClick={() => this.onSelectGist(this.props.closePortal)}>
-            {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
-          </button>
-        </form>
-      </>
+          <div className="load-gist">
+            <h3>Load GISTS</h3>
+            <form ref={form => (this.refGistForm = form)}>
+              <div className="gist-input-container">
+                Gist Type:
+                <input
+                  type="radio"
+                  name="gist-type"
+                  id="gist-type[vega]"
+                  value="vega"
+                  checked={this.state.gist.type === Mode.Vega}
+                  onChange={this.updateGistType.bind(this)}
+                />
+                <label htmlFor="gist-type[vega]">Vega</label>
+                <input
+                  type="radio"
+                  name="gist-type"
+                  id="gist-type[vega-lite]"
+                  value="vega-lite"
+                  checked={this.state.gist.type === Mode.VegaLite}
+                  onChange={this.updateGistType.bind(this)}
+                />
+                <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
+              </div>
+              <div className="gist-input-container">
+                <label>
+                  Gist URL
+                  <div style={{ marginTop: '2px' }}>
+                    <small>
+                      Example:{' '}
+                      <span className="gist-url">
+                        {'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9'}
+                      </span>
+                    </small>
+                  </div>
+                  <input
+                    required
+                    className="gist-input"
+                    type="text"
+                    placeholder="Enter URL"
+                    value={this.state.gist.url}
+                    onChange={this.updateGistUrl.bind(this)}
+                  />
+                </label>
+                <div className="error-message">{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
+              </div>
+              <div className="gist-optional">
+                <div className="gist-input-container gist-optional-input-container">
+                  <label>
+                    Revision (<small>optional</small>)
+                    <input
+                      className="gist-input"
+                      type="text"
+                      placeholder="Enter revision"
+                      value={this.state.gist.revision}
+                      onChange={this.updateGistRevision.bind(this)}
+                    />
+                  </label>
+                  <div className="error-message">
+                    {this.state.invalidRevision && <span>Please enter a valid revision.</span>}
+                  </div>
+                </div>
+                <div className="gist-input-container gist-optional-input-container">
+                  <label>
+                    Filename (<small>optional</small>)
+                    <input
+                      className="gist-input"
+                      type="text"
+                      placeholder="Enter filename"
+                      value={this.state.gist.filename}
+                      onChange={this.updateGistFile.bind(this)}
+                    />
+                  </label>
+                  <div className="error-message">
+                    {this.state.invalidFilename && <span>Please enter a valid filename.</span>}
+                  </div>
+                </div>
+              </div>
+              <button type="button" className="gist-button" onClick={() => this.onSelectGist(this.props.closePortal)}>
+                {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     );
   }
 }

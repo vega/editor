@@ -18,6 +18,7 @@ export interface State {
   error: { message: string }; // don't put Error here since we can't serialize it
   export: boolean;
   gist: string;
+  handle: string;
   hoverEnable: boolean | 'auto';
   logLevel: string;
   lastPosition: number;
@@ -54,6 +55,7 @@ export const DEFAULT_STATE: State = {
   error: null,
   export: false,
   gist: null,
+  handle: '',
   hoverEnable: 'auto',
   isAuthenticated: false,
   lastPosition: 0,
