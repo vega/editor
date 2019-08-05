@@ -9,6 +9,7 @@ type Props = ReturnType<typeof mapStateToProps> & { closePortal: () => void } & 
 
 interface State {
   gist: {
+    image: string;
     filename: string;
     revision: string;
     type: Mode;
@@ -29,6 +30,7 @@ class GistModal extends React.PureComponent<Props, State> {
     this.state = {
       gist: {
         filename: '',
+        image: '',
         revision: '',
         type: props.mode,
         url: '',
@@ -178,6 +180,7 @@ class GistModal extends React.PureComponent<Props, State> {
       this.setState({
         gist: {
           filename: '',
+          image: '',
           revision: '',
           type: Mode.Vega,
           url: '',
@@ -196,6 +199,7 @@ class GistModal extends React.PureComponent<Props, State> {
     this.setState({
       gist: {
         filename: '',
+        image: '',
         revision: '',
         type: nextProps.mode,
         url: '',
@@ -203,9 +207,10 @@ class GistModal extends React.PureComponent<Props, State> {
     });
   }
 
-  public preview(id, file) {
+  public preview(id, file, image) {
     this.updateGist({
       filename: file,
+      image,
       url: `https://gist.github.com/${this.props.handle}/${id}`,
     });
   }
@@ -241,7 +246,7 @@ class GistModal extends React.PureComponent<Props, State> {
                       {gist.title}
                       <ul>
                         {gist.spec.map(spec => (
-                          <li onClick={() => this.preview(gist.name, spec.name)}>{spec.name}</li>
+                          <li onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}>{spec.name}</li>
                         ))}
                       </ul>
                     </li>
@@ -326,9 +331,21 @@ class GistModal extends React.PureComponent<Props, State> {
                   </div>
                 </div>
               </div>
-              <button type="button" className="gist-button" onClick={() => this.onSelectGist(this.props.closePortal)}>
-                {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
-              </button>
+              <div className="load-button">
+                {this.state.gist.image && (
+                  <div className="preview-image-container">
+                    <span className="preview-text">Preview:</span>
+                    <div className="preview-image-wrapper">
+                      <img src={this.state.gist.image} />
+                    </div>
+                  </div>
+                )}
+                <div className="gist-button">
+                  <button type="button" onClick={() => this.onSelectGist(this.props.closePortal)}>
+                    {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
+                  </button>
+                </div>
+              </div>
             </form>
           </div>
         </div>

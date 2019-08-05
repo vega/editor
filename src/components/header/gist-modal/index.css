@@ -16,6 +16,12 @@
 }
 
 .gist-button {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.gist-button > button {
   background: rgb(100, 80, 150);
   color: white;
   border: 1px solid #a9a9a9;
@@ -23,11 +29,10 @@
   height: 30px;
   outline: none;
   font-size: 16px;
-  float: right;
   padding: 0 20px;
 }
 
-.gist-button:hover {
+.gist-button > button:hover {
   background: rgb(92, 64, 141);
   color: white;
 }
@@ -82,4 +87,29 @@
   margin-top: 3px;
   margin-bottom: 5px;
   float: right;
+}
+
+.load-button {
+  display: flex;
+  align-items: center;
+}
+
+.preview-image-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.preview-text {
+  margin-right: 10px;
+}
+
+.preview-image-wrapper {
+  height: 100px;
+  overflow: hidden;
+}
+
+.preview-image-wrapper > img {
+  position: relative;
+  width: 150px;
 }
