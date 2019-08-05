@@ -455,6 +455,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case RECEIVE_CURRENT_USER:
       return {
         ...state,
+        handle: action.handle,
         isAuthenticated: action.isAuthenticated,
         name: action.name,
         profilePicUrl: action.profilePicUrl,
