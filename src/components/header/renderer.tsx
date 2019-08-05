@@ -72,8 +72,8 @@ class Header extends React.PureComponent<Props, State> {
         return res.json();
       })
       .then(json => {
-        const { isAuthenticated, name, profilePicUrl } = json;
-        this.props.receiveCurrentUser(isAuthenticated, name, profilePicUrl);
+        const { handle, isAuthenticated, name, profilePicUrl } = json;
+        this.props.receiveCurrentUser(handle, isAuthenticated, name, profilePicUrl);
       })
       .catch(err => {
         // console.error(err);

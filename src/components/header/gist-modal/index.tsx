@@ -4,6 +4,8 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State, ownProps) {
   return {
+    handle: state.handle,
+    isAuthenticated: state.isAuthenticated,
     mode: state.mode,
   };
 }
