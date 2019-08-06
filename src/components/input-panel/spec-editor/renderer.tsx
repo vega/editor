@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { debounce } from 'vega';
 import parser from 'vega-schema-url-parser';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { KEYCODES, Mode, SIDEPANE } from '../../../constants';
+import { KEYCODES, LAYOUT, Mode, SIDEPANE } from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -172,13 +172,21 @@ class Editor extends React.PureComponent<Props, {}> {
     }
   }
 
+  public getEditorHeight() {
+    // height of header : 60
+    // height of compiled Spec Header :30
+    let height = window.innerHeight - 60 - LAYOUT.MinPaneSize - 30; // 60 is the height of header;
+    if (this.props.compiledVegaSpec) {
+      height -= this.props.compiledVegaPaneSize - 30;
+    }
+    return height;
+  }
+
   public render() {
     return (
-      <div
-        className={'full-height-wrapper'}
-        style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none' }}
-      >
+      <div style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none' }}>
         <MonacoEditor
+          height={this.getEditorHeight()}
           ref="editor"
           language="json"
           options={{
