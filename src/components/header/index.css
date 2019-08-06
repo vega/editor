@@ -208,6 +208,7 @@
 
 .auto-run__menu {
   margin-top: 10px !important;
+  width: 80px !important;
 }
 
 .auto-run__option {
@@ -274,7 +275,7 @@
 }
 
 .split-button {
-  width: 70px;
+  width: 80px;
 }
 
 .split-button > div:hover {
