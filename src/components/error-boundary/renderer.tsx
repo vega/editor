@@ -6,7 +6,7 @@ type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchT
 
 export default class ErrorBoundary extends React.PureComponent<Props> {
   public componentDidCatch(error, info) {
-    this.props.logError(error.toString());
+    this.props.logError(new Error(error));
   }
   public render() {
     if (this.props.error) {
