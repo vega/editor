@@ -3,7 +3,7 @@ import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { debounce } from 'vega';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { LAYOUT, SIDEPANE } from '../../constants';
+import { LAYOUT, Mode, SIDEPANE } from '../../constants';
 import './config-editor.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -82,7 +82,10 @@ export default class ConfigEditor extends React.PureComponent<Props> {
   }
   public render() {
     return (
-      <div style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : '' }}>
+      <div
+        className={this.props.mode === Mode.Vega ? 'full-height-wrapper' : ''}
+        style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : '' }}
+      >
         <MonacoEditor
           height={this.getEditorHeight()}
           options={{

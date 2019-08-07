@@ -184,7 +184,10 @@ class Editor extends React.PureComponent<Props, {}> {
 
   public render() {
     return (
-      <div style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none' }}>
+      <div
+        className={this.props.mode === Mode.Vega ? 'full-height-wrapper' : ''}
+        style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none' }}
+      >
         <MonacoEditor
           height={this.getEditorHeight()}
           ref="editor"
