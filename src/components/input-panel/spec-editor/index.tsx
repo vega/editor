@@ -6,6 +6,8 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State, ownProps) {
   return {
+    compiledVegaPaneSize: state.compiledVegaPaneSize,
+    compiledVegaSpec: state.compiledVegaSpec,
     configEditorString: state.configEditorString,
     editorString: state.editorString,
     gist: state.gist,
