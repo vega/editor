@@ -6,6 +6,7 @@ import { formatValueLong } from '../table/renderer';
 interface Props {
   view: View;
   signal: string;
+  onValueChange: (key, value) => void;
 }
 
 interface State {
@@ -24,9 +25,12 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     if (prevProps.view !== this.props.view) {
       prevProps.view.removeSignalListener(prevProps.signal, this.signalHandler);
       this.props.view.addSignalListener(this.props.signal, this.signalHandler);
-      this.setState({
-        signalValue: this.props.view.signal(this.props.signal),
-      });
+      this.setState(
+        {
+          signalValue: this.props.view.signal(this.props.signal),
+        },
+        () => this.props.onValueChange(this.props.signal, this.props.view.signal(this.props.signal))
+      );
     }
   }
   public componentDidMount() {
@@ -71,8 +75,13 @@ export default class SignalRow extends React.PureComponent<Props, State> {
   }
 
   private signalHandler(signalName: string, currentValue) {
-    this.setState({
-      signalValue: currentValue,
-    });
+    this.setState(
+      {
+        signalValue: currentValue,
+      },
+      () => {
+        this.props.onValueChange(this.props.signal, currentValue);
+      }
+    );
   }
 }
