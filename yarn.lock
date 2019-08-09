@@ -560,6 +560,11 @@ arr-union@^3.1.0:
   resolved "https://registry.yarnpkg.com/arr-union/-/arr-union-3.1.0.tgz#e39b09aea9def866a8f206e288af63919bae39c4"
   integrity sha1-45sJrqne+Gao8gbiiK9jkZuuOcQ=
 
+array-flat-polyfill@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/array-flat-polyfill/-/array-flat-polyfill-1.0.1.tgz#1e3a4255be619dfbffbfd1d635c1cf357cd034e7"
+  integrity sha512-hfJmKupmQN0lwi0xG6FQ5U8Rd97RnIERplymOv/qpq8AoNKPPAnxJadjFA23FNWm88wykh9HmpLJUUwUtNU/iw==
+
 array-flatten@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
@@ -6251,13 +6256,14 @@ vega-hierarchy@^4.0.1:
     vega-dataflow "^5.1.0"
     vega-util "^1.8.0"
 
-vega-lite@3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-3.4.0.tgz#a54ed1fe75551415f2c01bc94be5b0d7b998d6ed"
-  integrity sha512-RJg9uBNh5g0hA8xTzAcALUfNx0cEq7E7xx+vxPEGSMgI8z+A5KlE9u4jUx6nKu7Mjg1qZO8WOyWCmBS1kdFWPg==
+vega-lite@4.0.0-beta.0:
+  version "4.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-4.0.0-beta.0.tgz#e075b027bfbc37d72dc6dc2a4b275372b6ff2a8f"
+  integrity sha512-aJBwGPyst6fvStpQsv7ZO4IzuuA02zKOzXbION4Dv/z8tmqx40HconVHARH6MC7q8sNUtCfJFQEaGiXBLYBqmQ==
   dependencies:
     "@types/clone" "~0.1.30"
     "@types/fast-json-stable-stringify" "^2.0.0"
+    array-flat-polyfill "^1.0.1"
     clone "~2.1.2"
     fast-deep-equal "~2.0.1"
     fast-json-stable-stringify "~2.0.0"
