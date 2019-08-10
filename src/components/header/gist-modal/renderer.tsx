@@ -67,11 +67,13 @@ class GistModal extends React.PureComponent<Props, State> {
         return res.json();
       })
       .then(json => {
-        if (this.props.isAuthenticated) {
+        if (Array.isArray(json)) {
           this.setState({
             loaded: true,
             personalGist: json,
           });
+        } else {
+          this.props.receiveCurrentUser(json.isAuthenticated);
         }
       })
       .catch(err => {
