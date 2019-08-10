@@ -313,7 +313,7 @@
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   padding: 6px;
 }
