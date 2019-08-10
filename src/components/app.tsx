@@ -74,8 +74,6 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     if (parameter) {
       if (parameter.example_name) {
         this.setExample(parameter);
-      } else if (parameter.username && parameter.id) {
-        this.setGist(parameter);
       } else if (parameter.mode && !parameter.compressed) {
         this.setEmptySpec(NAME_TO_MODE[parameter.mode]);
       }
@@ -166,8 +164,8 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       setBaseUrl: EditorActions.setBaseUrl,
       setConfig: EditorActions.setConfig,
-      setGistVegaLiteSpec: EditorActions.setGistVegaLiteSpec,
       setGistVegaSpec: EditorActions.setGistVegaSpec,
+      setGistVegaLiteSpec: EditorActions.setGistVegaLiteSpec,
       setModeOnly: EditorActions.setModeOnly,
       setRenderer: EditorActions.setRenderer,
       setSettingsState: EditorActions.setSettingsState,
