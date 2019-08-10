@@ -9,7 +9,6 @@ import { mapDispatchToProps, mapStateToProps } from '.';
 import { BACKEND_URL, COOKIE_NAME, KEYCODES, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
-import Sidebar from '../sidebar/index';
 import { getCookie } from '../../utils/getCookie';
 import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
