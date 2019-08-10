@@ -1,20 +1,26 @@
 import * as React from 'react';
+import { AlertCircle, GitHub, Loader } from 'react-feather';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { mapStateToProps } from '.';
-import { BACKEND_URL, COOKIE_NAME, Mode } from '../../../constants';
+import { mapDispatchToProps, mapStateToProps } from '.';
+import { BACKEND_URL, COOKIE_NAME, Mode, NAME_TO_MODE, SCHEMA } from '../../../constants';
 import { getCookie } from '../../../utils/getCookie';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps> & { closePortal: () => void } & RouteComponentProps;
+type Props = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> & { closePortal: () => void } & RouteComponentProps;
 
 interface State {
   gist: {
     image: string;
+    imageStyle: {
+      bottom: number;
+    };
     filename: string;
     revision: string;
     type: Mode;
     url: string;
   };
+  loaded: boolean;
   gistLoadClicked: boolean;
   invalidFilename: boolean;
   invalidRevision: boolean;
@@ -31,6 +37,9 @@ class GistModal extends React.PureComponent<Props, State> {
       gist: {
         filename: '',
         image: '',
+        imageStyle: {
+          bottom: 0,
+        },
         revision: '',
         type: props.mode,
         url: '',
@@ -39,6 +48,7 @@ class GistModal extends React.PureComponent<Props, State> {
       invalidFilename: false,
       invalidRevision: false,
       invalidUrl: false,
+      loaded: false,
       personalGist: [],
       private: false,
     };
@@ -59,6 +69,7 @@ class GistModal extends React.PureComponent<Props, State> {
       .then(json => {
         if (this.props.isAuthenticated) {
           this.setState({
+            loaded: true,
             personalGist: json,
           });
         }
@@ -109,15 +120,13 @@ class GistModal extends React.PureComponent<Props, State> {
   }
 
   public async onSelectGist(closePortal) {
-    const type = this.state.gist.type;
     const url = this.state.gist.url.trim().toLowerCase();
 
     let revision = this.state.gist.revision.trim().toLowerCase();
-    let filename = this.state.gist.filename.trim();
+    const filename = this.state.gist.filename.trim();
 
     if (url.length === 0) {
       this.refGistForm.reportValidity();
-
       return;
     }
     this.setState({
@@ -125,74 +134,121 @@ class GistModal extends React.PureComponent<Props, State> {
     });
 
     const gistUrl = new URL(url, 'https://gist.github.com');
-    const [username, gistId] = gistUrl.pathname.split('/').slice(1);
-    const gistCommits = await fetch(`https://api.github.com/gists/${gistId}/commits`);
-    this.setState({
-      gistLoadClicked: gistCommits.ok,
-      invalidUrl: !gistCommits.ok,
-    });
-    const responseGistCommits = await gistCommits.json();
-    if (revision.length === 0) {
-      // the url is invalid so we don't want to show errors for the revisiton and filename
-      this.setState({
-        invalidFilename: false,
-        invalidRevision: false,
-      });
-      revision = responseGistCommits[0].version;
-    } else {
-      const revGistCommits = await fetch(`https://api.github.com/gists/${gistId}/${revision}`);
-      this.setState({
-        gistLoadClicked: revGistCommits.ok || this.state.invalidUrl,
-        invalidFilename: !this.state.invalidUrl,
-        invalidRevision: !(revGistCommits.ok || this.state.invalidUrl),
-      });
-    }
-
-    const gistData = await fetch(`https://api.github.com/gists/${gistId}`).then(r => r.json());
-    if (filename.length === 0) {
-      filename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
-
-      if (filename === undefined) {
+    const [_, gistId] = gistUrl.pathname.split('/').slice(1);
+    await fetch(`https://api.github.com/gists/${gistId}/commits`)
+      .then(res => {
         this.setState({
-          gistLoadClicked: false,
-          invalidUrl: true,
+          invalidUrl: !res.ok,
         });
-        throw Error();
-      }
-      this.setState({
-        invalidFilename: false,
-      });
-    } else {
-      const gistFilename = Object.keys(gistData.files).find(f => gistData.files[f].language === 'JSON');
-      if (this.state.gist.filename !== gistFilename && !this.state.invalidUrl) {
+        return res.json();
+      })
+      .then(json => {
+        if (!revision && !this.state.invalidUrl) {
+          revision = json[0].version;
+        } else if (this.state.invalidUrl) {
+          this.setState({
+            gistLoadClicked: false,
+          });
+          return Promise.reject('Invalid Gist URL');
+        }
         this.setState({
-          gistLoadClicked: false,
-          invalidFilename: true,
+          gist: {
+            ...this.state.gist,
+            revision,
+          },
         });
-      } else {
+        return fetch(`https://api.github.com/gists/${gistId}/${revision}`);
+      })
+      .then(res => {
         this.setState({
-          invalidFilename: false,
+          invalidRevision: !res.ok,
         });
-      }
-    }
-    if (!(this.state.invalidUrl || this.state.invalidFilename || this.state.invalidRevision)) {
-      this.props.history.push(`/gist/${type}/${username}/${gistId}/${revision}/${filename}`);
-      this.setState({
-        gist: {
-          filename: '',
-          image: '',
-          revision: '',
-          type: Mode.Vega,
-          url: '',
-        },
-        gistLoadClicked: true,
-        invalidFilename: false,
-        invalidRevision: false,
-        invalidUrl: false,
+        return res.json();
+      })
+      .then(json => {
+        if (this.state.invalidRevision) {
+          this.setState({
+            gistLoadClicked: false,
+          });
+          return Promise.reject('Invalid Revision');
+        } else if (!this.state.invalidRevision && filename === '') {
+          const jsonFiles = Object.keys(json.files).filter(file => {
+            if (file.split('.').slice(-1)[0] === 'json') {
+              return true;
+            }
+          });
+          if (jsonFiles.length === 0) {
+            this.setState(
+              {
+                gistLoadClicked: false,
+              },
+              () => {
+                return Promise.reject('No Vega/Vega-lite compatible file exists in the gist');
+              }
+            );
+          } else {
+            this.setState({
+              gist: {
+                ...this.state.gist,
+                filename: jsonFiles[0],
+              },
+            });
+            return fetch(json.files[jsonFiles[0]].raw_url);
+          }
+        } else {
+          if (json.files[filename] === undefined) {
+            this.setState({
+              gistLoadClicked: false,
+              invalidFilename: true,
+            });
+            return Promise.reject('Invalid file name');
+          } else {
+            return fetch(json.files[filename].raw_url);
+          }
+        }
+      })
+      .then(res => {
+        return res.json();
+      })
+      .catch(error => {
+        if (error instanceof SyntaxError) {
+          this.setState({
+            gistLoadClicked: false,
+            invalidFilename: true,
+          });
+          return Promise.reject(error);
+        }
+      })
+      .then(json => {
+        if (!json.hasOwnProperty('$schema')) {
+          this.setState({
+            gistLoadClicked: false,
+            invalidFilename: true,
+          });
+          return Promise.reject('Invalid Vega/Vega-Lite file');
+        }
+        for (const key in SCHEMA) {
+          if (SCHEMA[key] === json.$schema) {
+            this.setState(
+              {
+                gist: {
+                  ...this.state.gist,
+                  type: NAME_TO_MODE[key],
+                },
+                gistLoadClicked: false,
+              },
+              () => {
+                if (this.state.gist.type === Mode.Vega) {
+                  this.props.setGistVegaSpec('', JSON.stringify(json));
+                } else if (this.state.gist.type === Mode.VegaLite) {
+                  this.props.setGistVegaLiteSpec('', JSON.stringify(json));
+                }
+                closePortal();
+              }
+            );
+          }
+        }
       });
-
-      closePortal(); // Close the gist modal after it gets load
-    }
   }
 
   public componentWillReceiveProps(nextProps) {
@@ -200,6 +256,9 @@ class GistModal extends React.PureComponent<Props, State> {
       gist: {
         filename: '',
         image: '',
+        imageStyle: {
+          bottom: 0,
+        },
         revision: '',
         type: nextProps.mode,
         url: '',
@@ -208,10 +267,46 @@ class GistModal extends React.PureComponent<Props, State> {
   }
 
   public preview(id, file, image) {
-    this.updateGist({
-      filename: file,
-      image,
-      url: `https://gist.github.com/${this.props.handle}/${id}`,
+    this.setState({
+      gist: {
+        ...this.state.gist,
+        filename: file,
+        image,
+        imageStyle: {
+          ...this.state.gist.imageStyle,
+          bottom: 0,
+        },
+        revision: '',
+        url: `https://gist.github.com/${this.props.handle}/${id}`,
+      },
+      invalidFilename: false,
+      invalidRevision: false,
+      invalidUrl: false,
+    });
+  }
+
+  public slideImage(event) {
+    const imageHeight = event.target.height;
+    this.setState({
+      gist: {
+        ...this.state.gist,
+        imageStyle: {
+          ...this.state.gist.imageStyle,
+          bottom: imageHeight > 100 ? imageHeight - 100 : 0,
+        },
+      },
+    });
+  }
+
+  public slideImageBack() {
+    this.setState({
+      gist: {
+        ...this.state.gist,
+        imageStyle: {
+          ...this.state.gist.imageStyle,
+          bottom: 0,
+        },
+      },
     });
   }
 
@@ -227,56 +322,59 @@ class GistModal extends React.PureComponent<Props, State> {
         <div className="gist-split">
           <div className="personal-gist">
             <h3>Your GISTS</h3>
-            <div className="privacy-toggle">
-              <label htmlFor="privacy">Show private gists: </label>
-              <input
-                type="checkbox"
-                name="privacy"
-                id="privacy"
-                checked={this.state.private}
-                onChange={this.privacyToggle.bind(this)}
-              />
-            </div>
-            <ol>
-              {this.props.isAuthenticated &&
-                this.state.personalGist
-                  .filter(gist => gist.isPublic || this.state.private)
-                  .map(gist => (
-                    <li>
-                      {gist.title}
-                      <ul>
-                        {gist.spec.map(spec => (
-                          <li onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}>{spec.name}</li>
-                        ))}
-                      </ul>
-                    </li>
-                  ))}
-            </ol>
+            {this.props.isAuthenticated ? (
+              this.state.loaded ? (
+                <>
+                  {this.state.personalGist !== [] ? (
+                    <>
+                      <div className="privacy-toggle">
+                        <label htmlFor="privacy">Show private gists: </label>
+                        <input
+                          type="checkbox"
+                          name="privacy"
+                          id="privacy"
+                          checked={this.state.private}
+                          onChange={this.privacyToggle.bind(this)}
+                        />
+                      </div>
+                      <ol>
+                        {this.state.personalGist
+                          .filter(gist => gist.isPublic || this.state.private)
+                          .map(gist => (
+                            <li key={gist.name}>
+                              {gist.title}
+                              <ul>
+                                {gist.spec.map(spec => (
+                                  <li
+                                    key={spec.name}
+                                    onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}
+                                  >
+                                    {spec.name}
+                                  </li>
+                                ))}
+                              </ul>
+                            </li>
+                          ))}
+                      </ol>
+                    </>
+                  ) : (
+                    <>You have no Vega or Vega-Lite compatible gists.</>
+                  )}
+                </>
+              ) : (
+                <div className="loader-container">
+                  <Loader className="loader" />
+                </div>
+              )
+            ) : (
+              <span>
+                Login with <a href={`${BACKEND_URL}auth/github`}>GitHub</a> to see all of your personal gist.
+              </span>
+            )}
           </div>
           <div className="load-gist">
             <h3>Load GISTS</h3>
             <form ref={form => (this.refGistForm = form)}>
-              <div className="gist-input-container">
-                Gist Type:
-                <input
-                  type="radio"
-                  name="gist-type"
-                  id="gist-type[vega]"
-                  value="vega"
-                  checked={this.state.gist.type === Mode.Vega}
-                  onChange={this.updateGistType.bind(this)}
-                />
-                <label htmlFor="gist-type[vega]">Vega</label>
-                <input
-                  type="radio"
-                  name="gist-type"
-                  id="gist-type[vega-lite]"
-                  value="vega-lite"
-                  checked={this.state.gist.type === Mode.VegaLite}
-                  onChange={this.updateGistType.bind(this)}
-                />
-                <label htmlFor="gist-type[vega-lite]">Vega Lite</label>
-              </div>
               <div className="gist-input-container">
                 <label>
                   Gist URL
@@ -327,18 +425,43 @@ class GistModal extends React.PureComponent<Props, State> {
                     />
                   </label>
                   <div className="error-message">
-                    {this.state.invalidFilename && <span>Please enter a valid filename.</span>}
+                    {this.state.invalidFilename && <span>File not Vega/Vega-Lite compatible</span>}
                   </div>
                 </div>
               </div>
               <div className="load-button">
-                {this.state.gist.image && (
-                  <div className="preview-image-container">
-                    <span className="preview-text">Preview:</span>
-                    <div className="preview-image-wrapper">
-                      <img src={this.state.gist.image} />
+                {this.state.gist.url && this.state.gist.filename ? (
+                  this.state.gist.image ? (
+                    <div className="preview-image-container">
+                      <span className="preview-text">Preview:</span>
+                      <div className="preview-image-wrapper">
+                        <img
+                          src={this.state.gist.image}
+                          onMouseOver={this.slideImage.bind(this)}
+                          onMouseOut={this.slideImageBack.bind(this)}
+                          style={{
+                            transform: `translateY(-${this.state.gist.imageStyle.bottom}px)`,
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="preview-error-message-container">
+                      <div className="preview-error-message">
+                        <AlertCircle className="preview-error-icon" />
+                        <span>No preview available for this gist file.</span>
+                      </div>
+                      <span className="preview-error-fix">
+                        Upload an image with same name as the gist file to{' '}
+                        <a href={this.state.gist.url} target="_blank">
+                          this gist
+                        </a>
+                        .
+                      </span>
+                    </div>
+                  )
+                ) : (
+                  <></>
                 )}
                 <div className="gist-button">
                   <button type="button" onClick={() => this.onSelectGist(this.props.closePortal)}>
