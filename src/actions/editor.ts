@@ -367,7 +367,7 @@ export function extractConfigSpec() {
 
 export type ExtractConfigSpec = ReturnType<typeof extractConfigSpec>;
 
-export function receiveCurrentUser(handle: string, isAuthenticated: boolean, name?: string, profilePicUrl?: string) {
+export function receiveCurrentUser(isAuthenticated: boolean, handle?: string, name?: string, profilePicUrl?: string) {
   return {
     handle,
     isAuthenticated,
