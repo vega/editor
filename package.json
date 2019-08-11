@@ -6,10 +6,10 @@
   "devDependencies": {
     "autoprefixer": "^9.6.1",
     "awesome-typescript-loader": "^5.2.1",
-    "css-loader": "^3.1.0",
-    "gh-pages": "^2.1.0",
+    "css-loader": "^3.2.0",
+    "gh-pages": "^2.1.1",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^3.0.2",
+    "husky": "^3.0.3",
     "lint-staged": "^9.2.1",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "postcss-loader": "^3.0.0",
@@ -22,10 +22,10 @@
     "webpack": "4.39.1",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.6",
-    "webpack-dev-server": "^3.7.2"
+    "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
-    "@types/react": "^16.8.24",
+    "@types/react": "^16.9.1",
     "@types/react-redux": "^7.1.1",
     "@types/react-router-dom": "^4.3.4",
     "ajv": "^6.10.2",
@@ -36,9 +36,9 @@
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.17.1",
     "prop-types": "^15.7.2",
-    "react": "^16.8.6",
+    "react": "^16.9.0",
     "react-clipboard.js": "^2.0.13",
-    "react-dom": "^16.8.6",
+    "react-dom": "^16.9.0",
     "react-feather": "^2.0.3",
     "react-ga": "2.6.0",
     "react-monaco-editor": "^0.28.0",
