@@ -142,3 +142,7 @@ button:focus {
   display: flex;
   flex-direction: row;
 }
+
+p {
+  line-height: 1.3;
+}

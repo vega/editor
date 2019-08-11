@@ -2,6 +2,7 @@
   border-left: solid 1px rgba(0, 0, 0, 0.2);
   width: 290px;
   font-size: 14px;
+  padding: 25px;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -17,7 +18,6 @@
 }
 
 .select-container {
-  margin: 29px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,7 +52,6 @@
 .tooltips,
 .hover-enable {
   width: 150px;
-  margin: 25px;
   display: flex;
   align-items: center;
   margin-bottom: 13px;
@@ -64,10 +63,9 @@
 }
 
 .settings-description {
-  display: block;
   font-size: small;
   color: #666;
-  margin: 12px 29px;
+  margin: 12px 0 30px 0;
 }
 
 .settings-description a {
