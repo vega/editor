@@ -39,7 +39,10 @@ const HelpModal = () => {
       </a>
       <h2>Keyboard Shortcuts</h2>
       <ul className="keyboard-shortcuts">{keyBoardShortcuts}</ul>
-      <p>Note: You can use editor shortcuts by clicking the 'Commands' button</p>
+      <p>
+        Access editor actions by clicking the 'Commands' button or pressing <kbd>f1</kbd>.<br />
+        Here you can clear the spec, extract or merge the config, or format the specification.
+      </p>
       <a
         href={`https://github.com/vega/editor/issues/new?body=**Vega-Editor ${pjson.version}**`}
         target="_blank"
