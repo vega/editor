@@ -206,7 +206,7 @@ class Header extends React.PureComponent<Props, State> {
     const authButton = (
       <div className="auth-button-container">
         {this.props.isAuthenticated ? (
-          <form action={`${BACKEND_URL}auth/github/logout`} method="get">
+          <form action={`${BACKEND_URL}auth/github/logout`} method="get" target="_blank">
             <div className="profile-container">
               <img className="profile-img" src={this.props.profilePicUrl} />
               <span className="arrow-down"></span>
@@ -222,7 +222,7 @@ class Header extends React.PureComponent<Props, State> {
             </div>
           </form>
         ) : (
-          <form action={`${BACKEND_URL}auth/github`} method="get">
+          <form action={`${BACKEND_URL}auth/github`} method="get" target="_blank">
             <button className="sign-in" type="submit">
               <span className="sign-in-text">Sign in with</span>
               <GitHub />
