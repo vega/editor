@@ -349,7 +349,7 @@
   width: 130px;
   background-color: white;
   border: 1px solid #ccc;
-  top: 61px;
+  top: 58px;
   right: 6px;
   z-index: 10;
   border-radius: 3px;
@@ -362,7 +362,7 @@
   width: 0px;
   height: 0px;
   content: "";
-  bottom: 111px;
+  bottom: 102px;
   right: 27px;
 }
 
@@ -390,17 +390,13 @@
 .whoami {
   font-size: 0.9em;
   padding: 0.5em 0 1em 0.5em;
-  /* padding-bottom: 0.5em; */
-  border-bottom: 1px solid #ccc;
-}
-
-.profile-options {
-  margin: 0.3em 0;
+  border-bottom: 1px solid #ebebeb;
 }
 
 .sign-out {
   font-size: 16px;
   background-color: transparent;
+  color: #4269d0;
   padding: 0.6em 0 0.6em 0.5em;
   width: 100%;
   border: none;

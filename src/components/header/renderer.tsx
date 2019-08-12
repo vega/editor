@@ -212,10 +212,10 @@ class Header extends React.PureComponent<Props, State> {
               <span className="arrow-down"></span>
               {this.state.open && (
                 <div className="profile-menu">
-                  <div className="welcome">Welcome!</div>
+                  <div className="welcome">Logged in as</div>
                   <div className="whoami">{this.props.name}</div>
-                  <div className="profile-options">
-                    <input className="sign-out" type="submit" value="Logout" onClick={e => e.stopPropagation()} />
+                  <div>
+                    <input className="sign-out" type="submit" value="Sign out" onClick={e => e.stopPropagation()} />
                   </div>
                 </div>
               )}
@@ -224,7 +224,7 @@ class Header extends React.PureComponent<Props, State> {
         ) : (
           <form action={`${BACKEND_URL}auth/github`} method="get">
             <button className="sign-in" type="submit">
-              <span className="sign-in-text">Login with</span>
+              <span className="sign-in-text">Sign in with</span>
               <GitHub />
             </button>
           </form>
