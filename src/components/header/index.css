@@ -349,7 +349,7 @@
   width: 130px;
   background-color: white;
   border: 1px solid #ccc;
-  top: 58px;
+  top: 55px;
   right: 6px;
   z-index: 10;
   border-radius: 3px;
@@ -363,22 +363,22 @@
   height: 0px;
   content: "";
   bottom: 102px;
-  right: 27px;
+  right: 31px;
 }
 
 .profile-menu::before {
-  border-top: 12px solid transparent;
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-bottom: 12px solid #ccc;
-  right: 26px;
+  border-top: 9px solid transparent;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid #ccc;
+  right: 29px;
 }
 
 .profile-menu::after {
-  border-top: 10px solid transparent;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid white;
+  border-top: 7px solid transparent;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid white;
 }
 
 .welcome {
