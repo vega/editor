@@ -56,4 +56,4 @@ export const KEYCODES = {
 
 export const BACKEND_URL = 'https://vega.now.sh/';
 
-export const COOKIE_NAME = 'vegasessid';
+export const COOKIE_NAME = 'vega_session';
