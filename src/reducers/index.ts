@@ -42,6 +42,8 @@ import {
   UPDATE_VEGA_SPEC,
   UpdateVegaLiteSpec,
   UpdateVegaSpec,
+  SET_SIGNALS,
+  ADD_SIGNAL,
 } from '../actions/editor';
 import { DEFAULT_STATE, Mode } from '../constants';
 import { State } from '../constants/default-state';
@@ -451,6 +453,16 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return mergeConfig(state, action);
     case EXTRACT_CONFIG_SPEC:
       return extractConfig(state, action);
+    case SET_SIGNALS:
+      return {
+        ...state,
+        signals: action.signals,
+      };
+    case ADD_SIGNAL:
+      return {
+        ...state,
+        signals: state.signals.concat(action.signal),
+      };
     default:
       return state;
   }

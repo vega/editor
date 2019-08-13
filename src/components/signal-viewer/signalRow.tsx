@@ -7,6 +7,7 @@ interface Props {
   view: View;
   signal: string;
   onValueChange: (key, value) => void;
+  maskListner: boolean;
 }
 
 interface State {
@@ -14,6 +15,7 @@ interface State {
 }
 
 export default class SignalRow extends React.PureComponent<Props, State> {
+  private listnerAttached = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -34,11 +36,26 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     }
   }
   public componentDidMount() {
-    this.props.view.addSignalListener(this.props.signal, this.signalHandler);
+    if (!this.props.maskListner) {
+      this.props.view.addSignalListener(this.props.signal, this.signalHandler);
+      this.listnerAttached = true;
+    }
   }
   public componentWillUnmount() {
     this.props.view.removeSignalListener(this.props.signal, this.signalHandler);
+    this.listnerAttached = false;
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.maskListner && this.listnerAttached) {
+      this.props.view.removeSignalListener(this.props.signal, this.signalHandler);
+      this.listnerAttached = false;
+    } else if (!this.listnerAttached && !nextProps.maskListner) {
+      this.props.view.addSignalListener(this.props.signal, this.signalHandler);
+      this.listnerAttached = true;
+    }
+  }
+
   public render() {
     let tooLong = false;
     let formatted = '';
