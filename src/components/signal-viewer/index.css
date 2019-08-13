@@ -5,3 +5,7 @@
   overflow: auto;
   flex: 1;
 }
+
+.svg-rect:hover {
+  fill: #fce57e !important;
+}

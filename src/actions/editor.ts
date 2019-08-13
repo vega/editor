@@ -36,6 +36,8 @@ export const SET_TOOLTIP: 'SET_TOOLTIP' = 'SET_TOOLTIP';
 export const CLEAR_CONFIG: 'CLEAR_CONFIG' = 'CLEAR_CONFIG';
 export const MERGE_CONFIG_SPEC: 'MERGE_CONFIG_SPEC' = 'MERGE_CONFIG_SPEC';
 export const EXTRACT_CONFIG_SPEC: 'EXTRACT_CONFIG_SPEC' = 'EXTRACT_CONFIG_SPEC';
+export const SET_SIGNALS: 'SET_SIGNALS' = 'SET_SIGNALS';
+export const ADD_SIGNAL: 'ADD_SIGNAL' = 'ADD_SIGNAL';
 
 export type Action =
   | SetMode
@@ -72,7 +74,9 @@ export type Action =
   | SetTooltip
   | ClearConfig
   | MergeConfigSpec
-  | ExtractConfigSpec;
+  | ExtractConfigSpec
+  | SetSignals
+  | AddSignal;
 
 export function setMode(mode: Mode) {
   return {
@@ -363,3 +367,19 @@ export function extractConfigSpec() {
 }
 
 export type ExtractConfigSpec = ReturnType<typeof extractConfigSpec>;
+
+export function setSignals(value: any) {
+  return {
+    type: SET_SIGNALS,
+    signals: value,
+  };
+}
+export type SetSignals = ReturnType<typeof setSignals>;
+
+export function addSignal(value: any) {
+  return {
+    type: ADD_SIGNAL,
+    signal: value,
+  };
+}
+export type AddSignal = ReturnType<typeof addSignal>;
