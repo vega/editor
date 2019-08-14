@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { AlertCircle, GitHub, Loader } from 'react-feather';
+import { AlertCircle } from 'react-feather';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { BACKEND_URL, COOKIE_NAME, Mode, NAME_TO_MODE, SCHEMA } from '../../../constants';
-import { getCookie } from '../../../utils/getCookie';
+import { BACKEND_URL, COOKIE_NAME, Mode } from '../../../constants';
+import getCookie from '../../../utils/getCookie';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -27,6 +27,7 @@ interface State {
   invalidUrl: boolean;
   personalGist: any;
   private: boolean;
+  syntaxError: boolean;
 }
 
 class GistModal extends React.PureComponent<Props, State> {
@@ -51,6 +52,7 @@ class GistModal extends React.PureComponent<Props, State> {
       loaded: false,
       personalGist: [],
       private: false,
+      syntaxError: false,
     };
   }
 
@@ -96,10 +98,6 @@ class GistModal extends React.PureComponent<Props, State> {
     });
   }
 
-  public updateGistType(event) {
-    this.updateGist({ type: event.currentTarget.value });
-  }
-
   public updateGistUrl(event) {
     this.updateGist({ url: event.currentTarget.value });
     this.setState({
@@ -124,8 +122,13 @@ class GistModal extends React.PureComponent<Props, State> {
   public async onSelectGist(closePortal) {
     const url = this.state.gist.url.trim().toLowerCase();
 
-    let revision = this.state.gist.revision.trim().toLowerCase();
-    const filename = this.state.gist.filename.trim();
+    this.setState({
+      gist: {
+        ...this.state.gist,
+        filename: this.state.gist.filename.trim(),
+        revision: this.state.gist.revision.trim().toLowerCase(),
+      },
+    });
 
     if (url.length === 0) {
       this.refGistForm.reportValidity();
@@ -145,21 +148,20 @@ class GistModal extends React.PureComponent<Props, State> {
         return res.json();
       })
       .then(json => {
-        if (!revision && !this.state.invalidUrl) {
-          revision = json[0].version;
+        if (!this.state.gist.revision && !this.state.invalidUrl) {
+          this.setState({
+            gist: {
+              ...this.state.gist,
+              revision: json[0].version,
+            },
+          });
         } else if (this.state.invalidUrl) {
           this.setState({
             gistLoadClicked: false,
           });
           return Promise.reject('Invalid Gist URL');
         }
-        this.setState({
-          gist: {
-            ...this.state.gist,
-            revision,
-          },
-        });
-        return fetch(`https://api.github.com/gists/${gistId}/${revision}`);
+        return fetch(`https://api.github.com/gists/${gistId}/${this.state.gist.revision}`);
       })
       .then(res => {
         this.setState({
@@ -173,7 +175,7 @@ class GistModal extends React.PureComponent<Props, State> {
             gistLoadClicked: false,
           });
           return Promise.reject('Invalid Revision');
-        } else if (!this.state.invalidRevision && filename === '') {
+        } else if (!this.state.invalidRevision && this.state.gist.filename === '') {
           const jsonFiles = Object.keys(json.files).filter(file => {
             if (file.split('.').slice(-1)[0] === 'json') {
               return true;
@@ -183,72 +185,49 @@ class GistModal extends React.PureComponent<Props, State> {
             this.setState(
               {
                 gistLoadClicked: false,
+                invalidUrl: true,
               },
               () => {
-                return Promise.reject('No Vega/Vega-lite compatible file exists in the gist');
+                return Promise.reject('No JSON file exists in the gist');
               }
             );
           } else {
-            this.setState({
-              gist: {
-                ...this.state.gist,
-                filename: jsonFiles[0],
+            this.setState(
+              {
+                gist: {
+                  ...this.state.gist,
+                  filename: jsonFiles[0],
+                },
               },
-            });
-            return fetch(json.files[jsonFiles[0]].raw_url);
+              () => {
+                const { revision, filename } = this.state.gist;
+                JSON.parse(json.files[jsonFiles[0]].content);
+                this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+                closePortal();
+              }
+            );
           }
         } else {
-          if (json.files[filename] === undefined) {
+          if (json.files[this.state.gist.filename] === undefined) {
             this.setState({
               gistLoadClicked: false,
               invalidFilename: true,
             });
             return Promise.reject('Invalid file name');
           } else {
-            return fetch(json.files[filename].raw_url);
+            const { revision, filename } = this.state.gist;
+            JSON.parse(json.files[filename].content);
+            this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+            closePortal();
           }
         }
-      })
-      .then(res => {
-        return res.json();
       })
       .catch(error => {
         if (error instanceof SyntaxError) {
           this.setState({
             gistLoadClicked: false,
-            invalidFilename: true,
+            syntaxError: true,
           });
-          return Promise.reject(error);
-        }
-      })
-      .then(json => {
-        if (!json.hasOwnProperty('$schema')) {
-          this.setState({
-            gistLoadClicked: false,
-            invalidFilename: true,
-          });
-          return Promise.reject('Invalid Vega/Vega-Lite file');
-        }
-        for (const key in SCHEMA) {
-          if (SCHEMA[key] === json.$schema) {
-            this.setState(
-              {
-                gist: {
-                  ...this.state.gist,
-                  type: NAME_TO_MODE[key],
-                },
-                gistLoadClicked: false,
-              },
-              () => {
-                if (this.state.gist.type === Mode.Vega) {
-                  this.props.setGistVegaSpec('', JSON.stringify(json));
-                } else if (this.state.gist.type === Mode.VegaLite) {
-                  this.props.setGistVegaLiteSpec('', JSON.stringify(json));
-                }
-                closePortal();
-              }
-            );
-          }
         }
       });
   }
@@ -284,6 +263,7 @@ class GistModal extends React.PureComponent<Props, State> {
       invalidFilename: false,
       invalidRevision: false,
       invalidUrl: false,
+      syntaxError: false,
     });
   }
 
@@ -365,12 +345,16 @@ class GistModal extends React.PureComponent<Props, State> {
                 </>
               ) : (
                 <div className="loader-container">
-                  <Loader className="loader" />
+                  <span>Loading your GISTS...</span>
                 </div>
               )
             ) : (
               <span>
-                Login with <a href={`${BACKEND_URL}auth/github`}>GitHub</a> to see all of your personal gist.
+                Login with{' '}
+                <a href={`${BACKEND_URL}auth/github`} target="_blank">
+                  GitHub
+                </a>{' '}
+                to see all of your personal gist.
               </span>
             )}
           </div>
@@ -427,7 +411,11 @@ class GistModal extends React.PureComponent<Props, State> {
                     />
                   </label>
                   <div className="error-message">
-                    {this.state.invalidFilename && <span>File not Vega/Vega-Lite compatible</span>}
+                    {this.state.invalidFilename ? (
+                      <span>Please enter a valid JSON file</span>
+                    ) : (
+                      this.state.syntaxError && <span>JSON is syntactically incorrect</span>
+                    )}
                   </div>
                 </div>
               </div>

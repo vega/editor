@@ -76,6 +76,8 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
         this.setExample(parameter);
       } else if (parameter.mode && !parameter.compressed) {
         this.setEmptySpec(NAME_TO_MODE[parameter.mode]);
+      } else if (parameter.id) {
+        this.setGist(parameter);
       }
     }
   }
@@ -122,6 +124,25 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
       this.props.updateVegaLiteSpec(VEGA_LITE_START_SPEC);
     }
   }
+
+  public async setGist(parameter: { id: string; revision: string; filename: string }) {
+    await fetch(`https://api.github.com/gists/${parameter.id}/${parameter.revision}`)
+      .then(res => res.json())
+      .then(json => {
+        const contentObj = JSON.parse(json.files[parameter.filename].content);
+        if (!contentObj.hasOwnProperty('$schema')) {
+          this.props.setGistVegaSpec('', json.files[parameter.filename].content);
+        } else {
+          const mode = contentObj.$schema.split('/').slice(-2)[0];
+          if (mode === 'vega') {
+            this.props.setGistVegaSpec('', json.files[parameter.filename].content);
+          } else if (mode === 'vega-lite') {
+            this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
+          }
+        }
+      });
+  }
+
   public render() {
     return (
       <div className="app-container">
@@ -164,8 +185,8 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       setBaseUrl: EditorActions.setBaseUrl,
       setConfig: EditorActions.setConfig,
-      setGistVegaSpec: EditorActions.setGistVegaSpec,
       setGistVegaLiteSpec: EditorActions.setGistVegaLiteSpec,
+      setGistVegaSpec: EditorActions.setGistVegaSpec,
       setModeOnly: EditorActions.setModeOnly,
       setRenderer: EditorActions.setRenderer,
       setSettingsState: EditorActions.setSettingsState,
