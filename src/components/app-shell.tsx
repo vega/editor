@@ -20,7 +20,7 @@ export default class AppShell extends React.PureComponent<Props> {
           <Route path="/" exact component={App} />
           <Route path="/reset" component={() => <Reset />} />
           <Route path="/edited" component={App} />
-          <Route path="/gist/:mode/:username/:id/:revision/:filename" component={App} />
+          <Route path="/gist/:id/:revision/:filename" component={App} />
           <Route path="/examples/:mode/:example_name" component={App} />
           <Route path="/examples/:mode" component={() => <App showExample={true} />} />
           <Route path="/examples" component={() => <App showExample={true} />} />

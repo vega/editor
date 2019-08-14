@@ -16,8 +16,6 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       receiveCurrentUser: EditorActions.receiveCurrentUser,
-      setGistVegaLiteSpec: EditorActions.setGistVegaLiteSpec,
-      setGistVegaSpec: EditorActions.setGistVegaSpec,
     },
     dispatch
   );
