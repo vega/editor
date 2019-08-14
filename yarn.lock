@@ -240,7 +240,7 @@
     "@types/history" "*"
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8.23", "@types/react@^16.9.1":
+"@types/react@*", "@types/react@^16.9.1":
   version "16.9.1"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.1.tgz#862c83b4c9d5cd116e42fd9a4f3694843cd2c051"
   integrity sha512-jGM2x8F7m7/r+81N/BOaUKVwbC5Cdw6ExlWEUpr77XPwVeNvAppnPEnMMLMfxRDYL8FPEX8MHjwtD2NQMJ0yyQ==
@@ -4845,12 +4845,12 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-monaco-editor@^0.28.0:
-  version "0.28.0"
-  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.28.0.tgz#c69e8d0b5eaefddef73a535a69257c85d48feee9"
-  integrity sha512-sRgAMcuRr+EpGZQDiEUFJyevLKo8km87Y3PDjuGrZGvZ/vL10XhYo509uY5xLFG3SLFk3tgjUWteWqxkVyTm1w==
+react-monaco-editor@^0.29.0:
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.29.0.tgz#0e3efa0264d973923e337d72ab678767aab9ac60"
+  integrity sha512-Enff/VtqUH6jQyNmrqdeosh59fossZYSmGy8nL3DN+BeTTx1dwBhYOf7noqBULCp4D+JA1ZSQQL5lAPwFjnMqw==
   dependencies:
-    "@types/react" "^16.8.23"
+    "@types/react" "^16.9.1"
     prop-types "^15.7.2"
 
 react-paginate@^6.3.0:
