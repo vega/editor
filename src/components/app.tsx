@@ -125,8 +125,10 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     }
   }
 
-  public async setGist(parameter: { id: string; revision: string; filename: string }) {
-    await fetch(`https://api.github.com/gists/${parameter.id}/${parameter.revision}`)
+  public async setGist(parameter: { id: string; revision?: string; filename: string }) {
+    await fetch(
+      `https://api.github.com/gists/${parameter.id}${parameter.revision !== undefined ? `/${parameter.revision}` : ''}`
+    )
       .then(res => res.json())
       .then(json => {
         const contentObj = JSON.parse(json.files[parameter.filename].content);

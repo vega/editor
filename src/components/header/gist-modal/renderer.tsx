@@ -20,11 +20,12 @@ interface State {
     type: Mode;
     url: string;
   };
-  loaded: boolean;
   gistLoadClicked: boolean;
   invalidFilename: boolean;
   invalidRevision: boolean;
   invalidUrl: boolean;
+  latestRevision: boolean;
+  loaded: boolean;
   personalGist: any;
   private: boolean;
   syntaxError: boolean;
@@ -49,6 +50,7 @@ class GistModal extends React.PureComponent<Props, State> {
       invalidFilename: false,
       invalidRevision: false,
       invalidUrl: false,
+      latestRevision: false,
       loaded: false,
       personalGist: [],
       private: false,
@@ -161,6 +163,11 @@ class GistModal extends React.PureComponent<Props, State> {
           });
           return Promise.reject('Invalid Gist URL');
         }
+        if (json[0].version === this.state.gist.revision) {
+          this.setState({
+            latestRevision: true,
+          });
+        }
         return fetch(`https://api.github.com/gists/${gistId}/${this.state.gist.revision}`);
       })
       .then(res => {
@@ -202,7 +209,11 @@ class GistModal extends React.PureComponent<Props, State> {
               () => {
                 const { revision, filename } = this.state.gist;
                 JSON.parse(json.files[jsonFiles[0]].content);
-                this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+                if (this.state.latestRevision) {
+                  this.props.history.push(`/gist/${gistId}/${filename}`);
+                } else {
+                  this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+                }
                 closePortal();
               }
             );
@@ -217,7 +228,11 @@ class GistModal extends React.PureComponent<Props, State> {
           } else {
             const { revision, filename } = this.state.gist;
             JSON.parse(json.files[filename].content);
-            this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+            if (this.state.latestRevision) {
+              this.props.history.push(`/gist/${gistId}/${filename}`);
+            } else {
+              this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+            }
             closePortal();
           }
         }
