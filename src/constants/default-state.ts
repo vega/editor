@@ -63,7 +63,7 @@ export const DEFAULT_STATE: State = {
   renderer: 'canvas',
   selectedExample: null,
   settings: false,
-  signals: [],
+  signals: {},
   sidePaneItem: SIDEPANE.Editor,
   themeName: 'custom',
   tooltipEnable: true,

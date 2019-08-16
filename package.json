@@ -31,6 +31,7 @@
     "ajv": "^6.10.2",
     "d3-geo-projection": "^2.7.0",
     "d3-request": "1.0.6",
+    "d3-selection": "^1.4.0",
     "history": "^4.9.0",
     "json-stringify-pretty-compact": "^2.0.0",
     "lz-string": "^1.4.4",

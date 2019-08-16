@@ -5,6 +5,7 @@ import { deepEqual } from 'vega-lite/build/src/util';
 import { mapDispatchToProps, mapStateToProps } from '.';
 import './index.css';
 import SignalRow from './signalRow';
+import TimelineRow from './TimelineRow';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -27,6 +28,8 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       hoverValue: {},
       maskListner: false,
       signal: {},
+      maxLength: 0,
+      xCount: 0,
     };
   }
 
@@ -34,19 +37,36 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     return Object.keys(_ref.view.getState({ data: vega.truthy, signals: vega.truthy, recurse: true }).signals);
   }
 
-  public getSignals() {
-    const obj = {};
-    const keys = this.getKeys();
-    keys.map(key => {
-      obj[key] = this.props.view.signal(key);
-    });
-    (obj as any).timeStamp = Date.now();
-    const prevSignal = { ...this.props.signals[this.props.signals.length - 1] };
-    const newSignal: any = { ...obj };
-    delete prevSignal.timeStamp;
-    delete newSignal.timeStamp;
-    if (!deepEqual(newSignal, prevSignal)) {
-      this.props.addSignal(obj);
+  public getSignals(changeKey = null) {
+    if (changeKey) {
+      const obj = {
+        value: this.props.view.signal(changeKey),
+      };
+      const lastObj = this.props.signals[changeKey];
+      const prevObj = { ...lastObj[lastObj.length - 1] };
+      delete prevObj.xCount;
+      if (!deepEqual(obj, prevObj)) {
+        (obj as any).xCount = this.state.xCount;
+        const newSignals = this.props.signals[changeKey].concat(obj);
+        this.props.setSignals({ ...this.props.signals, [changeKey]: newSignals });
+        this.setState(current => {
+          return {
+            ...current,
+            xCount: current.xCount + 1,
+          };
+        });
+      }
+    } else {
+      const obj = {};
+      this.state.keys.map(key => {
+        obj[key]
+          ? obj[key].push({ value: this.props.view.signal(key), xCount: this.state.xCount })
+          : (obj[key] = [{ value: this.props.view.signal(key), xCount: this.state.xCount }]);
+      });
+      this.props.setSignals(obj);
+      this.setState({
+        xCount: this.state.xCount + 1,
+      });
     }
   }
 
@@ -67,27 +87,34 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     }, 100);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.view !== nextProps.view) {
-      const keys = this.getKeys(nextProps);
-      this.setState(
-        {
-          keys,
-          signal: {},
-        },
-        () => {
-          const obj = {};
-          this.state.keys.map(key => {
-            obj[key] = this.props.view.signal(key);
-          });
-          (obj as any).timeStamp = Date.now();
-          this.props.setSignals([obj]);
-        }
-      );
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (this.props.view !== nextProps.view) {
+  //     const keys = this.getKeys(nextProps);
+  //     this.setState(
+  //       {
+  //         keys,
+  //         signal: {},
+  //       },
+  //       () => {
+  //         const obj = {};
+  //         this.state.keys.map(key => {
+  //           obj[key]
+  //             ? obj[key].push({ value: this.props.view.signal(key), xCount: this.state.xCount })
+  //             : (obj[key] = [{ value: this.props.view.signal(key), xCount: this.state.xCount }]);
+  //         });
+  //         this.props.setSignals(obj);
+  //         this.setState({
+  //           xCount: this.state.xCount + 1,
+  //         });
+  //       }
+  //     );
+  //   }
+  // }
 
   componentDidMount() {
+    window.addEventListener('resize', () => {
+      this.forceUpdate();
+    });
     const keys = this.getKeys();
     this.setState(
       {
@@ -103,37 +130,29 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     if (key === 'width' || key === 'height' || key === 'padding' || key === 'autosize' || key === 'cursor') {
       return;
     }
-    this.getSignals();
+    this.getSignals(key);
   };
 
   public render() {
-    const obj = {};
-    this.props.signals.map(signal => {
-      Object.keys(signal).map(key => {
-        obj[key]
-          ? obj[key].push({ value: signal[key], timeStamp: signal.timeStamp })
-          : (obj[key] = [{ value: signal[key], timeStamp: signal.timeStamp }]);
-      });
-    });
+    const maxLengthArray = [...Array(this.state.xCount)].map((u, i) => i);
     const colorObj = {};
     if (!deepEqual(this.state.signal, {})) {
-      Object.keys(obj).map(key => {
+      Object.keys(this.props.signals).map(key => {
         if (
           key === 'width' ||
           key === 'height' ||
           key === 'padding' ||
           key === 'autosize' ||
           key === 'cursor' ||
-          key === 'timeStamp'
+          key === 'xCount'
         ) {
           return;
         }
         if (!deepEqual(this.state.signal, {})) {
-          const index = getClosestValue(obj[key], this.state.signal.timeStamp, key);
+          const index = getClosestValue(this.props.signals[key], this.state.signal.timeStamp, key);
           colorObj[key] = index;
         }
       });
-      console.log(colorObj);
     }
     return (
       <>
@@ -141,55 +160,57 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           {this.state.isHovered && <div>{stringify(this.state.hoverValue)}</div>}
         </div>
         <table className="debugger-table">
-          {Object.keys(obj).map(k => {
+          {Object.keys(this.props.signals).map((k, index) => {
             if (
               k === 'width' ||
               k === 'height' ||
               k === 'padding' ||
               k === 'autosize' ||
               k === 'cursor' ||
-              k === 'timeStamp'
+              k === 'xCount'
             ) {
               return null;
             }
             return (
               <tr>
                 <td style={{ width: 100 }}>{k}</td>
-                <td style={{ height: 20 }}>
-                  <div style={{ width: window.innerWidth * 0.4 }}>
-                    <svg className="debugger" style={{ width: '100%', height: '20' }}>
+                <td>
+                  <div id={`timeline${index}`}>
+                    <TimelineRow data={this.props.signals[k]} id={index} />
+                    {/* <br></br> */}
+                    {/* <svg className="debugger" style={{ width: '100%', height: '20' }}>
                       <g>
-                        {obj[k].map((e, index) => {
-                          const prev = { ...obj[k][index - 1] };
-                          const next = { ...obj[k][index] };
-                          delete prev.timeStamp;
-                          delete next.timeStamp;
-                          if (deepEqual(prev, next)) {
-                            return null;
+                        {maxLengthArray.map((e, index) => {
+                          {
+                            return this.props.signals[k].map(signal => {
+                              if (signal.xCount === index) {
+                                return (
+                                  <rect
+                                    className="svg-rect"
+                                    onMouseOver={() => this.setState({ isHovered: true, hoverValue: { [k]: e } })}
+                                    onMouseOut={() => this.setState({ isHovered: false, hoverValue: {} })}
+                                    width={(window.innerWidth * 0.4) / this.state.xCount}
+                                    x={(index * window.innerWidth * 0.4) / this.state.xCount}
+                                    height="20"
+                                    style={{
+                                      cursor: 'pointer',
+                                      fill: '#b7b7b7',
+                                      stroke: 'white',
+                                      strokeWidth: '0.5px',
+                                      pointerEvents: 'all',
+                                    }}
+                                  >
+                                    {stringify(e)}
+                                  </rect>
+                                );
+                              } else {
+                                return null;
+                              }
+                            });
                           }
-                          return (
-                            <rect
-                              className="svg-rect"
-                              onMouseOver={() => this.setState({ isHovered: true, hoverValue: { [k]: e } })}
-                              onMouseOut={() => this.setState({ isHovered: false, hoverValue: {} })}
-                              width={(window.innerWidth * 0.4) / obj[k].length}
-                              x={(index * window.innerWidth * 0.4) / obj[k].length}
-                              height="20"
-                              onClick={() => this.handleSetState(e.timeStamp)}
-                              style={{
-                                cursor: 'pointer',
-                                fill: colorObj[k] === index ? 'green' : '#b7b7b7',
-                                stroke: 'white',
-                                strokeWidth: '0.5px',
-                                pointerEvents: 'all',
-                              }}
-                            >
-                              {stringify(e)}
-                            </rect>
-                          );
                         })}
                       </g>
-                    </svg>
+                    </svg> */}
                   </div>
                 </td>
               </tr>

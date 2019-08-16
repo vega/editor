@@ -458,11 +458,6 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         signals: action.signals,
       };
-    case ADD_SIGNAL:
-      return {
-        ...state,
-        signals: state.signals.concat(action.signal),
-      };
     default:
       return state;
   }
