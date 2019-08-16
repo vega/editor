@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AlertCircle } from 'react-feather';
+import { AlertCircle, File, Lock } from 'react-feather';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { mapDispatchToProps, mapStateToProps } from '.';
 import { BACKEND_URL, COOKIE_NAME, Mode } from '../../../constants';
@@ -325,7 +325,6 @@ class GistModal extends React.PureComponent<Props, State> {
                   {this.state.personalGist !== [] ? (
                     <>
                       <div className="privacy-toggle">
-                        <label htmlFor="privacy">Show private gists: </label>
                         <input
                           type="checkbox"
                           name="privacy"
@@ -333,26 +332,32 @@ class GistModal extends React.PureComponent<Props, State> {
                           checked={this.state.private}
                           onChange={this.privacyToggle.bind(this)}
                         />
+                        <label htmlFor="privacy">Show private GISTS</label>
                       </div>
-                      <ol>
-                        {this.state.personalGist
-                          .filter(gist => gist.isPublic || this.state.private)
-                          .map(gist => (
-                            <li key={gist.name}>
-                              {gist.title}
-                              <ul>
-                                {gist.spec.map(spec => (
-                                  <li
+                      {this.state.personalGist
+                        .filter(gist => gist.isPublic || this.state.private)
+                        .map(gist => (
+                          <div className="gist-container">
+                            <div className="personal-gist-description" key={gist.name}>
+                              {gist.isPublic ? <File width="14" height="14" /> : <Lock width="14" height="14" />}
+                              <span className="text">{gist.title ? gist.title : 'No description provided'}</span>
+                            </div>
+                            <div className="personal-gist-files">
+                              {gist.spec.map(spec => (
+                                <div className="file">
+                                  <div className="arrow"></div>
+                                  <div
+                                    className="filename"
                                     key={spec.name}
                                     onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}
                                   >
                                     {spec.name}
-                                  </li>
-                                ))}
-                              </ul>
-                            </li>
-                          ))}
-                      </ol>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
                     </>
                   ) : (
                     <>You have no Vega or Vega-Lite compatible gists.</>
@@ -457,11 +462,7 @@ class GistModal extends React.PureComponent<Props, State> {
                         <span>No preview available for this gist file.</span>
                       </div>
                       <span className="preview-error-fix">
-                        Upload an image with same name as the gist file to{' '}
-                        <a href={this.state.gist.url} target="_blank">
-                          this gist
-                        </a>
-                        .
+                        Upload an image file with name {this.state.gist.filename.replace(/\.json/i, '.(png/jpg)')}.
                       </span>
                     </div>
                   )
