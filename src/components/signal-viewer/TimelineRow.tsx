@@ -1,65 +1,33 @@
+import { range } from 'd3-array';
+import { scaleBand } from 'd3-scale';
+import stringify from 'json-stringify-pretty-compact';
 import React, { Component } from 'react';
-import * as d3 from 'd3-selection';
-import { deepEqual } from 'vega-lite/src/util';
-export default class TimelineRow extends Component<any, any> {
-  public scg = null;
 
-  renderChart() {
-    const data = this.props.data;
-    console.log(data.length);
-    (this as any).svg = d3
-      .select(`#timeline${this.props.id}`)
-      .append('svg')
-      .attr('width', 2000)
-      .attr('height', 20);
+export default class TimelineRow extends Component<{ data: any[]; width: number; xCount: number }, any> {
+  public render() {
+    const { data, width, xCount } = this.props;
+    const scale = scaleBand(range(0, xCount), [0, width]);
 
-    (this as any).svg
-      .selectAll('rect')
-      .data(data)
-      .enter()
-      .append('rect')
-      .attr('x', (d, i) => (i * 600) / data.length)
-      .attr('y', 0)
-      .attr('width', 600 / data.length)
-      .attr('height', (d, i) => 20)
-      .attr('fill', 'grey');
-  }
+    const row = data.map(d => {
+      return (
+        <rect
+          className="svg-rect"
+          height={20}
+          style={{
+            cursor: 'pointer',
+            fill: '#b7b7b7',
+            pointerEvents: 'all',
+            stroke: 'white',
+            strokeWidth: '0.5px',
+          }}
+          width={scale.bandwidth()}
+          x={scale(d.xCount)}
+        >
+          {stringify(d)}
+        </rect>
+      );
+    });
 
-  componentDidMount() {
-    this.renderChart();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.data.length !== nextProps.data.length) {
-      let gi = 0;
-      var circle = (this as any).svg
-        .selectAll('rect')
-        .data(nextProps.data)
-        .attr('width', 600 / nextProps.data.length)
-        .attr('x', (d, i) => {
-          gi = i;
-          return (600 * i) / nextProps.data.length;
-        });
-
-      circle.exit().remove(); // EXIT
-
-      circle
-        .enter()
-        .append('rect') // ENTER; modifies UPDATE! 🌶
-        .attr('x', (d, i) => {
-          gi++;
-          return (600 * gi) / nextProps.data.length;
-        })
-        .attr('y', 0)
-        .attr('width', 600 / nextProps.data.length)
-        .attr('height', (d, i) => 20)
-        .attr('fill', 'grey');
-
-      circle // ENTER + UPDATE
-        .style('stroke', 'white');
-    }
-  }
-  render() {
-    return null;
+    return <svg>{row}</svg>;
   }
 }

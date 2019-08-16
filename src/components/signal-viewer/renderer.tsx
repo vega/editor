@@ -19,22 +19,23 @@ function getClosestValue(signalArray, timeStamp, key) {
   }
   return i;
 }
+
 export default class SignalViewer extends React.PureComponent<Props, any> {
   constructor(props) {
     super(props);
     this.state = {
-      keys: [],
-      isHovered: false,
       hoverValue: {},
+      isHovered: false,
+      keys: [],
       maskListner: false,
-      signal: {},
       maxLength: 0,
+      signal: {},
       xCount: 0,
     };
   }
 
-  public getKeys(_ref = this.props) {
-    return Object.keys(_ref.view.getState({ data: vega.truthy, signals: vega.truthy, recurse: true }).signals);
+  public getKeys(ref = this.props) {
+    return Object.keys(ref.view.getState({ data: vega.truthy, signals: vega.truthy, recurse: true }).signals);
   }
 
   public getSignals(changeKey = null) {
@@ -111,7 +112,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   //   }
   // }
 
-  componentDidMount() {
+  public componentDidMount() {
     window.addEventListener('resize', () => {
       this.forceUpdate();
     });
@@ -134,7 +135,6 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   };
 
   public render() {
-    const maxLengthArray = [...Array(this.state.xCount)].map((u, i) => i);
     const colorObj = {};
     if (!deepEqual(this.state.signal, {})) {
       Object.keys(this.props.signals).map(key => {
@@ -172,46 +172,11 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               return null;
             }
             return (
-              <tr>
+              <tr key={k}>
                 <td style={{ width: 100 }}>{k}</td>
                 <td>
-                  <div id={`timeline${index}`}>
-                    <TimelineRow data={this.props.signals[k]} id={index} />
-                    {/* <br></br> */}
-                    {/* <svg className="debugger" style={{ width: '100%', height: '20' }}>
-                      <g>
-                        {maxLengthArray.map((e, index) => {
-                          {
-                            return this.props.signals[k].map(signal => {
-                              if (signal.xCount === index) {
-                                return (
-                                  <rect
-                                    className="svg-rect"
-                                    onMouseOver={() => this.setState({ isHovered: true, hoverValue: { [k]: e } })}
-                                    onMouseOut={() => this.setState({ isHovered: false, hoverValue: {} })}
-                                    width={(window.innerWidth * 0.4) / this.state.xCount}
-                                    x={(index * window.innerWidth * 0.4) / this.state.xCount}
-                                    height="20"
-                                    style={{
-                                      cursor: 'pointer',
-                                      fill: '#b7b7b7',
-                                      stroke: 'white',
-                                      strokeWidth: '0.5px',
-                                      pointerEvents: 'all',
-                                    }}
-                                  >
-                                    {stringify(e)}
-                                  </rect>
-                                );
-                              } else {
-                                return null;
-                              }
-                            });
-                          }
-                        })}
-                      </g>
-                    </svg> */}
-                  </div>
+                  // TODO: set width correctly
+                  <TimelineRow data={this.props.signals[k]} width={500} xCount={this.state.xCount} />
                 </td>
               </tr>
             );
