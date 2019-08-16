@@ -1,4 +1,3 @@
-import { text } from 'd3-request';
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -97,21 +96,21 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     }
   }
 
-  public setExample(parameter: { example_name: string; mode: string }) {
+  public async setExample(parameter: { example_name: string; mode: string }) {
     const name = parameter.example_name;
     this.props.setConfig(this.props.configEditorString);
     this.props.setSidePaneItem(SIDEPANE.Editor);
     switch (parameter.mode) {
-      case 'vega':
-        text(`./spec/vega/${name}.vg.json`, spec => {
-          this.props.setVegaExample(name, spec);
-        });
+      case 'vega': {
+        const r = await fetch(`./spec/vega/${name}.vg.json`);
+        this.props.setVegaExample(name, await r.text());
         break;
-      case 'vega-lite':
-        text(`./spec/vega-lite/${name}.vl.json`, spec => {
-          this.props.setVegaLiteExample(name, spec);
-        });
+      }
+      case 'vega-lite': {
+        const r = await fetch(`./spec/vega-lite/${name}.vl.json`);
+        this.props.setVegaLiteExample(name, await r.text());
         break;
+      }
       default:
         console.warn(`Unknown mode ${parameter.mode}`);
         break;
