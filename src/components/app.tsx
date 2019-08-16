@@ -125,7 +125,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     }
   }
 
-  public async setGist(parameter: { id: string; revision?: string; filename: string }) {
+  public async setGist(parameter: { id: string; filename: string; revision?: string }) {
     await fetch(
       `https://api.github.com/gists/${parameter.id}${parameter.revision !== undefined ? `/${parameter.revision}` : ''}`
     )
@@ -133,7 +133,11 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
       .then(json => {
         const contentObj = JSON.parse(json.files[parameter.filename].content);
         if (!contentObj.hasOwnProperty('$schema')) {
-          this.props.setGistVegaSpec('', json.files[parameter.filename].content);
+          if (parameter.filename.split('.').slice(-2)[0] === 'vl') {
+            this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
+          } else {
+            this.props.setGistVegaSpec('', json.files[parameter.filename].content);
+          }
         } else {
           const mode = contentObj.$schema.split('/').slice(-2)[0];
           if (mode === 'vega') {
