@@ -13,6 +13,47 @@
 .privacy-toggle {
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
+}
+
+.privacy-toggle > input {
+  margin: 0 4px 0 0;
+}
+
+.gist-container {
+  margin-bottom: 16px;
+}
+
+.personal-gist-description {
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.personal-gist-files {
+  display: flex;
+  flex-direction: column;
+}
+
+.file {
+  display: flex;
+}
+
+.arrow {
+  margin: 4px;
+  width: 15px;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.filename {
+  font-family: monospace;
+  cursor: pointer;
+  margin-top: 4px;
 }
 
 .gist-button {
