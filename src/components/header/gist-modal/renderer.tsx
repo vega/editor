@@ -387,7 +387,17 @@ class GistModal extends React.PureComponent<Props, State> {
                   <div style={{ marginTop: '2px' }}>
                     <small>
                       Example:{' '}
-                      <span className="gist-url">
+                      <span
+                        className="gist-url"
+                        onClick={e =>
+                          this.setState({
+                            gist: {
+                              ...this.state.gist,
+                              url: 'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9',
+                            },
+                          })
+                        }
+                      >
                         {'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9'}
                       </span>
                     </small>
