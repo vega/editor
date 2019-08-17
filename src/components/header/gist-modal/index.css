@@ -143,6 +143,11 @@
   align-items: center;
 }
 
+.preview-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .preview-image-container {
   display: flex;
   align-items: center;
