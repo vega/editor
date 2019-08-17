@@ -313,12 +313,12 @@ class GistModal extends React.PureComponent<Props, State> {
         <h1>
           Load{' '}
           <a href="https://gist.github.com/" target="_blank">
-            Gist
+            Github Gist
           </a>
         </h1>
         <div className="gist-split">
           <div className="personal-gist">
-            <h3>Your GISTS</h3>
+            <h3>Your gists</h3>
             {this.props.isAuthenticated ? (
               this.state.loaded ? (
                 <>
@@ -332,14 +332,18 @@ class GistModal extends React.PureComponent<Props, State> {
                           checked={this.state.private}
                           onChange={this.privacyToggle.bind(this)}
                         />
-                        <label htmlFor="privacy">Show private GISTS</label>
+                        <label htmlFor="privacy">Show private gists</label>
                       </div>
                       {this.state.personalGist
                         .filter(gist => gist.isPublic || this.state.private)
                         .map(gist => (
                           <div className="gist-container">
                             <div className="personal-gist-description" key={gist.name}>
-                              {gist.isPublic ? <File width="14" height="14" /> : <Lock width="14" height="14" />}
+                              {gist.isPublic ? (
+                                <File width="14" height="14" />
+                              ) : (
+                                <Lock width="14" height="14" fill="#FDD300" />
+                              )}
                               <span className="text">{gist.title ? gist.title : 'No description provided'}</span>
                             </div>
                             <div className="personal-gist-files">
@@ -379,7 +383,7 @@ class GistModal extends React.PureComponent<Props, State> {
             )}
           </div>
           <div className="load-gist">
-            <h3>Load GISTS</h3>
+            <h3>Load gists</h3>
             <form ref={form => (this.refGistForm = form)}>
               <div className="gist-input-container">
                 <label>
@@ -393,6 +397,9 @@ class GistModal extends React.PureComponent<Props, State> {
                           this.setState({
                             gist: {
                               ...this.state.gist,
+                              filename: '',
+                              image: '',
+                              revision: '',
                               url: 'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9',
                             },
                           })
@@ -452,17 +459,19 @@ class GistModal extends React.PureComponent<Props, State> {
               <div className="load-button">
                 {this.state.gist.url && this.state.gist.filename ? (
                   this.state.gist.image ? (
-                    <div className="preview-image-container">
-                      <span className="preview-text">Preview:</span>
-                      <div className="preview-image-wrapper">
-                        <img
-                          src={this.state.gist.image}
-                          onMouseOver={this.slideImage.bind(this)}
-                          onMouseOut={this.slideImageBack.bind(this)}
-                          style={{
-                            transform: `translateY(-${this.state.gist.imageStyle.bottom}px)`,
-                          }}
-                        />
+                    <div className="preview-container">
+                      <div className="preview-text">Preview:</div>
+                      <div className="preview-image-container">
+                        <div className="preview-image-wrapper">
+                          <img
+                            src={this.state.gist.image}
+                            onMouseOver={this.slideImage.bind(this)}
+                            onMouseOut={this.slideImageBack.bind(this)}
+                            style={{
+                              transform: `translateY(-${this.state.gist.imageStyle.bottom}px)`,
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -474,6 +483,7 @@ class GistModal extends React.PureComponent<Props, State> {
                       <span className="preview-error-fix">
                         Upload an image file with name {this.state.gist.filename.replace(/\.json/i, '.(png/jpg)')}.
                       </span>
+                      gists
                     </div>
                   )
                 ) : (
