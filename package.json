@@ -30,7 +30,6 @@
     "@types/react-router-dom": "^4.3.4",
     "ajv": "^6.10.2",
     "d3-geo-projection": "^2.7.0",
-    "d3-request": "1.0.6",
     "history": "^4.9.0",
     "json-stringify-pretty-compact": "^2.0.0",
     "lz-string": "^1.4.4",
