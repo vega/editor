@@ -70,7 +70,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     this.onHoverInit(key, hoverValue, true);
   }
 
-  componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps) {
     if (this.props.view !== nextProps.view) {
       const keys = this.getKeys(nextProps);
       this.setState(

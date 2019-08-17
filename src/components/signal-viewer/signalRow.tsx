@@ -1,8 +1,8 @@
+import stringify from 'json-stringify-pretty-compact';
 import React from 'react';
 import { isDate } from 'vega';
 import { View } from '../../constants';
 import { formatValueLong } from '../table/renderer';
-import stringify from 'json-stringify-pretty-compact';
 
 interface Props {
   view: View;
@@ -51,7 +51,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     this.listnerAttached = false;
   }
 
-  componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps) {
     if (nextProps.maskListner && this.listnerAttached) {
       this.props.view.removeSignalListener(this.props.signal, this.signalHandler);
       this.listnerAttached = false;
@@ -61,7 +61,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     }
   }
 
-  renderSignal = () => {
+  public renderSignal = () => {
     const { isClicked, isHovered, clickedSignal, hoverValue } = this.props;
     if (isClicked && clickedSignal !== undefined) {
       return stringify(clickedSignal);
