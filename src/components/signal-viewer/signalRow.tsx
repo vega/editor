@@ -2,12 +2,17 @@ import React from 'react';
 import { isDate } from 'vega';
 import { View } from '../../constants';
 import { formatValueLong } from '../table/renderer';
+import stringify from 'json-stringify-pretty-compact';
 
 interface Props {
   view: View;
   signal: string;
   onValueChange: (key, value) => void;
   maskListner: boolean;
+  isHovered: boolean;
+  isClicked: boolean;
+  clickedSignal: any;
+  hoverValue: any;
 }
 
 interface State {
@@ -56,6 +61,16 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     }
   }
 
+  renderSignal = () => {
+    const { isClicked, isHovered, clickedSignal, hoverValue } = this.props;
+    if (isClicked && clickedSignal !== undefined) {
+      return stringify(clickedSignal);
+    } else if (isHovered && hoverValue !== undefined) {
+      return stringify(hoverValue);
+    } else {
+      return null;
+    }
+  };
   public render() {
     let tooLong = false;
     let formatted = '';
@@ -82,10 +97,11 @@ export default class SignalRow extends React.PureComponent<Props, State> {
         </tr>
       );
     } else {
+      const value = this.renderSignal();
       return (
-        <tr>
+        <tr style={{ backgroundColor: this.props.isHovered && this.props.hoverValue !== undefined ? '#fce57e' : '' }}>
           <td>{this.props.signal}</td>
-          <td key={this.props.signal}>{formatted}</td>
+          <td key={this.props.signal}>{value ? value : formatted}</td>
         </tr>
       );
     }

@@ -9,32 +9,27 @@ import TimelineRow from './TimelineRow';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-function getClosestValue(signalArray, timeStamp, key) {
-  let i = 0;
-  while (signalArray[i].timeStamp !== timeStamp) {
-    i++;
-  }
-  while (signalArray[i] && signalArray[i - 1] && deepEqual(signalArray[i].value, signalArray[i - 1].value)) {
-    i--;
-  }
-  return i;
+function getClosestValue(signalArray, xCount, key) {
+  // console.log({ signalArray, xCount });
 }
 export default class SignalViewer extends React.PureComponent<Props, any> {
   constructor(props) {
     super(props);
     this.state = {
-      keys: [],
-      isHovered: false,
       hoverValue: {},
+      isHovered: false,
+      keys: [],
       maskListner: false,
-      signal: {},
       maxLength: 0,
+      signal: {},
+      countSignal: {},
       xCount: 0,
+      isClicked: false,
     };
   }
 
-  public getKeys(_ref = this.props) {
-    return Object.keys(_ref.view.getState({ data: vega.truthy, signals: vega.truthy, recurse: true }).signals);
+  public getKeys(ref = this.props) {
+    return Object.keys(ref.view.getState({ data: vega.truthy, signals: vega.truthy, recurse: true }).signals);
   }
 
   public getSignals(changeKey = null) {
@@ -70,48 +65,79 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     }
   }
 
-  public handleSetState(time) {
+  public onClickInit(key, hoverValue) {
     this.setState({ maskListner: true });
-    this.props.signals.forEach(signal => {
-      if (signal.timeStamp === time) {
-        this.setState({
-          signal,
-        });
-        this.props.view.setState({
-          signals: signal,
-        });
-      }
-    });
-    setTimeout(() => {
-      this.setState({ maskListner: false });
-    }, 100);
+    this.onHoverInit(key, hoverValue, true);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.view !== nextProps.view) {
-  //     const keys = this.getKeys(nextProps);
-  //     this.setState(
-  //       {
-  //         keys,
-  //         signal: {},
-  //       },
-  //       () => {
-  //         const obj = {};
-  //         this.state.keys.map(key => {
-  //           obj[key]
-  //             ? obj[key].push({ value: this.props.view.signal(key), xCount: this.state.xCount })
-  //             : (obj[key] = [{ value: this.props.view.signal(key), xCount: this.state.xCount }]);
-  //         });
-  //         this.props.setSignals(obj);
-  //         this.setState({
-  //           xCount: this.state.xCount + 1,
-  //         });
-  //       }
-  //     );
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.view !== nextProps.view) {
+      const keys = this.getKeys(nextProps);
+      this.setState(
+        {
+          keys,
+          signal: {},
+          xCount: 0,
+        },
+        () => {
+          const obj = {};
+          this.state.keys.map(key => {
+            obj[key]
+              ? obj[key].push({ value: this.props.view.signal(key), xCount: this.state.xCount })
+              : (obj[key] = [{ value: this.props.view.signal(key), xCount: this.state.xCount }]);
+          });
+          this.props.setSignals(obj);
+          this.setState({
+            xCount: 1,
+          });
+        }
+      );
+    }
+  }
 
-  componentDidMount() {
+  public onHoverInit(signalKey, hoverValue, shouldPersist = false) {
+    const hoverObj = {
+      [signalKey]: hoverValue.value,
+    };
+    const countObj = {
+      [signalKey]: hoverValue.xCount,
+    };
+    Object.keys(this.props.signals).map(key => {
+      if (key === 'width' || key === 'height' || key === 'padding' || key === 'autosize' || key === 'cursor') {
+        return;
+      }
+      let i = 0;
+      while (this.props.signals[key][i] && this.props.signals[key][i].xCount <= hoverValue.xCount) {
+        i++;
+      }
+      --i;
+      hoverObj[key] = this.props.signals[key][i].value;
+      countObj[key] = this.props.signals[key][i].xCount;
+    });
+    if (!shouldPersist) {
+      this.setState({
+        isHovered: true,
+        hoverValue: hoverObj,
+        isClicked: false,
+        signal: {},
+      });
+    } else {
+      this.setState(
+        {
+          isClicked: true,
+          signal: hoverObj,
+          isHovered: false,
+          hoverValue: {},
+          countSignal: countObj,
+        },
+        () => {
+          this.props.view.setState({ signals: hoverObj });
+        }
+      );
+    }
+  }
+
+  public componentDidMount() {
     window.addEventListener('resize', () => {
       this.forceUpdate();
     });
@@ -126,7 +152,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     );
   }
 
-  public valueChange = (key, value) => {
+  public valueChange = (key: string, value: any) => {
     if (key === 'width' || key === 'height' || key === 'padding' || key === 'autosize' || key === 'cursor') {
       return;
     }
@@ -134,31 +160,8 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   };
 
   public render() {
-    const maxLengthArray = [...Array(this.state.xCount)].map((u, i) => i);
-    const colorObj = {};
-    if (!deepEqual(this.state.signal, {})) {
-      Object.keys(this.props.signals).map(key => {
-        if (
-          key === 'width' ||
-          key === 'height' ||
-          key === 'padding' ||
-          key === 'autosize' ||
-          key === 'cursor' ||
-          key === 'xCount'
-        ) {
-          return;
-        }
-        if (!deepEqual(this.state.signal, {})) {
-          const index = getClosestValue(this.props.signals[key], this.state.signal.timeStamp, key);
-          colorObj[key] = index;
-        }
-      });
-    }
     return (
       <>
-        <div style={{ position: 'absolute', top: '50%', right: 100 }}>
-          {this.state.isHovered && <div>{stringify(this.state.hoverValue)}</div>}
-        </div>
         <table className="debugger-table">
           {Object.keys(this.props.signals).map((k, index) => {
             if (
@@ -172,46 +175,24 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               return null;
             }
             return (
-              <tr>
+              <tr key={k}>
                 <td style={{ width: 100 }}>{k}</td>
                 <td>
-                  <div id={`timeline${index}`}>
-                    <TimelineRow data={this.props.signals[k]} id={index} />
-                    {/* <br></br> */}
-                    {/* <svg className="debugger" style={{ width: '100%', height: '20' }}>
-                      <g>
-                        {maxLengthArray.map((e, index) => {
-                          {
-                            return this.props.signals[k].map(signal => {
-                              if (signal.xCount === index) {
-                                return (
-                                  <rect
-                                    className="svg-rect"
-                                    onMouseOver={() => this.setState({ isHovered: true, hoverValue: { [k]: e } })}
-                                    onMouseOut={() => this.setState({ isHovered: false, hoverValue: {} })}
-                                    width={(window.innerWidth * 0.4) / this.state.xCount}
-                                    x={(index * window.innerWidth * 0.4) / this.state.xCount}
-                                    height="20"
-                                    style={{
-                                      cursor: 'pointer',
-                                      fill: '#b7b7b7',
-                                      stroke: 'white',
-                                      strokeWidth: '0.5px',
-                                      pointerEvents: 'all',
-                                    }}
-                                  >
-                                    {stringify(e)}
-                                  </rect>
-                                );
-                              } else {
-                                return null;
-                              }
-                            });
-                          }
-                        })}
-                      </g>
-                    </svg> */}
-                  </div>
+                  <TimelineRow
+                    onHoverInit={hoverValue => this.onHoverInit(k, hoverValue)}
+                    onClickInit={hoverValue => this.onClickInit(k, hoverValue)}
+                    onHoverEnd={() => {
+                      this.setState({
+                        isHovered: false,
+                        hoverValue: {},
+                      });
+                    }}
+                    isClicked={this.state.isClicked}
+                    clickedValue={this.state.countSignal[k]}
+                    data={this.props.signals[k]}
+                    width={window.innerWidth * 0.4}
+                    xCount={this.state.xCount}
+                  />
                 </td>
               </tr>
             );
@@ -226,15 +207,21 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               </tr>
             </thead>
             <tbody>
-              {this.state.keys.map(signal => (
-                <SignalRow
-                  maskListner={this.state.maskListner}
-                  onValueChange={(key, value) => this.valueChange(key, value)}
-                  key={signal}
-                  signal={signal}
-                  view={this.props.view}
-                />
-              ))}
+              {this.state.keys.map(signal => {
+                return (
+                  <SignalRow
+                    isHovered={this.state.isHovered}
+                    isClicked={this.state.isClicked}
+                    clickedSignal={this.state.signal[signal]}
+                    hoverValue={this.state.hoverValue[signal]}
+                    maskListner={this.state.maskListner}
+                    onValueChange={(key, value) => this.valueChange(key, value)}
+                    key={signal}
+                    signal={signal}
+                    view={this.props.view}
+                  />
+                );
+              })}
             </tbody>
           </table>
         </div>

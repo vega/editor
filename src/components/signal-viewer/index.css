@@ -9,3 +9,7 @@
 .svg-rect:hover {
   fill: #fce57e !important;
 }
+
+.debugger-table svg {
+  height: 20px;
+}

@@ -16,7 +16,7 @@ const schemas = [
   },
   {
     schema: vegaLiteSchema,
-    uri: 'https://vega.github.io/schema/vega-lite/v3.json',
+    uri: 'https://vega.github.io/schema/vega-lite/v4.json',
   },
   {
     schema: mergeDeep({}, vegaLiteSchema, {
@@ -31,7 +31,7 @@ const schemas = [
         },
       },
     }),
-    uri: 'https://vega.github.io/schema/vega-lite/v3.json#Config',
+    uri: 'https://vega.github.io/schema/vega-lite/v4.json#Config',
   },
   {
     schema: {
