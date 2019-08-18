@@ -82,20 +82,6 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     }
   }
 
-  public async setGist(parameter: { mode: string; username: string; id: string; revision: string; filename: string }) {
-    const gistUrl = `https://api.github.com/gists/${parameter.id}/${parameter.revision}`;
-
-    const gistData = await fetch(gistUrl).then(r => r.json());
-
-    const spec = gistData.files[parameter.filename].content;
-
-    if (parameter.mode === 'vega') {
-      this.props.setGistVegaSpec(gistUrl, spec);
-    } else if (parameter.mode === 'vega-lite') {
-      this.props.setGistVegaLiteSpec(gistUrl, spec);
-    }
-  }
-
   public async setExample(parameter: { example_name: string; mode: string }) {
     const name = parameter.example_name;
     this.props.setConfig(this.props.configEditorString);
