@@ -373,8 +373,8 @@ class GistModal extends React.PureComponent<Props, State> {
                               <span className="text">{gist.title ? gist.title : 'No description provided'}</span>
                             </div>
                             <div className="personal-gist-files">
-                              {gist.spec.map(spec => (
-                                <div className="file">
+                              {gist.spec.map((spec, index) => (
+                                <div key={index} className="file">
                                   <div className="arrow"></div>
                                   <div
                                     className="filename"
@@ -509,7 +509,6 @@ class GistModal extends React.PureComponent<Props, State> {
                       <span className="preview-error-fix">
                         Upload an image file with name {this.state.gist.filename.replace(/\.json/i, '.(png/jpg)')}.
                       </span>
-                      gists
                     </div>
                   )
                 ) : (

@@ -119,11 +119,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
       .then(json => {
         const contentObj = JSON.parse(json.files[parameter.filename].content);
         if (!contentObj.hasOwnProperty('$schema')) {
-          if (parameter.filename.split('.').slice(-2)[0] === 'vl') {
-            this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
-          } else {
-            this.props.setGistVegaSpec('', json.files[parameter.filename].content);
-          }
+          this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
         } else {
           const mode = contentObj.$schema.split('/').slice(-2)[0];
           if (mode === 'vega') {
