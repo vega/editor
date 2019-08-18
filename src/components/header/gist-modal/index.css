@@ -54,6 +54,11 @@
   font-family: monospace;
   cursor: pointer;
   margin-top: 4px;
+  color: #4f4f4f;
+}
+
+.filename:hover {
+  color: #000000;
 }
 
 .gist-button {
