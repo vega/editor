@@ -6,9 +6,10 @@ import { PortalWithState } from 'react-portal';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { KEYCODES, Mode } from '../../constants';
+import { BACKEND_URL, COOKIE_NAME, KEYCODES, Mode } from '../../constants';
 import { NAMES } from '../../constants/consts';
 import { VEGA_LITE_SPECS, VEGA_SPECS } from '../../constants/specs';
+import getCookie from '../../utils/getCookie';
 import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
@@ -19,6 +20,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> & { showExample: () => {} } & RouteComponentProps;
 
 interface State {
+  open: boolean;
   showVega: boolean;
   scrollPosition: number;
 }
@@ -37,9 +39,66 @@ class Header extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      open: false,
       scrollPosition: 0,
       showVega: props.mode === Mode.Vega,
     };
+  }
+
+  public componentDidMount() {
+    const className = ['profile-img', 'arrow-down', 'profile-container'];
+    window.addEventListener('click', e => {
+      const key = 'className';
+      if (className.includes(e.target[key])) {
+        this.setState({
+          open: !this.state.open,
+        });
+      } else {
+        this.setState({
+          open: false,
+        });
+      }
+    });
+
+    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
+    fetch(`${BACKEND_URL}auth/github/check`, {
+      credentials: 'include',
+      headers: {
+        Cookie: `${COOKIE_NAME}=${cookieValue}`,
+      },
+      method: 'get',
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(json => {
+        const { isAuthenticated, handle, name, profilePicUrl } = json;
+        this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
+      })
+      .catch(err => {
+        // console.error(err);
+      });
+    window.addEventListener('message', e => {
+      if (e.data.type === 'auth') {
+        fetch(`${BACKEND_URL}auth/github/check`, {
+          credentials: 'include',
+          headers: {
+            Cookie: `${COOKIE_NAME}=${cookieValue}`,
+          },
+          method: 'get',
+        })
+          .then(res => {
+            return res.json();
+          })
+          .then(json => {
+            const { isAuthenticated, handle, name, profilePicUrl } = json;
+            this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
+          })
+          .catch(err => {
+            // console.error(err);
+          });
+      }
+    });
   }
 
   public onSelectVega(name) {
@@ -94,6 +153,13 @@ class Header extends React.PureComponent<Props, State> {
     });
     this.listnerAttached = false;
   }
+  public signIn() {
+    window.open(`${BACKEND_URL}auth/github`, '_blank');
+  }
+  public signOut() {
+    window.open(`${BACKEND_URL}auth/github/logout`, '_blank');
+  }
+
   public render() {
     const modeOptions =
       this.props.mode === Mode.Vega
@@ -162,6 +228,35 @@ class Header extends React.PureComponent<Props, State> {
       <div className="header-button" onClick={this.openCommandPalette.bind(this)}>
         <Terminal className="header-icon" />
         {'Commands'}
+      </div>
+    );
+
+    const authButton = (
+      <div className="auth-button-container">
+        {this.props.isAuthenticated ? (
+          <form>
+            <div className="profile-container">
+              <img className="profile-img" src={this.props.profilePicUrl} />
+              <span className="arrow-down"></span>
+              {this.state.open && (
+                <div className="profile-menu">
+                  <div className="welcome">Logged in as</div>
+                  <div className="whoami">{this.props.name}</div>
+                  <div>
+                    <input className="sign-out" type="submit" value="Sign out" onClick={this.signOut.bind(this)} />
+                  </div>
+                </div>
+              )}
+            </div>
+          </form>
+        ) : (
+          <form>
+            <button className="sign-in" type="submit" onClick={this.signIn.bind(this)}>
+              <span className="sign-in-text">Sign in with</span>
+              <GitHub />
+            </button>
+          </form>
+        )}
       </div>
     );
 
@@ -428,6 +523,7 @@ class Header extends React.PureComponent<Props, State> {
             }}
           </PortalWithState>
           {settingsButton}
+          {authButton}
         </section>
       </div>
     );

@@ -74,25 +74,11 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     if (parameter) {
       if (parameter.example_name) {
         this.setExample(parameter);
-      } else if (parameter.username && parameter.id) {
-        this.setGist(parameter);
       } else if (parameter.mode && !parameter.compressed) {
         this.setEmptySpec(NAME_TO_MODE[parameter.mode]);
+      } else if (parameter.id) {
+        this.setGist(parameter);
       }
-    }
-  }
-
-  public async setGist(parameter: { mode: string; username: string; id: string; revision: string; filename: string }) {
-    const gistUrl = `https://api.github.com/gists/${parameter.id}/${parameter.revision}`;
-
-    const gistData = await fetch(gistUrl).then(r => r.json());
-
-    const spec = gistData.files[parameter.filename].content;
-
-    if (parameter.mode === 'vega') {
-      this.props.setGistVegaSpec(gistUrl, spec);
-    } else if (parameter.mode === 'vega-lite') {
-      this.props.setGistVegaLiteSpec(gistUrl, spec);
     }
   }
 
@@ -124,6 +110,27 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
       this.props.updateVegaLiteSpec(VEGA_LITE_START_SPEC);
     }
   }
+
+  public async setGist(parameter: { id: string; filename: string; revision?: string }) {
+    await fetch(
+      `https://api.github.com/gists/${parameter.id}${parameter.revision !== undefined ? `/${parameter.revision}` : ''}`
+    )
+      .then(res => res.json())
+      .then(json => {
+        const contentObj = JSON.parse(json.files[parameter.filename].content);
+        if (!contentObj.hasOwnProperty('$schema')) {
+          this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
+        } else {
+          const mode = contentObj.$schema.split('/').slice(-2)[0];
+          if (mode === 'vega') {
+            this.props.setGistVegaSpec('', json.files[parameter.filename].content);
+          } else if (mode === 'vega-lite') {
+            this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
+          }
+        }
+      });
+  }
+
   public render() {
     return (
       <div className="app-container">

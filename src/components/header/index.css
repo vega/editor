@@ -297,8 +297,118 @@
   padding: 3px 0;
 }
 
+.header-button .header-icon {
+  display: none;
+}
+
+.auth-button-container {
+  margin: 0 8px;
+}
+
+.sign-in {
+  font-size: 0.9em;
+  background: white;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px;
+}
+
+.sign-in-text {
+  padding-right: 6px;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  z-index: 10000000;
+  cursor: pointer;
+}
+
+.profile-img {
+  width: 35px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-radius: 10px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid #5c5c5c;
+}
+
+.profile-menu {
+  position: fixed;
+  width: 130px;
+  background-color: white;
+  border: 1px solid #ccc;
+  top: 55px;
+  right: 6px;
+  z-index: 10;
+  border-radius: 3px;
+  cursor: default;
+}
+
+.profile-menu::before,
+.profile-menu::after {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  content: "";
+  bottom: 102px;
+  right: 31px;
+}
+
+.profile-menu::before {
+  border-top: 9px solid transparent;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid #ccc;
+  right: 29px;
+}
+
+.profile-menu::after {
+  border-top: 7px solid transparent;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid white;
+}
+
+.welcome {
+  font-size: 0.7em;
+  color: #6e6e6e;
+  margin: 1em 0 0.5em 0.6em;
+}
+
+.whoami {
+  font-size: 0.9em;
+  padding: 0.5em 0 1em 0.5em;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.sign-out {
+  font-size: 16px;
+  background-color: transparent;
+  padding: 0.6em 0 0.6em 0.5em;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sign-out:hover {
+  background-color: #f5f5f5;
+}
+
 /* Media queries */
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 1100px) {
   .header-button .header-icon {
     display: block;
   }
