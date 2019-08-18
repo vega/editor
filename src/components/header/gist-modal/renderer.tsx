@@ -260,6 +260,32 @@ class GistModal extends React.PureComponent<Props, State> {
         url: '',
       },
     });
+    if (nextProps.isAuthenticated) {
+      const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
+      fetch(`${BACKEND_URL}gists/user`, {
+        credentials: 'include',
+        headers: {
+          Cookie: `${COOKIE_NAME}=${cookieValue}`,
+        },
+        method: 'get',
+      })
+        .then(res => {
+          return res.json();
+        })
+        .then(json => {
+          if (Array.isArray(json)) {
+            this.setState({
+              loaded: true,
+              personalGist: json,
+            });
+          } else {
+            this.props.receiveCurrentUser(json.isAuthenticated);
+          }
+        })
+        .catch(err => {
+          // console.error(err);
+        });
+    }
   }
 
   public preview(id, file, image) {
@@ -337,8 +363,8 @@ class GistModal extends React.PureComponent<Props, State> {
                       {this.state.personalGist
                         .filter(gist => gist.isPublic || this.state.private)
                         .map(gist => (
-                          <div className="gist-container">
-                            <div className="personal-gist-description" key={gist.name}>
+                          <div key={gist.name} className="gist-container">
+                            <div className="personal-gist-description">
                               {gist.isPublic ? (
                                 <File width="14" height="14" />
                               ) : (
