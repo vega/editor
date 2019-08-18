@@ -78,6 +78,27 @@ class Header extends React.PureComponent<Props, State> {
       .catch(err => {
         // console.error(err);
       });
+    window.addEventListener('message', e => {
+      if (e.data.type === 'auth') {
+        fetch(`${BACKEND_URL}auth/github/check`, {
+          credentials: 'include',
+          headers: {
+            Cookie: `${COOKIE_NAME}=${cookieValue}`,
+          },
+          method: 'get',
+        })
+          .then(res => {
+            return res.json();
+          })
+          .then(json => {
+            const { isAuthenticated, name, profilePicUrl } = json;
+            this.props.receiveCurrentUser(isAuthenticated, name, profilePicUrl);
+          })
+          .catch(err => {
+            // console.error(err);
+          });
+      }
+    });
   }
 
   public onSelectVega(name) {
@@ -132,6 +153,13 @@ class Header extends React.PureComponent<Props, State> {
     });
     this.listnerAttached = false;
   }
+  public signIn() {
+    window.open(`${BACKEND_URL}auth/github`, '_blank');
+  }
+  public signOut() {
+    window.open(`${BACKEND_URL}auth/github/logout`, '_blank');
+  }
+
   public render() {
     const modeOptions =
       this.props.mode === Mode.Vega
@@ -206,7 +234,7 @@ class Header extends React.PureComponent<Props, State> {
     const authButton = (
       <div className="auth-button-container">
         {this.props.isAuthenticated ? (
-          <form action={`${BACKEND_URL}auth/github/logout`} method="get" target="_blank">
+          <form>
             <div className="profile-container">
               <img className="profile-img" src={this.props.profilePicUrl} />
               <span className="arrow-down"></span>
@@ -215,15 +243,15 @@ class Header extends React.PureComponent<Props, State> {
                   <div className="welcome">Logged in as</div>
                   <div className="whoami">{this.props.name}</div>
                   <div>
-                    <input className="sign-out" type="submit" value="Sign out" onClick={e => e.stopPropagation()} />
+                    <input className="sign-out" type="submit" value="Sign out" onClick={this.signOut.bind(this)} />
                   </div>
                 </div>
               )}
             </div>
           </form>
         ) : (
-          <form action={`${BACKEND_URL}auth/github`} method="get" target="_blank">
-            <button className="sign-in" type="submit">
+          <form>
+            <button className="sign-in" type="submit" onClick={this.signIn.bind(this)}>
               <span className="sign-in-text">Sign in with</span>
               <GitHub />
             </button>

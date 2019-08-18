@@ -67,8 +67,7 @@ We welcome contributions and promptly review pull requests. For instructions abo
 
 ![header](./public/header-sign-in.png)
 
-- A new tab will pop-up which will the editor deployed on production. You may close it.
-- Return to the orginal tab where editor is opened and refresh it.
+- A new tab will pop-up and automatically close after one is successfully logged in.
 - Find your GitHub profile image on the same place as 'Sign in with GitHub'.
 
 ![header](./public/header-sign-out.png)
