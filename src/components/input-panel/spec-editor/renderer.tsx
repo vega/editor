@@ -1,3 +1,4 @@
+import stringify from 'json-stringify-pretty-compact';
 import LZString from 'lz-string';
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
@@ -73,7 +74,9 @@ class Editor extends React.PureComponent<Props, {}> {
         $schema: SCHEMA[Mode.Vega],
         ...spec,
       };
-      this.props.updateVegaSpec(JSON.stringify(spec, null, 2));
+      if (confirm('Adding schema URL will format the specification too.')) {
+        this.props.updateVegaSpec(stringify(spec));
+      }
     }
   }
 
@@ -84,7 +87,9 @@ class Editor extends React.PureComponent<Props, {}> {
         $schema: SCHEMA[Mode.VegaLite],
         ...spec,
       };
-      this.props.updateVegaLiteSpec(JSON.stringify(spec, null, 2));
+      if (confirm('Adding schema URL will format the specification too.')) {
+        this.props.updateVegaLiteSpec(stringify(spec));
+      }
     }
   }
 
