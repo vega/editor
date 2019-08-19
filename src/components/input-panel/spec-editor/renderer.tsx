@@ -96,6 +96,23 @@ class Editor extends React.PureComponent<Props, {}> {
   public editorDidMount(editor: Monaco.editor.IStandaloneCodeEditor, monaco: typeof Monaco) {
     editor.addAction({
       contextMenuGroupId: 'vega',
+      contextMenuOrder: 0,
+      id: 'ADD_VEGA_SCHEMA',
+      label: 'Add Vega schema URL',
+      run: this.addVegaSchemaURL.bind(this),
+    });
+
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 1,
+      id: 'ADD_VEGA_LITE_SCHEMA',
+      label: 'Add Vega-Lite schema URL',
+      run: this.addVegaLiteSchemaURL.bind(this),
+    });
+
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 2,
       id: 'CLEAR_EDITOR',
       label: 'Clear Spec',
       run: this.onClear.bind(this),
@@ -103,7 +120,7 @@ class Editor extends React.PureComponent<Props, {}> {
 
     editor.addAction({
       contextMenuGroupId: 'vega',
-      contextMenuOrder: 0,
+      contextMenuOrder: 3,
       id: 'MERGE_CONFIG',
       label: 'Merge Config Into Spec',
       run: this.handleMergeConfig.bind(this),
@@ -111,22 +128,10 @@ class Editor extends React.PureComponent<Props, {}> {
 
     editor.addAction({
       contextMenuGroupId: 'vega',
-      contextMenuOrder: 1,
+      contextMenuOrder: 4,
       id: 'EXTRACT_CONFIG',
       label: 'Extract Config From Spec',
       run: this.handleExtractConfig.bind(this),
-    });
-
-    editor.addAction({
-      id: 'ADD_VEGA_SCHEMA',
-      label: 'Add Vega schema URL',
-      run: this.addVegaSchemaURL.bind(this),
-    });
-
-    editor.addAction({
-      id: 'ADD_VEGA_LITE_SCHEMA',
-      label: 'Add Vega-Lite schema URL',
-      run: this.addVegaLiteSchemaURL.bind(this),
     });
 
     this.editor = editor;
