@@ -482,43 +482,41 @@ class GistModal extends React.PureComponent<Props, State> {
                   </div>
                 </div>
               </div>
-              <div className="load-button">
-                {this.state.gist.url && this.state.gist.filename ? (
-                  this.state.gist.image ? (
-                    <div className="preview-container">
-                      <div className="preview-text">Preview:</div>
-                      <div className="preview-image-container">
-                        <div className="preview-image-wrapper">
-                          <img
-                            src={this.state.gist.image}
-                            onMouseOver={this.slideImage.bind(this)}
-                            onMouseOut={this.slideImageBack.bind(this)}
-                            style={{
-                              transform: `translateY(-${this.state.gist.imageStyle.bottom}px)`,
-                            }}
-                          />
-                        </div>
+              {this.state.gist.url && this.state.gist.filename ? (
+                this.state.gist.image ? (
+                  <div className="preview-container">
+                    <div className="preview-text">Preview:</div>
+                    <div className="preview-image-container">
+                      <div className="preview-image-wrapper">
+                        <img
+                          src={this.state.gist.image}
+                          onMouseOver={this.slideImage.bind(this)}
+                          onMouseOut={this.slideImageBack.bind(this)}
+                          style={{
+                            transform: `translateY(-${this.state.gist.imageStyle.bottom}px)`,
+                          }}
+                        />
                       </div>
                     </div>
-                  ) : (
-                    <div className="preview-error-message-container">
-                      <div className="preview-error-message">
-                        <AlertCircle className="preview-error-icon" />
-                        <span>No preview available for this gist file.</span>
-                      </div>
-                      <span className="preview-error-fix">
-                        Upload an image file with name {this.state.gist.filename.replace(/\.json/i, '.(png/jpg)')}.
-                      </span>
-                    </div>
-                  )
+                  </div>
                 ) : (
-                  <></>
-                )}
-                <div className="gist-button">
-                  <button type="button" onClick={() => this.onSelectGist(this.props.closePortal)}>
-                    {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
-                  </button>
-                </div>
+                  <div className="preview-error-message-container">
+                    <div className="preview-error-message">
+                      <AlertCircle className="preview-error-icon" />
+                      <span>No preview available for this gist file.</span>
+                    </div>
+                    <span className="preview-error-fix">
+                      Upload an image file with name {this.state.gist.filename.replace(/\.json/i, '.(png/jpg)')}.
+                    </span>
+                  </div>
+                )
+              ) : (
+                <></>
+              )}
+              <div className="gist-button gist-input-container">
+                <button type="button" onClick={() => this.onSelectGist(this.props.closePortal)}>
+                  {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
+                </button>
               </div>
             </form>
           </div>

@@ -61,12 +61,6 @@
   color: #000000;
 }
 
-.gist-button {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-}
-
 .gist-button > button {
   background: rgb(100, 80, 150);
   color: white;
@@ -141,11 +135,6 @@
   margin-top: 3px;
   margin-bottom: 5px;
   float: right;
-}
-
-.load-button {
-  display: flex;
-  align-items: center;
 }
 
 .preview-container {
