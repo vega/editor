@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import { bindActionCreators, Dispatch } from 'redux';
+import { Config, Spec } from 'vega';
 import { hash, mergeDeep } from 'vega-lite/build/src/util';
 import * as EditorActions from '../actions/editor';
 import { LAYOUT, Mode } from '../constants';
@@ -15,6 +16,14 @@ import InputPanel from './input-panel';
 import Sidebar from './sidebar';
 import VizPane from './viz-pane';
 
+interface MessageData {
+  spec: string;
+  file: unknown;
+  config: Config;
+  mode: string;
+  renderer: 'svg' | 'canvas';
+}
+
 type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps> & RouteComponentProps;
 
 class App extends React.PureComponent<Props & { match: any; location: any; showExample?: boolean }> {
@@ -23,7 +32,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     window.addEventListener(
       'message',
       evt => {
-        const data = evt.data;
+        const data = evt.data as MessageData;
         if (!data.spec) {
           return;
         }
@@ -31,7 +40,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
         this.props.setBaseUrl(evt.origin);
         console.info('[Vega-Editor] Received Message', evt.origin, data);
         // send acknowledgement
-        const parsed = JSON.parse(data.spec);
+        const parsed = JSON.parse(data.spec) as Spec;
         // merging config into the spec
         if (data.config) {
           mergeDeep(parsed, { config: data.config });
