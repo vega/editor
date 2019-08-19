@@ -122,9 +122,9 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
           this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
         } else {
           const mode = contentObj.$schema.split('/').slice(-2)[0];
-          if (mode === 'vega') {
+          if (mode === Mode.Vega) {
             this.props.setGistVegaSpec('', json.files[parameter.filename].content);
-          } else if (mode === 'vega-lite') {
+          } else if (mode === Mode.VegaLite) {
             this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
           }
         }

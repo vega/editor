@@ -140,7 +140,20 @@ class GistModal extends React.PureComponent<Props, State> {
       gistLoadClicked: true,
     });
 
-    const gistUrl = new URL(url, 'https://gist.github.com');
+    let gistUrl;
+    if (url.match(/gist.githubusercontent.com/)) {
+      gistUrl = new URL(url, 'https://gist.githubusercontent.com');
+      const [, , , revision, filename] = gistUrl.pathname.split('/').slice(1);
+      this.setState({
+        gist: {
+          ...this.state.gist,
+          filename,
+          revision,
+        },
+      });
+    } else if (url.match(/gist.github.com/)) {
+      gistUrl = new URL(url, 'https://gist.github.com');
+    }
     const [_, gistId] = gistUrl.pathname.split('/').slice(1);
     await fetch(`https://api.github.com/gists/${gistId}/commits`)
       .then(res => {
