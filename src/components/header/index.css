@@ -362,7 +362,7 @@
   width: 0px;
   height: 0px;
   content: "";
-  bottom: 104px;
+  bottom: 101px;
   right: 31px;
 }
 
@@ -384,7 +384,7 @@
 .welcome {
   font-size: 0.7em;
   color: #6e6e6e;
-  margin: 16px 0 0 12px;
+  margin: 13px 0 0 12px;
 }
 
 .whoami {
