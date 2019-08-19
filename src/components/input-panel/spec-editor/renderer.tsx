@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { debounce } from 'vega';
 import parser from 'vega-schema-url-parser';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { KEYCODES, LAYOUT, Mode, SIDEPANE } from '../../../constants';
+import { KEYCODES, LAYOUT, Mode, SCHEMA, SIDEPANE } from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -66,6 +66,28 @@ class Editor extends React.PureComponent<Props, {}> {
     this.props.mode === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
   }
 
+  public addVegaSchemaURL() {
+    let spec = JSON.parse(this.props.editorString);
+    if (spec.$schema === undefined) {
+      spec = {
+        $schema: SCHEMA[Mode.Vega],
+        ...spec,
+      };
+      this.props.updateVegaSpec(JSON.stringify(spec, null, 2));
+    }
+  }
+
+  public addVegaLiteSchemaURL() {
+    let spec = JSON.parse(this.props.editorString);
+    if (spec.$schema === undefined) {
+      spec = {
+        $schema: SCHEMA[Mode.VegaLite],
+        ...spec,
+      };
+      this.props.updateVegaLiteSpec(JSON.stringify(spec, null, 2));
+    }
+  }
+
   public editorDidMount(editor: Monaco.editor.IStandaloneCodeEditor, monaco: typeof Monaco) {
     editor.addAction({
       contextMenuGroupId: 'vega',
@@ -89,6 +111,19 @@ class Editor extends React.PureComponent<Props, {}> {
       label: 'Extract Config From Spec',
       run: this.handleExtractConfig.bind(this),
     });
+
+    editor.addAction({
+      id: 'ADD_VEGA_SCHEMA',
+      label: 'Add Vega schema URL',
+      run: this.addVegaSchemaURL.bind(this),
+    });
+
+    editor.addAction({
+      id: 'ADD_VEGA_LITE_SCHEMA',
+      label: 'Add Vega-Lite schema URL',
+      run: this.addVegaLiteSchemaURL.bind(this),
+    });
+
     this.editor = editor;
 
     if (this.props.sidePaneItem === SIDEPANE.Editor) {
