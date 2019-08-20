@@ -23,8 +23,6 @@ export const LAYOUT = {
   MinPaneSize: 30,
 };
 
-export type Renderer = 'svg' | 'canvas';
-
 export const SCHEMA = {
   [Mode.Vega]: 'https://vega.github.io/schema/vega/v5.json',
   [Mode.VegaLite]: 'https://vega.github.io/schema/vega-lite/v4.json',
