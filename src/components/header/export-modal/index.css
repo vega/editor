@@ -46,11 +46,10 @@
 }
 
 .export-button-container p {
-  color: #333;
   line-height: 1.2;
   text-align: left;
   width: 100%;
-  margin: 0;
+  margin: 0.2em 0 0 0;
 }
 
 .export-button-container p strong {
@@ -76,16 +75,8 @@
   justify-content: flex-start;
 }
 
-.input-container > div {
-  text-align: left;
-}
-
-.input-container input {
+.vl-label {
   margin-left: 1em;
-  vertical-align: middle;
-}
-.input-container label {
-  white-space: nowrap;
 }
 
 .user-notes p {

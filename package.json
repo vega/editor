@@ -1,6 +1,6 @@
 {
   "name": "vega-editor",
-  "version": "0.42.4",
+  "version": "0.43.0",
   "homepage": "http://vega.github.io/editor",
   "private": true,
   "devDependencies": {
@@ -9,8 +9,8 @@
     "css-loader": "^3.2.0",
     "gh-pages": "^2.1.1",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^3.0.3",
-    "lint-staged": "^9.2.1",
+    "husky": "^3.0.4",
+    "lint-staged": "^9.2.3",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "postcss-loader": "^3.0.0",
     "prettier": "^1.18.2",
@@ -21,7 +21,7 @@
     "typescript": "~3.4.0",
     "webpack": "4.39.2",
     "webpack-bundle-analyzer": "^3.4.1",
-    "webpack-cli": "^3.3.6",
+    "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
@@ -43,7 +43,7 @@
     "react-dom": "^16.9.0",
     "react-feather": "^2.0.3",
     "react-ga": "2.6.0",
-    "react-monaco-editor": "^0.29.0",
+    "react-monaco-editor": "^0.30.0",
     "react-paginate": "^6.3.0",
     "react-portal": "^4.2.0",
     "react-redux": "^7.1.0",

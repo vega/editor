@@ -71,13 +71,13 @@ class ShareModal extends React.PureComponent<Props, State> {
         <p>We use LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
         <div>
           <label className="user-pref">
-            Link opens visualization in fullscreen:
             <input
               type="checkbox"
               defaultChecked={this.state.fullScreen}
               name="fullscreen"
               onChange={this.handleCheck.bind(this)}
             />
+            Open visualization in fullscreen
           </label>
         </div>
         <div className="sharing-buttons">

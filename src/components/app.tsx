@@ -1,4 +1,3 @@
-import { text } from 'd3-request';
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -75,43 +74,29 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     if (parameter) {
       if (parameter.example_name) {
         this.setExample(parameter);
-      } else if (parameter.username && parameter.id) {
-        this.setGist(parameter);
       } else if (parameter.mode && !parameter.compressed) {
         this.setEmptySpec(NAME_TO_MODE[parameter.mode]);
+      } else if (parameter.id) {
+        this.setGist(parameter);
       }
     }
   }
 
-  public async setGist(parameter: { mode: string; username: string; id: string; revision: string; filename: string }) {
-    const gistUrl = `https://api.github.com/gists/${parameter.id}/${parameter.revision}`;
-
-    const gistData = await fetch(gistUrl).then(r => r.json());
-
-    const spec = gistData.files[parameter.filename].content;
-
-    if (parameter.mode === 'vega') {
-      this.props.setGistVegaSpec(gistUrl, spec);
-    } else if (parameter.mode === 'vega-lite') {
-      this.props.setGistVegaLiteSpec(gistUrl, spec);
-    }
-  }
-
-  public setExample(parameter: { example_name: string; mode: string }) {
+  public async setExample(parameter: { example_name: string; mode: string }) {
     const name = parameter.example_name;
     this.props.setConfig(this.props.configEditorString);
     this.props.setSidePaneItem(SIDEPANE.Editor);
     switch (parameter.mode) {
-      case 'vega':
-        text(`./spec/vega/${name}.vg.json`, spec => {
-          this.props.setVegaExample(name, spec);
-        });
+      case 'vega': {
+        const r = await fetch(`./spec/vega/${name}.vg.json`);
+        this.props.setVegaExample(name, await r.text());
         break;
-      case 'vega-lite':
-        text(`./spec/vega-lite/${name}.vl.json`, spec => {
-          this.props.setVegaLiteExample(name, spec);
-        });
+      }
+      case 'vega-lite': {
+        const r = await fetch(`./spec/vega-lite/${name}.vl.json`);
+        this.props.setVegaLiteExample(name, await r.text());
         break;
+      }
       default:
         console.warn(`Unknown mode ${parameter.mode}`);
         break;
@@ -125,6 +110,27 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
       this.props.updateVegaLiteSpec(VEGA_LITE_START_SPEC);
     }
   }
+
+  public async setGist(parameter: { id: string; filename: string; revision?: string }) {
+    await fetch(
+      `https://api.github.com/gists/${parameter.id}${parameter.revision !== undefined ? `/${parameter.revision}` : ''}`
+    )
+      .then(res => res.json())
+      .then(json => {
+        const contentObj = JSON.parse(json.files[parameter.filename].content);
+        if (!contentObj.hasOwnProperty('$schema')) {
+          this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
+        } else {
+          const mode = contentObj.$schema.split('/').slice(-2)[0];
+          if (mode === Mode.Vega) {
+            this.props.setGistVegaSpec('', json.files[parameter.filename].content);
+          } else if (mode === Mode.VegaLite) {
+            this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
+          }
+        }
+      });
+  }
+
   public render() {
     return (
       <div className="app-container">

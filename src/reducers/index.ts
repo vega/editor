@@ -12,6 +12,7 @@ import {
   LOG_ERROR,
   MergeConfigSpec,
   PARSE_SPEC,
+  RECEIVE_CURRENT_USER,
   SET_BASEURL,
   SET_COMPILED_VEGA_PANE_SIZE,
   SET_CONFIG,
@@ -452,10 +453,19 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return mergeConfig(state, action);
     case EXTRACT_CONFIG_SPEC:
       return extractConfig(state, action);
+
     case SET_SIGNALS:
       return {
         ...state,
         signals: action.signals,
+      }
+    case RECEIVE_CURRENT_USER:
+      return {
+        ...state,
+        handle: action.handle,
+        isAuthenticated: action.isAuthenticated,
+        name: action.name,
+        profilePicUrl: action.profilePicUrl,
       };
     default:
       return state;

@@ -145,7 +145,6 @@ class ExportModal extends React.PureComponent<Props, State> {
             <p>JSON is a lightweight data-interchange format.</p>
             {this.props.mode === Mode.VegaLite && (
               <div className="input-container">
-                Type:
                 <label>
                   <input
                     type="radio"
@@ -157,7 +156,7 @@ class ExportModal extends React.PureComponent<Props, State> {
                   />{' '}
                   Compiled Vega
                 </label>
-                <label htmlFor="json-type[vega-lite]">
+                <label htmlFor="json-type[vega-lite]" className="vl-label">
                   <input
                     type="radio"
                     name="json-type"
@@ -172,11 +171,10 @@ class ExportModal extends React.PureComponent<Props, State> {
             )}
             <div className="input-container">
               {this.state.downloadVegaJSON ? (
-                <div>The compiled Vega includes the config and is formatted.</div>
+                <p>The compiled Vega includes the config and is formatted.</p>
               ) : (
                 <div>
                   <label>
-                    Include config:
                     <input
                       type="checkbox"
                       name="config-include"
@@ -185,8 +183,9 @@ class ExportModal extends React.PureComponent<Props, State> {
                       checked={this.state.includeConfig}
                       onChange={this.updateIncludeConfig.bind(this)}
                     />
+                    Include config
                   </label>
-                  {this.state.includeConfig && <div>The downloaded spec will be formatted. </div>}
+                  {this.state.includeConfig && <p>The downloaded spec will be formatted. </p>}
                 </div>
               )}
             </div>

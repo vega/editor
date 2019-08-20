@@ -1,6 +1,7 @@
 import { Config } from 'vega-themes/build/config';
 import { Mode, Renderer, View } from '../constants';
 
+export const RECEIVE_CURRENT_USER: 'RECEIVE_CURRENT_USER' = 'RECEIVE_CURRENT_USER';
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
 export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
 export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
@@ -40,6 +41,7 @@ export const SET_SIGNALS: 'SET_SIGNALS' = 'SET_SIGNALS';
 export const ADD_SIGNAL: 'ADD_SIGNAL' = 'ADD_SIGNAL';
 
 export type Action =
+  | ReceiveCurrentUser
   | SetMode
   | SetModeOnly
   | SetScrollPosition
@@ -360,6 +362,7 @@ export function mergeConfigSpec() {
 }
 
 export type MergeConfigSpec = ReturnType<typeof mergeConfigSpec>;
+
 export function extractConfigSpec() {
   return {
     type: EXTRACT_CONFIG_SPEC,
@@ -383,3 +386,16 @@ export function addSignal(value: any) {
   };
 }
 export type AddSignal = ReturnType<typeof addSignal>;
+
+export function receiveCurrentUser(isAuthenticated: boolean, handle?: string, name?: string, profilePicUrl?: string) {
+  return {
+    handle,
+    isAuthenticated,
+    name,
+    profilePicUrl,
+    type: RECEIVE_CURRENT_USER,
+  };
+}
+
+export type ReceiveCurrentUser = ReturnType<typeof receiveCurrentUser>;
+

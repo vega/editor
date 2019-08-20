@@ -137,14 +137,16 @@ class Sidebar extends Component<any, any> {
           In "auto" mode, Vega-Lite disables hover event processing.
         </p>
         <div className="tooltips">
-          <input
-            onChange={e => this.props.setTooltip(e.target.checked)}
-            type="checkbox"
-            name=""
-            id="tooltip"
-            checked={this.props.tooltipEnable}
-          />
-          <label htmlFor="tooltip">Tooltips</label>
+          <label>
+            <input
+              onChange={e => this.props.setTooltip(e.target.checked)}
+              type="checkbox"
+              name=""
+              id="tooltip"
+              checked={this.props.tooltipEnable}
+            />
+            Tooltips
+          </label>
         </div>
         <p className="settings-description">
           Enable the default{' '}

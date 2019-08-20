@@ -1,3 +1,4 @@
+import stringify from 'json-stringify-pretty-compact';
 import LZString from 'lz-string';
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
@@ -6,7 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { debounce } from 'vega';
 import parser from 'vega-schema-url-parser';
 import { mapDispatchToProps, mapStateToProps } from '.';
-import { KEYCODES, LAYOUT, Mode, SIDEPANE } from '../../../constants';
+import { KEYCODES, LAYOUT, Mode, SCHEMA, SIDEPANE } from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -66,9 +67,52 @@ class Editor extends React.PureComponent<Props, {}> {
     this.props.mode === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
   }
 
+  public addVegaSchemaURL() {
+    let spec = JSON.parse(this.props.editorString);
+    if (spec.$schema === undefined) {
+      spec = {
+        $schema: SCHEMA[Mode.Vega],
+        ...spec,
+      };
+      if (confirm('Adding schema URL will format the specification too.')) {
+        this.props.updateVegaSpec(stringify(spec));
+      }
+    }
+  }
+
+  public addVegaLiteSchemaURL() {
+    let spec = JSON.parse(this.props.editorString);
+    if (spec.$schema === undefined) {
+      spec = {
+        $schema: SCHEMA[Mode.VegaLite],
+        ...spec,
+      };
+      if (confirm('Adding schema URL will format the specification too.')) {
+        this.props.updateVegaLiteSpec(stringify(spec));
+      }
+    }
+  }
+
   public editorDidMount(editor: Monaco.editor.IStandaloneCodeEditor, monaco: typeof Monaco) {
     editor.addAction({
       contextMenuGroupId: 'vega',
+      contextMenuOrder: 0,
+      id: 'ADD_VEGA_SCHEMA',
+      label: 'Add Vega schema URL',
+      run: this.addVegaSchemaURL.bind(this),
+    });
+
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 1,
+      id: 'ADD_VEGA_LITE_SCHEMA',
+      label: 'Add Vega-Lite schema URL',
+      run: this.addVegaLiteSchemaURL.bind(this),
+    });
+
+    editor.addAction({
+      contextMenuGroupId: 'vega',
+      contextMenuOrder: 2,
       id: 'CLEAR_EDITOR',
       label: 'Clear Spec',
       run: this.onClear.bind(this),
@@ -76,7 +120,7 @@ class Editor extends React.PureComponent<Props, {}> {
 
     editor.addAction({
       contextMenuGroupId: 'vega',
-      contextMenuOrder: 0,
+      contextMenuOrder: 3,
       id: 'MERGE_CONFIG',
       label: 'Merge Config Into Spec',
       run: this.handleMergeConfig.bind(this),
@@ -84,11 +128,12 @@ class Editor extends React.PureComponent<Props, {}> {
 
     editor.addAction({
       contextMenuGroupId: 'vega',
-      contextMenuOrder: 1,
+      contextMenuOrder: 4,
       id: 'EXTRACT_CONFIG',
       label: 'Extract Config From Spec',
       run: this.handleExtractConfig.bind(this),
     });
+
     this.editor = editor;
 
     if (this.props.sidePaneItem === SIDEPANE.Editor) {

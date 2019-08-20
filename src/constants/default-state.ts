@@ -5,6 +5,7 @@ import { LocalLogger } from '../utils/logger';
 import { LAYOUT, Mode, NAVBAR, Renderer, SIDEPANE, VEGA_LITE_START_SPEC, View } from './consts';
 
 export interface State {
+  isAuthenticated: boolean;
   baseURL: string;
   compiledVegaSpec: boolean;
   compiledVegaPaneSize: number;
@@ -17,15 +18,18 @@ export interface State {
   error: { message: string }; // don't put Error here since we can't serialize it
   export: boolean;
   gist: string;
+  handle: string;
   hoverEnable: boolean | 'auto';
   logLevel: string;
   lastPosition: number;
   logs: boolean;
   manualParse: boolean;
   mode: Mode;
+  name: string;
   navItem: string;
   sidePaneItem: string;
   parse: boolean;
+  profilePicUrl: string;
   renderer: Renderer;
   selectedExample: string;
   settings: boolean;
@@ -52,14 +56,18 @@ export const DEFAULT_STATE: State = {
   error: null,
   export: false,
   gist: null,
+  handle: '',
   hoverEnable: 'auto',
+  isAuthenticated: false,
   lastPosition: 0,
   logLevel: 'Warn',
   logs: false,
   manualParse: false,
   mode: Mode.VegaLite,
+  name: '',
   navItem: NAVBAR.Logs,
   parse: false,
+  profilePicUrl: '',
   renderer: 'canvas',
   selectedExample: null,
   settings: false,

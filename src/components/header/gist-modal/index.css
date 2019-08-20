@@ -1,4 +1,67 @@
-.gist-button {
+.gist-split {
+  display: flex;
+}
+
+.personal-gist {
+  flex: 1;
+}
+
+.load-gist {
+  flex: 1;
+}
+
+.privacy-toggle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.privacy-toggle > input {
+  margin: 0 4px 0 0;
+}
+
+.gist-container {
+  margin-bottom: 16px;
+}
+
+.personal-gist-description {
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.personal-gist-files {
+  display: flex;
+  flex-direction: column;
+}
+
+.file {
+  display: flex;
+}
+
+.arrow {
+  margin: 4px;
+  width: 15px;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.filename {
+  font-family: monospace;
+  cursor: pointer;
+  margin-top: 4px;
+  color: #4f4f4f;
+}
+
+.filename:hover {
+  color: #000000;
+}
+
+.gist-button > button {
   background: rgb(100, 80, 150);
   color: white;
   border: 1px solid #a9a9a9;
@@ -6,11 +69,10 @@
   height: 30px;
   outline: none;
   font-size: 16px;
-  float: right;
   padding: 0 20px;
 }
 
-.gist-button:hover {
+.gist-button > button:hover {
   background: rgb(92, 64, 141);
   color: white;
 }
@@ -49,6 +111,14 @@
   text-decoration: underline;
 }
 
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 30%;
+  font-size: 20px;
+}
+
 .gist-input {
   display: block;
   width: 100%;
@@ -65,4 +135,51 @@
   margin-top: 3px;
   margin-bottom: 5px;
   float: right;
+}
+
+.preview-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-image-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.preview-text {
+  margin-right: 10px;
+}
+
+.preview-image-wrapper {
+  height: 100px;
+  overflow: hidden;
+}
+
+.preview-image-wrapper > img {
+  position: relative;
+  width: 150px;
+  transition: transform 2s;
+}
+
+.preview-error-message-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-error-message {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--error-color);
+}
+
+.preview-error-icon {
+  margin-right: 4px !important;
+  width: 16px;
+}
+
+.preview-error-fix {
+  font-size: 12px;
 }
