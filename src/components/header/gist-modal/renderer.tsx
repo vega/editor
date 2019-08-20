@@ -361,7 +361,7 @@ class GistModal extends React.PureComponent<Props, State> {
             {this.props.isAuthenticated ? (
               this.state.loaded ? (
                 <>
-                  {this.state.personalGist !== [] ? (
+                  {this.state.personalGist.length > 0 ? (
                     <>
                       <div className="privacy-toggle">
                         <input
