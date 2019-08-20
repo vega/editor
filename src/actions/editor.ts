@@ -1,5 +1,6 @@
+import { Renderers } from 'vega';
 import { Config } from 'vega-themes/build/config';
-import { Mode, Renderer, View } from '../constants';
+import { Mode, View } from '../constants';
 
 export const RECEIVE_CURRENT_USER: 'RECEIVE_CURRENT_USER' = 'RECEIVE_CURRENT_USER';
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
@@ -205,7 +206,7 @@ export function exportVega(value: boolean) {
 }
 export type ExportVega = ReturnType<typeof exportVega>;
 
-export function setRenderer(renderer: Renderer) {
+export function setRenderer(renderer: Renderers) {
   return {
     renderer,
     type: SET_RENDERER,

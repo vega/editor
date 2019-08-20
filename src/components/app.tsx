@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import { bindActionCreators, Dispatch } from 'redux';
-import { Config, Spec } from 'vega';
+import { Spec } from 'vega';
+import { MessageData } from 'vega-embed';
 import { hash, mergeDeep } from 'vega-lite/build/src/util';
 import * as EditorActions from '../actions/editor';
 import { LAYOUT, Mode } from '../constants';
@@ -15,14 +16,6 @@ import Header from './header';
 import InputPanel from './input-panel';
 import Sidebar from './sidebar';
 import VizPane from './viz-pane';
-
-interface MessageData {
-  spec: string;
-  file: unknown;
-  config: Config;
-  mode: string;
-  renderer: 'svg' | 'canvas';
-}
 
 type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps> & RouteComponentProps;
 
@@ -43,7 +36,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
         const parsed = JSON.parse(data.spec) as Spec;
         // merging config into the spec
         if (data.config) {
-          mergeDeep(parsed, { config: data.config });
+          mergeDeep(parsed, { config: data.config as any });
         }
         data.spec = stringify(parsed);
         if (data.spec || data.file) {

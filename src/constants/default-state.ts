@@ -1,8 +1,8 @@
-import { Spec } from 'vega';
+import { Renderers, Spec } from 'vega';
 import { TopLevelSpec as VlSpec } from 'vega-lite';
 import { Config } from 'vega-themes/build/config';
 import { LocalLogger } from '../utils/logger';
-import { LAYOUT, Mode, NAVBAR, Renderer, SIDEPANE, VEGA_LITE_START_SPEC, View } from './consts';
+import { LAYOUT, Mode, NAVBAR, SIDEPANE, VEGA_LITE_START_SPEC, View } from './consts';
 
 export interface State {
   isAuthenticated: boolean;
@@ -30,7 +30,7 @@ export interface State {
   sidePaneItem: string;
   parse: boolean;
   profilePicUrl: string;
-  renderer: Renderer;
+  renderer: Renderers;
   selectedExample: string;
   settings: boolean;
   tooltipEnable: boolean;
