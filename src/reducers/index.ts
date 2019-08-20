@@ -24,6 +24,7 @@ import {
   SET_MODE_ONLY,
   SET_RENDERER,
   SET_SCROLL_POSITION,
+  SET_SIGNALS,
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
   SET_VIEW,
@@ -42,8 +43,6 @@ import {
   UPDATE_VEGA_SPEC,
   UpdateVegaLiteSpec,
   UpdateVegaSpec,
-  SET_SIGNALS,
-  ADD_SIGNAL,
 } from '../actions/editor';
 import { DEFAULT_STATE, Mode } from '../constants';
 import { State } from '../constants/default-state';

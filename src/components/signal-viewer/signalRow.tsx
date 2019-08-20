@@ -71,11 +71,23 @@ export default class SignalRow extends React.PureComponent<Props, State> {
       return null;
     }
   };
+
+  public getBackgroundColor = () => {
+    if (this.props.isClicked || this.props.clickedSignal !== undefined) {
+      return '#A4F9C8';
+    } else if (this.props.isHovered && this.props.hoverValue !== undefined) {
+      return '#fce57e';
+    } else {
+      return '';
+    }
+  };
+
   public render() {
     let tooLong = false;
     let formatted = '';
+    const value = this.renderSignal();
     if (!isDate(this.state.signalValue)) {
-      const formatValue = formatValueLong(this.state.signalValue);
+      const formatValue = formatValueLong(value ? JSON.parse(value) : this.state.signalValue);
       if (formatValue !== undefined) {
         tooLong = formatValue.tooLong;
         formatted = formatValue.formatted;
@@ -85,7 +97,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
       }
     } else {
       tooLong = false;
-      formatted = new Date(this.state.signalValue).toUTCString();
+      formatted = new Date(value ? JSON.parse(value) : this.state.signalValue).toUTCString();
     }
     if (tooLong) {
       return (
@@ -97,11 +109,13 @@ export default class SignalRow extends React.PureComponent<Props, State> {
         </tr>
       );
     } else {
-      const value = this.renderSignal();
       return (
-        <tr style={{ backgroundColor: this.props.isHovered && this.props.hoverValue !== undefined ? '#fce57e' : '' }}>
+        <tr>
           <td>{this.props.signal}</td>
-          <td key={this.props.signal}>{value ? value : formatted}</td>
+          <td>{this.props.children}</td>
+          <td style={{ backgroundColor: this.getBackgroundColor() }} key={this.props.signal}>
+            {formatted}
+          </td>
         </tr>
       );
     }

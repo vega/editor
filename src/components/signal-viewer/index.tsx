@@ -6,8 +6,8 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State) {
   return {
-    view: state.view,
     signals: state.signals,
+    view: state.view,
   };
 }
 

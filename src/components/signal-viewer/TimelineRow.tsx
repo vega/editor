@@ -20,30 +20,36 @@ export default class TimelineRow extends Component<
     const { data, width, xCount, clickedValue } = this.props;
     const scale = scaleBand(range(0, xCount), [0, width]);
 
-    const row = data.map(d => {
-      return (
-        <rect
-          key={d}
-          onMouseOver={() => this.props.onHoverInit(d)}
-          onClick={() => this.props.onClickInit(d)}
-          onMouseLeave={() => this.props.onHoverEnd()}
-          className="svg-rect"
-          height={20}
-          style={{
-            cursor: 'pointer',
-            fill: clickedValue === d.xCount ? 'green' : '#b7b7b7',
-            pointerEvents: 'all',
-            stroke: 'white',
-            strokeWidth: '0.5px',
-          }}
-          width={scale.bandwidth()}
-          x={scale(d.xCount)}
-        >
-          {stringify(d)}
-        </rect>
-      );
-    });
+    const row =
+      data &&
+      data.map(d => {
+        return (
+          <rect
+            key={d}
+            onMouseOver={() => this.props.onHoverInit(d)}
+            onClick={() => this.props.onClickInit(d)}
+            onMouseLeave={() => this.props.onHoverEnd()}
+            className="svg-rect"
+            height={20}
+            style={{
+              cursor: 'pointer',
+              fill: clickedValue === d.xCount ? '#A4F9C8' : '#b7b7b7',
+              pointerEvents: 'all',
+              stroke: 'white',
+              strokeWidth: '0.5px',
+            }}
+            width={scale.bandwidth()}
+            x={scale(d.xCount)}
+          >
+            {stringify(d)}
+          </rect>
+        );
+      });
 
-    return <svg width={window.innerWidth * 0.4}>{row}</svg>;
+    return (
+      <svg width={window.innerWidth * 0.4} height={20}>
+        {row}
+      </svg>
+    );
   }
 }

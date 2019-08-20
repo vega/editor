@@ -370,16 +370,16 @@ export type ExtractConfigSpec = ReturnType<typeof extractConfigSpec>;
 
 export function setSignals(value: any) {
   return {
-    type: SET_SIGNALS,
     signals: value,
+    type: SET_SIGNALS,
   };
 }
 export type SetSignals = ReturnType<typeof setSignals>;
 
 export function addSignal(value: any) {
   return {
-    type: ADD_SIGNAL,
     signal: value,
+    type: ADD_SIGNAL,
   };
 }
 export type AddSignal = ReturnType<typeof addSignal>;

@@ -16,15 +16,15 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   constructor(props) {
     super(props);
     this.state = {
+      countSignal: {},
       hoverValue: {},
+      isClicked: false,
       isHovered: false,
       keys: [],
       maskListner: false,
       maxLength: 0,
       signal: {},
-      countSignal: {},
       xCount: 0,
-      isClicked: false,
     };
   }
 
@@ -68,6 +68,8 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   public onClickInit(key, hoverValue) {
     this.setState({ maskListner: true });
     this.onHoverInit(key, hoverValue, true);
+
+    setImmediate(() => this.setState({ maskListner: false }));
   }
 
   public componentWillReceiveProps(nextProps) {
@@ -103,9 +105,6 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       [signalKey]: hoverValue.xCount,
     };
     Object.keys(this.props.signals).map(key => {
-      if (key === 'width' || key === 'height' || key === 'padding' || key === 'autosize' || key === 'cursor') {
-        return;
-      }
       let i = 0;
       while (this.props.signals[key][i] && this.props.signals[key][i].xCount <= hoverValue.xCount) {
         i++;
@@ -116,19 +115,18 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     });
     if (!shouldPersist) {
       this.setState({
-        isHovered: true,
         hoverValue: hoverObj,
         isClicked: false,
-        signal: {},
+        isHovered: true,
       });
     } else {
       this.setState(
         {
-          isClicked: true,
-          signal: hoverObj,
-          isHovered: false,
-          hoverValue: {},
           countSignal: countObj,
+          hoverValue: {},
+          isClicked: true,
+          isHovered: false,
+          signal: hoverObj,
         },
         () => {
           this.props.view.setState({ signals: hoverObj });
@@ -153,56 +151,27 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   }
 
   public valueChange = (key: string, value: any) => {
-    if (key === 'width' || key === 'height' || key === 'padding' || key === 'autosize' || key === 'cursor') {
-      return;
-    }
     this.getSignals(key);
+
+    this.setState({
+      countSignal: {},
+      hoverValue: {},
+      isClicked: false,
+      isHovered: false,
+      signal: {},
+    });
   };
 
   public render() {
     return (
       <>
-        <table className="debugger-table">
-          {Object.keys(this.props.signals).map((k, index) => {
-            if (
-              k === 'width' ||
-              k === 'height' ||
-              k === 'padding' ||
-              k === 'autosize' ||
-              k === 'cursor' ||
-              k === 'xCount'
-            ) {
-              return null;
-            }
-            return (
-              <tr key={k}>
-                <td style={{ width: 100 }}>{k}</td>
-                <td>
-                  <TimelineRow
-                    onHoverInit={hoverValue => this.onHoverInit(k, hoverValue)}
-                    onClickInit={hoverValue => this.onClickInit(k, hoverValue)}
-                    onHoverEnd={() => {
-                      this.setState({
-                        isHovered: false,
-                        hoverValue: {},
-                      });
-                    }}
-                    isClicked={this.state.isClicked}
-                    clickedValue={this.state.countSignal[k]}
-                    data={this.props.signals[k]}
-                    width={window.innerWidth * 0.4}
-                    xCount={this.state.xCount}
-                  />
-                </td>
-              </tr>
-            );
-          })}
-        </table>
+        <table className="debugger-table"></table>
         <div className="signal-viewer">
           <table className="editor-table">
             <thead>
               <tr>
                 <th>Signal</th>
+                <th>Timeline</th>
                 <th>Value</th>
               </tr>
             </thead>
@@ -219,7 +188,25 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
                     key={signal}
                     signal={signal}
                     view={this.props.view}
-                  />
+                  >
+                    <>
+                      <TimelineRow
+                        onHoverInit={hoverValue => this.onHoverInit(signal, hoverValue)}
+                        onClickInit={hoverValue => this.onClickInit(signal, hoverValue)}
+                        onHoverEnd={() => {
+                          this.setState({
+                            hoverValue: {},
+                            isHovered: false,
+                          });
+                        }}
+                        isClicked={this.state.isClicked}
+                        clickedValue={this.state.countSignal[signal]}
+                        data={this.props.signals[signal]}
+                        width={window.innerWidth * 0.4}
+                        xCount={this.state.xCount}
+                      />
+                    </>
+                  </SignalRow>
                 );
               })}
             </tbody>
