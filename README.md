@@ -2,6 +2,8 @@
 
 The **Vega editor** is a web application for authoring and testing [Vega](https://github.com/vega/vega) and [Vega-Lite](https://vega.github.io/vega-lite) visualizations. It includes a number of example specifications that showcase both the visual encodings and interaction techniques. It is deployed at https://vega.github.io/editor/.
 
+A back-end service at https://vega.now.sh/ has been integrated which lets a user log in through GitHub so that user can access his/her personal gists. To contribute to editor-backend, one can contribute here: https://github.com/vega/editor-backend.
+
 ## Editor is stuck
 
 You can reset the Vega Editor by going to https://vega.github.io/editor/#/reset and clicking the reset button. This will reset the saved editor state.
@@ -60,20 +62,3 @@ We welcome contributions and promptly review pull requests. For instructions abo
 
 - Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature.
 - Push the tag. Travis will automatically deploy the editor.
-
-## Testing authentication with [editor-backend](https://vega.now.sh/)
-
-- Click 'Sign in with GitHub' button located on the right most part of the header.
-
-![header](./public/header-sign-in.png)
-
-- A new tab will pop-up and automatically close after one is successfully logged in.
-- Find your GitHub profile image on the same place as 'Sign in with GitHub'.
-
-![header](./public/header-sign-out.png)
-
-- Click the image, or the small triangle besides it, to pop up options.
-
-![menu](./public/profile-menu.png)
-
-- Click 'Sign out' to log out.
