@@ -2,6 +2,8 @@
 
 The **Vega editor** is a web application for authoring and testing [Vega](https://github.com/vega/vega) and [Vega-Lite](https://vega.github.io/vega-lite) visualizations. It includes a number of example specifications that showcase both the visual encodings and interaction techniques. It is deployed at https://vega.github.io/editor/.
 
+A back-end service at https://vega.now.sh/ has been integrated which lets a user log in through GitHub so that user can access his/her personal gists. To contribute to editor-backend, one can contribute here: https://github.com/vega/editor-backend.
+
 ## Editor is stuck
 
 You can reset the Vega Editor by going to https://vega.github.io/editor/#/reset and clicking the reset button. This will reset the saved editor state.
@@ -60,9 +62,3 @@ We welcome contributions and promptly review pull requests. For instructions abo
 
 - Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature.
 - Push the tag. Travis will automatically deploy the editor.
-
-## Editor-backend is now integrated!
-
-Link to the backend service: https://vega.now.sh/.
-
-Contribute to the project here: https://github.com/vega/editor-backend.
