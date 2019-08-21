@@ -1,6 +1,5 @@
 import { range } from 'd3-array';
 import { scaleBand } from 'd3-scale';
-import stringify from 'json-stringify-pretty-compact';
 import React, { Component } from 'react';
 
 export default class TimelineRow extends Component<
@@ -25,7 +24,7 @@ export default class TimelineRow extends Component<
       data.map(d => {
         return (
           <rect
-            key={d}
+            key={d.xCount}
             onMouseOver={() => this.props.onHoverInit(d)}
             onClick={() => this.props.onClickInit(d)}
             onMouseLeave={() => this.props.onHoverEnd()}
@@ -40,14 +39,12 @@ export default class TimelineRow extends Component<
             }}
             width={scale.bandwidth()}
             x={scale(d.xCount)}
-          >
-            {stringify(d)}
-          </rect>
+          ></rect>
         );
       });
 
     return (
-      <svg width={window.innerWidth * 0.4} height={20}>
+      <svg width={window.innerWidth * 0.3} height={20}>
         {row}
       </svg>
     );

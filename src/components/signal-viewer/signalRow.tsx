@@ -1,6 +1,6 @@
 import stringify from 'json-stringify-pretty-compact';
 import React from 'react';
-import { isDate } from 'vega';
+import { isDate, debounce } from 'vega';
 import { View } from '../../constants';
 import { formatValueLong } from '../table/renderer';
 
@@ -13,6 +13,7 @@ interface Props {
   isClicked: boolean;
   clickedSignal: any;
   hoverValue: any;
+  timeline: boolean;
 }
 
 interface State {
@@ -64,16 +65,16 @@ export default class SignalRow extends React.PureComponent<Props, State> {
   public renderSignal = () => {
     const { isClicked, isHovered, clickedSignal, hoverValue } = this.props;
     if (isClicked && clickedSignal !== undefined) {
-      return stringify(clickedSignal);
+      return clickedSignal;
     } else if (isHovered && hoverValue !== undefined) {
-      return stringify(hoverValue);
+      return hoverValue;
     } else {
       return null;
     }
   };
 
   public getBackgroundColor = () => {
-    if (this.props.isClicked || this.props.clickedSignal !== undefined) {
+    if (this.props.isClicked && this.props.clickedSignal !== undefined) {
       return '#A4F9C8';
     } else if (this.props.isHovered && this.props.hoverValue !== undefined) {
       return '#fce57e';
@@ -87,7 +88,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     let formatted = '';
     const value = this.renderSignal();
     if (!isDate(this.state.signalValue)) {
-      const formatValue = formatValueLong(value ? JSON.parse(value) : this.state.signalValue);
+      const formatValue = formatValueLong(value ? value : this.state.signalValue);
       if (formatValue !== undefined) {
         tooLong = formatValue.tooLong;
         formatted = formatValue.formatted;
@@ -97,13 +98,18 @@ export default class SignalRow extends React.PureComponent<Props, State> {
       }
     } else {
       tooLong = false;
-      formatted = new Date(value ? JSON.parse(value) : this.state.signalValue).toUTCString();
+      formatted = new Date(value ? value : this.state.signalValue).toUTCString();
     }
     if (tooLong) {
       return (
         <tr>
           <td>{this.props.signal}</td>
-          <td title="The field is too large to be displayed. Please use the view API (see JS console).">
+          {this.props.timeline && <td>{this.props.children}</td>}
+          <td
+            style={{ backgroundColor: this.getBackgroundColor() }}
+            key={this.props.signal}
+            title="The field is too large to be displayed. Please use the view API (see JS console)."
+          >
             <span>(...)</span>
           </td>
         </tr>
@@ -111,9 +117,9 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     } else {
       return (
         <tr>
-          <td>{this.props.signal}</td>
-          <td>{this.props.children}</td>
-          <td style={{ backgroundColor: this.getBackgroundColor() }} key={this.props.signal}>
+          <td style={{ whiteSpace: 'nowrap' }}>{this.props.signal}</td>
+          {this.props.timeline && <td>{this.props.children}</td>}
+          <td style={{ whiteSpace: 'nowrap', backgroundColor: this.getBackgroundColor() }} key={this.props.signal}>
             {formatted}
           </td>
         </tr>

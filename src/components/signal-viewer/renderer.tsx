@@ -1,17 +1,52 @@
-import stringify from 'json-stringify-pretty-compact';
 import React from 'react';
 import * as vega from 'vega';
-import { deepEqual } from 'vega-lite/build/src/util';
 import { mapDispatchToProps, mapStateToProps } from '.';
 import './index.css';
+var equalCycles = require('fast-deep-equal');
 import SignalRow from './signalRow';
 import TimelineRow from './TimelineRow';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-function getClosestValue(signalArray, xCount, key) {
-  // console.log({ signalArray, xCount });
+function isEqual(a, b) {
+  var stack = [];
+  function _isEqual(a, b) {
+    // console.log("->", stack.length);
+    // handle some simple cases first
+    if (a === b) return true;
+    if (typeof a !== 'object' || typeof b !== 'object') return false;
+    // XXX: typeof(null) === "object", but Object.getPrototypeOf(null) throws!
+    if (a === null || b === null) return false;
+    var proto = Object.getPrototypeOf(a);
+    if (proto !== Object.getPrototypeOf(b)) return false;
+    // assume that non-identical objects of unrecognized type are not equal
+    // XXX: could add code here to properly compare e.g. Date objects
+    if (proto !== Object.prototype && proto !== Array.prototype) return false;
+
+    // check the stack before doing a recursive comparison
+    for (var i = 0; i < stack.length; i++) {
+      if (a === stack[i][0] && b === stack[i][1]) return true;
+      // if (b === stack[i][0] && a === stack[i][1]) return true;
+    }
+
+    // do the objects even have the same keys?
+    for (var prop in a) if (!(prop in b)) return false;
+    for (var prop in b) if (!(prop in a)) return false;
+
+    // nothing to do but recurse!
+    stack.push([a, b]);
+    for (var prop in a) {
+      if (!_isEqual(a[prop], b[prop])) {
+        stack.pop();
+        return false;
+      }
+    }
+    stack.pop();
+    return true;
+  }
+  return _isEqual(a, b);
 }
+
 export default class SignalViewer extends React.PureComponent<Props, any> {
   constructor(props) {
     super(props);
@@ -25,6 +60,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       maxLength: 0,
       signal: {},
       xCount: 0,
+      timeline: false,
     };
   }
 
@@ -33,14 +69,17 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   }
 
   public getSignals(changeKey = null) {
+    if (!this.state.timeline) {
+      return;
+    }
     if (changeKey) {
       const obj = {
         value: this.props.view.signal(changeKey),
       };
       const lastObj = this.props.signals[changeKey];
-      const prevObj = { ...lastObj[lastObj.length - 1] };
+      const prevObj = { ...lastObj[lastObj && lastObj.length - 1] };
       delete prevObj.xCount;
-      if (!deepEqual(obj, prevObj)) {
+      if (equalCycles(obj, prevObj)) {
         (obj as any).xCount = this.state.xCount;
         const newSignals = this.props.signals[changeKey].concat(obj);
         this.props.setSignals({ ...this.props.signals, [changeKey]: newSignals });
@@ -80,18 +119,22 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           keys,
           signal: {},
           xCount: 0,
+          timeline: false,
         },
         () => {
-          const obj = {};
-          this.state.keys.map(key => {
-            obj[key]
-              ? obj[key].push({ value: this.props.view.signal(key), xCount: this.state.xCount })
-              : (obj[key] = [{ value: this.props.view.signal(key), xCount: this.state.xCount }]);
-          });
-          this.props.setSignals(obj);
-          this.setState({
-            xCount: 1,
-          });
+          if (this.state.timeline) {
+            const obj = {};
+            this.state.keys.map(key => {
+              obj[key]
+                ? obj[key].push({ value: this.props.view.signal(key), xCount: this.state.xCount })
+                : (obj[key] = [{ value: this.props.view.signal(key), xCount: this.state.xCount }]);
+            });
+
+            this.props.setSignals(obj);
+            this.setState({
+              xCount: 1,
+            });
+          }
         }
       );
     }
@@ -140,18 +183,14 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       this.forceUpdate();
     });
     const keys = this.getKeys();
-    this.setState(
-      {
-        keys,
-      },
-      () => {
-        this.getSignals();
-      }
-    );
+    this.setState({
+      keys,
+    });
   }
-
   public valueChange = (key: string, value: any) => {
-    this.getSignals(key);
+    if (this.state.timeline) {
+      this.getSignals(key);
+    }
 
     this.setState({
       countSignal: {},
@@ -165,13 +204,34 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   public render() {
     return (
       <>
+        <div>
+          Enable Timeline :
+          <input
+            type="checkbox"
+            name=""
+            id=""
+            checked={this.state.timeline}
+            onChange={e =>
+              this.setState(
+                {
+                  timeline: (e.target as any).checked,
+                  xCount: 0,
+                },
+                () => {
+                  this.props.setSignals({});
+                  this.getSignals();
+                }
+              )
+            }
+          />
+        </div>
         <table className="debugger-table"></table>
         <div className="signal-viewer">
           <table className="editor-table">
             <thead>
               <tr>
                 <th>Signal</th>
-                <th>Timeline</th>
+                {this.state.timeline && <th>Timeline</th>}
                 <th>Value</th>
               </tr>
             </thead>
@@ -188,8 +248,9 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
                     key={signal}
                     signal={signal}
                     view={this.props.view}
+                    timeline={this.state.timeline}
                   >
-                    <>
+                    {this.state.timeline && (
                       <TimelineRow
                         onHoverInit={hoverValue => this.onHoverInit(signal, hoverValue)}
                         onClickInit={hoverValue => this.onClickInit(signal, hoverValue)}
@@ -202,10 +263,10 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
                         isClicked={this.state.isClicked}
                         clickedValue={this.state.countSignal[signal]}
                         data={this.props.signals[signal]}
-                        width={window.innerWidth * 0.4}
+                        width={window.innerWidth * 0.3}
                         xCount={this.state.xCount}
                       />
-                    </>
+                    )}
                   </SignalRow>
                 );
               })}
