@@ -61,19 +61,8 @@ We welcome contributions and promptly review pull requests. For instructions abo
 - Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature.
 - Push the tag. Travis will automatically deploy the editor.
 
-## Testing authentication with [editor-backend](https://vega.now.sh/)
+## Editor-backend is now integrated!
 
-- Click 'Sign in with GitHub' button located on the right most part of the header.
+Link to the backend service: https://vega.now.sh/.
 
-![header](./public/header-sign-in.png)
-
-- A new tab will pop-up and automatically close after one is successfully logged in.
-- Find your GitHub profile image on the same place as 'Sign in with GitHub'.
-
-![header](./public/header-sign-out.png)
-
-- Click the image, or the small triangle besides it, to pop up options.
-
-![menu](./public/profile-menu.png)
-
-- Click 'Sign out' to log out.
+Contribute to the project here: https://github.com/vega/editor-backend.
