@@ -259,7 +259,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               )
             }
           />
-          <button onClick={() => this.resetTimeline()}>Reset Timeline</button>
+          {this.state.maskListner && <button onClick={() => this.resetTimeline()}>Reset Timeline</button>}
         </div>
 
         <table className="debugger-table"></table>
