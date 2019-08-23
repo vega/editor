@@ -180,6 +180,7 @@ class Editor extends React.PureComponent<Props, State> {
     return (
       <div>
         <div className="chart">
+          <div className="overlay"></div>
           <div ref="chart" />
         </div>
         <Maximize

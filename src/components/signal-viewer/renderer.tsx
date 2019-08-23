@@ -2,40 +2,60 @@ import React from 'react';
 import * as vega from 'vega';
 import { mapDispatchToProps, mapStateToProps } from '.';
 import './index.css';
-var equalCycles = require('fast-deep-equal');
+// var equalCycles = require('fast-deep-equal');
 import SignalRow from './signalRow';
 import TimelineRow from './TimelineRow';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 function isEqual(a, b) {
-  var stack = [];
+  let stack = [];
   function _isEqual(a, b) {
     // console.log("->", stack.length);
     // handle some simple cases first
-    if (a === b) return true;
-    if (typeof a !== 'object' || typeof b !== 'object') return false;
+    if (a === b) {
+      return true;
+    }
+    if (typeof a !== 'object' || typeof b !== 'object') {
+      return false;
+    }
     // XXX: typeof(null) === "object", but Object.getPrototypeOf(null) throws!
-    if (a === null || b === null) return false;
-    var proto = Object.getPrototypeOf(a);
-    if (proto !== Object.getPrototypeOf(b)) return false;
+    if (a === null || b === null) {
+      return false;
+    }
+    let proto = Object.getPrototypeOf(a);
+    if (proto !== Object.getPrototypeOf(b)) {
+      return false;
+    }
     // assume that non-identical objects of unrecognized type are not equal
     // XXX: could add code here to properly compare e.g. Date objects
-    if (proto !== Object.prototype && proto !== Array.prototype) return false;
+    if (proto !== Object.prototype && proto !== Array.prototype) {
+      return false;
+    }
 
     // check the stack before doing a recursive comparison
-    for (var i = 0; i < stack.length; i++) {
-      if (a === stack[i][0] && b === stack[i][1]) return true;
+    for (let i = 0; i < stack.length; i++) {
+      if (a === stack[i][0] && b === stack[i][1]) {
+        return true;
+      }
       // if (b === stack[i][0] && a === stack[i][1]) return true;
     }
 
     // do the objects even have the same keys?
-    for (var prop in a) if (!(prop in b)) return false;
-    for (var prop in b) if (!(prop in a)) return false;
+    for (let prop in a) {
+      if (!(prop in b)) {
+        return false;
+      }
+    }
+    for (let prop in b) {
+      if (!(prop in a)) {
+        return false;
+      }
+    }
 
     // nothing to do but recurse!
     stack.push([a, b]);
-    for (var prop in a) {
+    for (let prop in a) {
       if (!_isEqual(a[prop], b[prop])) {
         stack.pop();
         return false;
@@ -79,17 +99,17 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       const lastObj = this.props.signals[changeKey];
       const prevObj = { ...lastObj[lastObj && lastObj.length - 1] };
       delete prevObj.xCount;
-      if (equalCycles(obj, prevObj)) {
-        (obj as any).xCount = this.state.xCount;
-        const newSignals = this.props.signals[changeKey].concat(obj);
-        this.props.setSignals({ ...this.props.signals, [changeKey]: newSignals });
-        this.setState(current => {
-          return {
-            ...current,
-            xCount: current.xCount + 1,
-          };
-        });
-      }
+      // if (equalCycles(obj, prevObj)) {
+      (obj as any).xCount = this.state.xCount;
+      const newSignals = this.props.signals[changeKey].concat(obj);
+      this.props.setSignals({ ...this.props.signals, [changeKey]: newSignals });
+      this.setState(current => {
+        return {
+          ...current,
+          xCount: current.xCount + 1,
+        };
+      });
+      // }
     } else {
       const obj = {};
       this.state.keys.map(key => {
@@ -106,9 +126,9 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
 
   public onClickInit(key, hoverValue) {
     this.setState({ maskListner: true });
-    this.onHoverInit(key, hoverValue, true);
-
-    setImmediate(() => this.setState({ maskListner: false }));
+    const overlay: HTMLElement = document.querySelector('.overlay');
+    overlay.style.display = 'block';
+    this.onHoverInit(key, hoverValue, true); // hover calculation with persist
   }
 
   public componentWillReceiveProps(nextProps) {
@@ -138,6 +158,29 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
         }
       );
     }
+  }
+
+  public resetTimeline() {
+    // get the chart
+    const overlay: HTMLElement = document.querySelector('.overlay');
+    // remove the overlay
+    overlay.style.display = 'none';
+    // setState to current value
+    const currentValueObj = {};
+    this.state.keys.map(signal => {
+      currentValueObj[signal] = this.props.signals[signal][this.props.signals[signal].length - 1].value;
+    });
+    this.props.view.setState({ signals: currentValueObj });
+    // remove isClicked, isHovered, hoverValue, signal and CountValue
+    this.setState({
+      isClicked: false,
+      signal: {},
+      countSignal: {},
+      hoverValue: {},
+      isHovered: false,
+      maskListner: false,
+    });
+    // remove the maskListner
   }
 
   public onHoverInit(signalKey, hoverValue, shouldPersist = false) {
@@ -191,20 +234,12 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     if (this.state.timeline) {
       this.getSignals(key);
     }
-
-    this.setState({
-      countSignal: {},
-      hoverValue: {},
-      isClicked: false,
-      isHovered: false,
-      signal: {},
-    });
   };
 
   public render() {
     return (
       <>
-        <div>
+        <div style={{ display: 'inline-block' }}>
           Enable Timeline :
           <input
             type="checkbox"
@@ -224,7 +259,9 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               )
             }
           />
+          <button onClick={() => this.resetTimeline()}>Reset Timeline</button>
         </div>
+
         <table className="debugger-table"></table>
         <div className="signal-viewer">
           <table className="editor-table">
