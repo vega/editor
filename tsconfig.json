@@ -11,7 +11,8 @@
     "jsx": "react",
     "suppressImplicitAnyIndexErrors": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true
   },
   "files": ["src/index.tsx"],
   "include": ["node_modules/vega-lite/typings/*.d.ts"],

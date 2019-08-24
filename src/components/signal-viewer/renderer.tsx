@@ -1,6 +1,6 @@
 import React from 'react';
 import * as vega from 'vega';
-import { mapStateToProps } from '.';
+import {mapStateToProps} from '.';
 import './index.css';
 import SignalRow from './signalRow';
 
@@ -12,7 +12,7 @@ export default class SignalViewer extends React.PureComponent<Props> {
   }
 
   public getSignals() {
-    return Object.keys(this.props.view.getState({ data: vega.falsy, signals: vega.truthy, recurse: true }).signals);
+    return Object.keys(this.props.view.getState({data: vega.falsy, signals: vega.truthy, recurse: true}).signals);
   }
 
   public render() {

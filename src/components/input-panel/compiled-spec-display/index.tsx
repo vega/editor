@@ -1,11 +1,9 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
-import { connect } from 'react-redux';
-import ConfigEditor from '../../config-editor/index';
-
-import { LAYOUT, Mode, SIDEPANE } from '../../../constants';
-import { State } from '../../../constants/default-state';
+import {connect} from 'react-redux';
+import {LAYOUT} from '../../../constants';
+import {State} from '../../../constants/default-state';
 import CompiledSpecDisplayHeader from '../compiled-spec-header';
 
 type Props = ReturnType<typeof mapStateToProps>;
@@ -29,10 +27,10 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
           options={{
             automaticLayout: true,
             folding: true,
-            minimap: { enabled: false },
+            minimap: {enabled: false},
             readOnly: true,
             scrollBeyondLastLine: false,
-            wordWrap: 'on',
+            wordWrap: 'on'
           }}
           language="json"
           value={stringify(this.props.value)}
@@ -43,12 +41,12 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
   }
 }
 
-function mapStateToProps(state: State, ownProps) {
+function mapStateToProps(state: State) {
   return {
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     mode: state.mode,
     sidePaneItem: state.sidePaneItem,
-    value: state.vegaSpec,
+    value: state.vegaSpec
   };
 }
 

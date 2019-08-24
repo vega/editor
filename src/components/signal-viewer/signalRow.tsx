@@ -1,7 +1,7 @@
 import React from 'react';
-import { isDate } from 'vega';
-import { View } from '../../constants';
-import { formatValueLong } from '../table/renderer';
+import {isDate} from 'vega';
+import {View} from '../../constants';
+import {formatValueLong} from '../table/renderer';
 
 interface Props {
   view: View;
@@ -16,7 +16,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      signalValue: this.props.view.signal(this.props.signal),
+      signalValue: this.props.view.signal(this.props.signal)
     };
     this.signalHandler = this.signalHandler.bind(this);
   }
@@ -25,7 +25,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
       prevProps.view.removeSignalListener(prevProps.signal, this.signalHandler);
       this.props.view.addSignalListener(this.props.signal, this.signalHandler);
       this.setState({
-        signalValue: this.props.view.signal(this.props.signal),
+        signalValue: this.props.view.signal(this.props.signal)
       });
     }
   }
@@ -72,7 +72,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
 
   private signalHandler(signalName: string, currentValue) {
     this.setState({
-      signalValue: currentValue,
+      signalValue: currentValue
     });
   }
 }

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ChevronDown, ChevronUp } from 'react-feather';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { bindActionCreators, Dispatch } from 'redux';
+import {ChevronDown, ChevronUp} from 'react-feather';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor';
-import { NAVBAR } from '../../../constants/consts';
+import {NAVBAR} from '../../../constants/consts';
 
 interface Props {
   debugPane?: boolean;
@@ -92,7 +92,7 @@ function mapStateToProps(state, ownProps) {
     logs: state.logs,
     navItem: state.navItem,
     warningsCount: state.warningsCount,
-    warningsLogger: state.warningsLogger,
+    warningsLogger: state.warningsLogger
   };
 }
 
@@ -101,7 +101,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       showLogs: EditorActions.showLogs,
       toggleDebugPane: EditorActions.toggleDebugPane,
-      toggleNavbar: EditorActions.toggleNavbar,
+      toggleNavbar: EditorActions.toggleNavbar
     },
     dispatch
   );

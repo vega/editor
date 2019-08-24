@@ -2,8 +2,8 @@ import * as React from 'react';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
-import { debounce } from 'vega';
-import { mapStateToProps } from '.';
+import {debounce} from 'vega';
+import {mapStateToProps} from '.';
 import ErrorBoundary from '../error-boundary';
 import Table from '../table';
 import './index.css';
@@ -12,7 +12,7 @@ type Props = ReturnType<typeof mapStateToProps>;
 
 const initialState = {
   currentPage: 0,
-  selectedData: '',
+  selectedData: ''
 };
 
 type State = Readonly<typeof initialState>;
@@ -34,16 +34,16 @@ export default class DataViewer extends React.PureComponent<Props, State> {
   }
 
   public handleChange(option) {
-    this.setState({ selectedData: option.value, currentPage: 0 });
+    this.setState({selectedData: option.value, currentPage: 0});
   }
 
   public handlePageChange(option) {
     const selected = option.selected;
-    this.setState({ currentPage: selected });
+    this.setState({currentPage: selected});
   }
 
   public getDatasets() {
-    return Object.keys(this.props.view.getState({ data: vega.truthy, signals: vega.falsy, recurse: true }).data);
+    return Object.keys(this.props.view.getState({data: vega.truthy, signals: vega.falsy, recurse: true}).data);
   }
 
   public setDefaultDataset() {
@@ -52,7 +52,7 @@ export default class DataViewer extends React.PureComponent<Props, State> {
     if (datasets.length) {
       this.setState({
         currentPage: 0,
-        selectedData: datasets[datasets.length > 1 ? 1 : 0],
+        selectedData: datasets[datasets.length > 1 ? 1 : 0]
       });
     }
   }
@@ -143,11 +143,11 @@ export default class DataViewer extends React.PureComponent<Props, State> {
         <div className="data-viewer-header">
           <Select
             className="data-dropdown"
-            value={{ label: selected }}
+            value={{label: selected}}
             onChange={this.handleChange}
             options={datasets.map(d => ({
               label: d,
-              value: d,
+              value: d
             }))}
             clearable={false}
             searchable={false}

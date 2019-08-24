@@ -1,8 +1,8 @@
-import { Renderers, Spec } from 'vega';
-import { TopLevelSpec as VlSpec } from 'vega-lite';
-import { Config } from 'vega-themes/build/config';
-import { LocalLogger } from '../utils/logger';
-import { LAYOUT, Mode, NAVBAR, SIDEPANE, VEGA_LITE_START_SPEC, View } from './consts';
+import {Renderers, Spec} from 'vega';
+import {TopLevelSpec as VlSpec} from 'vega-lite';
+import {Config} from 'vega-themes/build/config';
+import {LocalLogger} from '../utils/logger';
+import {LAYOUT, Mode, NAVBAR, SIDEPANE, VEGA_LITE_START_SPEC, View} from './consts';
 
 export interface State {
   isAuthenticated: boolean;
@@ -15,7 +15,7 @@ export interface State {
   debugPaneSize: number;
   editorRef: any;
   editorString: string;
-  error: { message: string }; // don't put Error here since we can't serialize it
+  error: {message: string}; // don't put Error here since we can't serialize it
   export: boolean;
   gist: string;
   handle: string;
@@ -77,5 +77,5 @@ export const DEFAULT_STATE: State = {
   vegaSpec: {},
   view: null,
   warningsCount: 0,
-  warningsLogger: new LocalLogger(),
+  warningsLogger: new LocalLogger()
 };
