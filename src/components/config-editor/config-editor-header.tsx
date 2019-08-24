@@ -1,7 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import * as themes from 'vega-themes';
 import * as EditorActions from '../../actions/editor';
 import './config-editor.css';
@@ -28,7 +28,7 @@ class ConfigEditorHeader extends React.PureComponent<any, any> {
           }}
         >
           <option value="custom">Custom</option>
-          {Object.keys(themes).map((keyName, keyIndex) => {
+          {Object.keys(themes).map(keyName => {
             return (
               <option key={keyName} value={keyName}>
                 {keyName}
@@ -46,7 +46,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       setConfig: EditorActions.setConfig,
       setConfigEditorString: EditorActions.setConfigEditorString,
-      setThemeName: EditorActions.setThemeName,
+      setThemeName: EditorActions.setThemeName
     },
     dispatch
   );
@@ -55,7 +55,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
 function mapStateToProps(state) {
   return {
     manualParse: state.manualParse,
-    themeName: state.themeName,
+    themeName: state.themeName
   };
 }
 

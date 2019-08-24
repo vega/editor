@@ -1,10 +1,10 @@
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor';
-import { State } from '../../constants/default-state';
+import {State} from '../../constants/default-state';
 import Renderer from './renderer';
 
-export function mapStateToProps(state: State, ownProps) {
+export function mapStateToProps(state: State) {
   return {
     debugPane: state.debugPane,
     debugPaneSize: state.debugPaneSize,
@@ -12,7 +12,7 @@ export function mapStateToProps(state: State, ownProps) {
     logs: state.logs,
     navItem: state.navItem,
     settings: state.settings,
-    view: state.view,
+    view: state.view
   };
 }
 
@@ -22,7 +22,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setDebugPaneSize: EditorActions.setDebugPaneSize,
       showLogs: EditorActions.showLogs,
       toggleDebugPane: EditorActions.toggleDebugPane,
-      toggleNavbar: EditorActions.toggleNavbar,
+      toggleNavbar: EditorActions.toggleNavbar
     },
     dispatch
   );

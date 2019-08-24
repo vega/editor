@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import SplitPane from 'react-split-pane';
-import { bindActionCreators, Dispatch } from 'redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor';
-import { LAYOUT, Mode, SIDEPANE } from '../../constants';
-import { State } from '../../constants/default-state';
+import {LAYOUT, Mode} from '../../constants';
+import {State} from '../../constants/default-state';
 import ConfigEditor from '../config-editor';
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
@@ -62,7 +62,7 @@ class InputPanel extends React.PureComponent<Props> {
         <SpecEditor key="editor" />
 
         <ConfigEditor key="configEditor" />
-      </div>,
+      </div>
     ];
     if (this.props.compiledVegaSpec) {
       innerPanes.push(<CompiledSpecDisplay key="compiled" />);
@@ -93,8 +93,8 @@ class InputPanel extends React.PureComponent<Props> {
         minSize={LAYOUT.MinPaneSize}
         defaultSize={this.props.compiledVegaSpec ? this.props.compiledVegaPaneSize : LAYOUT.MinPaneSize}
         onChange={this.handleChange}
-        pane1Style={{ minHeight: `${LAYOUT.MinPaneSize}px` }}
-        paneStyle={{ display: 'flex' }}
+        pane1Style={{minHeight: `${LAYOUT.MinPaneSize}px`}}
+        paneStyle={{display: 'flex'}}
         onDragFinished={() => {
           if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
             this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
@@ -109,12 +109,12 @@ class InputPanel extends React.PureComponent<Props> {
   }
 }
 
-function mapStateToProps(state: State, ownProps) {
+function mapStateToProps(state: State) {
   return {
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     compiledVegaSpec: state.compiledVegaSpec,
     mode: state.mode,
-    sidePaneItem: state.sidePaneItem,
+    sidePaneItem: state.sidePaneItem
   };
 }
 
@@ -122,7 +122,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setCompiledVegaPaneSize: EditorActions.setCompiledVegaPaneSize,
-      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
+      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec
     },
     dispatch
   );

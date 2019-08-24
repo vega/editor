@@ -1,8 +1,8 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import * as ReactGA from 'react-ga';
-import { Provider } from 'react-redux';
-import { HashRouter } from 'react-router-dom';
+import {Provider} from 'react-redux';
+import {HashRouter} from 'react-router-dom';
 import * as vega from 'vega';
 import * as vl from 'vega-lite';
 import setupMonaco from './utils/monaco';
@@ -33,7 +33,7 @@ window.VEGA_DEBUG.VEGA_LITE_VERSION = vl.version;
 ReactGA.initialize('UA-44428446-7');
 
 function logPageView() {
-  ReactGA.set({ page: window.location.pathname + window.location.search });
+  ReactGA.set({page: window.location.pathname + window.location.search});
   ReactGA.pageview(window.location.pathname + window.location.search);
 }
 

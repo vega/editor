@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Select from 'react-select';
 import './index.css';
 
@@ -59,13 +59,13 @@ class Sidebar extends Component<any, any> {
   }
 
   public logOptions = () => {
-    let options = [{ label: 'None' }, { label: 'Warn' }, { label: 'Info' }, { label: 'Debug' }];
+    let options = [{label: 'None'}, {label: 'Warn'}, {label: 'Info'}, {label: 'Debug'}];
     options = options.filter(o => o.label !== this.props.logLevel);
     return options;
   };
 
   public hoverOptions = () => {
-    let options = [{ label: 'auto' }, { label: 'on' }, { label: 'off' }];
+    let options = [{label: 'auto'}, {label: 'on'}, {label: 'off'}];
     const selected =
       typeof this.props.hoverEnable !== 'boolean' ? this.props.hoverEnable : this.props.hoverEnable ? 'on' : 'off';
     options = options.filter(o => o.label !== selected);
@@ -84,7 +84,7 @@ class Sidebar extends Component<any, any> {
     this.props.setHover(newHover);
   }
   public render() {
-    const renderOptions = this.props.renderer === 'svg' ? [{ label: 'canvas' }] : [{ label: 'svg' }];
+    const renderOptions = this.props.renderer === 'svg' ? [{label: 'canvas'}] : [{label: 'svg'}];
     const hover = typeof this.props.hoverEnable !== 'boolean' ? 'auto' : this.props.hoverEnable ? 'on' : 'off';
     return (
       <div className="settings">
@@ -94,7 +94,7 @@ class Sidebar extends Component<any, any> {
             <Select
               className="renderer-dropdown-wrapper"
               classNamePrefix="renderer-dropdown"
-              value={{ label: this.props.renderer }}
+              value={{label: this.props.renderer}}
               options={renderOptions}
               isClearable={false}
               isSearchable={false}
@@ -109,7 +109,7 @@ class Sidebar extends Component<any, any> {
             <Select
               className="log-level-dropdown-wrapper"
               classNamePrefix="log-level-dropdown"
-              value={{ label: this.props.logLevel }}
+              value={{label: this.props.logLevel}}
               options={this.logOptions()}
               onChange={e => this.props.setLogLevel(e.label)}
               isClearable={false}
@@ -124,7 +124,7 @@ class Sidebar extends Component<any, any> {
             <Select
               className="hover-enable-dropdown-wrapper"
               classNamePrefix="hover-enable-dropdown"
-              value={{ label: hover }}
+              value={{label: hover}}
               options={this.hoverOptions()}
               onChange={this.setHover}
               isClearable={false}
@@ -134,7 +134,7 @@ class Sidebar extends Component<any, any> {
         </div>
         <p className="settings-description">
           Enable or disable <a href="https://vega.github.io/vega/docs/api/view/#view_hover">hover</a> event processing.
-          In "auto" mode, Vega-Lite disables hover event processing.
+          In auto mode, Vega-Lite disables hover event processing.
         </p>
         <div className="tooltips">
           <label>
@@ -150,7 +150,7 @@ class Sidebar extends Component<any, any> {
         </div>
         <p className="settings-description">
           Enable the default{' '}
-          <a href="https://github.com/vega/vega-tooltip" target="_blank">
+          <a href="https://github.com/vega/vega-tooltip" rel="noopener noreferrer" target="_blank">
             Vega Tooltip
           </a>{' '}
           handler.

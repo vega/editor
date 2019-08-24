@@ -1,10 +1,10 @@
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor';
-import { State } from '../../constants/default-state';
+import {State} from '../../constants/default-state';
 import Renderer from './renderer';
 
-export function mapStateToProps(state: State, ownProps) {
+export function mapStateToProps(state: State) {
   return {
     configEditorString: state.configEditorString,
     editorRef: state.editorRef,
@@ -17,7 +17,7 @@ export function mapStateToProps(state: State, ownProps) {
     settings: state.settings,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
-    view: state.view,
+    view: state.view
   };
 }
 
@@ -34,7 +34,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setSettingsState: EditorActions.setSettingsState,
       setThemeName: EditorActions.setThemeName,
       toggleAutoParse: EditorActions.toggleAutoParse,
-      updateVegaSpec: EditorActions.updateVegaSpec,
+      updateVegaSpec: EditorActions.updateVegaSpec
     },
     dispatch
   );

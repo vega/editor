@@ -1,5 +1,5 @@
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor';
 import Renderer from './renderer';
 
@@ -8,7 +8,7 @@ export function mapStateToProps(state) {
     hoverEnable: state.hoverEnable,
     logLevel: state.logLevel,
     renderer: state.renderer,
-    tooltipEnable: state.tooltipEnable,
+    tooltipEnable: state.tooltipEnable
   };
 }
 
@@ -19,7 +19,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setLogLevel: EditorActions.setLogLevel,
       setRenderer: EditorActions.setRenderer,
       setSettingsState: EditorActions.setSettingsState,
-      setTooltip: EditorActions.setTooltip,
+      setTooltip: EditorActions.setTooltip
     },
     dispatch
   );

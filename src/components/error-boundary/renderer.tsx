@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mapDispatchToProps, mapStateToProps } from '.';
+import {mapDispatchToProps, mapStateToProps} from '.';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;

@@ -1,23 +1,17 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { bindActionCreators, Dispatch } from 'redux';
+import {connect} from 'react-redux';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
+import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor';
-import { SIDEPANE } from '../../../constants';
+import {SIDEPANE} from '../../../constants';
 import ConfigEditorHeader from '../../config-editor/config-editor-header';
 import './index.css';
+import {State} from '../../../constants/default-state';
 
-const toggleStyle = {
-  cursor: 'pointer',
-};
-
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { history: any };
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
 class SpecEditorHeader extends React.PureComponent<Props> {
   public render() {
-    const toggleStyleUp = Object.assign({}, toggleStyle, {
-      position: 'static',
-    });
     return (
       <div className="editor-header spec-editor-header">
         <ul className="tabs-nav">
@@ -54,7 +48,7 @@ class SpecEditorHeader extends React.PureComponent<Props> {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: State) {
   return {
     compiledVegaSpec: state.compiledVegaSpec,
     configEditorString: state.configEditorString,
@@ -63,7 +57,7 @@ function mapStateToProps(state, ownProps) {
     mode: state.mode,
     sidePaneItem: state.sidePaneItem,
     themeName: state.themeName,
-    value: state.vegaSpec,
+    value: state.vegaSpec
   };
 }
 
@@ -78,7 +72,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setThemeName: EditorActions.setThemeName,
       toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
       updateEditorString: EditorActions.updateEditorString,
-      updateVegaSpec: EditorActions.updateVegaSpec,
+      updateVegaSpec: EditorActions.updateVegaSpec
     },
     dispatch
   );

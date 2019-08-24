@@ -1,4 +1,4 @@
-import { LoggerInterface } from 'vega';
+import {LoggerInterface} from 'vega';
 
 export class LocalLogger implements LoggerInterface {
   public readonly warns = [];

@@ -1,16 +1,16 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
 import SplitPane from 'react-split-pane';
-import { bindActionCreators, Dispatch } from 'redux';
-import { Spec } from 'vega';
-import { MessageData } from 'vega-embed';
-import { hash, mergeDeep } from 'vega-lite/build/src/util';
+import {bindActionCreators, Dispatch} from 'redux';
+import {Spec} from 'vega';
+import {MessageData} from 'vega-embed';
+import {hash, mergeDeep} from 'vega-lite/build/src/util';
 import * as EditorActions from '../actions/editor';
-import { LAYOUT, Mode } from '../constants';
-import { NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC } from '../constants/consts';
-import { State } from '../constants/default-state';
+import {LAYOUT, Mode} from '../constants';
+import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
+import {State} from '../constants/default-state';
 import './app.css';
 import Header from './header';
 import InputPanel from './input-panel';
@@ -19,7 +19,7 @@ import VizPane from './viz-pane';
 
 type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps> & RouteComponentProps;
 
-class App extends React.PureComponent<Props & { match: any; location: any; showExample?: boolean }> {
+class App extends React.PureComponent<Props & {match: any; location: any; showExample?: boolean}> {
   public w = window.innerWidth;
   public componentDidMount() {
     window.addEventListener(
@@ -36,7 +36,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
         const parsed = JSON.parse(data.spec) as Spec;
         // merging config into the spec
         if (data.config) {
-          mergeDeep(parsed, { config: data.config as any });
+          mergeDeep(parsed, {config: data.config as any});
         }
         data.spec = stringify(parsed);
         if (data.spec || data.file) {
@@ -59,7 +59,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
 
     const parameter = this.props.match.params;
     if (parameter.mode) {
-      if (parameter.mode === 'vega' || 'vega-lite') {
+      if (parameter.mode === 'vega' || parameter.mode === 'vega-lite') {
         this.props.setModeOnly(parameter.mode);
       }
     }
@@ -84,7 +84,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     }
   }
 
-  public async setExample(parameter: { example_name: string; mode: string }) {
+  public async setExample(parameter: {example_name: string; mode: string}) {
     const name = parameter.example_name;
     this.props.setConfig(this.props.configEditorString);
     this.props.setSidePaneItem(SIDEPANE.Editor);
@@ -113,7 +113,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
     }
   }
 
-  public async setGist(parameter: { id: string; filename: string; revision?: string }) {
+  public async setGist(parameter: {id: string; filename: string; revision?: string}) {
     await fetch(
       `https://api.github.com/gists/${parameter.id}${parameter.revision !== undefined ? `/${parameter.revision}` : ''}`
     )
@@ -139,7 +139,7 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
         <Header showExample={this.props.showExample} />
         <div
           style={{
-            height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,
+            height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`
           }}
           className="main-panel"
         >
@@ -147,10 +147,10 @@ class App extends React.PureComponent<Props & { match: any; location: any; showE
             split="vertical"
             minSize={300}
             defaultSize={this.w * 0.4}
-            pane1Style={{ display: 'flex' }}
+            pane1Style={{display: 'flex'}}
             className="main-pane"
-            pane2Style={{ overflow: 'scroll' }}
-            style={{ position: 'relative' }}
+            pane2Style={{overflow: 'scroll'}}
+            style={{position: 'relative'}}
           >
             <InputPanel />
             <VizPane />
@@ -166,7 +166,7 @@ function mapStateToProps(state: State) {
   return {
     configEditorString: state.configEditorString,
     settings: state.settings,
-    view: state.view,
+    view: state.view
   };
 }
 
@@ -184,7 +184,7 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setVegaExample: EditorActions.setVegaExample,
       setVegaLiteExample: EditorActions.setVegaLiteExample,
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
-      updateVegaSpec: EditorActions.updateVegaSpec,
+      updateVegaSpec: EditorActions.updateVegaSpec
     },
     dispatch
   );

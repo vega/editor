@@ -1,9 +1,9 @@
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
-import { debounce } from 'vega';
-import { mapDispatchToProps, mapStateToProps } from '.';
-import { LAYOUT, Mode, SIDEPANE } from '../../constants';
+import {debounce} from 'vega';
+import {mapDispatchToProps, mapStateToProps} from '.';
+import {LAYOUT, Mode, SIDEPANE} from '../../constants';
 import './config-editor.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -42,7 +42,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
       contextMenuOrder: 0,
       id: 'MERGE_CONFIG',
       label: 'Merge Config Into Spec',
-      run: this.handleMergeConfig.bind(this),
+      run: this.handleMergeConfig.bind(this)
     });
 
     editor.addAction({
@@ -50,7 +50,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
       contextMenuOrder: 1,
       id: 'EXTRACT_CONFIG',
       label: 'Extract Config From Spec',
-      run: this.handleExtractConfig.bind(this),
+      run: this.handleExtractConfig.bind(this)
     });
     this.editor = editor;
     if (this.props.sidePaneItem === SIDEPANE.Config) {
@@ -84,7 +84,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     return (
       <div
         className={this.props.mode === Mode.Vega ? 'full-height-wrapper' : ''}
-        style={{ display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : '' }}
+        style={{display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : ''}}
       >
         <MonacoEditor
           height={this.getEditorHeight()}
@@ -95,9 +95,9 @@ export default class ConfigEditor extends React.PureComponent<Props> {
             cursorBlinking: 'smooth',
             folding: true,
             lineNumbersMinChars: 4,
-            minimap: { enabled: false },
+            minimap: {enabled: false},
             scrollBeyondLastLine: false,
-            wordWrap: 'on',
+            wordWrap: 'on'
           }}
           ref="ConfigEditor"
           language="json"

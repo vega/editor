@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Book, Code, Image, Map } from 'react-feather';
-import { withRouter } from 'react-router-dom';
-import { mergeDeep } from 'vega-lite/build/src/util';
-import { mapStateToProps } from '.';
-import { Mode } from '../../../constants/consts';
+import {Book, Code, Image, Map} from 'react-feather';
+import {withRouter} from 'react-router-dom';
+import {mergeDeep} from 'vega-lite/build/src/util';
+import {mapStateToProps} from '.';
+import {Mode} from '../../../constants/consts';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;
@@ -18,7 +18,7 @@ class ExportModal extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       downloadVegaJSON: false,
-      includeConfig: true,
+      includeConfig: true
     };
   }
 
@@ -52,12 +52,12 @@ class ExportModal extends React.PureComponent<Props, State> {
         filename: 'chart.svg',
         input: 'raw',
         inputformat: 'svg',
-        outputformat: 'pdf',
+        outputformat: 'pdf'
       }),
       headers: {
-        'content-type': 'application/json; chartset=UTF-8',
+        'content-type': 'application/json; chartset=UTF-8'
       },
-      method: 'post',
+      method: 'post'
     });
 
     const blob = await pdf.blob();
@@ -74,7 +74,7 @@ class ExportModal extends React.PureComponent<Props, State> {
 
   public updateIncludeConfig(e) {
     this.setState({
-      includeConfig: e.target.checked,
+      includeConfig: e.target.checked
     });
   }
 
@@ -98,12 +98,12 @@ class ExportModal extends React.PureComponent<Props, State> {
     }
 
     if (this.state.includeConfig && this.props.config) {
-      content = { ...content };
+      content = {...content};
       content.config = mergeDeep({}, this.props.config, content.config);
     }
 
     const blob = new Blob([JSON.stringify(content, null, 2)], {
-      type: `application/json`,
+      type: `application/json`
     });
     const url = window.URL.createObjectURL(blob);
 
@@ -115,7 +115,7 @@ class ExportModal extends React.PureComponent<Props, State> {
   }
 
   public updateDownloadJSONType(event) {
-    this.setState({ downloadVegaJSON: event.currentTarget.value === 'vega' });
+    this.setState({downloadVegaJSON: event.currentTarget.value === 'vega'});
   }
 
   public render() {

@@ -1,10 +1,10 @@
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor';
-import { State } from '../../constants/default-state';
+import {State} from '../../constants/default-state';
 import Renderer from './renderer';
 
-export function mapStateToProps(state: State, ownProps) {
+export function mapStateToProps(state: State) {
   return {
     baseURL: state.baseURL,
     config: state.config,
@@ -16,14 +16,14 @@ export function mapStateToProps(state: State, ownProps) {
     tooltipEnable: state.tooltipEnable,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
-    view: state.view,
+    view: state.view
   };
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
-      setView: EditorActions.setView,
+      setView: EditorActions.setView
     },
     dispatch
   );
