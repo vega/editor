@@ -9496,10 +9496,10 @@ vega-hierarchy@^4.0.1:
     vega-dataflow "^5.1.0"
     vega-util "^1.8.0"
 
-vega-lite-dev-config@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/vega-lite-dev-config/-/vega-lite-dev-config-0.2.4.tgz#9c1091c860ea81b8c606d930a6789ce40dfbf78e"
-  integrity sha512-H3Csqs1PK/QT0RIzXvzzOkECC15du5B3/R58S5NGia96v3xjv9jNMaBB2KHEMCGU+srlLTRaLBFm1e//CtMkmg==
+vega-lite-dev-config@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/vega-lite-dev-config/-/vega-lite-dev-config-0.2.5.tgz#159e7d6761eddc0e30e65afba0f9b8233309baba"
+  integrity sha512-3Z+6/ZBMGWtZiOM6V3lhmwMablRf16AhiQvnONEo9t++qCeaemBHaE2ohirPP7GSVhwBMDu4xVla3fx/ixjSSA==
   dependencies:
     "@babel/core" "^7.5.5"
     "@babel/preset-env" "^7.5.5"
