@@ -18,7 +18,7 @@
     "tslint-eslint-rules": "^5.4.0",
     "tslint": "^5.19.0",
     "typescript": "~3.4.0",
-    "vega-lite-dev-config": "^0.2.4",
+    "vega-lite-dev-config": "^0.2.5",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0",
