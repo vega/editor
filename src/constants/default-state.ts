@@ -1,8 +1,10 @@
+import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {Renderers, Spec} from 'vega';
 import {TopLevelSpec as VlSpec} from 'vega-lite';
 import {Config} from 'vega-themes/build/config';
 import {LocalLogger} from '../utils/logger';
-import {LAYOUT, Mode, NAVBAR, SIDEPANE, VEGA_LITE_START_SPEC, View} from './consts';
+
+import {EDITOR_FOCUS, LAYOUT, Mode, NAVBAR, SIDEPANE, VEGA_LITE_START_SPEC, View} from './consts';
 
 export interface State {
   isAuthenticated: boolean;
@@ -13,7 +15,10 @@ export interface State {
   configEditorString: string;
   debugPane: boolean;
   debugPaneSize: number;
-  editorRef: any;
+  decorations: any;
+  editorRef: Monaco.editor.IStandaloneCodeEditor;
+  compiledEditorRef: Monaco.editor.IStandaloneCodeEditor;
+  editorFocus: string;
   editorString: string;
   error: {message: string}; // don't put Error here since we can't serialize it
   export: boolean;
@@ -44,12 +49,15 @@ export interface State {
 
 export const DEFAULT_STATE: State = {
   baseURL: null,
+  compiledEditorRef: null,
   compiledVegaPaneSize: LAYOUT.MinPaneSize,
   compiledVegaSpec: false,
   config: {},
   configEditorString: '{}',
   debugPane: false,
   debugPaneSize: LAYOUT.MinPaneSize,
+  decorations: [],
+  editorFocus: EDITOR_FOCUS.SpecEditor,
   editorRef: null,
   editorString: VEGA_LITE_START_SPEC,
   error: null,

@@ -49,6 +49,11 @@ export const SIDEPANE = {
   Editor: 'Editor'
 };
 
+export const EDITOR_FOCUS = {
+  CompiledEditor: 'compiled-editor',
+  SpecEditor: 'spec-editor'
+};
+
 export const KEYCODES = {
   B: 66,
   ESCAPE: 27,
@@ -56,6 +61,11 @@ export const KEYCODES = {
   SINGLE_QUOTE: 222,
   SLASH: 191
 };
+
+/**
+ * Taken from: https://github.com/microsoft/monaco-editor/blob/02fb6bfd43b5ddcff36c1a1303e4aac623deff2e/monaco.d.ts#L2602
+ */
+export const wordSeparators = '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?';
 
 export const BACKEND_URL = 'https://vega.now.sh/';
 

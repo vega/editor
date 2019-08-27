@@ -605,7 +605,7 @@
     js-levenshtein "^1.1.3"
     semver "^5.5.0"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.3", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5":
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.3", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
   integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
@@ -3323,6 +3323,11 @@ dom-serializer@0:
     domelementtype "^2.0.1"
     entities "^2.0.0"
 
+dom-walk@^0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
+  integrity sha1-ZyIm3HTI95mtNTB9+TaroRrNYBg=
+
 domain-browser@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
@@ -4379,6 +4384,14 @@ global-prefix@^3.0.0:
     ini "^1.3.5"
     kind-of "^6.0.2"
     which "^1.3.1"
+
+global@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/global/-/global-4.4.0.tgz#3e7b105179006a323ed71aafca3e9c57a5cc6406"
+  integrity sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==
+  dependencies:
+    min-document "^2.19.0"
+    process "^0.11.10"
 
 globals@^11.1.0, globals@^11.7.0:
   version "11.12.0"
@@ -5904,10 +5917,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
-lint-staged@^9.2.3:
-  version "9.2.3"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-9.2.3.tgz#a4ef2b7033f83e8dbc718556610e20e0098356c0"
-  integrity sha512-ovDmF0c0VJDTP0VmwLetJQ+lVGyNqOkTniwO9S0MOJxGxIExpSRTL56/ZmvXZ1tHNA53GBbXQbfS8RnNGRXFjg==
+lint-staged@^9.2.4:
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-9.2.4.tgz#7a35839c9c6103ec98eabf43e35657c209509345"
+  integrity sha512-RAt5ogbLRiKy9+T3dKbbPKP6tN2I9VjEtTXQFxdkauUdMjIBsS70ikwwSgsBR8xVVCUSX7sVDyWCyem5xB8YDw==
   dependencies:
     chalk "^2.4.2"
     commander "^2.20.0"
@@ -6286,6 +6299,13 @@ mimic-response@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-1.0.1.tgz#4923538878eef42063cb8a3e3b0798781487ab1b"
   integrity sha512-j5EctnkH7amfV/q5Hgmoal1g2QHFJRraOtmx0JpIqkxhBhI/lJSl1nMpQ45hVarwNETOoWEimndZ4QK0RHxuxQ==
+
+min-document@^2.19.0:
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/min-document/-/min-document-2.19.0.tgz#7bd282e3f5842ed295bb748cdd9f1ffa2c824685"
+  integrity sha1-e9KC4/WELtKVu3SM3Z8f+iyCRoU=
+  dependencies:
+    dom-walk "^0.1.0"
 
 mini-create-react-context@^0.3.0:
   version "0.3.2"
@@ -7606,7 +7626,7 @@ react-input-autosize@^2.2.1:
   dependencies:
     prop-types "^15.5.8"
 
-react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
+react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.9.0:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
   integrity sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
@@ -7638,17 +7658,17 @@ react-portal@^4.2.0:
   dependencies:
     prop-types "^15.5.8"
 
-react-redux@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.0.tgz#72af7cf490a74acdc516ea9c1dd80e25af9ea0b2"
-  integrity sha512-hyu/PoFK3vZgdLTg9ozbt7WF3GgX5+Yn3pZm5/96/o4UueXA+zj08aiSC9Mfj2WtD1bvpIb3C5yvskzZySzzaw==
+react-redux@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.1.tgz#ce6eee1b734a7a76e0788b3309bf78ff6b34fa0a"
+  integrity sha512-QsW0vcmVVdNQzEkrgzh2W3Ksvr8cqpAv5FhEk7tNEft+5pp7rXxAudTz3VOPawRkLIepItpkEIyLcN/VVXzjTg==
   dependencies:
-    "@babel/runtime" "^7.4.5"
+    "@babel/runtime" "^7.5.5"
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
     loose-envify "^1.4.0"
     prop-types "^15.7.2"
-    react-is "^16.8.6"
+    react-is "^16.9.0"
 
 react-router-dom@^5.0.1:
   version "5.0.1"
@@ -9496,10 +9516,10 @@ vega-hierarchy@^4.0.1:
     vega-dataflow "^5.1.0"
     vega-util "^1.8.0"
 
-vega-lite-dev-config@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/vega-lite-dev-config/-/vega-lite-dev-config-0.2.4.tgz#9c1091c860ea81b8c606d930a6789ce40dfbf78e"
-  integrity sha512-H3Csqs1PK/QT0RIzXvzzOkECC15du5B3/R58S5NGia96v3xjv9jNMaBB2KHEMCGU+srlLTRaLBFm1e//CtMkmg==
+vega-lite-dev-config@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/vega-lite-dev-config/-/vega-lite-dev-config-0.2.5.tgz#159e7d6761eddc0e30e65afba0f9b8233309baba"
+  integrity sha512-3Z+6/ZBMGWtZiOM6V3lhmwMablRf16AhiQvnONEo9t++qCeaemBHaE2ohirPP7GSVhwBMDu4xVla3fx/ixjSSA==
   dependencies:
     "@babel/core" "^7.5.5"
     "@babel/preset-env" "^7.5.5"

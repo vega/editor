@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Search} from 'react-feather';
 import {isDate, isFunction} from 'vega';
 import {stringify} from 'vega-tooltip';
 import './index.css';
@@ -6,6 +7,7 @@ import './index.css';
 interface Props {
   header: string[];
   data: any[];
+  onClickHandler?: (header: string) => void;
 }
 
 const MAX_DEPTH = 3;
@@ -14,8 +16,9 @@ const MAX_LENGTH = 150;
 export default class Table extends React.PureComponent<Props> {
   public render() {
     const headerNodes = this.props.header.map(h => (
-      <th title={h} key={h}>
+      <th onClick={() => this.props.onClickHandler && this.props.onClickHandler(h)} title={h} key={h}>
         {h}
+        <Search />
       </th>
     ));
 

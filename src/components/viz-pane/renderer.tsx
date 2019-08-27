@@ -1,7 +1,9 @@
+import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import SplitPane from 'react-split-pane';
 import {mapDispatchToProps, mapStateToProps} from '.';
-import {LAYOUT, NAVBAR} from '../../constants';
+
+import {EDITOR_FOCUS, LAYOUT, NAVBAR, wordSeparators} from '../../constants';
 import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
@@ -10,34 +12,61 @@ import SignalViewer from '../signal-viewer';
 import DebugPaneHeader from './debug-pane-header';
 import './index.css';
 
+interface State {
+  header: string;
+  range: number;
+  maxRange: number;
+}
+
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-export default class VizPane extends React.PureComponent<Props> {
+export default class VizPane extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
+    this.state = {
+      header: '',
+      maxRange: 0,
+      range: 0
+    };
     this.handleChange = this.handleChange.bind(this);
-    this.getComponent = this.getComponent.bind(this);
+    this.getContextViewer = this.getContextViewer.bind(this);
   }
   public componentDidMount() {
     if (this.props.logs) {
       this.props.showLogs(true);
     }
   }
-  public getComponent() {
-    if (!this.props.debugPane) {
-      return null;
-    }
-    if (this.props.view) {
-      switch (this.props.navItem) {
-        case NAVBAR.DataViewer:
-          return <DataViewer />;
-        case NAVBAR.SignalViewer:
-          return <SignalViewer />;
-        default:
-          return null;
-      }
-    } else {
-      return null;
+
+  public onClickHandler(header: string) {
+    const mainEditor = this.props.editorRef;
+    const compiledEditor = this.props.compiledEditorRef;
+
+    const editor = this.props.editorFocus === EDITOR_FOCUS.SpecEditor ? mainEditor : compiledEditor;
+
+    const model = editor.getModel();
+
+    const rangeValue = model.findMatches(header, true, true, true, wordSeparators, true);
+
+    editor && editor.deltaDecorations(this.props.decorations, []);
+
+    const decorations = editor.deltaDecorations(
+      [],
+      rangeValue.map(match => {
+        return {
+          options: {inlineClassName: 'myInlineDecoration'},
+          range: match.range
+        };
+      })
+    );
+
+    this.props.setDecorations(decorations);
+
+    if (rangeValue[0]) {
+      editor.revealRangeInCenter(rangeValue[0].range);
+      editor.focus();
+      setImmediate(() => {
+        (document.activeElement as HTMLElement).blur();
+      });
     }
   }
   public handleChange(size: number) {
@@ -52,6 +81,27 @@ export default class VizPane extends React.PureComponent<Props> {
     }
     if (this.props.error) {
       this.props.showLogs(true);
+    }
+  }
+
+  /**
+   *  Get the Component to be rendered in the Context Viewer.
+   */
+  public getContextViewer() {
+    if (!this.props.debugPane) {
+      return null;
+    }
+    if (this.props.view) {
+      switch (this.props.navItem) {
+        case NAVBAR.DataViewer:
+          return <DataViewer onClickHandler={header => this.onClickHandler(header)} />;
+        case NAVBAR.SignalViewer:
+          return <SignalViewer onClickHandler={header => this.onClickHandler(header)} />;
+        default:
+          return null;
+      }
+    } else {
+      return null;
     }
   }
   public render() {
@@ -98,7 +148,7 @@ export default class VizPane extends React.PureComponent<Props> {
           {this.props.error || (this.props.logs && this.props.navItem === NAVBAR.Logs) ? (
             <ErrorPane />
           ) : (
-            this.getComponent()
+            this.getContextViewer()
           )}
         </div>
       </SplitPane>
