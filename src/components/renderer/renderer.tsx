@@ -1,14 +1,14 @@
-import { UnregisterCallback } from 'history';
+import {UnregisterCallback} from 'history';
 import * as React from 'react';
-import { Edit3, Maximize } from 'react-feather';
-import { Portal } from 'react-portal';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import {Edit3, Maximize} from 'react-feather';
+import {Portal} from 'react-portal';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
-import { deepEqual } from 'vega-lite/build/src/util';
+import {deepEqual} from 'vega-lite/build/src/util';
 import vegaTooltip from 'vega-tooltip';
-import { mapDispatchToProps, mapStateToProps } from '.';
-import { KEYCODES, Mode } from '../../constants';
+import {mapDispatchToProps, mapStateToProps} from '.';
+import {KEYCODES, Mode} from '../../constants';
 import addProjections from '../../utils/addProjections';
 import './index.css';
 
@@ -17,7 +17,7 @@ addProjections(vega.projection);
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
-const defaultState = { fullscreen: false };
+const defaultState = {fullscreen: false};
 
 type State = Readonly<typeof defaultState>;
 
@@ -53,7 +53,7 @@ class Editor extends React.PureComponent<Props, State> {
   // Close portal on pressing escape key
   public handleKeydown(e) {
     if (e.keyCode === KEYCODES.ESCAPE && this.state.fullscreen) {
-      this.setState({ fullscreen: false }, this.onClosePortal);
+      this.setState({fullscreen: false}, this.onClosePortal);
     }
   }
 
@@ -73,9 +73,9 @@ class Editor extends React.PureComponent<Props, State> {
     loader.load = async (url, options) => {
       try {
         if (options) {
-          return await originalLoad(url, { ...options, ...{ baseURL: this.props.baseURL } });
+          return await originalLoad(url, {...options, ...{baseURL: this.props.baseURL}});
         }
-        return await originalLoad(url, { baseURL: this.props.baseURL });
+        return await originalLoad(url, {baseURL: this.props.baseURL});
       } catch {
         return await originalLoad(url, options);
       }
@@ -90,7 +90,7 @@ class Editor extends React.PureComponent<Props, State> {
     const view = new vega.View(runtime, {
       hover,
       loader,
-      logLevel: vega[this.props.logLevel],
+      logLevel: vega[this.props.logLevel]
     }).hover();
 
     (window as any).VEGA_DEBUG.view = view;
@@ -124,11 +124,11 @@ class Editor extends React.PureComponent<Props, State> {
     this.unlisten = this.props.history.listen(location => {
       if (location && location.pathname.endsWith('view')) {
         this.setState({
-          fullscreen: true,
+          fullscreen: true
         });
       } else {
         this.setState({
-          fullscreen: false,
+          fullscreen: false
         });
       }
     });
@@ -142,7 +142,7 @@ class Editor extends React.PureComponent<Props, State> {
         this.setState(current => {
           return {
             ...current,
-            fullscreen: !current.fullscreen,
+            fullscreen: !current.fullscreen
           };
         });
       }
@@ -152,11 +152,11 @@ class Editor extends React.PureComponent<Props, State> {
     // Enter fullscreen mode if url ends with /view
     const params = Editor.pathname.split('/');
     if (params[params.length - 1] === 'view') {
-      this.setState({ fullscreen: true });
+      this.setState({fullscreen: true});
     }
   }
 
-  public componentDidUpdate(prevProps, prevState) {
+  public componentDidUpdate(prevProps) {
     if (
       !deepEqual(prevProps.vegaSpec, this.props.vegaSpec) ||
       !deepEqual(prevProps.vegaLiteSpec, this.props.vegaLiteSpec) ||
@@ -187,7 +187,7 @@ class Editor extends React.PureComponent<Props, State> {
           data-tip="Fullscreen"
           className="fullscreen-open"
           onClick={() => {
-            this.setState({ fullscreen: true }, this.onOpenPortal);
+            this.setState({fullscreen: true}, this.onOpenPortal);
           }}
         />
         {this.state.fullscreen && (
@@ -197,7 +197,7 @@ class Editor extends React.PureComponent<Props, State> {
               <button
                 className="fullscreen-close"
                 onClick={() => {
-                  this.setState({ fullscreen: false }, this.onClosePortal);
+                  this.setState({fullscreen: false}, this.onClosePortal);
                 }}
               >
                 <Edit3 size={16} />

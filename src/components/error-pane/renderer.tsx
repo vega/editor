@@ -1,7 +1,7 @@
 import './index.css';
 
 import * as React from 'react';
-import { mapStateToProps } from '.';
+import {mapStateToProps} from '.';
 
 type Props = ReturnType<typeof mapStateToProps>;
 

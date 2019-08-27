@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { isDate, isFunction } from 'vega';
-import { stringify } from 'vega-tooltip';
+import {isDate, isFunction} from 'vega';
+import {stringify} from 'vega-tooltip';
 import './index.css';
 
 interface Props {
@@ -60,8 +60,8 @@ export function formatValueLong(value: any) {
   const formatted =
     value === undefined ? 'undefined' : isFunction(value) ? value.toString() : stringify(value, MAX_DEPTH);
   if (formatted.length > MAX_LENGTH) {
-    return { formatted: null, tooLong: true };
+    return {formatted: null, tooLong: true};
   }
 
-  return { formatted, tooLong: false };
+  return {formatted, tooLong: false};
 }

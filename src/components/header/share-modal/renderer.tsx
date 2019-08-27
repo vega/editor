@@ -1,9 +1,9 @@
 import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
-import { Copy, Link } from 'react-feather';
-import { withRouter } from 'react-router-dom';
-import { mapStateToProps } from '.';
+import {Copy, Link} from 'react-feather';
+import {withRouter} from 'react-router-dom';
+import {mapStateToProps} from '.';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;
@@ -20,7 +20,7 @@ class ShareModal extends React.PureComponent<Props, State> {
     this.state = {
       copied: false,
       fullScreen: false,
-      generatedURL: '',
+      generatedURL: ''
     };
   }
 
@@ -29,7 +29,7 @@ class ShareModal extends React.PureComponent<Props, State> {
       LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullScreen ? '/view' : '');
     if (serializedSpec) {
       const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
-      this.setState({ generatedURL: url });
+      this.setState({generatedURL: url});
     }
   }
 
@@ -42,11 +42,11 @@ class ShareModal extends React.PureComponent<Props, State> {
     if (!this.state.copied) {
       this.setState(
         {
-          copied: true,
+          copied: true
         },
         () => {
           setTimeout(() => {
-            this.setState({ copied: false });
+            this.setState({copied: false});
           }, 2500);
         }
       );
@@ -54,7 +54,7 @@ class ShareModal extends React.PureComponent<Props, State> {
   }
 
   public handleCheck(event) {
-    this.setState({ fullScreen: event.target.checked }, () => {
+    this.setState({fullScreen: event.target.checked}, () => {
       this.exportURL();
     });
   }
@@ -105,6 +105,7 @@ class ShareModal extends React.PureComponent<Props, State> {
               <a
                 href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 URLs over 2083 characters may not be supported in Internet Explorer.
               </a>

@@ -1,17 +1,14 @@
-import './index.css';
-
 import * as React from 'react';
 import SplitPane from 'react-split-pane';
-
-import { mapDispatchToProps, mapStateToProps } from '.';
-import { LAYOUT, NAVBAR } from '../../constants';
+import {mapDispatchToProps, mapStateToProps} from '.';
+import {LAYOUT, NAVBAR} from '../../constants';
 import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
-import Sidebar from '../sidebar';
 import SignalViewer from '../signal-viewer';
 import DebugPaneHeader from './debug-pane-header';
+import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -79,8 +76,8 @@ export default class VizPane extends React.PureComponent<Props> {
         minSize={LAYOUT.MinPaneSize}
         defaultSize={this.props.debugPane ? this.props.debugPaneSize : LAYOUT.MinPaneSize}
         onChange={this.handleChange}
-        pane1Style={{ minHeight: `${LAYOUT.MinPaneSize}px` }}
-        paneStyle={{ display: 'flex' }}
+        pane1Style={{minHeight: `${LAYOUT.MinPaneSize}px`}}
+        paneStyle={{display: 'flex'}}
         onDragStarted={() => {
           if (this.props.navItem === NAVBAR.Logs) {
             this.props.showLogs(true);

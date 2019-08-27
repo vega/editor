@@ -1,6 +1,6 @@
 import React from 'react';
 import * as vega from 'vega';
-import { mapDispatchToProps, mapStateToProps } from '.';
+import {mapDispatchToProps, mapStateToProps} from '.';
 import './index.css';
 // var equalCycles = require('fast-deep-equal');
 import SignalRow from './signalRow';
@@ -9,7 +9,7 @@ import TimelineRow from './TimelineRow';
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 function isEqual(a, b) {
-  let stack = [];
+  const stack = [];
   function _isEqual(a, b) {
     // console.log("->", stack.length);
     // handle some simple cases first
@@ -23,7 +23,7 @@ function isEqual(a, b) {
     if (a === null || b === null) {
       return false;
     }
-    let proto = Object.getPrototypeOf(a);
+    const proto = Object.getPrototypeOf(a);
     if (proto !== Object.getPrototypeOf(b)) {
       return false;
     }
@@ -42,12 +42,12 @@ function isEqual(a, b) {
     }
 
     // do the objects even have the same keys?
-    for (let prop in a) {
+    for (const prop in a) {
       if (!(prop in b)) {
         return false;
       }
     }
-    for (let prop in b) {
+    for (const prop in b) {
       if (!(prop in a)) {
         return false;
       }
@@ -55,7 +55,7 @@ function isEqual(a, b) {
 
     // nothing to do but recurse!
     stack.push([a, b]);
-    for (let prop in a) {
+    for (const prop in a) {
       if (!_isEqual(a[prop], b[prop])) {
         stack.pop();
         return false;
@@ -80,12 +80,18 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       maxLength: 0,
       signal: {},
       xCount: 0,
-      timeline: false,
+      timeline: false
     };
   }
 
   public getKeys(ref = this.props) {
-    return Object.keys(ref.view.getState({ data: vega.truthy, signals: vega.truthy, recurse: true }).signals);
+    return Object.keys(
+      ref.view.getState({
+        data: vega.truthy,
+        signals: vega.truthy,
+        recurse: true
+      }).signals
+    );
   }
 
   public getSignals(changeKey = null) {
@@ -94,19 +100,19 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     }
     if (changeKey) {
       const obj = {
-        value: this.props.view.signal(changeKey),
+        value: this.props.view.signal(changeKey)
       };
       const lastObj = this.props.signals[changeKey];
-      const prevObj = { ...lastObj[lastObj && lastObj.length - 1] };
+      const prevObj = {...lastObj[lastObj && lastObj.length - 1]};
       delete prevObj.xCount;
       // if (equalCycles(obj, prevObj)) {
       (obj as any).xCount = this.state.xCount;
       const newSignals = this.props.signals[changeKey].concat(obj);
-      this.props.setSignals({ ...this.props.signals, [changeKey]: newSignals });
+      this.props.setSignals({...this.props.signals, [changeKey]: newSignals});
       this.setState(current => {
         return {
           ...current,
-          xCount: current.xCount + 1,
+          xCount: current.xCount + 1
         };
       });
       // }
@@ -114,18 +120,21 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       const obj = {};
       this.state.keys.map(key => {
         obj[key]
-          ? obj[key].push({ value: this.props.view.signal(key), xCount: this.state.xCount })
-          : (obj[key] = [{ value: this.props.view.signal(key), xCount: this.state.xCount }]);
+          ? obj[key].push({
+              value: this.props.view.signal(key),
+              xCount: this.state.xCount
+            })
+          : (obj[key] = [{value: this.props.view.signal(key), xCount: this.state.xCount}]);
       });
       this.props.setSignals(obj);
       this.setState({
-        xCount: this.state.xCount + 1,
+        xCount: this.state.xCount + 1
       });
     }
   }
 
   public onClickInit(key, hoverValue) {
-    this.setState({ maskListner: true });
+    this.setState({maskListner: true});
     const overlay: HTMLElement = document.querySelector('.overlay');
     overlay.style.display = 'block';
     this.onHoverInit(key, hoverValue, true); // hover calculation with persist
@@ -139,20 +148,28 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           keys,
           signal: {},
           xCount: 0,
-          timeline: false,
+          timeline: false
         },
         () => {
           if (this.state.timeline) {
             const obj = {};
             this.state.keys.map(key => {
               obj[key]
-                ? obj[key].push({ value: this.props.view.signal(key), xCount: this.state.xCount })
-                : (obj[key] = [{ value: this.props.view.signal(key), xCount: this.state.xCount }]);
+                ? obj[key].push({
+                    value: this.props.view.signal(key),
+                    xCount: this.state.xCount
+                  })
+                : (obj[key] = [
+                    {
+                      value: this.props.view.signal(key),
+                      xCount: this.state.xCount
+                    }
+                  ]);
             });
 
             this.props.setSignals(obj);
             this.setState({
-              xCount: 1,
+              xCount: 1
             });
           }
         }
@@ -170,7 +187,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     this.state.keys.map(signal => {
       currentValueObj[signal] = this.props.signals[signal][this.props.signals[signal].length - 1].value;
     });
-    this.props.view.setState({ signals: currentValueObj });
+    this.props.view.setState({signals: currentValueObj});
     // remove isClicked, isHovered, hoverValue, signal and CountValue
     this.setState({
       isClicked: false,
@@ -178,17 +195,17 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       countSignal: {},
       hoverValue: {},
       isHovered: false,
-      maskListner: false,
+      maskListner: false
     });
     // remove the maskListner
   }
 
   public onHoverInit(signalKey, hoverValue, shouldPersist = false) {
     const hoverObj = {
-      [signalKey]: hoverValue.value,
+      [signalKey]: hoverValue.value
     };
     const countObj = {
-      [signalKey]: hoverValue.xCount,
+      [signalKey]: hoverValue.xCount
     };
     Object.keys(this.props.signals).map(key => {
       let i = 0;
@@ -203,7 +220,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       this.setState({
         hoverValue: hoverObj,
         isClicked: false,
-        isHovered: true,
+        isHovered: true
       });
     } else {
       this.setState(
@@ -212,10 +229,10 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           hoverValue: {},
           isClicked: true,
           isHovered: false,
-          signal: hoverObj,
+          signal: hoverObj
         },
         () => {
-          this.props.view.setState({ signals: hoverObj });
+          this.props.view.setState({signals: hoverObj});
         }
       );
     }
@@ -227,7 +244,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     });
     const keys = this.getKeys();
     this.setState({
-      keys,
+      keys
     });
   }
   public valueChange = (key: string, value: any) => {
@@ -239,7 +256,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   public render() {
     return (
       <>
-        <div style={{ display: 'inline-block' }}>
+        <div style={{display: 'inline-block'}}>
           Enable Timeline :
           <input
             type="checkbox"
@@ -250,7 +267,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               this.setState(
                 {
                   timeline: (e.target as any).checked,
-                  xCount: 0,
+                  xCount: 0
                 },
                 () => {
                   this.props.setSignals({});
@@ -262,7 +279,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           {this.state.maskListner && <button onClick={() => this.resetTimeline()}>Reset Timeline</button>}
         </div>
 
-        <table className="debugger-table"></table>
+        <table className="debugger-table" />
         <div className="signal-viewer">
           <table className="editor-table">
             <thead>
@@ -294,7 +311,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
                         onHoverEnd={() => {
                           this.setState({
                             hoverValue: {},
-                            isHovered: false,
+                            isHovered: false
                           });
                         }}
                         isClicked={this.state.isClicked}

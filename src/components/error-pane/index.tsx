@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-import { State } from '../../constants/default-state';
+import {State} from '../../constants/default-state';
 import Renderer from './renderer';
 
-export function mapStateToProps(state: State, ownProps) {
+export function mapStateToProps(state: State) {
   return {
     error: state.error,
-    warningsLogger: state.warningsLogger,
+    warningsLogger: state.warningsLogger
   };
 }
 

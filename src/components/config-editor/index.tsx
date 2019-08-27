@@ -1,11 +1,11 @@
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor';
-import { State } from '../../constants/default-state';
+import {State} from '../../constants/default-state';
 import './config-editor.css';
 import Renderer from './renderer';
 
-export function mapStateToProps(state: State, ownProps) {
+export function mapStateToProps(state: State) {
   return {
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     compiledVegaSpec: state.compiledVegaSpec,
@@ -19,7 +19,7 @@ export function mapStateToProps(state: State, ownProps) {
     selectedExample: state.selectedExample,
     sidePaneItem: state.sidePaneItem,
     themeName: state.themeName,
-    value: state.editorString,
+    value: state.editorString
   };
 }
 
@@ -39,7 +39,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
       updateEditorString: EditorActions.updateEditorString,
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
-      updateVegaSpec: EditorActions.updateVegaSpec,
+      updateVegaSpec: EditorActions.updateVegaSpec
     },
     dispatch
   );

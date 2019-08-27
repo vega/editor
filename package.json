@@ -15,20 +15,20 @@
     "postcss-loader": "^3.0.0",
     "prettier": "^1.18.2",
     "style-loader": "^1.0.0",
-    "tslint": "^5.18.0",
-    "tslint-config-prettier": "^1.18.0",
     "tslint-eslint-rules": "^5.4.0",
+    "tslint": "^5.19.0",
     "typescript": "~3.4.0",
-    "webpack": "4.39.2",
+    "vega-lite-dev-config": "^0.2.4",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7",
-    "webpack-dev-server": "^3.8.0"
+    "webpack-dev-server": "^3.8.0",
+    "webpack": "4.39.2"
   },
   "dependencies": {
     "@types/d3": "^5.7.2",
-    "@types/react": "^16.9.2",
     "@types/react-redux": "^7.1.2",
-    "@types/react-router-dom": "^4.3.4",
+    "@types/react-router-dom": "^4.3.5",
+    "@types/react": "^16.9.2",
     "ajv": "^6.10.2",
     "d3-geo-projection": "^2.7.0",
     "d3-request": "1.0.6",
@@ -38,12 +38,11 @@
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.17.1",
     "prop-types": "^15.7.2",
-    "react": "^16.9.0",
     "react-clipboard.js": "^2.0.13",
     "react-dom": "^16.9.0",
     "react-feather": "^2.0.3",
     "react-ga": "2.6.0",
-    "react-monaco-editor": "^0.30.0",
+    "react-monaco-editor": "^0.30.1",
     "react-paginate": "^6.3.0",
     "react-portal": "^4.2.0",
     "react-redux": "^7.1.0",
@@ -51,12 +50,14 @@
     "react-select": "^3.0.4",
     "react-split-pane": "^0.1.87",
     "react-tooltip": "^3.10.0",
-    "redux": "^4.0.4",
+    "react": "^16.9.0",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.3.0",
+    "redux": "^4.0.4",
     "tslib": "^1.10.0",
     "vega-cli": "5.4.0",
     "vega-datasets": "^1.25.0",
+    "vega-embed": "^4.2.4",
     "vega-lite": "4.0.0-beta.0",
     "vega-schema-url-parser": "^1.1.0",
     "vega-themes": "^2.3.2",
@@ -69,7 +70,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "tslint --fix",
+      "eslint --fix",
       "git add"
     ],
     "*.{js,jsx,ts,tsx,css,scss}": [
@@ -77,18 +78,41 @@
       "git add"
     ]
   },
+  "beemo": {
+    "module": "vega-lite-dev-config",
+    "drivers": [
+      "prettier",
+      "eslint"
+    ],
+    "eslint": {
+      "rules": {
+        "react/no-deprecated": "warn",
+        "react/no-string-refs": "warn",
+        "no-alert": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "react/no-find-dom-node": "warn",
+        "react/no-unescaped-entities": "off",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "no-prototype-builtins": "warn"
+      }
+    }
+  },
   "scripts": {
     "start": "webpack-dev-server --mode development --hot",
     "start:production": "webpack-dev-server --mode production",
-    "build": "npm run clean && npm run vendor && webpack --mode production --progress",
+    "build": "yarn clean && yarn vendor && webpack --mode production --progress",
     "clean": "rm -rf dist public/spec public/data",
     "postbuild": "rsync -r --ignore-existing public/* dist",
     "generate-example-images": "./scripts/generate-example-images.sh",
-    "postinstall": "npm run vendor",
+    "postinstall": "yarn vendor",
     "vendor": "./scripts/vendor.sh",
-    "format": "tslint -p . --fix && prettier --write 'src/**/*.{ts,tsx,css}'",
-    "lint": "tslint -p . && prettier --check 'src/**/*.{ts,tsx,css}'",
-    "predeploy": "npm run build",
+    "prepare": "beemo create-config --react",
+    "prettierbase": "beemo prettier '{src,public}/**/*.{css,html}'",
+    "eslintbase": "beemo eslint 'src/**/*.{ts,tsx}' --react",
+    "format": "yarn eslintbase --fix && yarn prettierbase --write",
+    "lint": "yarn eslintbase && yarn prettierbase --check",
+    "predeploy": "yarn build",
     "deploy": "gh-pages -d dist",
     "analyze": "webpack --mode production --profile --json > stats.json && webpack-bundle-analyzer stats.json"
   }

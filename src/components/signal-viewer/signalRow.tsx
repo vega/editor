@@ -1,8 +1,8 @@
 import stringify from 'json-stringify-pretty-compact';
 import React from 'react';
-import { isDate, debounce } from 'vega';
-import { View } from '../../constants';
-import { formatValueLong } from '../table/renderer';
+import {isDate, debounce} from 'vega';
+import {View} from '../../constants';
+import {formatValueLong} from '../table/renderer';
 
 interface Props {
   view: View;
@@ -25,7 +25,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      signalValue: this.props.view.signal(this.props.signal),
+      signalValue: this.props.view.signal(this.props.signal)
     };
     this.signalHandler = this.signalHandler.bind(this);
   }
@@ -35,7 +35,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
       this.props.view.addSignalListener(this.props.signal, this.signalHandler);
       this.setState(
         {
-          signalValue: this.props.view.signal(this.props.signal),
+          signalValue: this.props.view.signal(this.props.signal)
         },
         () => this.props.onValueChange(this.props.signal, this.props.view.signal(this.props.signal))
       );
@@ -63,7 +63,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
   }
 
   public renderSignal = () => {
-    const { isClicked, isHovered, clickedSignal, hoverValue } = this.props;
+    const {isClicked, isHovered, clickedSignal, hoverValue} = this.props;
     if (isClicked && clickedSignal !== undefined) {
       return clickedSignal;
     } else if (isHovered && hoverValue !== undefined) {
@@ -106,7 +106,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
           <td>{this.props.signal}</td>
           {this.props.timeline && <td>{this.props.children}</td>}
           <td
-            style={{ backgroundColor: this.getBackgroundColor() }}
+            style={{backgroundColor: this.getBackgroundColor()}}
             key={this.props.signal}
             title="The field is too large to be displayed. Please use the view API (see JS console)."
           >
@@ -117,9 +117,15 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     } else {
       return (
         <tr>
-          <td style={{ whiteSpace: 'nowrap' }}>{this.props.signal}</td>
+          <td style={{whiteSpace: 'nowrap'}}>{this.props.signal}</td>
           {this.props.timeline && <td>{this.props.children}</td>}
-          <td style={{ whiteSpace: 'nowrap', backgroundColor: this.getBackgroundColor() }} key={this.props.signal}>
+          <td
+            style={{
+              whiteSpace: 'nowrap',
+              backgroundColor: this.getBackgroundColor()
+            }}
+            key={this.props.signal}
+          >
             {formatted}
           </td>
         </tr>
@@ -130,7 +136,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
   private signalHandler(signalName: string, currentValue) {
     this.setState(
       {
-        signalValue: currentValue,
+        signalValue: currentValue
       },
       () => {
         this.props.onValueChange(this.props.signal, currentValue);

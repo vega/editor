@@ -1,6 +1,6 @@
-import { range } from 'd3-array';
-import { scaleBand } from 'd3-scale';
-import React, { Component } from 'react';
+import {range} from 'd3-array';
+import {scaleBand} from 'd3-scale';
+import React, {Component} from 'react';
 
 export default class TimelineRow extends Component<
   {
@@ -16,7 +16,7 @@ export default class TimelineRow extends Component<
   any
 > {
   public render() {
-    const { data, width, xCount, clickedValue } = this.props;
+    const {data, width, xCount, clickedValue} = this.props;
     const scale = scaleBand(range(0, xCount), [0, width]);
 
     const row =
@@ -35,7 +35,7 @@ export default class TimelineRow extends Component<
               fill: clickedValue === d.xCount ? '#A4F9C8' : '#b7b7b7',
               pointerEvents: 'all',
               stroke: 'white',
-              strokeWidth: '0.5px',
+              strokeWidth: '0.5px'
             }}
             width={scale.bandwidth()}
             x={scale(d.xCount)}
