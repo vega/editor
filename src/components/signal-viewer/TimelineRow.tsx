@@ -30,7 +30,7 @@ export default class TimelineRow extends Component<
             onClick={() => this.props.onClickInit(d)}
             onMouseLeave={() => this.props.onHoverEnd()}
             className="svg-rect"
-            height={20}
+            height={31}
             style={{
               cursor: 'pointer',
               fill: clickedValue === d.xCount ? '#A4F9C8' : '#b7b7b7',
@@ -45,7 +45,7 @@ export default class TimelineRow extends Component<
       });
 
     return (
-      <svg width={window.innerWidth * 0.3} height={20}>
+      <svg width={window.innerWidth * 0.3} height={31}>
         {row}
       </svg>
     );

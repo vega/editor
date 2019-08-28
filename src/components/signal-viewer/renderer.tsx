@@ -149,8 +149,16 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           signal: {},
           xCount: 0,
           timeline: false,
+          isHovered: false,
+          isClicked: false,
+          hoverValue: {},
+          countSignal: {},
+          maskListner: false,
         },
         () => {
+          const overlay: HTMLElement = document.querySelector('.overlay');
+          // remove the overlay
+          overlay.style.display = 'none';
           if (this.state.timeline) {
             const obj = {};
             this.state.keys.map(key => {
@@ -227,7 +235,6 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     if (!shouldPersist) {
       this.setState({
         hoverValue: hoverObj,
-        isClicked: false,
         isHovered: true,
       });
     } else {
@@ -265,26 +272,51 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     return (
       <>
         <div style={{display: 'inline-block'}}>
-          Enable Timeline :
-          <input
-            type="checkbox"
-            name=""
-            id=""
-            checked={this.state.timeline}
-            onChange={e =>
+          <button
+            className="sharing-button"
+            style={{backgroundColor: this.state.timeline ? 'red' : '', margin: '7px 10px'}}
+            onClick={() => {
               this.setState(
                 {
-                  timeline: (e.target as any).checked,
+                  timeline: !this.state.timeline,
                   xCount: 0,
                 },
                 () => {
                   this.props.setSignals({});
                   this.getSignals();
+                  if (!this.state.timeline) {
+                    this.resetTimeline();
+                  }
                 }
-              )
-            }
-          />
-          {this.state.maskListner && <button onClick={() => this.resetTimeline()}>Reset Timeline</button>}
+              );
+            }}
+          >
+            {this.state.timeline ? 'Stop Recording' : 'Record signal changes'}
+          </button>
+          {this.state.timeline && !this.state.maskListner && this.state.xCount > 1 && (
+            <button
+              className="sharing-button"
+              style={{margin: '7px 10px'}}
+              onClick={() => {
+                this.setState(
+                  {
+                    xCount: 0,
+                  },
+                  () => {
+                    this.props.setSignals({});
+                    this.getSignals();
+                  }
+                );
+              }}
+            >
+              Clear Timeline
+            </button>
+          )}
+          {this.state.maskListner && this.state.timeline && (
+            <button className="sharing-button" style={{margin: '7px 10px'}} onClick={() => this.resetTimeline()}>
+              Continue Recording
+            </button>
+          )}
         </div>
 
         <table className="debugger-table" />
