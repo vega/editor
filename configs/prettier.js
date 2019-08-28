@@ -1,0 +1,12 @@
+module.exports = {
+  overrides: [
+    {
+      files: '*.{ts,tsx}',
+      options: {
+        printWidth: 120,
+        singleQuote: true,
+        trailingComma: 'es5'
+      }
+    }
+  ]
+};

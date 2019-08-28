@@ -17,7 +17,8 @@ export default class TimelineRow extends Component<
 > {
   public render() {
     const {data, width, xCount, clickedValue} = this.props;
-    const scale = scaleBand(range(0, xCount), [0, width]);
+    const scaleNew = scaleBand as any;
+    const scale = scaleNew(range(0, xCount), [0, width]);
 
     const row =
       data &&
@@ -35,7 +36,7 @@ export default class TimelineRow extends Component<
               fill: clickedValue === d.xCount ? '#A4F9C8' : '#b7b7b7',
               pointerEvents: 'all',
               stroke: 'white',
-              strokeWidth: '0.5px'
+              strokeWidth: '0.5px',
             }}
             width={scale.bandwidth()}
             x={scale(d.xCount)}
