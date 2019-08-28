@@ -84,18 +84,3 @@
 .two {
   margin-top: 9px;
 }
-
-.create {
-  cursor: initial;
-  background: white;
-  flex-basis: 49%;
-  margin-top: 0;
-}
-
-.create:hover {
-  background: white;
-}
-
-.flex > label {
-  flex-basis: 49%;
-}
