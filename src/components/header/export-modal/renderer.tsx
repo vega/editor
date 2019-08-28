@@ -1,15 +1,19 @@
 import * as React from 'react';
-import {Book, Code, Image, Map} from 'react-feather';
-import {withRouter} from 'react-router-dom';
-import {mergeConfig} from 'vega';
-import {mapStateToProps} from '.';
-import {Mode} from '../../../constants/consts';
+import { Book, Code, Image, Map, GitHub } from 'react-feather';
+import { withRouter } from 'react-router-dom';
+import { mergeConfig } from 'vega';
+import { mapStateToProps } from '.';
+import { Mode, BACKEND_URL, COOKIE_NAME } from '../../../constants/consts';
 import './index.css';
+import getCookie from '../../../utils/getCookie';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
 interface State {
   downloadVegaJSON: boolean;
+  gistFileName: string;
+  gistPrivate: boolean;
+  gistTitle: string;
   includeConfig: boolean;
 }
 
@@ -18,6 +22,9 @@ class ExportModal extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       downloadVegaJSON: false,
+      gistFileName: '',
+      gistPrivate: false,
+      gistTitle: '',
       includeConfig: true
     };
   }
@@ -97,7 +104,7 @@ class ExportModal extends React.PureComponent<Props, State> {
     }
 
     if (this.state.includeConfig && this.props.config) {
-      content = {...content};
+      content = { ...content };
       content.config = mergeConfig({}, this.props.config, content.config);
     }
 
@@ -114,7 +121,48 @@ class ExportModal extends React.PureComponent<Props, State> {
   }
 
   public updateDownloadJSONType(event) {
-    this.setState({downloadVegaJSON: event.currentTarget.value === 'vega'});
+    this.setState({ downloadVegaJSON: event.currentTarget.value === 'vega' });
+  }
+
+  public updatePrivacy(event) {
+    this.setState({
+      gistPrivate: event.target.checked
+    });
+  }
+
+  public fileNameChange(event) {
+    this.setState({
+      gistFileName: event.target.value
+    });
+  }
+
+  public titleChange(event) {
+    this.setState({
+      gistTitle: event.target.value
+    });
+  }
+
+  public createGist() {
+    const body = {
+      content: this.props.editorString,
+      name: this.state.gistFileName,
+      title: this.state.gistTitle,
+      privacy: this.state.gistPrivate
+    };
+    console.log(this.props.editorString);
+    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
+    fetch(`${BACKEND_URL}gists/create`, {
+      body: JSON.stringify(body),
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: `${COOKIE_NAME}=${cookieValue}`
+      },
+      method: 'post'
+    })
+      .then(res => res.json())
+      .then(json => console.log(json));
   }
 
   public render() {
@@ -170,21 +218,21 @@ class ExportModal extends React.PureComponent<Props, State> {
               {this.state.downloadVegaJSON ? (
                 <p>The compiled Vega includes the config and is formatted.</p>
               ) : (
-                <div>
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="config-include"
-                      id="config-include"
-                      value="config-select"
-                      checked={this.state.includeConfig}
-                      onChange={this.updateIncludeConfig.bind(this)}
-                    />
-                    Include config
+                  <div>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="config-include"
+                        id="config-include"
+                        value="config-select"
+                        checked={this.state.includeConfig}
+                        onChange={this.updateIncludeConfig.bind(this)}
+                      />
+                      Include config
                   </label>
-                  {this.state.includeConfig && <p>The downloaded spec will be formatted. </p>}
-                </div>
-              )}
+                    {this.state.includeConfig && <p>The downloaded spec will be formatted. </p>}
+                  </div>
+                )}
             </div>
             <button onClick={e => this.downloadJSON(e)}>Download</button>
           </div>
@@ -197,8 +245,10 @@ class ExportModal extends React.PureComponent<Props, State> {
               SVG is a vector image format which uses geometric forms to represent different parts as discrete objects
               and are infinitely scalable.
             </p>
-            <button onClick={() => this.openViz('svg')}>Open</button>
-            <button onClick={() => this.downloadViz('svg')} className="export-button download">
+            <button onClick={() => this.openViz('svg')} className="export-button">
+              Open
+            </button>
+            <button onClick={() => this.downloadViz('svg')} className="export-button two">
               Download
             </button>
           </div>
@@ -213,6 +263,51 @@ class ExportModal extends React.PureComponent<Props, State> {
               patient. Your chart is sent to an <a href="https://cloudconvert.com/">external service</a> for processing.
             </p>
             <button onClick={() => this.downloadPDF()}>Download</button>
+          </div>
+          <div className="export-button-container">
+            <div className="header-text">
+              <GitHub />
+              <span>GIST</span>
+            </div>
+            <p>Create a GitHub gist directly using the editor.</p>
+            <div className="input-container">
+              <div>
+                <input
+                  type="checkbox"
+                  name="private-gist"
+                  id="private-gist"
+                  value="private-select"
+                  checked={this.state.gistPrivate}
+                  onChange={this.updatePrivacy.bind(this)}
+                />
+                <label htmlFor="private-gist">Private gist</label>
+              </div>
+            </div>
+            <div className="input-container flex">
+              <label>
+                File name:
+                <input
+                  value={this.state.gistFileName}
+                  onChange={this.fileNameChange.bind(this)}
+                  className="export-button create"
+                  type="text"
+                  placeholder="Enter file name"
+                />
+              </label>
+              <label>
+                Title (optional):
+                <input
+                  value={this.state.gistTitle}
+                  onChange={this.titleChange.bind(this)}
+                  className="export-button create"
+                  type="text"
+                  placeholder="Enter title of gist (optional)"
+                />
+              </label>
+            </div>
+            <button className="export-button two" onClick={this.createGist.bind(this)}>
+              Create
+            </button>
           </div>
         </div>
         <div className="user-notes">
