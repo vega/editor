@@ -1,48 +1,50 @@
-import LZString from 'lz-string'
-import * as React from 'react'
-import Clipboard from 'react-clipboard.js'
-import { Copy, Link } from 'react-feather'
-import { withRouter } from 'react-router-dom'
-import { mapStateToProps, mapDispatchToProps } from '.'
-import './index.css'
-import getCookie from '../../../utils/getCookie'
-import { BACKEND_URL, COOKIE_NAME } from '../../../constants/consts'
+import LZString from "lz-string";
+import * as React from "react";
+import Clipboard from "react-clipboard.js";
+import { Copy, Link } from "react-feather";
+import { withRouter } from "react-router-dom";
+import { mapStateToProps, mapDispatchToProps } from ".";
+import "./index.css";
+import getCookie from "../../../utils/getCookie";
+import { BACKEND_URL, COOKIE_NAME } from "../../../constants/consts";
 
 type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>
+  ReturnType<typeof mapDispatchToProps>;
 
 interface State {
-  copied: boolean
-  done: boolean
-  error: boolean
-  fullScreen: boolean
-  generatedURL: string
-  gistFileName: string
-  gistPrivate: boolean
-  gistTitle: string
+  copied: boolean;
+  created: boolean;
+  done: boolean;
+  error: boolean;
+  fullScreen: boolean;
+  generatedURL: string;
+  gistFileName: string;
+  gistPrivate: boolean;
+  gistTitle: string;
 }
 
 class ShareModal extends React.PureComponent<Props, State> {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       copied: false,
+      created: false,
       done: true,
       error: false,
       fullScreen: false,
-      generatedURL: '',
-      gistFileName: '',
+      generatedURL: "",
+      gistFileName: "",
       gistPrivate: false,
-      gistTitle: '',
-    }
+      gistTitle: ""
+    };
   }
 
   public exportURL() {
     const serializedSpec =
       LZString.compressToEncodedURIComponent(this.props.editorString) +
-      (this.state.fullScreen ? '/view' : '')
+      (this.state.fullScreen ? "/view" : "");
     if (serializedSpec) {
-      const url = `${document.location.href.split('#')[0]}#/url/${
+      const url = `${document.location.href.split("#")[0]}#/url/${
         this.props.mode
         }/${serializedSpec}`
       this.setState({ generatedURL: url })
@@ -50,102 +52,116 @@ class ShareModal extends React.PureComponent<Props, State> {
   }
 
   public previewURL() {
-    const win = window.open(this.state.generatedURL, '_blank')
-    win.focus()
+    const win = window.open(this.state.generatedURL, "_blank");
+    win.focus();
   }
 
   public onCopy() {
     if (!this.state.copied) {
       this.setState(
         {
-          copied: true,
+          copied: true
         },
         () => {
           setTimeout(() => {
-            this.setState({ copied: false })
-          }, 2500)
+            this.setState({ copied: false });
+          }, 2500);
         }
-      )
+      );
     }
   }
 
   public handleCheck(event) {
     this.setState({ fullScreen: event.target.checked }, () => {
-      this.exportURL()
-    })
+      this.exportURL();
+    });
   }
 
   public componentDidMount() {
-    this.exportURL()
+    this.exportURL();
   }
 
   public updatePrivacy(event) {
     this.setState({
-      gistPrivate: event.target.checked,
-    })
+      gistPrivate: event.target.checked
+    });
   }
 
   public fileNameChange(event) {
     this.setState({
-      gistFileName: event.target.value,
-    })
+      gistFileName: event.target.value
+    });
   }
 
   public titleChange(event) {
     this.setState({
-      gistTitle: event.target.value,
-    })
+      gistTitle: event.target.value
+    });
   }
 
   public createGist() {
     this.setState({
-      done: false,
-    })
+      done: false
+    });
     const body = {
       content: this.props.editorString,
-      name: this.state.gistFileName || 'spec',
+      name: this.state.gistFileName || "spec",
       title: this.state.gistTitle,
-      privacy: this.state.gistPrivate,
-    }
-    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME))
+      privacy: this.state.gistPrivate
+    };
+    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
     fetch(`${BACKEND_URL}gists/create`, {
       body: JSON.stringify(body),
-      mode: 'cors',
-      credentials: 'include',
+      mode: "cors",
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json',
-        Cookie: `${COOKIE_NAME}=${cookieValue}`,
+        "Content-Type": "application/json",
+        Cookie: `${COOKIE_NAME}=${cookieValue}`
       },
-      method: 'post',
+      method: "post"
     })
       .then(res => {
-        if (res.status === 201) {
-          return res.json()
-        } else {
-          this.setState({
-            done: true,
-            error: true,
-          })
-          return Promise.reject()
-        }
+        return res.json();
       })
       .then(json => {
         this.setState(
           {
-            done: true,
+            done: true
           },
           () => {
-            if (typeof json === 'object') {
-              this.props.receiveCurrentUser(json.isAuthenticated)
+            if (Object.keys(json).length > 0) {
+              this.setState(
+                {
+                  error: true
+                },
+                () => {
+                  this.props.receiveCurrentUser(json.isAuthenticated);
+                }
+              );
+            } else {
+              this.setState(
+                {
+                  created: true
+                },
+                () => {
+                  setTimeout(() => {
+                    this.setState({
+                      created: false
+                    });
+                  }, 2500);
+                }
+              );
             }
           }
-        )
+        );
       })
       .catch(error => {
+        console.error(error);
         this.setState({
-          done: true,
-        })
-      })
+          created: true,
+          done: true
+        });
+      });
   }
 
   public render() {
@@ -153,7 +169,7 @@ class ShareModal extends React.PureComponent<Props, State> {
       <>
         <h1>Share</h1>
         <div className="share-split">
-          <div className="share-url">
+          <div>
             <h3>Via URL</h3>
             <p>
               We pack the Vega or Vega-Lite specification and an encoded string
@@ -193,16 +209,16 @@ class ShareModal extends React.PureComponent<Props, State> {
                 </span>
               </Clipboard>
               <div
-                className={`copied + ${this.state.copied ? ' visible' : ''}`}
+                className={`copied + ${this.state.copied ? " visible" : ""}`}
               >
                 Copied!
               </div>
             </div>
-            Number of charaters in the URL: {this.state.generatedURL.length}{' '}
+            Number of charaters in the URL: {this.state.generatedURL.length}{" "}
             <span className="url-warning">
               {this.state.generatedURL.length > 2083 && (
                 <>
-                  Warning:{' '}
+                  Warning:{" "}
                   <a
                     href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
                     target="_blank"
@@ -215,8 +231,17 @@ class ShareModal extends React.PureComponent<Props, State> {
               )}
             </span>
           </div>
-          <div className="create-gist">
-            <h3>Via gist</h3>
+          <div>
+            <h3>
+              Via{" "}
+              <a
+                href="https://gist.github.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Github Gist
+              </a>
+            </h3>
             <div className="share-input-container">
               <input
                 type="checkbox"
@@ -252,8 +277,9 @@ class ShareModal extends React.PureComponent<Props, State> {
             </div>
             <div className="share-input-container">
               <button onClick={this.createGist.bind(this)}>
-                {this.state.done ? 'Create' : 'Creating...'}
+                {this.state.done ? "Create" : "Creating..."}
               </button>
+              {this.state.created && <span className="success">Created!</span>}
             </div>
             {this.state.error && (
               <div className="error-message share-error">
@@ -263,8 +289,8 @@ class ShareModal extends React.PureComponent<Props, State> {
           </div>
         </div>
       </>
-    )
+    );
   }
 }
 
-export default withRouter(ShareModal)
+export default withRouter(ShareModal);

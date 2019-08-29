@@ -22,7 +22,6 @@
 }
 
 .copied {
-  padding: 0 20px;
   visibility: hidden;
 }
 
@@ -44,6 +43,7 @@
 }
 
 .share-split > div {
+  margin-right: 5px;
   flex: 1;
 }
 
@@ -72,4 +72,8 @@
 
 .share-error {
   float: left;
+}
+
+.success {
+  margin-left: 10px;
 }
