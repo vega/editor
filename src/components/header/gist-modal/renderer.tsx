@@ -7,7 +7,9 @@ import getCookie from '../../../utils/getCookie';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & {closePortal: () => void} & RouteComponentProps;
+  ReturnType<typeof mapDispatchToProps> & {
+    closePortal: () => void;
+  } & RouteComponentProps;
 
 interface State {
   gist: {

@@ -11,6 +11,7 @@ export function mapStateToProps(state: State) {
     compiledVegaSpec: state.compiledVegaSpec,
     config: state.config,
     configEditorString: state.configEditorString,
+    decorations: state.decorations,
     editorString: state.editorString,
     gist: state.gist,
     manualParse: state.manualParse,

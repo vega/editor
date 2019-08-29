@@ -13,3 +13,13 @@
 .debugger-table svg {
   height: 20px;
 }
+.editor-table tbody tr td {
+  cursor: pointer;
+}
+.editor-table tbody tr td svg {
+  height: 10px;
+  width: 10px;
+  margin-left: 3px;
+  vertical-align: middle;
+  color: grey;
+}

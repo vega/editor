@@ -17,7 +17,9 @@ import './index.css';
 import ShareModal from './share-modal/index';
 
 type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & {showExample: () => {}} & RouteComponentProps;
+  ReturnType<typeof mapDispatchToProps> & {
+    showExample: () => {};
+  } & RouteComponentProps;
 
 interface State {
   open: boolean;
@@ -144,7 +146,7 @@ class Header extends React.PureComponent<Props, State> {
     this.props.setSettingsState(!this.props.settings);
   }
   public openCommandPalette() {
-    this.props.editorRef.trigger('', 'editor.action.quickCommand');
+    this.props.editorRef.trigger('', 'editor.action.quickCommand', '');
   }
 
   public componentWillUnmount() {
@@ -195,7 +197,9 @@ class Header extends React.PureComponent<Props, State> {
     const settingsButton = (
       <div
         className="header-button settings-button"
-        style={{backgroundColor: this.props.settings ? 'rgba(0, 0, 0, 0.08)' : ''}}
+        style={{
+          backgroundColor: this.props.settings ? 'rgba(0, 0, 0, 0.08)' : '',
+        }}
         onClick={() => this.props.setSettingsState(!this.props.settings)}
       >
         <Settings className="header-icon" />
@@ -309,7 +313,12 @@ class Header extends React.PureComponent<Props, State> {
                       }}
                       className="item"
                     >
-                      <div style={{backgroundImage: `url(images/examples/vg/${spec.name}.vg.png)`}} className="img" />
+                      <div
+                        style={{
+                          backgroundImage: `url(images/examples/vg/${spec.name}.vg.png)`,
+                        }}
+                        className="img"
+                      />
                       <div className="name">{formatExampleName(spec.name)}</div>
                     </div>
                   );
@@ -344,7 +353,9 @@ class Header extends React.PureComponent<Props, State> {
                             className="item"
                           >
                             <div
-                              style={{backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`}}
+                              style={{
+                                backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`,
+                              }}
                               className="img"
                             />
                             <div className="name">{spec.title}</div>

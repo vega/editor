@@ -37,6 +37,11 @@ export default class ConfigEditor extends React.PureComponent<Props> {
   }
 
   public handleEditorMount(editor: Monaco.editor.IStandaloneCodeEditor) {
+    editor.onDidFocusEditorText(() => {
+      editor.deltaDecorations(this.props.decorations, []);
+      this.props.setEditorReference(editor);
+    });
+
     editor.addAction({
       contextMenuGroupId: 'vega',
       contextMenuOrder: 0,
@@ -60,14 +65,14 @@ export default class ConfigEditor extends React.PureComponent<Props> {
 
   public componentDidMount() {
     if (this.props.sidePaneItem === SIDEPANE.Config) {
-      this.props.setEditorReference(this.refs.ConfigEditor);
+      this.props.setEditorReference(this.editor);
     }
   }
 
   public componentWillReceiveProps(nextProps) {
     if (nextProps.sidePaneItem === SIDEPANE.Config) {
       this.editor.focus();
-      this.props.setEditorReference(this.refs.ConfigEditor);
+      this.props.setEditorReference(this.editor);
     }
   }
 
@@ -84,7 +89,9 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     return (
       <div
         className={this.props.mode === Mode.Vega ? 'full-height-wrapper' : ''}
-        style={{display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : ''}}
+        style={{
+          display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : '',
+        }}
       >
         <MonacoEditor
           height={this.getEditorHeight()}

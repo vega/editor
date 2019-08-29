@@ -4,6 +4,7 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State) {
   return {
+    editorRef: state.editorRef,
     view: state.view,
   };
 }

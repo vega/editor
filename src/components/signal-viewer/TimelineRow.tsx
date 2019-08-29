@@ -45,7 +45,7 @@ export default class TimelineRow extends Component<
       });
 
     return (
-      <svg width={window.innerWidth * 0.3} height={31}>
+      <svg style={{width: window.innerWidth * 0.3, height: 31}} width={window.innerWidth * 0.3} height={31}>
         {row}
       </svg>
     );

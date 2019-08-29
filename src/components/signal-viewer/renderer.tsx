@@ -6,7 +6,13 @@ import './index.css';
 import SignalRow from './signalRow';
 import TimelineRow from './TimelineRow';
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type StoreProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
+interface OwnComponentProps {
+  onClickHandler: (header: string) => void;
+}
+
+type Props = StoreProps & OwnComponentProps;
 
 export default class SignalViewer extends React.PureComponent<Props, any> {
   constructor(props) {

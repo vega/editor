@@ -17,10 +17,13 @@ import {
   SetVegaExample,
   SetVegaLiteExample,
   SET_BASEURL,
+  SET_COMPILED_EDITOR_REFERENCE,
   SET_COMPILED_VEGA_PANE_SIZE,
   SET_CONFIG,
   SET_CONFIG_EDITOR_STRING,
   SET_DEBUG_PANE_SIZE,
+  SET_DECORATION,
+  SET_EDITOR_FOCUS,
   SET_EDITOR_REFERENCE,
   SET_GIST_VEGA_LITE_SPEC,
   SET_GIST_VEGA_SPEC,
@@ -456,6 +459,21 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         signals: action.signals,
+      };
+    case SET_DECORATION:
+      return {
+        ...state,
+        decorations: action.decoration,
+      };
+    case SET_COMPILED_EDITOR_REFERENCE:
+      return {
+        ...state,
+        compiledEditorRef: action.editorRef,
+      };
+    case SET_EDITOR_FOCUS:
+      return {
+        ...state,
+        editorFocus: action.editorFocus,
       };
     case RECEIVE_CURRENT_USER:
       return {

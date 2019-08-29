@@ -1,6 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
 import React from 'react';
 import {isDate, debounce} from 'vega';
+import {Search} from 'react-feather';
 import {View} from '../../constants';
 import {formatValueLong} from '../table/renderer';
 
@@ -14,6 +15,7 @@ interface Props {
   clickedSignal: any;
   hoverValue: any;
   timeline: boolean;
+  onClickHandler?: (header: string) => void;
 }
 
 interface State {
@@ -109,7 +111,10 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     if (tooLong) {
       return (
         <tr>
-          <td>{this.props.signal}</td>
+          <td onClick={() => this.props.onClickHandler && this.props.onClickHandler(this.props.signal)}>
+            {this.props.signal}
+            <Search />
+          </td>
           {this.props.timeline && <td style={{padding: 0}}>{this.props.children}</td>}
           <td
             style={{backgroundColor: this.getBackgroundColor()}}
@@ -123,7 +128,13 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     } else {
       return (
         <tr>
-          <td style={{whiteSpace: 'nowrap'}}>{this.props.signal}</td>
+          <td
+            style={{whiteSpace: 'nowrap'}}
+            onClick={() => this.props.onClickHandler && this.props.onClickHandler(this.props.signal)}
+          >
+            {this.props.signal}
+            <Search />
+          </td>
           {this.props.timeline && <td style={{padding: 0}}>{this.props.children}</td>}
           <td
             style={{
