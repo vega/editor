@@ -6,8 +6,12 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State) {
   return {
+    compiledEditorRef: state.compiledEditorRef,
     debugPane: state.debugPane,
     debugPaneSize: state.debugPaneSize,
+    decorations: state.decorations,
+    editorFocus: state.editorFocus,
+    editorRef: state.editorRef,
     error: state.error,
     logs: state.logs,
     navItem: state.navItem,
@@ -20,6 +24,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setDebugPaneSize: EditorActions.setDebugPaneSize,
+      setDecorations: EditorActions.setDecorations,
       showLogs: EditorActions.showLogs,
       toggleDebugPane: EditorActions.toggleDebugPane,
       toggleNavbar: EditorActions.toggleNavbar

@@ -70,3 +70,7 @@
   background: white;
   color: black;
 }
+
+.myInlineDecoration {
+  background-color: #f8c9aa !important;
+}

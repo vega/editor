@@ -4,7 +4,13 @@ import {mapStateToProps} from '.';
 import './index.css';
 import SignalRow from './signalRow';
 
-type Props = ReturnType<typeof mapStateToProps>;
+type StoreProps = ReturnType<typeof mapStateToProps>;
+
+interface OwnComponentProps {
+  onClickHandler: (header: string) => void;
+}
+
+type Props = StoreProps & OwnComponentProps;
 
 export default class SignalViewer extends React.PureComponent<Props> {
   constructor(props) {
@@ -12,7 +18,13 @@ export default class SignalViewer extends React.PureComponent<Props> {
   }
 
   public getSignals() {
-    return Object.keys(this.props.view.getState({data: vega.falsy, signals: vega.truthy, recurse: true}).signals);
+    return Object.keys(
+      this.props.view.getState({
+        data: vega.falsy,
+        signals: vega.truthy,
+        recurse: true
+      }).signals
+    );
   }
 
   public render() {
@@ -27,7 +39,12 @@ export default class SignalViewer extends React.PureComponent<Props> {
           </thead>
           <tbody>
             {this.getSignals().map(signal => (
-              <SignalRow key={signal} signal={signal} view={this.props.view} />
+              <SignalRow
+                onClickHandler={header => this.props.onClickHandler(header)}
+                key={signal}
+                signal={signal}
+                view={this.props.view}
+              />
             ))}
           </tbody>
         </table>

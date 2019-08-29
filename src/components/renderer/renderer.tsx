@@ -73,7 +73,10 @@ class Editor extends React.PureComponent<Props, State> {
     loader.load = async (url, options) => {
       try {
         if (options) {
-          return await originalLoad(url, {...options, ...{baseURL: this.props.baseURL}});
+          return await originalLoad(url, {
+            ...options,
+            ...{baseURL: this.props.baseURL}
+          });
         }
         return await originalLoad(url, {baseURL: this.props.baseURL});
       } catch {

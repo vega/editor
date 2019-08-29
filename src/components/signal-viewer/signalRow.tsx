@@ -1,4 +1,5 @@
 import React from 'react';
+import {Search} from 'react-feather';
 import {isDate} from 'vega';
 import {View} from '../../constants';
 import {formatValueLong} from '../table/renderer';
@@ -6,6 +7,7 @@ import {formatValueLong} from '../table/renderer';
 interface Props {
   view: View;
   signal: string;
+  onClickHandler?: (header: string) => void;
 }
 
 interface State {
@@ -54,7 +56,10 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     if (tooLong) {
       return (
         <tr>
-          <td>{this.props.signal}</td>
+          <td onClick={() => this.props.onClickHandler && this.props.onClickHandler(this.props.signal)}>
+            {this.props.signal}
+            <Search />
+          </td>
           <td title="The field is too large to be displayed. Please use the view API (see JS console).">
             <span>(...)</span>
           </td>
@@ -63,7 +68,10 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     } else {
       return (
         <tr>
-          <td>{this.props.signal}</td>
+          <td onClick={() => this.props.onClickHandler && this.props.onClickHandler(this.props.signal)}>
+            {this.props.signal}
+            <Search />
+          </td>
           <td key={this.props.signal}>{formatted}</td>
         </tr>
       );

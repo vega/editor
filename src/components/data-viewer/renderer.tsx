@@ -8,7 +8,13 @@ import ErrorBoundary from '../error-boundary';
 import Table from '../table';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps>;
+type StoreProps = ReturnType<typeof mapStateToProps>;
+
+interface OwnComponentProps {
+  onClickHandler: (header: string) => void;
+}
+
+type Props = StoreProps & OwnComponentProps;
 
 const initialState = {
   currentPage: 0,
@@ -43,7 +49,13 @@ export default class DataViewer extends React.PureComponent<Props, State> {
   }
 
   public getDatasets() {
-    return Object.keys(this.props.view.getState({data: vega.truthy, signals: vega.falsy, recurse: true}).data);
+    return Object.keys(
+      this.props.view.getState({
+        data: vega.truthy,
+        signals: vega.falsy,
+        recurse: true
+      }).data
+    );
   }
 
   public setDefaultDataset() {
@@ -133,7 +145,11 @@ export default class DataViewer extends React.PureComponent<Props, State> {
     const visibleData = data.slice(start, end);
 
     const table = data.length ? (
-      <Table header={Object.keys(data[0])} data={visibleData} />
+      <Table
+        onClickHandler={header => this.props.onClickHandler(header)}
+        header={Object.keys(data[0])}
+        data={visibleData}
+      />
     ) : (
       <span className="error">The table is empty.</span>
     );

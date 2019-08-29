@@ -1,5 +1,6 @@
 import {Renderers} from 'vega';
 import {Mode, View} from '../constants';
+import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 export const RECEIVE_CURRENT_USER: 'RECEIVE_CURRENT_USER' = 'RECEIVE_CURRENT_USER';
 export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
@@ -37,6 +38,9 @@ export const SET_TOOLTIP: 'SET_TOOLTIP' = 'SET_TOOLTIP';
 export const CLEAR_CONFIG: 'CLEAR_CONFIG' = 'CLEAR_CONFIG';
 export const MERGE_CONFIG_SPEC: 'MERGE_CONFIG_SPEC' = 'MERGE_CONFIG_SPEC';
 export const EXTRACT_CONFIG_SPEC: 'EXTRACT_CONFIG_SPEC' = 'EXTRACT_CONFIG_SPEC';
+export const SET_DECORATION: 'SET_DECORATION' = 'SET_DECORATION';
+export const SET_COMPILED_EDITOR_REFERENCE: 'SET_COMPILED_EDITOR_REFERENCE' = 'SET_COMPILED_EDITOR_REFERENCE';
+export const SET_EDITOR_FOCUS: 'SET_EDITOR_FOCUS' = 'SET_EDITOR_FOCUS';
 
 export type Action =
   | ReceiveCurrentUser
@@ -74,7 +78,10 @@ export type Action =
   | SetTooltip
   | ClearConfig
   | MergeConfigSpec
-  | ExtractConfigSpec;
+  | ExtractConfigSpec
+  | SetDecorations
+  | SetCompiledEditorRef
+  | SetEditorFocus;
 
 export function setMode(mode: Mode) {
   return {
@@ -308,14 +315,23 @@ export function setSidePaneItem(value: string) {
 
 export type SetSidePaneItem = ReturnType<typeof setSidePaneItem>;
 
-export function setEditorReference(editorRef: any) {
+export function setEditorReference(editorRef: Monaco.editor.IStandaloneCodeEditor) {
   return {
-    editorRef: (editorRef as any).editor,
+    editorRef: editorRef,
     type: SET_EDITOR_REFERENCE
   };
 }
 
 export type SetEditorReference = ReturnType<typeof setEditorReference>;
+
+export function setCompiledEditorRef(editorRef: Monaco.editor.IStandaloneCodeEditor) {
+  return {
+    editorRef: editorRef,
+    type: SET_COMPILED_EDITOR_REFERENCE
+  };
+}
+
+export type SetCompiledEditorRef = ReturnType<typeof setCompiledEditorRef>;
 
 export function setLogLevel(logLevel: string) {
   return {
@@ -367,6 +383,23 @@ export function extractConfigSpec() {
 
 export type ExtractConfigSpec = ReturnType<typeof extractConfigSpec>;
 
+export function setDecorations(value) {
+  return {
+    decoration: value,
+    type: SET_DECORATION
+  };
+}
+
+export type SetDecorations = ReturnType<typeof setDecorations>;
+
+export function setEditorFocus(value: string) {
+  return {
+    editorFocus: value,
+    type: SET_EDITOR_FOCUS
+  };
+}
+
+export type SetEditorFocus = ReturnType<typeof setEditorFocus>;
 export function receiveCurrentUser(isAuthenticated: boolean, handle?: string, name?: string, profilePicUrl?: string) {
   return {
     handle,

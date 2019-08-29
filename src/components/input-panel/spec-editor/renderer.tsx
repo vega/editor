@@ -7,7 +7,7 @@ import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {debounce} from 'vega';
 import parser from 'vega-schema-url-parser';
 import {mapDispatchToProps, mapStateToProps} from '.';
-import {KEYCODES, LAYOUT, Mode, SCHEMA, SIDEPANE} from '../../../constants';
+import {EDITOR_FOCUS, KEYCODES, LAYOUT, Mode, SCHEMA, SIDEPANE} from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -94,6 +94,11 @@ class Editor extends React.PureComponent<Props, {}> {
   }
 
   public editorDidMount(editor: Monaco.editor.IStandaloneCodeEditor, monaco: typeof Monaco) {
+    editor.onDidFocusEditorText(() => {
+      this.props.compiledEditorRef && this.props.compiledEditorRef.deltaDecorations(this.props.decorations, []);
+      editor.deltaDecorations(this.props.decorations, []);
+      this.props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
+    });
     editor.addAction({
       contextMenuGroupId: 'vega',
       contextMenuOrder: 0,
@@ -134,10 +139,13 @@ class Editor extends React.PureComponent<Props, {}> {
       run: this.handleExtractConfig.bind(this)
     });
 
+    editor.getModel().getOptions();
+
     this.editor = editor;
 
     if (this.props.sidePaneItem === SIDEPANE.Editor) {
       editor.focus();
+      this.props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
     }
   }
 
@@ -163,10 +171,19 @@ class Editor extends React.PureComponent<Props, {}> {
 
   public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.sidePaneItem === SIDEPANE.Editor) {
-      this.editor.focus();
-      this.props.setEditorReference(this.refs.editor);
+      if (this.props.sidePaneItem !== nextProps.sidePaneItem) {
+        this.editor.focus();
+        this.props.setEditorReference(this.editor);
+      }
     }
+
+    if (this.props.view !== nextProps.view) {
+      this.props.compiledEditorRef && this.props.compiledEditorRef.deltaDecorations(this.props.decorations, []);
+      this.props.editorRef && this.props.editorRef.deltaDecorations(this.props.decorations, []);
+    }
+
     if (nextProps.parse) {
+      this.editor.focus();
       this.updateSpec(nextProps.value);
       this.props.setConfig(nextProps.configEditorString);
       this.props.parseSpec(false);
@@ -176,7 +193,7 @@ class Editor extends React.PureComponent<Props, {}> {
   public componentDidMount() {
     document.addEventListener('keydown', this.handleKeydown);
     if (this.props.sidePaneItem === SIDEPANE.Editor) {
-      this.props.setEditorReference(this.refs.editor);
+      this.props.setEditorReference(this.editor);
     }
   }
 
@@ -231,7 +248,9 @@ class Editor extends React.PureComponent<Props, {}> {
     return (
       <div
         className={this.props.mode === Mode.Vega ? 'full-height-wrapper' : ''}
-        style={{display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none'}}
+        style={{
+          display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none'
+        }}
       >
         <MonacoEditor
           height={this.getEditorHeight()}

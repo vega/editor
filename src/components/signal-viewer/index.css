@@ -5,3 +5,14 @@
   overflow: auto;
   flex: 1;
 }
+
+.editor-table tbody tr td {
+  cursor: pointer;
+}
+.editor-table tbody tr td svg {
+  height: 10px;
+  width: 10px;
+  margin-left: 3px;
+  vertical-align: middle;
+  color: grey;
+}

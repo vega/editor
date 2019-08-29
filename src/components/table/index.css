@@ -9,9 +9,19 @@ table.editor-table thead tr:first-child > * {
 }
 
 table.editor-table th {
+  white-space: nowrap;
+  cursor: pointer;
   text-align: center;
   background: #f6f8fa;
   min-width: 50px;
+}
+
+table.editor-table svg {
+  height: 10px;
+  width: 10px;
+  margin-left: 3px;
+  vertical-align: middle;
+  color: grey;
 }
 
 table.editor-table td {
