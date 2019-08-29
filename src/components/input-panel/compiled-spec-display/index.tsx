@@ -4,9 +4,8 @@ import MonacoEditor from 'react-monaco-editor';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor';
-import {EDITOR_FOCUS, LAYOUT, Mode, SIDEPANE} from '../../../constants';
+import {EDITOR_FOCUS, LAYOUT} from '../../../constants';
 import {State} from '../../../constants/default-state';
-import ConfigEditor from '../../config-editor/index';
 import CompiledSpecDisplayHeader from '../compiled-spec-header';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;

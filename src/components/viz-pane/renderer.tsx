@@ -1,9 +1,7 @@
-import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import SplitPane from 'react-split-pane';
 import {mapDispatchToProps, mapStateToProps} from '.';
-
-import {EDITOR_FOCUS, LAYOUT, NAVBAR, wordSeparators} from '../../constants';
+import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants';
 import DataViewer from '../data-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
@@ -45,7 +43,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
 
     const model = editor.getModel();
 
-    const rangeValue = model.findMatches(header, true, true, true, wordSeparators, true);
+    const rangeValue = model.findMatches(header, true, true, true, WORD_SEPARATORS, true);
 
     editor && editor.deltaDecorations(this.props.decorations, []);
 

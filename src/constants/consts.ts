@@ -65,7 +65,7 @@ export const KEYCODES = {
 /**
  * Taken from: https://github.com/microsoft/monaco-editor/blob/02fb6bfd43b5ddcff36c1a1303e4aac623deff2e/monaco.d.ts#L2602
  */
-export const wordSeparators = '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?';
+export const WORD_SEPARATORS = '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?';
 
 export const BACKEND_URL = 'https://vega.now.sh/';
 
