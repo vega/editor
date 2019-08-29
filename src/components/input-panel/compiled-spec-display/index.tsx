@@ -38,7 +38,7 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
             minimap: {enabled: false},
             readOnly: true,
             scrollBeyondLastLine: false,
-            wordWrap: 'on',
+            wordWrap: 'on'
           }}
           ref="compiledEditor"
           language="json"
@@ -65,7 +65,7 @@ function mapStateToProps(state: State) {
     editorRef: state.editorRef,
     mode: state.mode,
     sidePaneItem: state.sidePaneItem,
-    value: state.vegaSpec,
+    value: state.vegaSpec
   };
 }
 
@@ -73,7 +73,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setCompiledEditorReference: EditorActions.setCompiledEditorRef,
-      setEditorFocus: EditorActions.setEditorFocus,
+      setEditorFocus: EditorActions.setEditorFocus
     },
     dispatch
   );

@@ -47,7 +47,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
       contextMenuOrder: 0,
       id: 'MERGE_CONFIG',
       label: 'Merge Config Into Spec',
-      run: this.handleMergeConfig.bind(this),
+      run: this.handleMergeConfig.bind(this)
     });
 
     editor.addAction({
@@ -55,7 +55,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
       contextMenuOrder: 1,
       id: 'EXTRACT_CONFIG',
       label: 'Extract Config From Spec',
-      run: this.handleExtractConfig.bind(this),
+      run: this.handleExtractConfig.bind(this)
     });
     this.editor = editor;
     if (this.props.sidePaneItem === SIDEPANE.Config) {
@@ -90,7 +90,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
       <div
         className={this.props.mode === Mode.Vega ? 'full-height-wrapper' : ''}
         style={{
-          display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : '',
+          display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : ''
         }}
       >
         <MonacoEditor
@@ -104,7 +104,7 @@ export default class ConfigEditor extends React.PureComponent<Props> {
             lineNumbersMinChars: 4,
             minimap: {enabled: false},
             scrollBeyondLastLine: false,
-            wordWrap: 'on',
+            wordWrap: 'on'
           }}
           ref="ConfigEditor"
           language="json"
