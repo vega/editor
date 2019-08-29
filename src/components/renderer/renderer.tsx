@@ -90,7 +90,7 @@ class Editor extends React.PureComponent<Props, State> {
     const view = new vega.View(runtime, {
       hover,
       loader,
-      logLevel: vega[this.props.logLevel]
+      logLevel: vega[this.props.logLevel],
     }).hover();
 
     (window as any).VEGA_DEBUG.view = view;
@@ -124,11 +124,11 @@ class Editor extends React.PureComponent<Props, State> {
     this.unlisten = this.props.history.listen(location => {
       if (location && location.pathname.endsWith('view')) {
         this.setState({
-          fullscreen: true
+          fullscreen: true,
         });
       } else {
         this.setState({
-          fullscreen: false
+          fullscreen: false,
         });
       }
     });
@@ -142,7 +142,7 @@ class Editor extends React.PureComponent<Props, State> {
         this.setState(current => {
           return {
             ...current,
-            fullscreen: !current.fullscreen
+            fullscreen: !current.fullscreen,
           };
         });
       }

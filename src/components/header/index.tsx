@@ -17,7 +17,7 @@ export function mapStateToProps(state: State) {
     settings: state.settings,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
-    view: state.view
+    view: state.view,
   };
 }
 
@@ -34,7 +34,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setSettingsState: EditorActions.setSettingsState,
       setThemeName: EditorActions.setThemeName,
       toggleAutoParse: EditorActions.toggleAutoParse,
-      updateVegaSpec: EditorActions.updateVegaSpec
+      updateVegaSpec: EditorActions.updateVegaSpec,
     },
     dispatch
   );

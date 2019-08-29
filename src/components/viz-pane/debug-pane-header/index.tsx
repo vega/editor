@@ -92,7 +92,7 @@ function mapStateToProps(state, ownProps) {
     logs: state.logs,
     navItem: state.navItem,
     warningsCount: state.warningsCount,
-    warningsLogger: state.warningsLogger
+    warningsLogger: state.warningsLogger,
   };
 }
 
@@ -101,7 +101,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       showLogs: EditorActions.showLogs,
       toggleDebugPane: EditorActions.toggleDebugPane,
-      toggleNavbar: EditorActions.toggleNavbar
+      toggleNavbar: EditorActions.toggleNavbar,
     },
     dispatch
   );

@@ -57,7 +57,7 @@ function mapStateToProps(state: State) {
     mode: state.mode,
     sidePaneItem: state.sidePaneItem,
     themeName: state.themeName,
-    value: state.vegaSpec
+    value: state.vegaSpec,
   };
 }
 
@@ -72,7 +72,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setThemeName: EditorActions.setThemeName,
       toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
       updateEditorString: EditorActions.updateEditorString,
-      updateVegaSpec: EditorActions.updateVegaSpec
+      updateVegaSpec: EditorActions.updateVegaSpec,
     },
     dispatch
   );

@@ -8,65 +8,6 @@ import TimelineRow from './TimelineRow';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-function isEqual(a, b) {
-  const stack = [];
-  function _isEqual(a, b) {
-    // console.log("->", stack.length);
-    // handle some simple cases first
-    if (a === b) {
-      return true;
-    }
-    if (typeof a !== 'object' || typeof b !== 'object') {
-      return false;
-    }
-    // XXX: typeof(null) === "object", but Object.getPrototypeOf(null) throws!
-    if (a === null || b === null) {
-      return false;
-    }
-    const proto = Object.getPrototypeOf(a);
-    if (proto !== Object.getPrototypeOf(b)) {
-      return false;
-    }
-    // assume that non-identical objects of unrecognized type are not equal
-    // XXX: could add code here to properly compare e.g. Date objects
-    if (proto !== Object.prototype && proto !== Array.prototype) {
-      return false;
-    }
-
-    // check the stack before doing a recursive comparison
-    for (let i = 0; i < stack.length; i++) {
-      if (a === stack[i][0] && b === stack[i][1]) {
-        return true;
-      }
-      // if (b === stack[i][0] && a === stack[i][1]) return true;
-    }
-
-    // do the objects even have the same keys?
-    for (const prop in a) {
-      if (!(prop in b)) {
-        return false;
-      }
-    }
-    for (const prop in b) {
-      if (!(prop in a)) {
-        return false;
-      }
-    }
-
-    // nothing to do but recurse!
-    stack.push([a, b]);
-    for (const prop in a) {
-      if (!_isEqual(a[prop], b[prop])) {
-        stack.pop();
-        return false;
-      }
-    }
-    stack.pop();
-    return true;
-  }
-  return _isEqual(a, b);
-}
-
 export default class SignalViewer extends React.PureComponent<Props, any> {
   constructor(props) {
     super(props);

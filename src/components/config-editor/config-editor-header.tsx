@@ -46,7 +46,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       setConfig: EditorActions.setConfig,
       setConfigEditorString: EditorActions.setConfigEditorString,
-      setThemeName: EditorActions.setThemeName
+      setThemeName: EditorActions.setThemeName,
     },
     dispatch
   );
@@ -55,7 +55,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
 function mapStateToProps(state) {
   return {
     manualParse: state.manualParse,
-    themeName: state.themeName
+    themeName: state.themeName,
   };
 }
 

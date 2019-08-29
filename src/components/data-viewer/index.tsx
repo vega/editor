@@ -4,7 +4,7 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State) {
   return {
-    view: state.view
+    view: state.view,
   };
 }
 

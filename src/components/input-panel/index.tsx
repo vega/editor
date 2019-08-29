@@ -62,7 +62,7 @@ class InputPanel extends React.PureComponent<Props> {
         <SpecEditor key="editor" />
 
         <ConfigEditor key="configEditor" />
-      </div>
+      </div>,
     ];
     if (this.props.compiledVegaSpec) {
       innerPanes.push(<CompiledSpecDisplay key="compiled" />);
@@ -114,7 +114,7 @@ function mapStateToProps(state: State) {
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     compiledVegaSpec: state.compiledVegaSpec,
     mode: state.mode,
-    sidePaneItem: state.sidePaneItem
+    sidePaneItem: state.sidePaneItem,
   };
 }
 
@@ -122,7 +122,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setCompiledVegaPaneSize: EditorActions.setCompiledVegaPaneSize,
-      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec
+      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
     },
     dispatch
   );

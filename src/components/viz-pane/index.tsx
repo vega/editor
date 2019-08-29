@@ -12,7 +12,7 @@ export function mapStateToProps(state: State) {
     logs: state.logs,
     navItem: state.navItem,
     settings: state.settings,
-    view: state.view
+    view: state.view,
   };
 }
 
@@ -22,7 +22,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setDebugPaneSize: EditorActions.setDebugPaneSize,
       showLogs: EditorActions.showLogs,
       toggleDebugPane: EditorActions.toggleDebugPane,
-      toggleNavbar: EditorActions.toggleNavbar
+      toggleNavbar: EditorActions.toggleNavbar,
     },
     dispatch
   );

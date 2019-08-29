@@ -30,7 +30,7 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
             minimap: {enabled: false},
             readOnly: true,
             scrollBeyondLastLine: false,
-            wordWrap: 'on'
+            wordWrap: 'on',
           }}
           language="json"
           value={stringify(this.props.value)}
@@ -46,7 +46,7 @@ function mapStateToProps(state: State) {
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     mode: state.mode,
     sidePaneItem: state.sidePaneItem,
-    value: state.vegaSpec
+    value: state.vegaSpec,
   };
 }
 

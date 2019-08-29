@@ -41,7 +41,7 @@ import {
   UpdateVegaSpec,
   UPDATE_EDITOR_STRING,
   UPDATE_VEGA_LITE_SPEC,
-  UPDATE_VEGA_SPEC
+  UPDATE_VEGA_SPEC,
 } from '../actions/editor';
 import {DEFAULT_STATE, Mode} from '../constants';
 import {State} from '../constants/default-state';
@@ -54,7 +54,7 @@ import {
   SET_SETTINGS,
   SET_SIDEPANE_ITEM,
   SET_THEME_NAME,
-  SET_TOOLTIP
+  SET_TOOLTIP,
 } from './../actions/editor';
 
 function errorLine(code: string, error: string) {
@@ -84,7 +84,7 @@ function mergeConfig(state: State) {
   if (state.configEditorString === '{}') {
     return {
       ...state,
-      parse: true
+      parse: true,
     };
   }
 
@@ -104,13 +104,13 @@ function mergeConfig(state: State) {
       configEditorString: '{}',
       editorString: stringify(spec),
       parse: true,
-      themeName: 'custom'
+      themeName: 'custom',
     };
   } catch (e) {
     console.warn(e);
     return {
       ...state,
-      parse: true
+      parse: true,
     };
   }
 }
@@ -129,13 +129,13 @@ function extractConfig(state: State) {
       ...state,
       configEditorString: stringify(config),
       editorString: stringify(spec),
-      parse: true
+      parse: true,
     };
   } catch (e) {
     console.warn(e);
     return {
       ...state,
-      parse: true
+      parse: true,
     };
   }
 }
@@ -153,7 +153,7 @@ function parseVega(
 
     extend = {
       ...extend,
-      vegaSpec: spec
+      vegaSpec: spec,
     };
   } catch (e) {
     const errorMessage = errorLine(action.spec, e.message);
@@ -161,7 +161,7 @@ function parseVega(
 
     extend = {
       ...extend,
-      error: {message: errorMessage}
+      error: {message: errorMessage},
     };
   }
   const logger = {...currLogger};
@@ -177,7 +177,7 @@ function parseVega(
     warningsLogger: currLogger,
 
     // extend with other changes
-    ...extend
+    ...extend,
   };
 }
 
@@ -208,7 +208,7 @@ function parseVegaLite(
 
     const options = {
       config,
-      logger: currLogger
+      logger: currLogger,
     };
     validateVegaLite(vegaLiteSpec, currLogger);
 
@@ -217,7 +217,7 @@ function parseVegaLite(
     extend = {
       ...extend,
       vegaLiteSpec,
-      vegaSpec
+      vegaSpec,
     };
   } catch (e) {
     const errorMessage = errorLine(spec, e.message);
@@ -225,7 +225,7 @@ function parseVegaLite(
 
     extend = {
       ...extend,
-      error: {message: errorMessage}
+      error: {message: errorMessage},
     };
   }
   const logger = {...currLogger};
@@ -241,7 +241,7 @@ function parseVegaLite(
     warningsLogger: currLogger,
 
     // extend with other changes
-    ...extend
+    ...extend,
   };
 }
 
@@ -255,7 +255,7 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
 
     extend = {
       ...extend,
-      error: {message: errorMessage}
+      error: {message: errorMessage},
     };
   }
   return {
@@ -264,7 +264,7 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
     error: null,
 
     // extend
-    ...extend
+    ...extend,
   };
 }
 
@@ -285,26 +285,26 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         vegaSpec: {},
         view: null,
         warningsCount: 0,
-        warningsLogger: new LocalLogger()
+        warningsLogger: new LocalLogger(),
       };
     case SET_MODE_ONLY:
       return {
         ...state,
-        mode: action.mode
+        mode: action.mode,
       };
     case SET_SCROLL_POSITION:
       return {
         ...state,
-        lastPosition: action.position
+        lastPosition: action.position,
       };
     case PARSE_SPEC:
       return {
         ...state,
-        parse: action.parse
+        parse: action.parse,
       };
     case SET_VEGA_EXAMPLE: {
       return parseVega(state, action, {
-        selectedExample: action.example
+        selectedExample: action.example,
       });
     }
     case UPDATE_VEGA_SPEC: {
@@ -312,12 +312,12 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     }
     case SET_GIST_VEGA_SPEC: {
       return parseVega(state, action, {
-        gist: action.gist
+        gist: action.gist,
       });
     }
     case SET_VEGA_LITE_EXAMPLE: {
       return parseVegaLite(state, action, {
-        selectedExample: action.example
+        selectedExample: action.example,
       });
     }
     case UPDATE_VEGA_LITE_SPEC: {
@@ -325,127 +325,127 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     }
     case SET_GIST_VEGA_LITE_SPEC: {
       return parseVegaLite(state, action, {
-        gist: action.gist
+        gist: action.gist,
       });
     }
     case TOGGLE_AUTO_PARSE:
       return {
         ...state,
         manualParse: !state.manualParse,
-        parse: state.manualParse
+        parse: state.manualParse,
       };
     case TOGGLE_COMPILED_VEGA_SPEC:
       return {
         ...state,
-        compiledVegaSpec: !state.compiledVegaSpec
+        compiledVegaSpec: !state.compiledVegaSpec,
       };
     case TOGGLE_DEBUG_PANE:
       return {
         ...state,
-        debugPane: !state.debugPane
+        debugPane: !state.debugPane,
       };
     case LOG_ERROR:
       return {
         ...state,
-        error: action.error
+        error: action.error,
       };
     case UPDATE_EDITOR_STRING:
       return {
         ...state,
-        editorString: action.editorString
+        editorString: action.editorString,
       };
     case EXPORT_VEGA:
       return {
         ...state,
-        export: action.export
+        export: action.export,
       };
     case SET_RENDERER:
       return {
         ...state,
-        renderer: action.renderer
+        renderer: action.renderer,
       };
     case SET_BASEURL:
       return {
         ...state,
-        baseURL: action.baseURL
+        baseURL: action.baseURL,
       };
     case SET_VIEW:
       return {
         ...state,
-        view: action.view
+        view: action.view,
       };
     case SET_DEBUG_PANE_SIZE:
       return {
         ...state,
-        debugPaneSize: action.debugPaneSize
+        debugPaneSize: action.debugPaneSize,
       };
     case SHOW_LOGS:
       return {
         ...state,
-        logs: action.logs
+        logs: action.logs,
       };
     case SET_COMPILED_VEGA_PANE_SIZE:
       return {
         ...state,
-        compiledVegaPaneSize: action.compiledVegaPaneSize
+        compiledVegaPaneSize: action.compiledVegaPaneSize,
       };
     case TOGGLE_NAV_BAR:
       return {
         ...state,
-        navItem: action.navItem
+        navItem: action.navItem,
       };
     case SET_SETTINGS:
       return {
         ...state,
-        settings: action.settings
+        settings: action.settings,
       };
     case SET_CONFIG:
       return state.mode === Mode.VegaLite
         ? parseVegaLite(state, action, {
-            configEditorString: action.configEditorString
+            configEditorString: action.configEditorString,
           })
         : parseConfig(state, action);
     case SET_THEME_NAME:
       return {
         ...state,
-        themeName: action.themeName
+        themeName: action.themeName,
       };
     case SET_SIDEPANE_ITEM:
       return {
         ...state,
-        sidePaneItem: action.sidePaneItem
+        sidePaneItem: action.sidePaneItem,
       };
     case SET_CONFIG_EDITOR_STRING:
       return {
         ...state,
-        configEditorString: action.configEditorString
+        configEditorString: action.configEditorString,
       };
     case SET_EDITOR_REFERENCE:
       return {
         ...state,
-        editorRef: action.editorRef
+        editorRef: action.editorRef,
       };
     case SET_LOG_LEVEL:
       return {
         ...state,
-        logLevel: action.logLevel
+        logLevel: action.logLevel,
       };
     case SET_HOVER:
       return {
         ...state,
-        hoverEnable: action.hoverEnable
+        hoverEnable: action.hoverEnable,
       };
     case SET_TOOLTIP:
       return {
         ...state,
-        tooltipEnable: action.tooltipEnable
+        tooltipEnable: action.tooltipEnable,
       };
     case CLEAR_CONFIG:
       return {
         ...state,
         config: {},
         configEditorString: '{}',
-        themeName: 'custom'
+        themeName: 'custom',
       };
     case MERGE_CONFIG_SPEC:
       return mergeConfig(state);
@@ -455,7 +455,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case SET_SIGNALS:
       return {
         ...state,
-        signals: action.signals
+        signals: action.signals,
       };
     case RECEIVE_CURRENT_USER:
       return {
@@ -463,7 +463,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         handle: action.handle,
         isAuthenticated: action.isAuthenticated,
         name: action.name,
-        profilePicUrl: action.profilePicUrl
+        profilePicUrl: action.profilePicUrl,
       };
     default:
       return state;

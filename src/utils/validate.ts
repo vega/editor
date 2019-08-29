@@ -3,7 +3,7 @@ import Ajv from 'ajv';
 const ajv = new Ajv({
   allErrors: false,
   jsonPointers: true,
-  schemaId: 'auto'
+  schemaId: 'auto',
 });
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));

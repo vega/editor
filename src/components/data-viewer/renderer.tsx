@@ -12,7 +12,7 @@ type Props = ReturnType<typeof mapStateToProps>;
 
 const initialState = {
   currentPage: 0,
-  selectedData: ''
+  selectedData: '',
 };
 
 type State = Readonly<typeof initialState>;
@@ -52,7 +52,7 @@ export default class DataViewer extends React.PureComponent<Props, State> {
     if (datasets.length) {
       this.setState({
         currentPage: 0,
-        selectedData: datasets[datasets.length > 1 ? 1 : 0]
+        selectedData: datasets[datasets.length > 1 ? 1 : 0],
       });
     }
   }
@@ -147,7 +147,7 @@ export default class DataViewer extends React.PureComponent<Props, State> {
             onChange={this.handleChange}
             options={datasets.map(d => ({
               label: d,
-              value: d
+              value: d,
             }))}
             clearable={false}
             searchable={false}
