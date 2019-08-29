@@ -1,6 +1,6 @@
 {
   "name": "vega-editor",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "homepage": "http://vega.github.io/editor",
   "private": true,
   "devDependencies": {
@@ -17,8 +17,8 @@
     "style-loader": "^1.0.0",
     "tslint": "^5.19.0",
     "typescript": "~3.5.0",
-    "webpack": "4.39.3",
     "vega-lite-dev-config": "^0.2.5",
+    "webpack": "4.39.3",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0"
