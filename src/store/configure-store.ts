@@ -3,9 +3,9 @@ import persistState from 'redux-localstorage';
 import thunk from 'redux-thunk';
 
 import rootReducer from '../reducers';
-import {DEFAULT_STATE} from './../constants/default-state';
+import {DEFAULT_STATE, State} from './../constants/default-state';
 
-export default function configureStore(initialState = DEFAULT_STATE) {
+export default function configureStore(initialState: State = DEFAULT_STATE) {
   // Compose final middleware
   const middleware = applyMiddleware(thunk);
 
@@ -19,7 +19,8 @@ export default function configureStore(initialState = DEFAULT_STATE) {
   const enhancer = composeEnhancers(middleware, persistState(paths));
 
   // Create final store
-  const store = createStore(rootReducer, initialState, enhancer);
+  // TODO: remove as any
+  const store = createStore(rootReducer, initialState as any, enhancer);
 
   if ((module as any).hot) {
     (module as any).hot.accept('../reducers', () => {

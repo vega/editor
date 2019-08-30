@@ -16,7 +16,7 @@
     "prettier": "^1.18.2",
     "style-loader": "^1.0.0",
     "tslint": "^5.19.0",
-    "typescript": "~3.5.0",
+    "typescript": "~3.6.2",
     "vega-lite-dev-config": "^0.2.5",
     "webpack": "4.39.3",
     "webpack-bundle-analyzer": "^3.4.1",
@@ -46,18 +46,18 @@
     "react-router-dom": "^5.0.1",
     "react-select": "^3.0.4",
     "react-split-pane": "^0.1.87",
-    "react-tooltip": "^3.10.0",
+    "react-tooltip": "^3.11.0",
     "redux": "^4.0.4",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.3.0",
     "tslib": "^1.10.0",
-    "vega-cli": "5.5.1",
+    "vega-cli": "5.5.2",
     "vega-datasets": "^1.25.0",
-    "vega-embed": "^4.2.4",
+    "vega-embed": "^5.0.0",
     "vega-lite": "4.0.0-beta.1",
     "vega-schema-url-parser": "^1.1.0",
-    "vega-themes": "^2.3.2",
-    "vega-tooltip": "^0.19.0"
+    "vega-themes": "^2.4.0",
+    "vega-tooltip": "^0.19.1"
   },
   "husky": {
     "hooks": {

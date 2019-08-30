@@ -1,9 +1,8 @@
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {Renderers, Spec} from 'vega';
+import {Config} from 'vega-embed';
 import {TopLevelSpec as VlSpec} from 'vega-lite';
-import {Config} from 'vega-themes/build/config';
 import {LocalLogger} from '../utils/logger';
-
 import {EDITOR_FOCUS, LAYOUT, Mode, NAVBAR, SIDEPANE, VEGA_LITE_START_SPEC, View} from './consts';
 
 export interface State {
