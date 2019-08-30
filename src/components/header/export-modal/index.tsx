@@ -8,7 +8,7 @@ export function mapStateToProps(state: State) {
     mode: state.mode,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
-    view: state.view,
+    view: state.view
   };
 }
 

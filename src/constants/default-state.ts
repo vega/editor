@@ -87,5 +87,5 @@ export const DEFAULT_STATE: State = {
   vegaSpec: {},
   view: null,
   warningsCount: 0,
-  warningsLogger: new LocalLogger(),
+  warningsLogger: new LocalLogger()
 };

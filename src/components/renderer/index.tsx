@@ -16,14 +16,14 @@ export function mapStateToProps(state: State) {
     tooltipEnable: state.tooltipEnable,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
-    view: state.view,
+    view: state.view
   };
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
-      setView: EditorActions.setView,
+      setView: EditorActions.setView
     },
     dispatch
   );

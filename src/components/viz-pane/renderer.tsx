@@ -24,7 +24,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
     this.state = {
       header: '',
       maxRange: 0,
-      range: 0,
+      range: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.getContextViewer = this.getContextViewer.bind(this);
@@ -52,7 +52,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
       rangeValue.map(match => {
         return {
           options: {inlineClassName: 'myInlineDecoration'},
-          range: match.range,
+          range: match.range
         };
       })
     );

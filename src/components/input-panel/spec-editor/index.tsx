@@ -22,7 +22,7 @@ export function mapStateToProps(state: State) {
     sidePaneItem: state.sidePaneItem,
     themeName: state.themeName,
     value: state.editorString,
-    view: state.view,
+    view: state.view
   };
 }
 
@@ -40,7 +40,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setEditorReference: EditorActions.setEditorReference,
       updateEditorString: EditorActions.updateEditorString,
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
-      updateVegaSpec: EditorActions.updateVegaSpec,
+      updateVegaSpec: EditorActions.updateVegaSpec
     },
     dispatch
   );

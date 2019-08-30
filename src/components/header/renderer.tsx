@@ -43,7 +43,7 @@ class Header extends React.PureComponent<Props, State> {
     this.state = {
       open: false,
       scrollPosition: 0,
-      showVega: props.mode === Mode.Vega,
+      showVega: props.mode === Mode.Vega
     };
   }
 
@@ -53,11 +53,11 @@ class Header extends React.PureComponent<Props, State> {
       const key = 'className';
       if (className.includes(e.target[key])) {
         this.setState({
-          open: !this.state.open,
+          open: !this.state.open
         });
       } else {
         this.setState({
-          open: false,
+          open: false
         });
       }
     });
@@ -66,9 +66,9 @@ class Header extends React.PureComponent<Props, State> {
     fetch(`${BACKEND_URL}auth/github/check`, {
       credentials: 'include',
       headers: {
-        Cookie: `${COOKIE_NAME}=${cookieValue}`,
+        Cookie: `${COOKIE_NAME}=${cookieValue}`
       },
-      method: 'get',
+      method: 'get'
     })
       .then(res => {
         return res.json();
@@ -85,9 +85,9 @@ class Header extends React.PureComponent<Props, State> {
         fetch(`${BACKEND_URL}auth/github/check`, {
           credentials: 'include',
           headers: {
-            Cookie: `${COOKIE_NAME}=${cookieValue}`,
+            Cookie: `${COOKIE_NAME}=${cookieValue}`
           },
-          method: 'get',
+          method: 'get'
         })
           .then(res => {
             return res.json();
@@ -122,7 +122,7 @@ class Header extends React.PureComponent<Props, State> {
 
   public componentWillReceiveProps(nextProps) {
     this.setState({
-      showVega: nextProps.mode === Mode.Vega,
+      showVega: nextProps.mode === Mode.Vega
     });
   }
 
@@ -198,7 +198,7 @@ class Header extends React.PureComponent<Props, State> {
       <div
         className="header-button settings-button"
         style={{
-          backgroundColor: this.props.settings ? 'rgba(0, 0, 0, 0.08)' : '',
+          backgroundColor: this.props.settings ? 'rgba(0, 0, 0, 0.08)' : ''
         }}
         onClick={() => this.props.setSettingsState(!this.props.settings)}
       >
@@ -315,7 +315,7 @@ class Header extends React.PureComponent<Props, State> {
                     >
                       <div
                         style={{
-                          backgroundImage: `url(images/examples/vg/${spec.name}.vg.png)`,
+                          backgroundImage: `url(images/examples/vg/${spec.name}.vg.png)`
                         }}
                         className="img"
                       />
@@ -354,7 +354,7 @@ class Header extends React.PureComponent<Props, State> {
                           >
                             <div
                               style={{
-                                backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`,
+                                backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`
                               }}
                               className="img"
                             />
@@ -402,7 +402,7 @@ class Header extends React.PureComponent<Props, State> {
                     <div className="modal-body">{exportContent}</div>
                   </div>
                 </div>
-              ),
+              )
             ]}
           </PortalWithState>
 
@@ -422,7 +422,7 @@ class Header extends React.PureComponent<Props, State> {
                     <div className="modal-body">{shareContent}</div>
                   </div>
                 </div>
-              ),
+              )
             ]}
           </PortalWithState>
 
@@ -442,7 +442,7 @@ class Header extends React.PureComponent<Props, State> {
                     <div className="modal-body">{gist(closePortal)}</div>
                   </div>
                 </div>
-              ),
+              )
             ]}
           </PortalWithState>
 
@@ -454,7 +454,7 @@ class Header extends React.PureComponent<Props, State> {
               node.scrollTop = this.props.lastPosition;
               node.addEventListener('scroll', () => {
                 this.setState({
-                  scrollPosition: node.scrollTop,
+                  scrollPosition: node.scrollTop
                 });
               });
             }}
@@ -501,7 +501,7 @@ class Header extends React.PureComponent<Props, State> {
                     </div>
                   </div>
                 </div>
-              ),
+              )
             ]}
           </PortalWithState>
         </section>
@@ -529,7 +529,7 @@ class Header extends React.PureComponent<Props, State> {
                       </div>
                     </div>
                   </div>
-                ),
+                )
               ];
             }}
           </PortalWithState>

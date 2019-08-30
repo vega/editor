@@ -140,7 +140,7 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
         <Header showExample={this.props.showExample} />
         <div
           style={{
-            height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,
+            height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`
           }}
           className="main-panel"
         >
@@ -168,7 +168,7 @@ function mapStateToProps(state: State) {
     configEditorString: state.configEditorString,
     editorRef: state.editorRef,
     settings: state.settings,
-    view: state.view,
+    view: state.view
   };
 }
 
@@ -186,7 +186,7 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setVegaExample: EditorActions.setVegaExample,
       setVegaLiteExample: EditorActions.setVegaLiteExample,
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
-      updateVegaSpec: EditorActions.updateVegaSpec,
+      updateVegaSpec: EditorActions.updateVegaSpec
     },
     dispatch
   );
