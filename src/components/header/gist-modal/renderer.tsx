@@ -385,7 +385,9 @@ class GistModal extends React.PureComponent<Props, State> {
                               ) : (
                                 <Lock width="14" height="14" fill="#FDD300" />
                               )}
-                              <span className="text">{gist.title ? gist.title : 'No description provided'}</span>
+                              <span className={`text ${gist.title ? '' : 'play-down'}`}>
+                                {gist.title ? gist.title : 'No description provided'}
+                              </span>
                             </div>
                             <div className="personal-gist-files">
                               {gist.spec.map((spec, index) => (

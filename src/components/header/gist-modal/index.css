@@ -34,6 +34,10 @@
   font-weight: bold;
 }
 
+.play-down {
+  color: #999999;
+}
+
 .personal-gist-files {
   display: flex;
   flex-direction: column;
