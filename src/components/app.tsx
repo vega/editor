@@ -66,9 +66,9 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
     this.setSpecInUrl(parameter);
   }
 
-  public componentWillReceiveProps(nextProps) {
-    if (hash(this.props.match.params) !== hash(nextProps.match.params)) {
-      this.setSpecInUrl(nextProps.match.params);
+  public componentDidUpdate(prevProps) {
+    if (hash(this.props.match.params) !== hash(prevProps.match.params)) {
+      this.setSpecInUrl(this.props.match.params);
     }
   }
 
