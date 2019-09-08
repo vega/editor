@@ -91,15 +91,23 @@ class Sidebar extends Component<any, any> {
         <div className="select-container">
           <span>Renderer:</span>
           <div>
-            <Select
-              className="renderer-dropdown-wrapper"
-              classNamePrefix="renderer-dropdown"
-              value={{label: this.props.renderer}}
-              options={renderOptions}
-              isClearable={false}
-              isSearchable={false}
-              onChange={e => this.props.setRenderer(e.label)}
+            <input
+              type="radio"
+              name="renderer"
+              value="canvas"
+              defaultChecked
+              onClick={e => this.props.setRenderer(e.currentTarget.value)}
             />
+            <label>canvas</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              name="renderer"
+              value="svg"
+              onClick={e => this.props.setRenderer(e.currentTarget.value)}
+            />
+            <label>svg</label>
           </div>
         </div>
         <p className="settings-description">Set Vega renderer.</p>
