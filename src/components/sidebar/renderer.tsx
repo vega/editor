@@ -84,7 +84,6 @@ class Sidebar extends Component<any, any> {
     this.props.setHover(newHover);
   }
   public render() {
-    const renderOptions = this.props.renderer === 'svg' ? [{label: 'canvas'}] : [{label: 'svg'}];
     const hover = typeof this.props.hoverEnable !== 'boolean' ? 'auto' : this.props.hoverEnable ? 'on' : 'off';
     return (
       <div className="settings">
