@@ -1,4 +1,4 @@
-FROM node:11
+FROM node:12
 
 # Informs Docker that the container listens on the specified port at runtime
 # https://docs.docker.com/engine/reference/builder/#expose
