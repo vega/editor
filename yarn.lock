@@ -9572,10 +9572,10 @@ vega-lite-dev-config@^0.2.5:
     prettier "^1.18.2"
     ts-jest "^24.0.2"
 
-vega-lite@4.0.0-beta.1:
-  version "4.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-4.0.0-beta.1.tgz#343c96a65485e0bc451ce3eef5a5cb80b82811b2"
-  integrity sha512-BimCt96EUCOgDO7X8Y6y4jWUf30ihDOPY/geY1aHW80Ujugc7DlosCtX8tic1XdYE8FZMU5coWe7geQa4K9O4A==
+vega-lite@4.0.0-beta.2:
+  version "4.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-4.0.0-beta.2.tgz#fd612766f9c097e24e9eb118a63742a7656ac6ae"
+  integrity sha512-zu64TZ8k8BYjHKW2NIwNd1DNPIYVw+E+XuQcL19D4flUlFVvqiWjgSdXiSGY+mOCmAUW+VJvx0t1ZwtMj1K0oA==
   dependencies:
     "@types/clone" "~0.1.30"
     "@types/fast-json-stable-stringify" "^2.0.0"
@@ -9588,7 +9588,7 @@ vega-lite@4.0.0-beta.1:
     vega-event-selector "~2.0.1"
     vega-expression "~2.6.1"
     vega-typings "~0.8.1"
-    vega-util "~1.11.0"
+    vega-util "~1.11.1"
     yargs "~14.0.0"
 
 vega-loader@^4.0.0, vega-loader@^4.1.1:
@@ -9724,12 +9724,7 @@ vega-typings@~0.8.1:
   dependencies:
     vega-util "^1.11.0"
 
-vega-util@^1.11.0, vega-util@^1.11.1, vega-util@^1.8.0, vega-util@~1.11.0:
-  version "1.11.1"
-  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.11.1.tgz#7a61e3995dec533c38946cc4dcd766bfbdfedba6"
-  integrity sha512-ai/gKv2zg753t44YNwDVuCAdR9vFoDzzbSeAv/SG7n1pI4EYCUmsjNUmg+WR8BcaHInS1PCGkoncZ0RoX8dUjg==
-
-vega-util@^1.11.2:
+vega-util@^1.11.0, vega-util@^1.11.1, vega-util@^1.11.2, vega-util@^1.8.0, vega-util@~1.11.1:
   version "1.11.2"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.11.2.tgz#0a96da3207c54ab73b0da45ec5a4e88d32355881"
   integrity sha512-E/9zhO026xOSrjOmgCchKKI14fAcik5uNp1/wt9XfCkKjUCibvLCZOX2UVCVAFgF/frby2H1jU34o8mrTSsOxg==
