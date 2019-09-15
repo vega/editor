@@ -84,25 +84,30 @@ class Sidebar extends Component<any, any> {
     this.props.setHover(newHover);
   }
   public render() {
-    const renderOptions = this.props.renderer === 'svg' ? [{label: 'canvas'}] : [{label: 'svg'}];
     const hover = typeof this.props.hoverEnable !== 'boolean' ? 'auto' : this.props.hoverEnable ? 'on' : 'off';
+
+    const renderers = [{value: 'svg', label: 'SVG'}, {value: 'canvas', label: 'Canvas'}].map(d => (
+      <label key={d.label}>
+        <input
+          type="radio"
+          name="renderer"
+          value={d.value}
+          defaultChecked={this.props.renderer === d.value}
+          onClick={e => this.props.setRenderer(e.currentTarget.value)}
+        />
+        {d.label}
+      </label>
+    ));
+
     return (
       <div className="settings">
         <div className="select-container">
           <span>Renderer:</span>
-          <div>
-            <Select
-              className="renderer-dropdown-wrapper"
-              classNamePrefix="renderer-dropdown"
-              value={{label: this.props.renderer}}
-              options={renderOptions}
-              isClearable={false}
-              isSearchable={false}
-              onChange={e => this.props.setRenderer(e.label)}
-            />
-          </div>
+          {renderers}
         </div>
-        <p className="settings-description">Set Vega renderer.</p>
+        <p className="settings-description">
+          Set Vega renderer. Canvas creates pixel graphics. SVG creates vector graphics.
+        </p>
         <div className="select-container">
           <span>Log Level:</span>
           <div>
