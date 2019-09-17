@@ -107,6 +107,10 @@ class Header extends React.PureComponent<Props, State> {
     this.props.history.push(`/examples/vega/${name}`);
   }
 
+  public onSelectNewVega() {
+    this.props.history.push('/');
+  }
+
   public onSelectVegaLite(name) {
     this.props.history.push(`/examples/vega-lite/${name}`);
   }
@@ -116,7 +120,9 @@ class Header extends React.PureComponent<Props, State> {
   }
 
   public onSwitchMode(option) {
-    option.value === Mode.Vega ? this.props.updateVegaSpec(stringify(this.props.vegaSpec)) : this.onSelectNewVegaLite();
+    option.value === Mode.Vega
+      ? this.props.updateVegaSpec(stringify(this.props.vegaSpec)) && this.onSelectNewVega()
+      : this.onSelectNewVegaLite();
     this.props.clearConfig();
   }
 
