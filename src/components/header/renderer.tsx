@@ -108,7 +108,7 @@ class Header extends React.PureComponent<Props, State> {
   }
 
   public onSelectNewVega() {
-    this.props.history.push('/');
+    this.props.history.push('/custom/vega');
   }
 
   public onSelectVegaLite(name) {
