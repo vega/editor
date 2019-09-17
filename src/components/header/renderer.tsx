@@ -121,7 +121,8 @@ class Header extends React.PureComponent<Props, State> {
 
   public onSwitchMode(option) {
     if (option.value === Mode.Vega) {
-      this.props.updateVegaSpec(stringify(this.props.vegaSpec)) && this.onSelectNewVega();
+      this.props.updateVegaSpec(stringify(this.props.vegaSpec));
+      this.onSelectNewVega();
     } else {
       this.onSelectNewVegaLite();
     }
