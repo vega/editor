@@ -418,7 +418,7 @@ class GistModal extends React.PureComponent<Props, State> {
             ) : (
               <span>
                 Login with{' '}
-                <a href={`${BACKEND_URL}auth/github`} target="_blank" rel="noopener noreferrer">
+                <a href={`${BACKEND_URL}auth/github`} target="_blank">
                   GitHub
                 </a>{' '}
                 to see all of your personal gist.
