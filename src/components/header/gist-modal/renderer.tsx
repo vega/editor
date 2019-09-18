@@ -348,10 +348,6 @@ class GistModal extends React.PureComponent<Props, State> {
     });
   }
 
-  public signIn() {
-    window.open(`${BACKEND_URL}auth/github`, '_blank');
-  }
-
   public render() {
     return (
       <div>
@@ -422,9 +418,9 @@ class GistModal extends React.PureComponent<Props, State> {
             ) : (
               <span>
                 Login with{' '}
-                <span className="gist-login" onClick={this.signIn.bind(this)}>
+                <a href={`${BACKEND_URL}auth/github`} target="_blank" rel="noopener noreferrer">
                   GitHub
-                </span>{' '}
+                </a>{' '}
                 to see all of your personal gist.
               </span>
             )}

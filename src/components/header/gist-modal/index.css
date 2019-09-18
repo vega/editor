@@ -24,12 +24,6 @@
   margin-bottom: 16px;
 }
 
-.gist-login {
-  color: #0000ee;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .personal-gist-description {
   display: flex;
   align-items: center;
