@@ -88,7 +88,6 @@
         "@typescript-eslint/no-var-requires": "off",
         "react/no-find-dom-node": "warn",
         "react/no-unescaped-entities": "off",
-        "react/jsx-no-target-blank": "off",
         "@typescript-eslint/no-unused-vars": "warn",
         "no-prototype-builtins": "warn"
       }

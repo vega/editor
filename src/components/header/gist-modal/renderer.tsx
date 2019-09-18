@@ -417,7 +417,7 @@ class GistModal extends React.PureComponent<Props, State> {
               )
             ) : (
               <span>
-                Login with{' '}
+                Login with {/* eslint-disable-next-line react/jsx-no-target-blank */}
                 <a href={`${BACKEND_URL}auth/github`} target="_blank">
                   GitHub
                 </a>{' '}
