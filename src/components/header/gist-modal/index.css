@@ -65,22 +65,6 @@
   color: #000000;
 }
 
-.gist-button > button {
-  background: rgb(100, 80, 150);
-  color: white;
-  border: 1px solid #a9a9a9;
-  cursor: pointer;
-  height: 30px;
-  outline: none;
-  font-size: 16px;
-  padding: 0 20px;
-}
-
-.gist-button > button:hover {
-  background: rgb(92, 64, 141);
-  color: white;
-}
-
 .gist-text {
   margin-top: 30px;
   font-size: 12px;

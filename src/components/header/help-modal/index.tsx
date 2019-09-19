@@ -47,7 +47,7 @@ const HelpModal = () => {
         href={`https://github.com/vega/editor/issues/new?body=**Vega-Editor ${pjson.version}**`}
         target="_blank"
         rel="noopener noreferrer"
-        className="report-button help-modal-link"
+        className="report-button button"
       >
         <AlertCircle className="header-icon" />
         <span>Report a Bug</span>

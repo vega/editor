@@ -83,6 +83,7 @@
 .pagination a,
 .pagination .break {
   padding: 10px 10px;
+  color: inherit;
 }
 
 .pagination a:focus {

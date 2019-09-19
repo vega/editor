@@ -531,11 +531,9 @@ class GistModal extends React.PureComponent<Props, State> {
               ) : (
                 <></>
               )}
-              <div className="gist-button gist-input-container">
-                <button type="button" onClick={() => this.onSelectGist(this.props.closePortal)}>
-                  {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
-                </button>
-              </div>
+              <button type="button" onClick={() => this.onSelectGist(this.props.closePortal)}>
+                {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
+              </button>
             </form>
           </div>
         </div>

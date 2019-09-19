@@ -1,29 +1,10 @@
-.sharing-buttons,
-.sharing-button {
+.sharing-buttons {
   display: flex;
   align-items: center;
+  padding: 2em 0;
 }
 
-.sharing-button:hover {
-  border-color: #aaa;
-}
-
-.sharing-button:active {
-  background-color: #ddd;
-}
-
-.sharing-button {
-  font-size: 0.9em;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  user-select: none;
-  margin: 30px 10px 30px 0;
-  padding: 5px;
-}
-
-.sharing-button svg {
+.sharing-buttons .button svg {
   width: 22px;
   height: 22px;
   stroke: #000;
