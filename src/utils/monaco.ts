@@ -50,6 +50,18 @@ export default function setupMonaco() {
     validate: true
   });
 
+  Monaco.languages.json.jsonDefaults.setModeConfiguration({
+    documentFormattingEdits: false,
+    documentRangeFormattingEdits: false,
+    completionItems: true,
+    hovers: true,
+    documentSymbols: true,
+    tokens: true,
+    colors: true,
+    foldingRanges: true,
+    diagnostics: true
+  });
+
   Monaco.languages.registerDocumentFormattingEditProvider('json', {
     provideDocumentFormattingEdits(
       model: Monaco.editor.ITextModel,
