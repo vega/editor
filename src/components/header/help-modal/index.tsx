@@ -66,12 +66,13 @@ const HelpModal = () => {
         You can access Vega, Vega-Lite, and the <a href="https://vega.github.io/vega/docs/api/view/"> Vega view</a> at{' '}
         <code>(VEGA_DEBUG)</code> using your browser's developer console.
       </p>
-      <div className="version-viewer">
-        <div>Vega Version : {VG_VERISION}</div>
-        <div>Vega-Lite Version : {VL_VERSION}</div>
-        <div>Vega-Tooltip Version : {TOOLTIP_VERSION}</div>
-        <div>Editor Version : {pjson.version}</div>
-      </div>
+      <h2>Versions</h2>
+      <ul>
+        <li>Vega: {VG_VERISION}</li>
+        <li>Vega-Lite: {VL_VERSION}</li>
+        <li>Vega-Tooltip: {TOOLTIP_VERSION}</li>
+        <li>Editor: {pjson.version}</li>
+      </ul>
     </div>
   );
 };

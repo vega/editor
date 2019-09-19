@@ -71,15 +71,3 @@ kbd {
   margin: 0px 6px 0px 2px;
   vertical-align: sub;
 }
-
-.version-viewer {
-  display: flex;
-  flex-direction: row;
-  font-size: small;
-  color: #777;
-  margin: 2em 0;
-}
-
-.version-viewer div {
-  margin-right: 1em;
-}
