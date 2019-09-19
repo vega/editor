@@ -19,16 +19,16 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 
 # For this project, additional files must also be copied as yarn hooks depend on them
-COPY public ./public
 COPY scripts ./scripts
 
 # Remove 'r' characters from the vendor script (otherwise it won't execute)
 RUN sed $'s/\r$//' ./scripts/vendor.sh > ./scripts/vendor.sh
 
-RUN yarn
-
 # Copy remaining files
 COPY . .
+
+# Run Yarn
+RUN yarn
 
 # Sets the container executable (ENTRYPOINT) as yarn and the default argument (CMD) as start
 # https://docs.docker.com/engine/reference/builder/#entrypoint
