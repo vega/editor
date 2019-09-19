@@ -21,7 +21,8 @@
 }
 
 .gist-container {
-  margin-bottom: 16px;
+  margin-bottom: 1em;
+  font-size: 0.9em;
 }
 
 .personal-gist-description {
