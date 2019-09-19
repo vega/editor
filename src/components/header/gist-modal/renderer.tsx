@@ -349,6 +349,13 @@ class GistModal extends React.PureComponent<Props, State> {
   }
 
   public render() {
+    const githubLink = (
+      /* eslint-disable-next-line react/jsx-no-target-blank */
+      <a href={`${BACKEND_URL}auth/github`} target="_blank">
+        Login with GitHub
+      </a>
+    );
+
     return (
       <div>
         <h1>
@@ -416,13 +423,7 @@ class GistModal extends React.PureComponent<Props, State> {
                 </div>
               )
             ) : (
-              <span>
-                Login with{' '}
-                <a href={`${BACKEND_URL}auth/github`} target="_blank" rel="noopener noreferrer">
-                  GitHub
-                </a>{' '}
-                to see all of your personal gist.
-              </span>
+              <span>{githubLink} to see all of your personal gist.</span>
             )}
           </div>
           <div className="load-gist">
