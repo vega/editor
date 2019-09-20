@@ -1,22 +1,43 @@
 .App {
-  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
 }
 
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app-left {
+  width: 50%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #09d3ac;
+.app-left-top {
+  padding: 2rem;
+  height: 50%;
+  width: 100%;
+  overflow-y: scroll;
+  border-bottom: 1px solid #a9a9a9;
+  box-sizing: border-box;
+}
+
+.app-left-bottom {
+  height: 50%;
+  width: 100%;
+}
+
+.app-right {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid #a9a9a9;
+  background: #FAFAFA;
+  box-sizing: border-box;
+}
+
+.vega-wrapper {
+  background: #FFFFFF;
+  border: 1px solid #DFDFDF;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.07);
 }
