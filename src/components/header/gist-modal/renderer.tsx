@@ -392,18 +392,20 @@ class GistModal extends React.PureComponent<Props, State> {
                         />
                         <label htmlFor="privacy">Show private gists</label>
                       </div>
-                      <ReactPaginate
-                        previousLabel={'<'}
-                        nextLabel={'>'}
-                        breakClassName={'break'}
-                        containerClassName={'pagination'}
-                        activeClassName={'active'}
-                        pageCount={Object.keys(this.state.pages).length}
-                        onPageChange={this.handlePageChange.bind(this)}
-                        forcePage={this.state.currentPage}
-                        marginPagesDisplayed={1}
-                        pageRangeDisplayed={2}
-                      />
+                      {Object.keys(this.state.pages).length > 1 && (
+                        <ReactPaginate
+                          previousLabel={'<'}
+                          nextLabel={'>'}
+                          breakClassName={'break'}
+                          containerClassName={'pagination'}
+                          activeClassName={'active'}
+                          pageCount={Object.keys(this.state.pages).length}
+                          onPageChange={this.handlePageChange.bind(this)}
+                          forcePage={this.state.currentPage}
+                          marginPagesDisplayed={1}
+                          pageRangeDisplayed={2}
+                        />
+                      )}
                       {this.state.personalGist.map(gist => (
                         <div key={gist.name} className="gist-container">
                           <div className="personal-gist-description">
