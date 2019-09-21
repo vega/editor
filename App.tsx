@@ -21,7 +21,6 @@ const App: React.FC = () => {
       <div className="app-left">
         <div className="app-left-top">
           <button onClick={() => setDoVisualize(true)}>Visualize</button>
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           <ObjectViewer src={scene!} />
         </div>
         <div className="app-left-bottom">
