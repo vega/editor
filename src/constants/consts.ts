@@ -5,6 +5,11 @@ export namespace Mode {
   export const VegaLite: 'vega-lite' = 'vega-lite';
 }
 
+export namespace GistPrivacy {
+  export const PUBLIC: 'PUBLIC' = 'PUBLIC';
+  export const ALL: 'ALL' = 'ALL';
+}
+
 export type Mode = typeof Mode.Vega | typeof Mode.VegaLite;
 
 export const NAME_TO_MODE = {

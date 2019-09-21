@@ -3,7 +3,7 @@ import ReactPaginate from 'react-paginate';
 import {AlertCircle, File, Lock} from 'react-feather';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {mapDispatchToProps, mapStateToProps} from '.';
-import {BACKEND_URL, COOKIE_NAME, Mode} from '../../../constants';
+import {BACKEND_URL, COOKIE_NAME, Mode, GistPrivacy} from '../../../constants';
 import getCookie from '../../../utils/getCookie';
 import './index.css';
 
@@ -60,7 +60,7 @@ class GistModal extends React.PureComponent<Props, State> {
       loaded: false,
       pages: {},
       personalGist: [],
-      private: 'PUBLIC',
+      private: GistPrivacy.PUBLIC,
       syntaxError: false
     };
   }
@@ -71,7 +71,7 @@ class GistModal extends React.PureComponent<Props, State> {
 
   public privacyToggle() {
     this.setState({
-      private: this.state.private === 'PUBLIC' ? 'ALL' : 'PUBLIC'
+      private: this.state.private === GistPrivacy.PUBLIC ? GistPrivacy.ALL : GistPrivacy.PUBLIC
     });
   }
 
@@ -387,7 +387,7 @@ class GistModal extends React.PureComponent<Props, State> {
                           type="checkbox"
                           name="privacy"
                           id="privacy"
-                          checked={this.state.private === 'ALL'}
+                          checked={this.state.private === GistPrivacy.ALL}
                           onChange={this.privacyToggle.bind(this)}
                         />
                         <label htmlFor="privacy">Show private gists</label>
