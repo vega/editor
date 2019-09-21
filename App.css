@@ -23,6 +23,9 @@
 .app-left-bottom {
   height: 50%;
   width: 100%;
+  padding: 2rem;
+  overflow-y: scroll;
+  box-sizing: border-box;
 }
 
 .app-right {
