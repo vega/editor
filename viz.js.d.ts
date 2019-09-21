@@ -8,6 +8,10 @@ declare module 'viz.js' {
 
   export default class Viz {
     constructor(parameters: VizConstructorParameters);
+    renderString(
+      src,
+      { format = 'svg', engine = 'dot', files = [], images = [], yInvert = false, nop = 0 } = {},
+    ): Promise<string>;
     renderSVGElement(dot: string): Promise<SVGSVGElement>;
   }
 }

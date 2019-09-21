@@ -1,28 +1,24 @@
 import React, { useState } from 'react';
 import ObjectViewer from 'react-json-view';
+import { View } from 'vega-typings';
 import './App.css';
+import GraphvizDisplay from './GraphvizDisplay';
 import { exportScene } from './scenegraph';
 import { view2dot } from './vega2dot';
-import Viz from 'viz.js';
-import { Module, render } from 'viz.js/full.render';
-import { View } from 'vega-typings';
 import { VegaWrapper } from './VegaWrapper';
-
-const viz = new Viz({ Module, render });
 
 const App: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [view, setView] = useState<View | null>(null);
   const [sceneGraph, setSceneGraph] = useState<object>({});
-  const [dataFlow, setDataFlow] = useState<SVGSVGElement | null>(null);
+  const [dataFlow, setDataFlow] = useState<string | null>(null);
 
   const updateDisplay = (): void => {
     if (view !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const internalSceneGraph = (view as any)['_scenegraph'];
+      setDataFlow(view2dot(view));
       setSceneGraph(exportScene(internalSceneGraph.root));
-      viz.renderSVGElement(view2dot(view)).then(el => {
-        setDataFlow(el);
-      });
     }
   };
 
@@ -35,9 +31,9 @@ const App: React.FC = () => {
         </div>
         <div className="app-left-bottom">
           {dataFlow === null ? (
-            <p>No graph available</p>
+            <p>Click Visualize to show data flow graph here</p>
           ) : (
-            <div dangerouslySetInnerHTML={{ __html: dataFlow.outerHTML }}></div>
+            <GraphvizDisplay source={dataFlow} />
           )}
         </div>
       </div>
