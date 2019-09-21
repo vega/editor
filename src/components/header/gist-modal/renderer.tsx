@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ReactPaginate from 'react-paginate';
 import {AlertCircle, File, Lock} from 'react-feather';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {mapDispatchToProps, mapStateToProps} from '.';
@@ -12,6 +13,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   } & RouteComponentProps;
 
 interface State {
+  currentPage: number;
   gist: {
     image: string;
     imageStyle: {
@@ -28,8 +30,9 @@ interface State {
   invalidUrl: boolean;
   latestRevision: boolean;
   loaded: boolean;
+  pages: any;
   personalGist: any;
-  private: boolean;
+  private: string;
   syntaxError: boolean;
 }
 
@@ -38,6 +41,7 @@ class GistModal extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      currentPage: 0,
       gist: {
         filename: '',
         image: '',
@@ -54,42 +58,20 @@ class GistModal extends React.PureComponent<Props, State> {
       invalidUrl: false,
       latestRevision: false,
       loaded: false,
+      pages: {},
       personalGist: [],
-      private: false,
+      private: 'PUBLIC',
       syntaxError: false
     };
   }
 
   public componentDidMount() {
-    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
-    fetch(`${BACKEND_URL}gists/user`, {
-      credentials: 'include',
-      headers: {
-        Cookie: `${COOKIE_NAME}=${cookieValue}`
-      },
-      method: 'get'
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(json => {
-        if (Array.isArray(json)) {
-          this.setState({
-            loaded: true,
-            personalGist: json
-          });
-        } else {
-          this.props.receiveCurrentUser(json.isAuthenticated);
-        }
-      })
-      .catch(err => {
-        // console.error(err);
-      });
+    this.handlePageChange({selected: 0});
   }
 
   public privacyToggle() {
     this.setState({
-      private: !this.state.private
+      private: this.state.private === 'PUBLIC' ? 'ALL' : 'PUBLIC'
     });
   }
 
@@ -262,44 +244,36 @@ class GistModal extends React.PureComponent<Props, State> {
       });
   }
 
-  public componentWillReceiveProps(nextProps) {
-    this.setState({
-      gist: {
-        filename: '',
-        image: '',
-        imageStyle: {
-          bottom: 0
-        },
-        revision: '',
-        type: nextProps.mode,
-        url: ''
-      }
-    });
-    if (nextProps.isAuthenticated) {
-      const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
-      fetch(`${BACKEND_URL}gists/user`, {
-        credentials: 'include',
-        headers: {
-          Cookie: `${COOKIE_NAME}=${cookieValue}`
-        },
-        method: 'get'
-      })
-        .then(res => {
-          return res.json();
-        })
-        .then(json => {
-          if (Array.isArray(json)) {
-            this.setState({
-              loaded: true,
-              personalGist: json
-            });
-          } else {
-            this.props.receiveCurrentUser(json.isAuthenticated);
+  public componentDidUpdate(prevProps, prevState) {
+    if (this.props.isAuthenticated !== prevProps.isAuthenticated) {
+      this.setState(
+        {
+          currentPage: 0,
+          gist: {
+            filename: '',
+            image: '',
+            imageStyle: {
+              bottom: 0
+            },
+            revision: '',
+            type: this.props.mode,
+            url: ''
           }
-        })
-        .catch(err => {
-          // console.error(err);
-        });
+        },
+        () => {
+          this.handlePageChange({selected: this.state.currentPage});
+        }
+      );
+    }
+    if (this.state.private !== prevState.private) {
+      this.setState(
+        {
+          currentPage: 0
+        },
+        () => {
+          this.handlePageChange({selected: this.state.currentPage});
+        }
+      );
     }
   }
 
@@ -348,6 +322,42 @@ class GistModal extends React.PureComponent<Props, State> {
     });
   }
 
+  public async handlePageChange(page) {
+    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
+    let response;
+    if (page.selected === 0) {
+      response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=${this.state.private}`, {
+        credentials: 'include',
+        headers: {
+          Cookie: `${COOKIE_NAME}=${cookieValue}`
+        },
+        method: 'get'
+      });
+    } else {
+      response = await fetch(
+        `${BACKEND_URL}gists/user?cursor=${this.state.pages[page.selected]}&privacy=${this.state.private}`,
+        {
+          credentials: 'include',
+          headers: {
+            Cookie: `${COOKIE_NAME}=${cookieValue}`
+          },
+          method: 'get'
+        }
+      );
+    }
+    const data = await response.json();
+    if (Array.isArray(data.data)) {
+      this.setState({
+        currentPage: page.selected,
+        loaded: true,
+        pages: page.selected === 0 ? data.cursors : this.state.pages,
+        personalGist: data.data
+      });
+    } else {
+      this.props.receiveCurrentUser(data.isAuthenticated);
+    }
+  }
+
   public render() {
     const githubLink = (
       /* eslint-disable-next-line react/jsx-no-target-blank */
@@ -377,41 +387,51 @@ class GistModal extends React.PureComponent<Props, State> {
                           type="checkbox"
                           name="privacy"
                           id="privacy"
-                          checked={this.state.private}
+                          checked={this.state.private === 'ALL'}
                           onChange={this.privacyToggle.bind(this)}
                         />
                         <label htmlFor="privacy">Show private gists</label>
                       </div>
-                      {this.state.personalGist
-                        .filter(gist => gist.isPublic || this.state.private)
-                        .map(gist => (
-                          <div key={gist.name} className="gist-container">
-                            <div className="personal-gist-description">
-                              {gist.isPublic ? (
-                                <File width="14" height="14" />
-                              ) : (
-                                <Lock width="14" height="14" fill="#FDD300" />
-                              )}
-                              <span className={`text ${gist.title ? '' : 'play-down'}`}>
-                                {gist.title ? gist.title : 'No description provided'}
-                              </span>
-                            </div>
-                            <div className="personal-gist-files">
-                              {gist.spec.map((spec, index) => (
-                                <div key={index} className="file">
-                                  <div className="arrow"></div>
-                                  <div
-                                    className="filename"
-                                    key={spec.name}
-                                    onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}
-                                  >
-                                    {spec.name}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
+                      <ReactPaginate
+                        previousLabel={'<'}
+                        nextLabel={'>'}
+                        breakClassName={'break'}
+                        containerClassName={'pagination'}
+                        activeClassName={'active'}
+                        pageCount={Object.keys(this.state.pages).length}
+                        onPageChange={this.handlePageChange.bind(this)}
+                        forcePage={this.state.currentPage}
+                        marginPagesDisplayed={1}
+                        pageRangeDisplayed={2}
+                      />
+                      {this.state.personalGist.map(gist => (
+                        <div key={gist.name} className="gist-container">
+                          <div className="personal-gist-description">
+                            {gist.isPublic ? (
+                              <File width="14" height="14" />
+                            ) : (
+                              <Lock width="14" height="14" fill="#FDD300" />
+                            )}
+                            <span className={`text ${gist.title ? '' : 'play-down'}`}>
+                              {gist.title ? gist.title : 'No description provided'}
+                            </span>
                           </div>
-                        ))}
+                          <div className="personal-gist-files">
+                            {gist.spec.map((spec, index) => (
+                              <div key={index} className="file">
+                                <div className="arrow"></div>
+                                <div
+                                  className="filename"
+                                  key={spec.name}
+                                  onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}
+                                >
+                                  {spec.name}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </>
                   ) : (
                     <>You have no Vega or Vega-Lite compatible gists.</>
