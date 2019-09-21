@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ObjectViewer from 'react-json-view';
+import { Inspector } from 'react-inspector';
 import { View } from 'vega-typings';
 import './App.css';
 import GraphvizDisplay from './GraphvizDisplay';
@@ -27,7 +27,7 @@ const App: React.FC = () => {
       <div className="app-left">
         <div className="app-left-top">
           <button onClick={updateDisplay}>Visualize</button>
-          <ObjectViewer src={sceneGraph} />
+          <Inspector data={sceneGraph} expandLevel={5} />
         </div>
         <div className="app-left-bottom">
           {dataFlow === null ? (
