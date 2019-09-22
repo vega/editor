@@ -1,0 +1,16 @@
+.vega-wrapper {
+  width: 100%;
+  height: 100%;
+  background: rgba(243, 240, 240, 0.63);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vega-embed {
+  background: white;
+  border: 1px solid #DFDFDF;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.07);
+  padding-right: 0 !important;
+}
