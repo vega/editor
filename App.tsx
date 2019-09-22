@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Inspector } from 'react-inspector';
 import { View } from 'vega-typings';
 import './App.css';
 import GraphvizDisplay from './GraphvizDisplay';
 import { exportScene } from './scenegraph';
 import { view2dot } from './vega2dot';
 import { VegaWrapper } from './VegaWrapper';
+import { SceneGraphInsepector } from './SceneGraphInsepector';
 
 const App: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,7 +27,7 @@ const App: React.FC = () => {
       <div className="app-left">
         <div className="app-left-top">
           <button onClick={updateDisplay}>Visualize</button>
-          <Inspector data={sceneGraph} expandLevel={5} />
+          <SceneGraphInsepector sceneGraph={sceneGraph} expandLevel={2} />
         </div>
         <div className="app-left-bottom">
           {dataFlow === null ? (

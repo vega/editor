@@ -76,6 +76,7 @@ const keys = [
   'fontWeight',
   'fontStyle',
   'fontVariant', // font
+  '_svg',
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
