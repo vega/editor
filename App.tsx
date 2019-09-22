@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View } from 'vega-typings';
-import GraphvizDisplay from './GraphvizDisplay';
+import GraphvizDisplay from './components/GraphvizDisplay';
 import { exportScene } from './scenegraph';
 import { view2dot } from './vega2dot';
-import { VegaWrapper } from './VegaWrapper';
-import { SceneGraphInsepector } from './SceneGraphInsepector';
+import { VegaWrapper } from './components/VegaWrapper';
+import { SceneGraphInsepector } from './components/SceneGraphInsepector';
 import styled from 'styled-components';
 
 const appNavHeight = 50;
