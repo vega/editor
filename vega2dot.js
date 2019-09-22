@@ -9,10 +9,6 @@ const markTypes = {
   viewlayout: 1,
 };
 
-function array(a) {
-  return Array.isArray(a) ? a : [a];
-}
-
 function nodeLabel(node) {
   return node.signal
     ? node.signal
