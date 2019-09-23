@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Viz from 'viz.js';
 import { Module, render } from 'viz.js/full.render';
+import { parse } from '../svg-to-node';
 
 const viz = new Viz({ Module, render });
 
@@ -25,7 +26,7 @@ const GraphvizDisplay: React.FC<GraphvizDisplayProps> = props => {
       });
   }, [props.source]);
 
-  return renderResult === null ? <p>{message}</p> : <div dangerouslySetInnerHTML={{ __html: renderResult }}></div>;
+  return renderResult === null ? <p>{message}</p> : parse(renderResult);
 };
 
 GraphvizDisplay.propTypes = {
