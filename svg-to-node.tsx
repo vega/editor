@@ -102,8 +102,8 @@ export function transform(el: Element): React.ReactElement | null {
     return <text {...attrs}>{el.textContent}</text>;
   }
 
-  if (el instanceof HTMLTitleElement) {
-    return <title>{el.innerText}</title>;
+  if (el instanceof SVGTitleElement) {
+    return <title>{el.textContent}</title>;
   }
 
   // We do conversion on limited types of nodes.
