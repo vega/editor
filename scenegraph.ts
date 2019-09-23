@@ -48,7 +48,6 @@ const keys = [
   'fontWeight',
   'fontStyle',
   'fontVariant', // font
-  '_svg',
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,6 +61,9 @@ export function exportScene(t: any): { [key: string]: any } {
     if (t[k] !== undefined) {
       obj[k] = t[k];
     }
+  }
+  if (typeof t._svg === 'object' && t.souce !== null) {
+    Object.defineProperty(obj, '_svg', { value: t._svg, enumerable: false });
   }
   if (typeof t.source === 'object' && t.souce !== null) {
     Object.defineProperty(obj, 'source', { value: t.source.id, enumerable: false });
