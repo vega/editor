@@ -3,23 +3,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Inspector, { NodeRenderer, ObjectRootLabel, ObjectName, ObjectValue, ObjectLabelProps } from 'react-inspector';
 
-let previouslyHighlightElement: SVGElement | null = null;
-let originalStrokeColor: string | null = null;
-let originalStrokeWidth: string | null = null;
+class Highlighter {
+  private previouslyHighlightElement: SVGElement | null = null;
+  private originalStrokeColor: string | null = null;
+  private originalStrokeWidth: string | null = null;
 
-const emphasize = (el: SVGElement): void => {
-  originalStrokeColor = el.style.stroke;
-  originalStrokeWidth = el.style.strokeWidth;
-  el.style.stroke = 'red';
-  el.style.strokeWidth = '3px';
-  previouslyHighlightElement = el;
-};
+  emphasize(el: SVGElement): void {
+    this.dampen();
+    this.originalStrokeColor = el.style.stroke;
+    this.originalStrokeWidth = el.style.strokeWidth;
+    el.style.stroke = 'red';
+    el.style.strokeWidth = '3px';
+    this.previouslyHighlightElement = el;
+  }
 
-const dampen = (el: SVGElement): void => {
-  el.style.stroke = originalStrokeColor;
-  el.style.strokeWidth = originalStrokeWidth;
-  previouslyHighlightElement = null;
-};
+  dampen(): void {
+    if (this.previouslyHighlightElement !== null) {
+      this.previouslyHighlightElement.style.stroke = this.originalStrokeColor;
+      this.previouslyHighlightElement.style.strokeWidth = this.originalStrokeWidth;
+      this.previouslyHighlightElement = null;
+    }
+  }
+}
+
+const resultViewHighligher = new Highlighter();
 
 export interface SceneGraphInsepectorProps {
   sceneGraph: object;
@@ -29,16 +36,14 @@ export interface SceneGraphInsepectorProps {
 export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = props => {
   const onLabelMouseEnter = (data: any): void => {
     if (data && typeof data === 'object' && data._svg instanceof SVGElement) {
-      if (previouslyHighlightElement !== null) {
-        dampen(previouslyHighlightElement);
-      }
-      emphasize(data._svg as SVGElement);
+      resultViewHighligher.emphasize(data._svg);
     }
   };
 
   const onLabelMouseLeave = (data: any): void => {
     if (data && typeof data === 'object' && data._svg instanceof SVGElement) {
-      dampen(data._svg as SVGElement);
+      resultViewHighligher.dampen();
+      // dampen(data._svg as SVGElement);
     }
   };
 
