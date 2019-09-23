@@ -37,6 +37,7 @@ import {
   SHOW_LOGS,
   TOGGLE_AUTO_PARSE,
   TOGGLE_COMPILED_VEGA_SPEC,
+  TOGGLE_GIST_PRIVACY,
   TOGGLE_DEBUG_PANE,
   TOGGLE_NAV_BAR,
   UpdateVegaLiteSpec,
@@ -45,7 +46,7 @@ import {
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC
 } from '../actions/editor';
-import {DEFAULT_STATE, Mode} from '../constants';
+import {DEFAULT_STATE, Mode, GistPrivacy} from '../constants';
 import {State} from '../constants/default-state';
 import {LocalLogger} from '../utils/logger';
 import {validateVega, validateVegaLite} from '../utils/validate';
@@ -475,6 +476,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         isAuthenticated: action.isAuthenticated,
         name: action.name,
         profilePicUrl: action.profilePicUrl
+      };
+    case TOGGLE_GIST_PRIVACY:
+      return {
+        ...state,
+        private: state.private === GistPrivacy.PUBLIC ? GistPrivacy.ALL : GistPrivacy.PUBLIC
       };
     default:
       return state;

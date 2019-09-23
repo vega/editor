@@ -12,6 +12,8 @@ export namespace GistPrivacy {
 
 export type Mode = typeof Mode.Vega | typeof Mode.VegaLite;
 
+export type GistPrivacy = typeof GistPrivacy.ALL | typeof GistPrivacy.PUBLIC;
+
 export const NAME_TO_MODE = {
   vega: Mode.Vega,
   'vega-lite': Mode.VegaLite

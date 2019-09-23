@@ -32,7 +32,6 @@ interface State {
   loaded: boolean;
   pages: any;
   personalGist: any;
-  private: string;
   syntaxError: boolean;
 }
 
@@ -60,19 +59,12 @@ class GistModal extends React.PureComponent<Props, State> {
       loaded: false,
       pages: {},
       personalGist: [],
-      private: GistPrivacy.PUBLIC,
       syntaxError: false
     };
   }
 
   public componentDidMount() {
     this.handlePageChange({selected: 0});
-  }
-
-  public privacyToggle() {
-    this.setState({
-      private: this.state.private === GistPrivacy.PUBLIC ? GistPrivacy.ALL : GistPrivacy.PUBLIC
-    });
   }
 
   public updateGist(gist) {
@@ -244,7 +236,7 @@ class GistModal extends React.PureComponent<Props, State> {
       });
   }
 
-  public componentDidUpdate(prevProps, prevState) {
+  public componentDidUpdate(prevProps) {
     if (this.props.isAuthenticated !== prevProps.isAuthenticated) {
       this.setState(
         {
@@ -265,7 +257,7 @@ class GistModal extends React.PureComponent<Props, State> {
         }
       );
     }
-    if (this.state.private !== prevState.private) {
+    if (this.props.private !== prevProps.private) {
       this.setState(
         {
           currentPage: 0
@@ -326,7 +318,7 @@ class GistModal extends React.PureComponent<Props, State> {
     const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
     let response;
     if (page.selected === 0) {
-      response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=${this.state.private}`, {
+      response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=${this.props.private}`, {
         credentials: 'include',
         headers: {
           Cookie: `${COOKIE_NAME}=${cookieValue}`
@@ -335,7 +327,7 @@ class GistModal extends React.PureComponent<Props, State> {
       });
     } else {
       response = await fetch(
-        `${BACKEND_URL}gists/user?cursor=${this.state.pages[page.selected]}&privacy=${this.state.private}`,
+        `${BACKEND_URL}gists/user?cursor=${this.state.pages[page.selected]}&privacy=${this.props.private}`,
         {
           credentials: 'include',
           headers: {
@@ -387,8 +379,8 @@ class GistModal extends React.PureComponent<Props, State> {
                           type="checkbox"
                           name="privacy"
                           id="privacy"
-                          checked={this.state.private === GistPrivacy.ALL}
-                          onChange={this.privacyToggle.bind(this)}
+                          checked={this.props.private === GistPrivacy.ALL}
+                          onChange={this.props.toggleGistPrivacy}
                         />
                         <label htmlFor="privacy">Show private gists</label>
                       </div>
