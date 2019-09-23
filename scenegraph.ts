@@ -63,6 +63,9 @@ export function exportScene(t: any): { [key: string]: any } {
       obj[k] = t[k];
     }
   }
+  if (typeof t.source === 'object' && t.souce !== null) {
+    Object.defineProperty(obj, 'source', { value: t.source.id, enumerable: false });
+  }
   if (Array.isArray(t.items)) {
     obj.items = t.items.map(exportScene);
   }

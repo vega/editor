@@ -27,6 +27,7 @@ class Highlighter {
 }
 
 const resultViewHighligher = new Highlighter();
+const dataFlowHighlighter = new Highlighter();
 
 export interface SceneGraphInsepectorProps {
   sceneGraph: object;
@@ -35,15 +36,28 @@ export interface SceneGraphInsepectorProps {
 
 export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = props => {
   const onLabelMouseEnter = (data: any): void => {
-    if (data && typeof data === 'object' && data._svg instanceof SVGElement) {
-      resultViewHighligher.emphasize(data._svg);
+    if (data && typeof data === 'object') {
+      if (data._svg instanceof SVGElement) {
+        resultViewHighligher.emphasize(data._svg);
+      }
+      if (typeof data.source === 'number') {
+        const el = document.getElementById(`node${data.source}`);
+        console.log(el);
+        if (el instanceof SVGElement) {
+          dataFlowHighlighter.emphasize(el);
+        }
+      }
     }
   };
 
   const onLabelMouseLeave = (data: any): void => {
-    if (data && typeof data === 'object' && data._svg instanceof SVGElement) {
-      resultViewHighligher.dampen();
-      // dampen(data._svg as SVGElement);
+    if (data && typeof data === 'object') {
+      if (data._svg instanceof SVGElement) {
+        resultViewHighligher.dampen();
+      }
+      if (typeof data.source === 'number') {
+        dataFlowHighlighter.dampen();
+      }
     }
   };
 
