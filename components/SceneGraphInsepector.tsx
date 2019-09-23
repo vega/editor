@@ -55,9 +55,9 @@ export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = props =
 
   // Make linter happy
   ObjectLabel.propTypes = {
-    name: PropTypes.string.isRequired,
-    data: PropTypes.object.isRequired,
-    isNonenumerable: PropTypes.bool.isRequired,
+    name: PropTypes.string,
+    data: PropTypes.any.isRequired,
+    isNonenumerable: PropTypes.bool,
   };
 
   const customizedNodeRenderer: NodeRenderer = ({ depth, name, data, isNonenumerable }) =>
@@ -70,9 +70,9 @@ export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = props =
   // Make linter happy
   customizedNodeRenderer.propTypes = {
     depth: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     data: PropTypes.any.isRequired,
-    isNonenumerable: PropTypes.bool.isRequired,
+    isNonenumerable: PropTypes.bool,
     expanded: PropTypes.bool.isRequired,
   };
 

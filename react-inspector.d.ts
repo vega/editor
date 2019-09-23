@@ -10,9 +10,9 @@ declare module 'react-inspector' {
 
   export interface NodeRendererProps {
     depth: number;
-    name: string;
+    name?: string;
     data: any;
-    isNonenumerable: boolean;
+    isNonenumerable?: boolean;
     expanded: boolean;
   }
 
@@ -98,18 +98,18 @@ declare module 'react-inspector' {
 
   // Missing type declarations for children elements.
 
-  export class ObjectRootLabel extends React.Component<{ name: string; data: any }> {}
+  export class ObjectRootLabel extends React.Component<{ name?: string; data: any }> {}
 
   export interface ObjectLabelProps {
-    name: string;
+    name?: string;
     data: any;
-    isNonenumerable: boolean;
+    isNonenumerable?: boolean;
   }
 
   export class ObjectLabel extends React.Component<ObjectLabelProps> {}
 
   export class ObjectName extends React.Component<{
-    name: string;
+    name?: string;
     dimmed: boolean;
     styles?: { [key: string]: string };
   }> {}
