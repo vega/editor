@@ -31,6 +31,7 @@ interface State {
   latestRevision: boolean;
   loaded: boolean;
   pages: any;
+  pageLoaded: boolean;
   personalGist: any;
   syntaxError: boolean;
 }
@@ -58,6 +59,7 @@ class GistModal extends React.PureComponent<Props, State> {
       latestRevision: false,
       loaded: false,
       pages: {},
+      pageLoaded: true,
       personalGist: [],
       syntaxError: false
     };
@@ -250,7 +252,8 @@ class GistModal extends React.PureComponent<Props, State> {
             revision: '',
             type: this.props.mode,
             url: ''
-          }
+          },
+          pageLoaded: true
         },
         () => {
           this.handlePageChange({selected: this.state.currentPage});
@@ -260,7 +263,8 @@ class GistModal extends React.PureComponent<Props, State> {
     if (this.props.private !== prevProps.private) {
       this.setState(
         {
-          currentPage: 0
+          currentPage: 0,
+          pageLoaded: true
         },
         () => {
           this.handlePageChange({selected: this.state.currentPage});
@@ -315,38 +319,48 @@ class GistModal extends React.PureComponent<Props, State> {
   }
 
   public async handlePageChange(page) {
-    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
-    let response;
-    if (page.selected === 0) {
-      response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=${this.props.private}`, {
-        credentials: 'include',
-        headers: {
-          Cookie: `${COOKIE_NAME}=${cookieValue}`
-        },
-        method: 'get'
-      });
-    } else {
-      response = await fetch(
-        `${BACKEND_URL}gists/user?cursor=${this.state.pages[page.selected]}&privacy=${this.props.private}`,
+    if (this.state.pageLoaded) {
+      this.setState(
         {
-          credentials: 'include',
-          headers: {
-            Cookie: `${COOKIE_NAME}=${cookieValue}`
-          },
-          method: 'get'
+          pageLoaded: false
+        },
+        async () => {
+          const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
+          let response;
+          if (page.selected === 0) {
+            response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=${this.props.private}`, {
+              credentials: 'include',
+              headers: {
+                Cookie: `${COOKIE_NAME}=${cookieValue}`
+              },
+              method: 'get'
+            });
+          } else {
+            response = await fetch(
+              `${BACKEND_URL}gists/user?cursor=${this.state.pages[page.selected]}&privacy=${this.props.private}`,
+              {
+                credentials: 'include',
+                headers: {
+                  Cookie: `${COOKIE_NAME}=${cookieValue}`
+                },
+                method: 'get'
+              }
+            );
+          }
+          const data = await response.json();
+          if (Array.isArray(data.data)) {
+            this.setState({
+              currentPage: page.selected,
+              loaded: true,
+              pages: page.selected === 0 ? data.cursors : this.state.pages,
+              pageLoaded: true,
+              personalGist: data.data
+            });
+          } else {
+            this.props.receiveCurrentUser(data.isAuthenticated);
+          }
         }
       );
-    }
-    const data = await response.json();
-    if (Array.isArray(data.data)) {
-      this.setState({
-        currentPage: page.selected,
-        loaded: true,
-        pages: page.selected === 0 ? data.cursors : this.state.pages,
-        personalGist: data.data
-      });
-    } else {
-      this.props.receiveCurrentUser(data.isAuthenticated);
     }
   }
 
@@ -384,48 +398,54 @@ class GistModal extends React.PureComponent<Props, State> {
                         />
                         <label htmlFor="privacy">Show private gists</label>
                       </div>
-                      {Object.keys(this.state.pages).length > 1 && (
-                        <ReactPaginate
-                          previousLabel={'<'}
-                          nextLabel={'>'}
-                          breakClassName={'break'}
-                          containerClassName={'pagination'}
-                          activeClassName={'active'}
-                          pageCount={Object.keys(this.state.pages).length}
-                          onPageChange={this.handlePageChange.bind(this)}
-                          forcePage={this.state.currentPage}
-                          marginPagesDisplayed={1}
-                          pageRangeDisplayed={2}
-                        />
-                      )}
-                      {this.state.personalGist.map(gist => (
-                        <div key={gist.name} className="gist-container">
-                          <div className="personal-gist-description">
-                            {gist.isPublic ? (
-                              <File width="14" height="14" />
-                            ) : (
-                              <Lock width="14" height="14" fill="#FDD300" />
-                            )}
-                            <span className={`text ${gist.title ? '' : 'play-down'}`}>
-                              {gist.title ? gist.title : 'No description provided'}
-                            </span>
-                          </div>
-                          <div className="personal-gist-files">
-                            {gist.spec.map((spec, index) => (
-                              <div key={index} className="file">
-                                <div className="arrow"></div>
-                                <div
-                                  className="filename"
-                                  key={spec.name}
-                                  onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}
-                                >
-                                  {spec.name}
-                                </div>
+                      {this.state.pageLoaded ? (
+                        <>
+                          {Object.keys(this.state.pages).length > 1 && (
+                            <ReactPaginate
+                              previousLabel={'<'}
+                              nextLabel={'>'}
+                              breakClassName={'break'}
+                              containerClassName={'pagination'}
+                              activeClassName={'active'}
+                              pageCount={Object.keys(this.state.pages).length}
+                              onPageChange={this.handlePageChange.bind(this)}
+                              forcePage={this.state.currentPage}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={2}
+                            />
+                          )}
+                          {this.state.personalGist.map(gist => (
+                            <div key={gist.name} className="gist-container">
+                              <div className="personal-gist-description">
+                                {gist.isPublic ? (
+                                  <File width="14" height="14" />
+                                ) : (
+                                  <Lock width="14" height="14" fill="#FDD300" />
+                                )}
+                                <span className={`text ${gist.title ? '' : 'play-down'}`}>
+                                  {gist.title ? gist.title : 'No description provided'}
+                                </span>
                               </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
+                              <div className="personal-gist-files">
+                                {gist.spec.map((spec, index) => (
+                                  <div key={index} className="file">
+                                    <div className="arrow"></div>
+                                    <div
+                                      className="filename"
+                                      key={spec.name}
+                                      onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}
+                                    >
+                                      {spec.name}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      ) : (
+                        <>Loading...</>
+                      )}
                     </>
                   ) : (
                     <>You have no Vega or Vega-Lite compatible gists.</>
