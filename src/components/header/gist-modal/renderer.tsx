@@ -30,8 +30,8 @@ interface State {
   invalidUrl: boolean;
   latestRevision: boolean;
   loaded: boolean;
+  loading: boolean;
   pages: any;
-  pageLoaded: boolean;
   personalGist: any;
   syntaxError: boolean;
 }
@@ -58,8 +58,8 @@ class GistModal extends React.PureComponent<Props, State> {
       invalidUrl: false,
       latestRevision: false,
       loaded: false,
+      loading: true,
       pages: {},
-      pageLoaded: true,
       personalGist: [],
       syntaxError: false
     };
@@ -253,7 +253,7 @@ class GistModal extends React.PureComponent<Props, State> {
             type: this.props.mode,
             url: ''
           },
-          pageLoaded: true
+          loading: true
         },
         () => {
           this.handlePageChange({selected: this.state.currentPage});
@@ -264,7 +264,7 @@ class GistModal extends React.PureComponent<Props, State> {
       this.setState(
         {
           currentPage: 0,
-          pageLoaded: true
+          loading: true
         },
         () => {
           this.handlePageChange({selected: this.state.currentPage});
@@ -319,10 +319,10 @@ class GistModal extends React.PureComponent<Props, State> {
   }
 
   public async handlePageChange(page) {
-    if (this.state.pageLoaded) {
+    if (this.state.loading) {
       this.setState(
         {
-          pageLoaded: false
+          loading: false
         },
         async () => {
           const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
@@ -353,7 +353,7 @@ class GistModal extends React.PureComponent<Props, State> {
               currentPage: page.selected,
               loaded: true,
               pages: page.selected === 0 ? data.cursors : this.state.pages,
-              pageLoaded: true,
+              loading: true,
               personalGist: data.data
             });
           } else {
@@ -398,7 +398,7 @@ class GistModal extends React.PureComponent<Props, State> {
                         />
                         <label htmlFor="privacy">Show private gists</label>
                       </div>
-                      {this.state.pageLoaded ? (
+                      {this.state.loading ? (
                         <>
                           {Object.keys(this.state.pages).length > 1 && (
                             <ReactPaginate
