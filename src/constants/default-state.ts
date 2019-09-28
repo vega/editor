@@ -3,7 +3,7 @@ import {Renderers, Spec} from 'vega';
 import {Config} from 'vega-embed';
 import {TopLevelSpec as VlSpec} from 'vega-lite';
 import {LocalLogger} from '../utils/logger';
-import {EDITOR_FOCUS, LAYOUT, Mode, NAVBAR, SIDEPANE, VEGA_LITE_START_SPEC, View} from './consts';
+import {EDITOR_FOCUS, LAYOUT, Mode, NAVBAR, SIDEPANE, VEGA_LITE_START_SPEC, View, GistPrivacy} from './consts';
 
 export interface State {
   isAuthenticated: boolean;
@@ -33,6 +33,7 @@ export interface State {
   navItem: string;
   sidePaneItem: string;
   parse: boolean;
+  private: GistPrivacy;
   profilePicUrl: string;
   renderer: Renderers;
   selectedExample: string;
@@ -73,6 +74,7 @@ export const DEFAULT_STATE: State = {
   name: '',
   navItem: NAVBAR.Logs,
   parse: false,
+  private: GistPrivacy.ALL,
   profilePicUrl: '',
   renderer: 'canvas',
   selectedExample: null,

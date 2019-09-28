@@ -20,9 +20,16 @@
   margin: 0 4px 0 0;
 }
 
+.gist-wrapper {
+  max-width: 35%;
+  overflow-y: auto;
+  max-height: 35vh;
+}
+
 .gist-container {
   margin-bottom: 1em;
   font-size: 0.9em;
+  word-wrap: break-word;
 }
 
 .personal-gist-description {
@@ -155,6 +162,7 @@
 .preview-error-message-container {
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .preview-error-message {

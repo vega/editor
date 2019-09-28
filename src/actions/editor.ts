@@ -23,6 +23,7 @@ export const SHOW_LOGS: 'SHOW_LOGS' = 'SHOW_LOGS';
 export const TOGGLE_AUTO_PARSE: 'TOGGLE_AUTO_PARSE' = 'TOGGLE_AUTO_PARSE';
 export const TOGGLE_COMPILED_VEGA_SPEC: 'TOGGLE_COMPILED_VEGA_SPEC' = 'TOGGLE_COMPILED_VEGA_SPEC';
 export const TOGGLE_DEBUG_PANE: 'TOGGLE_DEBUG_PANE' = 'TOGGLE_DEBUG_PANE';
+export const TOGGLE_GIST_PRIVACY: 'TOGGLE_GIST_PRIVACY' = 'TOGGLE_GIST_PRIVACY';
 export const TOGGLE_NAV_BAR: 'TOGGLE_NAV_BAR' = 'TOGGLE_NAV_BAR';
 export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
 export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
@@ -56,6 +57,7 @@ export type Action =
   | SetGistVegaLiteSpec
   | ToggleAutoParse
   | ToggleCompiledVegaSpec
+  | ToggleGistPrivacy
   | ToggleDebugPane
   | ToggleNavbar
   | LogError
@@ -400,6 +402,7 @@ export function setEditorFocus(value: string) {
 }
 
 export type SetEditorFocus = ReturnType<typeof setEditorFocus>;
+
 export function receiveCurrentUser(isAuthenticated: boolean, handle?: string, name?: string, profilePicUrl?: string) {
   return {
     handle,
@@ -411,3 +414,11 @@ export function receiveCurrentUser(isAuthenticated: boolean, handle?: string, na
 }
 
 export type ReceiveCurrentUser = ReturnType<typeof receiveCurrentUser>;
+
+export function toggleGistPrivacy() {
+  return {
+    type: TOGGLE_GIST_PRIVACY
+  };
+}
+
+export type ToggleGistPrivacy = ReturnType<typeof toggleGistPrivacy>;
