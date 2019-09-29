@@ -1,8 +1,11 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "es2015",
-    "lib": ["esnext", "dom"],
+    "module": "esnext",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "moduleResolution": "node",
     "declaration": false,
     "noImplicitAny": false,
@@ -14,8 +17,12 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true
   },
-  "files": ["src/index.tsx"],
-  "include": ["node_modules/vega-lite/typings/*.d.ts"],
+  "files": [
+    "src/index.tsx"
+  ],
+  "include": [
+    "node_modules/vega-lite/typings/*.d.ts"
+  ],
   "awesomeTypescriptLoaderOptions": {
     "useCache": true,
     "forceIsolatedModules": true,

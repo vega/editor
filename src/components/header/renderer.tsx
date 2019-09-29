@@ -14,7 +14,7 @@ import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
 import './index.css';
-import ShareModal from './share-modal/index';
+const ShareModal = React.lazy(() => import('./share-modal/index'));
 
 type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> & {
@@ -383,7 +383,11 @@ class Header extends React.PureComponent<Props, State> {
 
     const gist = closePortal => <GistModal closePortal={() => closePortal()} />;
     const exportContent = <ExportModal />;
-    const shareContent = <ShareModal />;
+    const shareContent = (
+      <React.Suspense fallback={<React.Fragment></React.Fragment>}>
+        <ShareModal />
+      </React.Suspense>
+    );
 
     return (
       <div className="header">
