@@ -10,8 +10,8 @@ import {BACKEND_URL, COOKIE_NAME, KEYCODES, Mode} from '../../constants';
 import {NAMES} from '../../constants/consts';
 import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs';
 import getCookie from '../../utils/getCookie';
-import ExportModal from './export-modal/index';
-import GistModal from './gist-modal/index';
+const ExportModal = React.lazy(() => import('./export-modal/index'));
+const GistModal = React.lazy(() => import('./gist-modal/index'));
 import HelpModal from './help-modal/index';
 import './index.css';
 const ShareModal = React.lazy(() => import('./share-modal/index'));
@@ -381,8 +381,18 @@ class Header extends React.PureComponent<Props, State> {
       </div>
     );
 
-    const gist = closePortal => <GistModal closePortal={() => closePortal()} />;
-    const exportContent = <ExportModal />;
+    const gist = closePortal => {
+      return (
+        <React.Suspense fallback={<React.Fragment></React.Fragment>}>
+          <GistModal closePortal={() => closePortal()} />
+        </React.Suspense>
+      );
+    };
+    const exportContent = (
+      <React.Suspense fallback={<React.Fragment></React.Fragment>}>
+        <ExportModal />
+      </React.Suspense>
+    );
     const shareContent = (
       <React.Suspense fallback={<React.Fragment></React.Fragment>}>
         <ShareModal />
