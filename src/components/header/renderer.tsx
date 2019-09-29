@@ -12,7 +12,7 @@ import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs';
 import getCookie from '../../utils/getCookie';
 const ExportModal = React.lazy(() => import('./export-modal/index'));
 const GistModal = React.lazy(() => import('./gist-modal/index'));
-import HelpModal from './help-modal/index';
+const HelpModal = React.lazy(() => import('./help-modal/index'));
 import './index.css';
 const ShareModal = React.lazy(() => import('./share-modal/index'));
 
@@ -548,7 +548,9 @@ class Header extends React.PureComponent<Props, State> {
                         </button>
                       </div>
                       <div className="modal-body">
-                        <HelpModal />
+                        <React.Suspense fallback={<React.Fragment></React.Fragment>}>
+                          <HelpModal />
+                        </React.Suspense>
                       </div>
                     </div>
                   </div>
