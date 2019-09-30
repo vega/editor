@@ -9533,10 +9533,10 @@ vega-lite-dev-config@^0.2.5:
     prettier "^1.18.2"
     ts-jest "^24.0.2"
 
-vega-lite@4.0.0-beta.2:
-  version "4.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-4.0.0-beta.2.tgz#fd612766f9c097e24e9eb118a63742a7656ac6ae"
-  integrity sha512-zu64TZ8k8BYjHKW2NIwNd1DNPIYVw+E+XuQcL19D4flUlFVvqiWjgSdXiSGY+mOCmAUW+VJvx0t1ZwtMj1K0oA==
+vega-lite@4.0.0-beta.8:
+  version "4.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-4.0.0-beta.8.tgz#fa5cdc313c04d89704243429037b4886cad6dbe9"
+  integrity sha512-9ZD0C9h7VxegTC7qwFXomrpemHmmFHszM2XRoyuO9b3j0/rJFpO/3bGd4mat6uSLhqW563DlwqPxZPHg/Zru0w==
   dependencies:
     "@types/clone" "~0.1.30"
     "@types/fast-json-stable-stringify" "^2.0.0"
@@ -9548,8 +9548,8 @@ vega-lite@4.0.0-beta.2:
     tslib "~1.10.0"
     vega-event-selector "~2.0.1"
     vega-expression "~2.6.1"
-    vega-typings "~0.8.1"
-    vega-util "~1.11.1"
+    vega-typings "~0.9.0"
+    vega-util "~1.11.2"
     yargs "~14.0.0"
 
 vega-loader@^4.0.0, vega-loader@^4.1.1:
@@ -9664,21 +9664,14 @@ vega-transforms@^4.3.0:
     vega-statistics "^1.5.0"
     vega-util "^1.11.0"
 
-vega-typings@^0.9.0:
+vega-typings@^0.9.0, vega-typings@~0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.9.0.tgz#c12779e50c2fe075e51fec8f530a344a566e75a1"
   integrity sha512-auHUUKq/18jk+NGUfR4m/0eil1ufN7sFaYjPOTFu4xhGlULAMriyGQHFaFqPuucNfDCpXMLAQhm31fj67ZPabw==
   dependencies:
     vega-util "^1.11.0"
 
-vega-typings@~0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.8.1.tgz#6c29437cade44cbe89803d524cc7ac95a41d616d"
-  integrity sha512-ovZS3dTNtEXmSHebmH1Rw4pgtJNuAbIe1DFck2jI45toN8yGCMOTQA9I8WUSKm/hGMl06Ys5a2AcOfsjtoZqcw==
-  dependencies:
-    vega-util "^1.11.0"
-
-vega-util@^1.11.0, vega-util@^1.11.1, vega-util@^1.11.2, vega-util@^1.8.0, vega-util@~1.11.1:
+vega-util@^1.11.0, vega-util@^1.11.1, vega-util@^1.11.2, vega-util@^1.8.0, vega-util@~1.11.2:
   version "1.11.2"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.11.2.tgz#0a96da3207c54ab73b0da45ec5a4e88d32355881"
   integrity sha512-E/9zhO026xOSrjOmgCchKKI14fAcik5uNp1/wt9XfCkKjUCibvLCZOX2UVCVAFgF/frby2H1jU34o8mrTSsOxg==
