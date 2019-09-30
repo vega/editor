@@ -33,7 +33,7 @@
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.18.1",
     "prop-types": "^15.7.2",
-    "react": "^16.9.0",
+    "react": "^16.10.1",
     "react-clipboard.js": "^2.0.16",
     "react-dom": "^16.9.0",
     "react-feather": "^2.0.3",
