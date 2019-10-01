@@ -9,8 +9,8 @@ mkdir -p public/images/examples/vg
 cd public;
 
 echo "Generating PNGs for Vega-Lite..."
-ls spec/vega-lite/*.vl.json | parallel --eta --halt 1 "../node_modules/.bin/vl2vg {} | ../node_modules/.bin/vg2png > images/examples/vl/{/.}.png"
+ls spec/vega-lite/*.vl.json | parallel --halt 1 "../node_modules/.bin/vl2vg {} | ../node_modules/.bin/vg2png > images/examples/vl/{/.}.png"
 
 echo "Generating PNGs for Vega..."
-ls spec/vega/*.vg.json | parallel --eta --halt 1 "../node_modules/.bin/vg2png -b . {} > images/examples/vg/{/.}.png"
+ls spec/vega/*.vg.json | parallel --halt 1 "../node_modules/.bin/vg2png -b . {} > images/examples/vg/{/.}.png"
 
