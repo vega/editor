@@ -47,7 +47,7 @@ class Header extends React.PureComponent<Props, State> {
     };
   }
 
-  public componentDidMount() {
+  public async componentDidMount() {
     const className = ['profile-img', 'arrow-down', 'profile-container'];
     window.addEventListener('click', e => {
       const key = 'className';
@@ -63,42 +63,37 @@ class Header extends React.PureComponent<Props, State> {
     });
 
     const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
-    fetch(`${BACKEND_URL}auth/github/check`, {
-      credentials: 'include',
-      headers: {
-        Cookie: `${COOKIE_NAME}=${cookieValue}`
-      },
-      method: 'get'
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(json => {
-        const {isAuthenticated, handle, name, profilePicUrl} = json;
-        this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
-      })
-      .catch(err => {
-        // console.error(err);
+    try {
+      const response = await fetch(`${BACKEND_URL}auth/github/check`, {
+        credentials: 'include',
+        headers: {
+          Cookie: `${COOKIE_NAME}=${cookieValue}`
+        },
+        method: 'get'
       });
-    window.addEventListener('message', e => {
+      const data = await response.json();
+      const {isAuthenticated, handle, name, profilePicUrl} = data;
+      this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
+    } catch (error) {
+      console.error(error);
+    }
+
+    window.addEventListener('message', async e => {
       if (e.data.type === 'auth') {
-        fetch(`${BACKEND_URL}auth/github/check`, {
-          credentials: 'include',
-          headers: {
-            Cookie: `${COOKIE_NAME}=${cookieValue}`
-          },
-          method: 'get'
-        })
-          .then(res => {
-            return res.json();
-          })
-          .then(json => {
-            const {isAuthenticated, handle, name, profilePicUrl} = json;
-            this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
-          })
-          .catch(err => {
-            // console.error(err);
+        try {
+          const response = await fetch(`${BACKEND_URL}auth/github/check`, {
+            credentials: 'include',
+            headers: {
+              Cookie: `${COOKIE_NAME}=${cookieValue}`
+            },
+            method: 'get'
           });
+          const data = await response.json();
+          const {isAuthenticated, handle, name, profilePicUrl} = data;
+          this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
+        } catch (error) {
+          console.error(error);
+        }
       }
     });
   }
