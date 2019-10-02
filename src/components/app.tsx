@@ -122,15 +122,16 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
         }`
       );
       const data = await response.json();
-      const contentObj = JSON.parse(data.files[parameter.filename].content);
+      const content = data.files[parameter.filename].content;
+      const contentObj = JSON.parse(content);
       if (!contentObj.hasOwnProperty('$schema')) {
-        this.props.setGistVegaLiteSpec('', data.files[parameter.filename].content);
+        this.props.setGistVegaLiteSpec('', content);
       } else {
         const mode = contentObj.$schema.split('/').slice(-2)[0];
         if (mode === Mode.Vega) {
-          this.props.setGistVegaSpec('', data.files[parameter.filename].content);
+          this.props.setGistVegaSpec('', content);
         } else if (mode === Mode.VegaLite) {
-          this.props.setGistVegaLiteSpec('', data.files[parameter.filename].content);
+          this.props.setGistVegaLiteSpec('', content);
         }
       }
     } catch (error) {
