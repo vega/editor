@@ -21,7 +21,7 @@
 }
 
 .gist-wrapper {
-  max-width: 35%;
+  margin-right: 0.5em;
   overflow-y: auto;
   max-height: 35vh;
 }
