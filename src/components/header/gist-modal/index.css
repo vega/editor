@@ -1,8 +1,10 @@
 .gist-split {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .personal-gist {
+  min-width: 50%;
   flex: 1;
 }
 
@@ -21,9 +23,9 @@
 }
 
 .gist-wrapper {
-  max-width: 35%;
+  margin-right: 0.5em;
   overflow-y: auto;
-  max-height: 35vh;
+  max-height: 47vh;
 }
 
 .gist-container {
@@ -83,9 +85,11 @@
   font-size: 12px;
   font-style: italic;
   color: rgb(6, 69, 173);
+  word-break: break-all;
 }
 
 .gist-input-container {
+  min-width: 150px;
   margin-top: 20px;
 }
 
