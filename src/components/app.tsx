@@ -115,23 +115,27 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
   }
 
   public async setGist(parameter: {id: string; filename: string; revision?: string}) {
-    await fetch(
-      `https://api.github.com/gists/${parameter.id}${parameter.revision !== undefined ? `/${parameter.revision}` : ''}`
-    )
-      .then(res => res.json())
-      .then(json => {
-        const contentObj = JSON.parse(json.files[parameter.filename].content);
-        if (!contentObj.hasOwnProperty('$schema')) {
-          this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
-        } else {
-          const mode = contentObj.$schema.split('/').slice(-2)[0];
-          if (mode === Mode.Vega) {
-            this.props.setGistVegaSpec('', json.files[parameter.filename].content);
-          } else if (mode === Mode.VegaLite) {
-            this.props.setGistVegaLiteSpec('', json.files[parameter.filename].content);
-          }
+    try {
+      const response = await fetch(
+        `https://api.github.com/gists/${parameter.id}${
+          parameter.revision !== undefined ? `/${parameter.revision}` : ''
+        }`
+      );
+      const data = await response.json();
+      const contentObj = JSON.parse(data.files[parameter.filename].content);
+      if (!contentObj.hasOwnProperty('$schema')) {
+        this.props.setGistVegaLiteSpec('', data.files[parameter.filename].content);
+      } else {
+        const mode = contentObj.$schema.split('/').slice(-2)[0];
+        if (mode === Mode.Vega) {
+          this.props.setGistVegaSpec('', data.files[parameter.filename].content);
+        } else if (mode === Mode.VegaLite) {
+          this.props.setGistVegaLiteSpec('', data.files[parameter.filename].content);
         }
-      });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   public render() {
