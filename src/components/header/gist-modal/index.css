@@ -23,7 +23,7 @@
 .gist-wrapper {
   margin-right: 0.5em;
   overflow-y: auto;
-  max-height: 35vh;
+  max-height: 47vh;
 }
 
 .gist-container {
@@ -179,4 +179,10 @@
 
 .preview-error-fix {
   font-size: 12px;
+}
+
+@media only screen and (max-width: 800px) {
+  .gist-split {
+    flex-wrap: wrap;
+  }
 }
