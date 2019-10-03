@@ -1,9 +1,9 @@
 import * as React from 'react';
 import ReactPaginate from 'react-paginate';
-import { AlertCircle, File, Lock } from 'react-feather';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { mapDispatchToProps, mapStateToProps } from '.';
-import { BACKEND_URL, COOKIE_NAME, Mode, GistPrivacy } from '../../../constants';
+import {AlertCircle, File, Lock} from 'react-feather';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {mapDispatchToProps, mapStateToProps} from '.';
+import {BACKEND_URL, COOKIE_NAME, Mode, GistPrivacy} from '../../../constants';
 import getCookie from '../../../utils/getCookie';
 import './index.css';
 
@@ -66,7 +66,7 @@ class GistModal extends React.PureComponent<Props, State> {
   }
 
   public componentDidMount() {
-    this.handlePageChange({ selected: 0 });
+    this.handlePageChange({selected: 0});
   }
 
   public updateGist(gist) {
@@ -79,21 +79,21 @@ class GistModal extends React.PureComponent<Props, State> {
   }
 
   public updateGistUrl(event) {
-    this.updateGist({ url: event.currentTarget.value });
+    this.updateGist({url: event.currentTarget.value});
     this.setState({
       invalidUrl: false
     });
   }
 
   public updateGistRevision(event) {
-    this.updateGist({ revision: event.currentTarget.value });
+    this.updateGist({revision: event.currentTarget.value});
     this.setState({
       invalidRevision: false
     });
   }
 
   public updateGistFile(event) {
-    this.updateGist({ filename: event.currentTarget.value });
+    this.updateGist({filename: event.currentTarget.value});
     this.setState({
       invalidFilename: false
     });
@@ -198,7 +198,7 @@ class GistModal extends React.PureComponent<Props, State> {
                 }
               },
               () => {
-                const { revision, filename } = this.state.gist;
+                const {revision, filename} = this.state.gist;
                 JSON.parse(json.files[jsonFiles[0]].content);
                 if (this.state.latestRevision) {
                   this.props.history.push(`/gist/${gistId}/${filename}`);
@@ -217,7 +217,7 @@ class GistModal extends React.PureComponent<Props, State> {
             });
             return Promise.reject('Invalid file name');
           } else {
-            const { revision, filename } = this.state.gist;
+            const {revision, filename} = this.state.gist;
             JSON.parse(json.files[filename].content);
             if (this.state.latestRevision) {
               this.props.history.push(`/gist/${gistId}/${filename}`);
@@ -256,7 +256,7 @@ class GistModal extends React.PureComponent<Props, State> {
           loading: true
         },
         () => {
-          this.handlePageChange({ selected: this.state.currentPage });
+          this.handlePageChange({selected: this.state.currentPage});
         }
       );
     }
@@ -267,7 +267,7 @@ class GistModal extends React.PureComponent<Props, State> {
           loading: true
         },
         () => {
-          this.handlePageChange({ selected: this.state.currentPage });
+          this.handlePageChange({selected: this.state.currentPage});
         }
       );
     }
@@ -420,8 +420,8 @@ class GistModal extends React.PureComponent<Props, State> {
                                 {gist.isPublic ? (
                                   <File width="14" height="14" />
                                 ) : (
-                                    <Lock width="14" height="14" fill="#FDD300" />
-                                  )}
+                                  <Lock width="14" height="14" fill="#FDD300" />
+                                )}
                                 <span className={`text ${gist.title ? '' : 'play-down'}`}>
                                   {gist.title ? gist.title : 'No description provided'}
                                 </span>
@@ -444,21 +444,21 @@ class GistModal extends React.PureComponent<Props, State> {
                           ))}
                         </div>
                       ) : (
-                          <>Loading...</>
-                        )}
+                        <>Loading...</>
+                      )}
                     </>
                   ) : (
-                      <>You have no Vega or Vega-Lite compatible gists.</>
-                    )}
+                    <>You have no Vega or Vega-Lite compatible gists.</>
+                  )}
                 </>
               ) : (
-                  <div className="loader-container">
-                    <span>Loading your GISTS...</span>
-                  </div>
-                )
+                <div className="loader-container">
+                  <span>Loading your GISTS...</span>
+                </div>
+              )
             ) : (
-                <span>{githubLink} to see all of your personal gist.</span>
-              )}
+              <span>{githubLink} to see all of your personal gist.</span>
+            )}
           </div>
           <div className="load-gist">
             <h3>Load gists</h3>
@@ -466,7 +466,7 @@ class GistModal extends React.PureComponent<Props, State> {
               <div className="gist-input-container">
                 <label>
                   Gist URL
-                  <div style={{ marginTop: '2px' }}>
+                  <div style={{marginTop: '2px'}}>
                     <small>
                       Example:{' '}
                       <span
@@ -529,8 +529,8 @@ class GistModal extends React.PureComponent<Props, State> {
                     {this.state.invalidFilename ? (
                       <span>Please enter a valid JSON file</span>
                     ) : (
-                        this.state.syntaxError && <span>JSON is syntactically incorrect</span>
-                      )}
+                      this.state.syntaxError && <span>JSON is syntactically incorrect</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -552,19 +552,19 @@ class GistModal extends React.PureComponent<Props, State> {
                     </div>
                   </div>
                 ) : (
-                    <div className="preview-error-message-container">
-                      <div className="preview-error-message">
-                        <AlertCircle className="preview-error-icon" />
-                        <span>No preview available for this gist file.</span>
-                      </div>
-                      <span className="preview-error-fix">
-                        Upload an image file with name {this.state.gist.filename.replace(/\.json/i, '.(png/jpg)')}.
-                    </span>
+                  <div className="preview-error-message-container">
+                    <div className="preview-error-message">
+                      <AlertCircle className="preview-error-icon" />
+                      <span>No preview available for this gist file.</span>
                     </div>
-                  )
+                    <span className="preview-error-fix">
+                      Upload an image file with name {this.state.gist.filename.replace(/\.json/i, '.(png/jpg)')}.
+                    </span>
+                  </div>
+                )
               ) : (
-                  <></>
-                )}
+                <></>
+              )}
               <button type="button" onClick={() => this.onSelectGist(this.props.closePortal)}>
                 {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
               </button>
