@@ -4,8 +4,8 @@ FROM node:12
 # https://docs.docker.com/engine/reference/builder/#expose
 EXPOSE 8080
 
-# Fetch updated list of packages
-RUN apt-get update
+# Fetch updated list of packages and upgrade operating system for next step (install rsync)
+RUN apt-get update && apt-get upgrade -y
 
 # Install rsync as it is a dependency of ./scripts/vendor.sh
 RUN apt-get -y install rsync
