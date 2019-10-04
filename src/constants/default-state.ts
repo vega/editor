@@ -45,6 +45,7 @@ export interface State {
   warningsCount: number;
   warningsLogger: LocalLogger;
   themeName: string;
+  backgroundColor: string;
 }
 
 export const DEFAULT_STATE: State = {
@@ -86,5 +87,6 @@ export const DEFAULT_STATE: State = {
   vegaSpec: {},
   view: null,
   warningsCount: 0,
-  warningsLogger: new LocalLogger()
+  warningsLogger: new LocalLogger(),
+  backgroundColor: '#F7F6F6'
 };

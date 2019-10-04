@@ -42,6 +42,7 @@ export const EXTRACT_CONFIG_SPEC: 'EXTRACT_CONFIG_SPEC' = 'EXTRACT_CONFIG_SPEC';
 export const SET_DECORATION: 'SET_DECORATION' = 'SET_DECORATION';
 export const SET_COMPILED_EDITOR_REFERENCE: 'SET_COMPILED_EDITOR_REFERENCE' = 'SET_COMPILED_EDITOR_REFERENCE';
 export const SET_EDITOR_FOCUS: 'SET_EDITOR_FOCUS' = 'SET_EDITOR_FOCUS';
+export const SET_BACKGROUND_COLOR: 'SET_BACKGROUND_COLOR' = 'SET_BACKGROUND_COLOR';
 
 export type Action =
   | ReceiveCurrentUser
@@ -83,7 +84,8 @@ export type Action =
   | ExtractConfigSpec
   | SetDecorations
   | SetCompiledEditorRef
-  | SetEditorFocus;
+  | SetEditorFocus
+  | SetBackgroundColor;
 
 export function setMode(mode: Mode) {
   return {
@@ -422,3 +424,12 @@ export function toggleGistPrivacy() {
 }
 
 export type ToggleGistPrivacy = ReturnType<typeof toggleGistPrivacy>;
+
+export function setBackgroundColor(color) {
+  return {
+    type: SET_BACKGROUND_COLOR,
+    color
+  };
+}
+
+export type SetBackgroundColor = ReturnType<typeof setBackgroundColor>;
