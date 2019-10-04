@@ -50,8 +50,10 @@
 
 .fullscreen-open {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  background-color: rgba(247, 246, 246, 0.6);
   cursor: pointer;
 }
 

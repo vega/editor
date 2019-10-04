@@ -1,7 +1,7 @@
 .chart-container {
   width: 100%;
   height: 100%;
-  background: rgba(243, 240, 240, 0.63);
+  background: rgb(247, 246, 246);
   padding: 10px;
   overflow: auto;
 }
@@ -77,8 +77,10 @@
 
 .chart-container .versions {
   position: absolute;
-  bottom: 6px;
-  right: 6px;
+  bottom: 0;
+  right: 0;
+  padding: 8px;
   font-size: 0.8em;
-  color: #ccc;
+  color: #bbb;
+  background-color: rgba(247, 246, 246, 0.6);
 }

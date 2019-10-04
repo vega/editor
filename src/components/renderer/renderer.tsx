@@ -185,13 +185,14 @@ class Editor extends React.PureComponent<Props, State> {
         <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
           <div ref="chart" />
         </div>
-        <Maximize
-          data-tip="Fullscreen"
-          className="fullscreen-open"
-          onClick={() => {
-            this.setState({fullscreen: true}, this.onOpenPortal);
-          }}
-        />
+        <div className="fullscreen-open">
+          <Maximize
+            data-tip="Fullscreen"
+            onClick={() => {
+              this.setState({fullscreen: true}, this.onOpenPortal);
+            }}
+          />
+        </div>
         {this.state.fullscreen && (
           <Portal>
             <div className="chart fullscreen-chart" style={{backgroundColor: this.props.backgroundColor}}>
@@ -202,8 +203,7 @@ class Editor extends React.PureComponent<Props, State> {
                   this.setState({fullscreen: false}, this.onClosePortal);
                 }}
               >
-                <Edit3 size={16} />
-                <span>{'Edit'}</span>
+                <span>Edit Visualization</span>
               </button>
             </div>
           </Portal>
