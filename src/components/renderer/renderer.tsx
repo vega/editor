@@ -182,7 +182,7 @@ class Editor extends React.PureComponent<Props, State> {
   public render() {
     return (
       <div>
-        <div className="chart">
+        <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
           <div ref="chart" />
         </div>
         <Maximize
@@ -194,7 +194,7 @@ class Editor extends React.PureComponent<Props, State> {
         />
         {this.state.fullscreen && (
           <Portal>
-            <div className="chart fullscreen-chart">
+            <div className="chart fullscreen-chart" style={{backgroundColor: this.props.backgroundColor}}>
               <div ref="fchart" />
               <button
                 className="fullscreen-close"

@@ -44,7 +44,8 @@ import {
   UpdateVegaSpec,
   UPDATE_EDITOR_STRING,
   UPDATE_VEGA_LITE_SPEC,
-  UPDATE_VEGA_SPEC
+  UPDATE_VEGA_SPEC,
+  SET_BACKGROUND_COLOR
 } from '../actions/editor';
 import {DEFAULT_STATE, Mode, GistPrivacy} from '../constants';
 import {State} from '../constants/default-state';
@@ -481,6 +482,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         private: state.private === GistPrivacy.PUBLIC ? GistPrivacy.ALL : GistPrivacy.PUBLIC
+      };
+    case SET_BACKGROUND_COLOR:
+      return {
+        ...state,
+        backgroundColor: action.color
       };
     default:
       return state;
