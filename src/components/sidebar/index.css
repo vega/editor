@@ -24,6 +24,11 @@
   margin-bottom: 2px;
 }
 
+.settings input[type="checkbox"],
+.settings input[type="radio"] {
+  margin-right: 5px;
+}
+
 .log-level-dropdown-wrapper,
 .hover-enable-dropdown-wrapper {
   width: 150px;
