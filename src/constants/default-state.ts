@@ -88,5 +88,5 @@ export const DEFAULT_STATE: State = {
   view: null,
   warningsCount: 0,
   warningsLogger: new LocalLogger(),
-  backgroundColor: '#F7F6F6'
+  backgroundColor: '#FFF'
 };

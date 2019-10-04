@@ -84,11 +84,6 @@ class Sidebar extends Component<any, any> {
     this.props.setHover(newHover);
   }
 
-  public onBackgroundColorChosen(color) {
-    console.log('Current background color: ' + this.props.backgroundColor);
-    console.log('Current color chosen : ' + color.target.value);
-    this.props.setBackgroundColor(color.target.value);
-  }
   public render() {
     const hover = typeof this.props.hoverEnable !== 'boolean' ? 'auto' : this.props.hoverEnable ? 'on' : 'off';
 
@@ -122,13 +117,11 @@ class Sidebar extends Component<any, any> {
               id="head"
               name="head"
               defaultValue={this.props.backgroundColor}
-              onInput={e => this.onBackgroundColorChosen(e)}
+              onInput={e => this.props.setBackgroundColor((e.target as HTMLTextAreaElement).value)}
             />
           </div>
         </div>
-        <p className="settings-description">
-          Set Vega renderer. Canvas creates pixel graphics. SVG creates vector graphics.
-        </p>
+        <p className="settings-description">Set visualization panel background color</p>
         <div className="select-container">
           <span>Log Level:</span>
           <div>
