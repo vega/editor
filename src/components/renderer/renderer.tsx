@@ -17,7 +17,7 @@ addProjections(vega.projection);
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
-const defaultState = {fullscreen: false};
+const defaultState = {fullscreen: false, width: 500, height: 300};
 
 type State = Readonly<typeof defaultState>;
 
@@ -55,6 +55,52 @@ class Editor extends React.PureComponent<Props, State> {
     if (e.keyCode === KEYCODES.ESCAPE && this.state.fullscreen) {
       this.setState({fullscreen: false}, this.onClosePortal);
     }
+  }
+
+  public isResponsive(): [boolean, boolean] {
+    const spec = this.props.vegaSpec;
+    let w = false;
+    let h = false;
+    if (spec.signals && spec.signals instanceof Array) {
+      for (const signal of spec.signals as any) {
+        if (signal.name == 'width' && signal.init == 'containerSize()[0]') {
+          w = true;
+        }
+        if (signal.name == 'height' && signal.init == 'containerSize()[1]') {
+          h = true;
+        }
+      }
+    }
+    return [w, h];
+  }
+
+  public handleResizeMouseDown(e: React.MouseEvent) {
+    const x0 = e.pageX;
+    const y0 = e.pageY;
+    const width0 = this.state.width;
+    const height0 = this.state.height;
+    const [resizeWidth, resizeHeight] = this.isResponsive();
+    const onMove = (eMove: MouseEvent) => {
+      const x1 = eMove.pageX;
+      const y1 = eMove.pageY;
+      const factor = this.state.fullscreen ? 2 : 1;
+      this.setState(
+        {
+          width: resizeWidth ? Math.max(10, width0 + (x1 - x0) * factor) : this.state.width,
+          height: resizeHeight ? Math.max(10, height0 + (y1 - y0) * factor) : this.state.height
+        },
+        () => {
+          // Dispatch window.resize, that currently the only way to inform Vega about container size change.
+          this.triggerResize();
+        }
+      );
+    };
+    const onUp = () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
   }
 
   // Initialize the view instance
@@ -104,14 +150,17 @@ class Editor extends React.PureComponent<Props, State> {
 
     this.props.setView(view);
   }
+
   public renderVega() {
     // Selecting chart for rendering vega
     const chart = this.state.fullscreen ? (this.refs.fchart as any) : (this.refs.chart as any);
-    chart.style.width = chart.getBoundingClientRect().width + 'px';
+    if (!(this.isResponsive()[0] || this.isResponsive()[1])) {
+      chart.style.width = chart.getBoundingClientRect().width + 'px';
+      chart.style.width = 'auto';
+    }
+
     // Parsing pathname from URL
     Editor.pathname = window.location.hash.split('#')[1];
-
-    chart.style.width = 'auto';
 
     if (!this.props.view) {
       return;
@@ -121,6 +170,19 @@ class Editor extends React.PureComponent<Props, State> {
       .renderer(this.props.renderer)
       .initialize(chart)
       .runAsync();
+
+    // Trigger the resize event if the chart is responsive. This seem to be necessary.
+    if (this.isResponsive()[0] || this.isResponsive()[1]) {
+      this.triggerResize();
+    }
+  }
+
+  public triggerResize() {
+    try {
+      window.dispatchEvent(new Event('resize'));
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   public componentDidMount() {
@@ -174,16 +236,40 @@ class Editor extends React.PureComponent<Props, State> {
     }
     this.renderVega();
   }
+
   public componentWillUnmount() {
     // Remove listener to event keydown
     document.removeEventListener('keydown', this.handleKeydown);
     this.unlisten();
   }
+
+  public renderResizeHandle() {
+    const [resizeWidth, resizeHeight] = this.isResponsive();
+    if (resizeWidth || resizeHeight) {
+      return (
+        <div className="chart-resize-handle" onMouseDown={this.handleResizeMouseDown.bind(this)}>
+          <svg width="10" height="10">
+            <path d="M-2,13L13,-2 M-2,16L16,-2 M-2,19L19,-2" />
+          </svg>
+        </div>
+      );
+    }
+  }
+
   public render() {
+    const [resizeWidth, resizeHeight] = this.isResponsive();
+    const chartStyle =
+      resizeWidth || resizeHeight
+        ? {
+            width: resizeWidth ? this.state.width + 'px' : null,
+            height: resizeHeight ? this.state.height + 'px' : null
+          }
+        : {};
     return (
       <div>
         <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
-          <div ref="chart" />
+          <div ref="chart" style={chartStyle} />
+          {this.renderResizeHandle()}
         </div>
         <div className="fullscreen-open">
           <Maximize
@@ -195,8 +281,11 @@ class Editor extends React.PureComponent<Props, State> {
         </div>
         {this.state.fullscreen && (
           <Portal>
-            <div className="chart fullscreen-chart" style={{backgroundColor: this.props.backgroundColor}}>
-              <div ref="fchart" />
+            <div className="fullscreen-chart">
+              <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
+                <div ref="fchart" style={chartStyle} />
+                {this.renderResizeHandle()}
+              </div>
               <button
                 className="fullscreen-close"
                 onClick={() => {
