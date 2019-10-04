@@ -1,6 +1,6 @@
 import {UnregisterCallback} from 'history';
 import * as React from 'react';
-import {Edit3, Maximize} from 'react-feather';
+import {Maximize} from 'react-feather';
 import {Portal} from 'react-portal';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
@@ -62,11 +62,11 @@ class Editor extends React.PureComponent<Props, State> {
     let w = false;
     let h = false;
     if (spec.signals && spec.signals instanceof Array) {
-      for (const signal of spec.signals as any) {
-        if (signal.name == 'width' && signal.init == 'containerSize()[0]') {
+      for (const signal of spec.signals) {
+        if (signal.name == 'width' && (signal as vega.InitSignal).init == 'containerSize()[0]') {
           w = true;
         }
-        if (signal.name == 'height' && signal.init == 'containerSize()[1]') {
+        if (signal.name == 'height' && (signal as vega.InitSignal).init == 'containerSize()[1]') {
           h = true;
         }
       }
