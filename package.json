@@ -23,7 +23,7 @@
     "webpack-dev-server": "^3.8.2"
   },
   "dependencies": {
-    "@types/react": "^16.9.4",
+    "@types/react": "^16.9.5",
     "@types/react-redux": "^7.1.4",
     "@types/react-router-dom": "^5.1.0",
     "ajv": "^6.10.2",
@@ -33,11 +33,11 @@
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.18.1",
     "prop-types": "^15.7.2",
-    "react": "^16.10.1",
+    "react": "^16.10.2",
     "react-clipboard.js": "^2.0.16",
-    "react-dom": "^16.10.1",
+    "react-dom": "^16.10.2",
     "react-feather": "^2.0.3",
-    "react-ga": "2.6.0",
+    "react-ga": "2.7.0",
     "react-monaco-editor": "^0.31.0",
     "react-paginate": "^6.3.0",
     "react-portal": "^4.2.0",
@@ -55,7 +55,7 @@
     "vega-embed": "^5.1.3",
     "vega-lite": "4.0.0-beta.9",
     "vega-schema-url-parser": "^1.1.0",
-    "vega-themes": "^2.4.0",
+    "vega-themes": "^2.5.0",
     "vega-tooltip": "^0.19.1"
   },
   "husky": {
