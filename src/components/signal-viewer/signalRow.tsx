@@ -1,9 +1,9 @@
-import stringify from 'json-stringify-pretty-compact';
-import React from 'react';
-import {isDate, debounce} from 'vega';
-import {Search} from 'react-feather';
-import {View} from '../../constants';
-import {formatValueLong} from '../table/renderer';
+import stringify from "json-stringify-pretty-compact";
+import React from "react";
+import { isDate, debounce } from "vega";
+import { Search } from "react-feather";
+import { View } from "../../constants";
+import { formatValueLong } from "../table/renderer";
 
 interface Props {
   view: View;
@@ -11,7 +11,7 @@ interface Props {
   onValueChange: (key, value) => void;
   maskListner: boolean;
   isHovered: boolean;
-  isClicked: boolean;
+  isTimelineSelected: boolean;
   clickedSignal: any;
   hoverValue: any;
   timeline: boolean;
@@ -39,7 +39,11 @@ export default class SignalRow extends React.PureComponent<Props, State> {
         {
           signalValue: this.props.view.signal(this.props.signal)
         },
-        () => this.props.onValueChange(this.props.signal, this.props.view.signal(this.props.signal))
+        () =>
+          this.props.onValueChange(
+            this.props.signal,
+            this.props.view.signal(this.props.signal)
+          )
       );
     }
   }
@@ -56,7 +60,10 @@ export default class SignalRow extends React.PureComponent<Props, State> {
 
   public componentWillReceiveProps(nextProps) {
     if (nextProps.maskListner && this.listnerAttached) {
-      this.props.view.removeSignalListener(this.props.signal, this.signalHandler);
+      this.props.view.removeSignalListener(
+        this.props.signal,
+        this.signalHandler
+      );
       this.listnerAttached = false;
     } else if (!this.listnerAttached && !nextProps.maskListner) {
       this.props.view.addSignalListener(this.props.signal, this.signalHandler);
@@ -65,11 +72,16 @@ export default class SignalRow extends React.PureComponent<Props, State> {
   }
 
   public renderSignal = () => {
-    const {isClicked, isHovered, clickedSignal, hoverValue} = this.props;
-    if (isClicked && isHovered) {
+    const {
+      isTimelineSelected,
+      isHovered,
+      clickedSignal,
+      hoverValue
+    } = this.props;
+    if (isTimelineSelected && isHovered) {
       return hoverValue;
     }
-    if (isClicked) {
+    if (isTimelineSelected) {
       return clickedSignal;
     } else if (isHovered) {
       return hoverValue;
@@ -79,45 +91,59 @@ export default class SignalRow extends React.PureComponent<Props, State> {
   };
 
   public getBackgroundColor = () => {
-    if (this.props.isClicked && this.props.isHovered) {
-      return '#fce57e';
+    if (this.props.isTimelineSelected && this.props.isHovered) {
+      return "#fce57e";
     }
-    if (this.props.isClicked && this.props.clickedSignal !== undefined) {
-      return '#A4F9C8';
+    if (
+      this.props.isTimelineSelected &&
+      this.props.clickedSignal !== undefined
+    ) {
+      return "#A4F9C8";
     } else if (this.props.isHovered && this.props.hoverValue !== undefined) {
-      return '#fce57e';
+      return "#fce57e";
     } else {
-      return '';
+      return "";
     }
   };
 
   public render() {
     let tooLong = false;
-    let formatted = '';
+    let formatted = "";
     const value = this.renderSignal();
     if (!isDate(this.state.signalValue)) {
-      const formatValue = formatValueLong(value ? value : this.state.signalValue);
+      const formatValue = formatValueLong(
+        value ? value : this.state.signalValue
+      );
       if (formatValue !== undefined) {
         tooLong = formatValue.tooLong;
         formatted = formatValue.formatted;
       } else {
         tooLong = false;
-        formatted = 'undefined';
+        formatted = "undefined";
       }
     } else {
       tooLong = false;
-      formatted = new Date(value ? value : this.state.signalValue).toUTCString();
+      formatted = new Date(
+        value ? value : this.state.signalValue
+      ).toUTCString();
     }
     if (tooLong) {
       return (
         <tr>
-          <td onClick={() => this.props.onClickHandler && this.props.onClickHandler(this.props.signal)}>
+          <td
+            onClick={() =>
+              this.props.onClickHandler &&
+              this.props.onClickHandler(this.props.signal)
+            }
+          >
             {this.props.signal}
             <Search />
           </td>
-          {this.props.timeline && <td style={{padding: 0}}>{this.props.children}</td>}
+          {this.props.timeline && (
+            <td style={{ padding: 0 }}>{this.props.children}</td>
+          )}
           <td
-            style={{backgroundColor: this.getBackgroundColor()}}
+            style={{ backgroundColor: this.getBackgroundColor() }}
             key={this.props.signal}
             title="The field is too large to be displayed. Please use the view API (see JS console)."
           >
@@ -129,16 +155,21 @@ export default class SignalRow extends React.PureComponent<Props, State> {
       return (
         <tr>
           <td
-            style={{whiteSpace: 'nowrap'}}
-            onClick={() => this.props.onClickHandler && this.props.onClickHandler(this.props.signal)}
+            style={{ whiteSpace: "nowrap" }}
+            onClick={() =>
+              this.props.onClickHandler &&
+              this.props.onClickHandler(this.props.signal)
+            }
           >
             {this.props.signal}
             <Search />
           </td>
-          {this.props.timeline && <td style={{padding: 0}}>{this.props.children}</td>}
+          {this.props.timeline && (
+            <td style={{ padding: 0 }}>{this.props.children}</td>
+          )}
           <td
             style={{
-              whiteSpace: 'nowrap',
+              whiteSpace: "nowrap",
               backgroundColor: this.getBackgroundColor()
             }}
             key={this.props.signal}

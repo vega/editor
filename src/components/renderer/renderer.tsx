@@ -1,23 +1,25 @@
-import {UnregisterCallback} from 'history';
-import * as React from 'react';
-import {Edit3, Maximize} from 'react-feather';
-import {Portal} from 'react-portal';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
-import * as vega from 'vega';
-import {deepEqual} from 'vega-lite/build/src/util';
-import vegaTooltip from 'vega-tooltip';
-import {mapDispatchToProps, mapStateToProps} from '.';
-import {KEYCODES, Mode} from '../../constants';
-import addProjections from '../../utils/addProjections';
-import './index.css';
+import { UnregisterCallback } from "history";
+import * as React from "react";
+import { Edit3, Maximize } from "react-feather";
+import { Portal } from "react-portal";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import ReactTooltip from "react-tooltip";
+import * as vega from "vega";
+import { deepEqual } from "vega-lite/build/src/util";
+import vegaTooltip from "vega-tooltip";
+import { mapDispatchToProps, mapStateToProps } from ".";
+import { KEYCODES, Mode } from "../../constants";
+import addProjections from "../../utils/addProjections";
+import "./index.css";
 
 // Add additional projections
 addProjections(vega.projection);
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
+type Props = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> &
+  RouteComponentProps;
 
-const defaultState = {fullscreen: false};
+const defaultState = { fullscreen: false };
 
 type State = Readonly<typeof defaultState>;
 
@@ -35,25 +37,25 @@ class Editor extends React.PureComponent<Props, State> {
   // Callback to opening portal
   public onOpenPortal() {
     const pathname = Editor.pathname;
-    if (pathname !== '/' && pathname !== '/edited') {
-      this.props.history.push(pathname + '/view');
+    if (pathname !== "/" && pathname !== "/edited") {
+      this.props.history.push(pathname + "/view");
     }
   }
   // Callback to closing portal
   public onClosePortal() {
     let pathname = Editor.pathname;
     pathname = pathname
-      .split('/')
-      .filter(e => e !== 'view')
-      .join('/');
-    if (pathname !== '/' && pathname !== '/edited') {
+      .split("/")
+      .filter(e => e !== "view")
+      .join("/");
+    if (pathname !== "/" && pathname !== "/edited") {
       this.props.history.push(pathname);
     }
   }
   // Close portal on pressing escape key
   public handleKeydown(e) {
     if (e.keyCode === KEYCODES.ESCAPE && this.state.fullscreen) {
-      this.setState({fullscreen: false}, this.onClosePortal);
+      this.setState({ fullscreen: false }, this.onClosePortal);
     }
   }
 
@@ -75,10 +77,10 @@ class Editor extends React.PureComponent<Props, State> {
         if (options) {
           return await originalLoad(url, {
             ...options,
-            ...{baseURL: this.props.baseURL}
+            ...{ baseURL: this.props.baseURL }
           });
         }
-        return await originalLoad(url, {baseURL: this.props.baseURL});
+        return await originalLoad(url, { baseURL: this.props.baseURL });
       } catch {
         return await originalLoad(url, options);
       }
@@ -89,7 +91,10 @@ class Editor extends React.PureComponent<Props, State> {
       this.props.view.finalize();
     }
 
-    const hover = typeof this.props.hoverEnable === 'boolean' ? this.props.hoverEnable : this.props.mode === Mode.Vega;
+    const hover =
+      typeof this.props.hoverEnable === "boolean"
+        ? this.props.hoverEnable
+        : this.props.mode === Mode.Vega;
     const view = new vega.View(runtime, {
       hover,
       loader,
@@ -106,12 +111,14 @@ class Editor extends React.PureComponent<Props, State> {
   }
   public renderVega() {
     // Selecting chart for rendering vega
-    const chart = this.state.fullscreen ? (this.refs.fchart as any) : (this.refs.chart as any);
-    chart.style.width = chart.getBoundingClientRect().width + 'px';
+    const chart = this.state.fullscreen
+      ? (this.refs.fchart as any)
+      : (this.refs.chart as any);
+    chart.style.width = chart.getBoundingClientRect().width + "px";
     // Parsing pathname from URL
-    Editor.pathname = window.location.hash.split('#')[1];
+    Editor.pathname = window.location.hash.split("#")[1];
 
-    chart.style.width = 'auto';
+    chart.style.width = "auto";
 
     if (!this.props.view) {
       return;
@@ -125,7 +132,7 @@ class Editor extends React.PureComponent<Props, State> {
 
   public componentDidMount() {
     this.unlisten = this.props.history.listen(location => {
-      if (location && location.pathname.endsWith('view')) {
+      if (location && location.pathname.endsWith("view")) {
         this.setState({
           fullscreen: true
         });
@@ -139,7 +146,7 @@ class Editor extends React.PureComponent<Props, State> {
     this.initView();
     this.renderVega();
     // Add Event Listener to ctrl+f11 key
-    document.addEventListener('keydown', e => {
+    document.addEventListener("keydown", e => {
       // Keycode of f11 is 122
       if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
         this.setState(current => {
@@ -151,11 +158,11 @@ class Editor extends React.PureComponent<Props, State> {
       }
     });
     // Add listener to event keydown
-    document.addEventListener('keydown', this.handleKeydown);
+    document.addEventListener("keydown", this.handleKeydown);
     // Enter fullscreen mode if url ends with /view
-    const params = Editor.pathname.split('/');
-    if (params[params.length - 1] === 'view') {
-      this.setState({fullscreen: true});
+    const params = Editor.pathname.split("/");
+    if (params[params.length - 1] === "view") {
+      this.setState({ fullscreen: true });
     }
   }
 
@@ -176,21 +183,21 @@ class Editor extends React.PureComponent<Props, State> {
   }
   public componentWillUnmount() {
     // Remove listener to event keydown
-    document.removeEventListener('keydown', this.handleKeydown);
+    document.removeEventListener("keydown", this.handleKeydown);
     this.unlisten();
   }
   public render() {
     return (
       <div>
         <div className="chart">
-          <div className="overlay"></div>
+          <div className="chart-overlay"></div>
           <div ref="chart" />
         </div>
         <Maximize
           data-tip="Fullscreen"
           className="fullscreen-open"
           onClick={() => {
-            this.setState({fullscreen: true}, this.onOpenPortal);
+            this.setState({ fullscreen: true }, this.onOpenPortal);
           }}
         />
         {this.state.fullscreen && (
@@ -200,11 +207,11 @@ class Editor extends React.PureComponent<Props, State> {
               <button
                 className="fullscreen-close"
                 onClick={() => {
-                  this.setState({fullscreen: false}, this.onClosePortal);
+                  this.setState({ fullscreen: false }, this.onClosePortal);
                 }}
               >
                 <Edit3 size={16} />
-                <span>{'Edit'}</span>
+                <span>{"Edit"}</span>
               </button>
             </div>
           </Portal>
