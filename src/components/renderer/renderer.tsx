@@ -57,37 +57,36 @@ class Editor extends React.PureComponent<Props, State> {
     }
   }
 
-  public isResponsive(): [boolean, boolean] {
+  public isResponsive() {
     const spec = this.props.vegaSpec;
-    let w = false;
-    let h = false;
-    if (spec.signals && spec.signals instanceof Array) {
+    let responsiveWidth = false;
+    let responsiveHeight = false;
+    if (spec.signals) {
       for (const signal of spec.signals) {
-        if (signal.name == 'width' && (signal as vega.InitSignal).init == 'containerSize()[0]') {
-          w = true;
+        if (signal.name == 'width' && (signal as vega.InitSignal).init.indexOf('containerSize') >= 0) {
+          responsiveWidth = true;
         }
-        if (signal.name == 'height' && (signal as vega.InitSignal).init == 'containerSize()[1]') {
-          h = true;
+        if (signal.name == 'height' && (signal as vega.InitSignal).init.indexOf('containerSize') >= 0) {
+          responsiveHeight = true;
         }
       }
     }
-    return [w, h];
+    return {responsiveWidth, responsiveHeight};
   }
 
   public handleResizeMouseDown(e: React.MouseEvent) {
     const x0 = e.pageX;
     const y0 = e.pageY;
-    const width0 = this.state.width;
-    const height0 = this.state.height;
-    const [resizeWidth, resizeHeight] = this.isResponsive();
+    const {width: width0, height: height0} = this.state;
+    const {responsiveWidth, responsiveHeight} = this.isResponsive();
     const onMove = (eMove: MouseEvent) => {
       const x1 = eMove.pageX;
       const y1 = eMove.pageY;
       const factor = this.state.fullscreen ? 2 : 1;
       this.setState(
         {
-          width: resizeWidth ? Math.max(10, width0 + (x1 - x0) * factor) : this.state.width,
-          height: resizeHeight ? Math.max(10, height0 + (y1 - y0) * factor) : this.state.height
+          width: responsiveWidth ? Math.max(10, width0 + (x1 - x0) * factor) : this.state.width,
+          height: responsiveHeight ? Math.max(10, height0 + (y1 - y0) * factor) : this.state.height
         },
         () => {
           // Dispatch window.resize, that currently the only way to inform Vega about container size change.
@@ -154,7 +153,7 @@ class Editor extends React.PureComponent<Props, State> {
   public renderVega() {
     // Selecting chart for rendering vega
     const chart = this.state.fullscreen ? (this.refs.fchart as any) : (this.refs.chart as any);
-    if (!(this.isResponsive()[0] || this.isResponsive()[1])) {
+    if (!(this.isResponsive().responsiveWidth || this.isResponsive().responsiveHeight)) {
       chart.style.width = chart.getBoundingClientRect().width + 'px';
       chart.style.width = 'auto';
     }
@@ -170,11 +169,6 @@ class Editor extends React.PureComponent<Props, State> {
       .renderer(this.props.renderer)
       .initialize(chart)
       .runAsync();
-
-    // Trigger the resize event if the chart is responsive. This seem to be necessary.
-    if (this.isResponsive()[0] || this.isResponsive()[1]) {
-      this.triggerResize();
-    }
   }
 
   public triggerResize() {
@@ -244,8 +238,8 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public renderResizeHandle() {
-    const [resizeWidth, resizeHeight] = this.isResponsive();
-    if (resizeWidth || resizeHeight) {
+    const {responsiveWidth, responsiveHeight} = this.isResponsive();
+    if (responsiveWidth || responsiveHeight) {
       return (
         <div className="chart-resize-handle" onMouseDown={this.handleResizeMouseDown.bind(this)}>
           <svg width="10" height="10">
@@ -257,12 +251,12 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const [resizeWidth, resizeHeight] = this.isResponsive();
+    const {responsiveWidth, responsiveHeight} = this.isResponsive();
     const chartStyle =
-      resizeWidth || resizeHeight
+      responsiveWidth || responsiveHeight
         ? {
-            width: resizeWidth ? this.state.width + 'px' : null,
-            height: resizeHeight ? this.state.height + 'px' : null
+            width: responsiveWidth ? this.state.width + 'px' : null,
+            height: responsiveHeight ? this.state.height + 'px' : null
           }
         : {};
     return (
