@@ -78,14 +78,12 @@ class Editor extends React.PureComponent<Props, State> {
     return {responsiveWidth, responsiveHeight};
   }
 
-  public handleResizeMouseDown(e: React.MouseEvent) {
-    const x0 = e.pageX;
-    const y0 = e.pageY;
+  public handleResizeMouseDown(eDown: React.MouseEvent) {
+    const {pageX: x0, pageY: y0} = eDown;
     const {width: width0, height: height0} = this.state;
     const {responsiveWidth, responsiveHeight} = this.isResponsive();
     const onMove = (eMove: MouseEvent) => {
-      const x1 = eMove.pageX;
-      const y1 = eMove.pageY;
+      const {pageX: x1, pageY: y1} = eMove;
       const factor = this.state.fullscreen ? 2 : 1;
       this.setState(
         {
