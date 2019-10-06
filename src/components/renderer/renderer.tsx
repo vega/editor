@@ -65,6 +65,7 @@ class Editor extends React.PureComponent<Props, State> {
     const spec = this.props.vegaSpec;
     let responsiveWidth = false;
     let responsiveHeight = false;
+    // Check for signals
     if (spec.signals) {
       for (const signal of spec.signals) {
         if (signal.name == 'width' && (signal as vega.InitSignal).init.indexOf('containerSize') >= 0) {
@@ -79,11 +80,16 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public handleResizeMouseDown(eDown: React.MouseEvent) {
-    const {pageX: x0, pageY: y0} = eDown;
-    const {width: width0, height: height0} = this.state;
     const {responsiveWidth, responsiveHeight} = this.isResponsive();
+    // Record initial mouse position and view size
+    const x0 = eDown.pageX;
+    const y0 = eDown.pageY;
+    const width0 = this.state.width;
+    const height0 = this.state.height;
+    // Update size on window.mousemove
     const onMove = (eMove: MouseEvent) => {
-      const {pageX: x1, pageY: y1} = eMove;
+      const x1 = eMove.pageX;
+      const y1 = eMove.pageY;
       const factor = this.state.fullscreen ? 2 : 1;
       this.setState(
         {
@@ -96,10 +102,12 @@ class Editor extends React.PureComponent<Props, State> {
         }
       );
     };
+    // Remove listeners on window.mouseup
     const onUp = () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
     };
+    // Add listeners
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
   }
@@ -239,9 +247,11 @@ class Editor extends React.PureComponent<Props, State> {
     this.unlisten();
   }
 
+  // Render resize handle for responsive charts
   public renderResizeHandle() {
     const {responsiveWidth, responsiveHeight} = this.isResponsive();
     if (responsiveWidth || responsiveHeight) {
+      // The handle is defined as a inline SVG
       return (
         <div className="chart-resize-handle" onMouseDown={this.handleResizeMouseDown.bind(this)}>
           <svg width="10" height="10">
@@ -254,6 +264,7 @@ class Editor extends React.PureComponent<Props, State> {
 
   public render() {
     const {responsiveWidth, responsiveHeight} = this.isResponsive();
+    // Determine chart element style based on responsiveness
     const chartStyle =
       responsiveWidth || responsiveHeight
         ? {
