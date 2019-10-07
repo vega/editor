@@ -68,10 +68,18 @@ class Editor extends React.PureComponent<Props, State> {
     // Check for signals
     if (spec.signals) {
       for (const signal of spec.signals) {
-        if (signal.name == 'width' && (signal as vega.InitSignal).init.indexOf('containerSize') >= 0) {
+        if (
+          signal.name == 'width' &&
+          (signal as vega.InitSignal).init &&
+          (signal as vega.InitSignal).init.indexOf('containerSize') >= 0
+        ) {
           responsiveWidth = true;
         }
-        if (signal.name == 'height' && (signal as vega.InitSignal).init.indexOf('containerSize') >= 0) {
+        if (
+          signal.name == 'height' &&
+          (signal as vega.InitSignal).init &&
+          (signal as vega.InitSignal).init.indexOf('containerSize') >= 0
+        ) {
           responsiveHeight = true;
         }
       }
@@ -152,11 +160,6 @@ class Editor extends React.PureComponent<Props, State> {
     }).hover();
 
     (window as any).VEGA_DEBUG.view = view;
-
-    if (this.props.tooltipEnable) {
-      vegaTooltip(view);
-    }
-
     this.props.setView(view);
   }
 
@@ -179,6 +182,11 @@ class Editor extends React.PureComponent<Props, State> {
       .renderer(this.props.renderer)
       .initialize(chart)
       .runAsync();
+
+    if (this.props.tooltipEnable) {
+      // Tooltip needs to be added after initializing the view with `chart`
+      vegaTooltip(this.props.view);
+    }
   }
 
   public triggerResize() {
