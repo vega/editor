@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Book, Code, Image, Map} from 'react-feather';
 import {withRouter} from 'react-router-dom';
-import {mergeDeep} from 'vega-lite/build/src/util';
+import {mergeConfig} from 'vega';
 import {mapStateToProps} from '.';
 import {Mode} from '../../../constants/consts';
 import './index.css';
@@ -99,7 +99,7 @@ class ExportModal extends React.PureComponent<Props, State> {
 
     if (this.state.includeConfig && this.props.config) {
       content = {...content};
-      content.config = mergeDeep({}, this.props.config, content.config);
+      content.config = mergeConfig({}, this.props.config, content.config);
     }
 
     const blob = new Blob([JSON.stringify(content, null, 2)], {
