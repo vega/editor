@@ -1,5 +1,5 @@
 import stringify from 'json-stringify-pretty-compact';
-import * as vl from 'vega-lite';
+import * as vegaLite from 'vega-lite';
 import {mergeDeep} from 'vega-lite/build/src/util';
 import {Config} from 'vega-lite/src/config';
 import {TopLevelSpec} from 'vega-lite/src/spec';
@@ -207,7 +207,7 @@ function parseVegaLite(
         configEditorString = state.configEditorString;
     }
 
-    const vegaLiteSpec: vl.TopLevelSpec = JSON.parse(spec);
+    const vegaLiteSpec: vegaLite.TopLevelSpec = JSON.parse(spec);
     const config: Config = JSON.parse(configEditorString);
 
     const options = {
@@ -216,7 +216,7 @@ function parseVegaLite(
     };
     validateVegaLite(vegaLiteSpec, currLogger);
 
-    const vegaSpec = spec !== '{}' ? vl.compile(vegaLiteSpec, options).spec : {};
+    const vegaSpec = spec !== '{}' ? vegaLite.compile(vegaLiteSpec, options).spec : {};
 
     extend = {
       ...extend,
