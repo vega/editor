@@ -87,7 +87,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(238, 238, 239, 0.48);
-  z-index: 9999;
+  z-index: 14;
   border: 1px solid rgb(79, 153, 252);
   color: white;
 }
