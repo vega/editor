@@ -4,7 +4,7 @@
   "homepage": "http://vega.github.io/editor",
   "private": true,
   "devDependencies": {
-    "autoprefixer": "^9.6.4",
+    "autoprefixer": "^9.6.5",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.2.0",
     "gh-pages": "^2.1.1",
