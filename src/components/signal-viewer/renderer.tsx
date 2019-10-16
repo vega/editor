@@ -1,12 +1,11 @@
-import React from "react";
-import * as vega from "vega";
-import { mapDispatchToProps, mapStateToProps } from ".";
-import "./index.css";
-import SignalRow from "./signalRow";
-import TimelineRow from "./TimelineRow";
+import React from 'react';
+import * as vega from 'vega';
+import {mapDispatchToProps, mapStateToProps} from '.';
+import './index.css';
+import SignalRow from './signalRow';
+import TimelineRow from './TimelineRow';
 
-type StoreProps = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
+type StoreProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 interface OwnComponentProps {
   onClickHandler: (header: string) => void;
@@ -50,7 +49,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
         value: this.props.view.signal(changedSignal)
       };
       const lastObj = this.props.signals[changedSignal];
-      const prevObj = { ...lastObj[lastObj && lastObj.length - 1] };
+      const prevObj = {...lastObj[lastObj && lastObj.length - 1]};
       delete prevObj.xCount;
       (obj as any).xCount = this.state.xCount;
       const newSignals = this.props.signals[changedSignal].concat(obj);
@@ -72,9 +71,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               value: this.props.view.signal(key),
               xCount: this.state.xCount
             })
-          : (obj[key] = [
-              { value: this.props.view.signal(key), xCount: this.state.xCount }
-            ]);
+          : (obj[key] = [{value: this.props.view.signal(key), xCount: this.state.xCount}]);
       });
       this.props.setSignals(obj);
       this.setState({
@@ -84,9 +81,9 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   }
 
   public onClickInit(key, hoverValue) {
-    this.setState({ maskListner: true });
-    const overlay: HTMLElement = document.querySelector(".chart-overlay");
-    overlay.style.display = "block";
+    this.setState({maskListner: true});
+    const overlay: HTMLElement = document.querySelector('.chart-overlay');
+    overlay.style.display = 'block';
     this.onHoverInit(key, hoverValue, true); // hover calculation with persist
   }
 
@@ -106,9 +103,9 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           maskListner: false
         },
         () => {
-          const overlay: HTMLElement = document.querySelector(".chart-overlay");
+          const overlay: HTMLElement = document.querySelector('.chart-overlay');
           // remove the overlay
-          overlay.style.display = "none";
+          overlay.style.display = 'none';
           if (this.state.timeline) {
             const obj = {};
             this.state.keys.map(key => {
@@ -137,17 +134,15 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
 
   public resetTimeline() {
     // get the chart
-    const overlay: HTMLElement = document.querySelector(".chart-overlay");
+    const overlay: HTMLElement = document.querySelector('.chart-overlay');
     // remove the overlay
-    overlay.style.display = "none";
+    overlay.style.display = 'none';
     // setState to current value
     const currentValueObj = {};
     this.state.keys.map(signal => {
-      currentValueObj[signal] = this.props.signals[signal][
-        this.props.signals[signal].length - 1
-      ].value;
+      currentValueObj[signal] = this.props.signals[signal][this.props.signals[signal].length - 1].value;
     });
-    this.props.view.setState({ signals: currentValueObj });
+    this.props.view.setState({signals: currentValueObj});
     // remove isTimelineSelected, isHovered, hoverValue, signal and CountValue
     this.setState(
       {
@@ -178,10 +173,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
 
     for (const key in this.props.signals) {
       let i = 0;
-      while (
-        this.props.signals[key][i] &&
-        this.props.signals[key][i].xCount <= hoverValue.xCount
-      ) {
+      while (this.props.signals[key][i] && this.props.signals[key][i].xCount <= hoverValue.xCount) {
         i++;
       }
       --i;
@@ -203,14 +195,14 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           signal: hoverObj
         },
         () => {
-          this.props.view.setState({ signals: hoverObj });
+          this.props.view.setState({signals: hoverObj});
         }
       );
     }
   }
 
   public componentDidMount() {
-    window.addEventListener("resize", () => {
+    window.addEventListener('resize', () => {
       this.forceUpdate();
     });
     const keys = this.getKeys();
@@ -227,11 +219,11 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   public render() {
     return (
       <>
-        <div style={{ display: "inline-block" }}>
+        <div style={{display: 'inline-block'}}>
           <button
             className="sharing-button renderer-button"
             style={{
-              backgroundColor: this.state.timeline ? "red" : ""
+              backgroundColor: this.state.timeline ? 'red' : ''
             }}
             onClick={() => {
               this.setState(
@@ -249,34 +241,28 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               );
             }}
           >
-            {this.state.timeline ? "Stop Recording" : "Record signal changes"}
+            {this.state.timeline ? 'Stop Recording' : 'Record signal changes'}
           </button>
-          {this.state.timeline &&
-            !this.state.maskListner &&
-            this.state.xCount > 1 && (
-              <button
-                className="sharing-button renderer-button"
-                onClick={() => {
-                  this.setState(
-                    {
-                      xCount: 0
-                    },
-                    () => {
-                      this.props.setSignals({});
-                      this.getSignals();
-                    }
-                  );
-                }}
-              >
-                Clear Timeline
-              </button>
-            )}
-          {this.state.maskListner && this.state.timeline && (
+          {this.state.timeline && !this.state.maskListner && this.state.xCount > 1 && (
             <button
-              className="sharing-button"
-              style={{ margin: "7px 10px" }}
-              onClick={() => this.resetTimeline()}
+              className="sharing-button renderer-button"
+              onClick={() => {
+                this.setState(
+                  {
+                    xCount: 0
+                  },
+                  () => {
+                    this.props.setSignals({});
+                    this.getSignals();
+                  }
+                );
+              }}
             >
+              Clear Timeline
+            </button>
+          )}
+          {this.state.maskListner && this.state.timeline && (
+            <button className="sharing-button" style={{margin: '7px 10px'}} onClick={() => this.resetTimeline()}>
               Continue Recording
             </button>
           )}
@@ -309,12 +295,8 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
                   >
                     {this.state.timeline && (
                       <TimelineRow
-                        onHoverInit={hoverValue =>
-                          this.onHoverInit(signal, hoverValue)
-                        }
-                        onClickInit={hoverValue =>
-                          this.onClickInit(signal, hoverValue)
-                        }
+                        onHoverInit={hoverValue => this.onHoverInit(signal, hoverValue)}
+                        onClickInit={hoverValue => this.onClickInit(signal, hoverValue)}
                         onHoverEnd={() => {
                           this.setState({
                             hoverValue: {},

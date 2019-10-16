@@ -1,6 +1,6 @@
-import { range } from "d3-array";
-import { scaleBand } from "d3-scale";
-import React, { Component } from "react";
+import {range} from 'd3-array';
+import {scaleBand} from 'd3-scale';
+import React, {Component} from 'react';
 
 export default class TimelineRow extends Component<
   {
@@ -16,7 +16,7 @@ export default class TimelineRow extends Component<
   any
 > {
   public render() {
-    const { data, width, xCount, clickedValue } = this.props;
+    const {data, width, xCount, clickedValue} = this.props;
     const scaleNew = scaleBand as any;
     const scale = scaleNew(range(0, xCount), [0, width]);
 
@@ -32,11 +32,11 @@ export default class TimelineRow extends Component<
             className="svg-rect"
             height={31}
             style={{
-              cursor: "pointer",
-              fill: clickedValue === d.xCount ? "#A4F9C8" : "#b7b7b7",
-              pointerEvents: "all",
-              stroke: "white",
-              strokeWidth: "0.5px"
+              cursor: 'pointer',
+              fill: clickedValue === d.xCount ? '#A4F9C8' : '#b7b7b7',
+              pointerEvents: 'all',
+              stroke: 'white',
+              strokeWidth: '0.5px'
             }}
             width={scale.bandwidth()}
             x={scale(d.xCount)}
@@ -45,11 +45,7 @@ export default class TimelineRow extends Component<
       });
 
     return (
-      <svg
-        style={{ width: window.innerWidth * 0.3, height: 31 }}
-        width={window.innerWidth * 0.3}
-        height={31}
-      >
+      <svg style={{width: window.innerWidth * 0.3, height: 31}} width={window.innerWidth * 0.3} height={31}>
         {row}
       </svg>
     );

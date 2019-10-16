@@ -1,10 +1,10 @@
-import stringify from "json-stringify-pretty-compact";
-import * as Monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { mergeDeep } from "vega-lite/build/src/util";
-import addMarkdownProps from "./markdownProps";
+import stringify from 'json-stringify-pretty-compact';
+import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import {mergeDeep} from 'vega-lite/build/src/util';
+import addMarkdownProps from './markdownProps';
 
-const vegaLiteSchema = require("vega-lite/build/vega-lite-schema.json");
-const vegaSchema = require("vega/build/vega-schema.json");
+const vegaLiteSchema = require('vega-lite/build/vega-lite-schema.json');
+const vegaSchema = require('vega/build/vega-schema.json');
 
 addMarkdownProps(vegaSchema);
 addMarkdownProps(vegaLiteSchema);
@@ -12,33 +12,33 @@ addMarkdownProps(vegaLiteSchema);
 const schemas = [
   {
     schema: vegaSchema,
-    uri: "https://vega.github.io/schema/vega/v5.json"
+    uri: 'https://vega.github.io/schema/vega/v5.json'
   },
   {
     schema: vegaLiteSchema,
-    uri: "https://vega.github.io/schema/vega-lite/v4.json"
+    uri: 'https://vega.github.io/schema/vega-lite/v4.json'
   },
   {
     schema: mergeDeep({}, vegaLiteSchema, {
-      $ref: "#/definitions/Config",
+      $ref: '#/definitions/Config',
       definitions: {
         Config: {
           properties: {
             $schema: {
-              type: "string"
+              type: 'string'
             }
           }
         }
       }
     }),
-    uri: "https://vega.github.io/schema/vega-lite/v4.json#Config"
+    uri: 'https://vega.github.io/schema/vega-lite/v4.json#Config'
   },
   {
     schema: {
-      $schema: "http://json-schema.org/draft-06/schema#",
-      type: "object"
+      $schema: 'http://json-schema.org/draft-06/schema#',
+      type: 'object'
     },
-    uri: "https://vega.github.io/schema/vega/v5.json#Config"
+    uri: 'https://vega.github.io/schema/vega/v5.json#Config'
   }
 ];
 
@@ -62,7 +62,7 @@ export default function setupMonaco() {
     diagnostics: true
   });
 
-  Monaco.languages.registerDocumentFormattingEditProvider("json", {
+  Monaco.languages.registerDocumentFormattingEditProvider('json', {
     provideDocumentFormattingEdits(
       model: Monaco.editor.ITextModel,
       options: Monaco.languages.FormattingOptions,

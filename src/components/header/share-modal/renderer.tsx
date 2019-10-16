@@ -1,10 +1,10 @@
-import LZString from "lz-string";
-import * as React from "react";
-import Clipboard from "react-clipboard.js";
-import { Copy, Link } from "react-feather";
-import { withRouter } from "react-router-dom";
-import { mapStateToProps } from ".";
-import "./index.css";
+import LZString from 'lz-string';
+import * as React from 'react';
+import Clipboard from 'react-clipboard.js';
+import {Copy, Link} from 'react-feather';
+import {withRouter} from 'react-router-dom';
+import {mapStateToProps} from '.';
+import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
@@ -20,24 +20,21 @@ class ShareModal extends React.PureComponent<Props, State> {
     this.state = {
       copied: false,
       fullScreen: false,
-      generatedURL: ""
+      generatedURL: ''
     };
   }
 
   public exportURL() {
     const serializedSpec =
-      LZString.compressToEncodedURIComponent(this.props.editorString) +
-      (this.state.fullScreen ? "/view" : "");
+      LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullScreen ? '/view' : '');
     if (serializedSpec) {
-      const url = `${document.location.href.split("#")[0]}#/url/${
-        this.props.mode
-      }/${serializedSpec}`;
-      this.setState({ generatedURL: url });
+      const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
+      this.setState({generatedURL: url});
     }
   }
 
   public previewURL() {
-    const win = window.open(this.state.generatedURL, "_blank");
+    const win = window.open(this.state.generatedURL, '_blank');
     win.focus();
   }
 
@@ -49,7 +46,7 @@ class ShareModal extends React.PureComponent<Props, State> {
         },
         () => {
           setTimeout(() => {
-            this.setState({ copied: false });
+            this.setState({copied: false});
           }, 2500);
         }
       );
@@ -57,7 +54,7 @@ class ShareModal extends React.PureComponent<Props, State> {
   }
 
   public handleCheck(event) {
-    this.setState({ fullScreen: event.target.checked }, () => {
+    this.setState({fullScreen: event.target.checked}, () => {
       this.exportURL();
     });
   }
@@ -70,14 +67,8 @@ class ShareModal extends React.PureComponent<Props, State> {
     return (
       <>
         <h1>Share</h1>
-        <p>
-          We pack the Vega or Vega-Lite specification and an encoded string in
-          the URL.
-        </p>
-        <p>
-          We use LZ-based compression algorithm and preserve indentation,
-          newlines, and other whitespace.
-        </p>
+        <p>We pack the Vega or Vega-Lite specification and an encoded string in the URL.</p>
+        <p>We use LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
         <div>
           <label className="user-pref">
             <input
@@ -102,22 +93,19 @@ class ShareModal extends React.PureComponent<Props, State> {
             <Copy />
             <span>Copy to Clipboard</span>
           </Clipboard>
-          <div className={`copied + ${this.state.copied ? " visible" : ""}`}>
-            Copied!
-          </div>
+          <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
         </div>
-        Number of charaters in the URL: {this.state.generatedURL.length}{" "}
+        Number of charaters in the URL: {this.state.generatedURL.length}{' '}
         <span className="url-warning">
           {this.state.generatedURL.length > 2083 && (
             <>
-              Warning:{" "}
+              Warning:{' '}
               <a
                 href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                URLs over 2083 characters may not be supported in Internet
-                Explorer.
+                URLs over 2083 characters may not be supported in Internet Explorer.
               </a>
             </>
           )}
