@@ -24,7 +24,11 @@
   margin-bottom: 2px;
 }
 
-.renderer-dropdown-wrapper,
+.settings input[type="checkbox"],
+.settings input[type="radio"] {
+  margin-right: 5px;
+}
+
 .log-level-dropdown-wrapper,
 .hover-enable-dropdown-wrapper {
   width: 150px;
@@ -66,8 +70,4 @@
   font-size: small;
   color: #666;
   margin: 12px 0 30px 0;
-}
-
-.settings-description a {
-  color: #333;
 }

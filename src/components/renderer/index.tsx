@@ -1,8 +1,8 @@
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../actions/editor';
-import {State} from '../../constants/default-state';
-import Renderer from './renderer';
+import { connect } from "react-redux";
+import { bindActionCreators, Dispatch } from "redux";
+import * as EditorActions from "../../actions/editor";
+import { State } from "../../constants/default-state";
+import Renderer from "./renderer";
 
 export function mapStateToProps(state: State) {
   return {
@@ -16,7 +16,8 @@ export function mapStateToProps(state: State) {
     tooltipEnable: state.tooltipEnable,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,
-    view: state.view
+    view: state.view,
+    backgroundColor: state.backgroundColor
   };
 }
 

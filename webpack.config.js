@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
             priority: 10,
             reuseExistingChunk: true
           },
-          vl: {
+          vegaLite: {
             test: /vega-lite/,
             name: "vega-lite",
             priority: 20,

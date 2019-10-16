@@ -31,26 +31,6 @@
   position: absolute;
   right: 20px;
   bottom: 20px;
-  color: #444444;
-  background: #f3f3f3;
-  border: 1px #dadada solid;
-  padding: 5px 10px;
-  border-radius: 2px;
-  font-weight: bold;
-  font-size: 9pt;
-  display: flex;
-  align-items: center;
-}
-
-.report-button:hover {
-  border: 1px #c6c6c6 solid;
-  box-shadow: 1px 1px 1px #eaeaea;
-  color: #333333;
-  background: #f7f7f7;
-}
-
-.report-button:active {
-  box-shadow: inset 1px 1px 1px #dfdfdf;
 }
 
 kbd {
@@ -70,16 +50,4 @@ kbd {
   height: 20px;
   margin: 0px 6px 0px 2px;
   vertical-align: sub;
-}
-
-.version-viewer {
-  display: flex;
-  flex-direction: row;
-  font-size: small;
-  color: #777;
-  margin: 2em 0;
-}
-
-.version-viewer div {
-  margin-right: 1em;
 }

@@ -104,11 +104,11 @@
   padding: 5px 10px;
   background: white;
   border: solid 1px black;
-  cursor: pointer;
+  display: inline;
 }
 
 .button-groups button.selected {
-  background: rgb(92, 64, 141);
+  background: var(--dark-brand-color);
   color: white;
 }
 

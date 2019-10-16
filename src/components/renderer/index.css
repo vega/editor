@@ -4,6 +4,7 @@
   position: relative;
   display: inline-block;
   margin-right: 10px;
+  position: relative;
 }
 
 .chart .vega-bindings {
@@ -42,6 +43,7 @@
   overflow: auto;
   display: flex;
   align-items: center;
+  background: white;
   z-index: 15;
 }
 
@@ -49,34 +51,42 @@
   margin: auto;
 }
 
+.fullscreen-chart .chart {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 .fullscreen-open {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  background-color: rgba(247, 246, 246, 0.6);
   cursor: pointer;
 }
 
 .fullscreen-close {
-  display: flex;
-  align-items: center;
   position: absolute;
-  background: white;
-  border: 1px solid #666;
-  padding: 5px 15px;
   top: 20px;
   right: 20px;
-  cursor: pointer;
   font-size: 1.1em;
-  border-radius: 2px;
   z-index: 1000;
 }
 
-.fullscreen-close span {
-  padding-left: 5px;
+.chart-resize-handle {
+  width: 10px;
+  height: 10px;
+  right: 0;
+  bottom: 0;
+  cursor: nwse-resize;
+  position: absolute;
 }
 
-.fullscreen-close:hover {
-  background: rgba(0, 0, 0, 0.08);
+.chart-resize-handle svg {
+  display: block;
+}
+
+.chart-resize-handle svg path {
+  stroke: #ddd;
 }
 
 .chart .chart-overlay {

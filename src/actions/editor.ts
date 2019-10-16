@@ -1,48 +1,61 @@
-import {Renderers} from 'vega';
-import {Mode, View} from '../constants';
-import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { Renderers } from "vega";
+import { Mode, View } from "../constants";
+import * as Monaco from "monaco-editor/esm/vs/editor/editor.api";
 
-export const RECEIVE_CURRENT_USER: 'RECEIVE_CURRENT_USER' = 'RECEIVE_CURRENT_USER';
-export const EXPORT_VEGA: 'EXPORT_VEGA' = 'EXPORT_VEGA';
-export const LOG_ERROR: 'LOG_ERROR' = 'LOG_ERROR';
-export const PARSE_SPEC: 'PARSE_SPEC' = 'PARSE_SPEC';
-export const SET_BASEURL: 'SET_BASEURL' = 'SET_BASEURL';
-export const SET_COMPILED_VEGA_PANE_SIZE: 'SET_COMPILED_VEGA_PANE_SIZE' = 'SET_COMPILED_VEGA_PANE_SIZE';
-export const SET_DEBUG_PANE_SIZE: 'SET_DEBUG_PANE_SIZE' = 'SET_DEBUG_PANE_SIZE';
-export const SET_EDITOR_REFERENCE: 'SET_EDITOR_REFERENCE' = 'SET_EDITOR_REFERENCE';
-export const SET_GIST_VEGA_LITE_SPEC: 'SET_GIST_VEGA_LITE_SPEC' = 'SET_GIST_VEGA_LITE_SPEC';
-export const SET_GIST_VEGA_SPEC: 'SET_GIST_VEGA_SPEC' = 'SET_GIST_VEGA_SPEC';
-export const SET_MODE: 'SET_MODE' = 'SET_MODE';
-export const SET_MODE_ONLY: 'SET_MODE_ONLY' = 'SET_MODE_ONLY';
-export const SET_SCROLL_POSITION: 'SET_SCROLL_POSITION' = 'SET_SCROLL_POSITION';
-export const SET_RENDERER: 'SET_RENDERER' = 'SET_RENDERER';
-export const SET_VEGA_EXAMPLE: 'SET_VEGA_EXAMPLE' = 'SET_VEGA_EXAMPLE';
-export const SET_VEGA_LITE_EXAMPLE: 'SET_VEGA_LITE_EXAMPLE' = 'SET_VEGA_LITE_EXAMPLE';
-export const SET_VIEW: 'SET_VIEW' = 'SET_VIEW';
-export const SHOW_LOGS: 'SHOW_LOGS' = 'SHOW_LOGS';
-export const TOGGLE_AUTO_PARSE: 'TOGGLE_AUTO_PARSE' = 'TOGGLE_AUTO_PARSE';
-export const TOGGLE_COMPILED_VEGA_SPEC: 'TOGGLE_COMPILED_VEGA_SPEC' = 'TOGGLE_COMPILED_VEGA_SPEC';
-export const TOGGLE_DEBUG_PANE: 'TOGGLE_DEBUG_PANE' = 'TOGGLE_DEBUG_PANE';
-export const TOGGLE_NAV_BAR: 'TOGGLE_NAV_BAR' = 'TOGGLE_NAV_BAR';
-export const UPDATE_EDITOR_STRING: 'UPDATE_EDITOR_STRING' = 'UPDATE_EDITOR_STRING';
-export const UPDATE_VEGA_LITE_SPEC: 'UPDATE_VEGA_LITE_SPEC' = 'UPDATE_VEGA_LITE_SPEC';
-export const UPDATE_VEGA_SPEC: 'UPDATE_VEGA_SPEC' = 'UPDATE_VEGA_SPEC';
-export const SET_SETTINGS: 'SET_SETTINGS' = 'SET_SETTINGS';
-export const SET_CONFIG: 'SET_CONFIG' = 'SET_CONFIG';
-export const SET_THEME_NAME: 'SET_THEME_NAME' = 'SET_THEME_NAME';
-export const SET_SIDEPANE_ITEM: 'SET_SIDEPANE_ITEM' = 'SET_SIDEPANE_ITEM';
-export const SET_CONFIG_EDITOR_STRING: 'SET_CONFIG_EDITOR_STRING' = 'SET_CONFIG_EDITOR_STRING';
-export const SET_LOG_LEVEL: 'SET_LOG_LEVEL' = 'SET_LOG_LEVEL';
-export const SET_HOVER: 'SET_HOVER' = 'SET_HOVER';
-export const SET_TOOLTIP: 'SET_TOOLTIP' = 'SET_TOOLTIP';
-export const CLEAR_CONFIG: 'CLEAR_CONFIG' = 'CLEAR_CONFIG';
-export const MERGE_CONFIG_SPEC: 'MERGE_CONFIG_SPEC' = 'MERGE_CONFIG_SPEC';
-export const EXTRACT_CONFIG_SPEC: 'EXTRACT_CONFIG_SPEC' = 'EXTRACT_CONFIG_SPEC';
-export const SET_SIGNALS: 'SET_SIGNALS' = 'SET_SIGNALS';
-export const ADD_SIGNAL: 'ADD_SIGNAL' = 'ADD_SIGNAL';
-export const SET_DECORATION: 'SET_DECORATION' = 'SET_DECORATION';
-export const SET_COMPILED_EDITOR_REFERENCE: 'SET_COMPILED_EDITOR_REFERENCE' = 'SET_COMPILED_EDITOR_REFERENCE';
-export const SET_EDITOR_FOCUS: 'SET_EDITOR_FOCUS' = 'SET_EDITOR_FOCUS';
+export const RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER" =
+  "RECEIVE_CURRENT_USER";
+export const EXPORT_VEGA: "EXPORT_VEGA" = "EXPORT_VEGA";
+export const LOG_ERROR: "LOG_ERROR" = "LOG_ERROR";
+export const PARSE_SPEC: "PARSE_SPEC" = "PARSE_SPEC";
+export const SET_BASEURL: "SET_BASEURL" = "SET_BASEURL";
+export const SET_COMPILED_VEGA_PANE_SIZE: "SET_COMPILED_VEGA_PANE_SIZE" =
+  "SET_COMPILED_VEGA_PANE_SIZE";
+export const SET_DEBUG_PANE_SIZE: "SET_DEBUG_PANE_SIZE" = "SET_DEBUG_PANE_SIZE";
+export const SET_EDITOR_REFERENCE: "SET_EDITOR_REFERENCE" =
+  "SET_EDITOR_REFERENCE";
+export const SET_GIST_VEGA_LITE_SPEC: "SET_GIST_VEGA_LITE_SPEC" =
+  "SET_GIST_VEGA_LITE_SPEC";
+export const SET_GIST_VEGA_SPEC: "SET_GIST_VEGA_SPEC" = "SET_GIST_VEGA_SPEC";
+export const SET_MODE: "SET_MODE" = "SET_MODE";
+export const SET_MODE_ONLY: "SET_MODE_ONLY" = "SET_MODE_ONLY";
+export const SET_SCROLL_POSITION: "SET_SCROLL_POSITION" = "SET_SCROLL_POSITION";
+export const SET_RENDERER: "SET_RENDERER" = "SET_RENDERER";
+export const SET_VEGA_EXAMPLE: "SET_VEGA_EXAMPLE" = "SET_VEGA_EXAMPLE";
+export const SET_VEGA_LITE_EXAMPLE: "SET_VEGA_LITE_EXAMPLE" =
+  "SET_VEGA_LITE_EXAMPLE";
+export const SET_VIEW: "SET_VIEW" = "SET_VIEW";
+export const SHOW_LOGS: "SHOW_LOGS" = "SHOW_LOGS";
+export const TOGGLE_AUTO_PARSE: "TOGGLE_AUTO_PARSE" = "TOGGLE_AUTO_PARSE";
+export const TOGGLE_COMPILED_VEGA_SPEC: "TOGGLE_COMPILED_VEGA_SPEC" =
+  "TOGGLE_COMPILED_VEGA_SPEC";
+export const TOGGLE_DEBUG_PANE: "TOGGLE_DEBUG_PANE" = "TOGGLE_DEBUG_PANE";
+export const TOGGLE_GIST_PRIVACY: "TOGGLE_GIST_PRIVACY" = "TOGGLE_GIST_PRIVACY";
+export const TOGGLE_NAV_BAR: "TOGGLE_NAV_BAR" = "TOGGLE_NAV_BAR";
+export const UPDATE_EDITOR_STRING: "UPDATE_EDITOR_STRING" =
+  "UPDATE_EDITOR_STRING";
+export const UPDATE_VEGA_LITE_SPEC: "UPDATE_VEGA_LITE_SPEC" =
+  "UPDATE_VEGA_LITE_SPEC";
+export const UPDATE_VEGA_SPEC: "UPDATE_VEGA_SPEC" = "UPDATE_VEGA_SPEC";
+export const SET_SETTINGS: "SET_SETTINGS" = "SET_SETTINGS";
+export const SET_CONFIG: "SET_CONFIG" = "SET_CONFIG";
+export const SET_THEME_NAME: "SET_THEME_NAME" = "SET_THEME_NAME";
+export const SET_SIDEPANE_ITEM: "SET_SIDEPANE_ITEM" = "SET_SIDEPANE_ITEM";
+export const SET_CONFIG_EDITOR_STRING: "SET_CONFIG_EDITOR_STRING" =
+  "SET_CONFIG_EDITOR_STRING";
+export const SET_LOG_LEVEL: "SET_LOG_LEVEL" = "SET_LOG_LEVEL";
+export const SET_HOVER: "SET_HOVER" = "SET_HOVER";
+export const SET_TOOLTIP: "SET_TOOLTIP" = "SET_TOOLTIP";
+export const CLEAR_CONFIG: "CLEAR_CONFIG" = "CLEAR_CONFIG";
+export const MERGE_CONFIG_SPEC: "MERGE_CONFIG_SPEC" = "MERGE_CONFIG_SPEC";
+export const EXTRACT_CONFIG_SPEC: "EXTRACT_CONFIG_SPEC" = "EXTRACT_CONFIG_SPEC";
+export const SET_SIGNALS: "SET_SIGNALS" = "SET_SIGNALS";
+export const ADD_SIGNAL: "ADD_SIGNAL" = "ADD_SIGNAL";
+export const SET_DECORATION: "SET_DECORATION" = "SET_DECORATION";
+export const SET_COMPILED_EDITOR_REFERENCE: "SET_COMPILED_EDITOR_REFERENCE" =
+  "SET_COMPILED_EDITOR_REFERENCE";
+export const SET_EDITOR_FOCUS: "SET_EDITOR_FOCUS" = "SET_EDITOR_FOCUS";
+export const SET_BACKGROUND_COLOR: "SET_BACKGROUND_COLOR" =
+  "SET_BACKGROUND_COLOR";
 
 export type Action =
   | ReceiveCurrentUser
@@ -58,6 +71,7 @@ export type Action =
   | SetGistVegaLiteSpec
   | ToggleAutoParse
   | ToggleCompiledVegaSpec
+  | ToggleGistPrivacy
   | ToggleDebugPane
   | ToggleNavbar
   | LogError
@@ -85,7 +99,8 @@ export type Action =
   | AddSignal
   | SetDecorations
   | SetCompiledEditorRef
-  | SetEditorFocus;
+  | SetEditorFocus
+  | SetBackgroundColor;
 
 export function setMode(mode: Mode) {
   return {
@@ -194,7 +209,7 @@ export type ToggleDebugPane = ReturnType<typeof toggleDebugPane>;
 
 export function logError(err: Error) {
   return {
-    error: {message: err.message},
+    error: { message: err.message },
     type: LOG_ERROR
   };
 }
@@ -263,7 +278,9 @@ export function setCompiledVegaPaneSize(size: number) {
   };
 }
 
-export type SetCompiledVegaPaneSize = ReturnType<typeof setCompiledVegaPaneSize>;
+export type SetCompiledVegaPaneSize = ReturnType<
+  typeof setCompiledVegaPaneSize
+>;
 
 export function toggleNavbar(value: string) {
   return {
@@ -319,7 +336,9 @@ export function setSidePaneItem(value: string) {
 
 export type SetSidePaneItem = ReturnType<typeof setSidePaneItem>;
 
-export function setEditorReference(editorRef: Monaco.editor.IStandaloneCodeEditor) {
+export function setEditorReference(
+  editorRef: Monaco.editor.IStandaloneCodeEditor
+) {
   return {
     editorRef: editorRef,
     type: SET_EDITOR_REFERENCE
@@ -328,7 +347,9 @@ export function setEditorReference(editorRef: Monaco.editor.IStandaloneCodeEdito
 
 export type SetEditorReference = ReturnType<typeof setEditorReference>;
 
-export function setCompiledEditorRef(editorRef: Monaco.editor.IStandaloneCodeEditor) {
+export function setCompiledEditorRef(
+  editorRef: Monaco.editor.IStandaloneCodeEditor
+) {
   return {
     editorRef: editorRef,
     type: SET_COMPILED_EDITOR_REFERENCE
@@ -346,7 +367,7 @@ export function setLogLevel(logLevel: string) {
 
 export type SetLogLevel = ReturnType<typeof setLogLevel>;
 
-export function setHover(hover: boolean | 'auto') {
+export function setHover(hover: boolean | "auto") {
   return {
     hoverEnable: hover,
     type: SET_HOVER
@@ -420,7 +441,13 @@ export function setEditorFocus(value: string) {
 }
 
 export type SetEditorFocus = ReturnType<typeof setEditorFocus>;
-export function receiveCurrentUser(isAuthenticated: boolean, handle?: string, name?: string, profilePicUrl?: string) {
+
+export function receiveCurrentUser(
+  isAuthenticated: boolean,
+  handle?: string,
+  name?: string,
+  profilePicUrl?: string
+) {
   return {
     handle,
     isAuthenticated,
@@ -431,3 +458,20 @@ export function receiveCurrentUser(isAuthenticated: boolean, handle?: string, na
 }
 
 export type ReceiveCurrentUser = ReturnType<typeof receiveCurrentUser>;
+
+export function toggleGistPrivacy() {
+  return {
+    type: TOGGLE_GIST_PRIVACY
+  };
+}
+
+export type ToggleGistPrivacy = ReturnType<typeof toggleGistPrivacy>;
+
+export function setBackgroundColor(color) {
+  return {
+    type: SET_BACKGROUND_COLOR,
+    color
+  };
+}
+
+export type SetBackgroundColor = ReturnType<typeof setBackgroundColor>;

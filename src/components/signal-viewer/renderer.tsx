@@ -229,10 +229,9 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       <>
         <div style={{ display: "inline-block" }}>
           <button
-            className="sharing-button"
+            className="sharing-button renderer-button"
             style={{
-              backgroundColor: this.state.timeline ? "red" : "",
-              margin: "7px 10px"
+              backgroundColor: this.state.timeline ? "red" : ""
             }}
             onClick={() => {
               this.setState(
@@ -256,8 +255,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
             !this.state.maskListner &&
             this.state.xCount > 1 && (
               <button
-                className="sharing-button"
-                style={{ margin: "7px 10px" }}
+                className="sharing-button renderer-button"
                 onClick={() => {
                   this.setState(
                     {

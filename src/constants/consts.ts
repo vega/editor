@@ -1,20 +1,27 @@
-import * as vega from 'vega';
+import * as vega from "vega";
 
 export namespace Mode {
-  export const Vega: 'vega' = 'vega';
-  export const VegaLite: 'vega-lite' = 'vega-lite';
+  export const Vega: "vega" = "vega";
+  export const VegaLite: "vega-lite" = "vega-lite";
+}
+
+export namespace GistPrivacy {
+  export const PUBLIC: "PUBLIC" = "PUBLIC";
+  export const ALL: "ALL" = "ALL";
 }
 
 export type Mode = typeof Mode.Vega | typeof Mode.VegaLite;
 
+export type GistPrivacy = typeof GistPrivacy.ALL | typeof GistPrivacy.PUBLIC;
+
 export const NAME_TO_MODE = {
   vega: Mode.Vega,
-  'vega-lite': Mode.VegaLite
+  "vega-lite": Mode.VegaLite
 };
 
 export const NAMES = {
-  [Mode.Vega]: 'Vega',
-  [Mode.VegaLite]: 'Vega-Lite'
+  [Mode.Vega]: "Vega",
+  [Mode.VegaLite]: "Vega-Lite"
 };
 
 export const LAYOUT = {
@@ -24,8 +31,8 @@ export const LAYOUT = {
 };
 
 export const SCHEMA = {
-  [Mode.Vega]: 'https://vega.github.io/schema/vega/v5.json',
-  [Mode.VegaLite]: 'https://vega.github.io/schema/vega-lite/v4.json'
+  [Mode.Vega]: "https://vega.github.io/schema/vega/v5.json",
+  [Mode.VegaLite]: "https://vega.github.io/schema/vega-lite/v4.json"
 };
 
 export const VEGA_START_SPEC = `{
@@ -33,25 +40,25 @@ export const VEGA_START_SPEC = `{
 }`;
 
 export const VEGA_LITE_START_SPEC = `{
-  "$schema": "${SCHEMA['vega-lite']}"
+  "$schema": "${SCHEMA["vega-lite"]}"
 }`;
 
 export type View = vega.View;
 
 export const NAVBAR = {
-  DataViewer: 'DataViewer',
-  Logs: 'Logs',
-  SignalViewer: 'SignalViewer'
+  DataViewer: "DataViewer",
+  Logs: "Logs",
+  SignalViewer: "SignalViewer"
 };
 
 export const SIDEPANE = {
-  Config: 'Config',
-  Editor: 'Editor'
+  Config: "Config",
+  Editor: "Editor"
 };
 
 export const EDITOR_FOCUS = {
-  CompiledEditor: 'compiled-editor',
-  SpecEditor: 'spec-editor'
+  CompiledEditor: "compiled-editor",
+  SpecEditor: "spec-editor"
 };
 
 export const KEYCODES = {
@@ -65,8 +72,8 @@ export const KEYCODES = {
 /**
  * Taken from: https://github.com/microsoft/monaco-editor/blob/02fb6bfd43b5ddcff36c1a1303e4aac623deff2e/monaco.d.ts#L2602
  */
-export const WORD_SEPARATORS = '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?';
+export const WORD_SEPARATORS = "`~!@#$%^&*()-=+[{]}\\|;:'\",.<>/?";
 
-export const BACKEND_URL = 'https://vega.now.sh/';
+export const BACKEND_URL = "https://vega.now.sh/";
 
-export const COOKIE_NAME = 'vega_session';
+export const COOKIE_NAME = "vega_session";

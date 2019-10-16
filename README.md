@@ -30,13 +30,19 @@ $ yarn start
 
 If you'd like to use [Docker](https://docs.docker.com/engine/docker-overview/), there's a [Docker Compose](https://docs.docker.com/compose/overview/) setup that you can use:
 
-1. Run the Docker Compose service:
+1. Build the docker container:
+
+```
+$ docker-compose build
+```
+
+2. Run the Docker Compose service:
 
 ```
 $ docker-compose up
 ```
 
-2. The local web server will be accessible from [http://localhost:8080](http://localhost:8080). You can run yarn commands with `docker-compose run editor CMD`.
+1. The local web server will be accessible from [http://localhost:8080](http://localhost:8080). You can run yarn commands with `docker-compose run editor CMD`.
 
 ## Local Testing & Debugging
 

@@ -1,8 +1,10 @@
 .gist-split {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .personal-gist {
+  min-width: 50%;
   flex: 1;
 }
 
@@ -20,8 +22,16 @@
   margin: 0 4px 0 0;
 }
 
+.gist-wrapper {
+  margin-right: 0.5em;
+  overflow-y: auto;
+  max-height: 47vh;
+}
+
 .gist-container {
-  margin-bottom: 16px;
+  margin-bottom: 1em;
+  font-size: 0.9em;
+  word-wrap: break-word;
 }
 
 .personal-gist-description {
@@ -32,6 +42,10 @@
 .text {
   margin-left: 8px;
   font-weight: bold;
+}
+
+.play-down {
+  color: #999999;
 }
 
 .personal-gist-files {
@@ -61,22 +75,6 @@
   color: #000000;
 }
 
-.gist-button > button {
-  background: rgb(100, 80, 150);
-  color: white;
-  border: 1px solid #a9a9a9;
-  cursor: pointer;
-  height: 30px;
-  outline: none;
-  font-size: 16px;
-  padding: 0 20px;
-}
-
-.gist-button > button:hover {
-  background: rgb(92, 64, 141);
-  color: white;
-}
-
 .gist-text {
   margin-top: 30px;
   font-size: 12px;
@@ -87,9 +85,11 @@
   font-size: 12px;
   font-style: italic;
   color: rgb(6, 69, 173);
+  word-break: break-all;
 }
 
 .gist-input-container {
+  min-width: 150px;
   margin-top: 20px;
 }
 
@@ -166,6 +166,7 @@
 .preview-error-message-container {
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .preview-error-message {
@@ -182,4 +183,8 @@
 
 .preview-error-fix {
   font-size: 12px;
+}
+
+.loading {
+  opacity: 0.4;
 }

@@ -23,3 +23,7 @@
   vertical-align: middle;
   color: grey;
 }
+
+.renderer-button {
+  margin: 7px 10px;
+}
