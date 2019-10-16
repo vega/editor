@@ -267,7 +267,7 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
     config,
     error: null,
 
-    // extend
+    // extend with other changes
     ...extend
   };
 }
