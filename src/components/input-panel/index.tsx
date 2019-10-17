@@ -1,18 +1,19 @@
-import * as React from 'react';
-import {connect} from 'react-redux';
-import SplitPane from 'react-split-pane';
-import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../actions/editor';
-import {LAYOUT, Mode} from '../../constants';
-import {State} from '../../constants/default-state';
-import ConfigEditor from '../config-editor';
-import CompiledSpecDisplay from './compiled-spec-display';
-import CompiledSpecHeader from './compiled-spec-header';
-import './index.css';
-import SpecEditor from './spec-editor';
-import SpecEditorHeader from './spec-editor-header';
+import * as React from "react";
+import { connect } from "react-redux";
+import SplitPane from "react-split-pane";
+import { bindActionCreators, Dispatch } from "redux";
+import * as EditorActions from "../../actions/editor";
+import { LAYOUT, Mode } from "../../constants";
+import { State } from "../../constants/default-state";
+import ConfigEditor from "../config-editor";
+import CompiledSpecDisplay from "./compiled-spec-display";
+import CompiledSpecHeader from "./compiled-spec-header";
+import "./index.css";
+import SpecEditor from "./spec-editor";
+import SpecEditorHeader from "./spec-editor-header";
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type Props = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps>;
 
 class InputPanel extends React.PureComponent<Props> {
   constructor(props) {
@@ -28,28 +29,20 @@ class InputPanel extends React.PureComponent<Props> {
       this.props.toggleCompiledVegaSpec();
     }
   }
-  public componentDidUpdate() {
+  public componentDidUpdate(prevProps, prevState) {
     if (this.props.mode === Mode.VegaLite) {
       if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-        this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
+        this.props.setCompiledVegaPaneSize(
+          (window.innerHeight - LAYOUT.HeaderHeight) * 0.3
+        );
       }
     }
-  }
-
-  public componentDidMount() {
-    if (this.props.mode === Mode.Vega) {
+    if (prevProps.mode !== this.props.mode) {
       const pane2 = (this.refs.compiledVegaPane as any).pane2;
-      pane2.style.display = 'none';
-    }
-  }
-
-  public componentWillReceiveProps(nextProps) {
-    if (nextProps.mode !== this.props.mode) {
-      const pane2 = (this.refs.compiledVegaPane as any).pane2;
-      if (nextProps.mode === Mode.Vega) {
-        pane2.style.display = 'none';
+      if (this.props.mode === Mode.Vega) {
+        pane2.style.display = "none";
       } else {
-        pane2.style.display = 'flex';
+        pane2.style.display = "flex";
       }
     }
   }
@@ -77,8 +70,8 @@ class InputPanel extends React.PureComponent<Props> {
     const compiledVegaPane = this.refs.compiledVegaPane as any;
     if (compiledVegaPane) {
       compiledVegaPane.pane2.style.height = this.props.compiledVegaSpec
-        ? (this.props.compiledVegaPaneSize || window.innerHeight * 0.4) + 'px'
-        : LAYOUT.MinPaneSize + 'px';
+        ? (this.props.compiledVegaPaneSize || window.innerHeight * 0.4) + "px"
+        : LAYOUT.MinPaneSize + "px";
     }
 
     return (
@@ -91,13 +84,19 @@ class InputPanel extends React.PureComponent<Props> {
         primary="second"
         className="editor-spitPane"
         minSize={LAYOUT.MinPaneSize}
-        defaultSize={this.props.compiledVegaSpec ? this.props.compiledVegaPaneSize : LAYOUT.MinPaneSize}
+        defaultSize={
+          this.props.compiledVegaSpec
+            ? this.props.compiledVegaPaneSize
+            : LAYOUT.MinPaneSize
+        }
         onChange={this.handleChange}
-        pane1Style={{minHeight: `${LAYOUT.MinPaneSize}px`}}
-        paneStyle={{display: 'flex'}}
+        pane1Style={{ minHeight: `${LAYOUT.MinPaneSize}px` }}
+        paneStyle={{ display: "flex" }}
         onDragFinished={() => {
           if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-            this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
+            this.props.setCompiledVegaPaneSize(
+              (window.innerHeight - LAYOUT.HeaderHeight) * 0.3
+            );
             // Popping up the the compiled vega pane for the first time will set its
             // height to 30% of the split pane. This can change depending on the UI.
           }
