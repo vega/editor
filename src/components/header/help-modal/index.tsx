@@ -52,15 +52,23 @@ const HelpModal = () => {
         <AlertCircle className="header-icon" />
         <span>Report a Bug</span>
       </a>
-      <h2>Send us your feedback</h2>
-      <a href="https://bit.ly/join-vega-slack" target="_blank" rel="noopener noreferrer" className="doc-link">
-        <Slack className="doc-image" />
-        Join our Slack channel
-      </a>
-      <a href="https://twitter.com/vega_vis" target="_blank" rel="noopener noreferrer" className="doc-link">
-        <Twitter className="doc-image" />
-        Follow us on Twitter
-      </a>
+      <div>
+        <h2>Send us your feedback</h2>
+        <div>
+          <a href="https://bit.ly/join-vega-slack" target="_blank" rel="noopener noreferrer" className="doc-link">
+            <Slack className="doc-image" />
+            Join our Slack channel
+          </a>
+        </div>
+
+        <div>
+          <a href="https://twitter.com/vega_vis" target="_blank" rel="noopener noreferrer" className="doc-link">
+            <Twitter className="doc-image" />
+            Follow us on Twitter
+          </a>
+        </div>
+      </div>
+
       <h2>Tip</h2>
       <p>
         You can access Vega, Vega-Lite, and the <a href="https://vega.github.io/vega/docs/api/view/"> Vega view</a> at{' '}

@@ -15,7 +15,7 @@
 }
 
 .help-modal .doc-link {
-  display: block;
+  display: inline-block;
   margin-bottom: 8px;
 }
 
