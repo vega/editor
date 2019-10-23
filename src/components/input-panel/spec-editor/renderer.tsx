@@ -1,25 +1,18 @@
-import stringify from "json-stringify-pretty-compact";
-import LZString from "lz-string";
-import * as Monaco from "monaco-editor/esm/vs/editor/editor.api";
-import * as React from "react";
-import MonacoEditor from "react-monaco-editor";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { debounce } from "vega";
-import parser from "vega-schema-url-parser";
-import { mapDispatchToProps, mapStateToProps } from ".";
-import {
-  EDITOR_FOCUS,
-  KEYCODES,
-  LAYOUT,
-  Mode,
-  SCHEMA,
-  SIDEPANE
-} from "../../../constants";
-import "./index.css";
+import stringify from 'json-stringify-pretty-compact';
+import LZString from 'lz-string';
+import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as React from 'react';
+import MonacoEditor from 'react-monaco-editor';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {debounce} from 'vega';
+import parser from 'vega-schema-url-parser';
+import {mapDispatchToProps, mapStateToProps} from '.';
+import {EDITOR_FOCUS, KEYCODES, LAYOUT, Mode, SCHEMA, SIDEPANE} from '../../../constants';
+import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
-  RouteComponentProps<{ compressed: string }>;
+  RouteComponentProps<{compressed: string}>;
 
 class Editor extends React.PureComponent<Props, {}> {
   public editor: Monaco.editor.IStandaloneCodeEditor;
@@ -34,30 +27,27 @@ class Editor extends React.PureComponent<Props, {}> {
 
   public handleKeydown(e) {
     if (this.props.manualParse) {
-      if (
-        (e.keyCode === KEYCODES.B || e.keyCode === KEYCODES.S) &&
-        (e.ctrlKey || e.metaKey)
-      ) {
+      if ((e.keyCode === KEYCODES.B || e.keyCode === KEYCODES.S) && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         this.props.parseSpec(true);
         const parseButton = this.refs.parse as any;
-        parseButton.classList.add("pressed");
+        parseButton.classList.add('pressed');
         setTimeout(() => {
-          parseButton.classList.remove("pressed");
+          parseButton.classList.remove('pressed');
         }, 250);
       }
     }
   }
 
   public handleMergeConfig() {
-    const confirmation = confirm("The spec will be formatted on merge.");
+    const confirmation = confirm('The spec will be formatted on merge.');
     if (!confirmation) {
       return;
     }
     this.props.mergeConfigSpec();
   }
   public handleExtractConfig() {
-    const confirmation = confirm("The spec and config will be formatted.");
+    const confirmation = confirm('The spec and config will be formatted.');
     if (!confirmation) {
       return;
     }
@@ -66,17 +56,15 @@ class Editor extends React.PureComponent<Props, {}> {
   }
 
   public onSelectNewVega() {
-    this.props.history.push("/custom/vega");
+    this.props.history.push('/custom/vega');
   }
 
   public onSelectNewVegaLite() {
-    this.props.history.push("/custom/vega-lite");
+    this.props.history.push('/custom/vega-lite');
   }
 
   public onClear() {
-    this.props.mode === Mode.Vega
-      ? this.onSelectNewVega()
-      : this.onSelectNewVegaLite();
+    this.props.mode === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
   }
 
   public addVegaSchemaURL() {
@@ -86,7 +74,7 @@ class Editor extends React.PureComponent<Props, {}> {
         $schema: SCHEMA[Mode.Vega],
         ...spec
       };
-      if (confirm("Adding schema URL will format the specification too.")) {
+      if (confirm('Adding schema URL will format the specification too.')) {
         this.props.updateVegaSpec(stringify(spec));
       }
     }
@@ -99,62 +87,55 @@ class Editor extends React.PureComponent<Props, {}> {
         $schema: SCHEMA[Mode.VegaLite],
         ...spec
       };
-      if (confirm("Adding schema URL will format the specification too.")) {
+      if (confirm('Adding schema URL will format the specification too.')) {
         this.props.updateVegaLiteSpec(stringify(spec));
       }
     }
   }
 
-  public editorDidMount(
-    editor: Monaco.editor.IStandaloneCodeEditor,
-    monaco: typeof Monaco
-  ) {
+  public editorDidMount(editor: Monaco.editor.IStandaloneCodeEditor, monaco: typeof Monaco) {
     editor.onDidFocusEditorText(() => {
-      this.props.compiledEditorRef &&
-        this.props.compiledEditorRef.deltaDecorations(
-          this.props.decorations,
-          []
-        );
+      this.props.compiledEditorRef && this.props.compiledEditorRef.deltaDecorations(this.props.decorations, []);
       editor.deltaDecorations(this.props.decorations, []);
       this.props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
     });
     editor.addAction({
-      contextMenuGroupId: "vega",
+      contextMenuGroupId: 'vega',
       contextMenuOrder: 0,
-      id: "ADD_VEGA_SCHEMA",
-      label: "Add Vega schema URL",
+      id: 'ADD_VEGA_SCHEMA',
+      label: 'Add Vega schema URL',
       run: this.addVegaSchemaURL.bind(this)
     });
 
     editor.addAction({
-      contextMenuGroupId: "vega",
+      contextMenuGroupId: 'vega',
       contextMenuOrder: 1,
-      id: "ADD_VEGA_LITE_SCHEMA",
-      label: "Add Vega-Lite schema URL",
+      id: 'ADD_VEGA_LITE_SCHEMA',
+      label: 'Add Vega-Lite schema URL',
       run: this.addVegaLiteSchemaURL.bind(this)
     });
 
     editor.addAction({
-      contextMenuGroupId: "vega",
+      contextMenuGroupId: 'vega',
       contextMenuOrder: 2,
-      id: "CLEAR_EDITOR",
-      label: "Clear Spec",
+      id: 'CLEAR_EDITOR',
+      label: 'Clear Spec',
       run: this.onClear.bind(this)
     });
 
     editor.addAction({
-      contextMenuGroupId: "vega",
+      contextMenuGroupId: 'vega',
       contextMenuOrder: 3,
-      id: "MERGE_CONFIG",
-      label: "Merge Config Into Spec",
+      id: 'MERGE_CONFIG',
+      label: 'Merge Config Into Spec',
       run: this.handleMergeConfig.bind(this)
     });
 
     editor.addAction({
-      contextMenuGroupId: "vega",
+      contextMenuGroupId: 'vega',
       contextMenuOrder: 4,
-      id: "EXTRACT_CONFIG",
-      label: "Extract Config From Spec",
+      id: 'EXTRACT_CONFIG',
+      label: 'Extract Config From Spec',
       run: this.handleExtractConfig.bind(this)
     });
 
@@ -169,12 +150,10 @@ class Editor extends React.PureComponent<Props, {}> {
   }
 
   public handleEditorChange(spec: string) {
-    this.props.manualParse
-      ? this.props.updateEditorString(spec)
-      : this.updateSpec(spec);
+    this.props.manualParse ? this.props.updateEditorString(spec) : this.updateSpec(spec);
 
-    if (this.props.history.location.pathname.indexOf("/edited") === -1) {
-      this.props.history.push("/edited");
+    if (this.props.history.location.pathname.indexOf('/edited') === -1) {
+      this.props.history.push('/edited');
     }
   }
 
@@ -185,11 +164,7 @@ class Editor extends React.PureComponent<Props, {}> {
       if (spec) {
         this.updateSpec(spec);
       } else {
-        this.props.logError(
-          new Error(
-            `Failed to decompress URL. Expected a specification, but received ${spec}`
-          )
-        );
+        this.props.logError(new Error(`Failed to decompress URL. Expected a specification, but received ${spec}`));
       }
     }
   }
@@ -203,10 +178,8 @@ class Editor extends React.PureComponent<Props, {}> {
     }
 
     if (prevProps.view !== this.props.view) {
-      prevProps.compiledEditorRef &&
-        prevProps.compiledEditorRef.deltaDecorations(prevProps.decorations, []);
-      prevProps.editorRef &&
-        prevProps.editorRef.deltaDecorations(prevProps.decorations, []);
+      prevProps.compiledEditorRef && prevProps.compiledEditorRef.deltaDecorations(prevProps.decorations, []);
+      prevProps.editorRef && prevProps.editorRef.deltaDecorations(prevProps.decorations, []);
     }
 
     if (this.props.parse) {
@@ -218,14 +191,14 @@ class Editor extends React.PureComponent<Props, {}> {
   }
 
   public componentDidMount() {
-    document.addEventListener("keydown", this.handleKeydown);
+    document.addEventListener('keydown', this.handleKeydown);
     if (this.props.sidePaneItem === SIDEPANE.Editor) {
       this.props.setEditorReference(this.editor);
     }
   }
 
   public componentWillUnmount() {
-    document.removeEventListener("keydown", this.handleKeydown);
+    document.removeEventListener('keydown', this.handleKeydown);
   }
 
   public updateSpec(spec: string) {
@@ -236,16 +209,16 @@ class Editor extends React.PureComponent<Props, {}> {
 
       if (schema) {
         switch (parser(schema).library) {
-          case "vega-lite":
+          case 'vega-lite':
             parsedMode = Mode.VegaLite;
             break;
-          case "vega":
+          case 'vega':
             parsedMode = Mode.Vega;
             break;
         }
       }
     } catch (err) {
-      console.warn("Error parsing JSON string", err);
+      console.warn('Error parsing JSON string', err);
     }
 
     switch (parsedMode) {
@@ -274,9 +247,9 @@ class Editor extends React.PureComponent<Props, {}> {
   public render() {
     return (
       <div
-        className={this.props.mode === Mode.Vega ? "full-height-wrapper" : ""}
+        className={this.props.mode === Mode.Vega ? 'full-height-wrapper' : ''}
         style={{
-          display: this.props.sidePaneItem === SIDEPANE.Editor ? "" : "none"
+          display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none'
         }}
       >
         <MonacoEditor
@@ -284,15 +257,15 @@ class Editor extends React.PureComponent<Props, {}> {
           ref="editor"
           language="json"
           options={{
-            autoClosingBrackets: "never",
-            autoClosingQuotes: "never",
+            autoClosingBrackets: 'never',
+            autoClosingQuotes: 'never',
             automaticLayout: true,
-            cursorBlinking: "smooth",
+            cursorBlinking: 'smooth',
             folding: true,
             lineNumbersMinChars: 4,
-            minimap: { enabled: false },
+            minimap: {enabled: false},
             scrollBeyondLastLine: false,
-            wordWrap: "on"
+            wordWrap: 'on'
           }}
           value={this.props.value}
           onChange={debounce(700, this.handleEditorChange)}

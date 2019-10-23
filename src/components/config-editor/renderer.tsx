@@ -1,20 +1,19 @@
-import * as Monaco from "monaco-editor/esm/vs/editor/editor.api";
-import * as React from "react";
-import MonacoEditor from "react-monaco-editor";
-import { debounce } from "vega";
-import { mapDispatchToProps, mapStateToProps } from ".";
-import { LAYOUT, Mode, SIDEPANE } from "../../constants";
-import "./config-editor.css";
+import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as React from 'react';
+import MonacoEditor from 'react-monaco-editor';
+import {debounce} from 'vega';
+import {mapDispatchToProps, mapStateToProps} from '.';
+import {LAYOUT, Mode, SIDEPANE} from '../../constants';
+import './config-editor.css';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export default class ConfigEditor extends React.PureComponent<Props> {
   public editor: Monaco.editor.IStandaloneCodeEditor;
   public handleEditorChange = (spec: string) => {
-    const newSpec = spec === "" ? "{}" : spec;
+    const newSpec = spec === '' ? '{}' : spec;
     this.props.setConfigEditorString(newSpec);
-    this.props.setThemeName("custom");
+    this.props.setThemeName('custom');
     if (this.props.manualParse) {
       return;
     }
@@ -22,14 +21,14 @@ export default class ConfigEditor extends React.PureComponent<Props> {
   };
 
   public handleMergeConfig() {
-    const confirmation = confirm("The spec will be formatted on merge.");
+    const confirmation = confirm('The spec will be formatted on merge.');
     if (!confirmation) {
       return;
     }
     this.props.mergeConfigSpec();
   }
   public handleExtractConfig() {
-    const confirmation = confirm("The spec and config will be formatted.");
+    const confirmation = confirm('The spec and config will be formatted.');
     if (!confirmation) {
       return;
     }
@@ -44,18 +43,18 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     });
 
     editor.addAction({
-      contextMenuGroupId: "vega",
+      contextMenuGroupId: 'vega',
       contextMenuOrder: 0,
-      id: "MERGE_CONFIG",
-      label: "Merge Config Into Spec",
+      id: 'MERGE_CONFIG',
+      label: 'Merge Config Into Spec',
       run: this.handleMergeConfig.bind(this)
     });
 
     editor.addAction({
-      contextMenuGroupId: "vega",
+      contextMenuGroupId: 'vega',
       contextMenuOrder: 1,
-      id: "EXTRACT_CONFIG",
-      label: "Extract Config From Spec",
+      id: 'EXTRACT_CONFIG',
+      label: 'Extract Config From Spec',
       run: this.handleExtractConfig.bind(this)
     });
     this.editor = editor;
@@ -89,23 +88,23 @@ export default class ConfigEditor extends React.PureComponent<Props> {
   public render() {
     return (
       <div
-        className={this.props.mode === Mode.Vega ? "full-height-wrapper" : ""}
+        className={this.props.mode === Mode.Vega ? 'full-height-wrapper' : ''}
         style={{
-          display: this.props.sidePaneItem === SIDEPANE.Editor ? "none" : ""
+          display: this.props.sidePaneItem === SIDEPANE.Editor ? 'none' : ''
         }}
       >
         <MonacoEditor
           height={this.getEditorHeight()}
           options={{
-            autoClosingBrackets: "never",
-            autoClosingQuotes: "never",
+            autoClosingBrackets: 'never',
+            autoClosingQuotes: 'never',
             automaticLayout: true,
-            cursorBlinking: "smooth",
+            cursorBlinking: 'smooth',
             folding: true,
             lineNumbersMinChars: 4,
-            minimap: { enabled: false },
+            minimap: {enabled: false},
             scrollBeyondLastLine: false,
-            wordWrap: "on"
+            wordWrap: 'on'
           }}
           ref="ConfigEditor"
           language="json"

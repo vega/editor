@@ -1,19 +1,17 @@
-import stringify from "json-stringify-pretty-compact";
-import * as React from "react";
-import { ChevronDown, ChevronUp } from "react-feather";
-import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { bindActionCreators, Dispatch } from "redux";
-import * as EditorActions from "../../../actions/editor";
-import { State } from "../../../constants/default-state";
+import stringify from 'json-stringify-pretty-compact';
+import * as React from 'react';
+import {ChevronDown, ChevronUp} from 'react-feather';
+import {connect} from 'react-redux';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {bindActionCreators, Dispatch} from 'redux';
+import * as EditorActions from '../../../actions/editor';
+import {State} from '../../../constants/default-state';
 
 const toggleStyle = {
-  cursor: "pointer"
+  cursor: 'pointer'
 };
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> &
-  RouteComponentProps;
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
 class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   constructor(props) {
@@ -22,8 +20,8 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   }
 
   public editVegaSpec() {
-    if (this.props.history.location.pathname.indexOf("/edited") === -1) {
-      this.props.history.push("/edited");
+    if (this.props.history.location.pathname.indexOf('/edited') === -1) {
+      this.props.history.push('/edited');
     }
     this.props.clearConfig();
     this.props.updateVegaSpec(stringify(this.props.value));
@@ -31,16 +29,12 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   public render() {
     if (this.props.compiledVegaSpec) {
       const toggleStyleUp = Object.assign({}, toggleStyle, {
-        position: "static"
+        position: 'static'
       });
       return (
-        <div
-          className="editor-header"
-          style={toggleStyleUp}
-          onClick={this.props.toggleCompiledVegaSpec}
-        >
+        <div className="editor-header" style={toggleStyleUp} onClick={this.props.toggleCompiledVegaSpec}>
           <span>Compiled Vega</span>
-          <button onClick={this.editVegaSpec} style={{ cursor: "pointer" }}>
+          <button onClick={this.editVegaSpec} style={{cursor: 'pointer'}}>
             Edit Vega Spec
           </button>
 
@@ -49,17 +43,10 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
       );
     } else {
       return (
-        <div
-          onClick={this.props.toggleCompiledVegaSpec}
-          className="editor-header"
-          style={toggleStyle}
-        >
+        <div onClick={this.props.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
           <span>Compiled Vega</span>
 
-          <button
-            onClick={this.editVegaSpec}
-            style={{ zIndex: -1, opacity: 0, cursor: "pointer" }}
-          >
+          <button onClick={this.editVegaSpec} style={{zIndex: -1, opacity: 0, cursor: 'pointer'}}>
             Edit Vega Spec
           </button>
 

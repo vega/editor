@@ -1,16 +1,16 @@
-import stringify from "json-stringify-pretty-compact";
-import * as React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators, Dispatch } from "redux";
-import { omit } from "vega-lite/build/src/util";
-import * as themes from "vega-themes";
-import * as EditorActions from "../../actions/editor";
-import { State } from "../../constants/default-state";
-import "./config-editor.css";
+import stringify from 'json-stringify-pretty-compact';
+import * as React from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
+import {omit} from 'vega-lite/build/src/util';
+import * as themes from 'vega-themes';
+import * as EditorActions from '../../actions/editor';
+import {State} from '../../constants/default-state';
+import './config-editor.css';
 
 class ConfigEditorHeader extends React.PureComponent<any, any> {
   public render() {
-    const vegaThemes = omit(themes, ["version"]);
+    const vegaThemes = omit(themes, ['version']);
 
     return (
       <label className="config-header">
@@ -21,14 +21,12 @@ class ConfigEditorHeader extends React.PureComponent<any, any> {
           id="config-select"
           onChange={e => {
             e.stopPropagation();
-            if (e.target.value === "custom") {
-              this.props.setConfig("{}");
-              this.props.setConfigEditorString("{}");
+            if (e.target.value === 'custom') {
+              this.props.setConfig('{}');
+              this.props.setConfigEditorString('{}');
             } else {
               this.props.setConfig(stringify(vegaThemes[e.target.value]));
-              this.props.setConfigEditorString(
-                stringify(vegaThemes[e.target.value])
-              );
+              this.props.setConfigEditorString(stringify(vegaThemes[e.target.value]));
             }
             this.props.setThemeName(e.target.value);
           }}
