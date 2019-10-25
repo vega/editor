@@ -4,7 +4,7 @@
   "homepage": "http://vega.github.io/editor",
   "private": true,
   "devDependencies": {
-    "autoprefixer": "^9.6.5",
+    "autoprefixer": "^9.7.0",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.2.0",
     "gh-pages": "^2.1.1",
@@ -23,7 +23,7 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
-    "@types/react": "^16.9.9",
+    "@types/react": "^16.9.11",
     "@types/react-redux": "^7.1.5",
     "@types/react-router-dom": "^5.1.0",
     "ajv": "^6.10.2",
