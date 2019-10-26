@@ -61,7 +61,10 @@ class Editor extends React.PureComponent<Props, State> {
   // Current criteria:
   // - Width(height) is defined as a signal
   // - The init property of the signal uses "containerSize".
-  public isResponsive(): {responsiveWidth: boolean; responsiveHeight: boolean} {
+  public isResponsive(): {
+    responsiveWidth: boolean;
+    responsiveHeight: boolean;
+  } {
     const spec = this.props.vegaSpec;
     let responsiveWidth = false;
     let responsiveHeight = false;
