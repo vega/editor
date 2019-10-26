@@ -28,7 +28,7 @@ class ConfigEditor extends React.PureComponent<Props> {
     if (!confirmation) {
       return;
     }
-    if (this.props.history.location.pathname.indexOf('/edited') === -1) {
+    if (this.props.history.location.pathname !== '/edited') {
       this.props.history.push('/edited');
     }
     this.props.mergeConfigSpec();
