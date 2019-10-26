@@ -219,9 +219,8 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   public render() {
     return (
       <>
-        <div style={{display: 'inline-block'}}>
+        <div className="timeline-control-buttons">
           <button
-            className="sharing-button renderer-button"
             style={{
               backgroundColor: this.state.timeline ? 'red' : '',
               color: this.state.timeline ? 'white' : 'black'
@@ -242,11 +241,10 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               );
             }}
           >
-            {this.state.timeline ? 'Stop Recording' : 'Record signal changes'}
+            {this.state.timeline ? 'Stop Recording & Reset' : 'Record signal changes'}
           </button>
           {this.state.timeline && !this.state.maskListner && this.state.xCount > 1 && (
             <button
-              className="sharing-button renderer-button"
               onClick={() => {
                 this.setState(
                   {
@@ -263,13 +261,9 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
             </button>
           )}
           {this.state.maskListner && this.state.timeline && (
-            <button className="sharing-button" style={{margin: '7px 10px'}} onClick={() => this.resetTimeline()}>
-              Continue Recording
-            </button>
+            <button onClick={() => this.resetTimeline()}>Continue Recording</button>
           )}
         </div>
-
-        <table className="debugger-table" />
         <div className="signal-viewer">
           <table className="editor-table">
             <thead>

@@ -10,9 +10,6 @@
   fill: #fce57e !important;
 }
 
-.debugger-table svg {
-  height: 20px;
-}
 .editor-table tbody tr td {
   cursor: pointer;
 }
@@ -23,7 +20,15 @@
   vertical-align: middle;
   color: grey;
 }
+.timeline-control-buttons {
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+}
+.timeline-control-buttons button {
+  margin-right: 1em;
+}
 
-.renderer-button {
-  margin: 7px 10px;
+.timeline-control-buttons button:focus {
+  outline: none;
 }
