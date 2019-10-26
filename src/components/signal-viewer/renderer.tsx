@@ -223,7 +223,8 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           <button
             className="sharing-button renderer-button"
             style={{
-              backgroundColor: this.state.timeline ? 'red' : ''
+              backgroundColor: this.state.timeline ? 'red' : '',
+              color: this.state.timeline ? 'white' : 'black'
             }}
             onClick={() => {
               this.setState(
