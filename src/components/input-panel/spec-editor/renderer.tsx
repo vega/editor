@@ -44,6 +44,9 @@ class Editor extends React.PureComponent<Props, {}> {
     if (!confirmation) {
       return;
     }
+    if (this.props.history.location.pathname !== '/edited') {
+      this.props.history.push('/edited');
+    }
     this.props.mergeConfigSpec();
   }
   public handleExtractConfig() {
