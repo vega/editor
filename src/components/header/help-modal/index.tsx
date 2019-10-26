@@ -31,12 +31,16 @@ const HelpModal = () => {
     <div className="help-modal">
       <h1 className="modal-header">Help</h1>
       <h2>References</h2>
-      <a href="https://vega.github.io/vega-lite/" target="_blank" rel="noopener noreferrer" className="doc-link">
-        Vega-Lite Docs
-      </a>
-      <a href="https://vega.github.io/vega/" target="_blank" rel="noopener noreferrer" className="doc-link">
-        Vega Docs
-      </a>
+      <div className="doc-link">
+        <a href="https://vega.github.io/vega-lite/" target="_blank" rel="noopener noreferrer">
+          Vega-Lite Docs
+        </a>
+      </div>
+      <div className="doc-link">
+        <a href="https://vega.github.io/vega/" target="_blank" rel="noopener noreferrer">
+          Vega Docs
+        </a>
+      </div>
       <h2>Keyboard Shortcuts</h2>
       <ul className="keyboard-shortcuts">{keyBoardShortcuts}</ul>
       <p>
