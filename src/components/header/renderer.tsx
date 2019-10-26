@@ -25,6 +25,7 @@ interface State {
   open: boolean;
   showVega: boolean;
   scrollPosition: number;
+  mode: string;
 }
 
 const formatExampleName = (name: string) => {
@@ -43,7 +44,8 @@ class Header extends React.PureComponent<Props, State> {
     this.state = {
       open: false,
       scrollPosition: 0,
-      showVega: props.mode === Mode.Vega
+      showVega: props.mode === Mode.Vega,
+      mode: props.mode
     };
   }
 
@@ -124,10 +126,13 @@ class Header extends React.PureComponent<Props, State> {
     this.props.clearConfig();
   }
 
-  public componentWillReceiveProps(nextProps) {
-    this.setState({
-      showVega: nextProps.mode === Mode.Vega
-    });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.mode !== prevState.mode) {
+      return {
+        showVega: nextProps.mode === Mode.Vega,
+        mode: nextProps.mode
+      };
+    } else return null;
   }
 
   public handleHelpModalToggle(Toggleevent, openPortal, closePortal, isOpen) {

@@ -44,6 +44,9 @@ class Editor extends React.PureComponent<Props, {}> {
     if (!confirmation) {
       return;
     }
+    if (this.props.history.location.pathname !== '/edited') {
+      this.props.history.push('/edited');
+    }
     this.props.mergeConfigSpec();
   }
   public handleExtractConfig() {
@@ -169,24 +172,24 @@ class Editor extends React.PureComponent<Props, {}> {
     }
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.sidePaneItem === SIDEPANE.Editor) {
-      if (this.props.sidePaneItem !== nextProps.sidePaneItem) {
+  public componentDidUpdate(prevProps, prevState) {
+    if (this.props.sidePaneItem === SIDEPANE.Editor) {
+      if (prevProps.sidePaneItem !== this.props.sidePaneItem) {
         this.editor.focus();
-        this.props.setEditorReference(this.editor);
+        prevProps.setEditorReference(this.editor);
       }
     }
 
-    if (this.props.view !== nextProps.view) {
-      this.props.compiledEditorRef && this.props.compiledEditorRef.deltaDecorations(this.props.decorations, []);
-      this.props.editorRef && this.props.editorRef.deltaDecorations(this.props.decorations, []);
+    if (prevProps.view !== this.props.view) {
+      prevProps.compiledEditorRef && prevProps.compiledEditorRef.deltaDecorations(prevProps.decorations, []);
+      prevProps.editorRef && prevProps.editorRef.deltaDecorations(prevProps.decorations, []);
     }
 
-    if (nextProps.parse) {
+    if (this.props.parse) {
       this.editor.focus();
-      this.updateSpec(nextProps.value);
-      this.props.setConfig(nextProps.configEditorString);
-      this.props.parseSpec(false);
+      this.updateSpec(this.props.value);
+      prevProps.setConfig(this.props.configEditorString);
+      prevProps.parseSpec(false);
     }
   }
 

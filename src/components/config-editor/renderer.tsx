@@ -2,13 +2,16 @@ import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import {debounce} from 'vega';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {mapDispatchToProps, mapStateToProps} from '.';
 import {LAYOUT, Mode, SIDEPANE} from '../../constants';
 import './config-editor.css';
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type Props = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> &
+  RouteComponentProps<{compressed: string}>;
 
-export default class ConfigEditor extends React.PureComponent<Props> {
+class ConfigEditor extends React.PureComponent<Props> {
   public editor: Monaco.editor.IStandaloneCodeEditor;
   public handleEditorChange = (spec: string) => {
     const newSpec = spec === '' ? '{}' : spec;
@@ -24,6 +27,9 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     const confirmation = confirm('The spec will be formatted on merge.');
     if (!confirmation) {
       return;
+    }
+    if (this.props.history.location.pathname !== '/edited') {
+      this.props.history.push('/edited');
     }
     this.props.mergeConfigSpec();
   }
@@ -69,8 +75,8 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     }
   }
 
-  public componentWillReceiveProps(nextProps) {
-    if (nextProps.sidePaneItem === SIDEPANE.Config) {
+  public componentDidUpdate(prevProps, prevState) {
+    if (this.props.sidePaneItem === SIDEPANE.Config) {
       this.editor.focus();
       this.props.setEditorReference(this.editor);
     }
@@ -116,3 +122,4 @@ export default class ConfigEditor extends React.PureComponent<Props> {
     );
   }
 }
+export default withRouter(ConfigEditor);

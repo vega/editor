@@ -28,25 +28,15 @@ class InputPanel extends React.PureComponent<Props> {
       this.props.toggleCompiledVegaSpec();
     }
   }
-  public componentDidUpdate() {
+  public componentDidUpdate(prevProps, prevState) {
     if (this.props.mode === Mode.VegaLite) {
       if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
         this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
       }
     }
-  }
-
-  public componentDidMount() {
-    if (this.props.mode === Mode.Vega) {
+    if (prevProps.mode !== this.props.mode) {
       const pane2 = (this.refs.compiledVegaPane as any).pane2;
-      pane2.style.display = 'none';
-    }
-  }
-
-  public componentWillReceiveProps(nextProps) {
-    if (nextProps.mode !== this.props.mode) {
-      const pane2 = (this.refs.compiledVegaPane as any).pane2;
-      if (nextProps.mode === Mode.Vega) {
+      if (this.props.mode === Mode.Vega) {
         pane2.style.display = 'none';
       } else {
         pane2.style.display = 'flex';
