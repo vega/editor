@@ -184,3 +184,7 @@
 .preview-error-fix {
   font-size: 12px;
 }
+
+.loading {
+  opacity: 0.4;
+}

@@ -412,40 +412,36 @@ class GistModal extends React.PureComponent<Props, State> {
                           pageRangeDisplayed={2}
                         />
                       )}
-                      {this.state.loading ? (
-                        <div className="gist-wrapper">
-                          {this.state.personalGist.map(gist => (
-                            <div key={gist.name} className="gist-container">
-                              <div className="personal-gist-description">
-                                {gist.isPublic ? (
-                                  <File width="14" height="14" />
-                                ) : (
-                                  <Lock width="14" height="14" fill="#FDD300" />
-                                )}
-                                <span className={`text ${gist.title ? '' : 'play-down'}`}>
-                                  {gist.title ? gist.title : 'No description provided'}
-                                </span>
-                              </div>
-                              <div className="personal-gist-files">
-                                {gist.spec.map((spec, index) => (
-                                  <div key={index} className="file">
-                                    <div className="arrow"></div>
-                                    <div
-                                      className="filename"
-                                      key={spec.name}
-                                      onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}
-                                    >
-                                      {spec.name}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
+                      <div className={`gist-wrapper ${!this.state.loading && 'loading'}`}>
+                        {this.state.personalGist.map(gist => (
+                          <div key={gist.name} className="gist-container">
+                            <div className="personal-gist-description">
+                              {gist.isPublic ? (
+                                <File width="14" height="14" />
+                              ) : (
+                                <Lock width="14" height="14" fill="#FDD300" />
+                              )}
+                              <span className={`text ${gist.title ? '' : 'play-down'}`}>
+                                {gist.title ? gist.title : 'No description provided'}
+                              </span>
                             </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <>Loading...</>
-                      )}
+                            <div className="personal-gist-files">
+                              {gist.spec.map((spec, index) => (
+                                <div key={index} className="file">
+                                  <div className="arrow"></div>
+                                  <div
+                                    className="filename"
+                                    key={spec.name}
+                                    onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}
+                                  >
+                                    {spec.name}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </>
                   ) : (
                     <>You have no Vega or Vega-Lite compatible gists.</>

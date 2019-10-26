@@ -4,9 +4,9 @@ import {connect} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import {bindActionCreators, Dispatch} from 'redux';
-import {Spec} from 'vega';
+import {mergeConfig, Spec} from 'vega';
 import {MessageData} from 'vega-embed';
-import {hash, mergeDeep} from 'vega-lite/build/src/util';
+import {hash} from 'vega-lite/build/src/util';
 import * as EditorActions from '../actions/editor';
 import {LAYOUT, Mode} from '../constants';
 import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
@@ -36,7 +36,7 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
         const parsed = JSON.parse(data.spec) as Spec;
         // merging config into the spec
         if (data.config) {
-          mergeDeep(parsed, {config: data.config as any});
+          parsed.config = mergeConfig(parsed.config, data.config as any);
         }
         data.spec = stringify(parsed);
         if (data.spec || data.file) {

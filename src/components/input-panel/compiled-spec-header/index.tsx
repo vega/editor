@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor';
+import {State} from '../../../constants/default-state';
 
 const toggleStyle = {
   cursor: 'pointer'
@@ -56,7 +57,7 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: State) {
   return {
     compiledVegaSpec: state.compiledVegaSpec,
     value: state.vegaSpec

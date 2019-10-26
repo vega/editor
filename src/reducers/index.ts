@@ -1,6 +1,6 @@
 import stringify from 'json-stringify-pretty-compact';
-import * as vl from 'vega-lite';
-import {mergeDeep} from 'vega-lite/build/src/util';
+import {mergeConfig} from 'vega';
+import * as vegaLite from 'vega-lite';
 import {Config} from 'vega-lite/src/config';
 import {TopLevelSpec} from 'vega-lite/src/spec';
 import {
@@ -16,6 +16,7 @@ import {
   SetGistVegaSpec,
   SetVegaExample,
   SetVegaLiteExample,
+  SET_BACKGROUND_COLOR,
   SET_BASEURL,
   SET_COMPILED_EDITOR_REFERENCE,
   SET_COMPILED_VEGA_PANE_SIZE,
@@ -37,17 +38,16 @@ import {
   SHOW_LOGS,
   TOGGLE_AUTO_PARSE,
   TOGGLE_COMPILED_VEGA_SPEC,
-  TOGGLE_GIST_PRIVACY,
   TOGGLE_DEBUG_PANE,
+  TOGGLE_GIST_PRIVACY,
   TOGGLE_NAV_BAR,
   UpdateVegaLiteSpec,
   UpdateVegaSpec,
   UPDATE_EDITOR_STRING,
   UPDATE_VEGA_LITE_SPEC,
-  UPDATE_VEGA_SPEC,
-  SET_BACKGROUND_COLOR
+  UPDATE_VEGA_SPEC
 } from '../actions/editor';
-import {DEFAULT_STATE, Mode, GistPrivacy} from '../constants';
+import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
 import {State} from '../constants/default-state';
 import {LocalLogger} from '../utils/logger';
 import {validateVega, validateVegaLite} from '../utils/validate';
@@ -84,7 +84,7 @@ function errorLine(code: string, error: string) {
   }
 }
 
-function mergeConfig(state: State) {
+function mergeConfigIntoSpec(state: State) {
   if (state.configEditorString === '{}') {
     return {
       ...state,
@@ -98,7 +98,7 @@ function mergeConfig(state: State) {
     spec = JSON.parse(state.editorString);
     config = JSON.parse(state.configEditorString);
     if (spec.config) {
-      spec.config = mergeDeep(config, spec.config);
+      spec.config = mergeConfig(config, spec.config);
     } else {
       spec.config = config;
     }
@@ -126,7 +126,7 @@ function extractConfig(state: State) {
     spec = JSON.parse(state.editorString);
     config = JSON.parse(state.configEditorString);
     if (spec.config) {
-      config = mergeDeep(config, spec.config);
+      config = mergeConfig(config, spec.config);
       delete spec.config;
     }
     return {
@@ -207,7 +207,7 @@ function parseVegaLite(
         configEditorString = state.configEditorString;
     }
 
-    const vegaLiteSpec: vl.TopLevelSpec = JSON.parse(spec);
+    const vegaLiteSpec: vegaLite.TopLevelSpec = JSON.parse(spec);
     const config: Config = JSON.parse(configEditorString);
 
     const options = {
@@ -216,7 +216,7 @@ function parseVegaLite(
     };
     validateVegaLite(vegaLiteSpec, currLogger);
 
-    const vegaSpec = spec !== '{}' ? vl.compile(vegaLiteSpec, options).spec : {};
+    const vegaSpec = spec !== '{}' ? vegaLite.compile(vegaLiteSpec, options).spec : {};
 
     extend = {
       ...extend,
@@ -267,7 +267,7 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
     config,
     error: null,
 
-    // extend
+    // extend with other changes
     ...extend
   };
 }
@@ -452,7 +452,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         themeName: 'custom'
       };
     case MERGE_CONFIG_SPEC:
-      return mergeConfig(state);
+      return mergeConfigIntoSpec(state);
     case EXTRACT_CONFIG_SPEC:
       return extractConfig(state);
     case SET_DECORATION:
