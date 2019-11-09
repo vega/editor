@@ -88,7 +88,7 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
     const name = parameter.example_name;
     this.props.setConfig(this.props.configEditorString);
     this.props.setSidePaneItem(SIDEPANE.Editor);
-    this.props.editorRef && this.props.editorRef.focus();
+    this.props.editorRef?.focus();
     switch (parameter.mode) {
       case 'vega': {
         const r = await fetch(`./spec/vega/${name}.vg.json`);
