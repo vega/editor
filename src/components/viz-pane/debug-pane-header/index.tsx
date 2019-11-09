@@ -107,9 +107,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(DebugPaneHeader)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DebugPaneHeader));

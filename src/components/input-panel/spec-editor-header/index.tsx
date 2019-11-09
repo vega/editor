@@ -78,9 +78,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SpecEditorHeader)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SpecEditorHeader));

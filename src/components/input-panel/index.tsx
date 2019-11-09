@@ -118,7 +118,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(InputPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(InputPanel);

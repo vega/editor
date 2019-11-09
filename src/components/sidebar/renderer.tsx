@@ -87,7 +87,10 @@ class Sidebar extends Component<any, any> {
   public render() {
     const hover = typeof this.props.hoverEnable !== 'boolean' ? 'auto' : this.props.hoverEnable ? 'on' : 'off';
 
-    const renderers = [{value: 'svg', label: 'SVG'}, {value: 'canvas', label: 'Canvas'}].map(d => (
+    const renderers = [
+      {value: 'svg', label: 'SVG'},
+      {value: 'canvas', label: 'Canvas'}
+    ].map(d => (
       <label key={d.label}>
         <input
           type="radio"

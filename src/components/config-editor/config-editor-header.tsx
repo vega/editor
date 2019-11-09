@@ -63,7 +63,4 @@ function mapStateToProps(state: State) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ConfigEditorHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(ConfigEditorHeader);

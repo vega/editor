@@ -33,7 +33,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Renderer);
+export default connect(mapStateToProps, mapDispatchToProps)(Renderer);
