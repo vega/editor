@@ -51,7 +51,7 @@
     "redux-thunk": "^2.3.0",
     "tslib": "^1.10.0",
     "vega-cli": "5.8.1",
-    "vega-datasets": "^1.27.0",
+    "vega-datasets": "^1.28.0",
     "vega-embed": "^6.2.0",
     "vega-lite": "4.0.0-beta.12",
     "vega-schema-url-parser": "^1.1.0",
