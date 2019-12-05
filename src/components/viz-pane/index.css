@@ -1,7 +1,7 @@
 .chart-container {
   width: 100%;
   height: 100%;
-  background: rgb(247, 246, 246);
+  background: var(--chart-container-bg-color);
   padding: 10px;
   overflow: auto;
 }
@@ -12,7 +12,7 @@
 
 .debug-pane {
   width: 100%;
-  background: white;
+  background: var(--primary-light-color);
   display: flex;
   flex-direction: column;
 }
@@ -22,10 +22,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ebebeb;
+  background: var(--pane-header-bg-color);
   text-transform: uppercase;
   font-size: 12px;
-  color: #666;
+  color: var(--pane-header-color);
   user-select: none;
   cursor: pointer;
 }
@@ -67,8 +67,8 @@
 }
 
 .active-tab {
-  background: white;
-  color: black;
+  background: var(--primary-light-color);
+  color: var(--active-tab-color);
 }
 
 .myInlineDecoration {
@@ -81,6 +81,6 @@
   right: 0;
   padding: 8px;
   font-size: 0.8em;
-  color: #bbb;
-  background-color: rgba(247, 246, 246, 0.6);
+  color: var(--chart-container-version-color);
+  background-color: var(--chart-container-version-bg-color);
 }

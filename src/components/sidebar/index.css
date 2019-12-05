@@ -11,8 +11,8 @@
     height: 100%;
     right: 0px;
     top: -2px;
-    background: white;
-    box-shadow: -2px 4px 10px 3px rgba(0, 0, 0, 0.2);
+    background: var(--primary-light-color);
+    box-shadow: -2px 4px 10px 3px var(--box-shadow-color);
     border-radius: 4px 0 0 4px;
   }
 }
@@ -38,7 +38,7 @@
 .renderer-dropdown__option,
 .log-level-dropdown__option,
 .hover-enable-dropdown__option {
-  background-color: white !important;
+  background-color: var(--primary-light-color) !important;
   color: black !important;
 }
 .renderer-dropdown__option:hover,
@@ -68,6 +68,6 @@
 
 .settings-description {
   font-size: small;
-  color: #666;
+  color: var(--settings-description-color);
   margin: 12px 0 30px 0;
 }

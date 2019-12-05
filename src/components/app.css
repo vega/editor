@@ -29,6 +29,12 @@
   --dark-brand-color: rgb(92, 64, 141);
   --error-color: #f44336;
   --warning-color: #ffc107;
+  --box-shadow-color: rgba(0, 0, 0, 0.2);
+  --kbd-color: #444d56;
+  --kbd-bg-color: #fafbfc;
+  --kbd-border-color: #c6cbd1;
+  --kbd-border-bottom-color: #959da5;
+  --kbd-box-shadow-color: #959da5;
 
   --data-viewer-header-btn-bg-color: white;
   --data-viewer-header-btn-border-color: #ccc;
@@ -38,6 +44,41 @@
   --pagination-li-border-color: #ddd;
   --pagination-active-color: #ddd;
   --pagination-disabled-color: #ddd;
+
+  --header-export-container-border-color: #ccc;
+  --header-export-container-p-strong-color: firebrick;
+
+  --header-play-down-color: #999999;
+  --header-gist-url: rgb(6, 69, 173);
+  --header-gist-arrow-border-color: black;
+  --header-filename-color: #4f4f4f;
+  --header-filename-hover-color: black;
+  --header-sharing-btn-svg-stroke-color: black;
+
+  --error-pane-info-color: #399e39;
+
+  --editor-header-bg-color: #e6e6e6;
+
+  --fullscreen-open-bg-color: rgba(247, 246, 246, 0.6);
+
+  --settings-description-color: #666;
+
+  --editor-table-color: #333;
+  --editor-table-bg-color: #f6f8fa;
+  --editor-table-svg-color: grey;
+
+  --chart-bg-color: white;
+  --chart-container-bg-color: rgb(247, 246, 246);
+
+  --pane-header-color: #666;
+  --pane-header-bg-color: #ebebeb;
+
+  --active-tab-color: black;
+
+  --chart-container-version-color: #bbb;
+  --chart-container-version-bg-color: (247, 246, 246, 0.6);
+
+  --url-warning-a-color: #f0ad4e;
 }
 
 body,

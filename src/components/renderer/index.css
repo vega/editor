@@ -1,5 +1,5 @@
 .chart {
-  background: white;
+  background: var(--chart-bg-color);
   padding: 10px;
   display: inline-block;
   margin-right: 10px;
@@ -42,7 +42,7 @@
   overflow: auto;
   display: flex;
   align-items: center;
-  background: white;
+  background: var(--chart-bg-color);
   z-index: 15;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .fullscreen-chart .chart {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px var(--box-shadow-color);
 }
 
 .fullscreen-open {
@@ -59,7 +59,7 @@
   top: 0;
   right: 0;
   padding: 10px;
-  background-color: rgba(247, 246, 246, 0.6);
+  background-color: var(--fullscreen-open-bg-color);
   cursor: pointer;
 }
 
