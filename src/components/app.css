@@ -29,6 +29,15 @@
   --dark-brand-color: rgb(92, 64, 141);
   --error-color: #f44336;
   --warning-color: #ffc107;
+
+  --data-viewer-header-btn-bg-color: white;
+  --data-viewer-header-btn-border-color: #ccc;
+  --data-viewer-header-btn-hover-color: #aaa;
+  --data-viewer-header-btn-active-bg-color: #ddd;
+
+  --pagination-li-border-color: #ddd;
+  --pagination-active-color: #ddd;
+  --pagination-disabled-color: #ddd;
 }
 
 body,
