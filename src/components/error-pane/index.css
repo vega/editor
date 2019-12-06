@@ -9,7 +9,7 @@
 }
 
 .error-pane .info {
-  color: var(--error-pane-info-color);
+  color: var(--info-color);
   line-height: 25px;
 }
 

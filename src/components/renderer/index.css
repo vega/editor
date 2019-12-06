@@ -1,5 +1,5 @@
 .chart {
-  background: var(--chart-bg-color);
+  background: var(--primary-light-color);
   padding: 10px;
   display: inline-block;
   margin-right: 10px;
@@ -42,7 +42,7 @@
   overflow: auto;
   display: flex;
   align-items: center;
-  background: var(--chart-bg-color);
+  background: var(--primary-light-color);
   z-index: 15;
 }
 
@@ -59,7 +59,7 @@
   top: 0;
   right: 0;
   padding: 10px;
-  background-color: var(--fullscreen-open-bg-color);
+  background-color: rgba(247, 246, 246, 0.6);
   cursor: pointer;
 }
 
@@ -85,5 +85,5 @@
 }
 
 .chart-resize-handle svg path {
-  stroke: #ddd;
+  stroke: var(--light-color);
 }
