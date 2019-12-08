@@ -48,7 +48,7 @@
   align-items: center;
   justify-content: center;
   position: fixed;
-  background: var(--transparent-color);
+  background: var(--transparent-bg-color);
   top: 0;
   left: 0;
   right: 0;
@@ -58,7 +58,7 @@
 
 .modal {
   position: relative;
-  background: white;
+  background: var(--primary-light-color);
   width: 80%;
   align-self: flex-start;
   margin-top: 6vh;
