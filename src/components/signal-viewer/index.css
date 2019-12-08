@@ -14,5 +14,5 @@
   width: 10px;
   margin-left: 3px;
   vertical-align: middle;
-  color: grey;
+  color: var(--primary-extra-dark-color);
 }

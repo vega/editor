@@ -45,7 +45,7 @@
 }
 
 .play-down {
-  color: #999999;
+  color: var(--primary-extra-dark-color);
 }
 
 .personal-gist-files {
@@ -60,19 +60,19 @@
 .arrow {
   margin: 4px;
   width: 15px;
-  border-bottom: 1px solid black;
-  border-left: 1px solid black;
+  border-bottom: 1px solid var(--dark-color);
+  border-left: 1px solid var(--dark-color);
 }
 
 .filename {
   font-family: monospace;
   cursor: pointer;
   margin-top: 4px;
-  color: #4f4f4f;
+  color: var(--primary-extra-dark-color);
 }
 
 .filename:hover {
-  color: #000000;
+  color: var(--dark-color);
 }
 
 .gist-text {
@@ -84,7 +84,7 @@
 .gist-url {
   font-size: 12px;
   font-style: italic;
-  color: rgb(6, 69, 173);
+  color: var(--url-color);
   word-break: break-all;
 }
 

@@ -21,14 +21,21 @@
 
   /* Colors */
   --light-color: #dedede;
-  --dark-color: #24292e;
+  --dark-color: #1a1d20;
   --primary-color: #f5f5f5;
   --primary-light-color: #ffffff;
-  --primary-dark-color: #d5d5d5;
+  --primary-dark-color: #c0c0c0;
+  --primary-extra-dark-color: #666;
   --brand-color: #654ff0;
   --dark-brand-color: rgb(92, 64, 141);
   --error-color: #f44336;
   --warning-color: #ffc107;
+  --info-color: #399e39;
+  --strong-color: firebrick;
+  --url-color: rgb(6, 69, 173);
+  --box-shadow-color: rgba(0, 0, 0, 0.2);
+  --transparent-color: rgba(0, 0, 0, 0.08);
+  --transparent-bg-color: rgba(0, 0, 0, 0.8);
 }
 
 body,
