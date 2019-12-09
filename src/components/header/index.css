@@ -12,7 +12,7 @@
   align-items: center;
   font-size: 14px;
   cursor: pointer;
-  color: var(--dark-color);
+  color: var(--black-color);
   text-decoration: none;
   user-select: none;
   position: relative;
@@ -58,7 +58,7 @@
 
 .modal {
   position: relative;
-  background: var(--primary-light-color);
+  background: var(--white-color);
   width: 80%;
   align-self: flex-start;
   margin-top: 6vh;
@@ -87,11 +87,11 @@
   padding: 10px;
   border: none;
   cursor: pointer;
-  background: var(--primary-light-color);
+  background: var(--white-color);
 }
 
 .close-button:hover {
-  background: var(--primary-color);
+  background: var(--light-gray-color);
 }
 
 .close-button:focus {
@@ -102,14 +102,14 @@
   width: 120px;
   font-size: 16px;
   padding: 5px 10px;
-  background: var(--primary-light-color);
-  border: solid 1px var(--dark-color);
+  background: var(--white-color);
+  border: solid 1px var(--black-color);
   display: inline;
 }
 
 .button-groups button.selected {
   background: var(--dark-brand-color);
-  color: var(--primary-light-color);
+  color: var(--white-color);
 }
 
 .button-groups button:first-of-type {
@@ -122,8 +122,8 @@
 }
 
 .button-groups button:not(.selected):hover {
-  background: var(--primary-color);
-  color: var(--dark-color);
+  background: var(--light-gray-color);
+  color: var(--black-color);
 }
 
 .button-groups button:focus {
@@ -139,7 +139,7 @@
 }
 
 .specType {
-  border-bottom: solid 1px var(--primary-extra-dark-color);
+  border-bottom: solid 1px var(--extra-dark-gray-color);
   clear: left;
   padding-bottom: 2px;
 }
@@ -167,13 +167,13 @@
   background-size: contain;
   width: 95px;
   height: 80px;
-  background-color: var(--primary-light-color);
+  background-color: var(--white-color);
 }
 
 .item .name {
   margin-top: 3px;
   padding-top: 5px;
-  border-top: solid 1px var(--primary-extra-dark-color);
+  border-top: solid 1px var(--extra-dark-gray-color);
   font-size: 12px;
 }
 
@@ -198,7 +198,7 @@
 .mode-switcher__menu,
 .auto-run__menu {
   box-shadow: none !important;
-  border: 1px solid var(--light-color) !important;
+  border: 1px solid var(--gray-color) !important;
   border-top: 0 !important;
 }
 
@@ -212,7 +212,7 @@
 }
 
 .auto-run__option {
-  color: var(--dark-color) !important;
+  color: var(--black-color) !important;
 }
 
 .auto-run__control {
@@ -220,7 +220,7 @@
 }
 
 .mode-switcher__control {
-  border-color: var(--light-color) !important;
+  border-color: var(--gray-color) !important;
 }
 
 .mode-switcher__control--is-focused {
@@ -239,7 +239,7 @@
 
 .auto-run__option--is-focused,
 .mode-switcher__option--is-focused {
-  background-color: var(--primary-light-color) !important;
+  background-color: var(--white-color) !important;
 }
 
 .auto-run__menu,
@@ -293,7 +293,7 @@
 .parse-mode {
   text-align: center;
   font-size: 10px;
-  color: var(--primary-extra-dark-color);
+  color: var(--extra-dark-gray-color);
   padding: 3px 0;
 }
 
@@ -307,9 +307,9 @@
 
 .sign-in {
   font-size: 0.9em;
-  background: var(--primary-light-color);
-  color: var(--dark-color);
-  border: 1px solid var(--primary-dark-color);
+  background: var(--white-color);
+  color: var(--black-color);
+  border: 1px solid var(--dark-gray-color);
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
@@ -341,14 +341,14 @@
   border-radius: 10px;
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-top: 7px solid var(--primary-extra-dark-color);
+  border-top: 7px solid var(--extra-dark-gray-color);
 }
 
 .profile-menu {
   position: fixed;
   width: 130px;
-  background-color: var(--primary-light-color);
-  border: 1px solid var(--primary-dark-color);
+  background-color: var(--white-color);
+  border: 1px solid var(--dark-gray-color);
   top: 56px;
   right: 6px;
   z-index: 10;
@@ -370,7 +370,7 @@
   border-top: 9px solid transparent;
   border-left: 9px solid transparent;
   border-right: 9px solid transparent;
-  border-bottom: 9px solid var(--primary-dark-color);
+  border-bottom: 9px solid var(--dark-gray-color);
   right: 29px;
 }
 
@@ -378,19 +378,19 @@
   border-top: 7px solid transparent;
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-bottom: 7px solid var(--primary-light-color);
+  border-bottom: 7px solid var(--white-color);
 }
 
 .welcome {
   font-size: 0.7em;
-  color: var(--primary-extra-dark-color);
+  color: var(--extra-dark-gray-color);
   margin: 13px 0 0 12px;
 }
 
 .whoami {
   font-size: 0.9em;
   padding: 12px 0 12px 12px;
-  border-bottom: 1px solid var(--light-color);
+  border-bottom: 1px solid var(--gray-color);
 }
 
 .sign-out {
@@ -404,7 +404,7 @@
 }
 
 .sign-out:hover {
-  background-color: var(--primary-color);
+  background-color: var(--light-gray-color);
 }
 
 /* Media queries */

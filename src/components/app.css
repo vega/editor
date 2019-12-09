@@ -20,12 +20,12 @@
   --spacing-unit: 5px;
 
   /* Colors */
-  --light-color: #dedede;
-  --dark-color: #1a1d20;
-  --primary-color: #f5f5f5;
-  --primary-light-color: #ffffff;
-  --primary-dark-color: #c0c0c0;
-  --primary-extra-dark-color: #666;
+  --white-color: #ffffff;
+  --light-gray-color: #f5f5f5;
+  --gray-color: #dedede;
+  --dark-gray-color: #c0c0c0;
+  --extra-dark-gray-color: #666;
+  --black-color: #000000;
   --brand-color: #654ff0;
   --dark-brand-color: rgb(92, 64, 141);
   --error-color: #f44336;
