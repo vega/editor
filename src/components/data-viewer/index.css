@@ -26,8 +26,8 @@
 
 .data-viewer-header button {
   font-size: 1em;
-  background: var(--primary-light-color);
-  border: 1px solid var(--primary-dark-color);
+  background: var(--white-color);
+  border: 1px solid var(--dark-gray-color);
   border-radius: 4px;
   line-height: 33px;
   cursor: pointer;
@@ -40,11 +40,11 @@
 }
 
 .data-viewer-header button:hover {
-  border-color: var(--primary-extra-dark-color);
+  border-color: var(--extra-dark-gray-color);
 }
 
 .data-viewer-header button:active {
-  background-color: var(--primary-dark-color);
+  background-color: var(--dark-gray-color);
 }
 
 .pagination-wrapper {
@@ -69,7 +69,7 @@
 
 .pagination li {
   display: inline-block;
-  border: 1px solid var(--light-color);
+  border: 1px solid var(--gray-color);
   border-right: 0;
   padding: 10px 0;
   cursor: pointer;
@@ -77,7 +77,7 @@
 }
 
 .pagination li:last-child {
-  border-right: 1px solid var(--light-color);
+  border-right: 1px solid var(--gray-color);
 }
 
 .pagination a,
@@ -91,11 +91,11 @@
 }
 
 .pagination .active {
-  background: var(--light-color);
+  background: var(--gray-color);
 }
 
 .pagination .disabled {
-  color: var(--light-color);
+  color: var(--gray-color);
 }
 
 .error {
