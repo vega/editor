@@ -8,7 +8,7 @@
   height: 30px;
   flex-shrink: 0;
   flex-wrap: wrap;
-  background-color: var(--primary-color);
+  background-color: var(--light-gray-color);
   display: flex;
   align-items: center;
   justify-content: space-between;

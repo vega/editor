@@ -1,5 +1,5 @@
 .chart {
-  background: var(--primary-light-color);
+  background: var(--white-color);
   padding: 10px;
   display: inline-block;
   margin-right: 10px;
@@ -42,7 +42,7 @@
   overflow: auto;
   display: flex;
   align-items: center;
-  background: var(--primary-light-color);
+  background: var(--white-color);
   z-index: 15;
 }
 
@@ -85,5 +85,5 @@
 }
 
 .chart-resize-handle svg path {
-  stroke: var(--light-color);
+  stroke: var(--gray-color);
 }
