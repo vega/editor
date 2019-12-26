@@ -36,5 +36,5 @@ table.editor-table th {
 }
 
 table.editor-table tr:nth-child(even) {
-  background-color: var(--white-color);
+  background-color: var(--light-gray-color);
 }
