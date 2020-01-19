@@ -1,6 +1,6 @@
 import {UnregisterCallback} from 'history';
 import * as React from 'react';
-import {Edit3, Maximize} from 'react-feather';
+import {Maximize} from 'react-feather';
 import {Portal} from 'react-portal';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
