@@ -38,6 +38,7 @@ export interface State {
   renderer: Renderers;
   selectedExample: string;
   settings: boolean;
+  signals: any;
   tooltipEnable: boolean;
   vegaLiteSpec: VlSpec;
   vegaSpec: Spec;
@@ -81,6 +82,7 @@ export const DEFAULT_STATE: State = {
   selectedExample: null,
   settings: false,
   sidePaneItem: SIDEPANE.Editor,
+  signals: {},
   themeName: 'custom',
   tooltipEnable: true,
   vegaLiteSpec: null,

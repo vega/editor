@@ -32,6 +32,7 @@ import {
   SET_MODE_ONLY,
   SET_RENDERER,
   SET_SCROLL_POSITION,
+  SET_SIGNALS,
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
   SET_VIEW,
@@ -455,6 +456,12 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return mergeConfigIntoSpec(state);
     case EXTRACT_CONFIG_SPEC:
       return extractConfig(state);
+
+    case SET_SIGNALS:
+      return {
+        ...state,
+        signals: action.signals
+      };
     case SET_DECORATION:
       return {
         ...state,

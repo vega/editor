@@ -287,6 +287,11 @@ class Editor extends React.PureComponent<Props, State> {
     return (
       <div>
         <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
+          <div
+            data-tip={`Click on "Continue Recording" to make the chart interactive`}
+            data-place="right"
+            className="chart-overlay"
+          ></div>
           <div ref="chart" style={chartStyle} />
           {this.renderResizeHandle()}
         </div>

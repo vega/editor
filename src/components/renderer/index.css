@@ -1,6 +1,7 @@
 .chart {
   background: var(--white-color);
   padding: 10px;
+  position: relative;
   display: inline-block;
   margin-right: 10px;
   position: relative;
@@ -86,4 +87,17 @@
 
 .chart-resize-handle svg path {
   stroke: var(--gray-color);
+}
+
+.chart .chart-overlay {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(238, 238, 239, 0.3);
+  z-index: 14;
+  border: 1px solid rgb(79, 153, 252);
+  color: white;
 }

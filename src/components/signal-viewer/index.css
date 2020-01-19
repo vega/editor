@@ -6,13 +6,30 @@
   flex: 1;
 }
 
+.svg-rect:hover {
+  fill: #fce57e !important;
+}
+
 .editor-table .pointer {
   cursor: pointer;
 }
+
 .editor-table tbody tr td svg {
   height: 10px;
   width: 10px;
   margin-left: 3px;
   vertical-align: middle;
   color: var(---extra-dark-gray-color);
+}
+.timeline-control-buttons {
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+}
+.timeline-control-buttons button {
+  margin-right: 1em;
+}
+
+.timeline-control-buttons button:focus {
+  outline: none;
 }

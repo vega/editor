@@ -39,6 +39,8 @@ export const SET_TOOLTIP: 'SET_TOOLTIP' = 'SET_TOOLTIP';
 export const CLEAR_CONFIG: 'CLEAR_CONFIG' = 'CLEAR_CONFIG';
 export const MERGE_CONFIG_SPEC: 'MERGE_CONFIG_SPEC' = 'MERGE_CONFIG_SPEC';
 export const EXTRACT_CONFIG_SPEC: 'EXTRACT_CONFIG_SPEC' = 'EXTRACT_CONFIG_SPEC';
+export const SET_SIGNALS: 'SET_SIGNALS' = 'SET_SIGNALS';
+export const ADD_SIGNAL: 'ADD_SIGNAL' = 'ADD_SIGNAL';
 export const SET_DECORATION: 'SET_DECORATION' = 'SET_DECORATION';
 export const SET_COMPILED_EDITOR_REFERENCE: 'SET_COMPILED_EDITOR_REFERENCE' = 'SET_COMPILED_EDITOR_REFERENCE';
 export const SET_EDITOR_FOCUS: 'SET_EDITOR_FOCUS' = 'SET_EDITOR_FOCUS';
@@ -82,6 +84,8 @@ export type Action =
   | ClearConfig
   | MergeConfigSpec
   | ExtractConfigSpec
+  | SetSignals
+  | AddSignal
   | SetDecorations
   | SetCompiledEditorRef
   | SetEditorFocus
@@ -386,6 +390,22 @@ export function extractConfigSpec() {
 }
 
 export type ExtractConfigSpec = ReturnType<typeof extractConfigSpec>;
+
+export function setSignals(value: any) {
+  return {
+    signals: value,
+    type: SET_SIGNALS
+  };
+}
+export type SetSignals = ReturnType<typeof setSignals>;
+
+export function addSignal(value: any) {
+  return {
+    signal: value,
+    type: ADD_SIGNAL
+  };
+}
+export type AddSignal = ReturnType<typeof addSignal>;
 
 export function setDecorations(value) {
   return {
