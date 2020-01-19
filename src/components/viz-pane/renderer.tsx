@@ -9,7 +9,7 @@ import Renderer from '../renderer';
 import SignalViewer from '../signal-viewer';
 import DebugPaneHeader from './debug-pane-header';
 import './index.css';
-import {version as VG_VERISION} from 'vega';
+import {version as VG_VERSION} from 'vega';
 import {version as VL_VERSION} from 'vega-lite';
 import {version as TOOLTIP_VERSION} from 'vega-tooltip';
 const pjson = require('../../../package.json');
@@ -119,7 +119,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
           <Renderer />
         </ErrorBoundary>
         <div className="versions">
-          Vega {VG_VERISION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {pjson.version}
+          Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {pjson.version}
         </div>
       </div>
     );

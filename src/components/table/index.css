@@ -5,14 +5,14 @@ table.editor-table {
 }
 
 table.editor-table thead tr:first-child > * {
-  border-bottom: 2px solid var(--light-color);
+  border-bottom: 2px solid var(--gray-color);
 }
 
 table.editor-table th {
   white-space: nowrap;
   cursor: pointer;
   text-align: center;
-  background: #f6f8fa;
+  background: var(--white-color);
   min-width: 50px;
 }
 
@@ -21,7 +21,7 @@ table.editor-table svg {
   width: 10px;
   margin-left: 3px;
   vertical-align: middle;
-  color: grey;
+  color: var(--extra-dark-gray-color);
 }
 
 table.editor-table td {
@@ -30,11 +30,11 @@ table.editor-table td {
 
 table.editor-table td,
 table.editor-table th {
-  color: #333;
+  color: var(--black-color);
   padding: 8px;
-  border: 1px solid var(--light-color);
+  border: 1px solid var(--gray-color);
 }
 
 table.editor-table tr:nth-child(even) {
-  background-color: #f6f8fa;
+  background-color: var(--light-gray-color);
 }

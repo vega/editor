@@ -79,6 +79,10 @@ module.exports = (env, argv) => {
               options: {plugins: [require('autoprefixer')]}
             }
           ]
+        },
+        {
+          test: /\.ttf$/,
+          use: ['file-loader']
         }
       ]
     },

@@ -80,10 +80,9 @@ class ExportModal extends React.PureComponent<Props, State> {
 
   public downloadJSON(event) {
     if (
-      event.target &&
-      (event.target.matches(`input`) ||
-        event.target.matches(`label`) ||
-        event.target.matches(`div.type-input-container`))
+      event.target?.matches(`input`) ||
+      event.target?.matches(`label`) ||
+      event.target?.matches(`div.type-input-container`)
     ) {
       return;
     }

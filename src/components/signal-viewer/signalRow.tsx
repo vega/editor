@@ -111,7 +111,10 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     if (tooLong) {
       return (
         <tr>
-          <td onClick={() => this.props.onClickHandler && this.props.onClickHandler(this.props.signal)}>
+          <td
+            className="pointer"
+            onClick={() => this.props.onClickHandler && this.props.onClickHandler(this.props.signal)}
+          >
             {this.props.signal}
             <Search />
           </td>
@@ -130,6 +133,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
         <tr>
           <td
             style={{whiteSpace: 'nowrap'}}
+            className="pointer"
             onClick={() => this.props.onClickHandler && this.props.onClickHandler(this.props.signal)}
           >
             {this.props.signal}

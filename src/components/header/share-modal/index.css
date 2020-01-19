@@ -7,7 +7,7 @@
 .sharing-buttons .button svg {
   width: 22px;
   height: 22px;
-  stroke: #000;
+  stroke: var(--black-color);
   padding-right: 5px;
 }
 
@@ -36,5 +36,5 @@
 
 .url-warning,
 .url-warning a {
-  color: #f0ad4e;
+  color: var(--warning-color);
 }

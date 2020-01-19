@@ -6,7 +6,7 @@
 
 .export-container {
   min-width: 280px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--dark-gray-color);
   border-radius: 4px;
   display: inline-flex;
   align-items: center;
@@ -38,7 +38,7 @@
 }
 
 .export-container p strong {
-  color: firebrick;
+  color: var(--strong-color);
 }
 
 .export-container button {

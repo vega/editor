@@ -1,22 +1,20 @@
 .error-pane .error {
   color: var(--error-color);
-  line-height: 25px;
 }
 
 .error-pane .warning {
   color: var(--warning-color);
-  line-height: 25px;
 }
 
 .error-pane .info {
-  color: #399e39;
-  line-height: 25px;
+  color: var(--info-color);
 }
 
 .error-pane {
   overflow: auto;
   width: 100%;
   flex: 1;
+  line-height: 25px;
 }
 
 .error-pane ul {
