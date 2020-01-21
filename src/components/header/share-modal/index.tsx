@@ -1,8 +1,8 @@
-import { connect } from "react-redux";
-import { State } from "../../../constants/default-state";
-import { bindActionCreators, Dispatch } from "redux";
-import Renderer from "./renderer";
-import * as EditorActions from "../../../actions/editor";
+import {connect} from 'react-redux';
+import {State} from '../../../constants/default-state';
+import {bindActionCreators, Dispatch} from 'redux';
+import Renderer from './renderer';
+import * as EditorActions from '../../../actions/editor';
 
 export function mapStateToProps(state: State) {
   return {
@@ -21,7 +21,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Renderer);
+export default connect(mapStateToProps, mapDispatchToProps)(Renderer);

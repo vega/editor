@@ -1,15 +1,14 @@
-import LZString from "lz-string";
-import * as React from "react";
-import Clipboard from "react-clipboard.js";
-import { Copy, Link } from "react-feather";
-import { withRouter } from "react-router-dom";
-import { mapStateToProps, mapDispatchToProps } from ".";
-import "./index.css";
-import getCookie from "../../../utils/getCookie";
-import { BACKEND_URL, COOKIE_NAME } from "../../../constants/consts";
+import LZString from 'lz-string';
+import * as React from 'react';
+import Clipboard from 'react-clipboard.js';
+import {Copy, Link} from 'react-feather';
+import {withRouter} from 'react-router-dom';
+import {mapStateToProps, mapDispatchToProps} from '.';
+import './index.css';
+import getCookie from '../../../utils/getCookie';
+import {BACKEND_URL, COOKIE_NAME} from '../../../constants/consts';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 interface State {
   copied: boolean;
@@ -32,27 +31,24 @@ class ShareModal extends React.PureComponent<Props, State> {
       done: true,
       error: false,
       fullScreen: false,
-      generatedURL: "",
-      gistFileName: "",
+      generatedURL: '',
+      gistFileName: '',
       gistPrivate: false,
-      gistTitle: ""
+      gistTitle: ''
     };
   }
 
   public exportURL() {
     const serializedSpec =
-      LZString.compressToEncodedURIComponent(this.props.editorString) +
-      (this.state.fullScreen ? "/view" : "");
+      LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullScreen ? '/view' : '');
     if (serializedSpec) {
-      const url = `${document.location.href.split("#")[0]}#/url/${
-        this.props.mode
-        }/${serializedSpec}`
-      this.setState({ generatedURL: url })
+      const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
+      this.setState({generatedURL: url});
     }
   }
 
   public previewURL() {
-    const win = window.open(this.state.generatedURL, "_blank");
+    const win = window.open(this.state.generatedURL, '_blank');
     win.focus();
   }
 
@@ -64,7 +60,7 @@ class ShareModal extends React.PureComponent<Props, State> {
         },
         () => {
           setTimeout(() => {
-            this.setState({ copied: false });
+            this.setState({copied: false});
           }, 2500);
         }
       );
@@ -72,7 +68,7 @@ class ShareModal extends React.PureComponent<Props, State> {
   }
 
   public handleCheck(event) {
-    this.setState({ fullScreen: event.target.checked }, () => {
+    this.setState({fullScreen: event.target.checked}, () => {
       this.exportURL();
     });
   }
@@ -105,20 +101,20 @@ class ShareModal extends React.PureComponent<Props, State> {
     });
     const body = {
       content: this.props.editorString,
-      name: this.state.gistFileName || "spec",
+      name: this.state.gistFileName || 'spec',
       title: this.state.gistTitle,
       privacy: this.state.gistPrivate
     };
     const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
     fetch(`${BACKEND_URL}gists/create`, {
       body: JSON.stringify(body),
-      mode: "cors",
-      credentials: "include",
+      mode: 'cors',
+      credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Cookie: `${COOKIE_NAME}=${cookieValue}`
       },
-      method: "post"
+      method: 'post'
     })
       .then(res => {
         return res.json();
@@ -171,14 +167,8 @@ class ShareModal extends React.PureComponent<Props, State> {
         <div className="share-split">
           <div>
             <h3>Via URL</h3>
-            <p>
-              We pack the Vega or Vega-Lite specification and an encoded string
-              in the URL.
-            </p>
-            <p>
-              We use LZ-based compression algorithm and preserve indentation,
-              newlines, and other whitespace.
-            </p>
+            <p>We pack the Vega or Vega-Lite specification and an encoded string in the URL.</p>
+            <p>We use LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
             <div>
               <label className="user-pref">
                 <input
@@ -191,10 +181,7 @@ class ShareModal extends React.PureComponent<Props, State> {
               </label>
             </div>
             <div className="sharing-buttons">
-              <button
-                className="sharing-button"
-                onClick={() => this.previewURL()}
-              >
+              <button className="sharing-button" onClick={() => this.previewURL()}>
                 <Link />
                 <span>Open Link</span>
               </button>
@@ -208,24 +195,19 @@ class ShareModal extends React.PureComponent<Props, State> {
                   Copy to Clipboard
                 </span>
               </Clipboard>
-              <div
-                className={`copied + ${this.state.copied ? " visible" : ""}`}
-              >
-                Copied!
-              </div>
+              <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
             </div>
-            Number of charaters in the URL: {this.state.generatedURL.length}{" "}
+            Number of charaters in the URL: {this.state.generatedURL.length}{' '}
             <span className="url-warning">
               {this.state.generatedURL.length > 2083 && (
                 <>
-                  Warning:{" "}
+                  Warning:{' '}
                   <a
                     href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    URLs over 2083 characters may not be supported in Internet
-                    Explorer.
+                    URLs over 2083 characters may not be supported in Internet Explorer.
                   </a>
                 </>
               )}
@@ -233,12 +215,8 @@ class ShareModal extends React.PureComponent<Props, State> {
           </div>
           <div>
             <h3>
-              Via{" "}
-              <a
-                href="https://gist.github.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              Via{' '}
+              <a href="https://gist.github.com/" target="_blank" rel="noopener noreferrer">
                 Github Gist
               </a>
             </h3>
@@ -276,16 +254,10 @@ class ShareModal extends React.PureComponent<Props, State> {
               </label>
             </div>
             <div className="share-input-container">
-              <button onClick={this.createGist.bind(this)}>
-                {this.state.done ? "Create" : "Creating..."}
-              </button>
+              <button onClick={this.createGist.bind(this)}>{this.state.done ? 'Create' : 'Creating...'}</button>
               {this.state.created && <span className="success">Created!</span>}
             </div>
-            {this.state.error && (
-              <div className="error-message share-error">
-                Gist could not be created
-              </div>
-            )}
+            {this.state.error && <div className="error-message share-error">Gist could not be created</div>}
           </div>
         </div>
       </>
