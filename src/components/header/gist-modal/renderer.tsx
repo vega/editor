@@ -386,18 +386,18 @@ class GistModal extends React.PureComponent<Props, State> {
             {this.props.isAuthenticated ? (
               this.state.loaded ? (
                 <>
+                  <div className="privacy-toggle">
+                    <input
+                      type="checkbox"
+                      name="privacy"
+                      id="privacy"
+                      checked={this.props.private === GistPrivacy.ALL}
+                      onChange={this.props.toggleGistPrivacy}
+                    />
+                    <label htmlFor="privacy">Show private gists</label>
+                  </div>
                   {this.state.personalGist.length > 0 ? (
                     <>
-                      <div className="privacy-toggle">
-                        <input
-                          type="checkbox"
-                          name="privacy"
-                          id="privacy"
-                          checked={this.props.private === GistPrivacy.ALL}
-                          onChange={this.props.toggleGistPrivacy}
-                        />
-                        <label htmlFor="privacy">Show private gists</label>
-                      </div>
                       {Object.keys(this.state.pages).length > 1 && (
                         <ReactPaginate
                           previousLabel={'<'}
