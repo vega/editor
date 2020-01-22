@@ -221,15 +221,17 @@ class ShareModal extends React.PureComponent<Props, State> {
               </a>
             </h3>
             <div className="share-input-container">
-              <input
-                type="checkbox"
-                name="private-gist"
-                id="private-gist"
-                value="private-select"
-                checked={this.state.gistPrivate}
-                onChange={this.updatePrivacy.bind(this)}
-              />
-              <label htmlFor="private-gist">Private gist</label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="private-gist"
+                  id="private-gist"
+                  value="private-select"
+                  checked={this.state.gistPrivate}
+                  onChange={this.updatePrivacy.bind(this)}
+                />
+                Private Gist
+              </label>
             </div>
             <div className="share-input-container">
               <label>
