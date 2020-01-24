@@ -65,10 +65,14 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.tsx?$/,
-          use: ['ts-loader'],
-          options: {
-            transpileOnly: true
-          }
+          use: [
+            {
+              loader: 'ts-loader',
+              options: {
+                transpileOnly: true
+              }
+            }
+          ]
         },
         {
           test: /\.css$/,
