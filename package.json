@@ -13,7 +13,7 @@
     "lint-staged": "^10.0.2",
     "monaco-editor-webpack-plugin": "^1.8.2",
     "postcss-loader": "^3.0.0",
-    "prettier": "^1.19.1",
+    "react-test-renderer": "^16.12.0",
     "style-loader": "^1.1.3",
     "typescript": "~3.7.5",
     "vega-lite-dev-config": "^0.3.1",
@@ -62,6 +62,24 @@
     "vega-themes": "^2.6.0",
     "vega-tooltip": "^0.20.0"
   },
+  "scripts": {
+    "start": "webpack-dev-server --mode development --hot",
+    "start:production": "webpack-dev-server --mode production",
+    "build": "yarn clean && yarn vendor && webpack --mode production --progress",
+    "clean": "rm -rf dist public/spec public/data",
+    "postbuild": "rsync -r --ignore-existing public/* dist",
+    "generate-example-images": "scripts/generate-example-images.sh",
+    "vendor": "scripts/vendor.sh",
+    "prepare": "yarn vendor && beemo create-config --react",
+    "prettierbase": "beemo prettier '{src,public}/**/*.{css,html}'",
+    "eslintbase": "beemo eslint 'src/**/*.{ts,tsx}' --react",
+    "format": "yarn eslintbase --fix && yarn prettierbase --write",
+    "lint": "yarn eslintbase && yarn prettierbase --check",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist",
+    "test": "jest test",
+    "analyze": "webpack --mode production --profile --json > stats.json && webpack-bundle-analyzer stats.json"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -80,6 +98,7 @@
   "beemo": {
     "module": "vega-lite-dev-config",
     "drivers": [
+      "babel",
       "prettier",
       "eslint"
     ],
@@ -97,21 +116,30 @@
       }
     }
   },
-  "scripts": {
-    "start": "webpack-dev-server --mode development --hot",
-    "start:production": "webpack-dev-server --mode production",
-    "build": "yarn clean && yarn vendor && webpack --mode production --progress",
-    "clean": "rm -rf dist public/spec public/data",
-    "postbuild": "rsync -r --ignore-existing public/* dist",
-    "generate-example-images": "scripts/generate-example-images.sh",
-    "vendor": "scripts/vendor.sh",
-    "prepare": "yarn vendor && beemo create-config --react",
-    "prettierbase": "beemo prettier '{src,public}/**/*.{css,html}'",
-    "eslintbase": "beemo eslint 'src/**/*.{ts,tsx}' --react",
-    "format": "yarn eslintbase --fix && yarn prettierbase --write",
-    "lint": "yarn eslintbase && yarn prettierbase --check",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d dist",
-    "analyze": "webpack --mode production --profile --json > stats.json && webpack-bundle-analyzer stats.json"
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "<rootDir>/test/mocks/style.js"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules",
+      "<rootDir>/dist",
+      "<rootDir>/src"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(monaco-editor)/)"
+    ],
+    "collectCoverage": false
   }
 }
