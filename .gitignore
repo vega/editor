@@ -5,6 +5,7 @@ _site
 .eslintrc.js
 .idea
 .prettierignore
+babel.config.js
 beemo-error.log
 coverage
 dist
