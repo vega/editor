@@ -67,8 +67,8 @@ class ShareModal extends React.PureComponent<Props, State> {
     return (
       <>
         <h1>Share</h1>
-        <p>We pack the Vega or Vega-Lite specification and an encoded string in the URL.</p>
-        <p>We use LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
+        <p>We pack the Vega or Vega-Lite specification as an encoded string in the URL.</p>
+        <p>We use a LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
         <div>
           <label className="user-pref">
             <input
