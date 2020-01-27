@@ -125,6 +125,10 @@ button,
   font-size: 0.9em;
 }
 
+.find-widget .button {
+  padding: 0;
+}
+
 button:hover,
 .button:hover,
 button:focus,
