@@ -51,6 +51,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  text-transform: uppercase;
 }
 
 .tabs-nav li {

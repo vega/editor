@@ -1,7 +1,3 @@
-.config-header {
-  text-transform: none;
-}
-
 .config-header > select {
   margin-left: 6px;
 }

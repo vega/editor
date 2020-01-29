@@ -13,7 +13,7 @@ type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchT
 class SpecEditorHeader extends React.PureComponent<Props> {
   public render() {
     return (
-      <div className="editor-header spec-editor-header">
+      <div className="editor-header">
         <ul className="tabs-nav">
           <li
             className={this.props.sidePaneItem === SIDEPANE.Editor ? 'active-tab' : undefined}
