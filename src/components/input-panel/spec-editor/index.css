@@ -18,12 +18,3 @@
 .editor-header.right-align {
   justify-content: flex-end;
 }
-
-.editor-button {
-  user-select: none;
-  margin-right: 8px;
-}
-
-.editor-button:focus {
-  outline: 0;
-}
