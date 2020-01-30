@@ -4,7 +4,7 @@
   padding: 2em 0;
 }
 
-.sharing-buttons .button svg {
+.sharing-buttons .editor-button svg {
   width: 22px;
   height: 22px;
   stroke: var(--black-color);

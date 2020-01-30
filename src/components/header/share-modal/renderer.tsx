@@ -81,12 +81,12 @@ class ShareModal extends React.PureComponent<Props, State> {
           </label>
         </div>
         <div className="sharing-buttons">
-          <button className="button" onClick={() => this.previewURL()}>
+          <button className="editor-button" onClick={() => this.previewURL()}>
             <Link />
             <span>Open Link</span>
           </button>
           <Clipboard
-            className="button copy-icon"
+            className="editor-button copy-icon"
             data-clipboard-text={this.state.generatedURL}
             onSuccess={this.onCopy.bind(this)}
           >
