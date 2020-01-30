@@ -1,12 +1,12 @@
-.error-pane .error {
+.error-pane__list-item--error {
   color: var(--error-color);
 }
 
-.error-pane .warning {
+.error-pane__list-item--warning {
   color: var(--warning-color);
 }
 
-.error-pane .info {
+.error-pane__list-item--info {
   color: var(--info-color);
 }
 
@@ -17,7 +17,7 @@
   line-height: 25px;
 }
 
-.error-pane ul {
+.error-pane__list {
   list-style-type: none;
   padding-left: 1em;
   padding-right: 2em;
