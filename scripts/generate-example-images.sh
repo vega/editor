@@ -18,7 +18,7 @@ if hash gdate 2>/dev/null; then
     echo "Compressing images..."
     image_optim -r images --allow-lossy --skip-missing-workers
 else
-    echo "Need to image_optim to compress images."
+    echo "Need image_optim to compress images."
 fi
 
 popd
