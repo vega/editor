@@ -5,7 +5,7 @@ script:
   - yarn lint
   - yarn build
 before_deploy:
-  - echo $TINY_TOKEN > ~/.tinypng
+  - gem install image_optim_pack
   - yarn generate-example-images
   - yarn postbuild
 cache: yarn

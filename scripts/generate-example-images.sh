@@ -6,7 +6,7 @@ set -e
 mkdir -p public/images/examples/vl
 mkdir -p public/images/examples/vg
 
-cd public;
+pushd public
 
 echo "Generating PNGs for Vega-Lite..."
 ls spec/vega-lite/*.vl.json | parallel --halt 1 "../node_modules/.bin/vl2vg {} | ../node_modules/.bin/vg2png > images/examples/vl/{/.}.png"
@@ -14,5 +14,11 @@ ls spec/vega-lite/*.vl.json | parallel --halt 1 "../node_modules/.bin/vl2vg {} |
 echo "Generating PNGs for Vega..."
 ls spec/vega/*.vg.json | parallel --halt 1 "../node_modules/.bin/vg2png -b . {} > images/examples/vg/{/.}.png"
 
-echo "Compressing images..."
-yarn tinypng public/images -r
+if hash gdate 2>/dev/null; then
+    echo "Compressing images..."
+    image_optim -r images --allow-lossy --skip-missing-workers
+else
+    echo "Need to image_optim to compress images."
+fi
+
+popd
