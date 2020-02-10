@@ -102,7 +102,7 @@
     "start:production": "webpack-dev-server --mode production",
     "build": "yarn clean && yarn vendor && webpack --mode production",
     "clean": "rm -rf dist public/spec public/data",
-    "postbuild": "rsync -r --ignore-existing public/* dist",
+    "postbuild": "rsync -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
     "vendor": "scripts/vendor.sh",
     "prepare": "yarn vendor && beemo create-config --react",
