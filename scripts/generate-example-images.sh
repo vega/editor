@@ -14,3 +14,5 @@ ls spec/vega-lite/*.vl.json | parallel --halt 1 "../node_modules/.bin/vl2vg {} |
 echo "Generating PNGs for Vega..."
 ls spec/vega/*.vg.json | parallel --halt 1 "../node_modules/.bin/vg2png -b . {} > images/examples/vg/{/.}.png"
 
+echo "Compressing images..."
+yarn tinypng public/images -r

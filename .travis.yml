@@ -1,10 +1,11 @@
 language: node_js
 node_js:
-  - "12"
+  - "13"
 script:
   - yarn lint
   - yarn build
 before_deploy:
+  - echo $TINY_TOKEN > ~/.tinypng
   - yarn generate-example-images
 cache: yarn
 deploy:
