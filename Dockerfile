@@ -10,6 +10,9 @@ RUN apt-get update && apt-get upgrade -y
 # Install rsync as it is a dependency of ./scripts/vendor.sh
 RUN apt-get -y install rsync
 
+# Install dos2unix to remove 'r' characters from scripts
+RUN apt-get install dos2unix
+
 # Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile
 # https://docs.docker.com/engine/reference/builder/#workdir
 WORKDIR /usr/src/app
@@ -21,8 +24,8 @@ COPY package.json yarn.lock ./
 # For this project, additional files must also be copied as yarn hooks depend on them
 COPY scripts ./scripts
 
-# Remove 'r' characters from the vendor script (otherwise it won't execute)
-RUN sed $'s/\r$//' ./scripts/vendor.sh > ./scripts/vendor.sh
+# Remove 'r' characters from the scripts (otherwise it won't execute)
+RUN dos2unix ./scripts/generate-example-images.sh ./scripts/vendor.sh ./scripts/version.sh
 
 # Copy remaining files
 COPY . .
