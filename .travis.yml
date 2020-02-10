@@ -12,9 +12,10 @@ before_deploy:
   - yarn postbuild
 cache: yarn
 deploy:
-  edge: true
   provider: pages
+  skip-cleanup: true
   github-token: $GITHUB_TOKEN
+  keep-history: true
   local-dir: dist
   name: Dominik Moritz
   email: domoritz@gmail.com
