@@ -309,8 +309,8 @@ class Header extends React.PureComponent<Props, State> {
         {Object.keys(VEGA_SPECS).map((specType, i) => {
           const specs = VEGA_SPECS[specType];
           return (
-            <div className="itemGroup" key={i}>
-              <div className="specType">{specType}</div>
+            <div className="item-group" key={i}>
+              <h4 className="spec-type">{specType}</h4>
               <div className="items" onClick={closePortal}>
                 {specs.map((spec, j) => {
                   return (
@@ -348,8 +348,8 @@ class Header extends React.PureComponent<Props, State> {
               {Object.keys(VEGA_LITE_SPECS[specGroup]).map((specType, j) => {
                 const specs = VEGA_LITE_SPECS[specGroup][specType];
                 return (
-                  <div className="itemGroup" key={j}>
-                    <div className="specType">{specType}</div>
+                  <div className="item-group" key={j}>
+                    <h4 className="spec-type">{specType}</h4>
                     <div className="items">
                       {specs.map((spec, k) => {
                         return (
