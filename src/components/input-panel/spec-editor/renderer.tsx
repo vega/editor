@@ -186,7 +186,7 @@ class Editor extends React.PureComponent<Props, {}> {
     }
 
     if (this.props.parse) {
-      this.editor.focus();
+      this.props.editorRef.focus();
       this.updateSpec(this.props.value);
       prevProps.setConfig(this.props.configEditorString);
       prevProps.parseSpec(false);
