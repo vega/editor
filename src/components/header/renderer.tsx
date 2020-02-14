@@ -265,7 +265,9 @@ class Header extends React.PureComponent<Props, State> {
         ) : (
           <form>
             <button className="sign-in" type="submit" onClick={this.signIn.bind(this)}>
-              <span className="sign-in-text">Sign in with</span>
+              <span className="sign-in-text" aria-label="Sign in with GitHub">
+                Sign in with
+              </span>
               <GitHub />
             </button>
           </form>
