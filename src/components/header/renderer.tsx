@@ -6,10 +6,9 @@ import {PortalWithState} from 'react-portal';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import Select from 'react-select';
 import {mapDispatchToProps, mapStateToProps} from '.';
-import {BACKEND_URL, COOKIE_NAME, KEYCODES, Mode} from '../../constants';
+import {BACKEND_URL, KEYCODES, Mode} from '../../constants';
 import {NAMES} from '../../constants/consts';
 import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs';
-import getCookie from '../../utils/getCookie';
 import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
@@ -64,14 +63,9 @@ class Header extends React.PureComponent<Props, State> {
       }
     });
 
-    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
     try {
       const response = await fetch(`${BACKEND_URL}auth/github/check`, {
-        credentials: 'include',
-        headers: {
-          Cookie: `${COOKIE_NAME}=${cookieValue}`
-        },
-        method: 'get'
+        credentials: 'include'
       });
       const data = await response.json();
       const {isAuthenticated, handle, name, profilePicUrl} = data;
@@ -84,11 +78,7 @@ class Header extends React.PureComponent<Props, State> {
       if (e.data.type === 'auth') {
         try {
           const response = await fetch(`${BACKEND_URL}auth/github/check`, {
-            credentials: 'include',
-            headers: {
-              Cookie: `${COOKIE_NAME}=${cookieValue}`
-            },
-            method: 'get'
+            credentials: 'include'
           });
           const data = await response.json();
           const {isAuthenticated, handle, name, profilePicUrl} = data;
