@@ -3,6 +3,7 @@
   "version": "0.59.0",
   "homepage": "http://vega.github.io/editor",
   "private": true,
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "autoprefixer": "^9.7.4",
     "css-loader": "^3.4.2",
