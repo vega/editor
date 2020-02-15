@@ -36,7 +36,7 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
         const parsed = JSON.parse(data.spec) as Spec;
         // merging config into the spec
         if (data.config) {
-          parsed.config = mergeConfig(parsed.config, data.config as any);
+          parsed.config = mergeConfig(data.config as any, parsed.config);
         }
         data.spec = stringify(parsed);
         if (data.spec || data.file) {
