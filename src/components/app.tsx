@@ -32,13 +32,11 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
         // setting baseURL as event's origin
         this.props.setBaseUrl(evt.origin);
         console.info('[Vega-Editor] Received Message', evt.origin, data);
-        // send acknowledgement
-        const parsed = JSON.parse(data.spec) as Spec;
-        // merging config into the spec
+
         if (data.config) {
-          parsed.config = mergeConfig(data.config as any, parsed.config);
+          this.props.setConfig(stringify(data.config));
         }
-        data.spec = stringify(parsed);
+
         if (data.spec || data.file) {
           // FIXME: remove any
           (evt as any).source.postMessage(true, '*');
