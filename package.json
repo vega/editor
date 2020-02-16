@@ -25,9 +25,10 @@
   },
   "dependencies": {
     "@types/d3": "^5.7.2",
-    "@types/react": "^16.9.19",
     "@types/react-redux": "^7.1.7",
+    "@types/react-resize-detector": "^4.2.0",
     "@types/react-router-dom": "^5.1.3",
+    "@types/react": "^16.9.19",
     "ajv": "^6.11.0",
     "d3-array": "^2.4.0",
     "d3-geo-projection": "^2.8.1",
