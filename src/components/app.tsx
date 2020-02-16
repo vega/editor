@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import {bindActionCreators, Dispatch} from 'redux';
-import {mergeConfig, Spec} from 'vega';
 import {MessageData} from 'vega-embed';
 import {hash} from 'vega-lite/build/src/util';
 import * as EditorActions from '../actions/editor';
@@ -150,7 +149,7 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
           <SplitPane
             split="vertical"
             minSize={300}
-            defaultSize={this.w * 0.4}
+            defaultSize={Math.min(this.w * 0.4, 800)}
             pane1Style={{display: 'flex'}}
             className="main-pane"
             pane2Style={{overflow: 'scroll'}}

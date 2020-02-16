@@ -1,7 +1,3 @@
-.sizeFixEditorParent .react-monaco-editor-container {
-  overflow: hidden;
-}
-
 .editor-header {
   font-size: 12px;
   width: 100%;

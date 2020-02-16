@@ -49,17 +49,17 @@ export const NAVBAR = {
   DataViewer: 'DataViewer',
   Logs: 'Logs',
   SignalViewer: 'SignalViewer'
-};
+} as const;
 
 export const SIDEPANE = {
   Config: 'Config',
   Editor: 'Editor'
-};
+} as const;
 
 export const EDITOR_FOCUS = {
   CompiledEditor: 'compiled-editor',
   SpecEditor: 'spec-editor'
-};
+} as const;
 
 export const KEYCODES = {
   B: 66,

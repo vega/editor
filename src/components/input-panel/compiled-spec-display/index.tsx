@@ -7,6 +7,7 @@ import * as EditorActions from '../../../actions/editor';
 import {EDITOR_FOCUS, LAYOUT} from '../../../constants';
 import {State} from '../../../constants/default-state';
 import CompiledSpecDisplayHeader from '../compiled-spec-header';
+import ReactResizeDetector from 'react-resize-detector';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -17,29 +18,26 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
     this.props.setCompiledEditorReference(this.editor);
   }
 
-  public componentDidUpdate(prevProps) {
-    if (this.props.compiledVegaPaneSize !== prevProps.compiledVegaPaneSize) {
-      if (this.editor) {
-        this.editor.layout();
-      }
-    }
-  }
-
   public render() {
     return (
-      <div className={'sizeFixEditorParent full-height-wrapper'}>
+      <div className={'full-height-wrapper'}>
         <CompiledSpecDisplayHeader />
+        <ReactResizeDetector
+          handleWidth
+          handleHeight
+          onResize={(width: number, height: number) => {
+            this.editor.layout({width, height: height - LAYOUT.MinPaneSize});
+          }}
+        ></ReactResizeDetector>
         <MonacoEditor
           height={this.props.compiledVegaPaneSize - LAYOUT.MinPaneSize}
           options={{
-            automaticLayout: true,
             folding: true,
             minimap: {enabled: false},
             readOnly: true,
             scrollBeyondLastLine: false,
             wordWrap: 'on'
           }}
-          ref="compiledEditor"
           language="json"
           value={stringify(this.props.value)}
           editorDidMount={editor => {

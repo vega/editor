@@ -3,14 +3,14 @@ import {connect} from 'react-redux';
 import SplitPane from 'react-split-pane';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor';
-import {LAYOUT, Mode} from '../../constants';
+import {LAYOUT, Mode, SIDEPANE} from '../../constants';
 import {State} from '../../constants/default-state';
 import ConfigEditor from '../config-editor';
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
-import './index.css';
 import SpecEditor from './spec-editor';
 import SpecEditorHeader from './spec-editor-header';
+import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -28,18 +28,11 @@ class InputPanel extends React.PureComponent<Props> {
       this.props.toggleCompiledVegaSpec();
     }
   }
+
   public componentDidUpdate(prevProps, prevState) {
     if (this.props.mode === Mode.VegaLite) {
       if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
         this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
-      }
-    }
-    if (prevProps.mode !== this.props.mode) {
-      const pane2 = (this.refs.compiledVegaPane as any).pane2;
-      if (this.props.mode === Mode.Vega) {
-        pane2.style.display = 'none';
-      } else {
-        pane2.style.display = 'flex';
       }
     }
   }
@@ -48,10 +41,23 @@ class InputPanel extends React.PureComponent<Props> {
     const innerPanes = [
       <div key="editor" className="full-height-wrapper">
         <SpecEditorHeader key="specEditorHeader" />
+        <div
+          className="full-height-wrapper"
+          style={{
+            display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none'
+          }}
+        >
+          <SpecEditor key="editor" />
+        </div>
 
-        <SpecEditor key="editor" />
-
-        <ConfigEditor key="configEditor" />
+        <div
+          className="full-height-wrapper"
+          style={{
+            display: this.props.sidePaneItem === SIDEPANE.Config ? '' : 'none'
+          }}
+        >
+          <ConfigEditor key="configEditor" />
+        </div>
       </div>
     ];
     if (this.props.compiledVegaSpec) {
@@ -64,19 +70,12 @@ class InputPanel extends React.PureComponent<Props> {
   }
   public render() {
     const innerPanes = this.getInnerPanes();
-    const compiledVegaPane = this.refs.compiledVegaPane as any;
-    if (compiledVegaPane) {
-      compiledVegaPane.pane2.style.height = this.props.compiledVegaSpec
-        ? (this.props.compiledVegaPaneSize || window.innerHeight * 0.4) + 'px'
-        : LAYOUT.MinPaneSize + 'px';
-    }
 
     return (
       // ! Never make this conditional based on modes
       // ! we will loose support for undo across modes
       // ! because the editor will be unmounted
       <SplitPane
-        ref="compiledVegaPane"
         split="horizontal"
         primary="second"
         className="editor-spitPane"
@@ -84,12 +83,18 @@ class InputPanel extends React.PureComponent<Props> {
         defaultSize={this.props.compiledVegaSpec ? this.props.compiledVegaPaneSize : LAYOUT.MinPaneSize}
         onChange={this.handleChange}
         pane1Style={{minHeight: `${LAYOUT.MinPaneSize}px`}}
+        pane2Style={{
+          display: this.props.mode === Mode.Vega ? 'none' : 'flex',
+          height: this.props.compiledVegaSpec
+            ? (this.props.compiledVegaPaneSize || window.innerHeight * 0.4) + 'px'
+            : LAYOUT.MinPaneSize + 'px'
+        }}
         paneStyle={{display: 'flex'}}
         onDragFinished={() => {
           if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-            this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
+            this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.5);
             // Popping up the the compiled vega pane for the first time will set its
-            // height to 30% of the split pane. This can change depending on the UI.
+            // height to 50% of the split pane. This can change depending on the UI.
           }
         }}
       >
