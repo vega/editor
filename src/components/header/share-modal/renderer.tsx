@@ -95,7 +95,7 @@ class ShareModal extends React.PureComponent<Props, State> {
           </Clipboard>
           <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
         </div>
-        Number of charaters in the URL: {this.state.generatedURL.length}{' '}
+        Number of characters in the URL: {this.state.generatedURL.length}{' '}
         <span className="url-warning">
           {this.state.generatedURL.length > 2083 && (
             <>
