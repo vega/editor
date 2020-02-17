@@ -121,7 +121,7 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
       const data = await response.json();
       const content = data.files[parameter.filename].content;
       const contentObj = JSON.parse(content);
-      if (!contentObj.hasOwnProperty('$schema')) {
+      if (!('$schema' in contentObj)) {
         this.props.setGistVegaLiteSpec('', content);
       } else {
         const mode = contentObj.$schema.split('/').slice(-2)[0];

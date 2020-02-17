@@ -292,7 +292,7 @@ class Editor extends React.PureComponent<Props, State> {
             data-place="right"
             className="chart-overlay"
           ></div>
-          <div ref="chart" style={chartStyle} />
+          <div aria-label="visualization" ref="chart" style={chartStyle} />
           {this.renderResizeHandle()}
         </div>
         <div className="fullscreen-open">
