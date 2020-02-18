@@ -16,7 +16,7 @@ const MAX_LENGTH = 150;
 export default class Table extends React.PureComponent<Props> {
   public render() {
     const headerNodes = this.props.header.map(h => (
-      <th onClick={() => this.props.onClickHandler && this.props.onClickHandler(h)} title={h} key={h}>
+      <th onClick={() => this.props.onClickHandler && this.props.onClickHandler(h)} key={h}>
         {h}
         <Search />
       </th>
