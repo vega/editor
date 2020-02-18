@@ -67,8 +67,12 @@ const HelpModal = () => {
       </a>
       <h2>Tip</h2>
       <p>
-        You can access Vega, Vega-Lite, and the <a href="https://vega.github.io/vega/docs/api/view/"> Vega view</a> at{' '}
-        <code>(VEGA_DEBUG)</code> using your browser's developer console.
+        You can access Vega, Vega-Lite, and the{' '}
+        <a href="https://vega.github.io/vega/docs/api/view/" target="_blank" rel="noopener noreferrer">
+          {' '}
+          Vega view
+        </a>{' '}
+        at <code>(VEGA_DEBUG)</code> using your browser's developer console.
       </p>
       <h2>Versions</h2>
       <ul>
