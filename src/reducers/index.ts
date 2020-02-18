@@ -1,5 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
-import {mergeConfig} from 'vega';
+import {mergeConfig, version} from 'vega';
+import {satisfies} from 'semver';
+import schemaParser from 'vega-schema-url-parser';
 import * as vegaLite from 'vega-lite';
 import {Config} from 'vega-lite/src/config';
 import {TopLevelSpec} from 'vega-lite/src/spec';
@@ -153,6 +155,10 @@ function parseVega(
 
   try {
     const spec = JSON.parse(action.spec);
+    const parsed = schemaParser(spec.$schema);
+
+    if (!satisfies(version, `^${parsed.version.slice(1)}`))
+      currLogger.warn(`The input spec uses Vega ${parsed.version}, but the current version of Vega is v${version}.`);
 
     validateVega(spec, currLogger);
 
@@ -215,6 +221,14 @@ function parseVegaLite(
       config,
       logger: currLogger
     };
+
+    const parsed = schemaParser(vegaLiteSpec.$schema);
+
+    if (!satisfies(vegaLite.version, `^${parsed.version.slice(1)}`))
+      currLogger.warn(
+        `The input spec uses Vega-Lite ${parsed.version}, but the current version of Vega-Lite is v${vegaLite.version}.`
+      );
+
     validateVegaLite(vegaLiteSpec, currLogger);
 
     const vegaSpec = spec !== '{}' ? vegaLite.compile(vegaLiteSpec, options).spec : {};
