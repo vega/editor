@@ -155,8 +155,11 @@ class Sidebar extends Component<any, any> {
           </div>
         </div>
         <p className="settings-description">
-          Enable or disable <a href="https://vega.github.io/vega/docs/api/view/#view_hover">hover</a> event processing.
-          In auto mode, Vega-Lite disables hover event processing.
+          Enable or disable{' '}
+          <a href="https://vega.github.io/vega/docs/api/view/#view_hover" target="_blank" rel="noopener noreferrer">
+            hover
+          </a>{' '}
+          event processing. In auto mode, Vega-Lite disables hover event processing.
         </p>
         <div className="tooltips">
           <label>
