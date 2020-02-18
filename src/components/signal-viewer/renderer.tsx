@@ -287,6 +287,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
                     signal={signal}
                     view={this.props.view}
                     timeline={this.state.timeline}
+                    onClickHandler={this.props.onClickHandler}
                   >
                     {this.state.timeline && (
                       <TimelineRow
