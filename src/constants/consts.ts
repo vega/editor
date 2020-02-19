@@ -49,17 +49,17 @@ export const NAVBAR = {
   DataViewer: 'DataViewer',
   Logs: 'Logs',
   SignalViewer: 'SignalViewer'
-};
+} as const;
 
 export const SIDEPANE = {
   Config: 'Config',
   Editor: 'Editor'
-};
+} as const;
 
 export const EDITOR_FOCUS = {
   CompiledEditor: 'compiled-editor',
   SpecEditor: 'spec-editor'
-};
+} as const;
 
 export const KEYCODES = {
   B: 66,
@@ -75,5 +75,3 @@ export const KEYCODES = {
 export const WORD_SEPARATORS = '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?';
 
 export const BACKEND_URL = 'https://vega.now.sh/';
-
-export const COOKIE_NAME = 'vega_session';

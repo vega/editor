@@ -14,11 +14,5 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true
   },
-  "files": ["src/index.tsx"],
-  "include": ["node_modules/vega-lite/typings/*.d.ts"],
-  "awesomeTypescriptLoaderOptions": {
-    "useCache": true,
-    "forceIsolatedModules": true,
-    "silent": true
-  }
+  "files": ["src/index.tsx"]
 }

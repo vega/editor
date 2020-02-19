@@ -3,11 +3,12 @@ import LZString from 'lz-string';
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
+import ReactResizeDetector from 'react-resize-detector';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {debounce} from 'vega';
 import parser from 'vega-schema-url-parser';
 import {mapDispatchToProps, mapStateToProps} from '.';
-import {EDITOR_FOCUS, KEYCODES, LAYOUT, Mode, SCHEMA, SIDEPANE} from '../../../constants';
+import {EDITOR_FOCUS, KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -49,6 +50,7 @@ class Editor extends React.PureComponent<Props, {}> {
     }
     this.props.mergeConfigSpec();
   }
+
   public handleExtractConfig() {
     const confirmation = confirm('The spec and config will be formatted.');
     if (!confirmation) {
@@ -102,6 +104,7 @@ class Editor extends React.PureComponent<Props, {}> {
       editor.deltaDecorations(this.props.decorations, []);
       this.props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
     });
+
     editor.addAction({
       contextMenuGroupId: 'vega',
       contextMenuOrder: 0,
@@ -148,6 +151,7 @@ class Editor extends React.PureComponent<Props, {}> {
 
     if (this.props.sidePaneItem === SIDEPANE.Editor) {
       editor.focus();
+      editor.layout();
       this.props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
     }
   }
@@ -176,6 +180,7 @@ class Editor extends React.PureComponent<Props, {}> {
     if (this.props.sidePaneItem === SIDEPANE.Editor) {
       if (prevProps.sidePaneItem !== this.props.sidePaneItem) {
         this.editor.focus();
+        this.editor.layout();
         prevProps.setEditorReference(this.editor);
       }
     }
@@ -187,6 +192,7 @@ class Editor extends React.PureComponent<Props, {}> {
 
     if (this.props.parse) {
       this.editor.focus();
+      this.editor.layout();
       this.updateSpec(this.props.value);
       prevProps.setConfig(this.props.configEditorString);
       prevProps.parseSpec(false);
@@ -237,32 +243,21 @@ class Editor extends React.PureComponent<Props, {}> {
     }
   }
 
-  public getEditorHeight() {
-    // height of header : 60
-    // height of compiled Spec Header :30
-    let height = window.innerHeight - 60 - LAYOUT.MinPaneSize - 30; // 60 is the height of header;
-    if (this.props.compiledVegaSpec) {
-      height -= this.props.compiledVegaPaneSize - 30;
-    }
-    return height;
-  }
-
   public render() {
     return (
-      <div
-        className={this.props.mode === Mode.Vega ? 'full-height-wrapper' : ''}
-        style={{
-          display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none'
-        }}
-      >
+      <>
+        <ReactResizeDetector
+          handleWidth
+          handleHeight
+          onResize={(width: number, height: number) => {
+            this.editor.layout({width, height: height});
+          }}
+        ></ReactResizeDetector>
         <MonacoEditor
-          height={this.getEditorHeight()}
-          ref="editor"
           language="json"
           options={{
             autoClosingBrackets: 'never',
             autoClosingQuotes: 'never',
-            automaticLayout: true,
             cursorBlinking: 'smooth',
             folding: true,
             lineNumbersMinChars: 4,
@@ -275,7 +270,7 @@ class Editor extends React.PureComponent<Props, {}> {
           editorWillMount={this.editorWillMount}
           editorDidMount={this.editorDidMount}
         />
-      </div>
+      </>
     );
   }
 }

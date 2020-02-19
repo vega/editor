@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import {bindActionCreators, Dispatch} from 'redux';
-import {mergeConfig, Spec} from 'vega';
 import {MessageData} from 'vega-embed';
 import {hash} from 'vega-lite/build/src/util';
 import * as EditorActions from '../actions/editor';
@@ -32,13 +31,11 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
         // setting baseURL as event's origin
         this.props.setBaseUrl(evt.origin);
         console.info('[Vega-Editor] Received Message', evt.origin, data);
-        // send acknowledgement
-        const parsed = JSON.parse(data.spec) as Spec;
-        // merging config into the spec
+
         if (data.config) {
-          parsed.config = mergeConfig(parsed.config, data.config as any);
+          this.props.setConfig(stringify(data.config));
         }
-        data.spec = stringify(parsed);
+
         if (data.spec || data.file) {
           // FIXME: remove any
           (evt as any).source.postMessage(true, '*');
@@ -126,7 +123,7 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
       const content = await contentResponse.text(); // get as text
       const contentObj = JSON.parse(content); // parse the text
 
-      if (!contentObj.hasOwnProperty('$schema')) {
+      if (!('$schema' in contentObj)) {
         this.props.setGistVegaLiteSpec('', content);
       } else {
         const mode = contentObj.$schema.split('/').slice(-2)[0];
@@ -154,7 +151,7 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
           <SplitPane
             split="vertical"
             minSize={300}
-            defaultSize={this.w * 0.4}
+            defaultSize={Math.min(this.w * 0.4, 800)}
             pane1Style={{display: 'flex'}}
             className="main-pane"
             pane2Style={{overflow: 'scroll'}}

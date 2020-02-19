@@ -287,7 +287,12 @@ class Editor extends React.PureComponent<Props, State> {
     return (
       <div>
         <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
-          <div ref="chart" style={chartStyle} />
+          <div
+            data-tip={`Click on "Continue Recording" to make the chart interactive`}
+            data-place="right"
+            className="chart-overlay"
+          ></div>
+          <div aria-label="visualization" ref="chart" style={chartStyle} />
           {this.renderResizeHandle()}
         </div>
         <div className="fullscreen-open">

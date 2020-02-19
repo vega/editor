@@ -6,10 +6,9 @@ import {PortalWithState} from 'react-portal';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import Select from 'react-select';
 import {mapDispatchToProps, mapStateToProps} from '.';
-import {BACKEND_URL, COOKIE_NAME, KEYCODES, Mode} from '../../constants';
+import {BACKEND_URL, KEYCODES, Mode} from '../../constants';
 import {NAMES} from '../../constants/consts';
 import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs';
-import getCookie from '../../utils/getCookie';
 import ExportModal from './export-modal/index';
 import GistModal from './gist-modal/index';
 import HelpModal from './help-modal/index';
@@ -64,14 +63,9 @@ class Header extends React.PureComponent<Props, State> {
       }
     });
 
-    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
     try {
       const response = await fetch(`${BACKEND_URL}auth/github/check`, {
-        credentials: 'include',
-        headers: {
-          Cookie: `${COOKIE_NAME}=${cookieValue}`
-        },
-        method: 'get'
+        credentials: 'include'
       });
       const data = await response.json();
       const {isAuthenticated, handle, name, profilePicUrl} = data;
@@ -84,11 +78,7 @@ class Header extends React.PureComponent<Props, State> {
       if (e.data.type === 'auth') {
         try {
           const response = await fetch(`${BACKEND_URL}auth/github/check`, {
-            credentials: 'include',
-            headers: {
-              Cookie: `${COOKIE_NAME}=${cookieValue}`
-            },
-            method: 'get'
+            credentials: 'include'
           });
           const data = await response.json();
           const {isAuthenticated, handle, name, profilePicUrl} = data;
@@ -265,7 +255,9 @@ class Header extends React.PureComponent<Props, State> {
         ) : (
           <form>
             <button className="sign-in" type="submit" onClick={this.signIn.bind(this)}>
-              <span className="sign-in-text">Sign in with</span>
+              <span className="sign-in-text" aria-label="Sign in with GitHub">
+                Sign in with
+              </span>
               <GitHub />
             </button>
           </form>
@@ -309,8 +301,8 @@ class Header extends React.PureComponent<Props, State> {
         {Object.keys(VEGA_SPECS).map((specType, i) => {
           const specs = VEGA_SPECS[specType];
           return (
-            <div className="itemGroup" key={i}>
-              <div className="specType">{specType}</div>
+            <div className="item-group" key={i}>
+              <h4 className="spec-type">{specType}</h4>
               <div className="items" onClick={closePortal}>
                 {specs.map((spec, j) => {
                   return (
@@ -348,8 +340,8 @@ class Header extends React.PureComponent<Props, State> {
               {Object.keys(VEGA_LITE_SPECS[specGroup]).map((specType, j) => {
                 const specs = VEGA_LITE_SPECS[specGroup][specType];
                 return (
-                  <div className="itemGroup" key={j}>
-                    <div className="specType">{specType}</div>
+                  <div className="item-group" key={j}>
+                    <h4 className="spec-type">{specType}</h4>
                     <div className="items">
                       {specs.map((spec, k) => {
                         return (
@@ -386,7 +378,7 @@ class Header extends React.PureComponent<Props, State> {
     const shareContent = <ShareModal />;
 
     return (
-      <div className="header">
+      <div className="header" role="banner">
         <section className="left-section">
           {modeSwitcher}
           <span ref="splitButton" className={splitClass}>

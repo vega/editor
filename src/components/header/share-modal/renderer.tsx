@@ -67,8 +67,8 @@ class ShareModal extends React.PureComponent<Props, State> {
     return (
       <>
         <h1>Share</h1>
-        <p>We pack the Vega or Vega-Lite specification and an encoded string in the URL.</p>
-        <p>We use LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
+        <p>We pack the Vega or Vega-Lite specification as an encoded string in the URL.</p>
+        <p>We use a LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
         <div>
           <label className="user-pref">
             <input
@@ -81,12 +81,12 @@ class ShareModal extends React.PureComponent<Props, State> {
           </label>
         </div>
         <div className="sharing-buttons">
-          <button className="button" onClick={() => this.previewURL()}>
+          <button className="editor-button" onClick={() => this.previewURL()}>
             <Link />
             <span>Open Link</span>
           </button>
           <Clipboard
-            className="button copy-icon"
+            className="editor-button copy-icon"
             data-clipboard-text={this.state.generatedURL}
             onSuccess={this.onCopy.bind(this)}
           >
@@ -95,7 +95,7 @@ class ShareModal extends React.PureComponent<Props, State> {
           </Clipboard>
           <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
         </div>
-        Number of charaters in the URL: {this.state.generatedURL.length}{' '}
+        Number of characters in the URL: {this.state.generatedURL.length}{' '}
         <span className="url-warning">
           {this.state.generatedURL.length > 2083 && (
             <>

@@ -1,10 +1,9 @@
 import * as React from 'react';
-import ReactPaginate from 'react-paginate';
 import {AlertCircle, File, Lock} from 'react-feather';
+import ReactPaginate from 'react-paginate';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {mapDispatchToProps, mapStateToProps} from '.';
-import {BACKEND_URL, COOKIE_NAME, Mode, GistPrivacy} from '../../../constants';
-import getCookie from '../../../utils/getCookie';
+import {BACKEND_URL, GistPrivacy, Mode} from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -328,14 +327,10 @@ class GistModal extends React.PureComponent<Props, State> {
           loading: false
         },
         async () => {
-          const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
           let response;
           if (page.selected === 0) {
             response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=${this.props.private}`, {
               credentials: 'include',
-              headers: {
-                Cookie: `${COOKIE_NAME}=${cookieValue}`
-              },
               method: 'get'
             });
           } else {
@@ -343,9 +338,6 @@ class GistModal extends React.PureComponent<Props, State> {
               `${BACKEND_URL}gists/user?cursor=${this.state.pages[page.selected]}&privacy=${this.props.private}`,
               {
                 credentials: 'include',
-                headers: {
-                  Cookie: `${COOKIE_NAME}=${cookieValue}`
-                },
                 method: 'get'
               }
             );
@@ -389,18 +381,18 @@ class GistModal extends React.PureComponent<Props, State> {
             {this.props.isAuthenticated ? (
               this.state.loaded ? (
                 <>
+                  <div className="privacy-toggle">
+                    <input
+                      type="checkbox"
+                      name="privacy"
+                      id="privacy"
+                      checked={this.props.private === GistPrivacy.ALL}
+                      onChange={this.props.toggleGistPrivacy}
+                    />
+                    <label htmlFor="privacy">Show private gists</label>
+                  </div>
                   {this.state.personalGist.length > 0 ? (
                     <>
-                      <div className="privacy-toggle">
-                        <input
-                          type="checkbox"
-                          name="privacy"
-                          id="privacy"
-                          checked={this.props.private === GistPrivacy.ALL}
-                          onChange={this.props.toggleGistPrivacy}
-                        />
-                        <label htmlFor="privacy">Show private gists</label>
-                      </div>
                       {Object.keys(this.state.pages).length > 1 && (
                         <ReactPaginate
                           previousLabel={'<'}

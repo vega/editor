@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:13
 
 # Informs Docker that the container listens on the specified port at runtime
 # https://docs.docker.com/engine/reference/builder/#expose
@@ -10,22 +10,22 @@ RUN apt-get update && apt-get upgrade -y
 # Install rsync as it is a dependency of ./scripts/vendor.sh
 RUN apt-get -y install rsync
 
+# Install dos2unix to remove 'r' characters from scripts
+RUN apt-get -y install dos2unix
+
+RUN apt-get -y install ruby-full
+RUN gem install image_optim image_optim_pack
+RUN curl -L "http://www.jonof.id.au/files/kenutils/pngout-20200115-linux.tar.gz" | tar -xz -C /usr/local/bin --strip-components 2 --wildcards '*/amd64/pngout'
+
 # Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile
 # https://docs.docker.com/engine/reference/builder/#workdir
 WORKDIR /usr/src/app
 
-# Copies the package.json and yarn.lock files first to ensure the cache is only invalidated when these files change
-# https://nodejs.org/en/docs/guides/nodejs-docker-webapp/#creating-a-dockerfile
-COPY package.json yarn.lock ./
-
-# For this project, additional files must also be copied as yarn hooks depend on them
-COPY scripts ./scripts
-
-# Remove 'r' characters from the vendor script (otherwise it won't execute)
-RUN sed $'s/\r$//' ./scripts/vendor.sh > ./scripts/vendor.sh
-
 # Copy remaining files
 COPY . .
+
+# Remove 'r' characters from the scripts (otherwise it won't execute)
+RUN dos2unix ./scripts/generate-example-images.sh ./scripts/vendor.sh ./scripts/version.sh
 
 # Run Yarn
 RUN yarn

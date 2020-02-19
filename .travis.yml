@@ -1,17 +1,20 @@
 language: node_js
 node_js:
-  - "12"
+  - "13"
 script:
   - yarn lint
   - yarn build
 before_deploy:
+  - gem install image_optim
+  - gem install image_optim_pack
+  - command -v pngout || curl -L "http://www.jonof.id.au/files/kenutils/pngout-20200115-linux.tar.gz" | tar -xz -C ~/bin --strip-components 2 --wildcards '*/amd64/pngout'
   - yarn generate-example-images
+  - yarn postbuild
 cache: yarn
 deploy:
+  edge: true
   provider: pages
-  skip-cleanup: true
   github-token: $GITHUB_TOKEN
-  keep-history: true
   local-dir: dist
   name: Dominik Moritz
   email: domoritz@gmail.com

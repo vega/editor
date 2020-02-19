@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const {CheckerPlugin} = require('awesome-typescript-loader');
 
 module.exports = (env, argv) => {
   const config = {
@@ -66,8 +65,14 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.tsx?$/,
-          exclude: /node_modules/,
-          use: ['awesome-typescript-loader']
+          use: [
+            {
+              loader: 'ts-loader',
+              options: {
+                transpileOnly: true
+              }
+            }
+          ]
         },
         {
           test: /\.css$/,
@@ -94,8 +99,7 @@ module.exports = (env, argv) => {
       }),
       new MonacoWebpackPlugin({
         languages: ['json']
-      }),
-      new CheckerPlugin()
+      })
     ],
 
     devServer: {

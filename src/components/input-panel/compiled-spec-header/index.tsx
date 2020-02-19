@@ -45,11 +45,6 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
       return (
         <div onClick={this.props.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
           <span>Compiled Vega</span>
-
-          <button onClick={this.editVegaSpec} style={{zIndex: -1, opacity: 0, cursor: 'pointer'}}>
-            Edit Vega Spec
-          </button>
-
           <ChevronUp />
         </div>
       );

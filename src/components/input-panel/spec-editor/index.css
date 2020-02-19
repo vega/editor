@@ -1,7 +1,3 @@
-.sizeFixEditorParent .react-monaco-editor-container {
-  overflow: hidden;
-}
-
 .editor-header {
   font-size: 12px;
   width: 100%;
@@ -17,13 +13,4 @@
 
 .editor-header.right-align {
   justify-content: flex-end;
-}
-
-.button {
-  user-select: none;
-  margin-right: 8px;
-}
-
-.button:focus {
-  outline: 0;
 }
