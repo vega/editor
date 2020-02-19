@@ -116,14 +116,16 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
 
   public async setGist(parameter: {id: string; filename: string; revision?: string}) {
     try {
-      const response = await fetch(
+      const gistResponse = await fetch(
         `https://api.github.com/gists/${parameter.id}${
           parameter.revision !== undefined ? `/${parameter.revision}` : ''
         }`
       );
-      const data = await response.json();
-      const content = data.files[parameter.filename].content;
-      const contentObj = JSON.parse(content);
+      const gistData = await gistResponse.json();
+      const contentResponse = await fetch(gistData.files[parameter.filename].raw_url); // fetch from raw_url to handle large files
+      const content = await contentResponse.text(); // get as text
+      const contentObj = JSON.parse(content); // parse the text
+
       if (!contentObj.hasOwnProperty('$schema')) {
         this.props.setGistVegaLiteSpec('', content);
       } else {

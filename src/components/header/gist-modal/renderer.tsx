@@ -216,17 +216,20 @@ class GistModal extends React.PureComponent<Props, State> {
               invalidFilename: true
             });
             return Promise.reject('Invalid file name');
-          } else {
-            const {revision, filename} = this.state.gist;
-            JSON.parse(json.files[filename].content);
-            if (this.state.latestRevision) {
-              this.props.history.push(`/gist/${gistId}/${filename}`);
-            } else {
-              this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
-            }
-            closePortal();
           }
+
+          return fetch(json.files[this.state.gist.filename].raw_url); // fetch from raw_url to handle large files
         }
+      })
+      .then(async res => {
+        const {revision, filename} = this.state.gist;
+        await res.json(); // check if the loaded file is a JSON
+        if (this.state.latestRevision) {
+          this.props.history.push(`/gist/${gistId}/${filename}`);
+        } else {
+          this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+        }
+        closePortal();
       })
       .catch(error => {
         if (error instanceof SyntaxError) {
