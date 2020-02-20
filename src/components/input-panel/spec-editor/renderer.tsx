@@ -259,6 +259,7 @@ class Editor extends React.PureComponent<Props, {}> {
             autoClosingBrackets: 'never',
             autoClosingQuotes: 'never',
             cursorBlinking: 'smooth',
+            fixedOverflowWidgets: true,
             folding: true,
             lineNumbersMinChars: 4,
             minimap: {enabled: false},
