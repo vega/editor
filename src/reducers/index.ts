@@ -157,6 +157,13 @@ function parseVega(
     const spec = JSON.parse(action.spec);
     const parsed = schemaParser(spec.$schema);
 
+    const parsedVersionArray = parsed.version.slice(1).split('.');
+    parsedVersionArray.map((v, index) => {
+      if (index != 0 && parseInt(v) != 0) {
+        currLogger.warn(`${spec.$schema} can not be resolved`);
+        return;
+      }
+    });
     if (!satisfies(version, `^${parsed.version.slice(1)}`))
       currLogger.warn(`The input spec uses Vega ${parsed.version}, but the current version of Vega is v${version}.`);
 
@@ -223,6 +230,13 @@ function parseVegaLite(
     };
 
     const parsed = schemaParser(vegaLiteSpec.$schema);
+    const parsedVersionArray = parsed.version.slice(1).split('.');
+    parsedVersionArray.map((v, index) => {
+      if (index != 0 && parseInt(v) != 0) {
+        currLogger.warn(`${vegaLiteSpec.$schema} can not be resolved`);
+        return;
+      }
+    });
 
     if (!satisfies(vegaLite.version, `^${parsed.version.slice(1)}`))
       currLogger.warn(
