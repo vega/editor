@@ -12,7 +12,7 @@ class Reset extends React.PureComponent<RouteComponentProps> {
     return (
       <div className="reset">
         <p>
-          Reset the Vega Editor by clearing the local storage. You can run this if the editor is struck in a loop or
+          Reset the Vega Editor by clearing the local storage. You can run this if the editor is stuck in a loop or
           otherwise not functioning correctly. This operation cannot be undone.
         </p>
         <button onClick={this.handleClick.bind(this)} type="button">
