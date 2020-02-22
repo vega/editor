@@ -210,7 +210,11 @@ class ExportModal extends React.PureComponent<Props, State> {
             <p>
               <strong>Experimental!</strong>
               <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
-              patient. Your chart is sent to an <a href="https://cloudconvert.com/">external service</a> for processing.
+              patient. Your chart is sent to an{' '}
+              <a href="https://cloudconvert.com/" target="_blank" rel="noopener noreferrer">
+                external service
+              </a>{' '}
+              for processing.
             </p>
             <button onClick={() => this.downloadPDF()}>Download</button>
           </div>
