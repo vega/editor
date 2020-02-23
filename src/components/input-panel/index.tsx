@@ -38,35 +38,32 @@ class InputPanel extends React.PureComponent<Props> {
   }
 
   public getInnerPanes() {
-    const innerPanes = [
+    return [
       <div key="editor" className="full-height-wrapper">
         <SpecEditorHeader key="specEditorHeader" />
         <div
-          className="full-height-wrapper"
           style={{
+            height: 'calc(100% - 30px)', // - header
             display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none'
           }}
         >
           <SpecEditor key="editor" />
         </div>
-
         <div
-          className="full-height-wrapper"
           style={{
+            height: 'calc(100% - 30px)', // - header
             display: this.props.sidePaneItem === SIDEPANE.Config ? '' : 'none'
           }}
         >
           <ConfigEditor key="configEditor" />
         </div>
-      </div>
+      </div>,
+      this.props.compiledVegaSpec ? (
+        <CompiledSpecDisplay key="compiled" />
+      ) : (
+        <CompiledSpecHeader key="compiledSpecHeader" />
+      )
     ];
-    if (this.props.compiledVegaSpec) {
-      innerPanes.push(<CompiledSpecDisplay key="compiled" />);
-    } else {
-      innerPanes.push(<CompiledSpecHeader key="compiledSpecHeader" />);
-    }
-
-    return innerPanes;
   }
   public render() {
     const innerPanes = this.getInnerPanes();
@@ -85,12 +82,11 @@ class InputPanel extends React.PureComponent<Props> {
           onChange={this.handleChange}
           pane1Style={{minHeight: `${LAYOUT.MinPaneSize}px`}}
           pane2Style={{
-            display: this.props.mode === Mode.Vega ? 'none' : 'flex',
+            display: this.props.mode === Mode.Vega ? 'none' : 'block',
             height: this.props.compiledVegaSpec
               ? (this.props.compiledVegaPaneSize || window.innerHeight * 0.4) + 'px'
               : LAYOUT.MinPaneSize + 'px'
           }}
-          paneStyle={{display: 'flex'}}
           onDragFinished={() => {
             if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
               this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.5);
