@@ -166,7 +166,7 @@ class GistModal extends React.PureComponent<Props, State> {
         });
         return res.json();
       })
-      .then(json => {
+      .then(async json => {
         if (this.state.invalidRevision) {
           this.setState({
             gistLoadClicked: false
@@ -217,18 +217,17 @@ class GistModal extends React.PureComponent<Props, State> {
             return Promise.reject('Invalid file name');
           }
 
-          return fetch(json.files[this.state.gist.filename].raw_url); // fetch from raw_url to handle large files
+          const res = await fetch(json.files[this.state.gist.filename].raw_url); // fetch from raw_url to handle large files
+
+          const {revision, filename} = this.state.gist;
+          await res.json(); // check if the loaded file is a JSON
+          if (this.state.latestRevision) {
+            this.props.history.push(`/gist/${gistId}/${filename}`);
+          } else {
+            this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+          }
+          closePortal();
         }
-      })
-      .then(async res => {
-        const {revision, filename} = this.state.gist;
-        await res.json(); // check if the loaded file is a JSON
-        if (this.state.latestRevision) {
-          this.props.history.push(`/gist/${gistId}/${filename}`);
-        } else {
-          this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
-        }
-        closePortal();
       })
       .catch(error => {
         if (error instanceof SyntaxError) {
