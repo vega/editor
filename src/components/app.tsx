@@ -120,8 +120,8 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
       );
       const gistData = await gistResponse.json();
       const contentResponse = await fetch(gistData.files[parameter.filename].raw_url); // fetch from raw_url to handle large files
-      const content = await contentResponse.text(); // get as text
-      const contentObj = JSON.parse(content); // parse the text
+      const content = await contentResponse.text();
+      const contentObj = JSON.parse(content);
 
       if (!('$schema' in contentObj)) {
         this.props.setGistVegaLiteSpec('', content);
