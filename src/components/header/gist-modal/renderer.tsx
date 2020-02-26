@@ -132,111 +132,106 @@ class GistModal extends React.PureComponent<Props, State> {
       gistUrl = new URL(url, 'https://gist.github.com');
     }
     const [_, gistId] = gistUrl.pathname.split('/').slice(1);
-    await fetch(`https://api.github.com/gists/${gistId}/commits`)
-      .then(res => {
+
+    try {
+      const gistCommitsResponse = await fetch(`https://api.github.com/gists/${gistId}/commits`);
+      this.setState({
+        invalidUrl: !gistCommitsResponse.ok
+      });
+      const gistCommits = await gistCommitsResponse.json();
+      if (!this.state.gist.revision && !this.state.invalidUrl) {
         this.setState({
-          invalidUrl: !res.ok
-        });
-        return res.json();
-      })
-      .then(json => {
-        if (!this.state.gist.revision && !this.state.invalidUrl) {
-          this.setState({
-            gist: {
-              ...this.state.gist,
-              revision: json[0].version
-            }
-          });
-        } else if (this.state.invalidUrl) {
-          this.setState({
-            gistLoadClicked: false
-          });
-          return Promise.reject('Invalid Gist URL');
-        }
-        if (json[0].version === this.state.gist.revision) {
-          this.setState({
-            latestRevision: true
-          });
-        }
-        return fetch(`https://api.github.com/gists/${gistId}/${this.state.gist.revision}`);
-      })
-      .then(res => {
-        this.setState({
-          invalidRevision: !res.ok
-        });
-        return res.json();
-      })
-      .then(async json => {
-        if (this.state.invalidRevision) {
-          this.setState({
-            gistLoadClicked: false
-          });
-          return Promise.reject('Invalid Revision');
-        } else if (!this.state.invalidRevision && this.state.gist.filename === '') {
-          const jsonFiles = Object.keys(json.files).filter(file => {
-            if (file.split('.').slice(-1)[0] === 'json') {
-              return true;
-            }
-          });
-          if (jsonFiles.length === 0) {
-            this.setState(
-              {
-                gistLoadClicked: false,
-                invalidUrl: true
-              },
-              () => {
-                return Promise.reject('No JSON file exists in the gist');
-              }
-            );
-          } else {
-            this.setState(
-              {
-                gist: {
-                  ...this.state.gist,
-                  filename: jsonFiles[0]
-                }
-              },
-              () => {
-                const {revision, filename} = this.state.gist;
-                JSON.parse(json.files[jsonFiles[0]].content);
-                if (this.state.latestRevision) {
-                  this.props.history.push(`/gist/${gistId}/${filename}`);
-                } else {
-                  this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
-                }
-                closePortal();
-              }
-            );
+          gist: {
+            ...this.state.gist,
+            revision: gistCommits[0].version
           }
-        } else {
-          if (json.files[this.state.gist.filename] === undefined) {
-            this.setState({
+        });
+      } else if (this.state.invalidUrl) {
+        this.setState({
+          gistLoadClicked: false
+        });
+        return Promise.reject('Invalid Gist URL');
+      }
+      if (gistCommits[0].version === this.state.gist.revision) {
+        this.setState({
+          latestRevision: true
+        });
+      }
+      const gistSummaryResponse = await fetch(`https://api.github.com/gists/${gistId}/${this.state.gist.revision}`);
+      this.setState({
+        invalidRevision: !gistSummaryResponse.ok
+      });
+      const gistSummary = await gistSummaryResponse.json();
+
+      if (this.state.invalidRevision) {
+        this.setState({
+          gistLoadClicked: false
+        });
+        return Promise.reject('Invalid Revision');
+      } else if (!this.state.invalidRevision && this.state.gist.filename === '') {
+        const jsonFiles = Object.keys(gistSummary.files).filter(file => {
+          if (file.split('.').slice(-1)[0] === 'json') {
+            return true;
+          }
+        });
+        if (jsonFiles.length === 0) {
+          this.setState(
+            {
               gistLoadClicked: false,
-              invalidFilename: true
-            });
-            return Promise.reject('Invalid file name');
-          }
-
-          const res = await fetch(json.files[this.state.gist.filename].raw_url); // fetch from raw_url to handle large files
-
-          const {revision, filename} = this.state.gist;
-          await res.json(); // check if the loaded file is a JSON
-          if (this.state.latestRevision) {
-            this.props.history.push(`/gist/${gistId}/${filename}`);
-          } else {
-            this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
-          }
-          closePortal();
+              invalidUrl: true
+            },
+            () => {
+              return Promise.reject('No JSON file exists in the gist');
+            }
+          );
+        } else {
+          this.setState(
+            {
+              gist: {
+                ...this.state.gist,
+                filename: jsonFiles[0]
+              }
+            },
+            () => {
+              const {revision, filename} = this.state.gist;
+              JSON.parse(gistSummary.files[jsonFiles[0]].content);
+              if (this.state.latestRevision) {
+                this.props.history.push(`/gist/${gistId}/${filename}`);
+              } else {
+                this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+              }
+              closePortal();
+            }
+          );
         }
-      })
-      .catch(error => {
-        if (error instanceof SyntaxError) {
+      } else {
+        if (gistSummary.files[this.state.gist.filename] === undefined) {
           this.setState({
             gistLoadClicked: false,
-            syntaxError: true
+            invalidFilename: true
           });
+          return Promise.reject('Invalid file name');
         }
-      });
+
+        const rawResponse = await fetch(gistSummary.files[this.state.gist.filename].raw_url); // fetch from raw_url to handle large files
+
+        const {revision, filename} = this.state.gist;
+        await rawResponse.json(); // check if the loaded file is a JSON
+        if (this.state.latestRevision) {
+          this.props.history.push(`/gist/${gistId}/${filename}`);
+        } else {
+          this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+        }
+        closePortal();
+      }
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        this.setState({
+          gistLoadClicked: false,
+          syntaxError: true
+        });
+      }
+    }
   }
 
   public componentDidUpdate(prevProps) {
