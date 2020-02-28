@@ -150,7 +150,7 @@ class GistModal extends React.PureComponent<Props, State> {
         this.setState({
           gistLoadClicked: false
         });
-        return Promise.reject('Invalid Gist URL');
+        throw new Error('Invalid Gist URL');
       }
       if (gistCommits[0].version === this.state.gist.revision) {
         this.setState({
@@ -167,7 +167,7 @@ class GistModal extends React.PureComponent<Props, State> {
         this.setState({
           gistLoadClicked: false
         });
-        return Promise.reject('Invalid Revision');
+        throw new Error('Invalid Revision');
       } else if (!this.state.invalidRevision && this.state.gist.filename === '') {
         const jsonFiles = Object.keys(gistSummary.files).filter(file => {
           if (file.split('.').slice(-1)[0] === 'json') {
@@ -175,15 +175,11 @@ class GistModal extends React.PureComponent<Props, State> {
           }
         });
         if (jsonFiles.length === 0) {
-          this.setState(
-            {
-              gistLoadClicked: false,
-              invalidUrl: true
-            },
-            () => {
-              return Promise.reject('No JSON file exists in the gist');
-            }
-          );
+          this.setState({
+            gistLoadClicked: false,
+            invalidUrl: true
+          });
+          throw new Error('No JSON file exists in the gist');
         } else {
           this.setState(
             {
@@ -210,13 +206,13 @@ class GistModal extends React.PureComponent<Props, State> {
             gistLoadClicked: false,
             invalidFilename: true
           });
-          return Promise.reject('Invalid file name');
+          throw new Error('Invalid file name');
         }
 
         const rawResponse = await fetch(gistSummary.files[this.state.gist.filename].raw_url); // fetch from raw_url to handle large files
+        await rawResponse.json(); // check if the loaded file is a JSON
 
         const {revision, filename} = this.state.gist;
-        await rawResponse.json(); // check if the loaded file is a JSON
         if (this.state.latestRevision) {
           this.props.history.push(`/gist/${gistId}/${filename}`);
         } else {
