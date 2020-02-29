@@ -117,10 +117,11 @@ class GistModal extends React.PureComponent<Props, State> {
       gistLoadClicked: true
     });
 
-    let gistUrl;
+    let gistUrl: URL;
+
     if (url.match(/gist.githubusercontent.com/)) {
       gistUrl = new URL(url, 'https://gist.githubusercontent.com');
-      const [, , , revision, filename] = gistUrl.pathname.split('/').slice(1);
+      const [revision, filename] = gistUrl.pathname.split('/').slice(4);
       this.setState({
         gist: {
           ...this.state.gist,
@@ -131,7 +132,7 @@ class GistModal extends React.PureComponent<Props, State> {
     } else if (url.match(/gist.github.com/)) {
       gistUrl = new URL(url, 'https://gist.github.com');
     }
-    const [_, gistId] = gistUrl.pathname.split('/').slice(1);
+    const gistId = gistUrl.pathname.split('/')[2];
 
     try {
       const gistCommitsResponse = await fetch(`https://api.github.com/gists/${gistId}/commits`);
