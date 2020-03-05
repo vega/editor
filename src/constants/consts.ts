@@ -66,7 +66,8 @@ export const KEYCODES = {
   ESCAPE: 27,
   S: 83,
   SINGLE_QUOTE: 222,
-  SLASH: 191
+  SLASH: 191,
+  THREE: 51
 };
 
 /**

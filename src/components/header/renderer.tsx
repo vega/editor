@@ -49,6 +49,9 @@ class Header extends React.PureComponent<Props, State> {
   }
 
   public async componentDidMount() {
+    if (!this.listnerAttached) {
+      this.handleAppShortcuts();
+    }
     const className = ['profile-img', 'arrow-down', 'profile-container'];
     window.addEventListener('click', e => {
       const key = 'className';
@@ -125,16 +128,27 @@ class Header extends React.PureComponent<Props, State> {
     } else return null;
   }
 
-  public handleHelpModalToggle(Toggleevent, openPortal, closePortal, isOpen) {
+  public handleAppShortcuts() {
     window.addEventListener('keydown', event => {
       if (
         (event.keyCode === KEYCODES.SINGLE_QUOTE && event.metaKey && !event.shiftKey) || // Handle key press in Mac
         (event.keyCode === KEYCODES.SLASH && event.ctrlKey && event.shiftKey) // Handle Key press in PC
       ) {
-        if (!isOpen) {
-          openPortal();
+        const modalInstance: any = this.refs.helpModal;
+        if (!modalInstance.isOpen) {
+          modalInstance.openPortal();
         } else {
-          closePortal();
+          modalInstance.closePortal();
+        }
+      }
+      // shortcut for opening examples modal
+      if (
+        (event.keyCode === KEYCODES.THREE && event.metaKey && !event.shiftKey) || // Handle key press in Mac
+        (event.keyCode === KEYCODES.THREE && event.ctrlKey && event.shiftKey) // Handle Key press in PC
+      ) {
+        const modalInstance: any = this.refs.examplesModal;
+        if (!modalInstance.isOpen) {
+          modalInstance.openPortal();
         }
       }
       this.listnerAttached = true;
@@ -450,6 +464,7 @@ class Header extends React.PureComponent<Props, State> {
           <PortalWithState
             closeOnEsc
             defaultOpen={this.props.showExample}
+            ref="examplesModal"
             onOpen={() => {
               const node = ReactDOM.findDOMNode(this.examplePortal.current);
               node.scrollTop = this.props.lastPosition;
@@ -508,11 +523,8 @@ class Header extends React.PureComponent<Props, State> {
         </section>
 
         <section className="right-section">
-          <PortalWithState closeOnEsc>
+          <PortalWithState closeOnEsc ref="helpModal">
             {({openPortal, closePortal, isOpen, portal}) => {
-              if (!this.listnerAttached) {
-                this.handleHelpModalToggle(event, openPortal, closePortal, isOpen);
-              }
               return [
                 <span key="0" onClick={openPortal}>
                   {HelpButton}

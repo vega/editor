@@ -23,6 +23,11 @@ const shortcuts = [
     mac: '⌘ + Shift + o',
     text: `Navigate to a symbol in the specification`,
     windows: 'Ctrl + Shift + o'
+  },
+  {
+    mac: '⌘ + 3',
+    text: `Open Examples`,
+    windows: 'Ctrl + Shift + 3'
   }
 ];
 
