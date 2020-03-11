@@ -6722,9 +6722,9 @@ minimist@0.0.8:
   integrity sha1-hX/Kv8M5fSYluCKCYuhqp6ARsF0=
 
 minimist@^1.1.1, minimist@^1.2.0:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.3.tgz#3db5c0765545ab8637be71f333a104a965a9ca3f"
-  integrity sha512-+bMdgqjMN/Z77a6NlY/I3U5LlRDbnmaAk6lDveAPKwSpcPM4tKAuYsvYF8xjhOPXhOYGe/73vVLVez5PW+jqhw==
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.4.tgz#40357ef9582f8cd42ba8eaa274ddcf27f0c979b7"
+  integrity sha512-wTiNDqe4D2rbTJGZk1qcdZgFtY0/r+iuE6GDT7V0/+Gu5MLpIDm4+CssDECR79OJs/OxLPXMzdxy153b5Qy3hg==
 
 minipass@^2.6.0, minipass@^2.8.6, minipass@^2.9.0:
   version "2.9.0"
@@ -9994,10 +9994,10 @@ vega-lite-dev-config@^0.4.3:
     prettier "^1.19.1"
     ts-jest "^25.2.0"
 
-vega-lite@4.5.1:
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-4.5.1.tgz#e5d3a5080890870025e788659f6935c9dea398b8"
-  integrity sha512-onC8RwSN4hEW9IyyMdfh+V0MThQg4Gi/LFtLwrz/ZxLPzreeZL/Qtj0ea7ysz7VzN4RkBmAcUioeV6ggZ5e8nA==
+vega-lite@4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-4.6.0.tgz#6084d57c79330f7e7581a359a54327abcbe11136"
+  integrity sha512-yDYSOHGincL0MAGAI83VJsILljRrasByPwbA8JC+bp+wY1I3I4WMVwF5t+2sPt/rFowtEnpBxDvU7urtdbt9NQ==
   dependencies:
     "@types/clone" "~0.1.30"
     "@types/fast-json-stable-stringify" "^2.0.0"
@@ -10011,7 +10011,7 @@ vega-lite@4.5.1:
     vega-expression "~2.6.3"
     vega-scale "^6.0.0"
     vega-util "~1.13.0"
-    yargs "~15.1.0"
+    yargs "~15.3.0"
 
 vega-loader@^4.0.0, vega-loader@^4.2.0, vega-loader@~4.2.0:
   version "4.2.0"
@@ -10691,7 +10691,7 @@ yargs@13.2.4:
     y18n "^4.0.0"
     yargs-parser "^13.1.0"
 
-yargs@15, yargs@^15.0.0, yargs@^15.1.0:
+yargs@15, yargs@^15.0.0, yargs@^15.1.0, yargs@~15.3.0:
   version "15.3.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.3.0.tgz#403af6edc75b3ae04bf66c94202228ba119f0976"
   integrity sha512-g/QCnmjgOl1YJjGsnUg2SatC7NUYEiLXJqxNOQU9qSpjzGtGXda9b+OKccr1kLTy8BN9yqEyqfq5lxlwdc13TA==
@@ -10707,20 +10707,3 @@ yargs@15, yargs@^15.0.0, yargs@^15.1.0:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^18.1.0"
-
-yargs@~15.1.0:
-  version "15.1.0"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.1.0.tgz#e111381f5830e863a89550bd4b136bb6a5f37219"
-  integrity sha512-T39FNN1b6hCW4SOIk1XyTOWxtXdcen0t+XYrysQmChzSipvhBO8Bj0nK1ozAasdk24dNWuMZvr4k24nz+8HHLg==
-  dependencies:
-    cliui "^6.0.0"
-    decamelize "^1.2.0"
-    find-up "^4.1.0"
-    get-caller-file "^2.0.1"
-    require-directory "^2.1.1"
-    require-main-filename "^2.0.0"
-    set-blocking "^2.0.0"
-    string-width "^4.2.0"
-    which-module "^2.0.0"
-    y18n "^4.0.0"
-    yargs-parser "^16.1.0"
