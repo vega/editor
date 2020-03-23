@@ -10006,10 +10006,10 @@ vega-tooltip@^0.20.1:
   dependencies:
     vega-util "^1.12.2"
 
-vega-tooltip@^0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.21.0.tgz#04bf26a7f0495f6f391dc5c75cafe309c6288108"
-  integrity sha512-PQBc/kHVd/6KRuOFn3ZndWEpeXysgYNgrS4x6+4XS12laIhcy1np+sz0U3POyuQld8DnC/MTok8pKH96S9x1hQ==
+vega-tooltip@^0.22.0:
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.22.0.tgz#b87175f6942d6fe8ac083359db0dc1fe30c8afc8"
+  integrity sha512-H5rK3wpjmMU2jsRqcSfVsqD9PDQkbwQp1daAmr7lBVzb33dgw3vGZAgOTCI9OwNSi2xV2Ylv0QRlUq2f7ojFVQ==
   dependencies:
     vega-util "^1.13.0"
 
