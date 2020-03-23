@@ -44,7 +44,7 @@
     "react-dom": "^16.13.0",
     "react-feather": "^2.0.3",
     "react-ga": "2.7.0",
-    "react-monaco-editor": "^0.34.0",
+    "react-monaco-editor": "^0.35.0",
     "react-paginate": "^6.3.2",
     "react-portal": "^4.2.1",
     "react-redux": "^7.2.0",
