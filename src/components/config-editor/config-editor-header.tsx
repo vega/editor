@@ -17,9 +17,9 @@ class ConfigEditorHeader extends React.PureComponent<any, any> {
         Theme:
         <select
           value={this.props.themeName}
-          onClick={e => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
           id="config-select"
-          onChange={e => {
+          onChange={(e) => {
             e.stopPropagation();
             if (e.target.value === 'custom') {
               this.props.setConfig('{}');
@@ -32,7 +32,7 @@ class ConfigEditorHeader extends React.PureComponent<any, any> {
           }}
         >
           <option value="custom">Custom</option>
-          {Object.keys(vegaThemes).map(keyName => {
+          {Object.keys(vegaThemes).map((keyName) => {
             return (
               <option key={keyName} value={keyName}>
                 {keyName}
@@ -50,7 +50,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       setConfig: EditorActions.setConfig,
       setConfigEditorString: EditorActions.setConfigEditorString,
-      setThemeName: EditorActions.setThemeName
+      setThemeName: EditorActions.setThemeName,
     },
     dispatch
   );
@@ -59,7 +59,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
 function mapStateToProps(state: State) {
   return {
     manualParse: state.manualParse,
-    themeName: state.themeName
+    themeName: state.themeName,
   };
 }
 

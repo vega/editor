@@ -77,7 +77,7 @@ class Editor extends React.PureComponent<Props, {}> {
     if (spec.$schema === undefined) {
       spec = {
         $schema: SCHEMA[Mode.Vega],
-        ...spec
+        ...spec,
       };
       if (confirm('Adding schema URL will format the specification too.')) {
         this.props.updateVegaSpec(stringify(spec));
@@ -90,7 +90,7 @@ class Editor extends React.PureComponent<Props, {}> {
     if (spec.$schema === undefined) {
       spec = {
         $schema: SCHEMA[Mode.VegaLite],
-        ...spec
+        ...spec,
       };
       if (confirm('Adding schema URL will format the specification too.')) {
         this.props.updateVegaLiteSpec(stringify(spec));
@@ -110,7 +110,7 @@ class Editor extends React.PureComponent<Props, {}> {
       contextMenuOrder: 0,
       id: 'ADD_VEGA_SCHEMA',
       label: 'Add Vega schema URL',
-      run: this.addVegaSchemaURL.bind(this)
+      run: this.addVegaSchemaURL.bind(this),
     });
 
     editor.addAction({
@@ -118,7 +118,7 @@ class Editor extends React.PureComponent<Props, {}> {
       contextMenuOrder: 1,
       id: 'ADD_VEGA_LITE_SCHEMA',
       label: 'Add Vega-Lite schema URL',
-      run: this.addVegaLiteSchemaURL.bind(this)
+      run: this.addVegaLiteSchemaURL.bind(this),
     });
 
     editor.addAction({
@@ -126,7 +126,7 @@ class Editor extends React.PureComponent<Props, {}> {
       contextMenuOrder: 2,
       id: 'CLEAR_EDITOR',
       label: 'Clear Spec',
-      run: this.onClear.bind(this)
+      run: this.onClear.bind(this),
     });
 
     editor.addAction({
@@ -134,7 +134,7 @@ class Editor extends React.PureComponent<Props, {}> {
       contextMenuOrder: 3,
       id: 'MERGE_CONFIG',
       label: 'Merge Config Into Spec',
-      run: this.handleMergeConfig.bind(this)
+      run: this.handleMergeConfig.bind(this),
     });
 
     editor.addAction({
@@ -142,7 +142,7 @@ class Editor extends React.PureComponent<Props, {}> {
       contextMenuOrder: 4,
       id: 'EXTRACT_CONFIG',
       label: 'Extract Config From Spec',
-      run: this.handleExtractConfig.bind(this)
+      run: this.handleExtractConfig.bind(this),
     });
 
     editor.getModel().getOptions();
@@ -263,7 +263,7 @@ class Editor extends React.PureComponent<Props, {}> {
             lineNumbersMinChars: 4,
             minimap: {enabled: false},
             scrollBeyondLastLine: false,
-            wordWrap: 'on'
+            wordWrap: 'on',
           }}
           value={this.props.value}
           onChange={debounce(700, this.handleEditorChange)}

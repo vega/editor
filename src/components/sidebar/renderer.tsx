@@ -60,7 +60,7 @@ class Sidebar extends Component<any, any> {
 
   public logOptions = () => {
     let options = [{label: 'None'}, {label: 'Warn'}, {label: 'Info'}, {label: 'Debug'}];
-    options = options.filter(o => o.label !== this.props.logLevel);
+    options = options.filter((o) => o.label !== this.props.logLevel);
     return options;
   };
 
@@ -68,7 +68,7 @@ class Sidebar extends Component<any, any> {
     let options = [{label: 'auto'}, {label: 'on'}, {label: 'off'}];
     const selected =
       typeof this.props.hoverEnable !== 'boolean' ? this.props.hoverEnable : this.props.hoverEnable ? 'on' : 'off';
-    options = options.filter(o => o.label !== selected);
+    options = options.filter((o) => o.label !== selected);
     return options;
   };
 
@@ -89,15 +89,15 @@ class Sidebar extends Component<any, any> {
 
     const renderers = [
       {value: 'svg', label: 'SVG'},
-      {value: 'canvas', label: 'Canvas'}
-    ].map(d => (
+      {value: 'canvas', label: 'Canvas'},
+    ].map((d) => (
       <label key={d.label}>
         <input
           type="radio"
           name="renderer"
           value={d.value}
           defaultChecked={this.props.renderer === d.value}
-          onClick={e => this.props.setRenderer(e.currentTarget.value)}
+          onClick={(e) => this.props.setRenderer(e.currentTarget.value)}
         />
         {d.label}
       </label>
@@ -120,7 +120,7 @@ class Sidebar extends Component<any, any> {
               id="head"
               name="head"
               defaultValue={this.props.backgroundColor}
-              onInput={e => this.props.setBackgroundColor((e.target as HTMLTextAreaElement).value)}
+              onInput={(e) => this.props.setBackgroundColor((e.target as HTMLTextAreaElement).value)}
             />
           </div>
         </div>
@@ -133,7 +133,7 @@ class Sidebar extends Component<any, any> {
               classNamePrefix="log-level-dropdown"
               value={{label: this.props.logLevel}}
               options={this.logOptions()}
-              onChange={e => this.props.setLogLevel(e.label)}
+              onChange={(e) => this.props.setLogLevel(e.label)}
               isClearable={false}
               isSearchable={false}
             />
@@ -164,7 +164,7 @@ class Sidebar extends Component<any, any> {
         <div className="tooltips">
           <label>
             <input
-              onChange={e => this.props.setTooltip(e.target.checked)}
+              onChange={(e) => this.props.setTooltip(e.target.checked)}
               type="checkbox"
               name=""
               id="tooltip"

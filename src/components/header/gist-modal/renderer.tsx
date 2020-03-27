@@ -45,11 +45,11 @@ class GistModal extends React.PureComponent<Props, State> {
         filename: '',
         image: '',
         imageStyle: {
-          bottom: 0
+          bottom: 0,
         },
         revision: '',
         type: props.mode,
-        url: ''
+        url: '',
       },
       gistLoadClicked: false,
       invalidFilename: false,
@@ -60,7 +60,7 @@ class GistModal extends React.PureComponent<Props, State> {
       loading: true,
       pages: {},
       personalGist: [],
-      syntaxError: false
+      syntaxError: false,
     };
   }
 
@@ -72,29 +72,29 @@ class GistModal extends React.PureComponent<Props, State> {
     this.setState({
       gist: {
         ...this.state.gist,
-        ...gist
-      }
+        ...gist,
+      },
     });
   }
 
   public updateGistUrl(event) {
     this.updateGist({url: event.currentTarget.value});
     this.setState({
-      invalidUrl: false
+      invalidUrl: false,
     });
   }
 
   public updateGistRevision(event) {
     this.updateGist({revision: event.currentTarget.value});
     this.setState({
-      invalidRevision: false
+      invalidRevision: false,
     });
   }
 
   public updateGistFile(event) {
     this.updateGist({filename: event.currentTarget.value});
     this.setState({
-      invalidFilename: false
+      invalidFilename: false,
     });
   }
 
@@ -105,8 +105,8 @@ class GistModal extends React.PureComponent<Props, State> {
       gist: {
         ...this.state.gist,
         filename: this.state.gist.filename.trim(),
-        revision: this.state.gist.revision.trim().toLowerCase()
-      }
+        revision: this.state.gist.revision.trim().toLowerCase(),
+      },
     });
 
     if (url.length === 0) {
@@ -114,7 +114,7 @@ class GistModal extends React.PureComponent<Props, State> {
       return;
     }
     this.setState({
-      gistLoadClicked: true
+      gistLoadClicked: true,
     });
 
     let gistUrl: URL;
@@ -126,8 +126,8 @@ class GistModal extends React.PureComponent<Props, State> {
         gist: {
           ...this.state.gist,
           filename,
-          revision
-        }
+          revision,
+        },
       });
     } else if (url.match(/gist.github.com/)) {
       gistUrl = new URL(url, 'https://gist.github.com');
@@ -137,40 +137,40 @@ class GistModal extends React.PureComponent<Props, State> {
     try {
       const gistCommitsResponse = await fetch(`https://api.github.com/gists/${gistId}/commits`);
       this.setState({
-        invalidUrl: !gistCommitsResponse.ok
+        invalidUrl: !gistCommitsResponse.ok,
       });
       const gistCommits = await gistCommitsResponse.json();
       if (!this.state.gist.revision && !this.state.invalidUrl) {
         this.setState({
           gist: {
             ...this.state.gist,
-            revision: gistCommits[0].version
-          }
+            revision: gistCommits[0].version,
+          },
         });
       } else if (this.state.invalidUrl) {
         this.setState({
-          gistLoadClicked: false
+          gistLoadClicked: false,
         });
         throw new Error('Invalid Gist URL');
       }
       if (gistCommits[0].version === this.state.gist.revision) {
         this.setState({
-          latestRevision: true
+          latestRevision: true,
         });
       }
       const gistSummaryResponse = await fetch(`https://api.github.com/gists/${gistId}/${this.state.gist.revision}`);
       this.setState({
-        invalidRevision: !gistSummaryResponse.ok
+        invalidRevision: !gistSummaryResponse.ok,
       });
       const gistSummary = await gistSummaryResponse.json();
 
       if (this.state.invalidRevision) {
         this.setState({
-          gistLoadClicked: false
+          gistLoadClicked: false,
         });
         throw new Error('Invalid Revision');
       } else if (!this.state.invalidRevision && this.state.gist.filename === '') {
-        const jsonFiles = Object.keys(gistSummary.files).filter(file => {
+        const jsonFiles = Object.keys(gistSummary.files).filter((file) => {
           if (file.split('.').slice(-1)[0] === 'json') {
             return true;
           }
@@ -178,7 +178,7 @@ class GistModal extends React.PureComponent<Props, State> {
         if (jsonFiles.length === 0) {
           this.setState({
             gistLoadClicked: false,
-            invalidUrl: true
+            invalidUrl: true,
           });
           throw new Error('No JSON file exists in the gist');
         } else {
@@ -186,8 +186,8 @@ class GistModal extends React.PureComponent<Props, State> {
             {
               gist: {
                 ...this.state.gist,
-                filename: jsonFiles[0]
-              }
+                filename: jsonFiles[0],
+              },
             },
             () => {
               const {revision, filename} = this.state.gist;
@@ -205,7 +205,7 @@ class GistModal extends React.PureComponent<Props, State> {
         if (gistSummary.files[this.state.gist.filename] === undefined) {
           this.setState({
             gistLoadClicked: false,
-            invalidFilename: true
+            invalidFilename: true,
           });
           throw new Error('Invalid file name');
         }
@@ -225,7 +225,7 @@ class GistModal extends React.PureComponent<Props, State> {
       if (error instanceof SyntaxError) {
         this.setState({
           gistLoadClicked: false,
-          syntaxError: true
+          syntaxError: true,
         });
       }
     }
@@ -240,13 +240,13 @@ class GistModal extends React.PureComponent<Props, State> {
             filename: '',
             image: '',
             imageStyle: {
-              bottom: 0
+              bottom: 0,
             },
             revision: '',
             type: this.props.mode,
-            url: ''
+            url: '',
           },
-          loading: true
+          loading: true,
         },
         () => {
           this.handlePageChange({selected: this.state.currentPage});
@@ -257,7 +257,7 @@ class GistModal extends React.PureComponent<Props, State> {
       this.setState(
         {
           currentPage: 0,
-          loading: true
+          loading: true,
         },
         () => {
           this.handlePageChange({selected: this.state.currentPage});
@@ -274,15 +274,15 @@ class GistModal extends React.PureComponent<Props, State> {
         image,
         imageStyle: {
           ...this.state.gist.imageStyle,
-          bottom: 0
+          bottom: 0,
         },
         revision: '',
-        url: `https://gist.github.com/${this.props.handle}/${id}`
+        url: `https://gist.github.com/${this.props.handle}/${id}`,
       },
       invalidFilename: false,
       invalidRevision: false,
       invalidUrl: false,
-      syntaxError: false
+      syntaxError: false,
     });
   }
 
@@ -293,9 +293,9 @@ class GistModal extends React.PureComponent<Props, State> {
         ...this.state.gist,
         imageStyle: {
           ...this.state.gist.imageStyle,
-          bottom: imageHeight > 100 ? imageHeight - 100 : 0
-        }
-      }
+          bottom: imageHeight > 100 ? imageHeight - 100 : 0,
+        },
+      },
     });
   }
 
@@ -305,9 +305,9 @@ class GistModal extends React.PureComponent<Props, State> {
         ...this.state.gist,
         imageStyle: {
           ...this.state.gist.imageStyle,
-          bottom: 0
-        }
-      }
+          bottom: 0,
+        },
+      },
     });
   }
 
@@ -315,21 +315,21 @@ class GistModal extends React.PureComponent<Props, State> {
     if (this.state.loading) {
       this.setState(
         {
-          loading: false
+          loading: false,
         },
         async () => {
           let response;
           if (page.selected === 0) {
             response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=${this.props.private}`, {
               credentials: 'include',
-              method: 'get'
+              method: 'get',
             });
           } else {
             response = await fetch(
               `${BACKEND_URL}gists/user?cursor=${this.state.pages[page.selected]}&privacy=${this.props.private}`,
               {
                 credentials: 'include',
-                method: 'get'
+                method: 'get',
               }
             );
           }
@@ -340,7 +340,7 @@ class GistModal extends React.PureComponent<Props, State> {
               loaded: true,
               pages: page.selected === 0 ? data.cursors : this.state.pages,
               loading: true,
-              personalGist: data.data
+              personalGist: data.data,
             });
           } else {
             this.props.receiveCurrentUser(data.isAuthenticated);
@@ -399,7 +399,7 @@ class GistModal extends React.PureComponent<Props, State> {
                         />
                       )}
                       <div className={`gist-wrapper ${!this.state.loading && 'loading'}`}>
-                        {this.state.personalGist.map(gist => (
+                        {this.state.personalGist.map((gist) => (
                           <div key={gist.name} className="gist-container">
                             <div className="personal-gist-description">
                               {gist.isPublic ? (
@@ -444,7 +444,7 @@ class GistModal extends React.PureComponent<Props, State> {
           </div>
           <div className="load-gist">
             <h3>Load gists</h3>
-            <form ref={form => (this.refGistForm = form)}>
+            <form ref={(form) => (this.refGistForm = form)}>
               <div className="gist-input-container">
                 <label>
                   Gist URL
@@ -453,15 +453,15 @@ class GistModal extends React.PureComponent<Props, State> {
                       Example:{' '}
                       <span
                         className="gist-url"
-                        onClick={e =>
+                        onClick={(e) =>
                           this.setState({
                             gist: {
                               ...this.state.gist,
                               filename: '',
                               image: '',
                               revision: '',
-                              url: 'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9'
-                            }
+                              url: 'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9',
+                            },
                           })
                         }
                       >
@@ -527,7 +527,7 @@ class GistModal extends React.PureComponent<Props, State> {
                           onMouseOver={this.slideImage.bind(this)}
                           onMouseOut={this.slideImageBack.bind(this)}
                           style={{
-                            transform: `translateY(-${this.state.gist.imageStyle.bottom}px)`
+                            transform: `translateY(-${this.state.gist.imageStyle.bottom}px)`,
                           }}
                         />
                       </div>

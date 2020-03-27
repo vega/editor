@@ -10,7 +10,7 @@ export function mapStateToProps(state: State) {
     logLevel: state.logLevel,
     renderer: state.renderer,
     tooltipEnable: state.tooltipEnable,
-    backgroundColor: state.backgroundColor
+    backgroundColor: state.backgroundColor,
   };
 }
 
@@ -22,7 +22,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setRenderer: EditorActions.setRenderer,
       setSettingsState: EditorActions.setSettingsState,
       setTooltip: EditorActions.setTooltip,
-      setBackgroundColor: EditorActions.setBackgroundColor
+      setBackgroundColor: EditorActions.setBackgroundColor,
     },
     dispatch
   );

@@ -44,7 +44,7 @@ class InputPanel extends React.PureComponent<Props> {
         <div
           style={{
             height: 'calc(100% - 30px)', // - header
-            display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none'
+            display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none',
           }}
         >
           <SpecEditor key="editor" />
@@ -52,7 +52,7 @@ class InputPanel extends React.PureComponent<Props> {
         <div
           style={{
             height: 'calc(100% - 30px)', // - header
-            display: this.props.sidePaneItem === SIDEPANE.Config ? '' : 'none'
+            display: this.props.sidePaneItem === SIDEPANE.Config ? '' : 'none',
           }}
         >
           <ConfigEditor key="configEditor" />
@@ -62,7 +62,7 @@ class InputPanel extends React.PureComponent<Props> {
         <CompiledSpecDisplay key="compiled" />
       ) : (
         <CompiledSpecHeader key="compiledSpecHeader" />
-      )
+      ),
     ];
   }
   public render() {
@@ -85,7 +85,7 @@ class InputPanel extends React.PureComponent<Props> {
             display: this.props.mode === Mode.Vega ? 'none' : 'block',
             height: this.props.compiledVegaSpec
               ? (this.props.compiledVegaPaneSize || window.innerHeight * 0.4) + 'px'
-              : LAYOUT.MinPaneSize + 'px'
+              : LAYOUT.MinPaneSize + 'px',
           }}
           onDragFinished={() => {
             if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
@@ -107,7 +107,7 @@ function mapStateToProps(state: State) {
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     compiledVegaSpec: state.compiledVegaSpec,
     mode: state.mode,
-    sidePaneItem: state.sidePaneItem
+    sidePaneItem: state.sidePaneItem,
   };
 }
 
@@ -115,7 +115,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setCompiledVegaPaneSize: EditorActions.setCompiledVegaPaneSize,
-      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec
+      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
     },
     dispatch
   );

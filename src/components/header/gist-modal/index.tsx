@@ -9,7 +9,7 @@ export function mapStateToProps(state: State) {
     handle: state.handle,
     isAuthenticated: state.isAuthenticated,
     mode: state.mode,
-    private: state.private
+    private: state.private,
   };
 }
 
@@ -17,7 +17,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       receiveCurrentUser: EditorActions.receiveCurrentUser,
-      toggleGistPrivacy: EditorActions.toggleGistPrivacy
+      toggleGistPrivacy: EditorActions.toggleGistPrivacy,
     },
     dispatch
   );

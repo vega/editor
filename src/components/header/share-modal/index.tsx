@@ -6,7 +6,7 @@ export function mapStateToProps(state: State) {
   return {
     editorString: state.editorString,
     mode: state.mode,
-    view: state.view
+    view: state.view,
   };
 }
 

@@ -12,11 +12,11 @@ addMarkdownProps(vegaLiteSchema);
 const schemas = [
   {
     schema: vegaSchema,
-    uri: 'https://vega.github.io/schema/vega/v5.json'
+    uri: 'https://vega.github.io/schema/vega/v5.json',
   },
   {
     schema: vegaLiteSchema,
-    uri: 'https://vega.github.io/schema/vega-lite/v4.json'
+    uri: 'https://vega.github.io/schema/vega-lite/v4.json',
   },
   {
     schema: mergeDeep({}, vegaLiteSchema, {
@@ -25,21 +25,21 @@ const schemas = [
         Config: {
           properties: {
             $schema: {
-              type: 'string'
-            }
-          }
-        }
-      }
+              type: 'string',
+            },
+          },
+        },
+      },
     }),
-    uri: 'https://vega.github.io/schema/vega-lite/v4.json#Config'
+    uri: 'https://vega.github.io/schema/vega-lite/v4.json#Config',
   },
   {
     schema: {
       $schema: 'http://json-schema.org/draft-06/schema#',
-      type: 'object'
+      type: 'object',
     },
-    uri: 'https://vega.github.io/schema/vega/v5.json#Config'
-  }
+    uri: 'https://vega.github.io/schema/vega/v5.json#Config',
+  },
 ];
 
 export default function setupMonaco() {
@@ -47,7 +47,7 @@ export default function setupMonaco() {
     allowComments: false,
     enableSchemaRequest: true,
     schemas,
-    validate: true
+    validate: true,
   });
 
   Monaco.languages.json.jsonDefaults.setModeConfiguration({
@@ -59,7 +59,7 @@ export default function setupMonaco() {
     tokens: true,
     colors: true,
     foldingRanges: true,
-    diagnostics: true
+    diagnostics: true,
   });
 
   Monaco.languages.registerDocumentFormattingEditProvider('json', {
@@ -71,9 +71,9 @@ export default function setupMonaco() {
       return [
         {
           range: model.getFullModelRange(),
-          text: stringify(JSON.parse(model.getValue()))
-        }
+          text: stringify(JSON.parse(model.getValue())),
+        },
       ];
-    }
+    },
   });
 }

@@ -55,7 +55,7 @@ class ConfigEditor extends React.PureComponent<Props> {
       contextMenuOrder: 0,
       id: 'MERGE_CONFIG',
       label: 'Merge Config Into Spec',
-      run: this.handleMergeConfig.bind(this)
+      run: this.handleMergeConfig.bind(this),
     });
 
     editor.addAction({
@@ -63,7 +63,7 @@ class ConfigEditor extends React.PureComponent<Props> {
       contextMenuOrder: 1,
       id: 'EXTRACT_CONFIG',
       label: 'Extract Config From Spec',
-      run: this.handleExtractConfig.bind(this)
+      run: this.handleExtractConfig.bind(this),
     });
 
     this.editor = editor;
@@ -107,12 +107,12 @@ class ConfigEditor extends React.PureComponent<Props> {
             lineNumbersMinChars: 4,
             minimap: {enabled: false},
             scrollBeyondLastLine: false,
-            wordWrap: 'on'
+            wordWrap: 'on',
           }}
           language="json"
           onChange={debounce(700, this.handleEditorChange)}
           value={this.props.configEditorString}
-          editorDidMount={e => this.handleEditorMount(e)}
+          editorDidMount={(e) => this.handleEditorMount(e)}
         />
       </>
     );

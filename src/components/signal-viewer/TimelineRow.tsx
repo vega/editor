@@ -22,7 +22,7 @@ export default class TimelineRow extends Component<
 
     const row =
       data &&
-      data.map(d => {
+      data.map((d) => {
         return (
           <rect
             key={d.xCount}
@@ -36,7 +36,7 @@ export default class TimelineRow extends Component<
               fill: clickedValue === d.xCount ? '#A4F9C8' : '#b7b7b7',
               pointerEvents: 'all',
               stroke: 'white',
-              strokeWidth: '0.5px'
+              strokeWidth: '0.5px',
             }}
             width={scale.bandwidth()}
             x={scale(d.xCount)}

@@ -27,7 +27,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      signalValue: this.props.view.signal(this.props.signal)
+      signalValue: this.props.view.signal(this.props.signal),
     };
     this.signalHandler = this.signalHandler.bind(this);
   }
@@ -37,7 +37,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
       this.props.view.addSignalListener(this.props.signal, this.signalHandler);
       this.setState(
         {
-          signalValue: this.props.view.signal(this.props.signal)
+          signalValue: this.props.view.signal(this.props.signal),
         },
         () => this.props.onValueChange(this.props.signal, this.props.view.signal(this.props.signal))
       );
@@ -143,7 +143,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
           <td
             style={{
               whiteSpace: 'nowrap',
-              backgroundColor: this.getBackgroundColor()
+              backgroundColor: this.getBackgroundColor(),
             }}
             key={this.props.signal}
           >
@@ -157,7 +157,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
   private signalHandler(signalName: string, currentValue) {
     this.setState(
       {
-        signalValue: currentValue
+        signalValue: currentValue,
       },
       () => {
         this.props.onValueChange(this.props.signal, currentValue);

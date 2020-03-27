@@ -94,7 +94,7 @@ export type Action =
 export function setMode(mode: Mode) {
   return {
     mode,
-    type: SET_MODE
+    type: SET_MODE,
   };
 }
 export type SetMode = ReturnType<typeof setMode>;
@@ -102,7 +102,7 @@ export type SetMode = ReturnType<typeof setMode>;
 export function setModeOnly(mode: Mode) {
   return {
     mode,
-    type: SET_MODE_ONLY
+    type: SET_MODE_ONLY,
   };
 }
 export type SetModeOnly = ReturnType<typeof setModeOnly>;
@@ -110,7 +110,7 @@ export type SetModeOnly = ReturnType<typeof setModeOnly>;
 export function setScrollPosition(position: number) {
   return {
     position,
-    type: SET_SCROLL_POSITION
+    type: SET_SCROLL_POSITION,
   };
 }
 export type SetScrollPosition = ReturnType<typeof setScrollPosition>;
@@ -118,7 +118,7 @@ export type SetScrollPosition = ReturnType<typeof setScrollPosition>;
 export function parseSpec(value: boolean) {
   return {
     parse: value,
-    type: PARSE_SPEC
+    type: PARSE_SPEC,
   };
 }
 export type ParseSpec = ReturnType<typeof parseSpec>;
@@ -127,7 +127,7 @@ export function setVegaExample(example: string, spec) {
   return {
     example,
     spec,
-    type: SET_VEGA_EXAMPLE
+    type: SET_VEGA_EXAMPLE,
   };
 }
 export type SetVegaExample = ReturnType<typeof setVegaExample>;
@@ -136,7 +136,7 @@ export function setVegaLiteExample(example: string, spec) {
   return {
     example,
     spec,
-    type: SET_VEGA_LITE_EXAMPLE
+    type: SET_VEGA_LITE_EXAMPLE,
   };
 }
 export type SetVegaLiteExample = ReturnType<typeof setVegaLiteExample>;
@@ -144,7 +144,7 @@ export type SetVegaLiteExample = ReturnType<typeof setVegaLiteExample>;
 export function updateVegaSpec(spec) {
   return {
     spec,
-    type: UPDATE_VEGA_SPEC
+    type: UPDATE_VEGA_SPEC,
   };
 }
 export type UpdateVegaSpec = ReturnType<typeof updateVegaSpec>;
@@ -152,7 +152,7 @@ export type UpdateVegaSpec = ReturnType<typeof updateVegaSpec>;
 export function updateVegaLiteSpec(spec) {
   return {
     spec,
-    type: UPDATE_VEGA_LITE_SPEC
+    type: UPDATE_VEGA_LITE_SPEC,
   };
 }
 export type UpdateVegaLiteSpec = ReturnType<typeof updateVegaLiteSpec>;
@@ -161,7 +161,7 @@ export function setGistVegaSpec(gist: string, spec) {
   return {
     gist,
     spec,
-    type: SET_GIST_VEGA_SPEC
+    type: SET_GIST_VEGA_SPEC,
   };
 }
 export type SetGistVegaSpec = ReturnType<typeof setGistVegaSpec>;
@@ -170,28 +170,28 @@ export function setGistVegaLiteSpec(gist: string, spec) {
   return {
     gist,
     spec,
-    type: SET_GIST_VEGA_LITE_SPEC
+    type: SET_GIST_VEGA_LITE_SPEC,
   };
 }
 export type SetGistVegaLiteSpec = ReturnType<typeof setGistVegaLiteSpec>;
 
 export function toggleAutoParse() {
   return {
-    type: TOGGLE_AUTO_PARSE
+    type: TOGGLE_AUTO_PARSE,
   };
 }
 export type ToggleAutoParse = ReturnType<typeof toggleAutoParse>;
 
 export function toggleCompiledVegaSpec() {
   return {
-    type: TOGGLE_COMPILED_VEGA_SPEC
+    type: TOGGLE_COMPILED_VEGA_SPEC,
   };
 }
 export type ToggleCompiledVegaSpec = ReturnType<typeof toggleCompiledVegaSpec>;
 
 export function toggleDebugPane() {
   return {
-    type: TOGGLE_DEBUG_PANE
+    type: TOGGLE_DEBUG_PANE,
   };
 }
 export type ToggleDebugPane = ReturnType<typeof toggleDebugPane>;
@@ -199,7 +199,7 @@ export type ToggleDebugPane = ReturnType<typeof toggleDebugPane>;
 export function logError(err: Error) {
   return {
     error: {message: err.message},
-    type: LOG_ERROR
+    type: LOG_ERROR,
   };
 }
 export type LogError = ReturnType<typeof logError>;
@@ -207,7 +207,7 @@ export type LogError = ReturnType<typeof logError>;
 export function updateEditorString(editorString: string) {
   return {
     editorString,
-    type: UPDATE_EDITOR_STRING
+    type: UPDATE_EDITOR_STRING,
   };
 }
 export type UpdateEditorString = ReturnType<typeof updateEditorString>;
@@ -215,7 +215,7 @@ export type UpdateEditorString = ReturnType<typeof updateEditorString>;
 export function exportVega(value: boolean) {
   return {
     export: value,
-    type: EXPORT_VEGA
+    type: EXPORT_VEGA,
   };
 }
 export type ExportVega = ReturnType<typeof exportVega>;
@@ -223,7 +223,7 @@ export type ExportVega = ReturnType<typeof exportVega>;
 export function setRenderer(renderer: Renderers) {
   return {
     renderer,
-    type: SET_RENDERER
+    type: SET_RENDERER,
   };
 }
 export type SetRenderer = ReturnType<typeof setRenderer>;
@@ -231,7 +231,7 @@ export type SetRenderer = ReturnType<typeof setRenderer>;
 export function setBaseUrl(baseURL: string) {
   return {
     baseURL,
-    type: SET_BASEURL
+    type: SET_BASEURL,
   };
 }
 export type SetBaseUrl = ReturnType<typeof setBaseUrl>;
@@ -239,7 +239,7 @@ export type SetBaseUrl = ReturnType<typeof setBaseUrl>;
 export function setView(view: View) {
   return {
     type: SET_VIEW,
-    view
+    view,
   };
 }
 export type SetView = ReturnType<typeof setView>;
@@ -247,7 +247,7 @@ export type SetView = ReturnType<typeof setView>;
 export function setDebugPaneSize(size: number) {
   return {
     debugPaneSize: size,
-    type: SET_DEBUG_PANE_SIZE
+    type: SET_DEBUG_PANE_SIZE,
   };
 }
 export type SetDebugPaneSize = ReturnType<typeof setDebugPaneSize>;
@@ -255,7 +255,7 @@ export type SetDebugPaneSize = ReturnType<typeof setDebugPaneSize>;
 export function showLogs(value: boolean) {
   return {
     logs: value,
-    type: SHOW_LOGS
+    type: SHOW_LOGS,
   };
 }
 export type ShowLogs = ReturnType<typeof showLogs>;
@@ -263,7 +263,7 @@ export type ShowLogs = ReturnType<typeof showLogs>;
 export function setCompiledVegaPaneSize(size: number) {
   return {
     compiledVegaPaneSize: size,
-    type: SET_COMPILED_VEGA_PANE_SIZE
+    type: SET_COMPILED_VEGA_PANE_SIZE,
   };
 }
 
@@ -272,7 +272,7 @@ export type SetCompiledVegaPaneSize = ReturnType<typeof setCompiledVegaPaneSize>
 export function toggleNavbar(value: string) {
   return {
     navItem: value,
-    type: TOGGLE_NAV_BAR
+    type: TOGGLE_NAV_BAR,
   };
 }
 
@@ -281,7 +281,7 @@ export type ToggleNavbar = ReturnType<typeof toggleNavbar>;
 export function setSettingsState(value: boolean) {
   return {
     settings: value,
-    type: SET_SETTINGS
+    type: SET_SETTINGS,
   };
 }
 
@@ -290,7 +290,7 @@ export type SetSettingsState = ReturnType<typeof setSettingsState>;
 export function setConfig(value: string) {
   return {
     configEditorString: value,
-    type: SET_CONFIG
+    type: SET_CONFIG,
   };
 }
 
@@ -299,7 +299,7 @@ export type SetConfig = ReturnType<typeof setConfig>;
 export function setConfigEditorString(value: string) {
   return {
     configEditorString: value,
-    type: SET_CONFIG_EDITOR_STRING
+    type: SET_CONFIG_EDITOR_STRING,
   };
 }
 
@@ -308,7 +308,7 @@ export type SetConfigEditorString = ReturnType<typeof setConfigEditorString>;
 export function setThemeName(value: string) {
   return {
     themeName: value,
-    type: SET_THEME_NAME
+    type: SET_THEME_NAME,
   };
 }
 
@@ -317,7 +317,7 @@ export type SetThemeName = ReturnType<typeof setThemeName>;
 export function setSidePaneItem(value: string) {
   return {
     sidePaneItem: value,
-    type: SET_SIDEPANE_ITEM
+    type: SET_SIDEPANE_ITEM,
   };
 }
 
@@ -326,7 +326,7 @@ export type SetSidePaneItem = ReturnType<typeof setSidePaneItem>;
 export function setEditorReference(editorRef: Monaco.editor.IStandaloneCodeEditor) {
   return {
     editorRef: editorRef,
-    type: SET_EDITOR_REFERENCE
+    type: SET_EDITOR_REFERENCE,
   };
 }
 
@@ -335,7 +335,7 @@ export type SetEditorReference = ReturnType<typeof setEditorReference>;
 export function setCompiledEditorRef(editorRef: Monaco.editor.IStandaloneCodeEditor) {
   return {
     editorRef: editorRef,
-    type: SET_COMPILED_EDITOR_REFERENCE
+    type: SET_COMPILED_EDITOR_REFERENCE,
   };
 }
 
@@ -344,7 +344,7 @@ export type SetCompiledEditorRef = ReturnType<typeof setCompiledEditorRef>;
 export function setLogLevel(logLevel: string) {
   return {
     logLevel,
-    type: SET_LOG_LEVEL
+    type: SET_LOG_LEVEL,
   };
 }
 
@@ -353,7 +353,7 @@ export type SetLogLevel = ReturnType<typeof setLogLevel>;
 export function setHover(hover: boolean | 'auto') {
   return {
     hoverEnable: hover,
-    type: SET_HOVER
+    type: SET_HOVER,
   };
 }
 
@@ -362,14 +362,14 @@ export type SetHover = ReturnType<typeof setHover>;
 export function setTooltip(tooltip: boolean) {
   return {
     tooltipEnable: tooltip,
-    type: SET_TOOLTIP
+    type: SET_TOOLTIP,
   };
 }
 
 export type SetTooltip = ReturnType<typeof setTooltip>;
 export function clearConfig() {
   return {
-    type: CLEAR_CONFIG
+    type: CLEAR_CONFIG,
   };
 }
 
@@ -377,7 +377,7 @@ export type ClearConfig = ReturnType<typeof clearConfig>;
 
 export function mergeConfigSpec() {
   return {
-    type: MERGE_CONFIG_SPEC
+    type: MERGE_CONFIG_SPEC,
   };
 }
 
@@ -385,7 +385,7 @@ export type MergeConfigSpec = ReturnType<typeof mergeConfigSpec>;
 
 export function extractConfigSpec() {
   return {
-    type: EXTRACT_CONFIG_SPEC
+    type: EXTRACT_CONFIG_SPEC,
   };
 }
 
@@ -394,7 +394,7 @@ export type ExtractConfigSpec = ReturnType<typeof extractConfigSpec>;
 export function setSignals(value: any) {
   return {
     signals: value,
-    type: SET_SIGNALS
+    type: SET_SIGNALS,
   };
 }
 export type SetSignals = ReturnType<typeof setSignals>;
@@ -402,7 +402,7 @@ export type SetSignals = ReturnType<typeof setSignals>;
 export function addSignal(value: any) {
   return {
     signal: value,
-    type: ADD_SIGNAL
+    type: ADD_SIGNAL,
   };
 }
 export type AddSignal = ReturnType<typeof addSignal>;
@@ -410,7 +410,7 @@ export type AddSignal = ReturnType<typeof addSignal>;
 export function setDecorations(value) {
   return {
     decoration: value,
-    type: SET_DECORATION
+    type: SET_DECORATION,
   };
 }
 
@@ -419,7 +419,7 @@ export type SetDecorations = ReturnType<typeof setDecorations>;
 export function setEditorFocus(value: string) {
   return {
     editorFocus: value,
-    type: SET_EDITOR_FOCUS
+    type: SET_EDITOR_FOCUS,
   };
 }
 
@@ -431,7 +431,7 @@ export function receiveCurrentUser(isAuthenticated: boolean, handle?: string, na
     isAuthenticated,
     name,
     profilePicUrl,
-    type: RECEIVE_CURRENT_USER
+    type: RECEIVE_CURRENT_USER,
   };
 }
 
@@ -439,7 +439,7 @@ export type ReceiveCurrentUser = ReturnType<typeof receiveCurrentUser>;
 
 export function toggleGistPrivacy() {
   return {
-    type: TOGGLE_GIST_PRIVACY
+    type: TOGGLE_GIST_PRIVACY,
   };
 }
 
@@ -448,7 +448,7 @@ export type ToggleGistPrivacy = ReturnType<typeof toggleGistPrivacy>;
 export function setBackgroundColor(color) {
   return {
     type: SET_BACKGROUND_COLOR,
-    color
+    color,
   };
 }
 

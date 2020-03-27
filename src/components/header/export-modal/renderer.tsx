@@ -18,7 +18,7 @@ class ExportModal extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       downloadVegaJSON: false,
-      includeConfig: true
+      includeConfig: true,
     };
   }
 
@@ -52,12 +52,12 @@ class ExportModal extends React.PureComponent<Props, State> {
         filename: 'chart.svg',
         input: 'raw',
         inputformat: 'svg',
-        outputformat: 'pdf'
+        outputformat: 'pdf',
       }),
       headers: {
-        'content-type': 'application/json; chartset=UTF-8'
+        'content-type': 'application/json; chartset=UTF-8',
       },
-      method: 'post'
+      method: 'post',
     });
 
     const blob = await pdf.blob();
@@ -74,7 +74,7 @@ class ExportModal extends React.PureComponent<Props, State> {
 
   public updateIncludeConfig(e) {
     this.setState({
-      includeConfig: e.target.checked
+      includeConfig: e.target.checked,
     });
   }
 
@@ -102,7 +102,7 @@ class ExportModal extends React.PureComponent<Props, State> {
     }
 
     const blob = new Blob([JSON.stringify(content, null, 2)], {
-      type: `application/json`
+      type: `application/json`,
     });
     const url = window.URL.createObjectURL(blob);
 
@@ -186,7 +186,7 @@ class ExportModal extends React.PureComponent<Props, State> {
                 </div>
               )}
             </div>
-            <button onClick={e => this.downloadJSON(e)}>Download</button>
+            <button onClick={(e) => this.downloadJSON(e)}>Download</button>
           </div>
           <div className="export-container">
             <div className="header-text">

@@ -20,7 +20,7 @@ class ShareModal extends React.PureComponent<Props, State> {
     this.state = {
       copied: false,
       fullScreen: false,
-      generatedURL: ''
+      generatedURL: '',
     };
   }
 
@@ -42,7 +42,7 @@ class ShareModal extends React.PureComponent<Props, State> {
     if (!this.state.copied) {
       this.setState(
         {
-          copied: true
+          copied: true,
         },
         () => {
           setTimeout(() => {

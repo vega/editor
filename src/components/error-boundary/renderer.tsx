@@ -11,7 +11,7 @@ export default class ErrorBoundary extends React.PureComponent<Props> {
   public render() {
     if (this.props.error) {
       return (
-        <div id="error-indicator" onClick={e => this.props.toggleDebugPane()}>
+        <div id="error-indicator" onClick={(e) => this.props.toggleDebugPane()}>
           {this.props.error.message}
         </div>
       );

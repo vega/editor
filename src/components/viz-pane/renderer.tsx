@@ -28,7 +28,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
     this.state = {
       header: '',
       maxRange: 0,
-      range: 0
+      range: 0,
     };
     this.handleChange = this.handleChange.bind(this);
     this.getContextViewer = this.getContextViewer.bind(this);
@@ -53,10 +53,10 @@ export default class VizPane extends React.PureComponent<Props, State> {
 
     const decorations = editor.deltaDecorations(
       [],
-      rangeValue.map(match => {
+      rangeValue.map((match) => {
         return {
           options: {inlineClassName: 'myInlineDecoration'},
-          range: match.range
+          range: match.range,
         };
       })
     );
@@ -97,9 +97,9 @@ export default class VizPane extends React.PureComponent<Props, State> {
     if (this.props.view) {
       switch (this.props.navItem) {
         case NAVBAR.DataViewer:
-          return <DataViewer onClickHandler={header => this.onClickHandler(header)} />;
+          return <DataViewer onClickHandler={(header) => this.onClickHandler(header)} />;
         case NAVBAR.SignalViewer:
-          return <SignalViewer onClickHandler={header => this.onClickHandler(header)} />;
+          return <SignalViewer onClickHandler={(header) => this.onClickHandler(header)} />;
         default:
           return null;
       }
@@ -129,7 +129,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
         pane2Style={{
           height: this.props.debugPane
             ? (this.props.debugPaneSize || window.innerHeight * 0.4) + 'px'
-            : LAYOUT.MinPaneSize + 'px'
+            : LAYOUT.MinPaneSize + 'px',
         }}
         paneStyle={{display: 'flex'}}
         onDragStarted={() => {

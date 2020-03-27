@@ -44,7 +44,7 @@ class Editor extends React.PureComponent<Props, State> {
     let pathname = Editor.pathname;
     pathname = pathname
       .split('/')
-      .filter(e => e !== 'view')
+      .filter((e) => e !== 'view')
       .join('/');
     if (pathname !== '/' && pathname !== '/edited') {
       this.props.history.push(pathname);
@@ -105,7 +105,7 @@ class Editor extends React.PureComponent<Props, State> {
       this.setState(
         {
           width: responsiveWidth ? Math.max(10, width0 + (x1 - x0) * factor) : this.state.width,
-          height: responsiveHeight ? Math.max(10, height0 + (y1 - y0) * factor) : this.state.height
+          height: responsiveHeight ? Math.max(10, height0 + (y1 - y0) * factor) : this.state.height,
         },
         () => {
           // Dispatch window.resize, that currently the only way to inform Vega about container size change.
@@ -141,7 +141,7 @@ class Editor extends React.PureComponent<Props, State> {
         if (options) {
           return await originalLoad(url, {
             ...options,
-            ...{baseURL: this.props.baseURL}
+            ...{baseURL: this.props.baseURL},
           });
         }
         return await originalLoad(url, {baseURL: this.props.baseURL});
@@ -159,7 +159,7 @@ class Editor extends React.PureComponent<Props, State> {
     const view = new vega.View(runtime, {
       hover,
       loader,
-      logLevel: vega[this.props.logLevel]
+      logLevel: vega[this.props.logLevel],
     }).hover();
 
     (window as any).VEGA_DEBUG.view = view;
@@ -181,10 +181,7 @@ class Editor extends React.PureComponent<Props, State> {
       return;
     }
 
-    this.props.view
-      .renderer(this.props.renderer)
-      .initialize(chart)
-      .runAsync();
+    this.props.view.renderer(this.props.renderer).initialize(chart).runAsync();
 
     if (this.props.tooltipEnable) {
       // Tooltip needs to be added after initializing the view with `chart`
@@ -201,14 +198,14 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public componentDidMount() {
-    this.unlisten = this.props.history.listen(location => {
+    this.unlisten = this.props.history.listen((location) => {
       if (location && location.pathname.endsWith('view')) {
         this.setState({
-          fullscreen: true
+          fullscreen: true,
         });
       } else {
         this.setState({
-          fullscreen: false
+          fullscreen: false,
         });
       }
     });
@@ -217,13 +214,13 @@ class Editor extends React.PureComponent<Props, State> {
     this.renderVega();
 
     // Add Event Listener to ctrl+f11 key
-    document.addEventListener('keydown', e => {
+    document.addEventListener('keydown', (e) => {
       // Keycode of f11 is 122
       if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
-        this.setState(current => {
+        this.setState((current) => {
           return {
             ...current,
-            fullscreen: !current.fullscreen
+            fullscreen: !current.fullscreen,
           };
         });
       }
@@ -281,7 +278,7 @@ class Editor extends React.PureComponent<Props, State> {
       responsiveWidth || responsiveHeight
         ? {
             width: responsiveWidth ? this.state.width + 'px' : null,
-            height: responsiveHeight ? this.state.height + 'px' : null
+            height: responsiveHeight ? this.state.height + 'px' : null,
           }
         : {};
     return (

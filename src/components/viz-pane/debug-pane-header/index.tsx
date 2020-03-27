@@ -27,13 +27,13 @@ class DebugPaneHeader extends React.PureComponent<Props> {
   }
   public render() {
     return (
-      <div className="pane-header" onClick={e => this.props.toggleDebugPane()}>
+      <div className="pane-header" onClick={(e) => this.props.toggleDebugPane()}>
         <ul className="tabs-nav">
           <li
             className={
               this.props.error || (this.props.logs && this.props.navItem === NAVBAR.Logs) ? 'active-tab' : undefined
             }
-            onClick={e => {
+            onClick={(e) => {
               if (this.props.debugPane) {
                 e.stopPropagation();
               }
@@ -53,7 +53,7 @@ class DebugPaneHeader extends React.PureComponent<Props> {
           {this.props.error === null && (
             <li
               className={this.props.navItem === NAVBAR.DataViewer ? 'active-tab' : undefined}
-              onClick={e => {
+              onClick={(e) => {
                 if (this.props.debugPane) {
                   e.stopPropagation();
                 }
@@ -67,7 +67,7 @@ class DebugPaneHeader extends React.PureComponent<Props> {
           {this.props.error === null && (
             <li
               className={this.props.navItem === NAVBAR.SignalViewer ? 'active-tab' : undefined}
-              onClick={e => {
+              onClick={(e) => {
                 if (this.props.debugPane) {
                   e.stopPropagation();
                 }
@@ -92,7 +92,7 @@ function mapStateToProps(state, ownProps) {
     logs: state.logs,
     navItem: state.navItem,
     warningsCount: state.warningsCount,
-    warningsLogger: state.warningsLogger
+    warningsLogger: state.warningsLogger,
   };
 }
 
@@ -101,7 +101,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       showLogs: EditorActions.showLogs,
       toggleDebugPane: EditorActions.toggleDebugPane,
-      toggleNavbar: EditorActions.toggleNavbar
+      toggleNavbar: EditorActions.toggleNavbar,
     },
     dispatch
   );

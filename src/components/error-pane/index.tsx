@@ -6,7 +6,7 @@ import Renderer from './renderer';
 export function mapStateToProps(state: State) {
   return {
     error: state.error,
-    warningsLogger: state.warningsLogger
+    warningsLogger: state.warningsLogger,
   };
 }
 

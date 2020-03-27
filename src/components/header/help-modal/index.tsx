@@ -20,7 +20,7 @@ const keyBoardShortcuts = shortcuts.map((shortcut, i) => {
     <li key={i}>
       {(isMac() ? shortcut.mac : shortcut.windows)
         .split(' ')
-        .map(key => (key === '+' ? '+' : <kbd key={`${key}${i}`}>{key}</kbd>))}
+        .map((key) => (key === '+' ? '+' : <kbd key={`${key}${i}`}>{key}</kbd>))}
       : {shortcut.text}
     </li>
   );

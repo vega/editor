@@ -1,6 +1,6 @@
 import * as d3 from 'd3-geo-projection';
 
-export default function(vegaProjections: any) {
+export default function (vegaProjections: any) {
   for (const p of [
     'airy',
     'aitoff',
@@ -95,7 +95,7 @@ export default function(vegaProjections: any) {
     'wagner6',
     'wagner7',
     'wiechel',
-    'winkel3'
+    'winkel3',
   ]) {
     vegaProjections(p, d3['geo' + p[0].toUpperCase() + p.slice(1)]);
   }
