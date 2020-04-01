@@ -60,6 +60,10 @@ yarn link vega
 
 The Vega editor supports [React Developer Tools](https://github.com/facebook/react-devtools) and [Redux DevTools](https://github.com/zalmoxisus/redux-devtools-extension).
 
+## Building preview images
+
+Build images with `yarn generate-example-images`. For best results, install [image_optim](https://github.com/toy/image_optim).
+
 ## Contributing guidelines
 
 We welcome contributions and promptly review pull requests. For instructions about how to contribute, please follow the [Vega-Lite contributing guidelines](https://github.com/vega/vega-lite/blob/master/CONTRIBUTING.md).
