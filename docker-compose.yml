@@ -7,3 +7,4 @@ services:
       - "8080:8080"
     volumes:
       - "./src:/usr/src/app/src"
+    restart: "always"
