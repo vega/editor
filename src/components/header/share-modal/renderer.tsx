@@ -91,7 +91,15 @@ class ShareModal extends React.PureComponent<Props, State> {
             onSuccess={this.onCopy.bind(this)}
           >
             <Copy />
-            <span>Copy to Clipboard</span>
+            <span>Copy Link to Clipboard</span>
+          </Clipboard>
+          <Clipboard
+            className="editor-button copy-icon"
+            data-clipboard-text={`[Open the Chart in the Vega Editor](${this.state.generatedURL})`}
+            onSuccess={this.onCopy.bind(this)}
+          >
+            <Copy />
+            <span>Copy Markdown Link to Clipboard</span>
           </Clipboard>
           <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
         </div>
