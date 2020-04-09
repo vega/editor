@@ -78,7 +78,7 @@ export const DEFAULT_STATE: State = {
   parse: false,
   private: GistPrivacy.ALL,
   profilePicUrl: '',
-  renderer: 'canvas',
+  renderer: 'svg',
   selectedExample: null,
   settings: false,
   sidePaneItem: SIDEPANE.Editor,
