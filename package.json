@@ -6,7 +6,7 @@
   "license": "BSD-3-Clause",
   "devDependencies": {
     "autoprefixer": "^9.7.6",
-    "css-loader": "^3.5.1",
+    "css-loader": "^3.5.2",
     "gh-pages": "^2.2.0",
     "html-webpack-plugin": "^4.0.4",
     "husky": "^4.2.3",
