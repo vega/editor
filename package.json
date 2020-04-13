@@ -60,7 +60,7 @@
     "vega-cli": "5.10.1",
     "vega-datasets": "^1.30.2",
     "vega-embed": "^6.5.2",
-    "vega-lite": "4.10.1",
+    "vega-lite": "4.10.2",
     "vega-schema-url-parser": "^1.1.0",
     "vega-themes": "^2.8.3",
     "vega-tooltip": "^0.22.1"
