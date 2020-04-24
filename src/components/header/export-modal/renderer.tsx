@@ -42,30 +42,18 @@ class ExportModal extends React.PureComponent<Props, State> {
     // show that we are working
     const dlButton = this.refs.downloadPDF as any;
     dlButton.classList.add('disabled');
-    const svg = await this.props.view.toSVG();
-    let content;
-    let filename: string;
-    if (this.props.mode === Mode.Vega) {
-      content = this.props.vegaSpec;
-      filename = `visualization.vg.pdf`;
-    } else {
-      content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
-      filename = this.state.downloadVegaJSON ? `visualization.vg.pdf` : `visualization.vl.pdf`;
-    }
-    const pdf = await fetch('https://vega-render-service.hungngovinh97.now.sh', {
+    const content = this.props.mode === Mode.Vega ? this.props.vegaSpec : this.props.vegaLiteSpec;
+    const pdf = await fetch('https://vega-render-service.now.sh', {
       body: JSON.stringify(content),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/pdf',
-        Origin: 'http://0.0.0.0:8080',
       },
       method: 'post',
       mode: 'cors',
     });
-
     const blob = await pdf.blob();
     const url = window.URL.createObjectURL(blob);
-
     const link = document.createElement('a');
     link.setAttribute('href', url);
     link.setAttribute('target', '_blank');
