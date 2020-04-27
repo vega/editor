@@ -8,30 +8,20 @@
 }
 
 .chart .vega-bindings {
-  line-height: 20px;
+  line-height: 24px;
 }
 
 .chart .vega-bind-name {
   display: inline-block;
-  width: 105px;
+  width: 120px;
 }
 
 .chart .vega-bind input[type="range"] {
-  padding: 0;
-  width: 100px;
+  width: 120px;
 }
 
 .chart .vega-bind select {
   max-width: 200px;
-}
-
-.chart .vega-bind label {
-  margin-left: 4px;
-}
-
-.chart .vega-bind-radio label {
-  margin-left: 0;
-  margin-right: 4px;
 }
 
 .fullscreen-chart {
