@@ -199,7 +199,12 @@ class ExportModal extends React.PureComponent<Props, State> {
               <span>PDF</span>
             </div>
             <p>
-              <br /> PDF is a vector format usually used for documents.
+              <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
+              patient. Use absolute URLs to ensure that the data is loaded correctly. Your chart is sent to{' '}
+              <a href="https://vega-render.now.sh/" target="_blank" rel="noopener noreferrer">
+                vega-render.now.sh
+              </a>{' '}
+              for processing.
             </p>
             <button onClick={() => this.downloadPDF()}>Download</button>
           </div>
