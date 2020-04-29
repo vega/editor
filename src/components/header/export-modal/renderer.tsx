@@ -42,27 +42,18 @@ class ExportModal extends React.PureComponent<Props, State> {
     // show that we are working
     const dlButton = this.refs.downloadPDF as any;
     dlButton.classList.add('disabled');
-
-    const svg = await this.props.view.toSVG();
-
-    const pdf = await fetch('https://api.cloudconvert.com/convert', {
-      body: JSON.stringify({
-        apikey: '7ZSKlPLjDB4RUaq5dvEvAQMG5GGwEeHH3qa7ixAr0KZtPxfwsKv81sc1SqFhlh7d',
-        file: svg,
-        filename: 'chart.svg',
-        input: 'raw',
-        inputformat: 'svg',
-        outputformat: 'pdf',
-      }),
+    const content = this.props.mode === Mode.Vega ? this.props.vegaSpec : this.props.vegaLiteSpec;
+    const pdf = await fetch('https://vega-render-service.now.sh', {
+      body: JSON.stringify(content),
       headers: {
-        'content-type': 'application/json; chartset=UTF-8',
+        'Content-Type': 'application/json',
+        Accept: 'application/pdf',
       },
       method: 'post',
+      mode: 'cors',
     });
-
     const blob = await pdf.blob();
     const url = window.URL.createObjectURL(blob);
-
     const link = document.createElement('a');
     link.setAttribute('href', url);
     link.setAttribute('target', '_blank');
@@ -208,13 +199,7 @@ class ExportModal extends React.PureComponent<Props, State> {
               <span>PDF</span>
             </div>
             <p>
-              <strong>Experimental!</strong>
-              <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
-              patient. Your chart is sent to an{' '}
-              <a href="https://cloudconvert.com/" target="_blank" rel="noopener noreferrer">
-                external service
-              </a>{' '}
-              for processing.
+              <br /> PDF is a vector format usually used for documents.
             </p>
             <button onClick={() => this.downloadPDF()}>Download</button>
           </div>
