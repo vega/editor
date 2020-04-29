@@ -11,6 +11,7 @@ type Props = ReturnType<typeof mapStateToProps>;
 interface State {
   copied: boolean;
   fullScreen: boolean;
+  whitespace: boolean;
   generatedURL: string;
 }
 
@@ -20,13 +21,18 @@ class ShareModal extends React.PureComponent<Props, State> {
     this.state = {
       copied: false,
       fullScreen: false,
+      whitespace: true,
       generatedURL: '',
     };
   }
 
   public exportURL() {
-    const serializedSpec =
-      LZString.compressToEncodedURIComponent(this.props.editorString) + (this.state.fullScreen ? '/view' : '');
+    const specString = this.state.whitespace
+      ? this.props.editorString
+      : JSON.stringify(JSON.parse(this.props.editorString));
+
+    const serializedSpec = LZString.compressToEncodedURIComponent(specString) + (this.state.fullScreen ? '/view' : '');
+
     if (serializedSpec) {
       const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
       this.setState({generatedURL: url});
@@ -53,8 +59,14 @@ class ShareModal extends React.PureComponent<Props, State> {
     }
   }
 
-  public handleCheck(event) {
+  public handleFulscreenCheck(event) {
     this.setState({fullScreen: event.target.checked}, () => {
+      this.exportURL();
+    });
+  }
+
+  public handleWhitespaceCheck(event) {
+    this.setState({whitespace: event.target.checked}, () => {
       this.exportURL();
     });
   }
@@ -67,17 +79,28 @@ class ShareModal extends React.PureComponent<Props, State> {
     return (
       <>
         <h1>Share</h1>
-        <p>We pack the Vega or Vega-Lite specification as an encoded string in the URL.</p>
-        <p>We use a LZ-based compression algorithm and preserve indentation, newlines, and other whitespace.</p>
+        <p>
+          We pack the Vega or Vega-Lite specification as an encoded string in the URL. We use a LZ-based compression
+          algorithm.
+        </p>
         <div>
           <label className="user-pref">
             <input
               type="checkbox"
               defaultChecked={this.state.fullScreen}
               name="fullscreen"
-              onChange={this.handleCheck.bind(this)}
+              onChange={this.handleFulscreenCheck.bind(this)}
             />
             Open visualization in fullscreen
+          </label>
+          <label className="user-pref">
+            <input
+              type="checkbox"
+              defaultChecked={this.state.whitespace}
+              name="whitespace"
+              onChange={this.handleWhitespaceCheck.bind(this)}
+            />
+            Preserve whitespace
           </label>
         </div>
         <div className="sharing-buttons">
