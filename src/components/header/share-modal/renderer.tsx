@@ -21,7 +21,7 @@ class ShareModal extends React.PureComponent<Props, State> {
     this.state = {
       copied: false,
       fullScreen: false,
-      whitespace: true,
+      whitespace: false,
       generatedURL: '',
     };
   }
@@ -81,7 +81,8 @@ class ShareModal extends React.PureComponent<Props, State> {
         <h1>Share</h1>
         <p>
           We pack the Vega or Vega-Lite specification as an encoded string in the URL. We use a LZ-based compression
-          algorithm.
+          algorithm. When whitespaces are not preserved, the editor will automatically format the specification when it
+          is loaded.
         </p>
         <div>
           <label className="user-pref">
@@ -100,7 +101,7 @@ class ShareModal extends React.PureComponent<Props, State> {
               name="whitespace"
               onChange={this.handleWhitespaceCheck.bind(this)}
             />
-            Preserve whitespace
+            Preserve whitespaces
           </label>
         </div>
         <div className="sharing-buttons">

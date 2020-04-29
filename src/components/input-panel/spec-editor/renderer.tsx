@@ -167,8 +167,15 @@ class Editor extends React.PureComponent<Props, {}> {
   public editorWillMount(monaco: typeof Monaco) {
     const compressed = this.props.match.params.compressed;
     if (compressed) {
-      const spec = LZString.decompressFromEncodedURIComponent(compressed);
+      let spec: string = LZString.decompressFromEncodedURIComponent(compressed);
+
       if (spec) {
+        const newlines = (spec.match(/\n/g) || '').length + 1;
+        if (newlines <= 1) {
+          console.log('Formatting spec string from URL that did not contain newlines.');
+          spec = stringify(JSON.parse(spec));
+        }
+
         this.updateSpec(spec);
       } else {
         this.props.logError(new Error(`Failed to decompress URL. Expected a specification, but received ${spec}`));
