@@ -25,7 +25,7 @@
   "dependencies": {
     "@types/d3": "^5.7.2",
     "@types/react": "^16.9.34",
-    "@types/react-redux": "^7.1.7",
+    "@types/react-redux": "^7.1.8",
     "@types/react-resize-detector": "^4.2.0",
     "@types/react-router-dom": "^5.1.5",
     "ajv": "^6.12.2",
@@ -59,7 +59,7 @@
     "vega-cli": "5.11.1",
     "vega-datasets": "^1.30.2",
     "vega-embed": "^6.7.1",
-    "vega-lite": "4.11.0",
+    "vega-lite": "4.12.0",
     "vega-schema-url-parser": "^1.1.0",
     "vega-themes": "^2.8.3",
     "vega-tooltip": "^0.22.1"
