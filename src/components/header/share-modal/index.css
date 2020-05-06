@@ -38,3 +38,44 @@
 .url-warning a {
   color: var(--warning-color);
 }
+
+.share-split {
+  display: flex;
+}
+
+.share-split > div {
+  margin-right: 5px;
+  flex: 1;
+}
+
+.share-input-container {
+  margin-top: 20px;
+}
+
+.share-input-container > input[type="checkbox"] {
+  margin-left: 0;
+}
+
+.share-input-container > label > input[type="text"] {
+  width: 100%;
+  padding: 5px;
+  margin-top: 0.5em;
+}
+
+.share-input-container > button {
+  background: rgb(100, 80, 150);
+  color: white;
+  border: 1px solid #a9a9a9;
+  outline: none;
+  font-size: 16px;
+  padding: 0 20px;
+  height: 30px;
+}
+
+.share-error {
+  float: left;
+}
+
+.success {
+  margin-left: 10px;
+}

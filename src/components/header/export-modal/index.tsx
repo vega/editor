@@ -5,6 +5,7 @@ import Renderer from './renderer';
 export function mapStateToProps(state: State) {
   return {
     config: state.config,
+    editorString: state.editorString,
     mode: state.mode,
     vegaLiteSpec: state.vegaLiteSpec,
     vegaSpec: state.vegaSpec,

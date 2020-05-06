@@ -75,3 +75,5 @@ export const KEYCODES = {
 export const WORD_SEPARATORS = '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?';
 
 export const BACKEND_URL = 'https://vega.now.sh/';
+
+export const COOKIE_NAME = 'vega_session';
