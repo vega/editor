@@ -39,15 +39,6 @@
   color: var(--warning-color);
 }
 
-.share-split {
-  display: flex;
-}
-
-.share-split > div {
-  margin-right: 5px;
-  flex: 1;
-}
-
 .share-input-container {
   margin-top: 20px;
 }
@@ -56,20 +47,15 @@
   margin-left: 0;
 }
 
+.share-input-container select {
+  margin-top: 5px;
+  padding: 5px;
+}
+
 .share-input-container > label > input[type="text"] {
   width: 100%;
   padding: 5px;
   margin-top: 0.5em;
-}
-
-.share-input-container > button {
-  background: rgb(100, 80, 150);
-  color: white;
-  border: 1px solid #a9a9a9;
-  outline: none;
-  font-size: 16px;
-  padding: 0 20px;
-  height: 30px;
 }
 
 .share-error {
@@ -78,4 +64,31 @@
 
 .success {
   margin-left: 10px;
+}
+
+.horizontal-or-split {
+  display: flex;
+  flex-direction: row;
+}
+
+.horizontal-or-split > div {
+  margin-top: 1em;
+}
+
+.horizontal-or-split > div:first-child {
+  padding-right: 3em;
+}
+
+.horizontal-or-split > div:last-child {
+  border-left: 3px solid #eee;
+  padding-left: 3em;
+}
+
+.horizontal-or-split .editor-button {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.share-modal .spacer {
+  margin-top: 4em;
 }

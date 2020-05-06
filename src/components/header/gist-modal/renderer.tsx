@@ -363,7 +363,7 @@ class GistModal extends React.PureComponent<Props, State> {
         <h1>
           Load{' '}
           <a href="https://gist.github.com/" target="_blank" rel="noopener noreferrer">
-            Github Gist
+            GitHub Gist
           </a>
         </h1>
         <div className="gist-split">
