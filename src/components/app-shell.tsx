@@ -4,15 +4,7 @@ import {Route, Switch} from 'react-router-dom';
 import App from './app';
 import Reset from './reset';
 
-interface Props {
-  logPageView: () => void;
-}
-
-export default class AppShell extends React.PureComponent<Props> {
-  public componentDidUpdate() {
-    this.props.logPageView();
-  }
-
+export default class AppShell extends React.PureComponent {
   public render() {
     return (
       <div>
