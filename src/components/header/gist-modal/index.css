@@ -3,6 +3,10 @@
   flex-wrap: wrap;
 }
 
+.personal-gist {
+  min-width: 50%;
+}
+
 .gist-text {
   margin-top: 30px;
   font-size: 12px;

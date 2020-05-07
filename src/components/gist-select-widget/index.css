@@ -1,8 +1,3 @@
-.personal-gist {
-  min-width: 50%;
-  flex: 1;
-}
-
 .privacy-toggle {
   display: flex;
   align-items: center;

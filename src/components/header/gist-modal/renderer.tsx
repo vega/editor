@@ -272,7 +272,10 @@ class GistModal extends React.PureComponent<Props, State> {
           </a>
         </h1>
         <div className="gist-split">
-          <GistSelectWidget preview={this.preview.bind(this)} />
+          <div className="personal-gist">
+            <h3>Your gists</h3>
+            <GistSelectWidget selectGist={this.preview.bind(this)} />
+          </div>
           <div className="load-gist">
             <h3>Load gists</h3>
             <form ref={(form) => (this.refGistForm = form)}>

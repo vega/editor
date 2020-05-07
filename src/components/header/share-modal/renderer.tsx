@@ -5,6 +5,7 @@ import {Copy, Link} from 'react-feather';
 import {withRouter} from 'react-router-dom';
 import {mapStateToProps, mapDispatchToProps} from '.';
 import getCookie from '../../../utils/getCookie';
+import GistSelectWidget from '../../gist-select-widget';
 import {BACKEND_URL, COOKIE_NAME} from '../../../constants/consts';
 import './index.css';
 
@@ -14,12 +15,12 @@ interface State {
   copied: boolean;
   created: boolean;
   done: boolean;
-  error: boolean;
+  createError: boolean;
+  updateError: boolean;
   fullScreen: boolean;
   whitespace: boolean;
   generatedURL: string;
   gistFileName: string;
-  gistFileNameEdited: string;
   gistPrivate: boolean;
   gistTitle: string;
   gistId: string;
@@ -32,6 +33,7 @@ interface State {
     }[];
   }[];
   updated: boolean;
+  url: string;
 }
 
 class ShareModal extends React.PureComponent<Props, State> {
@@ -41,17 +43,18 @@ class ShareModal extends React.PureComponent<Props, State> {
       copied: false,
       created: false,
       done: true,
-      error: false,
+      createError: false,
+      updateError: false,
       fullScreen: false,
       whitespace: false,
       generatedURL: '',
       gistFileName: '',
-      gistFileNameEdited: '',
       gistPrivate: false,
       gistTitle: '',
       gistId: '',
       listOfCurrentGist: [],
       updated: true,
+      url: '',
     };
   }
 
@@ -113,7 +116,7 @@ class ShareModal extends React.PureComponent<Props, State> {
 
   public fileNameChange(event) {
     this.setState({
-      gistFileNameEdited: event.target.value,
+      gistFileName: event.target.value,
     });
   }
 
@@ -141,7 +144,7 @@ class ShareModal extends React.PureComponent<Props, State> {
 
     const body = {
       content: this.props.editorString,
-      name: this.state.gistFileNameEdited || 'spec',
+      name: this.state.gistFileName || 'spec',
       title: this.state.gistTitle,
       privacy: this.state.gistPrivate,
     };
@@ -160,16 +163,15 @@ class ShareModal extends React.PureComponent<Props, State> {
     });
 
     const json = await res.json();
-
     this.setState(
       {
         done: true,
       },
       () => {
-        if (Object.keys(json).length > 0) {
+        if (json.url === undefined) {
           this.setState(
             {
-              error: true,
+              createError: true,
             },
             () => {
               this.props.receiveCurrentUser(json.isAuthenticated);
@@ -179,6 +181,8 @@ class ShareModal extends React.PureComponent<Props, State> {
           this.setState(
             {
               created: true,
+              createError: false,
+              url: json.url,
             },
             () => {
               setTimeout(() => {
@@ -193,16 +197,10 @@ class ShareModal extends React.PureComponent<Props, State> {
     );
   }
 
-  public selectGist(e) {
-    const gist = this.state.listOfCurrentGist.find((gistFile) => gistFile.name === e.target.value);
-    const {isPublic, title} = gist;
-    const fileName = gist.spec[0].name;
+  public selectGist(id, fileName) {
     this.setState({
-      gistFileNameEdited: fileName,
+      gistId: id,
       gistFileName: fileName,
-      gistPrivate: !isPublic,
-      gistTitle: title,
-      gistId: e.target.value,
     });
   }
 
@@ -216,11 +214,8 @@ class ShareModal extends React.PureComponent<Props, State> {
       const res = await fetch(`${BACKEND_URL}gists/update`, {
         body: JSON.stringify({
           gistId: this.state.gistId,
-          privacy: !this.state.gistPrivate,
           fileName: this.state.gistFileName,
-          title: this.state.gistTitle,
           content: this.props.editorString,
-          fileNameEdited: this.state.gistFileNameEdited || this.state.gistFileName,
         }),
         mode: 'cors',
         credentials: 'include',
@@ -231,11 +226,18 @@ class ShareModal extends React.PureComponent<Props, State> {
         method: 'post',
       });
 
+      const data = await res.json();
       if (res.status === 205) {
-        this.setState((prevState) => ({
-          gistFileName: prevState.gistFileNameEdited,
+        this.setState({
           updated: true,
-        }));
+          url: data.url,
+          updateError: false,
+        });
+      } else {
+        this.setState({
+          updated: true,
+          updateError: true,
+        });
       }
     }
   }
@@ -315,74 +317,60 @@ class ShareModal extends React.PureComponent<Props, State> {
             GitHub Gist
           </a>
         </h2>
-        <div className="share-input-container">
-          <label>
-            Select Gist to update to to use as a template:
-            <br />
-            <select onChange={this.selectGist.bind(this)}>
-              <option selected disabled>
-                -
-              </option>
-              {this.state.listOfCurrentGist.map((gist) => (
-                <option key={gist.name} value={gist.name}>
-                  {gist.title}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <div className="share-input-container">
-          <label>
-            File name:
-            <input
-              value={this.state.gistFileNameEdited}
-              onChange={this.fileNameChange.bind(this)}
-              type="text"
-              placeholder="Enter file name"
-            />
-          </label>
-        </div>
-        <div className="share-input-container">
-          <label>
-            Title (optional):
-            <input
-              value={this.state.gistTitle}
-              onChange={this.titleChange.bind(this)}
-              type="text"
-              placeholder="Enter title of gist"
-            />
-          </label>
-        </div>
-        <div className="share-input-container">
-          <label>
-            <input
-              type="checkbox"
-              name="private-gist"
-              id="private-gist"
-              value="private-select"
-              checked={this.state.gistPrivate}
-              onChange={this.updatePrivacy.bind(this)}
-            />
-            Create or Update a Private Gist
-          </label>
-        </div>
-        <div className="horizontal-or-split">
+        <div className="share-gist-split">
+          <div className="update-gist">
+            <h3>Update an existing GIST</h3>
+            <GistSelectWidget selectGist={this.selectGist.bind(this)} />
+            <button className="editor-button" onClick={this.updateGist.bind(this)}>
+              {this.state.updated ? 'Update' : 'Updating...'}
+            </button>
+            {this.state.updateError && <div className="error-message share-error">Gist could not be updated</div>}
+          </div>
           <div>
             <h3>Create a new Gist</h3>
+            <div className="share-input-container">
+              <label>
+                File name:
+                <input
+                  value={this.state.gistFileName}
+                  onChange={this.fileNameChange.bind(this)}
+                  type="text"
+                  placeholder="Enter file name"
+                />
+              </label>
+            </div>
+            <div className="share-input-container">
+              <label>
+                Title (optional):
+                <input
+                  value={this.state.gistTitle}
+                  onChange={this.titleChange.bind(this)}
+                  type="text"
+                  placeholder="Enter title of gist"
+                />
+              </label>
+            </div>
+            <div className="share-input-container">
+              <label>
+                <input
+                  type="checkbox"
+                  name="private-gist"
+                  id="private-gist"
+                  value="private-select"
+                  checked={this.state.gistPrivate}
+                  onChange={this.updatePrivacy.bind(this)}
+                />
+                Create or Update a Private Gist
+              </label>
+            </div>
             <div>
               <button className="editor-button" onClick={this.createGist.bind(this)}>
                 {this.state.done ? 'Create' : 'Creating...'}
               </button>
               {this.state.created && <span className="success">Created!</span>}
-
-              {this.state.error && <div className="error-message share-error">Gist could not be created</div>}
+              {/* {this.state.url && <span>{this.state.url}</span>} */}
+              {this.state.createError && <div className="error-message share-error">Gist could not be created</div>}
             </div>
-          </div>
-          <div>
-            <h3>Update an Existing Gist</h3>
-            <button className="editor-button" onClick={this.updateGist.bind(this)}>
-              {this.state.updated ? 'Update' : 'Updating...'}
-            </button>
           </div>
         </div>
       </div>
