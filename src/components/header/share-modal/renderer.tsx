@@ -6,7 +6,7 @@ import {withRouter} from 'react-router-dom';
 import {mapStateToProps, mapDispatchToProps} from '.';
 import getCookie from '../../../utils/getCookie';
 import GistSelectWidget from '../../gist-select-widget';
-import {BACKEND_URL, COOKIE_NAME} from '../../../constants/consts';
+import {BACKEND_URL, COOKIE_NAME, NAMES} from '../../../constants/consts';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -21,24 +21,18 @@ interface State {
   whitespace: boolean;
   generatedURL: string;
   gistFileName: string;
+  gistFileNameSelected: string;
   gistPrivate: boolean;
   gistTitle: string;
   gistId: string;
-  listOfCurrentGist: {
-    name: string;
-    title: string;
-    isPublic: boolean;
-    spec: {
-      name: string;
-    }[];
-  }[];
   updated: boolean;
-  url: string;
+  gistURL: string;
 }
 
 class ShareModal extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
+    const date = new Date().toDateString();
     this.state = {
       copied: false,
       created: false,
@@ -48,13 +42,13 @@ class ShareModal extends React.PureComponent<Props, State> {
       fullScreen: false,
       whitespace: false,
       generatedURL: '',
-      gistFileName: '',
+      gistFileName: 'spec.json',
+      gistFileNameSelected: '',
       gistPrivate: false,
-      gistTitle: '',
+      gistTitle: `${NAMES[this.props.mode]} spec from ${date}`,
       gistId: '',
-      listOfCurrentGist: [],
       updated: true,
-      url: '',
+      gistURL: '',
     };
   }
 
@@ -105,7 +99,6 @@ class ShareModal extends React.PureComponent<Props, State> {
 
   public componentDidMount() {
     this.exportURL();
-    this.getGist();
   }
 
   public updatePrivacy(event) {
@@ -123,17 +116,6 @@ class ShareModal extends React.PureComponent<Props, State> {
   public titleChange(event) {
     this.setState({
       gistTitle: event.target.value,
-    });
-  }
-
-  public async getGist() {
-    const response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=ALL`, {
-      credentials: 'include',
-      method: 'get',
-    });
-    const data = await response.json();
-    this.setState({
-      listOfCurrentGist: [...data.data],
     });
   }
 
@@ -182,7 +164,7 @@ class ShareModal extends React.PureComponent<Props, State> {
             {
               created: true,
               createError: false,
-              url: json.url,
+              gistURL: json.url,
             },
             () => {
               setTimeout(() => {
@@ -199,8 +181,8 @@ class ShareModal extends React.PureComponent<Props, State> {
 
   public selectGist(id, fileName) {
     this.setState({
+      gistFileNameSelected: fileName,
       gistId: id,
-      gistFileName: fileName,
     });
   }
 
@@ -214,7 +196,7 @@ class ShareModal extends React.PureComponent<Props, State> {
       const res = await fetch(`${BACKEND_URL}gists/update`, {
         body: JSON.stringify({
           gistId: this.state.gistId,
-          fileName: this.state.gistFileName,
+          fileName: this.state.gistFileNameSelected,
           content: this.props.editorString,
         }),
         mode: 'cors',
@@ -229,8 +211,8 @@ class ShareModal extends React.PureComponent<Props, State> {
       const data = await res.json();
       if (res.status === 205) {
         this.setState({
+          gistURL: data.url,
           updated: true,
-          url: data.url,
           updateError: false,
         });
       } else {
@@ -330,23 +312,23 @@ class ShareModal extends React.PureComponent<Props, State> {
             <h3>Create a new Gist</h3>
             <div className="share-input-container">
               <label>
-                File name:
-                <input
-                  value={this.state.gistFileName}
-                  onChange={this.fileNameChange.bind(this)}
-                  type="text"
-                  placeholder="Enter file name"
-                />
-              </label>
-            </div>
-            <div className="share-input-container">
-              <label>
                 Title (optional):
                 <input
                   value={this.state.gistTitle}
                   onChange={this.titleChange.bind(this)}
                   type="text"
                   placeholder="Enter title of gist"
+                />
+              </label>
+            </div>
+            <div className="share-input-container">
+              <label>
+                File name:
+                <input
+                  value={this.state.gistFileName}
+                  onChange={this.fileNameChange.bind(this)}
+                  type="text"
+                  placeholder="Enter file name"
                 />
               </label>
             </div>
@@ -360,7 +342,7 @@ class ShareModal extends React.PureComponent<Props, State> {
                   checked={this.state.gistPrivate}
                   onChange={this.updatePrivacy.bind(this)}
                 />
-                Create or Update a Private Gist
+                Create a Private Gist
               </label>
             </div>
             <div>
@@ -368,7 +350,12 @@ class ShareModal extends React.PureComponent<Props, State> {
                 {this.state.done ? 'Create' : 'Creating...'}
               </button>
               {this.state.created && <span className="success">Created!</span>}
-              {/* {this.state.url && <span>{this.state.url}</span>} */}
+              {this.state.gistURL && (
+                <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistURL}>
+                  <Copy />
+                  <span>Copy Link to Clipboard</span>
+                </Clipboard>
+              )}
               {this.state.createError && <div className="error-message share-error">Gist could not be created</div>}
             </div>
           </div>
