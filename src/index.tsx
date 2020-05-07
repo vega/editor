@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import * as ReactGA from 'react-ga';
 import {Provider} from 'react-redux';
 import {HashRouter} from 'react-router-dom';
 import * as vega from 'vega';
@@ -29,14 +28,6 @@ window.VEGA_DEBUG.vegaLite = vegaLite;
 window.VEGA_DEBUG.VEGA_VERSION = vega.version;
 window.VEGA_DEBUG.VEGA_LITE_VERSION = vegaLite.version;
 
-// Google analytics
-ReactGA.initialize('UA-44428446-7');
-
-function logPageView() {
-  ReactGA.set({page: window.location.pathname + window.location.search});
-  ReactGA.pageview(window.location.pathname + window.location.search);
-}
-
 setupMonaco();
 
 const store = configureStore();
@@ -46,7 +37,7 @@ const store = configureStore();
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter>
-      <AppShell logPageView={logPageView} />
+      <AppShell />
     </HashRouter>
   </Provider>,
   document.getElementById('root')

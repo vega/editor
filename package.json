@@ -42,7 +42,6 @@
     "react-clipboard.js": "^2.0.16",
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",
-    "react-ga": "2.7.0",
     "react-monaco-editor": "^0.36.0",
     "react-paginate": "^6.3.2",
     "react-portal": "^4.2.1",
