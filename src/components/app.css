@@ -25,6 +25,7 @@
   --gray-color: #dedede;
   --dark-gray-color: #c0c0c0;
   --extra-dark-gray-color: #666;
+  --almost-black-color: #333;
   --black-color: #000000;
   --brand-color: #654ff0;
   --dark-brand-color: rgb(92, 64, 141);
@@ -146,11 +147,11 @@ button:active,
   border-color: hsl(0, 0%, 40%);
 }
 
-button.disabled,
-.editor-button.disabled {
-  cursor: wait;
-  filter: grayscale(80%);
-  opacity: 0.8;
+button:disabled,
+.editor-button:disabled {
+  opacity: 0.7;
+  background-color: var(--light-gray-color);
+  color: var(--extra-dark-gray-color);
 }
 
 /* Scrollbar Styles */
@@ -196,4 +197,8 @@ p {
 
 a {
   color: #0451a5;
+}
+
+h2 {
+  margin: 26px 0 14px 0;
 }

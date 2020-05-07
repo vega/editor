@@ -22,7 +22,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       isTimelineSelected: false,
       isHovered: false,
       keys: [],
-      maskListner: false,
+      maskListener: false,
       maxLength: 0,
       signal: {},
       xCount: 0,
@@ -81,7 +81,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   }
 
   public onClickInit(key, hoverValue) {
-    this.setState({maskListner: true});
+    this.setState({maskListener: true});
     const overlay: HTMLElement = document.querySelector('.chart-overlay');
     overlay.style.display = 'block';
     this.onHoverInit(key, hoverValue, true); // hover calculation with persist
@@ -100,7 +100,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           isTimelineSelected: false,
           hoverValue: {},
           countSignal: {},
-          maskListner: false,
+          maskListener: false,
         },
         () => {
           const overlay: HTMLElement = document.querySelector('.chart-overlay');
@@ -155,8 +155,8 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
       () => {
         setImmediate(() =>
           this.setState({
-            // remove the maskListner
-            maskListner: false,
+            // remove the maskListener
+            maskListener: false,
           })
         );
       }
@@ -211,7 +211,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
     });
   }
   public valueChange = (key: string, value: any) => {
-    if (this.state.timeline && !this.state.maskListner) {
+    if (this.state.timeline && !this.state.maskListener) {
       this.getSignals(key);
     }
   };
@@ -243,7 +243,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           >
             {this.state.timeline ? 'Stop Recording & Reset' : 'Record signal changes'}
           </button>
-          {this.state.timeline && !this.state.maskListner && this.state.xCount > 1 && (
+          {this.state.timeline && !this.state.maskListener && this.state.xCount > 1 && (
             <button
               onClick={() => {
                 this.setState(
@@ -260,7 +260,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               Clear Timeline
             </button>
           )}
-          {this.state.maskListner && this.state.timeline && (
+          {this.state.maskListener && this.state.timeline && (
             <button onClick={() => this.resetTimeline()}>Continue Recording</button>
           )}
         </div>
@@ -281,7 +281,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
                     isTimelineSelected={this.state.isTimelineSelected}
                     clickedSignal={this.state.signal[signal]}
                     hoverValue={this.state.hoverValue[signal]}
-                    maskListner={this.state.maskListner}
+                    maskListener={this.state.maskListener}
                     onValueChange={(key, value) => this.valueChange(key, value)}
                     key={signal}
                     signal={signal}

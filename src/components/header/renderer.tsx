@@ -37,7 +37,7 @@ const formatExampleName = (name: string) => {
 class Header extends React.PureComponent<Props, State> {
   private refGistForm: HTMLFormElement;
   private examplePortal = React.createRef<HTMLDivElement>();
-  private listnerAttached = false;
+  private listenerAttached = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -137,7 +137,7 @@ class Header extends React.PureComponent<Props, State> {
           closePortal();
         }
       }
-      this.listnerAttached = true;
+      this.listenerAttached = true;
     });
   }
 
@@ -152,7 +152,7 @@ class Header extends React.PureComponent<Props, State> {
     window.removeEventListener('keydown', () => {
       return;
     });
-    this.listnerAttached = false;
+    this.listenerAttached = false;
   }
   public signIn() {
     window.open(`${BACKEND_URL}auth/github`, '_blank');
@@ -510,7 +510,7 @@ class Header extends React.PureComponent<Props, State> {
         <section className="right-section">
           <PortalWithState closeOnEsc>
             {({openPortal, closePortal, isOpen, portal}) => {
-              if (!this.listnerAttached) {
+              if (!this.listenerAttached) {
                 this.handleHelpModalToggle(event, openPortal, closePortal, isOpen);
               }
               return [

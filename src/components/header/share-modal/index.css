@@ -38,3 +38,43 @@
 .url-warning a {
   color: var(--warning-color);
 }
+
+.share-gist-split {
+  display: flex;
+  flex-direction: row;
+}
+
+.update-gist {
+  min-width: 50%;
+}
+
+.share-input-container {
+  margin-top: 20px;
+}
+
+.share-input-container > input[type="checkbox"] {
+  margin-left: 0;
+}
+
+.share-input-container select {
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.share-input-container > label > input[type="text"] {
+  width: 100%;
+  padding: 5px;
+  margin-top: 0.5em;
+}
+
+.share-error {
+  float: left;
+}
+
+.success {
+  margin-left: 10px;
+}
+
+.share-modal .spacer {
+  margin-top: 4em;
+}

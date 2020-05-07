@@ -29,7 +29,7 @@ const keyBoardShortcuts = shortcuts.map((shortcut, i) => {
 const HelpModal = () => {
   return (
     <div className="help-modal">
-      <h1 className="modal-header">Help</h1>
+      <h1>Help</h1>
       <h2>References</h2>
       <div className="doc-link">
         <a href="https://vega.github.io/vega-lite/" target="_blank" rel="noopener noreferrer">

@@ -8,7 +8,7 @@ import './index.css';
 const SIZE_THRESHOLD = 1000;
 
 class Sidebar extends Component<any, any> {
-  private listnerAttached = false;
+  private listenerAttached = false;
   public constructor(props) {
     super(props);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
@@ -16,18 +16,18 @@ class Sidebar extends Component<any, any> {
     this.setHover = this.setHover.bind(this);
   }
   public componentDidMount() {
-    // add click event listner depending on the screen size
+    // add click event listener depending on the screen size
     document.body.addEventListener('click', this.handleOutsideClick, true);
 
-    // add escape event listner depending on the screen size
+    // add escape event listener depending on the screen size
     window.addEventListener('keydown', this.handleEscClick, true);
 
     // remove or add event listeners if the window is resized;
     window.addEventListener('resize', () => {
-      if (this.listnerAttached && window.innerWidth > SIZE_THRESHOLD) {
+      if (this.listenerAttached && window.innerWidth > SIZE_THRESHOLD) {
         document.body.removeEventListener('click', this.handleOutsideClick, true);
       }
-      if (!this.listnerAttached && window.innerWidth <= SIZE_THRESHOLD) {
+      if (!this.listenerAttached && window.innerWidth <= SIZE_THRESHOLD) {
         document.body.addEventListener('click', this.handleOutsideClick, true);
       }
     });
@@ -43,7 +43,7 @@ class Sidebar extends Component<any, any> {
   }
 
   public handleOutsideClick(event) {
-    if (!this.listnerAttached && window.innerWidth <= SIZE_THRESHOLD) {
+    if (!this.listenerAttached && window.innerWidth <= SIZE_THRESHOLD) {
       const target: any = event.target;
       if (
         target.closest('.settings') ||
@@ -54,7 +54,7 @@ class Sidebar extends Component<any, any> {
         return;
       }
       this.props.setSettingsState(false);
-      this.listnerAttached = true;
+      this.listenerAttached = true;
     }
   }
 

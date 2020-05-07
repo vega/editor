@@ -1,0 +1,85 @@
+.privacy-toggle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.privacy-toggle > input {
+  margin: 0 4px 0 0;
+}
+
+.gist-wrapper {
+  margin-right: 0.5em;
+  overflow-y: auto;
+  max-height: 47vh;
+}
+
+.load-gist {
+  flex: 1;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 30%;
+  font-size: 20px;
+}
+
+.text {
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.play-down {
+  color: var(--dark-gray-color);
+}
+
+.personal-gist-description {
+  display: flex;
+  align-items: center;
+  color: var(--extra-dark-gray-color);
+}
+
+.personal-gist-files {
+  display: flex;
+  flex-direction: column;
+}
+
+.gist-container {
+  margin-bottom: 1em;
+  font-size: 0.9em;
+  word-wrap: break-word;
+  width: fit-content;
+}
+
+.file {
+  display: flex;
+}
+
+.arrow {
+  margin: 4px;
+  width: 15px;
+  border-bottom: 1px solid var(--black-color);
+  border-left: 1px solid var(--black-color);
+}
+
+.filename {
+  font-family: monospace;
+  cursor: pointer;
+  margin-top: 4px;
+  color: var(--almost-black-color);
+}
+
+.filename:hover {
+  color: var(--black-color);
+}
+
+.file-active {
+  color: var(--black-color);
+  font-weight: bold;
+}
+
+.loading {
+  opacity: 0.4;
+}

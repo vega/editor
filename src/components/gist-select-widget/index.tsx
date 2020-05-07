@@ -1,15 +1,13 @@
 import {connect} from 'react-redux';
-import {State} from '../../../constants/default-state';
+import {State} from '../../constants/default-state';
 import {bindActionCreators, Dispatch} from 'redux';
+import * as EditorActions from '../../actions/editor';
 import Renderer from './renderer';
-import * as EditorActions from '../../../actions/editor';
 
 export function mapStateToProps(state: State) {
   return {
-    editorString: state.editorString,
-    mode: state.mode,
-    view: state.view,
-    handle: state.handle,
+    isAuthenticated: state.isAuthenticated,
+    private: state.private,
   };
 }
 
@@ -17,6 +15,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       receiveCurrentUser: EditorActions.receiveCurrentUser,
+      toggleGistPrivacy: EditorActions.toggleGistPrivacy,
     },
     dispatch
   );

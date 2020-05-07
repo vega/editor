@@ -1,28 +1,52 @@
 import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
-import {Copy, Link} from 'react-feather';
+import {Copy, Link, Save} from 'react-feather';
 import {withRouter} from 'react-router-dom';
-import {mapStateToProps} from '.';
+import {mapStateToProps, mapDispatchToProps} from '.';
+import getCookie from '../../../utils/getCookie';
+import GistSelectWidget from '../../gist-select-widget';
+import {BACKEND_URL, COOKIE_NAME, NAMES} from '../../../constants/consts';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps>;
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 interface State {
   copied: boolean;
+  creating: boolean;
+  createError: boolean;
+  updateError: boolean;
   fullScreen: boolean;
   whitespace: boolean;
   generatedURL: string;
+  gistFileName: string;
+  gistFileNameSelected: string;
+  gistPrivate: boolean;
+  gistTitle: string;
+  gistId: string;
+  updating: boolean;
+  gistEditorURL: string;
 }
 
 class ShareModal extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
+    const date = new Date().toDateString();
     this.state = {
       copied: false,
+      creating: undefined,
+      createError: false,
+      updateError: false,
       fullScreen: false,
       whitespace: false,
       generatedURL: '',
+      gistFileName: 'spec.json',
+      gistFileNameSelected: '',
+      gistPrivate: false,
+      gistTitle: `${NAMES[this.props.mode]} spec from ${date}`,
+      gistId: '',
+      updating: undefined,
+      gistEditorURL: '',
     };
   }
 
@@ -75,10 +99,129 @@ class ShareModal extends React.PureComponent<Props, State> {
     this.exportURL();
   }
 
+  public updatePrivacy(event) {
+    this.setState({
+      gistPrivate: event.target.checked,
+    });
+  }
+
+  public fileNameChange(event) {
+    this.setState({
+      gistFileName: event.target.value,
+    });
+  }
+
+  public titleChange(event) {
+    this.setState({
+      gistTitle: event.target.value,
+    });
+  }
+
+  public async createGist() {
+    this.setState({
+      creating: true,
+    });
+
+    const body = {
+      content: this.props.editorString,
+      name: this.state.gistFileName || 'spec',
+      title: this.state.gistTitle,
+      privacy: this.state.gistPrivate,
+    };
+
+    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
+
+    const res = await fetch(`${BACKEND_URL}gists/create`, {
+      body: JSON.stringify(body),
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: `${COOKIE_NAME}=${cookieValue}`,
+      },
+      method: 'post',
+    });
+
+    const data = await res.json();
+    this.setState(
+      {
+        creating: false,
+        updating: undefined,
+      },
+      () => {
+        if (data.url === undefined) {
+          this.setState(
+            {
+              createError: true,
+            },
+            () => {
+              this.props.receiveCurrentUser(data.isAuthenticated);
+            }
+          );
+        } else {
+          this.setState({
+            createError: false,
+            // TODO: create URL to editor. BASE_URL/#/gist/GIST_ID
+            gistEditorURL: data.url,
+          });
+        }
+      }
+    );
+  }
+
+  public selectGist(id, fileName) {
+    this.setState({
+      gistFileNameSelected: fileName,
+      gistId: id,
+    });
+  }
+
+  public async updateGist() {
+    this.setState({
+      updating: true,
+    });
+
+    if (this.state.gistId) {
+      const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
+      const res = await fetch(`${BACKEND_URL}gists/update`, {
+        body: JSON.stringify({
+          gistId: this.state.gistId,
+          fileName: this.state.gistFileNameSelected,
+          content: this.props.editorString,
+        }),
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Cookie: `${COOKIE_NAME}=${cookieValue}`,
+        },
+        method: 'post',
+      });
+
+      const data = await res.json();
+      if (res.status === 205) {
+        this.setState({
+          // TODO: create URL to editor. BASE_URL/#/gist/GIST_ID
+          gistEditorURL: data.url,
+          creating: undefined,
+          updating: false,
+          updateError: false,
+        });
+      } else {
+        this.setState({
+          creating: undefined,
+          updating: false,
+          updateError: true,
+        });
+      }
+    }
+  }
+
   public render() {
     return (
-      <>
+      <div className="share-modal">
         <h1>Share</h1>
+        <h2>Via URL</h2>
         <p>
           We pack the Vega or Vega-Lite specification as an encoded string in the URL. We use a LZ-based compression
           algorithm. When whitespaces are not preserved, the editor will automatically format the specification when it
@@ -142,7 +285,97 @@ class ShareModal extends React.PureComponent<Props, State> {
             </>
           )}
         </span>
-      </>
+        <div className="spacer"></div>
+        <h2>
+          Via{' '}
+          <a href="https://gist.github.com/" target="_blank" rel="noopener noreferrer">
+            GitHub Gist
+          </a>
+        </h2>
+        <p>
+          Here, you can save your Vega or Vega-Lite specification as a new Gist or update an existing Gist. You can view
+          all of your Gists on <a href={`https://gist.github.com/${this.props.handle}`}>GitHub</a>.
+        </p>
+        <div className="share-gist-split">
+          <div className="update-gist">
+            <h3>Update an existing Gist</h3>
+            <p>To update an existing Gist, select it in the list and then click the button below to confirm.</p>
+            <GistSelectWidget selectGist={this.selectGist.bind(this)} />
+            <div className="sharing-buttons">
+              <button
+                className="editor-button"
+                onClick={this.updateGist.bind(this)}
+                disabled={!this.state.gistFileNameSelected || this.state.updating}
+              >
+                <Save />
+                {this.state.updating ? 'Updating...' : 'Update'}
+              </button>
+              {this.state.gistEditorURL && this.state.updating !== undefined && (
+                <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistEditorURL}>
+                  <Copy />
+                  <span>Copy Link to Clipboard</span>
+                </Clipboard>
+              )}
+            </div>
+            {this.state.updateError && <div className="error-message share-error">Gist could not be updated.</div>}
+          </div>
+          <div>
+            <h3>Create a new Gist</h3>
+            <p>
+              Save the current Vega or Vega-Lite specification as a Gist. When yoy save it, you will get a link that you
+              can share. You can also load the specification via the Gist loading functionality in the editor.
+            </p>
+            <div className="share-input-container">
+              <label>
+                Title (optional):
+                <input
+                  value={this.state.gistTitle}
+                  onChange={this.titleChange.bind(this)}
+                  type="text"
+                  placeholder="Enter title of gist"
+                />
+              </label>
+            </div>
+            <div className="share-input-container">
+              <label>
+                File name:
+                <input
+                  value={this.state.gistFileName}
+                  onChange={this.fileNameChange.bind(this)}
+                  type="text"
+                  placeholder="Enter file name"
+                />
+              </label>
+            </div>
+            <div className="share-input-container">
+              <label>
+                <input
+                  type="checkbox"
+                  name="private-gist"
+                  id="private-gist"
+                  value="private-select"
+                  checked={this.state.gistPrivate}
+                  onChange={this.updatePrivacy.bind(this)}
+                />
+                Create a Private Gist
+              </label>
+            </div>
+            <div className="sharing-buttons">
+              <button className="editor-button" onClick={this.createGist.bind(this)} disabled={this.state.creating}>
+                <Save />
+                {this.state.creating ? 'Creating...' : 'Create'}
+              </button>
+              {this.state.gistEditorURL && this.state.creating !== undefined && (
+                <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistEditorURL}>
+                  <Copy />
+                  <span>Copy Link to Clipboard</span>
+                </Clipboard>
+              )}
+              {this.state.createError && <div className="error-message share-error">Gist could not be created</div>}
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
