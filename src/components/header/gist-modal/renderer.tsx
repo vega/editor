@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {AlertCircle, File, Lock} from 'react-feather';
-import ReactPaginate from 'react-paginate';
+import {AlertCircle} from 'react-feather';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {mapDispatchToProps, mapStateToProps} from '.';
-import {BACKEND_URL, GistPrivacy, Mode} from '../../../constants';
+import GistSelectWidget from '../../gist-select-widget';
+import {Mode} from '../../../constants';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -12,7 +12,6 @@ type Props = ReturnType<typeof mapStateToProps> &
   } & RouteComponentProps;
 
 interface State {
-  currentPage: number;
   gist: {
     image: string;
     imageStyle: {
@@ -28,10 +27,6 @@ interface State {
   invalidRevision: boolean;
   invalidUrl: boolean;
   latestRevision: boolean;
-  loaded: boolean;
-  loading: boolean;
-  pages: any;
-  personalGist: any;
   syntaxError: boolean;
 }
 
@@ -40,7 +35,6 @@ class GistModal extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: 0,
       gist: {
         filename: '',
         image: '',
@@ -56,16 +50,8 @@ class GistModal extends React.PureComponent<Props, State> {
       invalidRevision: false,
       invalidUrl: false,
       latestRevision: false,
-      loaded: false,
-      loading: true,
-      pages: {},
-      personalGist: [],
       syntaxError: false,
     };
-  }
-
-  public componentDidMount() {
-    this.handlePageChange({selected: 0});
   }
 
   public updateGist(gist) {
@@ -231,41 +217,6 @@ class GistModal extends React.PureComponent<Props, State> {
     }
   }
 
-  public componentDidUpdate(prevProps) {
-    if (this.props.isAuthenticated !== prevProps.isAuthenticated) {
-      this.setState(
-        {
-          currentPage: 0,
-          gist: {
-            filename: '',
-            image: '',
-            imageStyle: {
-              bottom: 0,
-            },
-            revision: '',
-            type: this.props.mode,
-            url: '',
-          },
-          loading: true,
-        },
-        () => {
-          this.handlePageChange({selected: this.state.currentPage});
-        }
-      );
-    }
-    if (this.props.private !== prevProps.private) {
-      this.setState(
-        {
-          currentPage: 0,
-          loading: true,
-        },
-        () => {
-          this.handlePageChange({selected: this.state.currentPage});
-        }
-      );
-    }
-  }
-
   public preview(id, file, image) {
     this.setState({
       gist: {
@@ -311,53 +262,7 @@ class GistModal extends React.PureComponent<Props, State> {
     });
   }
 
-  public async handlePageChange(page) {
-    if (this.state.loading) {
-      this.setState(
-        {
-          loading: false,
-        },
-        async () => {
-          let response;
-          if (page.selected === 0) {
-            response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=${this.props.private}`, {
-              credentials: 'include',
-              method: 'get',
-            });
-          } else {
-            response = await fetch(
-              `${BACKEND_URL}gists/user?cursor=${this.state.pages[page.selected]}&privacy=${this.props.private}`,
-              {
-                credentials: 'include',
-                method: 'get',
-              }
-            );
-          }
-          const data = await response.json();
-          if (Array.isArray(data.data)) {
-            this.setState({
-              currentPage: page.selected,
-              loaded: true,
-              pages: page.selected === 0 ? data.cursors : this.state.pages,
-              loading: true,
-              personalGist: data.data,
-            });
-          } else {
-            this.props.receiveCurrentUser(data.isAuthenticated);
-          }
-        }
-      );
-    }
-  }
-
   public render() {
-    const githubLink = (
-      /* eslint-disable-next-line react/jsx-no-target-blank */
-      <a href={`${BACKEND_URL}auth/github`} target="_blank">
-        Login with GitHub
-      </a>
-    );
-
     return (
       <div>
         <h1>
@@ -367,81 +272,7 @@ class GistModal extends React.PureComponent<Props, State> {
           </a>
         </h1>
         <div className="gist-split">
-          <div className="personal-gist">
-            <h3>Your gists</h3>
-            {this.props.isAuthenticated ? (
-              this.state.loaded ? (
-                <>
-                  <div className="privacy-toggle">
-                    <input
-                      type="checkbox"
-                      name="privacy"
-                      id="privacy"
-                      checked={this.props.private === GistPrivacy.ALL}
-                      onChange={this.props.toggleGistPrivacy}
-                    />
-                    <label htmlFor="privacy">Show private gists</label>
-                  </div>
-                  {this.state.personalGist.length > 0 ? (
-                    <>
-                      {Object.keys(this.state.pages).length > 1 && (
-                        <ReactPaginate
-                          previousLabel={'<'}
-                          nextLabel={'>'}
-                          breakClassName={'break'}
-                          containerClassName={'pagination'}
-                          activeClassName={'active'}
-                          pageCount={Object.keys(this.state.pages).length}
-                          onPageChange={this.handlePageChange.bind(this)}
-                          forcePage={this.state.currentPage}
-                          marginPagesDisplayed={2}
-                          pageRangeDisplayed={2}
-                        />
-                      )}
-                      <div className={`gist-wrapper ${!this.state.loading && 'loading'}`}>
-                        {this.state.personalGist.map((gist) => (
-                          <div key={gist.name} className="gist-container">
-                            <div className="personal-gist-description">
-                              {gist.isPublic ? (
-                                <File width="14" height="14" />
-                              ) : (
-                                <Lock width="14" height="14" fill="#FDD300" />
-                              )}
-                              <span className={`text ${gist.title ? '' : 'play-down'}`}>
-                                {gist.title ? gist.title : 'No description provided'}
-                              </span>
-                            </div>
-                            <div className="personal-gist-files">
-                              {gist.spec.map((spec, index) => (
-                                <div key={index} className="file">
-                                  <div className="arrow"></div>
-                                  <div
-                                    className="filename"
-                                    key={spec.name}
-                                    onClick={() => this.preview(gist.name, spec.name, spec.previewUrl)}
-                                  >
-                                    {spec.name}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <>You have no Vega or Vega-Lite compatible gists.</>
-                  )}
-                </>
-              ) : (
-                <div className="loader-container">
-                  <span>Loading your GISTS...</span>
-                </div>
-              )
-            ) : (
-              <span>{githubLink} to see all of your personal gist.</span>
-            )}
-          </div>
+          <GistSelectWidget preview={this.preview.bind(this)} />
           <div className="load-gist">
             <h3>Load gists</h3>
             <form ref={(form) => (this.refGistForm = form)}>
