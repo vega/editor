@@ -3,8 +3,13 @@
   flex-wrap: wrap;
 }
 
+.gist-split > div {
+  flex: 1;
+}
+
 .personal-gist {
   min-width: 50%;
+  padding-right: 2em;
 }
 
 .gist-text {

@@ -274,6 +274,10 @@ class GistModal extends React.PureComponent<Props, State> {
         <div className="gist-split">
           <div className="personal-gist">
             <h3>Your gists</h3>
+            <p>
+              To load a gist, select it in the list below or specify its details on the right. View all your Gists on{' '}
+              <a href={`https://gist.github.com/${this.props.handle}`}>GitHub</a>.
+            </p>
             <GistSelectWidget selectGist={this.preview.bind(this)} />
           </div>
           <div className="load-gist">

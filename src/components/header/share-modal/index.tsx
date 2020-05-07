@@ -9,6 +9,7 @@ export function mapStateToProps(state: State) {
     editorString: state.editorString,
     mode: state.mode,
     view: state.view,
+    handle: state.handle,
   };
 }
 

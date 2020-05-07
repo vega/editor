@@ -11,6 +11,7 @@ type Props = ReturnType<typeof mapStateToProps>;
 interface State {
   downloadVegaJSON: boolean;
   includeConfig: boolean;
+  loadingPDF: boolean;
 }
 
 class ExportModal extends React.PureComponent<Props, State> {
@@ -19,6 +20,7 @@ class ExportModal extends React.PureComponent<Props, State> {
     this.state = {
       downloadVegaJSON: false,
       includeConfig: true,
+      loadingPDF: false,
     };
   }
 
@@ -39,9 +41,8 @@ class ExportModal extends React.PureComponent<Props, State> {
   }
 
   public async downloadPDF() {
-    // show that we are working
-    const dlButton = this.refs.downloadPDF as any;
-    dlButton.classList.add('disabled');
+    this.setState({loadingPDF: true});
+
     const content = this.props.mode === Mode.Vega ? this.props.vegaSpec : this.props.vegaLiteSpec;
     const pdf = await fetch('https://vega-render-service.now.sh', {
       body: JSON.stringify(content),
@@ -60,7 +61,7 @@ class ExportModal extends React.PureComponent<Props, State> {
     link.setAttribute('download', `visualization.pdf`);
     link.dispatchEvent(new MouseEvent('click'));
 
-    dlButton.classList.remove('disabled');
+    this.setState({loadingPDF: false});
   }
 
   public updateIncludeConfig(e) {
@@ -193,7 +194,7 @@ class ExportModal extends React.PureComponent<Props, State> {
               Download
             </button>
           </div>
-          <div className="export-container" ref="downloadPDF">
+          <div className="export-container">
             <div className="header-text">
               <Book />
               <span>PDF</span>
@@ -206,7 +207,9 @@ class ExportModal extends React.PureComponent<Props, State> {
               </a>{' '}
               for processing.
             </p>
-            <button onClick={() => this.downloadPDF()}>Download</button>
+            <button onClick={() => this.downloadPDF()} disabled={this.state.loadingPDF}>
+              {this.state.loadingPDF ? 'Downloading...' : 'Download'}
+            </button>
           </div>
         </div>
         <div className="user-notes">

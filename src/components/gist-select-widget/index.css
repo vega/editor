@@ -32,12 +32,13 @@
 }
 
 .play-down {
-  color: var(--extra-dark-gray-color);
+  color: var(--dark-gray-color);
 }
 
 .personal-gist-description {
   display: flex;
   align-items: center;
+  color: var(--extra-dark-gray-color);
 }
 
 .personal-gist-files {
@@ -50,12 +51,6 @@
   font-size: 0.9em;
   word-wrap: break-word;
   width: fit-content;
-}
-
-.gist-active {
-  border: 1px solid hsl(0, 0%, 80%);
-  border-radius: 3px;
-  padding: 0.4em;
 }
 
 .file {
@@ -73,7 +68,7 @@
   font-family: monospace;
   cursor: pointer;
   margin-top: 4px;
-  color: var(--extra-dark-gray-color);
+  color: var(--almost-black-color);
 }
 
 .filename:hover {

@@ -9,7 +9,7 @@ interface Props {
   view: View;
   signal: string;
   onValueChange: (key, value) => void;
-  maskListner: boolean;
+  maskListener: boolean;
   isHovered: boolean;
   isTimelineSelected: boolean;
   clickedSignal: any;
@@ -23,7 +23,7 @@ interface State {
 }
 
 export default class SignalRow extends React.PureComponent<Props, State> {
-  private listnerAttached = false;
+  private listenerAttached = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -44,23 +44,23 @@ export default class SignalRow extends React.PureComponent<Props, State> {
     }
   }
   public componentDidMount() {
-    if (!this.props.maskListner) {
+    if (!this.props.maskListener) {
       this.props.view.addSignalListener(this.props.signal, this.signalHandler);
-      this.listnerAttached = true;
+      this.listenerAttached = true;
     }
   }
   public componentWillUnmount() {
     this.props.view.removeSignalListener(this.props.signal, this.signalHandler);
-    this.listnerAttached = false;
+    this.listenerAttached = false;
   }
 
   public componentWillReceiveProps(nextProps) {
-    if (nextProps.maskListner && this.listnerAttached) {
+    if (nextProps.maskListener && this.listenerAttached) {
       this.props.view.removeSignalListener(this.props.signal, this.signalHandler);
-      this.listnerAttached = false;
-    } else if (!this.listnerAttached && !nextProps.maskListner) {
+      this.listenerAttached = false;
+    } else if (!this.listenerAttached && !nextProps.maskListener) {
       this.props.view.addSignalListener(this.props.signal, this.signalHandler);
-      this.listnerAttached = true;
+      this.listenerAttached = true;
     }
   }
 

@@ -1,7 +1,7 @@
 import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
-import {Copy, Link} from 'react-feather';
+import {Copy, Link, Save} from 'react-feather';
 import {withRouter} from 'react-router-dom';
 import {mapStateToProps, mapDispatchToProps} from '.';
 import getCookie from '../../../utils/getCookie';
@@ -13,8 +13,7 @@ type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchT
 
 interface State {
   copied: boolean;
-  created: boolean;
-  done: boolean;
+  creating: boolean;
   createError: boolean;
   updateError: boolean;
   fullScreen: boolean;
@@ -25,8 +24,8 @@ interface State {
   gistPrivate: boolean;
   gistTitle: string;
   gistId: string;
-  updated: boolean;
-  gistURL: string;
+  updating: boolean;
+  gistEditorURL: string;
 }
 
 class ShareModal extends React.PureComponent<Props, State> {
@@ -35,8 +34,7 @@ class ShareModal extends React.PureComponent<Props, State> {
     const date = new Date().toDateString();
     this.state = {
       copied: false,
-      created: false,
-      done: true,
+      creating: undefined,
       createError: false,
       updateError: false,
       fullScreen: false,
@@ -47,8 +45,8 @@ class ShareModal extends React.PureComponent<Props, State> {
       gistPrivate: false,
       gistTitle: `${NAMES[this.props.mode]} spec from ${date}`,
       gistId: '',
-      updated: true,
-      gistURL: '',
+      updating: undefined,
+      gistEditorURL: '',
     };
   }
 
@@ -121,7 +119,7 @@ class ShareModal extends React.PureComponent<Props, State> {
 
   public async createGist() {
     this.setState({
-      done: false,
+      creating: true,
     });
 
     const body = {
@@ -144,36 +142,28 @@ class ShareModal extends React.PureComponent<Props, State> {
       method: 'post',
     });
 
-    const json = await res.json();
+    const data = await res.json();
     this.setState(
       {
-        done: true,
+        creating: false,
+        updating: undefined,
       },
       () => {
-        if (json.url === undefined) {
+        if (data.url === undefined) {
           this.setState(
             {
               createError: true,
             },
             () => {
-              this.props.receiveCurrentUser(json.isAuthenticated);
+              this.props.receiveCurrentUser(data.isAuthenticated);
             }
           );
         } else {
-          this.setState(
-            {
-              created: true,
-              createError: false,
-              gistURL: json.url,
-            },
-            () => {
-              setTimeout(() => {
-                this.setState({
-                  created: false,
-                });
-              }, 2500);
-            }
-          );
+          this.setState({
+            createError: false,
+            // TODO: create URL to editor. BASE_URL/#/gist/GIST_ID
+            gistEditorURL: data.url,
+          });
         }
       }
     );
@@ -188,7 +178,7 @@ class ShareModal extends React.PureComponent<Props, State> {
 
   public async updateGist() {
     this.setState({
-      updated: false,
+      updating: true,
     });
 
     if (this.state.gistId) {
@@ -211,13 +201,16 @@ class ShareModal extends React.PureComponent<Props, State> {
       const data = await res.json();
       if (res.status === 205) {
         this.setState({
-          gistURL: data.url,
-          updated: true,
+          // TODO: create URL to editor. BASE_URL/#/gist/GIST_ID
+          gistEditorURL: data.url,
+          creating: undefined,
+          updating: false,
           updateError: false,
         });
       } else {
         this.setState({
-          updated: true,
+          creating: undefined,
+          updating: false,
           updateError: true,
         });
       }
@@ -299,17 +292,39 @@ class ShareModal extends React.PureComponent<Props, State> {
             GitHub Gist
           </a>
         </h2>
+        <p>
+          Here, you can save your Vega or Vega-Lite specification as a new Gist or update an existing Gist. You can view
+          all of your Gists on <a href={`https://gist.github.com/${this.props.handle}`}>GitHub</a>.
+        </p>
         <div className="share-gist-split">
           <div className="update-gist">
-            <h3>Update an existing GIST</h3>
+            <h3>Update an existing Gist</h3>
+            <p>To update an existing Gist, select it in the list and then click the button below to confirm.</p>
             <GistSelectWidget selectGist={this.selectGist.bind(this)} />
-            <button className="editor-button" onClick={this.updateGist.bind(this)}>
-              {this.state.updated ? 'Update' : 'Updating...'}
-            </button>
-            {this.state.updateError && <div className="error-message share-error">Gist could not be updated</div>}
+            <div className="sharing-buttons">
+              <button
+                className="editor-button"
+                onClick={this.updateGist.bind(this)}
+                disabled={!this.state.gistFileNameSelected || this.state.updating}
+              >
+                <Save />
+                {this.state.updating ? 'Updating...' : 'Update'}
+              </button>
+              {this.state.gistEditorURL && this.state.updating !== undefined && (
+                <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistEditorURL}>
+                  <Copy />
+                  <span>Copy Link to Clipboard</span>
+                </Clipboard>
+              )}
+            </div>
+            {this.state.updateError && <div className="error-message share-error">Gist could not be updated.</div>}
           </div>
           <div>
             <h3>Create a new Gist</h3>
+            <p>
+              Save the current Vega or Vega-Lite specification as a Gist. When yoy save it, you will get a link that you
+              can share. You can also load the specification via the Gist loading functionality in the editor.
+            </p>
             <div className="share-input-container">
               <label>
                 Title (optional):
@@ -345,13 +360,13 @@ class ShareModal extends React.PureComponent<Props, State> {
                 Create a Private Gist
               </label>
             </div>
-            <div>
-              <button className="editor-button" onClick={this.createGist.bind(this)}>
-                {this.state.done ? 'Create' : 'Creating...'}
+            <div className="sharing-buttons">
+              <button className="editor-button" onClick={this.createGist.bind(this)} disabled={this.state.creating}>
+                <Save />
+                {this.state.creating ? 'Creating...' : 'Create'}
               </button>
-              {this.state.created && <span className="success">Created!</span>}
-              {this.state.gistURL && (
-                <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistURL}>
+              {this.state.gistEditorURL && this.state.creating !== undefined && (
+                <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistEditorURL}>
                   <Copy />
                   <span>Copy Link to Clipboard</span>
                 </Clipboard>
