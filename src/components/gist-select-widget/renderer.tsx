@@ -19,6 +19,10 @@ interface State {
   }[];
   pages: object;
   loading: boolean;
+  selected: {
+    gist: string;
+    file: string;
+  };
 }
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -35,6 +39,10 @@ class GistSelectWidget extends React.Component<Props, State> {
       personalGist: [],
       pages: {},
       loading: true,
+      selected: {
+        gist: null,
+        file: null,
+      },
     };
   }
   public componentDidMount() {
@@ -143,7 +151,10 @@ class GistSelectWidget extends React.Component<Props, State> {
                   )}
                   <div className={`gist-wrapper ${!this.state.loading && 'loading'}`}>
                     {this.state.personalGist.map((gist) => (
-                      <div key={gist.name} className="gist-container">
+                      <div
+                        key={gist.name}
+                        className={`gist-container ${this.state.selected.gist === gist.name && 'gist-active'}`}
+                      >
                         <div className="personal-gist-description">
                           {gist.isPublic ? (
                             <File width="14" height="14" />
@@ -159,9 +170,21 @@ class GistSelectWidget extends React.Component<Props, State> {
                             <div key={index} className="file">
                               <div className="arrow"></div>
                               <div
-                                className="filename"
+                                className={`filename ${
+                                  this.state.selected.file === spec.name &&
+                                  this.state.selected.gist === gist.name &&
+                                  'file-active'
+                                }`}
                                 key={spec.name}
-                                onClick={() => this.props.selectGist(gist.name, spec.name, spec.previewUrl)}
+                                onClick={() => {
+                                  this.props.selectGist(gist.name, spec.name, spec.previewUrl);
+                                  this.setState({
+                                    selected: {
+                                      gist: gist.name,
+                                      file: spec.name,
+                                    },
+                                  });
+                                }}
                               >
                                 {spec.name}
                               </div>
