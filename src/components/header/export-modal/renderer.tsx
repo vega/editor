@@ -218,7 +218,7 @@ class ExportModal extends React.PureComponent<Props, State> {
             {this.state.errorLoadingPdf && (
               <p style={{color: 'red'}}>
                 Render service cannot handle external data, please only use external datasets from{' '}
-                <a href="https://www.github.com/vega/vega-datasets" target="_blank" rel="noopener noreferrer">
+                <a href="http://www.vega.github.io/" target="_blank" rel="noopener noreferrer">
                   vega-datasets
                 </a>{' '}
                 for processing.
