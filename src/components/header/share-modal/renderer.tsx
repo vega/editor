@@ -149,7 +149,7 @@ class ShareModal extends React.PureComponent<Props, State> {
         updating: undefined,
       },
       () => {
-        if (data.url === undefined) {
+        if (data.gistId === undefined) {
           this.setState(
             {
               createError: true,
@@ -159,10 +159,11 @@ class ShareModal extends React.PureComponent<Props, State> {
             }
           );
         } else {
+          const BASE_URL = window.location.origin;
+          const {fileName, gistId} = data;
           this.setState({
             createError: false,
-            // TODO: create URL to editor. BASE_URL/#/gist/GIST_ID
-            gistEditorURL: data.url,
+            gistEditorURL: `${BASE_URL}/#/gist/${gistId}/${fileName}/`,
           });
         }
       }
@@ -200,9 +201,10 @@ class ShareModal extends React.PureComponent<Props, State> {
 
       const data = await res.json();
       if (res.status === 205) {
+        const BASE_URL = window.location.origin;
+        const {fileName, gistId} = data;
         this.setState({
-          // TODO: create URL to editor. BASE_URL/#/gist/GIST_ID
-          gistEditorURL: data.url,
+          gistEditorURL: `${BASE_URL}/#/gist/${gistId}/${fileName}/`,
           creating: undefined,
           updating: false,
           updateError: false,
