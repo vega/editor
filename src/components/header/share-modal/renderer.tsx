@@ -21,6 +21,7 @@ interface State {
   generatedURL: string;
   gistFileName: string;
   gistFileNameSelected: string;
+  gistFileNameNew: string;
   gistPrivate: boolean;
   gistTitle: string;
   gistId: string;
@@ -42,6 +43,7 @@ class ShareModal extends React.PureComponent<Props, State> {
       generatedURL: '',
       gistFileName: 'spec.json',
       gistFileNameSelected: '',
+      gistFileNameNew: '',
       gistPrivate: false,
       gistTitle: `${NAMES[this.props.mode]} spec from ${date}`,
       gistId: '',
@@ -105,15 +107,9 @@ class ShareModal extends React.PureComponent<Props, State> {
     });
   }
 
-  public fileNameChange(event) {
+  public textChange(event) {
     this.setState({
-      gistFileName: event.target.value,
-    });
-  }
-
-  public titleChange(event) {
-    this.setState({
-      gistTitle: event.target.value,
+      [event.target.name]: event.target.value,
     });
   }
 
@@ -182,12 +178,13 @@ class ShareModal extends React.PureComponent<Props, State> {
       updating: true,
     });
 
+    const fileName = this.state.gistFileNameNew || this.state.gistFileNameSelected;
     if (this.state.gistId) {
       const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
       const res = await fetch(`${BACKEND_URL}gists/update`, {
         body: JSON.stringify({
           gistId: this.state.gistId,
-          fileName: this.state.gistFileNameSelected,
+          fileName: fileName,
           content: this.props.editorString,
         }),
         mode: 'cors',
@@ -202,9 +199,10 @@ class ShareModal extends React.PureComponent<Props, State> {
       const data = await res.json();
       if (res.status === 205) {
         const BASE_URL = window.location.origin;
-        const {fileName, gistId} = data;
+        const gistId = data.gistId;
+        const fileNameUpdated = data.fileName;
         this.setState({
-          gistEditorURL: `${BASE_URL}/#/gist/${gistId}/${fileName}/`,
+          gistEditorURL: `${BASE_URL}/#/gist/${gistId}/${fileNameUpdated}/`,
           creating: undefined,
           updating: false,
           updateError: false,
@@ -303,6 +301,20 @@ class ShareModal extends React.PureComponent<Props, State> {
             <h3>Update an existing Gist</h3>
             <p>To update an existing Gist, select it in the list and then click the button below to confirm.</p>
             <GistSelectWidget selectGist={this.selectGist.bind(this)} />
+            {this.props.isAuthenticated && (
+              <div className="share-input-container">
+                <label>
+                  File name: (optional)
+                  <input
+                    value={this.state.gistFileNameNew}
+                    name="gistFileNameNew"
+                    onChange={this.textChange.bind(this)}
+                    placeholder="Fill this only if you want to create a new file in the selected gist"
+                    type="text"
+                  />
+                </label>
+              </div>
+            )}
             <div className="sharing-buttons">
               <button
                 className="editor-button"
@@ -332,7 +344,8 @@ class ShareModal extends React.PureComponent<Props, State> {
                 Title (optional):
                 <input
                   value={this.state.gistTitle}
-                  onChange={this.titleChange.bind(this)}
+                  name="gistTitle"
+                  onChange={this.textChange.bind(this)}
                   type="text"
                   placeholder="Enter title of gist"
                 />
@@ -343,7 +356,8 @@ class ShareModal extends React.PureComponent<Props, State> {
                 File name:
                 <input
                   value={this.state.gistFileName}
-                  onChange={this.fileNameChange.bind(this)}
+                  name="gistFileName"
+                  onChange={this.textChange.bind(this)}
                   type="text"
                   placeholder="Enter file name"
                 />
