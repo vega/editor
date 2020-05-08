@@ -1,5 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
-import {mergeConfig} from 'vega';
+import * as vega from 'vega';
+import {satisfies} from 'semver';
+import schemaParser from 'vega-schema-url-parser';
 import * as vegaLite from 'vega-lite';
 import {Config} from 'vega-lite/src/config';
 import {TopLevelSpec} from 'vega-lite/src/spec';
@@ -99,7 +101,7 @@ function mergeConfigIntoSpec(state: State) {
     spec = JSON.parse(state.editorString);
     config = JSON.parse(state.configEditorString);
     if (spec.config) {
-      spec.config = mergeConfig(config, spec.config);
+      spec.config = vega.mergeConfig(config, spec.config);
     } else {
       spec.config = config;
     }
@@ -127,7 +129,7 @@ function extractConfig(state: State) {
     spec = JSON.parse(state.editorString);
     config = JSON.parse(state.configEditorString);
     if (spec.config) {
-      config = mergeConfig(config, spec.config);
+      config = vega.mergeConfig(config, spec.config);
       delete spec.config;
     }
     return {
@@ -153,6 +155,16 @@ function parseVega(
 
   try {
     const spec = JSON.parse(action.spec);
+
+    if (spec.$schema) {
+      try {
+        const parsed = schemaParser(spec.$schema);
+        if (!satisfies(vega.version, `^${parsed.version.slice(1)}`))
+          currLogger.warn(`The specification expects Vega ${parsed.version} but the editor uses v${vega.version}.`);
+      } catch (e) {
+        throw new Error('Could not parse $schema url.');
+      }
+    }
 
     validateVega(spec, currLogger);
 
@@ -215,6 +227,17 @@ function parseVegaLite(
       config,
       logger: currLogger,
     };
+
+    if (vegaLiteSpec.$schema) {
+      try {
+        const parsed = schemaParser(vegaLiteSpec.$schema);
+        if (!satisfies(vegaLite.version, `^${parsed.version.slice(1)}`))
+          currLogger.warn(`The specification expects Vega ${parsed.version} but the editor uses v${vegaLite.version}.`);
+      } catch (e) {
+        throw new Error('Could not parse $schema url.');
+      }
+    }
+
     validateVegaLite(vegaLiteSpec, currLogger);
 
     const vegaSpec = spec !== '{}' ? vegaLite.compile(vegaLiteSpec, options).spec : {};
