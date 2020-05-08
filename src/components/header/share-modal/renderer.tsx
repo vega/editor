@@ -3,10 +3,11 @@ import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
 import {Copy, Link, Save} from 'react-feather';
 import {withRouter} from 'react-router-dom';
-import {mapStateToProps, mapDispatchToProps} from '.';
+import {mapDispatchToProps, mapStateToProps} from '.';
+import {BACKEND_URL, COOKIE_NAME, NAMES} from '../../../constants/consts';
 import getCookie from '../../../utils/getCookie';
 import GistSelectWidget from '../../gist-select-widget';
-import {BACKEND_URL, COOKIE_NAME, NAMES} from '../../../constants/consts';
+import LoginConditional from '../../login-conditional';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -21,7 +22,6 @@ interface State {
   generatedURL: string;
   gistFileName: string;
   gistFileNameSelected: string;
-  gistFileNameNew: string;
   gistPrivate: boolean;
   gistTitle: string;
   gistId: string;
@@ -43,7 +43,6 @@ class ShareModal extends React.PureComponent<Props, State> {
       generatedURL: '',
       gistFileName: 'spec.json',
       gistFileNameSelected: '',
-      gistFileNameNew: '',
       gistPrivate: false,
       gistTitle: `${NAMES[this.props.mode]} spec from ${date}`,
       gistId: '',
@@ -107,9 +106,21 @@ class ShareModal extends React.PureComponent<Props, State> {
     });
   }
 
-  public textChange(event) {
+  public fileNameChange(event) {
     this.setState({
-      [event.target.name]: event.target.value,
+      gistFileName: event.target.value,
+    });
+  }
+
+  public gistFileNameSelectedChange(event) {
+    this.setState({
+      gistFileNameSelected: event.target.value,
+    });
+  }
+
+  public titleChange(event) {
+    this.setState({
+      gistTitle: event.target.value,
     });
   }
 
@@ -178,7 +189,7 @@ class ShareModal extends React.PureComponent<Props, State> {
       updating: true,
     });
 
-    const fileName = this.state.gistFileNameNew || this.state.gistFileNameSelected;
+    const fileName = this.state.gistFileNameSelected;
     if (this.state.gistId) {
       const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
       const res = await fetch(`${BACKEND_URL}gists/update`, {
@@ -223,9 +234,9 @@ class ShareModal extends React.PureComponent<Props, State> {
         <h1>Share</h1>
         <h2>Via URL</h2>
         <p>
-          We pack the Vega or Vega-Lite specification as an encoded string in the URL. We use a LZ-based compression
-          algorithm. When whitespaces are not preserved, the editor will automatically format the specification when it
-          is loaded.
+          We pack the {NAMES[this.props.mode]} specification as an encoded string in the URL. We use a LZ-based
+          compression algorithm. When whitespaces are not preserved, the editor will automatically format the
+          specification when it is loaded.
         </p>
         <div>
           <label className="user-pref">
@@ -292,107 +303,107 @@ class ShareModal extends React.PureComponent<Props, State> {
             GitHub Gist
           </a>
         </h2>
-        <p>
-          Here, you can save your Vega or Vega-Lite specification as a new Gist or update an existing Gist. You can view
-          all of your Gists on <a href={`https://gist.github.com/${this.props.handle}`}>GitHub</a>.
-        </p>
-        <div className="share-gist-split">
-          <div className="update-gist">
-            <h3>Update an existing Gist</h3>
-            <p>To update an existing Gist, select it in the list and then click the button below to confirm.</p>
-            <GistSelectWidget selectGist={this.selectGist.bind(this)} />
-            {this.props.isAuthenticated && (
-              <React.Fragment>
-                <div className="share-input-container">
-                  <label>
-                    File name: (optional)
-                    <input
-                      value={this.state.gistFileNameNew}
-                      name="gistFileNameNew"
-                      onChange={this.textChange.bind(this)}
-                      type="text"
-                    />
-                    <small>*Fill this only if you want to create a new file in the selected gist</small>
-                  </label>
-                </div>
-              </React.Fragment>
-            )}
-            <div className="sharing-buttons">
-              <button
-                className="editor-button"
-                onClick={this.updateGist.bind(this)}
-                disabled={!this.state.gistFileNameSelected || this.state.updating}
-              >
-                <Save />
-                {this.state.updating ? 'Updating...' : 'Update'}
-              </button>
-              {this.state.gistEditorURL && this.state.updating !== undefined && (
-                <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistEditorURL}>
-                  <Copy />
-                  <span>Copy Link to Clipboard</span>
-                </Clipboard>
+        <LoginConditional>
+          <p>
+            Here, you can save your {NAMES[this.props.mode]} specification as a new Gist or update an existing Gist. You
+            can view all of your Gists on <a href={`https://gist.github.com/${this.props.handle}`}>GitHub</a>.
+          </p>
+          <div className="share-gist-split">
+            <div className="update-gist">
+              <h3>Update an existing Gist</h3>
+              <p>To update an existing Gist, select it in the list and then click the button below to confirm.</p>
+              <GistSelectWidget selectGist={this.selectGist.bind(this)} />
+              {this.props.isAuthenticated && (
+                <React.Fragment>
+                  <div className="share-input-container">
+                    <label>
+                      File name:
+                      <input
+                        value={this.state.gistFileNameSelected}
+                        onChange={this.gistFileNameSelectedChange.bind(this)}
+                        type="text"
+                      />
+                      <small>Change the filename to create a new file in the selected Gist</small>
+                    </label>
+                  </div>
+                </React.Fragment>
               )}
+              <div className="sharing-buttons">
+                <button
+                  className="editor-button"
+                  onClick={this.updateGist.bind(this)}
+                  disabled={!this.state.gistFileNameSelected || this.state.updating}
+                >
+                  <Save />
+                  {this.state.updating ? 'Updating...' : 'Update'}
+                </button>
+                {this.state.gistEditorURL && this.state.updating !== undefined && (
+                  <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistEditorURL}>
+                    <Copy />
+                    <span>Copy Link to Clipboard</span>
+                  </Clipboard>
+                )}
+              </div>
+              {this.state.updateError && <div className="error-message share-error">Gist could not be updated.</div>}
             </div>
-            {this.state.updateError && <div className="error-message share-error">Gist could not be updated.</div>}
+            <div>
+              <h3>Create a new Gist</h3>
+              <p>
+                Save the current {NAMES[this.props.mode]} specification as a Gist. When you save it, you will get a link
+                that you can share. You can also load the specification via the Gist loading functionality in the
+                editor.
+              </p>
+              <div className="share-input-container">
+                <label>
+                  Title:
+                  <input
+                    value={this.state.gistTitle}
+                    onChange={this.titleChange.bind(this)}
+                    type="text"
+                    placeholder="Enter title of gist"
+                  />
+                </label>
+              </div>
+              <div className="share-input-container">
+                <label>
+                  File name:
+                  <input
+                    value={this.state.gistFileName}
+                    onChange={this.fileNameChange.bind(this)}
+                    type="text"
+                    placeholder="Enter file name"
+                  />
+                </label>
+              </div>
+              <div className="share-input-container">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="private-gist"
+                    id="private-gist"
+                    value="private-select"
+                    checked={this.state.gistPrivate}
+                    onChange={this.updatePrivacy.bind(this)}
+                  />
+                  Create a Private Gist
+                </label>
+              </div>
+              <div className="sharing-buttons">
+                <button className="editor-button" onClick={this.createGist.bind(this)} disabled={this.state.creating}>
+                  <Save />
+                  {this.state.creating ? 'Creating...' : 'Create'}
+                </button>
+                {this.state.gistEditorURL && this.state.creating !== undefined && (
+                  <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistEditorURL}>
+                    <Copy />
+                    <span>Copy Link to Clipboard</span>
+                  </Clipboard>
+                )}
+                {this.state.createError && <div className="error-message share-error">Gist could not be created</div>}
+              </div>
+            </div>
           </div>
-          <div>
-            <h3>Create a new Gist</h3>
-            <p>
-              Save the current Vega or Vega-Lite specification as a Gist. When you save it, you will get a link that you
-              can share. You can also load the specification via the Gist loading functionality in the editor.
-            </p>
-            <div className="share-input-container">
-              <label>
-                Title (optional):
-                <input
-                  value={this.state.gistTitle}
-                  name="gistTitle"
-                  onChange={this.textChange.bind(this)}
-                  type="text"
-                  placeholder="Enter title of gist"
-                />
-              </label>
-            </div>
-            <div className="share-input-container">
-              <label>
-                File name:
-                <input
-                  value={this.state.gistFileName}
-                  name="gistFileName"
-                  onChange={this.textChange.bind(this)}
-                  type="text"
-                  placeholder="Enter file name"
-                />
-              </label>
-            </div>
-            <div className="share-input-container">
-              <label>
-                <input
-                  type="checkbox"
-                  name="private-gist"
-                  id="private-gist"
-                  value="private-select"
-                  checked={this.state.gistPrivate}
-                  onChange={this.updatePrivacy.bind(this)}
-                />
-                Create a Private Gist
-              </label>
-            </div>
-            <div className="sharing-buttons">
-              <button className="editor-button" onClick={this.createGist.bind(this)} disabled={this.state.creating}>
-                <Save />
-                {this.state.creating ? 'Creating...' : 'Create'}
-              </button>
-              {this.state.gistEditorURL && this.state.creating !== undefined && (
-                <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistEditorURL}>
-                  <Copy />
-                  <span>Copy Link to Clipboard</span>
-                </Clipboard>
-              )}
-              {this.state.createError && <div className="error-message share-error">Gist could not be created</div>}
-            </div>
-          </div>
-        </div>
+        </LoginConditional>
       </div>
     );
   }

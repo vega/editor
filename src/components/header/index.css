@@ -61,12 +61,12 @@
   background: var(--white-color);
   width: 80%;
   align-self: flex-start;
-  margin-top: 6vh;
+  margin-top: 5vh;
 }
 
 .modal-body {
   padding: 30px;
-  max-height: 80vh;
+  max-height: 90vh;
   overflow-y: auto;
   z-index: 20;
 }
