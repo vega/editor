@@ -232,7 +232,9 @@ function parseVegaLite(
       try {
         const parsed = schemaParser(vegaLiteSpec.$schema);
         if (!satisfies(vegaLite.version, `^${parsed.version.slice(1)}`))
-          currLogger.warn(`The specification expects Vega ${parsed.version} but the editor uses v${vegaLite.version}.`);
+          currLogger.warn(
+            `The specification expects Vega-Lite ${parsed.version} but the editor uses v${vegaLite.version}.`
+          );
       } catch (e) {
         throw new Error('Could not parse $schema url.');
       }
