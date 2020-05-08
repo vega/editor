@@ -1,5 +1,5 @@
 import stringify from 'json-stringify-pretty-compact';
-import {mergeConfig, version} from 'vega';
+import * as vega from 'vega';
 import {satisfies} from 'semver';
 import schemaParser from 'vega-schema-url-parser';
 import * as vegaLite from 'vega-lite';
@@ -101,7 +101,7 @@ function mergeConfigIntoSpec(state: State) {
     spec = JSON.parse(state.editorString);
     config = JSON.parse(state.configEditorString);
     if (spec.config) {
-      spec.config = mergeConfig(config, spec.config);
+      spec.config = vega.mergeConfig(config, spec.config);
     } else {
       spec.config = config;
     }
@@ -129,7 +129,7 @@ function extractConfig(state: State) {
     spec = JSON.parse(state.editorString);
     config = JSON.parse(state.configEditorString);
     if (spec.config) {
-      config = mergeConfig(config, spec.config);
+      config = vega.mergeConfig(config, spec.config);
       delete spec.config;
     }
     return {
@@ -155,18 +155,16 @@ function parseVega(
 
   try {
     const spec = JSON.parse(action.spec);
-    const parsed = schemaParser(spec.$schema);
 
-    const parsedVersionArray = parsed.version.slice(1).split('.');
-    for (const [index, v] of parsedVersionArray.entries()) {
-      if (index != 0 && parseInt(v) != 0) {
-        currLogger.warn(`${spec.$schema} can not be resolved`);
-        break;
+    if (spec.$schema) {
+      try {
+        const parsed = schemaParser(spec.$schema);
+        if (!satisfies(vega.version, `^${parsed.version.slice(1)}`))
+          currLogger.warn(`The specification expects Vega ${parsed.version} but the editor uses v${vega.version}.`);
+      } catch (e) {
+        throw new Error('Could not parse $schema url.');
       }
     }
-
-    if (!satisfies(version, `^${parsed.version.slice(1)}`))
-      currLogger.warn(`The input spec uses Vega ${parsed.version}, but the current version of Vega is v${version[0]}.`);
 
     validateVega(spec, currLogger);
 
@@ -230,20 +228,15 @@ function parseVegaLite(
       logger: currLogger,
     };
 
-    const parsed = schemaParser(vegaLiteSpec.$schema);
-    const parsedVersionArray = parsed.version.slice(1).split('.');
-
-    for (const [index, v] of parsedVersionArray.entries()) {
-      if (index != 0 && parseInt(v) != 0) {
-        currLogger.warn(`${vegaLiteSpec.$schema} can not be resolved`);
-        break;
+    if (vegaLiteSpec.$schema) {
+      try {
+        const parsed = schemaParser(vegaLiteSpec.$schema);
+        if (!satisfies(vegaLite.version, `^${parsed.version.slice(1)}`))
+          currLogger.warn(`The specification expects Vega ${parsed.version} but the editor uses v${vegaLite.version}.`);
+      } catch (e) {
+        throw new Error('Could not parse $schema url.');
       }
     }
-
-    if (!satisfies(vegaLite.version, `^${parsed.version.slice(1)}`))
-      currLogger.warn(
-        `The input spec uses Vega-Lite ${parsed.version}, but the current version of Vega-Lite is v${vegaLite.version[0]}.`
-      );
 
     validateVegaLite(vegaLiteSpec, currLogger);
 
