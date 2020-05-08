@@ -322,7 +322,7 @@ class ShareModal extends React.PureComponent<Props, State> {
           <div>
             <h3>Create a new Gist</h3>
             <p>
-              Save the current Vega or Vega-Lite specification as a Gist. When yoy save it, you will get a link that you
+              Save the current Vega or Vega-Lite specification as a Gist. When you save it, you will get a link that you
               can share. You can also load the specification via the Gist loading functionality in the editor.
             </p>
             <div className="share-input-container">
