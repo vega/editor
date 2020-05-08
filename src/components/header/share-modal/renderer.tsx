@@ -159,7 +159,7 @@ class ShareModal extends React.PureComponent<Props, State> {
           const {fileName, gistId} = data;
           this.setState({
             createError: false,
-            gistEditorURL: `${BASE_URL}/#/gist/${gistId}/${fileName}/`,
+            gistEditorURL: `${BASE_URL}/#/gist/${gistId}/${fileName}`,
           });
         }
       }
@@ -202,7 +202,7 @@ class ShareModal extends React.PureComponent<Props, State> {
         const gistId = data.gistId;
         const fileNameUpdated = data.fileName;
         this.setState({
-          gistEditorURL: `${BASE_URL}/#/gist/${gistId}/${fileNameUpdated}/`,
+          gistEditorURL: `${BASE_URL}/#/gist/${gistId}/${fileNameUpdated}`,
           creating: undefined,
           updating: false,
           updateError: false,
@@ -302,18 +302,20 @@ class ShareModal extends React.PureComponent<Props, State> {
             <p>To update an existing Gist, select it in the list and then click the button below to confirm.</p>
             <GistSelectWidget selectGist={this.selectGist.bind(this)} />
             {this.props.isAuthenticated && (
-              <div className="share-input-container">
-                <label>
-                  File name: (optional)
-                  <input
-                    value={this.state.gistFileNameNew}
-                    name="gistFileNameNew"
-                    onChange={this.textChange.bind(this)}
-                    placeholder="Fill this only if you want to create a new file in the selected gist"
-                    type="text"
-                  />
-                </label>
-              </div>
+              <React.Fragment>
+                <div className="share-input-container">
+                  <label>
+                    File name: (optional)
+                    <input
+                      value={this.state.gistFileNameNew}
+                      name="gistFileNameNew"
+                      onChange={this.textChange.bind(this)}
+                      type="text"
+                    />
+                    <small>*Fill this only if you want to create a new file in the selected gist</small>
+                  </label>
+                </div>
+              </React.Fragment>
             )}
             <div className="sharing-buttons">
               <button
