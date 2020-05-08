@@ -158,14 +158,15 @@ function parseVega(
     const parsed = schemaParser(spec.$schema);
 
     const parsedVersionArray = parsed.version.slice(1).split('.');
-    parsedVersionArray.map((v, index) => {
+    for (const [index, v] of parsedVersionArray.entries()) {
       if (index != 0 && parseInt(v) != 0) {
         currLogger.warn(`${spec.$schema} can not be resolved`);
-        return;
+        break;
       }
-    });
+    }
+
     if (!satisfies(version, `^${parsed.version.slice(1)}`))
-      currLogger.warn(`The input spec uses Vega ${parsed.version}, but the current version of Vega is v${version}.`);
+      currLogger.warn(`The input spec uses Vega ${parsed.version}, but the current version of Vega is v${version[0]}.`);
 
     validateVega(spec, currLogger);
 
@@ -231,16 +232,17 @@ function parseVegaLite(
 
     const parsed = schemaParser(vegaLiteSpec.$schema);
     const parsedVersionArray = parsed.version.slice(1).split('.');
-    parsedVersionArray.map((v, index) => {
+
+    for (const [index, v] of parsedVersionArray.entries()) {
       if (index != 0 && parseInt(v) != 0) {
         currLogger.warn(`${vegaLiteSpec.$schema} can not be resolved`);
-        return;
+        break;
       }
-    });
+    }
 
     if (!satisfies(vegaLite.version, `^${parsed.version.slice(1)}`))
       currLogger.warn(
-        `The input spec uses Vega-Lite ${parsed.version}, but the current version of Vega-Lite is v${vegaLite.version}.`
+        `The input spec uses Vega-Lite ${parsed.version}, but the current version of Vega-Lite is v${vegaLite.version[0]}.`
       );
 
     validateVegaLite(vegaLiteSpec, currLogger);
