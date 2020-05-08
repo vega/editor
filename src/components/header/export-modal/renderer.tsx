@@ -221,7 +221,7 @@ class ExportModal extends React.PureComponent<Props, State> {
                 <a href="http://www.vega.github.io/" target="_blank" rel="noopener noreferrer">
                   vega-datasets
                 </a>{' '}
-                for processing.
+                .
               </p>
             )}
           </div>
