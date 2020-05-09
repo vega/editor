@@ -388,7 +388,7 @@ class Header extends React.PureComponent<Props, State> {
           {optionsButton}
 
           <PortalWithState closeOnEsc>
-            {({openPortal, closePortal, isOpen, portal}) => [
+            {({openPortal, closePortal, portal}) => [
               <span key="0" onClick={openPortal}>
                 {exportButton}
               </span>,
@@ -408,7 +408,7 @@ class Header extends React.PureComponent<Props, State> {
           </PortalWithState>
 
           <PortalWithState closeOnEsc>
-            {({openPortal, closePortal, onOpen, portal}) => [
+            {({openPortal, closePortal, portal}) => [
               <span key="0" onClick={openPortal}>
                 {shareButton}
               </span>,
@@ -428,7 +428,7 @@ class Header extends React.PureComponent<Props, State> {
           </PortalWithState>
 
           <PortalWithState closeOnEsc>
-            {({openPortal, closePortal, isOpen, portal}) => [
+            {({openPortal, closePortal, portal}) => [
               <span key="0" onClick={openPortal}>
                 {gistButton}
               </span>,
@@ -463,7 +463,7 @@ class Header extends React.PureComponent<Props, State> {
               this.props.setScrollPosition(this.state.scrollPosition);
             }}
           >
-            {({openPortal, closePortal, isOpen, portal}) => [
+            {({openPortal, closePortal, portal}) => [
               <span key="0" onClick={openPortal}>
                 {examplesButton}
               </span>,

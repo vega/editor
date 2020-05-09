@@ -220,7 +220,8 @@ class ExportModal extends React.PureComponent<Props, State> {
                 Render service cannot handle external data, please only use external datasets from{' '}
                 <a href="http://vega.github.io/" target="_blank" rel="noopener noreferrer">
                   Vega dataset
-                </a>.
+                </a>
+                .
               </p>
             )}
           </div>

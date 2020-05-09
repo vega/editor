@@ -5,14 +5,14 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 module.exports = (env, argv) => {
   const config = {
     entry: {
-      main: './src/index.tsx'
+      main: './src/index.tsx',
     },
 
     output: {
       filename: '[name].js',
       chunkFilename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
-      pathinfo: false
+      pathinfo: false,
     },
 
     optimization: {
@@ -26,39 +26,39 @@ module.exports = (env, argv) => {
             test: /vega/,
             name: 'vega',
             priority: 10,
-            reuseExistingChunk: true
+            reuseExistingChunk: true,
           },
           vegaLite: {
             test: /vega-lite/,
             name: 'vega-lite',
             priority: 20,
-            reuseExistingChunk: true
+            reuseExistingChunk: true,
           },
           vendors: {
             test: /[\\/]node_modules[\\/]/,
             priority: -10,
             name: 'vendor',
-            reuseExistingChunk: true
+            reuseExistingChunk: true,
           },
           default: {
             name: 'default',
             priority: -20,
-            reuseExistingChunk: true
-          }
-        }
-      }
+            reuseExistingChunk: true,
+          },
+        },
+      },
     },
 
     performance: {
       hints: false,
       maxEntrypointSize: 512000,
-      maxAssetSize: 512000
+      maxAssetSize: 512000,
     },
 
     devtool: argv.mode === 'development' ? 'cheap-module-source-map' : 'source-map',
 
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.mjs', '.json']
+      extensions: ['.ts', '.tsx', '.js', '.mjs', '.json'],
     },
 
     module: {
@@ -69,10 +69,10 @@ module.exports = (env, argv) => {
             {
               loader: 'ts-loader',
               options: {
-                transpileOnly: true
-              }
-            }
-          ]
+                transpileOnly: true,
+              },
+            },
+          ],
         },
         {
           test: /\.css$/,
@@ -81,36 +81,36 @@ module.exports = (env, argv) => {
             'css-loader',
             {
               loader: 'postcss-loader',
-              options: {plugins: [require('autoprefixer')]}
-            }
-          ]
+              options: {plugins: [require('autoprefixer')]},
+            },
+          ],
         },
         {
           test: /\.ttf$/,
-          use: ['file-loader']
-        }
-      ]
+          use: ['file-loader'],
+        },
+      ],
     },
 
     plugins: [
       new HtmlWebpackPlugin({
         filename: 'index.html',
-        template: 'public/index.html'
+        template: 'public/index.html',
       }),
       new MonacoWebpackPlugin({
-        languages: ['json']
-      })
+        languages: ['json'],
+      }),
     ],
 
     devServer: {
       host: '0.0.0.0',
       stats: {
-        colors: true
+        colors: true,
       },
       compress: true,
       overlay: {
         warnings: true,
-        errors: true
+        errors: true,
       },
       progress: true,
       stats: 'errors-only',
@@ -118,13 +118,13 @@ module.exports = (env, argv) => {
       contentBase: path.join(__dirname, 'public'),
       watchContentBase: true,
       watchOptions: {
-        ignored: /node_modules/
-      }
+        ignored: /node_modules/,
+      },
     },
 
     node: {
-      fs: 'empty'
-    }
+      fs: 'empty',
+    },
   };
 
   return config;

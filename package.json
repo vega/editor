@@ -16,7 +16,7 @@
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.3",
     "typescript": "~3.8.3",
-    "vega-lite-dev-config": "^0.8.0",
+    "vega-lite-dev-config": "^0.10.3",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.7.0",
     "webpack-cli": "^3.3.11",
@@ -58,11 +58,11 @@
     "tslib": "^1.11.2",
     "vega-cli": "5.11.1",
     "vega-datasets": "^1.30.2",
-    "vega-embed": "^6.7.1",
+    "vega-embed": "^6.8.0",
     "vega-lite": "4.12.0",
     "vega-schema-url-parser": "^1.1.0",
     "vega-themes": "^2.8.3",
-    "vega-tooltip": "^0.22.1"
+    "vega-tooltip": "^0.23.0"
   },
   "husky": {
     "hooks": {
@@ -96,7 +96,10 @@
         "react/no-unescaped-entities": "off",
         "@typescript-eslint/no-unused-vars": "warn",
         "no-prototype-builtins": "warn"
-      }
+      },
+      "ignore": [
+        "webpack.config.js"
+      ]
     }
   },
   "scripts": {
@@ -109,7 +112,7 @@
     "vendor": "scripts/vendor.sh",
     "prepare": "yarn vendor && beemo create-config --react",
     "prettierbase": "beemo prettier '{src,public}/**/*.{css,html}'",
-    "eslintbase": "beemo eslint 'src/**/*.{ts,tsx}' --react",
+    "eslintbase": "beemo eslint . --react",
     "format": "yarn eslintbase --fix && yarn prettierbase --write",
     "lint": "yarn eslintbase && yarn prettierbase --check",
     "predeploy": "yarn build",
