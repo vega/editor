@@ -18,7 +18,3 @@ deploy:
   on:
     branch: master
     tags: true
-addons:
-  apt:
-    packages:
-      - parallel
