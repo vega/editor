@@ -321,7 +321,7 @@ class GistModal extends React.PureComponent<Props, State> {
               <div className="gist-optional">
                 <div className="gist-input-container gist-optional-input-container">
                   <label>
-                    Revision (<small>optional</small>)
+                    Revision (optional)
                     <input
                       className="gist-input"
                       type="text"
@@ -336,7 +336,7 @@ class GistModal extends React.PureComponent<Props, State> {
                 </div>
                 <div className="gist-input-container gist-optional-input-container">
                   <label>
-                    Filename (<small>optional</small>)
+                    Filename (optional)
                     <input
                       className="gist-input"
                       type="text"

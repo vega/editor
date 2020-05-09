@@ -7,8 +7,8 @@ import * as EditorActions from '../../../actions/editor';
 export function mapStateToProps(state: State) {
   return {
     editorString: state.editorString,
+    isAuthenticated: state.isAuthenticated,
     mode: state.mode,
-    view: state.view,
     handle: state.handle,
   };
 }

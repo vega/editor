@@ -1,8 +1,9 @@
 import React from 'react';
 import {File, Lock} from 'react-feather';
 import ReactPaginate from 'react-paginate';
-import {mapStateToProps, mapDispatchToProps} from '.';
+import {mapDispatchToProps, mapStateToProps} from '.';
 import {BACKEND_URL, GistPrivacy} from '../../constants';
+import LoginConditional from '../login-conditional';
 import './index.css';
 
 interface State {
@@ -111,103 +112,92 @@ class GistSelectWidget extends React.Component<Props, State> {
     }
   }
   public render() {
-    const githubLink = (
-      /* eslint-disable-next-line react/jsx-no-target-blank */
-      <a href={`${BACKEND_URL}auth/github`} target="_blank">
-        Login with GitHub
-      </a>
-    );
-
     return (
-      <React.Fragment>
-        {this.props.isAuthenticated ? (
-          this.state.loaded ? (
-            <>
-              <div className="privacy-toggle">
-                <input
-                  type="checkbox"
-                  name="privacy"
-                  id="privacy"
-                  checked={this.props.private === GistPrivacy.ALL}
-                  onChange={this.props.toggleGistPrivacy}
-                />
-                <label htmlFor="privacy">Show private gists</label>
-              </div>
-              {this.state.personalGist.length > 0 ? (
-                <>
-                  {Object.keys(this.state.pages).length > 1 && (
-                    <ReactPaginate
-                      previousLabel={'<'}
-                      nextLabel={'>'}
-                      breakClassName={'break'}
-                      containerClassName={'pagination'}
-                      activeClassName={'active'}
-                      pageCount={Object.keys(this.state.pages).length}
-                      onPageChange={this.handlePageChange.bind(this)}
-                      forcePage={this.state.currentPage}
-                      marginPagesDisplayed={2}
-                      pageRangeDisplayed={2}
-                    />
-                  )}
-                  <div className={`gist-wrapper ${!this.state.loading && 'loading'}`}>
-                    {this.state.personalGist.map((gist) => (
-                      <div
-                        key={gist.name}
-                        className={`gist-container ${this.state.selected.gist === gist.name && 'gist-active'}`}
-                      >
-                        <div className="personal-gist-description">
-                          {gist.isPublic ? (
-                            <File width="14" height="14" />
-                          ) : (
-                            <Lock width="14" height="14" fill="#FDD300" />
-                          )}
-                          <span className={`text ${gist.title ? '' : 'play-down'}`}>
-                            {gist.title ? gist.title : 'No description provided'}
-                          </span>
-                        </div>
-                        <div className="personal-gist-files">
-                          {gist.spec.map((spec, index) => (
-                            <div key={index} className="file">
-                              <div className="arrow"></div>
-                              <div
-                                className={`filename ${
-                                  this.state.selected.file === spec.name &&
-                                  this.state.selected.gist === gist.name &&
-                                  'file-active'
-                                }`}
-                                key={spec.name}
-                                onClick={() => {
-                                  this.props.selectGist(gist.name, spec.name, spec.previewUrl);
-                                  this.setState({
-                                    selected: {
-                                      gist: gist.name,
-                                      file: spec.name,
-                                    },
-                                  });
-                                }}
-                              >
-                                {spec.name}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <>You have no Vega or Vega-Lite compatible gists.</>
-              )}
-            </>
-          ) : (
-            <div className="loader-container">
-              <span>Loading your GISTS...</span>
+      <LoginConditional>
+        {this.state.loaded ? (
+          <>
+            <div className="privacy-toggle">
+              <input
+                type="checkbox"
+                name="privacy"
+                id="privacy"
+                checked={this.props.private === GistPrivacy.ALL}
+                onChange={this.props.toggleGistPrivacy}
+              />
+              <label htmlFor="privacy">Show private gists</label>
             </div>
-          )
+            {this.state.personalGist.length > 0 ? (
+              <>
+                {Object.keys(this.state.pages).length > 1 && (
+                  <ReactPaginate
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    breakClassName={'break'}
+                    containerClassName={'pagination'}
+                    activeClassName={'active'}
+                    pageCount={Object.keys(this.state.pages).length}
+                    onPageChange={this.handlePageChange.bind(this)}
+                    forcePage={this.state.currentPage}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={2}
+                  />
+                )}
+                <div className={`gist-wrapper ${!this.state.loading && 'loading'}`}>
+                  {this.state.personalGist.map((gist) => (
+                    <div
+                      key={gist.name}
+                      className={`gist-container ${this.state.selected.gist === gist.name && 'gist-active'}`}
+                    >
+                      <div className="personal-gist-description">
+                        {gist.isPublic ? (
+                          <File width="14" height="14" />
+                        ) : (
+                          <Lock width="14" height="14" fill="#FDD300" />
+                        )}
+                        <span className={`text ${gist.title ? '' : 'play-down'}`}>
+                          {gist.title ? gist.title : 'No description provided'}
+                        </span>
+                      </div>
+                      <div className="personal-gist-files">
+                        {gist.spec.map((spec, index) => (
+                          <div key={index} className="file">
+                            <div className="arrow"></div>
+                            <div
+                              className={`filename ${
+                                this.state.selected.file === spec.name &&
+                                this.state.selected.gist === gist.name &&
+                                'file-active'
+                              }`}
+                              key={spec.name}
+                              onClick={() => {
+                                this.props.selectGist(gist.name, spec.name, spec.previewUrl);
+                                this.setState({
+                                  selected: {
+                                    gist: gist.name,
+                                    file: spec.name,
+                                  },
+                                });
+                              }}
+                            >
+                              {spec.name}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>You have no Vega or Vega-Lite compatible gists.</>
+            )}
+          </>
         ) : (
-          <span>{githubLink} to see all of your personal gist.</span>
+          <div className="loader-container">
+            <span>Loading your GISTS...</span>
+          </div>
         )}
-      </React.Fragment>
+      </LoginConditional>
     );
   }
 }
