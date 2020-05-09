@@ -10,6 +10,8 @@ import GistSelectWidget from '../../gist-select-widget';
 import LoginConditional from '../../login-conditional';
 import './index.css';
 
+const EDITOR_BASE = window.location.origin + window.location.pathname;
+
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 interface State {
@@ -166,11 +168,10 @@ class ShareModal extends React.PureComponent<Props, State> {
             }
           );
         } else {
-          const BASE_URL = window.location.origin;
           const {fileName, gistId} = data;
           this.setState({
             createError: false,
-            gistEditorURL: `${BASE_URL}/#/gist/${gistId}/${fileName}`,
+            gistEditorURL: `${EDITOR_BASE}/#/gist/${gistId}/${fileName}`,
           });
         }
       }
@@ -209,11 +210,10 @@ class ShareModal extends React.PureComponent<Props, State> {
 
       const data = await res.json();
       if (res.status === 205) {
-        const BASE_URL = window.location.origin;
         const gistId = data.gistId;
         const fileNameUpdated = data.fileName;
         this.setState({
-          gistEditorURL: `${BASE_URL}/#/gist/${gistId}/${fileNameUpdated}`,
+          gistEditorURL: `${EDITOR_BASE}/#/gist/${gistId}/${fileNameUpdated}`,
           creating: undefined,
           updating: false,
           updateError: false,
