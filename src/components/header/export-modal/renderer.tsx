@@ -55,7 +55,7 @@ class ExportModal extends React.PureComponent<Props, State> {
       method: 'post',
       mode: 'cors',
     });
-    if (pdf.status === 400) {
+    if (pdf.status !== 200) {
       this.setState({loadingPDF: false, errorLoadingPdf: true});
       return;
     }
@@ -218,9 +218,9 @@ class ExportModal extends React.PureComponent<Props, State> {
             {this.state.errorLoadingPdf && (
               <p style={{color: 'red'}}>
                 Render service cannot handle external data, please only use external datasets from{' '}
-                <a href="http://www.vega.github.io/" target="_blank" rel="noopener noreferrer">
-                  vega-datasets
-                </a>{' '}
+                <a href="http://vega.github.io/" target="_blank" rel="noopener noreferrer">
+                  Vega dataset
+                </a>
                 .
               </p>
             )}
