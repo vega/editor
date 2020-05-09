@@ -55,7 +55,7 @@ class ExportModal extends React.PureComponent<Props, State> {
       method: 'post',
       mode: 'cors',
     });
-    if (pdf.status === 404) {
+    if (pdf.status === 400) {
       this.setState({loadingPDF: false, errorLoadingPdf: true});
       return;
     }
