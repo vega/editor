@@ -105,7 +105,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --hot",
     "start:production": "webpack-dev-server --mode production",
-    "build": "yarn clean && yarn vendor && webpack --mode production",
+    "build": "yarn clean && yarn vendor && yarn build:only",
+    "build:only": "webpack --mode production",
     "clean": "rm -rf dist public/spec public/data",
     "postbuild": "rsync --ignore-existing -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",

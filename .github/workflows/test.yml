@@ -29,4 +29,4 @@ jobs:
         run: yarn --frozen-lockfile
 
       - run: yarn lint
-      - run: yarn build
+      - run: yarn build:only
