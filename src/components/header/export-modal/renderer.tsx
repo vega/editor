@@ -12,6 +12,7 @@ interface State {
   downloadVegaJSON: boolean;
   includeConfig: boolean;
   loadingPDF: boolean;
+  errorLoadingPdf: boolean;
 }
 
 class ExportModal extends React.PureComponent<Props, State> {
@@ -21,6 +22,7 @@ class ExportModal extends React.PureComponent<Props, State> {
       downloadVegaJSON: false,
       includeConfig: true,
       loadingPDF: false,
+      errorLoadingPdf: false,
     };
   }
 
@@ -53,6 +55,11 @@ class ExportModal extends React.PureComponent<Props, State> {
       method: 'post',
       mode: 'cors',
     });
+    if (pdf.status !== 200) {
+      this.setState({loadingPDF: false, errorLoadingPdf: true});
+      return;
+    }
+    this.setState({loadingPDF: false, errorLoadingPdf: false});
     const blob = await pdf.blob();
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -60,8 +67,6 @@ class ExportModal extends React.PureComponent<Props, State> {
     link.setAttribute('target', '_blank');
     link.setAttribute('download', `visualization.pdf`);
     link.dispatchEvent(new MouseEvent('click'));
-
-    this.setState({loadingPDF: false});
   }
 
   public updateIncludeConfig(e) {
@@ -210,6 +215,14 @@ class ExportModal extends React.PureComponent<Props, State> {
             <button onClick={() => this.downloadPDF()} disabled={this.state.loadingPDF}>
               {this.state.loadingPDF ? 'Downloading...' : 'Download'}
             </button>
+            {this.state.errorLoadingPdf && (
+              <p style={{color: 'red'}}>
+                Render service cannot handle external data, please only use external datasets from{' '}
+                <a href="http://vega.github.io/" target="_blank" rel="noopener noreferrer">
+                  Vega dataset
+                </a>.
+              </p>
+            )}
           </div>
         </div>
         <div className="user-notes">
