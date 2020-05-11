@@ -1,20 +1,17 @@
 import {range} from 'd3-array';
 import {scaleBand} from 'd3-scale';
-import React, {Component} from 'react';
+import React from 'react';
 
-export default class TimelineRow extends Component<
-  {
-    data: any[];
-    width: number;
-    xCount: number;
-    onHoverInit: (hoverValue: any) => void;
-    onHoverEnd: () => void;
-    onClickInit: (hoverValue: any) => void;
-    isTimelineSelected: boolean;
-    clickedValue: any;
-  },
-  any
-> {
+export default class TimelineRow extends React.PureComponent<{
+  data: any[];
+  width: number;
+  xCount: number;
+  onHoverInit: (hoverValue: any) => void;
+  onHoverEnd: () => void;
+  onClickInit: (hoverValue: any) => void;
+  isTimelineSelected: boolean;
+  clickedValue: any;
+}> {
   public render() {
     const {data, width, xCount, clickedValue} = this.props;
     const scaleNew = scaleBand as any;

@@ -31,7 +31,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     selectGist: (id?: string, file?: string, image?: string) => void;
   };
 
-class GistSelectWidget extends React.Component<Props, State> {
+class GistSelectWidget extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

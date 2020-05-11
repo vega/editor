@@ -1,7 +1,6 @@
-import stringify from 'json-stringify-pretty-compact';
 import React from 'react';
-import {isDate, debounce} from 'vega';
 import {Search} from 'react-feather';
+import {isDate} from 'vega';
 import {View} from '../../constants';
 import {formatValueLong} from '../table/renderer';
 

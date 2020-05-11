@@ -35,9 +35,9 @@ const formatExampleName = (name: string) => {
 };
 
 class Header extends React.PureComponent<Props, State> {
-  private refGistForm: HTMLFormElement;
   private examplePortal = React.createRef<HTMLDivElement>();
   private listenerAttached = false;
+
   constructor(props) {
     super(props);
     this.state = {
