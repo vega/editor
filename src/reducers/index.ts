@@ -200,26 +200,14 @@ function parseVega(
 
 function parseVegaLite(
   state: State,
-  action: SetVegaLiteExample | UpdateVegaLiteSpec | SetGistVegaLiteSpec | SetConfig,
+  action: SetVegaLiteExample | UpdateVegaLiteSpec | SetGistVegaLiteSpec,
   extend: Partial<State> = {}
 ) {
   const currLogger = new LocalLogger();
 
-  let spec: string;
-  let configEditorString: string;
+  const spec: string = action.spec;
+  const configEditorString: string = state.configEditorString;
   try {
-    switch (action.type) {
-      case SET_CONFIG:
-        spec = state.editorString;
-        configEditorString = action.configEditorString;
-        break;
-      case SET_VEGA_LITE_EXAMPLE:
-      case SET_GIST_VEGA_LITE_SPEC:
-      case UPDATE_VEGA_LITE_SPEC:
-        spec = action.spec;
-        configEditorString = state.configEditorString;
-    }
-
     const vegaLiteSpec: vegaLite.TopLevelSpec = JSON.parse(spec);
     const config: Config = JSON.parse(configEditorString);
 
@@ -430,11 +418,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         settings: action.settings,
       };
     case SET_CONFIG:
-      return state.mode === Mode.VegaLite
-        ? parseVegaLite(state, action, {
-            configEditorString: action.configEditorString,
-          })
-        : parseConfig(state, action);
+      return parseConfig(state, action);
     case SET_THEME_NAME:
       return {
         ...state,
