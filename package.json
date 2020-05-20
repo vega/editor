@@ -15,7 +15,7 @@
     "postcss-loader": "^3.0.0",
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.4",
-    "typescript": "~3.9.2",
+    "typescript": "~3.9.3",
     "vega-lite-dev-config": "^0.10.3",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.8.0",
@@ -59,7 +59,7 @@
     "vega-cli": "5.12.1",
     "vega-datasets": "^1.30.2",
     "vega-embed": "^6.8.0",
-    "vega-lite": "4.12.1",
+    "vega-lite": "4.12.2",
     "vega-schema-url-parser": "^1.1.0",
     "vega-themes": "^2.8.3",
     "vega-tooltip": "^0.23.0"
