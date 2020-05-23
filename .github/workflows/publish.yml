@@ -19,6 +19,8 @@ jobs:
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
       - run: yarn build
+      - name: remove git directory
+        run: rm -r .git
       - name: Publish editor
         uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
         with:
