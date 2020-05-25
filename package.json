@@ -103,8 +103,7 @@
     }
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development --hot",
-    "start:production": "webpack-dev-server --mode production",
+    "start": "webpack-dev-server --mode development",
     "build": "yarn clean && yarn vendor && yarn build:only",
     "build:only": "webpack --mode production",
     "clean": "rm -rf dist public/spec public/data",

@@ -103,16 +103,14 @@ module.exports = (env, argv) => {
     ],
 
     devServer: {
-      host: '0.0.0.0',
       stats: {
         colors: true,
       },
-      compress: true,
       overlay: {
         warnings: true,
         errors: true,
       },
-      progress: true,
+      hot: true,
       stats: 'errors-only',
       open: false,
       contentBase: path.join(__dirname, 'public'),
