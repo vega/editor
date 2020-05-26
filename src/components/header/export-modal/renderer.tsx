@@ -44,8 +44,13 @@ class ExportModal extends React.PureComponent<Props, State> {
     this.setState({loadingPDF: true});
 
     const content = this.props.mode === Mode.Vega ? this.props.vegaSpec : this.props.vegaLiteSpec;
+    console.log('Base url', this.props.baseURL);
+    const body = {
+      spec: content,
+      baseURL: this.props.baseURL,
+    };
     const pdf = await fetch('https://render-vega.now.sh', {
-      body: JSON.stringify(content),
+      body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/pdf',

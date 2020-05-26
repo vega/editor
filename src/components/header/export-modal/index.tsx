@@ -4,6 +4,7 @@ import Renderer from './renderer';
 
 export function mapStateToProps(state: State) {
   return {
+    baseURL: state.baseURL,
     config: state.config,
     editorString: state.editorString,
     mode: state.mode,
