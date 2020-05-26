@@ -34,4 +34,4 @@ RUN yarn
 # https://docs.docker.com/engine/reference/builder/#entrypoint
 # https://docs.docker.com/engine/reference/builder/#cmd
 ENTRYPOINT ["yarn"]
-CMD ["start"]
+CMD ["start", "--host", "0.0.0.0"]

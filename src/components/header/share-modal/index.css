@@ -44,8 +44,12 @@
   flex-direction: row;
 }
 
+.share-gist-split > div {
+  flex: 1;
+}
+
 .update-gist {
-  min-width: 50%;
+  padding-right: 3em;
 }
 
 .share-input-container {
@@ -77,4 +81,8 @@
 
 .share-modal .spacer {
   margin-top: 4em;
+}
+
+small {
+  color: var(--extra-dark-gray-color);
 }

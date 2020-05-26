@@ -14,22 +14,20 @@ import {version as VL_VERSION} from 'vega-lite';
 import {version as TOOLTIP_VERSION} from 'vega-tooltip';
 const pjson = require('../../../package.json');
 
-interface State {
-  header: string;
-  range: number;
-  maxRange: number;
-}
+const defaultState = {
+  header: '',
+  maxRange: 0,
+  range: 0,
+};
+
+type State = Readonly<typeof defaultState>;
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export default class VizPane extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
-    this.state = {
-      header: '',
-      maxRange: 0,
-      range: 0,
-    };
+    this.state = defaultState;
     this.handleChange = this.handleChange.bind(this);
     this.getContextViewer = this.getContextViewer.bind(this);
   }

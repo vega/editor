@@ -1,4 +1,4 @@
-# Vega Editor [![Build Status](https://travis-ci.org/vega/editor.svg?branch=master)](https://travis-ci.org/vega/editor)
+# Vega Editor [![Build Status](https://github.com/vega/editor/workflows/Test/badge.svg)](https://github.com/vega/editor/actions)
 
 The **Vega editor** is a web application for authoring and testing [Vega](https://github.com/vega/vega) and [Vega-Lite](https://vega.github.io/vega-lite) visualizations. It includes a number of example specifications that showcase both the visual encodings and interaction techniques. It is deployed at https://vega.github.io/editor/.
 
@@ -71,4 +71,4 @@ We welcome contributions and promptly review pull requests. For instructions abo
 ## Creating a release on gh-pages
 
 - Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature.
-- Push the tag. Travis will automatically deploy the editor.
+- Push the tag. Github will automatically deploy the editor.

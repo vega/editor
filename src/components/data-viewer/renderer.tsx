@@ -155,7 +155,7 @@ export default class DataViewer extends React.PureComponent<Props, State> {
     );
 
     return (
-      <div className="data-viewer">
+      <>
         <div className="data-viewer-header">
           <Select
             className="data-dropdown"
@@ -173,7 +173,7 @@ export default class DataViewer extends React.PureComponent<Props, State> {
         <div className="data-table">
           <ErrorBoundary>{table}</ErrorBoundary>
         </div>
-      </div>
+      </>
     );
   }
 }

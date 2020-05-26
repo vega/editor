@@ -23,11 +23,11 @@ type State = Readonly<typeof defaultState>;
 
 class Editor extends React.PureComponent<Props, State> {
   public static pathname: string;
-  public readonly state: State = defaultState;
   public unlisten: UnregisterCallback;
 
   constructor(props) {
     super(props);
+    this.state = defaultState;
     this.handleKeydown = this.handleKeydown.bind(this);
     this.onOpenPortal = this.onOpenPortal.bind(this);
     this.onClosePortal = this.onClosePortal.bind(this);
@@ -225,8 +225,9 @@ class Editor extends React.PureComponent<Props, State> {
         });
       }
     });
-    // Add listener to event keydown
+
     document.addEventListener('keydown', this.handleKeydown);
+
     // Enter fullscreen mode if url ends with /view
     const params = Editor.pathname.split('/');
     if (params[params.length - 1] === 'view') {

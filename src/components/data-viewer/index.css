@@ -11,16 +11,9 @@
   outline: 0;
 }
 
-.data-viewer {
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px 15px 20px;
-  flex: 1;
-  height: 100%;
-}
-
 .data-viewer-header {
   width: 100%;
+  margin-left: 10px;
   align-items: center;
 }
 
@@ -103,6 +96,7 @@
 }
 
 .data-table {
+  margin: 10px;
   width: fit-content;
   max-width: 100%;
   overflow: auto;
