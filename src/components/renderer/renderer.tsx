@@ -11,6 +11,7 @@ import {mapDispatchToProps, mapStateToProps} from '.';
 import {KEYCODES, Mode} from '../../constants';
 import addProjections from '../../utils/addProjections';
 import './index.css';
+import {dispatchingLogger} from '../../utils/logger';
 
 // Add additional projections
 addProjections(vega.projection);
@@ -125,12 +126,14 @@ class Editor extends React.PureComponent<Props, State> {
 
   // Initialize the view instance
   public initView() {
+    const {vegaSpec, config, baseURL, mode, setView, hoverEnable} = this.props;
+
     let runtime: vega.Runtime;
-    if (this.props.mode === Mode.VegaLite) {
+    if (mode === Mode.VegaLite) {
       // In vl mode, we compile Vega-Lite spec along with config to Vega spec
-      runtime = vega.parse(this.props.vegaSpec);
+      runtime = vega.parse(vegaSpec);
     } else {
-      runtime = vega.parse(this.props.vegaSpec, this.props.config);
+      runtime = vega.parse(vegaSpec, config);
     }
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
@@ -141,10 +144,10 @@ class Editor extends React.PureComponent<Props, State> {
         if (options) {
           return await originalLoad(url, {
             ...options,
-            ...{baseURL: this.props.baseURL},
+            ...{baseURL: baseURL},
           });
         }
-        return await originalLoad(url, {baseURL: this.props.baseURL});
+        return await originalLoad(url, {baseURL: baseURL});
       } catch {
         return await originalLoad(url, options);
       }
@@ -155,15 +158,16 @@ class Editor extends React.PureComponent<Props, State> {
       this.props.view.finalize();
     }
 
-    const hover = typeof this.props.hoverEnable === 'boolean' ? this.props.hoverEnable : this.props.mode === Mode.Vega;
+    const hover = typeof hoverEnable === 'boolean' ? hoverEnable : mode === Mode.Vega;
     const view = new vega.View(runtime, {
       hover,
       loader,
-      logLevel: vega[this.props.logLevel],
-    }).hover();
+    });
+
+    (view as any).logger(dispatchingLogger);
 
     (window as any).VEGA_DEBUG.view = view;
-    this.props.setView(view);
+    setView(view);
   }
 
   public renderVega() {
@@ -177,15 +181,19 @@ class Editor extends React.PureComponent<Props, State> {
     // Parsing pathname from URL
     Editor.pathname = window.location.hash.split('#')[1];
 
-    if (!this.props.view) {
+    const {view, renderer, tooltipEnable} = this.props;
+
+    if (!view) {
       return;
     }
 
-    this.props.view.renderer(this.props.renderer).initialize(chart).runAsync();
+    view.renderer(renderer).initialize(chart);
+    (view as any).logger(dispatchingLogger);
+    view.runAsync();
 
-    if (this.props.tooltipEnable) {
+    if (tooltipEnable) {
       // Tooltip needs to be added after initializing the view with `chart`
-      vegaTooltip(this.props.view);
+      vegaTooltip(view);
     }
   }
 

@@ -1,8 +1,7 @@
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {Renderers, Spec} from 'vega';
-import {Config} from 'vega-embed';
+import {Config, vega} from 'vega-embed';
 import {TopLevelSpec as VlSpec} from 'vega-lite';
-import {LocalLogger} from '../utils/logger';
 import {EDITOR_FOCUS, LAYOUT, Mode, NAVBAR, SIDEPANE, VEGA_LITE_START_SPEC, View, GistPrivacy} from './consts';
 
 export interface State {
@@ -24,7 +23,7 @@ export interface State {
   gist: string;
   handle: string;
   hoverEnable: boolean | 'auto';
-  logLevel: string;
+  logLevel: number;
   lastPosition: number;
   logs: boolean;
   manualParse: boolean;
@@ -43,8 +42,9 @@ export interface State {
   vegaLiteSpec: VlSpec;
   vegaSpec: Spec;
   view: View;
-  warningsCount: number;
-  warningsLogger: LocalLogger;
+  warns: string[];
+  infos: string[];
+  debugs: string[];
   themeName: string;
   backgroundColor: string;
 }
@@ -69,7 +69,7 @@ export const DEFAULT_STATE: State = {
   hoverEnable: 'auto',
   isAuthenticated: false,
   lastPosition: 0,
-  logLevel: 'Warn',
+  logLevel: vega.Warn,
   logs: false,
   manualParse: false,
   mode: Mode.VegaLite,
@@ -88,7 +88,8 @@ export const DEFAULT_STATE: State = {
   vegaLiteSpec: null,
   vegaSpec: {},
   view: null,
-  warningsCount: 0,
-  warningsLogger: new LocalLogger(),
+  warns: [],
+  debugs: [],
+  infos: [],
   backgroundColor: '#ffffff',
 };

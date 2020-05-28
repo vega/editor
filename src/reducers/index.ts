@@ -1,3 +1,4 @@
+import {LocalLogger} from './../utils/logger';
 import stringify from 'json-stringify-pretty-compact';
 import * as vega from 'vega';
 import {satisfies} from 'semver';
@@ -49,10 +50,13 @@ import {
   UPDATE_EDITOR_STRING,
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
+  WARN,
+  INFO,
+  DEBUG,
 } from '../actions/editor';
 import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
 import {State} from '../constants/default-state';
-import {LocalLogger} from '../utils/logger';
+import {dispatchingLogger} from '../utils/logger';
 import {validateVega, validateVegaLite} from '../utils/validate';
 import {
   MERGE_CONFIG_SPEC,
@@ -146,6 +150,7 @@ function extractConfig(state: State) {
     };
   }
 }
+
 function parseVega(
   state: State,
   action: SetVegaExample | UpdateVegaSpec | SetGistVegaSpec,
@@ -181,7 +186,7 @@ function parseVega(
       error: {message: errorMessage},
     };
   }
-  const logger = {...currLogger};
+
   return {
     ...state,
 
@@ -190,8 +195,9 @@ function parseVega(
     gist: null,
     mode: Mode.Vega,
     selectedExample: null,
-    warningsCount: (logger as any).warns.length,
-    warningsLogger: currLogger,
+    warns: currLogger.warns,
+    infos: currLogger.infos,
+    debugs: currLogger.debugs,
 
     // extend with other changes
     ...extend,
@@ -258,7 +264,7 @@ function parseVegaLite(
       error: {message: errorMessage},
     };
   }
-  const logger = {...currLogger};
+
   return {
     ...state,
 
@@ -267,8 +273,9 @@ function parseVegaLite(
     gist: null,
     mode: Mode.VegaLite,
     selectedExample: null,
-    warningsCount: (logger as any).warns.length,
-    warningsLogger: currLogger,
+    warns: currLogger.warns,
+    infos: currLogger.infos,
+    debugs: currLogger.debugs,
 
     // extend with other changes
     ...extend,
@@ -314,8 +321,9 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         vegaLiteSpec: null,
         vegaSpec: {},
         view: null,
-        warningsCount: 0,
-        warningsLogger: new LocalLogger(),
+        warns: [],
+        infos: [],
+        debugs: [],
       };
     case SET_MODE_ONLY:
       return {
@@ -519,6 +527,21 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         backgroundColor: action.color,
+      };
+    case WARN:
+      return {
+        ...state,
+        warns: [...state.warns, action.warn],
+      };
+    case INFO:
+      return {
+        ...state,
+        infos: [...state.infos, action.info],
+      };
+    case DEBUG:
+      return {
+        ...state,
+        debugs: [...state.debugs, action.debug],
       };
     default:
       return state;

@@ -46,6 +46,11 @@ export const SET_COMPILED_EDITOR_REFERENCE = 'SET_COMPILED_EDITOR_REFERENCE' as 
 export const SET_EDITOR_FOCUS = 'SET_EDITOR_FOCUS' as const;
 export const SET_BACKGROUND_COLOR = 'SET_BACKGROUND_COLOR' as const;
 
+export const WARN = 'WARN' as const;
+export const INFO = 'INFO' as const;
+export const DEBUG = 'DEBUG' as const;
+export const RESET_LOGGING = 'RESET_LOGGING' as const;
+
 export type Action =
   | ReceiveCurrentUser
   | SetMode
@@ -89,7 +94,11 @@ export type Action =
   | SetDecorations
   | SetCompiledEditorRef
   | SetEditorFocus
-  | SetBackgroundColor;
+  | SetBackgroundColor
+  | AddWarning
+  | AddInfo
+  | AddDebug
+  | ResetLogging;
 
 export function setMode(mode: Mode) {
   return {
@@ -341,7 +350,7 @@ export function setCompiledEditorRef(editorRef: Monaco.editor.IStandaloneCodeEdi
 
 export type SetCompiledEditorRef = ReturnType<typeof setCompiledEditorRef>;
 
-export function setLogLevel(logLevel: string) {
+export function setLogLevel(logLevel: number) {
   return {
     logLevel,
     type: SET_LOG_LEVEL,
@@ -453,3 +462,38 @@ export function setBackgroundColor(color) {
 }
 
 export type SetBackgroundColor = ReturnType<typeof setBackgroundColor>;
+
+export function addWarning(warn) {
+  return {
+    type: WARN,
+    warn,
+  };
+}
+
+export type AddWarning = ReturnType<typeof addWarning>;
+
+export function addInfo(info) {
+  return {
+    type: INFO,
+    info,
+  };
+}
+
+export type AddInfo = ReturnType<typeof addInfo>;
+
+export function addDebug(debug) {
+  return {
+    type: DEBUG,
+    debug,
+  };
+}
+
+export type AddDebug = ReturnType<typeof addDebug>;
+
+export function resetLogging() {
+  return {
+    type: RESET_LOGGING,
+  };
+}
+
+export type ResetLogging = ReturnType<typeof resetLogging>;
