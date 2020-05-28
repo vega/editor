@@ -8,7 +8,7 @@ export default class ErrorPane extends React.Component<Props> {
   public render() {
     const list = [];
 
-    let i = 0;
+    let i = 1;
 
     if (this.props.error) {
       list.push(
