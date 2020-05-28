@@ -17,7 +17,7 @@ import ShareModal from './share-modal/index';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> & {
-    showExample: () => {};
+    showExample: () => void;
   } & RouteComponentProps;
 
 interface State {

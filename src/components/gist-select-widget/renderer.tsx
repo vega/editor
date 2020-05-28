@@ -18,7 +18,7 @@ interface State {
       previewUrl: string;
     }[];
   }[];
-  pages: object;
+  pages: Record<string, unknown>;
   loading: boolean;
   selected: {
     gist: string;

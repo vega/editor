@@ -15,7 +15,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
   RouteComponentProps<{compressed: string}>;
 
-class Editor extends React.PureComponent<Props, {}> {
+class Editor extends React.PureComponent<Props> {
   public editor: Monaco.editor.IStandaloneCodeEditor;
   constructor(props: Props) {
     super(props);

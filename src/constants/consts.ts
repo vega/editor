@@ -1,13 +1,13 @@
 import * as vega from 'vega';
 
 export namespace Mode {
-  export const Vega: 'vega' = 'vega';
-  export const VegaLite: 'vega-lite' = 'vega-lite';
+  export const Vega = 'vega' as const;
+  export const VegaLite = 'vega-lite' as const;
 }
 
 export namespace GistPrivacy {
-  export const PUBLIC: 'PUBLIC' = 'PUBLIC';
-  export const ALL: 'ALL' = 'ALL';
+  export const PUBLIC = 'PUBLIC' as const;
+  export const ALL = 'ALL' as const;
 }
 
 export type Mode = typeof Mode.Vega | typeof Mode.VegaLite;
