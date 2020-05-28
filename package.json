@@ -5,6 +5,7 @@
   "private": true,
   "license": "BSD-3-Clause",
   "devDependencies": {
+    "@types/react-select": "^3.0.13",
     "autoprefixer": "^9.8.0",
     "css-loader": "^3.5.3",
     "gh-pages": "^2.2.0",

@@ -30,7 +30,7 @@ window.VEGA_DEBUG.VEGA_LITE_VERSION = vegaLite.version;
 
 setupMonaco();
 
-const store = configureStore();
+export const store = configureStore();
 
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!

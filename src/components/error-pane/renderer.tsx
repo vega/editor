@@ -1,13 +1,13 @@
-import './index.css';
-
 import * as React from 'react';
 import {mapStateToProps} from '.';
+import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
-export default class ErrorPane extends React.PureComponent<Props> {
+export default class ErrorPane extends React.Component<Props> {
   public render() {
     const list = [];
+
     if (this.props.error) {
       list.push(
         <li key={0}>
@@ -16,7 +16,7 @@ export default class ErrorPane extends React.PureComponent<Props> {
         </li>
       );
     }
-    this.props.warningsLogger.warns.forEach((warning, i) => {
+    this.props.warns.forEach((warning, i) => {
       list.push(
         <li key={i + 1}>
           <span className="warning">[Warning] </span>

@@ -7,6 +7,22 @@ import './index.css';
  */
 const SIZE_THRESHOLD = 1000;
 
+const LEVEL_NAMES = {
+  0: 'None',
+  2: 'Warn',
+  3: 'Info',
+  4: 'Debug',
+};
+
+const LOG_OPTIONS = [
+  {label: LEVEL_NAMES[0], value: 0},
+  {label: LEVEL_NAMES[4], value: 4},
+  {label: LEVEL_NAMES[3], value: 3},
+  {label: LEVEL_NAMES[2], value: 2},
+];
+
+const HOVER_OPTIONS = [{label: 'Auto'}, {label: 'On'}, {label: 'Off'}];
+
 class Sidebar extends Component<any, any> {
   private listenerAttached = false;
   public constructor(props) {
@@ -58,34 +74,34 @@ class Sidebar extends Component<any, any> {
     }
   }
 
-  public logOptions = () => {
-    let options = [{label: 'None'}, {label: 'Warn'}, {label: 'Info'}, {label: 'Debug'}];
-    options = options.filter((o) => o.label !== this.props.logLevel);
-    return options;
-  };
-
-  public hoverOptions = () => {
-    let options = [{label: 'auto'}, {label: 'on'}, {label: 'off'}];
-    const selected =
-      typeof this.props.hoverEnable !== 'boolean' ? this.props.hoverEnable : this.props.hoverEnable ? 'on' : 'off';
-    options = options.filter((o) => o.label !== selected);
-    return options;
-  };
-
   public setHover(e) {
-    let newHover: boolean | 'auto' = 'auto';
+    let newHover = null;
     switch (e.label) {
-      case 'on':
+      case 'On':
         newHover = true;
         break;
-      case 'off':
+      case 'Off':
         newHover = false;
+        break;
+      case 'Auto':
+        newHover = 'auto';
     }
     this.props.setHover(newHover);
   }
 
   public render() {
-    const hover = typeof this.props.hoverEnable !== 'boolean' ? 'auto' : this.props.hoverEnable ? 'on' : 'off';
+    const {
+      logLevel,
+      renderer,
+      setRenderer,
+      setBackgroundColor,
+      backgroundColor,
+      setLogLevel,
+      setTooltip,
+      tooltipEnable,
+    } = this.props;
+
+    const hover = typeof this.props.hoverEnable !== 'boolean' ? 'Auto' : this.props.hoverEnable ? 'On' : 'Off';
 
     const renderers = [
       {value: 'svg', label: 'SVG'},
@@ -96,8 +112,8 @@ class Sidebar extends Component<any, any> {
           type="radio"
           name="renderer"
           value={d.value}
-          defaultChecked={this.props.renderer === d.value}
-          onClick={(e) => this.props.setRenderer(e.currentTarget.value)}
+          defaultChecked={renderer === d.value}
+          onClick={(e) => setRenderer(e.currentTarget.value)}
         />
         {d.label}
       </label>
@@ -119,8 +135,8 @@ class Sidebar extends Component<any, any> {
               type="color"
               id="head"
               name="head"
-              defaultValue={this.props.backgroundColor}
-              onInput={(e) => this.props.setBackgroundColor((e.target as HTMLTextAreaElement).value)}
+              defaultValue={backgroundColor}
+              onInput={(e) => setBackgroundColor((e.target as HTMLTextAreaElement).value)}
             />
           </div>
         </div>
@@ -131,9 +147,9 @@ class Sidebar extends Component<any, any> {
             <Select
               className="log-level-dropdown-wrapper"
               classNamePrefix="log-level-dropdown"
-              value={{label: this.props.logLevel}}
-              options={this.logOptions()}
-              onChange={(e) => this.props.setLogLevel(e.label)}
+              value={{value: logLevel, label: LEVEL_NAMES[logLevel]}}
+              options={LOG_OPTIONS}
+              onChange={(e: any) => setLogLevel(e.value)}
               isClearable={false}
               isSearchable={false}
             />
@@ -147,7 +163,7 @@ class Sidebar extends Component<any, any> {
               className="hover-enable-dropdown-wrapper"
               classNamePrefix="hover-enable-dropdown"
               value={{label: hover}}
-              options={this.hoverOptions()}
+              options={HOVER_OPTIONS}
               onChange={this.setHover}
               isClearable={false}
               isSearchable={false}
@@ -164,11 +180,11 @@ class Sidebar extends Component<any, any> {
         <div className="tooltips">
           <label>
             <input
-              onChange={(e) => this.props.setTooltip(e.target.checked)}
+              onChange={(e) => setTooltip(e.target.checked)}
               type="checkbox"
               name=""
               id="tooltip"
-              checked={this.props.tooltipEnable}
+              checked={tooltipEnable}
             />
             Tooltips
           </label>

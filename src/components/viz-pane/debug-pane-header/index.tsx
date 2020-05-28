@@ -6,18 +6,7 @@ import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor';
 import {NAVBAR} from '../../../constants/consts';
 
-interface Props {
-  debugPane?: boolean;
-  error?: string;
-  logs?: boolean;
-  warningsLogger: any[];
-  warningsCount: number;
-  navItem: string;
-
-  showLogs: (val: any) => void;
-  toggleDebugPane: () => void;
-  toggleNavbar: (val: string) => void;
-}
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class DebugPaneHeader extends React.PureComponent<Props> {
   public componentDidMount() {
@@ -25,61 +14,62 @@ class DebugPaneHeader extends React.PureComponent<Props> {
       this.props.showLogs(true);
     }
   }
+
   public render() {
+    const {toggleDebugPane, debugPane, showLogs, error, logs, navItem, toggleNavbar, warns} = this.props;
+
     return (
-      <div className="pane-header" onClick={(e) => this.props.toggleDebugPane()}>
+      <div className="pane-header" onClick={toggleDebugPane}>
         <ul className="tabs-nav">
           <li
-            className={
-              this.props.error || (this.props.logs && this.props.navItem === NAVBAR.Logs) ? 'active-tab' : undefined
-            }
+            className={error || (logs && navItem === NAVBAR.Logs) ? 'active-tab' : undefined}
             onClick={(e) => {
-              if (this.props.debugPane) {
+              if (debugPane) {
                 e.stopPropagation();
               }
-              this.props.showLogs(true);
-              this.props.toggleNavbar(NAVBAR.Logs);
+              showLogs(true);
+              toggleNavbar(NAVBAR.Logs);
             }}
           >
             <span className="logs-text">Logs</span>
-            {this.props.error ? (
+            {error ? (
               <span className="error">(Error)</span>
-            ) : this.props.warningsCount > 0 ? (
-              <span className="warnings-count">({this.props.warningsCount})</span>
+            ) : warns.length > 0 ? (
+              <span className="warnings-count">({warns.length})</span>
             ) : (
               ''
             )}
           </li>
-          {this.props.error === null && (
+          {error === null && (
             <li
-              className={this.props.navItem === NAVBAR.DataViewer ? 'active-tab' : undefined}
+              className={navItem === NAVBAR.DataViewer ? 'active-tab' : undefined}
               onClick={(e) => {
-                if (this.props.debugPane) {
+                if (debugPane) {
                   e.stopPropagation();
                 }
-                this.props.showLogs(false);
-                this.props.toggleNavbar(NAVBAR.DataViewer);
+                showLogs(false);
+                toggleNavbar(NAVBAR.DataViewer);
               }}
             >
               Data Viewer
             </li>
           )}
-          {this.props.error === null && (
+          {error === null && (
             <li
-              className={this.props.navItem === NAVBAR.SignalViewer ? 'active-tab' : undefined}
+              className={navItem === NAVBAR.SignalViewer ? 'active-tab' : undefined}
               onClick={(e) => {
-                if (this.props.debugPane) {
+                if (debugPane) {
                   e.stopPropagation();
                 }
-                this.props.showLogs(false);
-                this.props.toggleNavbar(NAVBAR.SignalViewer);
+                showLogs(false);
+                toggleNavbar(NAVBAR.SignalViewer);
               }}
             >
               Signal Viewer
             </li>
           )}
         </ul>
-        {this.props.debugPane ? <ChevronDown /> : <ChevronUp />}
+        {debugPane ? <ChevronDown /> : <ChevronUp />}
       </div>
     );
   }
@@ -91,8 +81,7 @@ function mapStateToProps(state, ownProps) {
     error: state.error,
     logs: state.logs,
     navItem: state.navItem,
-    warningsCount: state.warningsCount,
-    warningsLogger: state.warningsLogger,
+    warns: state.warns,
   };
 }
 

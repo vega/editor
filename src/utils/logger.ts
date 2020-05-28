@@ -1,3 +1,4 @@
+import {store} from './../index';
 import {LoggerInterface} from 'vega';
 
 export class LocalLogger implements LoggerInterface {
@@ -36,3 +37,56 @@ export class LocalLogger implements LoggerInterface {
     return this;
   }
 }
+
+export class DispatchingLogger implements LoggerInterface {
+  public level = (_?: number) => {
+    if (_ !== undefined) {
+      store.dispatch({
+        type: 'SET_LOG_LEVEL',
+        logLevel: _,
+      });
+      return this;
+    } else {
+      return store.getState().logLevel;
+    }
+  };
+
+  public warn = (...args: any[]) => {
+    console.warn(...args);
+
+    store.dispatch({
+      type: 'WARN',
+      warn: args[0],
+    });
+
+    return this;
+  };
+
+  public info = (...args: any[]) => {
+    console.info(...args);
+
+    store.dispatch({
+      type: 'INFO',
+      info: args[0],
+    });
+
+    return this;
+  };
+
+  public debug = (...args: any[]) => {
+    console.debug(...args);
+
+    store.dispatch({
+      type: 'DEBUG',
+      debug: args[0],
+    });
+
+    return this;
+  };
+
+  public error = (...args: any[]) => {
+    throw new Error(...args);
+  };
+}
+
+export const dispatchingLogger = new DispatchingLogger();
