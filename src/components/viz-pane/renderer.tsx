@@ -105,6 +105,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
       return null;
     }
   }
+
   public render() {
     const container = (
       <div className="chart-container">

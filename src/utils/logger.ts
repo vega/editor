@@ -5,8 +5,15 @@ export class LocalLogger implements LoggerInterface {
   public readonly infos = [];
   public readonly debugs = [];
 
-  public level() {
-    return this;
+  private _level = 0;
+
+  public level(_) {
+    if (arguments.length) {
+      this._level = +_;
+      return this;
+    } else {
+      return this._level;
+    }
   }
 
   public warn(...args: any[]) {

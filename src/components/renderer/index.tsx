@@ -11,6 +11,7 @@ export function mapStateToProps(state: State) {
     editorString: state.editorString,
     hoverEnable: state.hoverEnable,
     logLevel: state.logLevel,
+    logger: state.warningsLogger,
     mode: state.mode,
     renderer: state.renderer,
     tooltipEnable: state.tooltipEnable,
