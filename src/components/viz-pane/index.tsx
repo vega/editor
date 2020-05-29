@@ -13,6 +13,7 @@ export function mapStateToProps(state: State) {
     editorFocus: state.editorFocus,
     editorRef: state.editorRef,
     error: state.error,
+    errors: state.errors,
     logs: state.logs,
     navItem: state.navItem,
     settings: state.settings,

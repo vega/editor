@@ -19,6 +19,14 @@ export default class ErrorPane extends React.Component<Props> {
       );
     }
 
+    this.props.errors.forEach((error) => {
+      list.push(
+        <li key={i++}>
+          <span className="error">[Error] </span>
+          {error}
+        </li>
+      );
+    });
     this.props.warns.forEach((warning) => {
       list.push(
         <li key={i++}>

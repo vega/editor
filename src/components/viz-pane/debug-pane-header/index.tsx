@@ -17,7 +17,7 @@ class DebugPaneHeader extends React.PureComponent<Props> {
   }
 
   public render() {
-    const {toggleDebugPane, debugPane, showLogs, error, logs, navItem, toggleNavbar, warns} = this.props;
+    const {toggleDebugPane, debugPane, showLogs, error, logs, navItem, toggleNavbar, warns, errors} = this.props;
 
     return (
       <div className="pane-header" onClick={toggleDebugPane}>
@@ -35,6 +35,8 @@ class DebugPaneHeader extends React.PureComponent<Props> {
             <span className="logs-text">Logs</span>
             {error ? (
               <span className="error">(Error)</span>
+            ) : errors.length > 0 ? (
+              <span className="error">({errors.length})</span>
             ) : warns.length > 0 ? (
               <span className="warnings-count">({warns.length})</span>
             ) : (
@@ -80,6 +82,7 @@ function mapStateToProps(state: State, ownProps) {
   return {
     debugPane: state.debugPane,
     error: state.error,
+    errors: state.errors,
     logs: state.logs,
     navItem: state.navItem,
     warns: state.warns,

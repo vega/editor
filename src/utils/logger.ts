@@ -85,7 +85,14 @@ export class DispatchingLogger implements LoggerInterface {
   };
 
   public error = (...args: any[]) => {
-    throw new Error(...args);
+    console.warn(...args);
+
+    store.dispatch({
+      type: 'ERROR',
+      error: args[0],
+    });
+
+    return this;
   };
 }
 

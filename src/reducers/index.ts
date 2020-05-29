@@ -52,6 +52,7 @@ import {
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
   WARN,
+  ERROR,
 } from '../actions/editor';
 import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
 import {State} from '../constants/default-state';
@@ -194,6 +195,7 @@ function parseVega(
     gist: null,
     mode: Mode.Vega,
     selectedExample: null,
+    errors: [],
     warns: currLogger.warns,
     infos: currLogger.infos,
     debugs: currLogger.debugs,
@@ -272,6 +274,7 @@ function parseVegaLite(
     gist: null,
     mode: Mode.VegaLite,
     selectedExample: null,
+    errors: [],
     warns: currLogger.warns,
     infos: currLogger.infos,
     debugs: currLogger.debugs,
@@ -298,6 +301,10 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
     ...state,
     config,
     error: null,
+    errors: [],
+    warns: [],
+    debugs: [],
+    infos: [],
 
     // extend with other changes
     ...extend,
@@ -305,6 +312,8 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
 }
 
 export default (state: State = DEFAULT_STATE, action: Action): State => {
+  console.info(action);
+
   switch (action.type) {
     case SET_MODE:
       return {
@@ -320,6 +329,8 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         vegaLiteSpec: null,
         vegaSpec: {},
         view: null,
+        error: null,
+        errors: [],
         warns: [],
         infos: [],
         debugs: [],
@@ -337,6 +348,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case PARSE_SPEC:
       return {
         ...state,
+        error: null,
+        errors: [],
+        warns: [],
+        infos: [],
+        debugs: [],
         parse: action.parse,
       };
     case SET_VEGA_EXAMPLE: {
@@ -526,6 +542,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         backgroundColor: action.color,
+      };
+    case ERROR:
+      return {
+        ...state,
+        errors: [...state.errors, action.error],
       };
     case WARN:
       return {

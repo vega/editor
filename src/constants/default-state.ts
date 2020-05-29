@@ -42,6 +42,7 @@ export interface State {
   vegaLiteSpec: VlSpec;
   vegaSpec: Spec;
   view: View;
+  errors: string[];
   warns: string[];
   infos: string[];
   debugs: string[];
@@ -88,6 +89,7 @@ export const DEFAULT_STATE: State = {
   vegaLiteSpec: null,
   vegaSpec: {},
   view: null,
+  errors: [],
   warns: [],
   debugs: [],
   infos: [],

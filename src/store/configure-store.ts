@@ -14,7 +14,16 @@ export default function configureStore(initialState: State = DEFAULT_STATE) {
 
   // Subset of state to store in localStorage
   const paths = Object.keys(DEFAULT_STATE).filter(
-    (e) => e !== 'editorRef' && e !== 'compiledEditorRef' && e !== 'signals' && e !== 'view' && e !== 'isAuthenticated'
+    (e) =>
+      e !== 'editorRef' &&
+      e !== 'compiledEditorRef' &&
+      e !== 'signals' &&
+      e !== 'view' &&
+      e !== 'isAuthenticated' &&
+      e !== 'errors' &&
+      e !== 'warns' &&
+      e !== 'infos' &&
+      e !== 'debugs'
   );
   const enhancer = composeEnhancers(middleware, persistState(paths));
 

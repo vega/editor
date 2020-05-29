@@ -46,10 +46,10 @@ export const SET_COMPILED_EDITOR_REFERENCE = 'SET_COMPILED_EDITOR_REFERENCE' as 
 export const SET_EDITOR_FOCUS = 'SET_EDITOR_FOCUS' as const;
 export const SET_BACKGROUND_COLOR = 'SET_BACKGROUND_COLOR' as const;
 
+export const ERROR = 'ERROR' as const;
 export const WARN = 'WARN' as const;
 export const INFO = 'INFO' as const;
 export const DEBUG = 'DEBUG' as const;
-export const RESET_LOGGING = 'RESET_LOGGING' as const;
 
 export type Action =
   | ReceiveCurrentUser
@@ -95,10 +95,10 @@ export type Action =
   | SetCompiledEditorRef
   | SetEditorFocus
   | SetBackgroundColor
+  | AddError
   | AddWarning
   | AddInfo
-  | AddDebug
-  | ResetLogging;
+  | AddDebug;
 
 export function setMode(mode: Mode) {
   return {
@@ -463,6 +463,15 @@ export function setBackgroundColor(color) {
 
 export type SetBackgroundColor = ReturnType<typeof setBackgroundColor>;
 
+export function addError(error) {
+  return {
+    type: ERROR,
+    error,
+  };
+}
+
+export type AddError = ReturnType<typeof addError>;
+
 export function addWarning(warn) {
   return {
     type: WARN,
@@ -489,11 +498,3 @@ export function addDebug(debug) {
 }
 
 export type AddDebug = ReturnType<typeof addDebug>;
-
-export function resetLogging() {
-  return {
-    type: RESET_LOGGING,
-  };
-}
-
-export type ResetLogging = ReturnType<typeof resetLogging>;

@@ -80,7 +80,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
     if (this.props.debugPaneSize === LAYOUT.MinPaneSize) {
       this.props.setDebugPaneSize(LAYOUT.DebugPaneSize);
     }
-    if (this.props.error) {
+    if (this.props.error || this.props.errors.length) {
       this.props.showLogs(true);
     }
   }
