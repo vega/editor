@@ -188,7 +188,7 @@ class Editor extends React.PureComponent<Props, State> {
     }
 
     view.renderer(renderer).initialize(chart);
-    (view as any).logger(dispatchingLogger);
+
     view.runAsync();
 
     if (tooltipEnable) {
