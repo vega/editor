@@ -9857,15 +9857,10 @@ tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
   integrity sha512-i/6DQjL8Xf3be4K/E6Wgpekn5Qasl1usyw++dAA35Ue5orEn65VIxOA+YvNNl9HV3qv70T7CNwjODHZrLwvd1Q==
 
-tslib@^2.0.0:
+tslib@^2.0.0, tslib@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.0.tgz#18d13fc2dce04051e20f074cc8387fd8089ce4f3"
   integrity sha512-lTqkx847PI7xEDYJntxZH89L2/aXInsyF2luSafe/+0fHOMjlBNXdH6th7f70qxLDhul7KZK0zC8V5ZIyHl0/g==
-
-tslib@~1.11.2:
-  version "1.11.2"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.2.tgz#9c79d83272c9a7aaf166f73915c9667ecdde3cc9"
-  integrity sha512-tTSkux6IGPnUGUd1XAZHcpu85MOkIl5zX49pO+jfsie3eP0B6pyhOlLXm3cAC6T7s+euSDDUUV+Acop5WmtkVg==
 
 tsutils@^3.17.1:
   version "3.17.1"
@@ -10186,10 +10181,10 @@ vega-dataflow@^5.5.1, vega-dataflow@^5.6.0, vega-dataflow@~5.6.0:
     vega-loader "^4.3.0"
     vega-util "^1.14.0"
 
-vega-datasets@^1.30.3:
-  version "1.30.3"
-  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.30.3.tgz#cc92307f24744aec4c51df58cee15987ec9ced97"
-  integrity sha512-+OgX2VLV4eqta/+8P8+Cn6W/GsGMQPmkdzsxoEGO1WyODnrJp+lD04R4fugPdSAb78mhbu1e0u50iEhipw0lLQ==
+vega-datasets@^1.30.4:
+  version "1.30.4"
+  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.30.4.tgz#59693c595da2c779d1f9dc63c4dcb51ac12aae4f"
+  integrity sha512-rC1sgThPL8OjkHT4KTB3Oa4vB2gHxnAs4TsUSdLEx/EB4RZUqaudpgQbGuLwBkN1bPaM41vZybOpGniq+aITmA==
 
 vega-embed@^6.8.0:
   version "6.8.0"
@@ -10314,10 +10309,10 @@ vega-lite-dev-config@^0.11.5:
     prettier "^2.0.5"
     ts-jest "^26.0.0"
 
-vega-lite@4.12.2:
-  version "4.12.2"
-  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-4.12.2.tgz#70569c63480281f987654ca94ccd61e8a3a25ccf"
-  integrity sha512-FBMAgCTgCem2lGmnYg+gwqVFrna9wHNsAjvmr8kKAyY558Y0LdUaY7BlRgEFCxougMC+9Q7P/5rI4sUnxR14sg==
+vega-lite@4.13.0:
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-4.13.0.tgz#282146ccf5cc41fccc24f4f6569cd1f4ba97748c"
+  integrity sha512-qywlC6C6ybjjC4G/u/cL9pcYhZ10iXIh2KZKx7EdDBSS5zUI4CAaffV7kpl0VdlQzliYoDsFuKVztyHkaKNwmA==
   dependencies:
     "@types/clone" "~0.1.30"
     "@types/fast-json-stable-stringify" "^2.0.0"
@@ -10326,7 +10321,7 @@ vega-lite@4.12.2:
     fast-deep-equal "~3.1.1"
     fast-json-stable-stringify "~2.1.0"
     json-stringify-pretty-compact "~2.0.0"
-    tslib "~1.11.2"
+    tslib "~2.0.0"
     vega-event-selector "~2.0.3"
     vega-expression "~2.6.5"
     vega-util "~1.14.0"
