@@ -64,15 +64,7 @@ function mapStateToProps(state: State) {
 export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
-      clearConfig: EditorActions.clearConfig,
-      parseSpec: EditorActions.parseSpec,
-      setConfig: EditorActions.setConfig,
-      setConfigEditorString: EditorActions.setConfigEditorString,
       setSidePaneItem: EditorActions.setSidePaneItem,
-      setThemeName: EditorActions.setThemeName,
-      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
-      updateEditorString: EditorActions.updateEditorString,
-      updateVegaSpec: EditorActions.updateVegaSpec,
     },
     dispatch
   );

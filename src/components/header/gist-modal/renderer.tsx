@@ -1,15 +1,14 @@
 import * as React from 'react';
 import {AlertCircle} from 'react-feather';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {mapDispatchToProps, mapStateToProps} from '.';
+import {mapStateToProps} from '.';
 import GistSelectWidget from '../../gist-select-widget';
 import {Mode} from '../../../constants';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & {
-    closePortal: () => void;
-  } & RouteComponentProps;
+type Props = ReturnType<typeof mapStateToProps> & {
+  closePortal: () => void;
+} & RouteComponentProps;
 
 interface State {
   gist: {

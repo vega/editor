@@ -1,6 +1,4 @@
 import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../../actions/editor';
 import {State} from '../../../constants/default-state';
 import Renderer from './renderer';
 
@@ -13,14 +11,4 @@ export function mapStateToProps(state: State) {
   };
 }
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      receiveCurrentUser: EditorActions.receiveCurrentUser,
-      toggleGistPrivacy: EditorActions.toggleGistPrivacy,
-    },
-    dispatch
-  );
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);
+export default connect(mapStateToProps)(Renderer);

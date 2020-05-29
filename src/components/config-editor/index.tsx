@@ -27,20 +27,12 @@ export function mapStateToProps(state: State) {
 export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
-      clearConfig: EditorActions.clearConfig,
       extractConfig: EditorActions.extractConfigSpec,
-      logError: EditorActions.logError,
       mergeConfigSpec: EditorActions.mergeConfigSpec,
-      parseSpec: EditorActions.parseSpec,
       setConfig: EditorActions.setConfig,
       setConfigEditorString: EditorActions.setConfigEditorString,
       setEditorReference: EditorActions.setEditorReference,
-      setSidePaneItem: EditorActions.setSidePaneItem,
       setThemeName: EditorActions.setThemeName,
-      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
-      updateEditorString: EditorActions.updateEditorString,
-      updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
-      updateVegaSpec: EditorActions.updateVegaSpec,
     },
     dispatch
   );
