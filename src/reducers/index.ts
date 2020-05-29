@@ -297,6 +297,7 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
       error: {message: errorMessage},
     };
   }
+
   return {
     ...state,
     config,
@@ -346,11 +347,6 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
     case PARSE_SPEC:
       return {
         ...state,
-        error: null,
-        errors: [],
-        warns: [],
-        infos: [],
-        debugs: [],
         parse: action.parse,
       };
     case SET_VEGA_EXAMPLE: {
