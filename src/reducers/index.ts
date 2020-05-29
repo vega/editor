@@ -312,8 +312,6 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
 }
 
 export default (state: State = DEFAULT_STATE, action: Action): State => {
-  console.info(action);
-
   switch (action.type) {
     case SET_MODE:
       return {

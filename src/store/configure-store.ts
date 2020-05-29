@@ -23,7 +23,8 @@ export default function configureStore(initialState: State = DEFAULT_STATE) {
       e !== 'errors' &&
       e !== 'warns' &&
       e !== 'infos' &&
-      e !== 'debugs'
+      e !== 'debugs' &&
+      e !== 'view'
   );
   const enhancer = composeEnhancers(middleware, persistState(paths));
 
