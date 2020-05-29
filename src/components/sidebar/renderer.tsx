@@ -9,6 +9,7 @@ const SIZE_THRESHOLD = 1000;
 
 const LEVEL_NAMES = {
   0: 'None',
+  1: 'Error',
   2: 'Warn',
   3: 'Info',
   4: 'Debug',
@@ -16,9 +17,10 @@ const LEVEL_NAMES = {
 
 const LOG_OPTIONS = [
   {label: LEVEL_NAMES[0], value: 0},
-  {label: LEVEL_NAMES[4], value: 4},
-  {label: LEVEL_NAMES[3], value: 3},
+  {label: LEVEL_NAMES[1], value: 1},
   {label: LEVEL_NAMES[2], value: 2},
+  {label: LEVEL_NAMES[3], value: 3},
+  {label: LEVEL_NAMES[4], value: 4},
 ];
 
 const HOVER_OPTIONS = [{label: 'Auto'}, {label: 'On'}, {label: 'Off'}];
