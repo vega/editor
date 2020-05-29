@@ -5,6 +5,7 @@ import {withRouter} from 'react-router-dom';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor';
 import {NAVBAR} from '../../../constants/consts';
+import {State} from '../../../constants/default-state';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -75,7 +76,7 @@ class DebugPaneHeader extends React.PureComponent<Props> {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: State, ownProps) {
   return {
     debugPane: state.debugPane,
     error: state.error,

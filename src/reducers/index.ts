@@ -1,16 +1,17 @@
-import {LocalLogger} from './../utils/logger';
 import stringify from 'json-stringify-pretty-compact';
-import * as vega from 'vega';
 import {satisfies} from 'semver';
-import schemaParser from 'vega-schema-url-parser';
+import * as vega from 'vega';
 import * as vegaLite from 'vega-lite';
 import {Config} from 'vega-lite/src/config';
 import {TopLevelSpec} from 'vega-lite/src/spec';
+import schemaParser from 'vega-schema-url-parser';
 import {
   Action,
   CLEAR_CONFIG,
+  DEBUG,
   EXPORT_VEGA,
   EXTRACT_CONFIG_SPEC,
+  INFO,
   LOG_ERROR,
   PARSE_SPEC,
   RECEIVE_CURRENT_USER,
@@ -51,12 +52,9 @@ import {
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
   WARN,
-  INFO,
-  DEBUG,
 } from '../actions/editor';
 import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
 import {State} from '../constants/default-state';
-import {dispatchingLogger} from '../utils/logger';
 import {validateVega, validateVegaLite} from '../utils/validate';
 import {
   MERGE_CONFIG_SPEC,
@@ -67,6 +65,7 @@ import {
   SET_THEME_NAME,
   SET_TOOLTIP,
 } from './../actions/editor';
+import {LocalLogger} from './../utils/logger';
 
 function errorLine(code: string, error: string) {
   const pattern = /(position\s)(\d+)/;
