@@ -8,6 +8,8 @@ export class LocalLogger implements vega.LoggerInterface {
 
   #level = 0;
 
+  level(_: number): this;
+  level(): number;
   public level(_?: number) {
     if (arguments.length) {
       this.#level = +_;
