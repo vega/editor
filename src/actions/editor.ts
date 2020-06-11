@@ -1,6 +1,7 @@
-import {Renderers} from 'vega';
-import {Mode, View} from '../constants';
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import {Renderers, Spec} from 'vega';
+import {TopLevelSpec} from 'vega-lite/src/spec';
+import {Mode, View} from '../constants';
 
 export const RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER' as const;
 export const EXPORT_VEGA = 'EXPORT_VEGA' as const;
@@ -150,7 +151,7 @@ export function setVegaLiteExample(example: string, spec) {
 }
 export type SetVegaLiteExample = ReturnType<typeof setVegaLiteExample>;
 
-export function updateVegaSpec(spec) {
+export function updateVegaSpec(spec: Spec) {
   return {
     spec,
     type: UPDATE_VEGA_SPEC,
@@ -158,7 +159,7 @@ export function updateVegaSpec(spec) {
 }
 export type UpdateVegaSpec = ReturnType<typeof updateVegaSpec>;
 
-export function updateVegaLiteSpec(spec) {
+export function updateVegaLiteSpec(spec: TopLevelSpec) {
   return {
     spec,
     type: UPDATE_VEGA_LITE_SPEC,
@@ -166,7 +167,7 @@ export function updateVegaLiteSpec(spec) {
 }
 export type UpdateVegaLiteSpec = ReturnType<typeof updateVegaLiteSpec>;
 
-export function setGistVegaSpec(gist: string, spec) {
+export function setGistVegaSpec(gist: string, spec: Spec) {
   return {
     gist,
     spec,
@@ -175,7 +176,7 @@ export function setGistVegaSpec(gist: string, spec) {
 }
 export type SetGistVegaSpec = ReturnType<typeof setGistVegaSpec>;
 
-export function setGistVegaLiteSpec(gist: string, spec) {
+export function setGistVegaLiteSpec(gist: string, spec: TopLevelSpec) {
   return {
     gist,
     spec,
@@ -454,7 +455,7 @@ export function toggleGistPrivacy() {
 
 export type ToggleGistPrivacy = ReturnType<typeof toggleGistPrivacy>;
 
-export function setBackgroundColor(color) {
+export function setBackgroundColor(color: string) {
   return {
     type: SET_BACKGROUND_COLOR,
     color,
@@ -463,7 +464,7 @@ export function setBackgroundColor(color) {
 
 export type SetBackgroundColor = ReturnType<typeof setBackgroundColor>;
 
-export function addError(error) {
+export function addError(error: string) {
   return {
     type: ERROR,
     error,
@@ -472,7 +473,7 @@ export function addError(error) {
 
 export type AddError = ReturnType<typeof addError>;
 
-export function addWarning(warn) {
+export function addWarning(warn: string) {
   return {
     type: WARN,
     warn,
@@ -481,7 +482,7 @@ export function addWarning(warn) {
 
 export type AddWarning = ReturnType<typeof addWarning>;
 
-export function addInfo(info) {
+export function addInfo(info: string) {
   return {
     type: INFO,
     info,
@@ -490,7 +491,7 @@ export function addInfo(info) {
 
 export type AddInfo = ReturnType<typeof addInfo>;
 
-export function addDebug(debug) {
+export function addDebug(debug: string) {
   return {
     type: DEBUG,
     debug,

@@ -105,7 +105,7 @@ export class DispatchingLogger implements vega.LoggerInterface {
 
       store.dispatch({
         type: 'ERROR',
-        error: args[0],
+        error: 'message' in args[0] ? args[0].message : args[0],
       });
     }
 
