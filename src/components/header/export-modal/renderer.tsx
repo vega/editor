@@ -46,7 +46,6 @@ class ExportModal extends React.PureComponent<Props, State> {
     this.setState({loadingPDF: true});
 
     const content = this.props.mode === Mode.Vega ? this.props.vegaSpec : this.props.vegaLiteSpec;
-    console.log('Base url', this.props.baseURL);
     const body = {
       spec: content,
       baseURL: this.props.baseURL,
