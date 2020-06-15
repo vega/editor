@@ -8249,10 +8249,10 @@ react-redux@^7.2.0:
     prop-types "^15.7.2"
     react-is "^16.9.0"
 
-react-resize-detector@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-5.0.2.tgz#d27febf9bce0e904c392898ae23b8057b1e079d7"
-  integrity sha512-9JvZjL++I9M7miDBD/JxdvaJodHsKlvH8H+awv6iVOfew43HDxEycmCrWvLTicEaWsxpM2FXalybdtbTVm+c9w==
+react-resize-detector@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-5.0.3.tgz#f3930abb0da5e5f5e00c8d69203617a301eecb22"
+  integrity sha512-eI21j633KraRXgxGSagATaJR1R2oSFAZLkVUuNanVuIhvBwY00lLBRMQVVb/j8Fu44xasNdmnUuo0OG/ebvj9A==
   dependencies:
     lodash "^4.17.15"
     lodash-es "^4.17.15"
