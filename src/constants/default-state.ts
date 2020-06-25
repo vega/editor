@@ -2,7 +2,17 @@ import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {Renderers, Spec} from 'vega';
 import {Config, vega} from 'vega-embed';
 import {TopLevelSpec as VlSpec} from 'vega-lite';
-import {EDITOR_FOCUS, LAYOUT, Mode, NAVBAR, SIDEPANE, VEGA_LITE_START_SPEC, View, GistPrivacy} from './consts';
+import {
+  EDITOR_FOCUS,
+  LAYOUT,
+  Mode,
+  NAVBAR,
+  SIDEPANE,
+  VEGA_LITE_START_SPEC,
+  View,
+  GistPrivacy,
+  COMPILEDPANE,
+} from './consts';
 
 export interface State {
   isAuthenticated: boolean;
@@ -31,6 +41,7 @@ export interface State {
   name: string;
   navItem: string;
   sidePaneItem: string;
+  compiledPaneItem: string;
   parse: boolean;
   private: GistPrivacy;
   profilePicUrl: string;
@@ -40,6 +51,7 @@ export interface State {
   signals: any;
   tooltipEnable: boolean;
   vegaLiteSpec: VlSpec;
+  normalizedVegaLiteSpec: any;
   vegaSpec: Spec;
   view: View;
   errors: string[];
@@ -83,10 +95,12 @@ export const DEFAULT_STATE: State = {
   selectedExample: null,
   settings: false,
   sidePaneItem: SIDEPANE.Editor,
+  compiledPaneItem: COMPILEDPANE.Vega,
   signals: {},
   themeName: 'custom',
   tooltipEnable: true,
   vegaLiteSpec: null,
+  normalizedVegaLiteSpec: null,
   vegaSpec: {},
   view: null,
   errors: [],
