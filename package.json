@@ -17,7 +17,7 @@
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.5",
     "typescript": "~3.9.5",
-    "vega-lite-dev-config": "^0.11.7",
+    "vega-lite-dev-config": "^0.11.8",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.8.0",
     "webpack-cli": "^3.3.12",
