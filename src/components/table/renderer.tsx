@@ -59,9 +59,25 @@ export default class Table extends React.PureComponent<Props> {
   }
 }
 
+function formatNumberValue(value: number) {
+  return isNaN(value)
+    ? 'NaN'
+    : value === Number.POSITIVE_INFINITY
+    ? 'Infinity'
+    : value === Number.NEGATIVE_INFINITY
+    ? '-Infinity'
+    : stringify(value, MAX_DEPTH);
+}
+
 export function formatValueLong(value: any) {
   const formatted =
-    value === undefined ? 'undefined' : isFunction(value) ? value.toString() : stringify(value, MAX_DEPTH);
+    value === undefined
+      ? 'undefined'
+      : typeof value == 'number'
+      ? formatNumberValue(value)
+      : isFunction(value)
+      ? value.toString()
+      : stringify(value, MAX_DEPTH);
   if (formatted.length > MAX_LENGTH) {
     return {formatted: null, tooLong: true};
   }
