@@ -33,6 +33,7 @@ export const SET_SETTINGS = 'SET_SETTINGS' as const;
 export const SET_CONFIG = 'SET_CONFIG' as const;
 export const SET_THEME_NAME = 'SET_THEME_NAME' as const;
 export const SET_SIDEPANE_ITEM = 'SET_SIDEPANE_ITEM' as const;
+export const SET_COMPILEDPANE_ITEM = 'SET_COMPILEDPANE_ITEM' as const;
 export const SET_CONFIG_EDITOR_STRING = 'SET_CONFIG_EDITOR_STRING' as const;
 export const SET_LOG_LEVEL = 'SET_LOG_LEVEL' as const;
 export const SET_HOVER = 'SET_HOVER' as const;
@@ -94,6 +95,7 @@ export type Action =
   | AddSignal
   | SetDecorations
   | SetCompiledEditorRef
+  | SetCompiledPaneItem
   | SetEditorFocus
   | SetBackgroundColor
   | AddError
@@ -350,6 +352,15 @@ export function setCompiledEditorRef(editorRef: Monaco.editor.IStandaloneCodeEdi
 }
 
 export type SetCompiledEditorRef = ReturnType<typeof setCompiledEditorRef>;
+
+export function setCompiledPaneItem(value: string) {
+  return {
+    compiledPaneItem: value,
+    type: SET_COMPILEDPANE_ITEM,
+  };
+}
+
+export type SetCompiledPaneItem = ReturnType<typeof setCompiledPaneItem>;
 
 export function setLogLevel(logLevel: number) {
   return {

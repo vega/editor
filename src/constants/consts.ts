@@ -56,6 +56,11 @@ export const SIDEPANE = {
   Editor: 'Editor',
 } as const;
 
+export const COMPILEDPANE = {
+  Vega: 'Vega',
+  NormalizedVegaLite: 'NormalizedVegaLite',
+} as const;
+
 export const EDITOR_FOCUS = {
   CompiledEditor: 'compiled-editor',
   SpecEditor: 'spec-editor',

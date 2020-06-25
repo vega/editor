@@ -4,7 +4,7 @@ import MonacoEditor from 'react-monaco-editor';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor';
-import {EDITOR_FOCUS, LAYOUT} from '../../../constants';
+import {EDITOR_FOCUS, LAYOUT, COMPILEDPANE} from '../../../constants';
 import {State} from '../../../constants/default-state';
 import CompiledSpecDisplayHeader from '../compiled-spec-header';
 import ReactResizeDetector from 'react-resize-detector';
@@ -62,7 +62,7 @@ function mapStateToProps(state: State) {
     editorRef: state.editorRef,
     mode: state.mode,
     sidePaneItem: state.sidePaneItem,
-    value: state.vegaSpec,
+    value: state.compiledPaneItem == COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
   };
 }
 

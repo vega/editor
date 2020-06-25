@@ -53,6 +53,7 @@ import {
   UPDATE_VEGA_SPEC,
   WARN,
   ERROR,
+  SET_COMPILEDPANE_ITEM,
 } from '../actions/editor';
 import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
 import {State} from '../constants/default-state';
@@ -249,11 +250,14 @@ function parseVegaLite(
 
     validateVegaLite(vegaLiteSpec, currLogger);
 
-    const vegaSpec = spec !== '{}' ? vegaLite.compile(vegaLiteSpec, options).spec : {};
+    const compileResult = spec !== '{}' ? vegaLite.compile(vegaLiteSpec, options) : {spec: {}, normalized: {}};
+    const vegaSpec = compileResult.spec;
+    const normalizedVegaLiteSpec = compileResult.normalized;
 
     extend = {
       ...extend,
       vegaLiteSpec,
+      normalizedVegaLiteSpec,
       vegaSpec,
     };
   } catch (e) {
@@ -461,6 +465,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         sidePaneItem: action.sidePaneItem,
+      };
+    case SET_COMPILEDPANE_ITEM:
+      return {
+        ...state,
+        compiledPaneItem: action.compiledPaneItem,
       };
     case SET_CONFIG_EDITOR_STRING:
       return {
