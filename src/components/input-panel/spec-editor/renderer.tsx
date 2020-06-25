@@ -200,8 +200,7 @@ class Editor extends React.PureComponent<Props> {
     if (this.props.parse) {
       this.editor.focus();
       this.editor.layout();
-      this.updateSpec(this.props.value);
-      prevProps.setConfig(this.props.configEditorString);
+      this.updateSpec(this.props.value, this.props.configEditorString);
       prevProps.parseSpec(false);
     }
   }
@@ -217,7 +216,7 @@ class Editor extends React.PureComponent<Props> {
     document.removeEventListener('keydown', this.handleKeydown);
   }
 
-  public updateSpec(spec: string) {
+  public updateSpec(spec: string, config: string = undefined) {
     let parsedMode = this.props.mode;
 
     try {
@@ -239,10 +238,10 @@ class Editor extends React.PureComponent<Props> {
 
     switch (parsedMode) {
       case Mode.Vega:
-        this.props.updateVegaSpec(spec);
+        this.props.updateVegaSpec(spec, config);
         break;
       case Mode.VegaLite:
-        this.props.updateVegaLiteSpec(spec);
+        this.props.updateVegaLiteSpec(spec, config);
         break;
       default:
         console.exception(`Unknown mode:  ${parsedMode}`);

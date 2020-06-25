@@ -153,17 +153,19 @@ export function setVegaLiteExample(example: string, spec) {
 }
 export type SetVegaLiteExample = ReturnType<typeof setVegaLiteExample>;
 
-export function updateVegaSpec(spec: Spec) {
+export function updateVegaSpec(spec: Spec, config: string = undefined) {
   return {
     spec,
+    config,
     type: UPDATE_VEGA_SPEC,
   };
 }
 export type UpdateVegaSpec = ReturnType<typeof updateVegaSpec>;
 
-export function updateVegaLiteSpec(spec: TopLevelSpec) {
+export function updateVegaLiteSpec(spec: TopLevelSpec, config: string = undefined) {
   return {
     spec,
+    config,
     type: UPDATE_VEGA_LITE_SPEC,
   };
 }
