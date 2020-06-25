@@ -54,6 +54,7 @@ import {
   WARN,
   ERROR,
   SET_COMPILEDPANE_ITEM,
+  setConfig,
 } from '../actions/editor';
 import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
 import {State} from '../constants/default-state';
@@ -359,7 +360,12 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       });
     }
     case UPDATE_VEGA_SPEC: {
-      return parseVega(state, action);
+      if (action.config !== undefined) {
+        const newState = parseConfig(state, setConfig(action.config));
+        return parseVega(newState, action);
+      } else {
+        return parseVega(state, action);
+      }
     }
     case SET_GIST_VEGA_SPEC: {
       return parseVega(state, action, {
@@ -372,7 +378,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       });
     }
     case UPDATE_VEGA_LITE_SPEC: {
-      return parseVegaLite(state, action);
+      if (action.config !== undefined) {
+        return parseVegaLite(state, action, {configEditorString: action.config});
+      } else {
+        return parseVegaLite(state, action);
+      }
     }
     case SET_GIST_VEGA_LITE_SPEC: {
       return parseVegaLite(state, action, {
