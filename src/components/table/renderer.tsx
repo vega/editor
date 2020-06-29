@@ -15,15 +15,28 @@ const MAX_LENGTH = 150;
 
 export default class Table extends React.PureComponent<Props> {
   public render() {
-    const headerNodes = this.props.header.map((h) => (
-      <th onClick={() => this.props.onClickHandler && this.props.onClickHandler(h)} key={h}>
+    let {header} = this.props;
+    const {data, onClickHandler} = this.props;
+
+    const singleColumn = this.props.header.length == 0;
+
+    if (singleColumn) {
+      header = ['datum'];
+    }
+
+    const headerNodes = header.map((h) => (
+      <th onClick={() => onClickHandler && onClickHandler(h)} key={h}>
         {h}
         <Search />
       </th>
     ));
 
-    const tableBody = this.props.data.map((row, i) => {
-      const rowNodes = this.props.header.map((field, j) => {
+    const tableBody = data.map((row, i) => {
+      if (singleColumn) {
+        row = {datum: row};
+      }
+
+      const rowNodes = header.map((field, j) => {
         let tooLong = false;
         let formatted = '';
         if (!isDate(row[field])) {
