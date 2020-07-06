@@ -1771,10 +1771,10 @@
     "@types/history" "*"
     "@types/react" "*"
 
-"@types/react-select@^3.0.13":
-  version "3.0.13"
-  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-3.0.13.tgz#b1a05eae0f65fb4f899b4db1f89b8420cb9f3656"
-  integrity sha512-JxmSArGgzAOtb37+Jz2+3av8rVmp/3s3DGwlcP+g59/a3owkiuuU4/Jajd+qA32beDPHy4gJR2kkxagPY3j9kg==
+"@types/react-select@^3.0.14":
+  version "3.0.14"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-3.0.14.tgz#933d54502070eaafdef588d65b834e22814a926c"
+  integrity sha512-hfsLVHYZ3245+ESfOJDCKGFGGZ+hunTKO1tPe6Dg9bTjjh/NZIo7WaRHIyql5rnQd5hMUScul0V4wqCbI6omng==
   dependencies:
     "@types/react" "*"
     "@types/react-dom" "*"
