@@ -44,7 +44,7 @@
     "react-clipboard.js": "^2.0.16",
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",
-    "react-monaco-editor": "^0.36.0",
+    "react-monaco-editor": "^0.39.0",
     "react-paginate": "^6.3.2",
     "react-portal": "^4.2.1",
     "react-redux": "^7.2.0",
