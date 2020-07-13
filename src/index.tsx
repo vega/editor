@@ -13,8 +13,11 @@ declare global {
   interface Window {
     VEGA_DEBUG: {
       vega?: typeof vega;
+      vegaSpec?: vega.Spec;
       view?: vega.View;
       vegaLite?: typeof vegaLite;
+      normalizedVegaLiteSpec?: any;
+      vegaLiteSpec?: vegaLite.TopLevelSpec;
       VEGA_VERSION?: string;
       VEGA_LITE_VERSION?: string;
     };

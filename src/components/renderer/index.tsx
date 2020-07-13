@@ -15,6 +15,7 @@ export function mapStateToProps(state: State) {
     renderer: state.renderer,
     tooltipEnable: state.tooltipEnable,
     vegaLiteSpec: state.vegaLiteSpec,
+    normalizedVegaLiteSpec: state.normalizedVegaLiteSpec,
     vegaSpec: state.vegaSpec,
     view: state.view,
     backgroundColor: state.backgroundColor,
