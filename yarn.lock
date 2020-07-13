@@ -10236,10 +10236,10 @@ vega-statistics@^1.7.4, vega-statistics@^1.7.5, vega-statistics@~1.7.6:
   dependencies:
     d3-array "^2.4.0"
 
-vega-themes@^2.8.3:
-  version "2.8.3"
-  resolved "https://registry.yarnpkg.com/vega-themes/-/vega-themes-2.8.3.tgz#3f42a9d29b7274bf963d9d4e1c30ac0d5841d4fa"
-  integrity sha512-BzV/gC2ZAhnv20qpQVtyQW6CYXAGQKjArSdxky1UB1RnR5WMRzPsC+g8ak4k0txTwqhkvMAlDXUMaBgDMTOhQg==
+vega-themes@^2.8.3, vega-themes@^2.8.5:
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/vega-themes/-/vega-themes-2.8.5.tgz#f53c96676a1f28872b2c0e924da5f211613ce3a7"
+  integrity sha512-DqNVHZyOtyxsgEy97wfQORw11gDCWR7SIRXyDlqmiwKTLu7Jm+PdOZdw7fNbg0jozywhsPnl0itOj3k9c74CPg==
 
 vega-time@^2.0.0, vega-time@^2.0.1, vega-time@~2.0.1:
   version "2.0.1"
