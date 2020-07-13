@@ -62,7 +62,7 @@
     "vega-embed": "^6.9.0",
     "vega-lite": "4.13.1",
     "vega-schema-url-parser": "^1.1.0",
-    "vega-themes": "^2.8.3",
+    "vega-themes": "^2.8.5",
     "vega-tooltip": "^0.23.0"
   },
   "husky": {
