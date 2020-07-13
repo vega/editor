@@ -10004,17 +10004,17 @@ vega-datasets@^1.31.1:
   resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-1.31.1.tgz#b41d214963f6a00260c2a8f8bc5c21fb7aea979b"
   integrity sha512-KX3/6ffO3I1Kz8Gc+yQMlzi4rYnCx9n3A93MYyAIn9A/eohddKOuvAMEsx3Ah9NLnkrvkPI3Kup9+9NTXTD3NQ==
 
-vega-embed@^6.9.0:
-  version "6.9.0"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.9.0.tgz#41e8d744f92806cc5beaca34f56a22f7a34aef1c"
-  integrity sha512-VLPV4kh1i/5JqVOA+Ws5yjnIdOsXV38To1gUCRbe17C4QBFL5DXqF/TAdgXO+49KpHbCHrwOubuNZg8cTLQiaQ==
+vega-embed@^6.10.0:
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.10.0.tgz#75b2947fb75ccecd0d506296ea2b5c1f9295208c"
+  integrity sha512-tz4iUvJSaLTbMTRnatihWAUBS6ovLG34FfP1AlBvkKRcJObQukHeJiDSrzY3aJpzORqsvNGG6Oq7b1Rd1wbz+g==
   dependencies:
     fast-json-patch "^3.0.0-1"
     json-stringify-pretty-compact "^2.0.0"
     semver "^7.3.2"
     vega-schema-url-parser "^1.1.0"
-    vega-themes "^2.8.3"
-    vega-tooltip "^0.23.0"
+    vega-themes "^2.8.4"
+    vega-tooltip "^0.23.1"
 
 vega-encode@~4.8.0:
   version "4.8.0"
@@ -10236,7 +10236,7 @@ vega-statistics@^1.7.4, vega-statistics@^1.7.5, vega-statistics@~1.7.6:
   dependencies:
     d3-array "^2.4.0"
 
-vega-themes@^2.8.3, vega-themes@^2.8.5:
+vega-themes@^2.8.4, vega-themes@^2.8.5:
   version "2.8.5"
   resolved "https://registry.yarnpkg.com/vega-themes/-/vega-themes-2.8.5.tgz#f53c96676a1f28872b2c0e924da5f211613ce3a7"
   integrity sha512-DqNVHZyOtyxsgEy97wfQORw11gDCWR7SIRXyDlqmiwKTLu7Jm+PdOZdw7fNbg0jozywhsPnl0itOj3k9c74CPg==
@@ -10250,7 +10250,7 @@ vega-time@^2.0.0, vega-time@^2.0.1, vega-time@~2.0.1:
     d3-time "^1.1.0"
     vega-util "^1.14.0"
 
-vega-tooltip@^0.23.0, vega-tooltip@^0.23.2:
+vega-tooltip@^0.23.1, vega-tooltip@^0.23.2:
   version "0.23.2"
   resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.23.2.tgz#f4e22c4ce967ce9f1de6518381a74f6fe5102a86"
   integrity sha512-H7cIA1tZ26H+GJijTi1ZCBg5XWelWUv57ZNJB7No7VL6ZvV8ha7LJrFPvYQadqMP2bSdbbntKMP8oGtsKUFA7A==
