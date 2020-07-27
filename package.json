@@ -47,7 +47,7 @@
     "react-monaco-editor": "^0.39.1",
     "react-paginate": "^6.3.2",
     "react-portal": "^4.2.1",
-    "react-redux": "^7.2.0",
+    "react-redux": "^7.2.1",
     "react-resize-detector": "^5.0.6",
     "react-router-dom": "^5.2.0",
     "react-select": "^3.1.0",
