@@ -7,7 +7,7 @@
   "devDependencies": {
     "@types/react-select": "^3.0.14",
     "autoprefixer": "^9.8.5",
-    "css-loader": "^4.0.0",
+    "css-loader": "^4.1.0",
     "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
@@ -58,9 +58,9 @@
     "redux-thunk": "^2.3.0",
     "tslib": "^2.0.0",
     "vega-cli": "5.13.0",
-    "vega-datasets": "^1.31.1",
+    "vega-datasets": "^2.1.0",
     "vega-embed": "^6.10.0",
-    "vega-lite": "4.13.1",
+    "vega-lite": "4.14.0",
     "vega-schema-url-parser": "^1.1.0",
     "vega-themes": "^2.8.5",
     "vega-tooltip": "^0.23.2"
