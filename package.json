@@ -15,7 +15,7 @@
     "monaco-editor-webpack-plugin": "^1.9.0",
     "postcss-loader": "^3.0.0",
     "style-loader": "^1.2.1",
-    "ts-loader": "^8.0.1",
+    "ts-loader": "^8.0.2",
     "typescript": "~3.9.7",
     "vega-lite-dev-config": "^0.11.8",
     "webpack": "^4.44.1",
