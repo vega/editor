@@ -31,7 +31,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/semver": "^7.3.1",
     "ajv": "^6.12.3",
-    "d3-array": "^2.4.0",
+    "d3-array": "^2.5.0",
     "d3-geo-projection": "^2.9.0",
     "d3-scale": "^3.2.1",
     "file-loader": "^6.0.0",
