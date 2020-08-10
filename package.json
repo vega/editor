@@ -51,7 +51,7 @@
     "react-resize-detector": "^5.0.7",
     "react-router-dom": "^5.2.0",
     "react-select": "^3.1.0",
-    "react-split-pane": "^0.1.91",
+    "react-split-pane": "^0.1.92",
     "react-tooltip": "^4.2.8",
     "redux": "^4.0.5",
     "redux-localstorage": "^0.4.1",
