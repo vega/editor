@@ -153,7 +153,7 @@ export function setVegaLiteExample(example: string, spec) {
 }
 export type SetVegaLiteExample = ReturnType<typeof setVegaLiteExample>;
 
-export function updateVegaSpec(spec: Spec, config: string = undefined) {
+export function updateVegaSpec(spec: string, config: string = undefined) {
   return {
     spec,
     config,
@@ -162,7 +162,7 @@ export function updateVegaSpec(spec: Spec, config: string = undefined) {
 }
 export type UpdateVegaSpec = ReturnType<typeof updateVegaSpec>;
 
-export function updateVegaLiteSpec(spec: TopLevelSpec, config: string = undefined) {
+export function updateVegaLiteSpec(spec: string, config: string = undefined) {
   return {
     spec,
     config,
@@ -171,7 +171,7 @@ export function updateVegaLiteSpec(spec: TopLevelSpec, config: string = undefine
 }
 export type UpdateVegaLiteSpec = ReturnType<typeof updateVegaLiteSpec>;
 
-export function setGistVegaSpec(gist: string, spec: Spec) {
+export function setGistVegaSpec(gist: string, spec: string) {
   return {
     gist,
     spec,
@@ -180,7 +180,7 @@ export function setGistVegaSpec(gist: string, spec: Spec) {
 }
 export type SetGistVegaSpec = ReturnType<typeof setGistVegaSpec>;
 
-export function setGistVegaLiteSpec(gist: string, spec: TopLevelSpec) {
+export function setGistVegaLiteSpec(gist: string, spec: string) {
   return {
     gist,
     spec,

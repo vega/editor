@@ -1,17 +1,17 @@
-import {UnregisterCallback} from 'history';
 import * as React from 'react';
 import {Maximize} from 'react-feather';
 import {Portal} from 'react-portal';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
+import {Config as VgConfig} from 'vega';
 import {deepEqual} from 'vega-lite/build/src/util';
 import vegaTooltip from 'vega-tooltip';
 import {mapDispatchToProps, mapStateToProps} from '.';
 import {KEYCODES, Mode} from '../../constants';
 import addProjections from '../../utils/addProjections';
-import './index.css';
 import {dispatchingLogger} from '../../utils/logger';
+import './index.css';
 
 // Add additional projections
 addProjections(vega.projection);
@@ -24,8 +24,7 @@ type State = Readonly<typeof defaultState>;
 
 class Editor extends React.PureComponent<Props, State> {
   public static pathname: string;
-  public unlisten: UnregisterCallback;
-
+  public unlisten: () => void;
   constructor(props) {
     super(props);
     this.state = defaultState;
@@ -133,7 +132,7 @@ class Editor extends React.PureComponent<Props, State> {
       // In vl mode, we compile Vega-Lite spec along with config to Vega spec
       runtime = vega.parse(vegaSpec);
     } else {
-      runtime = vega.parse(vegaSpec, config);
+      runtime = vega.parse(vegaSpec, config as VgConfig);
     }
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
@@ -217,8 +216,9 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public componentDidMount() {
-    this.unlisten = this.props.history.listen((location) => {
-      if (location && location.pathname.endsWith('view')) {
+    this.unlisten = this.props.history.listen((listener) => {
+      // FIXME: remove the string casting
+      if (String(listener.location).endsWith('view')) {
         this.setState({
           fullscreen: true,
         });

@@ -12,7 +12,9 @@
     "suppressImplicitAnyIndexErrors": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "resolveJsonModule": true,
+    "noEmit": true
   },
-  "files": ["src/index.tsx"]
+  "files": ["src/index.tsx", "src/types.d.ts"]
 }

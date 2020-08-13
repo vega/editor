@@ -6,9 +6,11 @@ import GistSelectWidget from '../../gist-select-widget';
 import {Mode} from '../../../constants';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps> & {
+export type Props = {
   closePortal: () => void;
-} & RouteComponentProps;
+};
+
+type PropsType = ReturnType<typeof mapStateToProps> & Props & RouteComponentProps;
 
 interface State {
   gist: {
@@ -29,9 +31,10 @@ interface State {
   syntaxError: boolean;
 }
 
-class GistModal extends React.PureComponent<Props, State> {
+class GistModal extends React.PureComponent<PropsType, State> {
   private refGistForm: HTMLFormElement;
-  constructor(props) {
+
+  constructor(props: PropsType) {
     super(props);
     this.state = {
       gist: {

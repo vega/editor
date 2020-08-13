@@ -55,7 +55,7 @@ export class DispatchingLogger implements vega.LoggerInterface {
       });
       return this;
     } else {
-      return store.getState().logLevel;
+      return store.getState().logLevel as any;
     }
   };
 

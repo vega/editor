@@ -3,7 +3,7 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import {ExternalLink, GitHub, Grid, HelpCircle, Play, Settings, Share2, Terminal, X} from 'react-feather';
 import {PortalWithState} from 'react-portal';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {RouteComponentProps} from 'react-router-dom';
 import Select from 'react-select';
 import {mapDispatchToProps, mapStateToProps} from '.';
 import {BACKEND_URL, KEYCODES, Mode} from '../../constants';
@@ -15,10 +15,14 @@ import HelpModal from './help-modal/index';
 import './index.css';
 import ShareModal from './share-modal/index';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & {
-    showExample: () => void;
-  } & RouteComponentProps;
+export interface Props {
+  showExample: boolean;
+}
+
+type PropsType = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> &
+  Props &
+  RouteComponentProps;
 
 interface State {
   open: boolean;
@@ -34,7 +38,7 @@ const formatExampleName = (name: string) => {
     .join(' ');
 };
 
-class Header extends React.PureComponent<Props, State> {
+class Header extends React.PureComponent<PropsType, State> {
   private examplePortal = React.createRef<HTMLDivElement>();
   private listenerAttached = false;
 
@@ -167,11 +171,13 @@ class Header extends React.PureComponent<Props, State> {
         ? [{value: Mode.VegaLite, label: NAMES[Mode.VegaLite]}]
         : [{value: Mode.Vega, label: NAMES[Mode.Vega]}];
 
+    const value = [{label: `${NAMES[this.props.mode]}`}];
+
     const modeSwitcher = (
       <Select
         className="mode-switcher-wrapper"
         classNamePrefix="mode-switcher"
-        value={{label: `${NAMES[this.props.mode]}`}}
+        value={value}
         options={modeOptions}
         isClearable={false}
         isSearchable={false}
@@ -451,7 +457,7 @@ class Header extends React.PureComponent<Props, State> {
             closeOnEsc
             defaultOpen={this.props.showExample}
             onOpen={() => {
-              const node = ReactDOM.findDOMNode(this.examplePortal.current);
+              const node = ReactDOM.findDOMNode(this.examplePortal.current) as Element;
               node.scrollTop = this.props.lastPosition;
               node.addEventListener('scroll', () => {
                 this.setState({
@@ -476,7 +482,7 @@ class Header extends React.PureComponent<Props, State> {
                           className={this.state.showVega ? 'selected' : ''}
                           onClick={() => {
                             this.setState({showVega: true});
-                            const node = ReactDOM.findDOMNode(this.examplePortal.current);
+                            const node = ReactDOM.findDOMNode(this.examplePortal.current) as Element;
                             node.scrollTop = 0;
                           }}
                         >
@@ -486,7 +492,7 @@ class Header extends React.PureComponent<Props, State> {
                           className={this.state.showVega ? '' : 'selected'}
                           onClick={() => {
                             this.setState({showVega: false});
-                            const node = ReactDOM.findDOMNode(this.examplePortal.current);
+                            const node = ReactDOM.findDOMNode(this.examplePortal.current) as Element;
                             node.scrollTop = 0;
                           }}
                         >
@@ -542,4 +548,4 @@ class Header extends React.PureComponent<Props, State> {
   }
 }
 
-export default withRouter(Header);
+export default Header;

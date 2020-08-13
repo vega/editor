@@ -16,10 +16,16 @@ import InputPanel from './input-panel';
 import Sidebar from './sidebar';
 import VizPane from './viz-pane';
 
-type Props = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps> & RouteComponentProps;
+type Props = {showExample: boolean};
 
-class App extends React.PureComponent<Props & {match: any; location: any; showExample?: boolean}> {
+type PropsType = ReturnType<typeof mapDispatchToProps> &
+  ReturnType<typeof mapStateToProps> &
+  Props &
+  RouteComponentProps;
+
+class App extends React.PureComponent<PropsType> {
   public w = window.innerWidth;
+
   public componentDidMount() {
     window.addEventListener(
       'message',
@@ -167,7 +173,7 @@ class App extends React.PureComponent<Props & {match: any; location: any; showEx
   }
 }
 
-function mapStateToProps(state: State) {
+function mapStateToProps(state: State, ownProps: Props) {
   return {
     configEditorString: state.configEditorString,
     editorRef: state.editorRef,
@@ -196,4 +202,4 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

@@ -2,9 +2,10 @@ import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor';
 import {State} from '../../constants/default-state';
-import Renderer from './renderer';
+import Renderer, {Props} from './renderer';
+import {withRouter} from 'react-router-dom';
 
-export function mapStateToProps(state: State) {
+export function mapStateToProps(state: State, ownProps: Props) {
   return {
     configEditorString: state.configEditorString,
     editorRef: state.editorRef,
@@ -40,4 +41,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Renderer));

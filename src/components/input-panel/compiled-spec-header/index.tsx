@@ -10,7 +10,7 @@ import {COMPILEDPANE} from '../../../constants';
 
 const toggleStyle = {
   cursor: 'pointer',
-};
+} as const;
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
@@ -33,9 +33,7 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   }
   public render() {
     if (this.props.compiledVegaSpec) {
-      const toggleStyleUp = Object.assign({}, toggleStyle, {
-        position: 'static',
-      });
+      const toggleStyleUp = {...toggleStyle, position: 'static'} as const;
       return (
         <div className="editor-header" style={toggleStyleUp} onClick={this.props.toggleCompiledVegaSpec}>
           <ul className="tabs-nav">
