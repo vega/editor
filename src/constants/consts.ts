@@ -1,18 +1,16 @@
 import * as vega from 'vega';
 
-export namespace Mode {
-  export const Vega = 'vega' as const;
-  export const VegaLite = 'vega-lite' as const;
+// eslint-disable-next-line no-shadow
+export enum Mode {
+  Vega = 'vega',
+  VegaLite = 'vega-lite',
 }
 
-export namespace GistPrivacy {
-  export const PUBLIC = 'PUBLIC' as const;
-  export const ALL = 'ALL' as const;
+// eslint-disable-next-line no-shadow
+export enum GistPrivacy {
+  PUBLIC = 'PUBLIC',
+  ALL = 'ALL',
 }
-
-export type Mode = typeof Mode.Vega | typeof Mode.VegaLite;
-
-export type GistPrivacy = typeof GistPrivacy.ALL | typeof GistPrivacy.PUBLIC;
 
 export const NAME_TO_MODE = {
   vega: Mode.Vega,
