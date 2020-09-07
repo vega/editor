@@ -4,19 +4,12 @@
     "module": "es2015",
     "moduleResolution": "node",
     "noEmit": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "esModuleInterop": true,
     "strict": false,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "jsx": "react",
     "resolveJsonModule": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ],
     "lib": [
       "esnext",
       "dom"
