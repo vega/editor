@@ -58,7 +58,7 @@
     "tslib": "^2.0.1",
     "vega-cli": "5.15.0",
     "vega-datasets": "^2.1.0",
-    "vega-embed": "^6.12.1",
+    "vega-embed": "^6.12.2",
     "vega-lite": "4.15.0",
     "vega-schema-url-parser": "^2.1.0",
     "vega-themes": "^2.9.0",
