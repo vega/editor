@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-declare module 'react-inspector' {
+declare module "react-inspector" {
   // Type definitions for react-inspector 3.0
   // Project: http://formatjs.io/react/, https://github.com/yahoo/react-intl
   // Definitions by: Roger Clotet <https://github.com/rogerclotet>
   // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
   // TypeScript Version: 2.8
 
-  import * as React from 'react';
+  import * as React from "react";
 
   export interface NodeRendererProps {
     depth: number;
@@ -73,10 +73,12 @@ declare module 'react-inspector' {
     showNonenumerable?: boolean;
     sortObjectKeys?: boolean | ((a: any, b: any) => number);
     nodeRenderer?: NodeRenderer;
-    theme?: 'chromeLight' | 'chromeDark' | Theme;
+    theme?: "chromeLight" | "chromeDark" | Theme;
   }
 
-  export class Inspector extends React.Component<InspectorProps & { table?: boolean }> {}
+  export class Inspector extends React.Component<
+    InspectorProps & { table?: boolean }
+  > {}
   export class ObjectInspector extends React.Component<InspectorProps> {}
   export class TableInspector extends React.Component<InspectorProps> {}
 
@@ -89,7 +91,7 @@ declare module 'react-inspector' {
     showNonenumerable?: boolean;
     sortObjectKeys?: boolean | ((a: any, b: any) => number);
     nodeRenderer?: NodeRenderer;
-    theme?: 'chromeLight' | 'chromeDark' | Theme;
+    theme?: "chromeLight" | "chromeDark" | Theme;
   }
 
   export class DomInspector extends React.Component<DomInspectorProps> {}
@@ -98,7 +100,10 @@ declare module 'react-inspector' {
 
   // Missing type declarations for children elements.
 
-  export class ObjectRootLabel extends React.Component<{ name?: string; data: any }> {}
+  export class ObjectRootLabel extends React.Component<{
+    name?: string;
+    data: any;
+  }> {}
 
   export interface ObjectLabelProps {
     name?: string;
@@ -114,5 +119,8 @@ declare module 'react-inspector' {
     styles?: { [key: string]: string };
   }> {}
 
-  export class ObjectValue extends React.Component<{ object: any; styles?: { [key: string]: string } }> {}
+  export class ObjectValue extends React.Component<{
+    object: any;
+    styles?: { [key: string]: string };
+  }> {}
 }

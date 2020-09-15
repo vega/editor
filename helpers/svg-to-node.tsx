@@ -1,4 +1,4 @@
-import React, { SVGProps } from 'react';
+import React, { SVGProps } from "react";
 
 /**
  * Transform HTML elements to corresponding `ReactElement`s
@@ -11,7 +11,11 @@ export function transform(el: Element): React.ReactElement | null {
    * @param target the target React props object
    * @param attrName the attribute name **of native elements in kebab case**
    */
-  function set<T>(name: keyof SVGProps<T>, target: SVGProps<T>, attrName: string = name): void {
+  function set<T>(
+    name: keyof SVGProps<T>,
+    target: SVGProps<T>,
+    attrName: string = name
+  ): void {
     const value = el.getAttribute(attrName);
     if (value !== null) {
       // I got TS2590 here, which is an issue of TypeScript.
@@ -32,74 +36,74 @@ export function transform(el: Element): React.ReactElement | null {
     for (let i = 0; i < length; i++) {
       result.push(transform(children.item(i)!));
     }
-    return result.filter(x => !!x);
+    return result.filter((x) => !!x);
   }
 
   if (el instanceof SVGSVGElement) {
     const attrs: SVGProps<SVGSVGElement> = {};
-    set('id', attrs);
-    set('className', attrs, 'class');
-    set('viewBox', attrs);
-    set('xmlns', attrs);
-    set('xmlnsXlink', attrs, 'xmlns:link');
+    set("id", attrs);
+    set("className", attrs, "class");
+    set("viewBox", attrs);
+    set("xmlns", attrs);
+    set("xmlnsXlink", attrs, "xmlns:link");
     // The reason why I don't use JSX here is that React doesn't support spread children
     // unless you call `createElement` manually. This prevents warning of unique `key` props.
-    return React.createElement('svg', attrs, ...mapTransform(el.children));
+    return React.createElement("svg", attrs, ...mapTransform(el.children));
   }
 
   if (el instanceof SVGGElement) {
     const attrs: SVGProps<SVGGElement> = {};
-    set('id', attrs);
-    set('className', attrs, 'class');
-    set('transform', attrs);
+    set("id", attrs);
+    set("className", attrs, "class");
+    set("transform", attrs);
     // The reason why I don't use JSX here is that React doesn't support spread children
     // unless you call `createElement` manually. This prevents warning of unique `key` props.
-    return React.createElement('g', attrs, ...mapTransform(el.children));
+    return React.createElement("g", attrs, ...mapTransform(el.children));
   }
 
   if (el instanceof SVGPolygonElement) {
     const attrs: SVGProps<SVGPolygonElement> = {};
-    set('id', attrs);
-    set('className', attrs, 'class');
-    set('fill', attrs);
-    set('stroke', attrs);
-    set('points', attrs);
+    set("id", attrs);
+    set("className", attrs, "class");
+    set("fill", attrs);
+    set("stroke", attrs);
+    set("points", attrs);
     return <polygon {...attrs} />;
   }
 
   if (el instanceof SVGPathElement) {
     const attrs: SVGProps<SVGPathElement> = {};
-    set('id', attrs);
-    set('className', attrs, 'class');
-    set('fill', attrs);
-    set('stroke', attrs);
-    set('d', attrs);
+    set("id", attrs);
+    set("className", attrs, "class");
+    set("fill", attrs);
+    set("stroke", attrs);
+    set("d", attrs);
     return <path {...attrs} />;
   }
 
   if (el instanceof SVGEllipseElement) {
     const attrs: SVGProps<SVGEllipseElement> = {};
-    set('id', attrs);
-    set('className', attrs, 'class');
-    set('fill', attrs);
-    set('stroke', attrs);
-    set('cx', attrs);
-    set('cy', attrs);
-    set('rx', attrs);
-    set('ry', attrs);
+    set("id", attrs);
+    set("className", attrs, "class");
+    set("fill", attrs);
+    set("stroke", attrs);
+    set("cx", attrs);
+    set("cy", attrs);
+    set("rx", attrs);
+    set("ry", attrs);
     return <ellipse {...attrs} />;
   }
 
   if (el instanceof SVGTextElement) {
     const attrs: SVGProps<SVGTextElement> = {};
-    set('id', attrs);
-    set('className', attrs, 'class');
-    set('textAnchor', attrs, 'text-anchor');
-    set('x', attrs);
-    set('y', attrs);
-    set('fontFamily', attrs, 'font-family');
-    set('fontSize', attrs, 'font-size');
-    set('fill', attrs);
+    set("id", attrs);
+    set("className", attrs, "class");
+    set("textAnchor", attrs, "text-anchor");
+    set("x", attrs);
+    set("y", attrs);
+    set("fontFamily", attrs, "font-family");
+    set("fontSize", attrs, "font-size");
+    set("fill", attrs);
     return <text {...attrs}>{el.textContent}</text>;
   }
 
@@ -117,11 +121,11 @@ export function transform(el: Element): React.ReactElement | null {
  */
 export function parse(source: string): React.ReactElement | null {
   const parser = new DOMParser();
-  const el = parser.parseFromString(source, 'image/svg+xml');
+  const el = parser.parseFromString(source, "image/svg+xml");
   const root = el.firstElementChild;
   if (root instanceof SVGElement) {
     return transform(root);
   }
   console.log(root);
-  throw new Error('parsing result is not an instance of SVGElement');
+  throw new Error("parsing result is not an instance of SVGElement");
 }

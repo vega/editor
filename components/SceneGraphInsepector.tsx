@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
-import PropTypes from 'prop-types';
-import Inspector, { NodeRenderer, ObjectRootLabel, ObjectName, ObjectValue, ObjectLabelProps } from 'react-inspector';
+import React from "react";
+import PropTypes from "prop-types";
+import Inspector, {
+  NodeRenderer,
+  ObjectRootLabel,
+  ObjectName,
+  ObjectValue,
+  ObjectLabelProps,
+} from "react-inspector";
 
 class Highlighter {
   private previouslyHighlightElement: SVGElement | null = null;
@@ -12,8 +18,8 @@ class Highlighter {
     this.dampen();
     this.originalStrokeColor = el.style.stroke;
     this.originalStrokeWidth = el.style.strokeWidth;
-    el.style.stroke = 'red';
-    el.style.strokeWidth = '3px';
+    el.style.stroke = "red";
+    el.style.strokeWidth = "3px";
     this.previouslyHighlightElement = el;
   }
 
@@ -34,13 +40,15 @@ export interface SceneGraphInsepectorProps {
   expandLevel: number;
 }
 
-export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = props => {
+export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = (
+  props
+) => {
   const onLabelMouseEnter = (data: any): void => {
-    if (data && typeof data === 'object') {
+    if (data && typeof data === "object") {
       if (data._svg instanceof SVGElement) {
         resultViewHighligher.emphasize(data._svg);
       }
-      if (typeof data.source === 'number') {
+      if (typeof data.source === "number") {
         const el = document.getElementById(`node${data.source}`);
         console.log(el);
         if (el instanceof SVGElement) {
@@ -51,20 +59,27 @@ export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = props =
   };
 
   const onLabelMouseLeave = (data: any): void => {
-    if (data && typeof data === 'object') {
+    if (data && typeof data === "object") {
       if (data._svg instanceof SVGElement) {
         resultViewHighligher.dampen();
       }
-      if (typeof data.source === 'number') {
+      if (typeof data.source === "number") {
         dataFlowHighlighter.dampen();
       }
     }
   };
 
-  const ObjectLabel: React.FC<ObjectLabelProps> = ({ name, data, isNonenumerable = false }) => {
+  const ObjectLabel: React.FC<ObjectLabelProps> = ({
+    name,
+    data,
+    isNonenumerable = false,
+  }) => {
     const object = data;
     return (
-      <span onMouseOver={(): void => onLabelMouseEnter(data)} onMouseLeave={(): void => onLabelMouseLeave(data)}>
+      <span
+        onMouseOver={(): void => onLabelMouseEnter(data)}
+        onMouseLeave={(): void => onLabelMouseLeave(data)}
+      >
         <ObjectName name={name} dimmed={isNonenumerable} />
         <span>: </span>
         <ObjectValue object={object} />
@@ -79,7 +94,12 @@ export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = props =
     isNonenumerable: PropTypes.bool,
   };
 
-  const customizedNodeRenderer: NodeRenderer = ({ depth, name, data, isNonenumerable }) =>
+  const customizedNodeRenderer: NodeRenderer = ({
+    depth,
+    name,
+    data,
+    isNonenumerable,
+  }) =>
     depth === 0 ? (
       <ObjectRootLabel name={name} data={data} />
     ) : (
@@ -95,7 +115,13 @@ export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = props =
     expanded: PropTypes.bool.isRequired,
   };
 
-  return <Inspector data={props.sceneGraph} expandLevel={props.expandLevel} nodeRenderer={customizedNodeRenderer} />;
+  return (
+    <Inspector
+      data={props.sceneGraph}
+      expandLevel={props.expandLevel}
+      nodeRenderer={customizedNodeRenderer}
+    />
+  );
 };
 
 SceneGraphInsepector.propTypes = {

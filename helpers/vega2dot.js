@@ -15,49 +15,57 @@ function nodeLabel(node) {
     : node.scale
     ? node.scale
     : node.root
-    ? 'root'
-    : node.type === 'collect' && node.data
+    ? "root"
+    : node.type === "collect" && node.data
     ? node.data
     : node.type;
 }
 
 function nodeFillColor(node, stamp) {
   return stamp && node.value.stamp < stamp
-    ? '#ffffff'
+    ? "#ffffff"
     : node.signal
-    ? '#dddddd'
+    ? "#dddddd"
     : node.scale
-    ? '#ccffcc'
+    ? "#ccffcc"
     : node.data
-    ? '#ffcccc'
-    : node.type === 'axisticks' || node.type === 'legendentries'
-    ? '#ffcccc'
+    ? "#ffcccc"
+    : node.type === "axisticks" || node.type === "legendentries"
+    ? "#ffcccc"
     : node.isMark || node.root
-    ? '#ccccff'
-    : '#ffffff';
+    ? "#ccccff"
+    : "#ffffff";
 }
 
 function nodeColor(node, stamp) {
-  return stamp && node.value.stamp < stamp ? '#dddddd' : '#000000';
+  return stamp && node.value.stamp < stamp ? "#dddddd" : "#000000";
 }
 
 function nodeFontColor(node, stamp) {
-  return stamp && node.value.stamp < stamp ? '#cccccc' : '#000000';
+  return stamp && node.value.stamp < stamp ? "#cccccc" : "#000000";
 }
 
 function edgeColor(edge, nodes, stamp) {
   const n = edge.nodes;
-  return stamp && nodes[n[0]].value.stamp < stamp ? '#dddddd' : edge.param !== 'pulse' ? '#aaaaaa' : '#000000';
+  return stamp && nodes[n[0]].value.stamp < stamp
+    ? "#dddddd"
+    : edge.param !== "pulse"
+    ? "#aaaaaa"
+    : "#000000";
 }
 
 function edgeLabelColor(edge, nodes, stamp) {
   const n = edge.nodes;
-  return stamp && nodes[n[0]].value.stamp < stamp ? '#dddddd' : '#000000';
+  return stamp && nodes[n[0]].value.stamp < stamp ? "#dddddd" : "#000000";
 }
 
 function edgeWeight(edge, nodes) {
   const n = edge.nodes;
-  return edge.param !== 'pulse' ? 1 : nodes[n[0]].isMark && nodes[n[1]].isMark ? 100 : 2;
+  return edge.param !== "pulse"
+    ? 1
+    : nodes[n[0]].isMark && nodes[n[1]].isMark
+    ? 100
+    : 2;
 }
 
 function argop(t, s) {
@@ -65,7 +73,7 @@ function argop(t, s) {
     for (const v of t._argops) {
       if (v.op === s) return v.name;
     }
-  return '';
+  return "";
 }
 
 export function view2dot(view, stamp) {
@@ -91,7 +99,7 @@ export function view2dot(view, stamp) {
   }, {});
 
   // build node objects
-  const nodes = keys.map(key => {
+  const nodes = keys.map((key) => {
     const op = ops[key];
     const node = {
       id: op.id,
@@ -114,18 +122,18 @@ export function view2dot(view, stamp) {
 
   // build edge objects
   const edges = [];
-  keys.forEach(key => {
+  keys.forEach((key) => {
     const op = ops[key];
     if (op._targets)
-      op._targets.forEach(t => {
+      op._targets.forEach((t) => {
         if (!ids[t.id]) return;
         edges.push({
           nodes: [op.id, t.id],
-          param: t.source === op ? 'pulse' : argop(t, op),
+          param: t.source === op ? "pulse" : argop(t, op),
         });
         if (t.source === op && ids[op.id].isMark) {
           const node = ids[t.id];
-          if (node.type === 'collect') {
+          if (node.type === "collect") {
             // annotate post-datajoin collect operators as mark-processing
             node.isMark = true;
           }
@@ -137,7 +145,7 @@ export function view2dot(view, stamp) {
   rankdir = LR;
   node [style=filled];
   ${nodes
-    .map(node => {
+    .map((node) => {
       return (
         node.id +
         ' [label="' +
@@ -154,13 +162,13 @@ export function view2dot(view, stamp) {
         '"]'
       );
     })
-    .join(';\n  ')};
+    .join(";\n  ")};
   ${edges
-    .map(e => {
+    .map((e) => {
       return (
-        e.nodes.join(' -> ') +
+        e.nodes.join(" -> ") +
         ' [label="' +
-        (e.param === 'pulse' ? '' : e.param) +
+        (e.param === "pulse" ? "" : e.param) +
         '"]' +
         ' [color="' +
         edgeColor(e, ids, stamp) +
@@ -173,7 +181,7 @@ export function view2dot(view, stamp) {
         '"]'
       );
     })
-    .join(';\n  ')};
+    .join(";\n  ")};
 }`;
 }
 
@@ -202,7 +210,7 @@ export function scene2dot(view) {
     lut.set(node, n);
 
     if (parent) {
-      edges.push(lut.get(parent).id + ' -- ' + n.id);
+      edges.push(lut.get(parent).id + " -- " + n.id);
     }
   }
 
@@ -212,16 +220,16 @@ export function scene2dot(view) {
   rankdir = TB;
   ${nodes
     .map(
-      n =>
+      (n) =>
         n.id +
         ' [label="' +
-        (n.type ? n.type + ':' + n.role : n.index) +
+        (n.type ? n.type + ":" + n.role : n.index) +
         '"]' +
         ' [shape="' +
-        (n.type ? 'rect' : 'circle') +
-        '"]',
+        (n.type ? "rect" : "circle") +
+        '"]'
     )
-    .join(';\n  ')};
-  ${edges.join(';\n  ')};
+    .join(";\n  ")};
+  ${edges.join(";\n  ")};
 }`;
 }

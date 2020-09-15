@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { View } from 'vega-typings';
-import GraphvizDisplay from './components/GraphvizDisplay';
-import { exportScene } from './helpers/scenegraph';
-import { view2dot } from './helpers/vega2dot';
-import { VegaWrapper } from './components/VegaWrapper';
-import { SceneGraphInsepector } from './components/SceneGraphInsepector';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { View } from "vega-typings";
+import GraphvizDisplay from "./components/GraphvizDisplay";
+import { exportScene } from "./helpers/scenegraph";
+import { view2dot } from "./helpers/vega2dot";
+import { VegaWrapper } from "./components/VegaWrapper";
+import { SceneGraphInsepector } from "./components/SceneGraphInsepector";
+import styled from "styled-components";
 
 const appNavHeight = 50;
 
@@ -50,7 +50,7 @@ const Panel = styled.div`
 
 const PanelContent = styled.main<{ padded?: boolean }>`
   box-sizing: border-box;
-  padding: ${({ padded = false }): string => (padded ? '0.5rem' : '0')};
+  padding: ${({ padded = false }): string => (padded ? "0.5rem" : "0")};
   height: calc(100% - 24px);
   overflow-y: scroll;
 `;
@@ -115,7 +115,7 @@ const App: React.FC = () => {
   const updateDisplay = (): void => {
     if (view !== null) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const internalSceneGraph = (view as any)['_scenegraph'];
+      const internalSceneGraph = (view as any)["_scenegraph"];
       setDataFlow(view2dot(view));
       setSceneGraph(exportScene(internalSceneGraph.root));
     }
@@ -125,7 +125,7 @@ const App: React.FC = () => {
     <AppContainer>
       <AppHeader>
         <span>Lactobacillus</span>
-        <Button style={{ width: '100px' }} onClick={updateDisplay}>
+        <Button style={{ width: "100px" }} onClick={updateDisplay}>
           Visualize
         </Button>
       </AppHeader>
@@ -135,7 +135,9 @@ const App: React.FC = () => {
             <PanelTitle>Scene Graph Inspector</PanelTitle>
             <PanelContent padded>
               {sceneGraph === null ? (
-                <EmptyStatus>Click Visualize to intercept scene graph here</EmptyStatus>
+                <EmptyStatus>
+                  Click Visualize to intercept scene graph here
+                </EmptyStatus>
               ) : (
                 <SceneGraphInsepector sceneGraph={sceneGraph} expandLevel={2} />
               )}
@@ -145,7 +147,9 @@ const App: React.FC = () => {
             <PanelTitle>Data Flow Viewer</PanelTitle>
             <PanelContent padded>
               {dataFlow === null ? (
-                <EmptyStatus>Click Visualize to intercept data flow graph here</EmptyStatus>
+                <EmptyStatus>
+                  Click Visualize to intercept data flow graph here
+                </EmptyStatus>
               ) : (
                 <GraphvizDisplay source={dataFlow} />
               )}
@@ -157,7 +161,7 @@ const App: React.FC = () => {
           <PanelContent>
             <VegaWrapper
               onNewView={(view): void => {
-                console.log('A new view was created');
+                console.log("A new view was created");
                 setView(view);
               }}
             />

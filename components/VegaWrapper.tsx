@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Vega } from 'react-vega';
-import { chartData, chartSpec } from '../chart';
-import { View } from 'vega-typings';
-import './VegaWrapper.css';
+import React from "react";
+import PropTypes from "prop-types";
+import { Vega } from "react-vega";
+import { chartData, chartSpec } from "../chart";
+import { View } from "vega-typings";
+import "./VegaWrapper.css";
 
 interface VegaWrapperProps {
   onNewView?: (view: View) => void;
