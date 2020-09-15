@@ -19,8 +19,8 @@ class Highlighter {
 
   dampen(): void {
     if (this.previouslyHighlightElement !== null) {
-      this.previouslyHighlightElement.style.stroke = this.originalStrokeColor;
-      this.previouslyHighlightElement.style.strokeWidth = this.originalStrokeWidth;
+      this.previouslyHighlightElement.style.stroke = this.originalStrokeColor!;
+      this.previouslyHighlightElement.style.strokeWidth = this.originalStrokeWidth!;
       this.previouslyHighlightElement = null;
     }
   }

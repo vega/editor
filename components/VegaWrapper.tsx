@@ -26,15 +26,12 @@ export class VegaWrapper extends React.Component<VegaWrapperProps> {
         <Vega
           spec={chartSpec}
           data={chartData}
-          width={chartSpec.width}
-          height={chartSpec.height}
           renderer="svg"
           actions={false}
-          onNewView={(view): {} => {
+          onNewView={(view) => {
             if (this.props.onNewView !== undefined) {
               this.props.onNewView(view);
             }
-            return {};
           }}
         />
       </div>
