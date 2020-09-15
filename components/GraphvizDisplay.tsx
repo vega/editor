@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Viz from 'viz.js';
 import { Module, render } from 'viz.js/full.render';
-import { parse } from '../svg-to-node';
+import { parse } from '../helpers/svg-to-node';
 
 const viz = new Viz({ Module, render });
 

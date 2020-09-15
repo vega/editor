@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View } from 'vega-typings';
 import GraphvizDisplay from './components/GraphvizDisplay';
-import { exportScene } from './scenegraph';
-import { view2dot } from './vega2dot';
+import { exportScene } from './helpers/scenegraph';
+import { view2dot } from './helpers/vega2dot';
 import { VegaWrapper } from './components/VegaWrapper';
 import { SceneGraphInsepector } from './components/SceneGraphInsepector';
 import styled from 'styled-components';

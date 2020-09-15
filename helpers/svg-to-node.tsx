@@ -28,8 +28,9 @@ export function transform(el: Element): React.ReactElement | null {
    */
   function mapTransform(children: HTMLCollection): React.ReactNode[] {
     const result: React.ReactNode[] = [];
-    for (const el of children) {
-      result.push(transform(el));
+    const { length } = children;
+    for (let i = 0; i < length; i++) {
+      result.push(transform(children.item(i)!));
     }
     return result.filter(x => !!x);
   }
