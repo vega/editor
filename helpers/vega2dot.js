@@ -75,10 +75,8 @@ function argop(t, s) {
     }
   return "";
 }
-
-export function view2dot(view, stamp) {
-  const rt = view._runtime,
-    ops = rt.nodes,
+function subView2dot(rt) {
+  const ops = rt.nodes,
     keys = Object.keys(ops);
 
   const signals = Object.keys(rt.signals).reduce((lut, name) => {
@@ -119,6 +117,67 @@ export function view2dot(view, stamp) {
     lut[node.id] = node;
     return lut;
   }, {});
+
+  return [rt, ops, keys, signals, scales, data, nodes, ids];
+}
+
+export function view2dot(view, stamp) {
+  console.log(view);
+  const rt = view._runtime;
+  let ops = rt.nodes,
+    keys = Object.keys(ops);
+
+  let signals = Object.keys(rt.signals).reduce((lut, name) => {
+    lut[rt.signals[name].id] = name;
+    return lut;
+  }, {});
+
+  let scales = Object.keys(rt.scales).reduce((lut, name) => {
+    lut[rt.scales[name].id] = name;
+    return lut;
+  }, {});
+
+  let data = Object.keys(rt.data).reduce((lut, name) => {
+    const sets = rt.data[name];
+    if (sets.input) lut[sets.input.id] = name;
+    if (sets.output) lut[sets.output.id] = name;
+    return lut;
+  }, {});
+
+  // build node objects
+  let nodes = keys.map((key) => {
+    const op = ops[key];
+    const node = {
+      id: op.id,
+      type: op.constructor.name.toLowerCase(),
+      stamp: op.stamp,
+      value: op,
+    };
+    if (markTypes[node.type]) node.isMark = true;
+    if (signals[op.id]) node.signal = signals[op.id];
+    if (scales[op.id]) node.scale = scales[op.id];
+    if (data[op.id]) node.data = data[op.id];
+    if (rt.root === op) node.root = true;
+    return node;
+  });
+
+  let ids = nodes.reduce((lut, node) => {
+    lut[node.id] = node;
+    return lut;
+  }, {});
+
+  if (rt.subcontext) {
+    rt.subcontext.forEach((subview) => {
+      const result = subView2dot(subview, keys.length);
+      ops = { ...ops, ...result[1] };
+      keys = keys.concat(result[2]);
+      signals = { ...signals, ...result[3] };
+      scales = { ...scales, ...result[4] };
+      data = { ...data, ...result[5] };
+      nodes = nodes.concat(result[6]);
+      ids = { ...ids, ...result[7] };
+    });
+  }
 
   // build edge objects
   const edges = [];
