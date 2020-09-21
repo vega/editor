@@ -7793,10 +7793,10 @@ posix-character-classes@^0.1.0:
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
   integrity sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=
 
-postcss-loader@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-4.0.1.tgz#d1a2cf443005bcd65e856d3881204886646398d4"
-  integrity sha512-m+2fe21cs/1Oz4Yds90al5uqVSc0yJRhYSfCRnsnVLt3z0QoNPpqLdgW7CGVWmlUlKEGL9vmq+P4hHS6Orb5DA==
+postcss-loader@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-4.0.2.tgz#b9e55a6126ee67bb7b94bbfcbf1aa24c69f11229"
+  integrity sha512-u7Qoa6GSPIeg9/hHbNnXspzuD5jjCIWKgk1fJ/gGJPS0uaj6Whk2zjXhDAiHZyYSrDmIzUQk7GgwRF22eRIQGQ==
   dependencies:
     cosmiconfig "^7.0.0"
     klona "^2.0.3"
