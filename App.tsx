@@ -10,6 +10,7 @@ import EditorPanel from "./components/EditorPanel";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import defaultSpec from "./examples/bar-chart.json";
 import FloatingButton from "./components/FloatingButton";
+import brandImage from "./images/favicon.png";
 
 const AppHeader = styled.nav.attrs({ className: "bg-gray-900" })`
   grid-column: 1 / span 2;
@@ -84,6 +85,7 @@ const App: React.FC = () => {
   return (
     <AppLayout>
       <AppHeader>
+        <img className="mr-2 h-6 w-6" src={brandImage} alt="Vega Inspector" />
         <span className="text-xl font-bold">Vega Inspector</span>
       </AppHeader>
       <Panel>
