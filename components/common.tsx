@@ -12,12 +12,11 @@ export const PanelContent = styled.main<{ padded?: boolean }>`
   height: calc(100% - ${TITLE_HEIGHT});
 `;
 
-export const PanelTitle = styled.header.attrs({
-  className: "px-2 font-bold text-sm bg-gray-300 text-gray-700",
+export const PanelHeader = styled.header.attrs({
+  className: "px-2 font-bold bg-gray-300 text-gray-700",
 })`
   width: 100%;
   height: ${TITLE_HEIGHT};
-  text-transform: uppercase;
   display: flex;
   align-items: center;
 `;
@@ -28,4 +27,18 @@ export const EmptyStatus = styled.div.attrs({
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export type PanelHeaderButtonProps = { toggled?: boolean };
+
+export const PanelHeaderButton = styled.button.attrs<PanelHeaderButtonProps>(
+  ({ toggled }) => ({
+    className:
+      "ml-auto px-1 border border-gray-800 rounded text-xs uppercase" +
+      (toggled
+        ? " bg-gray-700 text-white hover:bg-gray-600 hover:border-gray-700"
+        : " hover:bg-gray-100"),
+  })
+)<PanelHeaderButtonProps>`
+  transition: background 0.2s ease-in-out;
 `;
