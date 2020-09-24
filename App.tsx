@@ -124,7 +124,7 @@ const App: React.FC = () => {
   return (
     <AppContainer>
       <AppHeader>
-        <span>Lactobacillus</span>
+        <span className="text-xl font-bold">Vega Inspector</span>
         <Button style={{ width: "100px" }} onClick={updateDisplay}>
           Visualize
         </Button>
