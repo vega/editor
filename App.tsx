@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View } from "vega-typings";
-import GraphvizDisplay from "./components/GraphvizDisplay";
 import { exportScene } from "./helpers/scenegraph";
 import { view2dot } from "./helpers/vega2dot";
 import { VegaWrapper } from "./components/VegaWrapper";
@@ -12,6 +11,13 @@ import defaultSpec from "./examples/bar-chart.json";
 import FloatingButton from "./components/FloatingButton";
 import brandImage from "./images/favicon.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  Panel,
+  PanelTitle,
+  PanelContent,
+  EmptyStatus,
+} from "./components/common";
+import DataFlowGraphPanel from "./components/DataFlowGraphPanel";
 
 const AppHeader = styled.nav.attrs({ className: "bg-gray-900" })`
   grid-column: 1 / span 2;
@@ -24,35 +30,6 @@ const AppHeader = styled.nav.attrs({ className: "bg-gray-900" })`
 const AppFooter = styled.footer.attrs({ className: "bg-gray-900" })`
   grid-column: 1 / span 2;
   width: 100%;
-`;
-
-const Panel = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const PanelContent = styled.main<{ padded?: boolean }>`
-  padding: ${({ padded = false }): string => (padded ? "0.5rem" : "0")};
-  height: calc(100% - 24px);
-`;
-
-const PanelTitle = styled.header.attrs({
-  className: "font-bold text-sm bg-gray-300 text-gray-700",
-})`
-  width: 100%;
-  height: 24px;
-  text-transform: uppercase;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const EmptyStatus = styled.div.attrs({
-  className: "w-full h-full text-gray-500",
-})`
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const AppLayout = styled.div`
@@ -130,18 +107,7 @@ const App: React.FC = () => {
           )}
         </PanelContent>
       </Panel>
-      <Panel className="border-l border-gray-400">
-        <PanelTitle>Data Flow Graph</PanelTitle>
-        <PanelContent className="overflow-scroll" padded>
-          {dataFlow === null ? (
-            <EmptyStatus>
-              Click “Analyze” to extract data flow graph and display here
-            </EmptyStatus>
-          ) : (
-            <GraphvizDisplay source={dataFlow} />
-          )}
-        </PanelContent>
-      </Panel>
+      <DataFlowGraphPanel source={dataFlow} />
       <AppFooter />
     </AppLayout>
   );
