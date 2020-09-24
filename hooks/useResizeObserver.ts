@@ -1,8 +1,8 @@
-import { useRef } from "react";
+import useLazyRef from "./useLazyRef";
 
 export function useResizeObserver(
   callback: ResizeObserverCallback
 ): ResizeObserver {
-  const observerRef = useRef(new ResizeObserver(callback));
+  const observerRef = useLazyRef(() => new ResizeObserver(callback));
   return observerRef.current;
 }

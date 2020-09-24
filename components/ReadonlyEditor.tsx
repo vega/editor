@@ -4,6 +4,7 @@ import { useMonacoEditor } from "../hooks/useMonacoEditor";
 export type ReadonlyEditorProps = { source: string };
 
 const ReadonlyEditor: React.FC<ReadonlyEditorProps> = ({ source }) => {
+  console.log("ReadonlyEditor is rendering...");
   const containerRef = useRef<HTMLDivElement>(null);
   useMonacoEditor(containerRef, {
     value: source ?? "",

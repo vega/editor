@@ -30,6 +30,6 @@ export function useMonacoEditor(
       }
       editorRef.current = monaco.editor.create(containerRef.current, options);
     }
-  });
+  }, [containerRef.current]);
   return editorRef.current;
 }
