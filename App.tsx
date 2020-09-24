@@ -6,111 +6,71 @@ import { view2dot } from "./helpers/vega2dot";
 import { VegaWrapper } from "./components/VegaWrapper";
 import { SceneGraphInsepector } from "./components/SceneGraphInsepector";
 import styled from "styled-components";
+import EditorPanel from "./components/EditorPanel";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import defaultSpec from "./examples/bar-chart.json";
+import FloatingButton from "./components/FloatingButton";
 
-const appNavHeight = 50;
-
-const AppContainer = styled.div`
-  height: 100vh;
-  width: 100vw;
+const AppHeader = styled.nav.attrs({ className: "bg-gray-900" })`
+  grid-column: 1 / span 2;
   display: flex;
-  flex-direction: column;
-`;
-
-const AppHeader = styled.nav`
-  height: ${appNavHeight}px;
-  background: #2b2b2b;
-  width: 100%;
-  display: grid;
-  grid-auto-flow: column;
   align-items: center;
-  justify-content: space-between;
   padding: 0 1rem;
   color: white;
-  box-sizing: border-box;
 `;
 
-const AppContent = styled.main`
+const AppFooter = styled.footer.attrs({ className: "bg-gray-900" })`
+  grid-column: 1 / span 2;
   width: 100%;
-  height: calc(100vh - ${appNavHeight}px - 24px);
-  display: flex;
-  flex-direction: row;
-`;
-
-const AppFooter = styled.footer`
-  width: 100%;
-  background: #2b2b2b;
-  height: 24px;
 `;
 
 const Panel = styled.div`
-  height: 50%;
   display: flex;
   flex-direction: column;
 `;
 
 const PanelContent = styled.main<{ padded?: boolean }>`
-  box-sizing: border-box;
   padding: ${({ padded = false }): string => (padded ? "0.5rem" : "0")};
   height: calc(100% - 24px);
-  overflow-y: scroll;
 `;
 
-const PanelTitle = styled.header`
+const PanelTitle = styled.header.attrs({
+  className: "font-bold text-sm bg-gray-300 text-gray-700",
+})`
   width: 100%;
   height: 24px;
-  font-size: 14px;
-  background: rgba(0, 0, 0, 0.1);
   text-transform: uppercase;
-  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const Vertical = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const AppContentLeft = styled(Vertical)`
-  width: 50%;
-`;
-
-const AppContentRight = styled(AppContentLeft)`
-  border-left: 2px solid rgba(0, 0, 0, 0.1);
-`;
-
-const EmptyStatus = styled.div`
+const EmptyStatus = styled.div.attrs({
+  className: "w-full h-full text-gray-500",
+})`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  color: #bdbdbd;
 `;
 
-const Button = styled.button`
-  display: inline-block;
-  border: none;
-  padding: 0.5rem 0.5rem;
-  margin: 0;
-  text-decoration: none;
-  background: #2f80ed;
-  color: #ffffff;
-  font-family: sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-  text-align: center;
-  transition: background 250ms ease-in-out, transform 150ms ease;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+const AppLayout = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: 3rem minmax(0, 1fr) minmax(0, 1fr) 1.5rem;
 `;
 
 const App: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [view, setView] = useState<View | null>(null);
   const [sceneGraph, setSceneGraph] = useState<object | null>(null);
   const [dataFlow, setDataFlow] = useState<string | null>(null);
+  const [spec, setSpec] = useState(JSON.stringify(defaultSpec, undefined, 2));
+  // Reference: https://sung.codes/blog/2018/09/29/resetting-error-boundary-error-state/
+  const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
 
   const updateDisplay = (): void => {
     if (view !== null) {
@@ -122,54 +82,62 @@ const App: React.FC = () => {
   };
 
   return (
-    <AppContainer>
+    <AppLayout>
       <AppHeader>
         <span className="text-xl font-bold">Vega Inspector</span>
-        <Button style={{ width: "100px" }} onClick={updateDisplay}>
-          Visualize
-        </Button>
       </AppHeader>
-      <AppContent>
-        <AppContentLeft>
-          <Panel>
-            <PanelTitle>Scene Graph Inspector</PanelTitle>
-            <PanelContent padded>
-              {sceneGraph === null ? (
-                <EmptyStatus>
-                  Click Visualize to intercept scene graph here
-                </EmptyStatus>
-              ) : (
-                <SceneGraphInsepector sceneGraph={sceneGraph} expandLevel={2} />
-              )}
-            </PanelContent>
-          </Panel>
-          <Panel>
-            <PanelTitle>Data Flow Viewer</PanelTitle>
-            <PanelContent padded>
-              {dataFlow === null ? (
-                <EmptyStatus>
-                  Click Visualize to intercept data flow graph here
-                </EmptyStatus>
-              ) : (
-                <GraphvizDisplay source={dataFlow} />
-              )}
-            </PanelContent>
-          </Panel>
-        </AppContentLeft>
-        <AppContentRight>
-          <PanelTitle>Renderer Output</PanelTitle>
-          <PanelContent>
+      <Panel>
+        <PanelTitle>Source Code</PanelTitle>
+        <PanelContent className="relative">
+          <EditorPanel
+            onVisualize={(source) => {
+              setSpec(source);
+              setErrorBoundaryKey(errorBoundaryKey + 1);
+            }}
+          />
+        </PanelContent>
+      </Panel>
+      <Panel className="relative border-l border-gray-400">
+        <PanelTitle>Visualization</PanelTitle>
+        <PanelContent className="flex justify-center items-center bg-gray-200 overflow-auto">
+          <ErrorBoundary key={errorBoundaryKey}>
             <VegaWrapper
+              spec={spec}
               onNewView={(view): void => {
                 console.log("A new view was created");
                 setView(view);
               }}
             />
-          </PanelContent>
-        </AppContentRight>
-      </AppContent>
+          </ErrorBoundary>
+        </PanelContent>
+        <FloatingButton onClick={updateDisplay}>Analyze</FloatingButton>
+      </Panel>
+      <Panel>
+        <PanelTitle>Scene Graph</PanelTitle>
+        <PanelContent padded>
+          {sceneGraph === null ? (
+            <EmptyStatus>
+              Click “Analyze” to extract scene graph and display here
+            </EmptyStatus>
+          ) : (
+            <SceneGraphInsepector sceneGraph={sceneGraph} expandLevel={2} />
+          )}
+        </PanelContent>
+      </Panel>
+      <Panel className="border-l border-gray-400">
+        <PanelTitle>Data Flow Graph</PanelTitle>
+        <PanelContent className="overflow-scroll" padded>
+          {dataFlow === null ? (
+            <EmptyStatus>
+              Click “Analyze” to extract data flow graph and display here
+            </EmptyStatus>
+          ) : (
+            <GraphvizDisplay source={dataFlow} />
+          )}
+        </PanelContent>
+      </Panel>
       <AppFooter />
-    </AppContainer>
+    </AppLayout>
   );
 };
 

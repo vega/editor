@@ -1,13 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Vega } from "react-vega";
-import { chartData, chartSpec } from "../chart";
+import { Vega, VisualizationSpec } from "react-vega";
 import { View } from "vega-typings";
 import "./VegaWrapper.css";
+import styled from "styled-components";
 
 interface VegaWrapperProps {
   onNewView?: (view: View) => void;
+  spec: string;
 }
+
+const VegaContainer = styled.main.attrs({ className: "" })`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 /**
  * Since react-vega do re-render every time parent component updates.
@@ -17,15 +24,18 @@ export class VegaWrapper extends React.Component<VegaWrapperProps> {
   public static propTypes = {
     onNewView: PropTypes.func.isRequired,
   };
-  public shouldComponentUpdate(): boolean {
-    return false;
+
+  public shouldComponentUpdate(nextProps: VegaWrapperProps): boolean {
+    return nextProps.spec === this.props.spec;
   }
+
   public render(): JSX.Element {
+    const parsedSpec = JSON.parse(this.props.spec) as VisualizationSpec;
     return (
-      <div className="vega-wrapper">
+      <VegaContainer>
         <Vega
-          spec={chartSpec}
-          data={chartData}
+          className="m-8 bg-white rounded shadow"
+          spec={parsedSpec}
           renderer="svg"
           actions={false}
           onNewView={(view) => {
@@ -34,7 +44,7 @@ export class VegaWrapper extends React.Component<VegaWrapperProps> {
             }
           }}
         />
-      </div>
+      </VegaContainer>
     );
   }
 }
