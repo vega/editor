@@ -7,9 +7,16 @@ export const Panel = styled.div`
   flex-direction: column;
 `;
 
-export const PanelContent = styled.main<{ padded?: boolean }>`
+export type PanelContentProps = { fullscreen?: boolean; padded?: boolean };
+
+export const PanelContent = styled.main.attrs<PanelContentProps>(
+  ({ fullscreen }) => ({
+    className: fullscreen ? "fixed top-0 right-0 bottom-0 left-0" : "",
+  })
+)<PanelContentProps>`
   padding: ${({ padded = false }): string => (padded ? "0.5rem" : "0")};
-  height: calc(100% - ${TITLE_HEIGHT});
+  height: ${({ fullscreen }) =>
+    fullscreen ? "100%" : `calc(100% - ${TITLE_HEIGHT})`};
 `;
 
 export const PanelHeader = styled.header.attrs({
@@ -32,12 +39,15 @@ export const EmptyStatus = styled.div.attrs({
 export type PanelHeaderButtonProps = { toggled?: boolean };
 
 export const PanelHeaderButton = styled.button.attrs<PanelHeaderButtonProps>(
-  ({ toggled }) => ({
+  ({ toggled, disabled }) => ({
     className:
-      "ml-auto px-1 border border-gray-800 rounded text-xs uppercase" +
-      (toggled
-        ? " bg-gray-700 text-white hover:bg-gray-600 hover:border-gray-700"
-        : " hover:bg-gray-100"),
+      "px-1 border rounded text-xs uppercase" +
+      (disabled
+        ? " border-gray-500 text-gray-600 cursor-default"
+        : " border-gray-800" +
+          (toggled
+            ? " bg-gray-700 text-white hover:bg-gray-600 hover:border-gray-700"
+            : " hover:bg-gray-100")),
   })
 )<PanelHeaderButtonProps>`
   transition: background 0.2s ease-in-out;

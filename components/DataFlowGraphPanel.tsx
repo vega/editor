@@ -8,6 +8,7 @@ import {
   EmptyStatus,
   PanelHeaderButton,
 } from "./common";
+import FloatingButton from "./FloatingButton";
 import GraphvizDisplay from "./GraphvizDisplay";
 import ReadonlyEditor from "./ReadonlyEditor";
 
@@ -20,6 +21,7 @@ const DataFlowGraphPanel: React.FC<DataFlowGraphPanelProps> = ({ source }) => {
   const [width, setWidth] = useState(500);
   const [height, setHeight] = useState(500);
   const [showSource, setShowSource] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const observer = useResizeObserver((entries) => {
     if (entries.length > 0) {
       const rect = entries[0].contentRect;
@@ -42,6 +44,14 @@ const DataFlowGraphPanel: React.FC<DataFlowGraphPanelProps> = ({ source }) => {
       <PanelHeader>
         <div className="text-sm uppercase">Data Flow Graph</div>
         <PanelHeaderButton
+          className="ml-auto mr-1"
+          disabled={source === null}
+          onClick={() => setIsFullScreen(!isFullScreen)}
+        >
+          <FontAwesomeIcon className="mr-1" icon="expand" fixedWidth />
+          Fullscreen
+        </PanelHeaderButton>
+        <PanelHeaderButton
           toggled={showSource}
           onClick={() => setShowSource(!showSource)}
         >
@@ -49,7 +59,7 @@ const DataFlowGraphPanel: React.FC<DataFlowGraphPanelProps> = ({ source }) => {
           Show dot Source: {showSource ? "On" : "Off"}
         </PanelHeaderButton>
       </PanelHeader>
-      <PanelContent ref={contentRef}>
+      <PanelContent fullscreen={isFullScreen} ref={contentRef}>
         {source === null ? (
           <EmptyStatus>
             Click “Analyze” to extract data flow graph and display here
@@ -60,6 +70,14 @@ const DataFlowGraphPanel: React.FC<DataFlowGraphPanelProps> = ({ source }) => {
           <GraphvizDisplay width={width} height={height} source={source} />
         )}
       </PanelContent>
+      {isFullScreen ? (
+        <FloatingButton
+          className="text-lg"
+          onClick={() => setIsFullScreen(false)}
+        >
+          Exit
+        </FloatingButton>
+      ) : null}
     </Panel>
   );
 };

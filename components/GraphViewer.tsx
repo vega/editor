@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import * as viewer from "react-svg-pan-zoom";
 
 export type GraphViewerProps = {
+  className?: string;
   width: number;
   height: number;
   children?: React.ReactNode;
 };
 
 const GraphViewer: React.FC<GraphViewerProps> = ({
+  className,
   width,
   height,
   children,
@@ -19,6 +21,7 @@ const GraphViewer: React.FC<GraphViewerProps> = ({
   );
   return (
     <viewer.ReactSVGPanZoom
+      className={className}
       width={width}
       height={height}
       tool={tool}

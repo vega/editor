@@ -8,12 +8,14 @@ import GraphViewer from "./GraphViewer";
 const viz = new Viz({ Module, render });
 
 interface GraphvizDisplayProps {
+  className?: string;
   width: number;
   height: number;
   source: string;
 }
 
 const GraphvizDisplay: React.FC<GraphvizDisplayProps> = ({
+  className,
   width,
   height,
   source,
@@ -34,9 +36,9 @@ const GraphvizDisplay: React.FC<GraphvizDisplayProps> = ({
   }, [source]);
 
   return renderResult === null ? (
-    <p>{message}</p>
+    <p className={className}>{message}</p>
   ) : (
-    <GraphViewer width={width} height={height}>
+    <GraphViewer className={className} width={width} height={height}>
       {parse(renderResult)}
     </GraphViewer>
   );
