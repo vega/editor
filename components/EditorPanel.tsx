@@ -3,6 +3,7 @@ import * as monaco from "monaco-editor";
 import defaultSpec from "../examples/bar-chart.json";
 import FloatingButton from "../components/FloatingButton";
 import noop from "../helpers/noop";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export type EditorPanelProps = { onVisualize?: (spec: string) => void };
 
@@ -41,6 +42,7 @@ const EditorPanel: React.FC<EditorPanelProps> = ({ onVisualize = noop }) => {
       <FloatingButton
         onClick={() => onVisualize(editorRef.current?.getValue() ?? "")}
       >
+        <FontAwesomeIcon className="mr-1" icon="play-circle" fixedWidth />
         Visualize
       </FloatingButton>
     </>

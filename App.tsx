@@ -11,6 +11,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import defaultSpec from "./examples/bar-chart.json";
 import FloatingButton from "./components/FloatingButton";
 import brandImage from "./images/favicon.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const AppHeader = styled.nav.attrs({ className: "bg-gray-900" })`
   grid-column: 1 / span 2;
@@ -112,7 +113,10 @@ const App: React.FC = () => {
             />
           </ErrorBoundary>
         </PanelContent>
-        <FloatingButton onClick={updateDisplay}>Analyze</FloatingButton>
+        <FloatingButton onClick={updateDisplay}>
+          <FontAwesomeIcon className="mr-1" icon="diagnoses" fixedWidth />
+          Analyze
+        </FloatingButton>
       </Panel>
       <Panel>
         <PanelTitle>Scene Graph</PanelTitle>
