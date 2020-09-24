@@ -5,7 +5,7 @@ import {RouteComponentProps, withRouter} from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import {bindActionCreators, Dispatch} from 'redux';
 import {MessageData} from 'vega-embed';
-import {hash} from 'vega-lite/build/src/util';
+import {hash} from 'vega-lite';
 import * as EditorActions from '../actions/editor';
 import {LAYOUT, Mode} from '../constants';
 import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';

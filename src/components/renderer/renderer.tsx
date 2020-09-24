@@ -5,7 +5,7 @@ import {RouteComponentProps, withRouter} from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
 import {Config as VgConfig} from 'vega';
-import {deepEqual} from 'vega-lite/build/src/util';
+import {deepEqual} from 'vega-lite';
 import vegaTooltip from 'vega-tooltip';
 import {mapDispatchToProps, mapStateToProps} from '.';
 import {KEYCODES, Mode} from '../../constants';

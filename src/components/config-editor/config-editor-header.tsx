@@ -2,7 +2,7 @@ import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
-import {omit} from 'vega-lite/build/src/util';
+import {omit} from 'vega-lite';
 import * as themes from 'vega-themes';
 import * as EditorActions from '../../actions/editor';
 import {State} from '../../constants/default-state';

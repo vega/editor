@@ -1,6 +1,6 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {mergeDeep} from 'vega-lite/build/src/util';
+import {mergeDeep} from 'vega-lite';
 import addMarkdownProps from './markdownProps';
 
 const vegaLiteSchema = require('vega-lite/build/vega-lite-schema.json');
