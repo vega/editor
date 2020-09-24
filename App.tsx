@@ -3,7 +3,7 @@ import { View } from "vega-typings";
 import { exportScene } from "./helpers/scenegraph";
 import { view2dot } from "./helpers/vega2dot";
 import { VegaWrapper } from "./components/VegaWrapper";
-import { SceneGraphInsepector } from "./components/SceneGraphInsepector";
+import { SceneGraphInsepector } from "./components/SceneGraphInspector";
 import styled from "styled-components";
 import EditorPanel from "./components/EditorPanel";
 import { ErrorBoundary } from "./components/ErrorBoundary";
