@@ -41,6 +41,7 @@ const AppLayout = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-template-rows: 3rem minmax(0, 1fr) minmax(0, 1fr) 1.5rem;
+  // overflow: hidden;
 `;
 
 const App: React.FC = () => {

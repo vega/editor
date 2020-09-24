@@ -52,7 +52,7 @@ const DataFlowGraphPanel: React.FC<DataFlowGraphPanelProps> = ({ source }) => {
             Click “Analyze” to extract data flow graph and display here
           </EmptyStatus>
         ) : showSource ? (
-          <ReadonlyEditor source={source} />
+          <ReadonlyEditor width={width} height={height} source={source} />
         ) : (
           <GraphvizDisplay width={width} height={height} source={source} />
         )}
