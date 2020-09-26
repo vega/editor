@@ -38,7 +38,7 @@
     "history": "^5.0.0",
     "json-stringify-pretty-compact": "^2.0.0",
     "lz-string": "^1.4.4",
-    "monaco-editor": "^0.21.0",
+    "monaco-editor": "^0.21.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-clipboard.js": "^2.0.16",
@@ -60,7 +60,7 @@
     "vega-cli": "5.16.1",
     "vega-datasets": "^2.1.0",
     "vega-embed": "^6.12.2",
-    "vega-lite": "4.16.2",
+    "vega-lite": "4.16.7",
     "vega-schema-url-parser": "^2.1.0",
     "vega-themes": "^2.9.1",
     "vega-tooltip": "^0.24.2"
