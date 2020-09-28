@@ -13,7 +13,7 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
     "monaco-editor-webpack-plugin": "^2.0.0",
-    "postcss": "^8.1.0",
+    "postcss": "^8.1.1",
     "postcss-loader": "^4.0.2",
     "style-loader": "^1.2.1",
     "ts-loader": "^8.0.4",
