@@ -31,7 +31,7 @@ function nodeFillColor(node, stamp) {
     : node.data
     ? "#ffcccc"
     : node.type === "axisticks" || node.type === "legendentries"
-    ? "#ffcccc"
+    ? "#ffffcc"
     : node.isMark || node.root
     ? "#ccccff"
     : "#ffffff";
@@ -99,16 +99,35 @@ function subView2dot(rt) {
   // build node objects
   const nodes = keys.map((key) => {
     const op = ops[key];
+    let opid = op.id;
+    let type = op.constructor.name.toLowerCase();
+    let tooltip = "";
+    if (type === "object") {
+      if (op.stamp === undefined) {
+        opid = "e" + opid;
+        type = "eventstream";
+      } else if (rt.root !== op) {
+        type = "operator";
+        tooltip = JSON.stringify(op.value)
+          .replace(/\[/g, "\\[")
+          .replace(/\]/g, "\\]")
+          .replace(/\{/g, "\\{")
+          .replace(/\}/g, "\\}")
+          .replace(/\"/g, '\\"');
+        console.log(tooltip);
+      }
+    }
     const node = {
-      id: op.id,
-      type: op.constructor.name.toLowerCase(),
+      id: opid,
+      type,
       stamp: op.stamp,
       value: op,
+      tooltip,
     };
     if (markTypes[node.type]) node.isMark = true;
-    if (signals[op.id]) node.signal = signals[op.id];
-    if (scales[op.id]) node.scale = scales[op.id];
-    if (data[op.id]) node.data = data[op.id];
+    if (signals[opid]) node.signal = signals[opid];
+    if (scales[opid]) node.scale = scales[opid];
+    if (data[opid]) node.data = data[opid];
     if (rt.root === op) node.root = true;
     return node;
   });
@@ -147,16 +166,35 @@ export function view2dot(view, stamp) {
   // build node objects
   let nodes = keys.map((key) => {
     const op = ops[key];
+    let opid = op.id;
+    let type = op.constructor.name.toLowerCase();
+    let tooltip = "";
+    if (type === "object") {
+      if (op.stamp === undefined) {
+        opid = "e" + opid;
+        type = "eventstream";
+      } else if (rt.root !== op) {
+        type = "operator";
+        tooltip = JSON.stringify(op.value)
+          .replace(/\[/g, "\\[")
+          .replace(/\]/g, "\\]")
+          .replace(/\{/g, "\\{")
+          .replace(/\}/g, "\\}")
+          .replace(/\"/g, '\\"');
+        console.log(tooltip);
+      }
+    }
     const node = {
-      id: op.id,
-      type: op.constructor.name.toLowerCase(),
+      id: opid,
+      type,
       stamp: op.stamp,
       value: op,
+      tooltip,
     };
     if (markTypes[node.type]) node.isMark = true;
-    if (signals[op.id]) node.signal = signals[op.id];
-    if (scales[op.id]) node.scale = scales[op.id];
-    if (data[op.id]) node.data = data[op.id];
+    if (signals[opid]) node.signal = signals[opid];
+    if (scales[opid]) node.scale = scales[opid];
+    if (data[opid]) node.data = data[opid];
     if (rt.root === op) node.root = true;
     return node;
   });
@@ -185,20 +223,30 @@ export function view2dot(view, stamp) {
     const op = ops[key];
     if (op._targets)
       op._targets.forEach((t) => {
-        if (!ids[t.id]) return;
-        edges.push({
-          nodes: [op.id, t.id],
-          param: t.source === op ? "pulse" : argop(t, op),
-        });
-        if (t.source === op && ids[op.id].isMark) {
-          const node = ids[t.id];
-          if (node.type === "collect") {
-            // annotate post-datajoin collect operators as mark-processing
-            node.isMark = true;
+        if (op.stamp === undefined) {
+          if (!ids["e" + t.id]) return;
+          edges.push({
+            nodes: ["e" + op.id, "e" + t.id],
+            param: "",
+          });
+        } else {
+          if (!ids[t.id]) return;
+          edges.push({
+            nodes: [op.id, t.id],
+            param: t.source === op ? "pulse" : argop(t, op),
+          });
+          if (t.source === op && ids[op.id].isMark) {
+            const node = ids[t.id];
+            if (node.type === "collect") {
+              // annotate post-datajoin collect operators as mark-processing
+              node.isMark = true;
+            }
           }
         }
       });
   });
+
+  console.log(nodes, edges);
 
   return `digraph {
   rankdir = LR;
@@ -209,6 +257,7 @@ export function view2dot(view, stamp) {
         node.id +
         ' [label="' +
         nodeLabel(node) +
+        (node.tooltip ? ": " + node.tooltip : "") +
         '"]' +
         ' [color="' +
         nodeColor(node, stamp) +
