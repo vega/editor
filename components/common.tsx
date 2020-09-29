@@ -20,7 +20,7 @@ export const PanelContent = styled.main.attrs<PanelContentProps>(
 `;
 
 export const PanelHeader = styled.header.attrs({
-  className: "px-2 font-bold bg-gray-300 text-gray-700",
+  className: "px-2 font-bold bg-gray-300 text-gray-700" as string,
 })`
   width: 100%;
   height: ${TITLE_HEIGHT};

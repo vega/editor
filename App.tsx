@@ -68,7 +68,7 @@ const App: React.FC = () => {
         <span className="text-xl font-bold">Vega Inspector</span>
       </AppHeader>
       <Panel>
-        <PanelHeader>Source Code</PanelHeader>
+        <PanelHeader className="uppercase">Source Code</PanelHeader>
         <PanelContent className="relative">
           <EditorPanel
             onVisualize={(source) => {
@@ -79,7 +79,7 @@ const App: React.FC = () => {
         </PanelContent>
       </Panel>
       <Panel className="relative border-l border-gray-400">
-        <PanelHeader>Visualization</PanelHeader>
+        <PanelHeader className="uppercase">Visualization</PanelHeader>
         <PanelContent className="flex justify-center items-center bg-gray-200 overflow-auto">
           <ErrorBoundary key={errorBoundaryKey}>
             <VegaWrapper
@@ -97,7 +97,7 @@ const App: React.FC = () => {
         </FloatingButton>
       </Panel>
       <Panel>
-        <PanelHeader>Scene Graph</PanelHeader>
+        <PanelHeader className="uppercase">Scene Graph</PanelHeader>
         <PanelContent padded>
           {sceneGraph === null ? (
             <EmptyStatus>
