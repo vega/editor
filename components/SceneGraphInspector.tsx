@@ -2,11 +2,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Inspector, {
-  NodeRenderer,
-  ObjectRootLabel,
+  InspectorNodeRenderer,
   ObjectName,
   ObjectValue,
   ObjectLabelProps,
+  ObjectRootLabelProps,
 } from "react-inspector";
 
 class Highlighter {
@@ -77,6 +77,7 @@ export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = (
     const object = data;
     return (
       <span
+        className="px-1 font-mono text-sm rounded select-none hover:bg-gray-300"
         onMouseOver={(): void => onLabelMouseEnter(data)}
         onMouseLeave={(): void => onLabelMouseLeave(data)}
       >
@@ -87,14 +88,19 @@ export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = (
     );
   };
 
-  // Make linter happy
-  ObjectLabel.propTypes = {
-    name: PropTypes.string,
-    data: PropTypes.any.isRequired,
-    isNonenumerable: PropTypes.bool,
+  const ObjectRootLabel: React.FC<ObjectRootLabelProps> = ({ name, data }) => {
+    if (typeof name === "string") {
+      return (
+        <span>
+          <span className="font-mono text-sm">{name}</span>
+        </span>
+      );
+    } else {
+      return <span className="font-mono text-sm">root</span>;
+    }
   };
 
-  const customizedNodeRenderer: NodeRenderer = ({
+  const customizedNodeRenderer: InspectorNodeRenderer = ({
     depth,
     name,
     data,
@@ -105,15 +111,6 @@ export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = (
     ) : (
       <ObjectLabel name={name} data={data} isNonenumerable={isNonenumerable} />
     );
-
-  // Make linter happy
-  customizedNodeRenderer.propTypes = {
-    depth: PropTypes.number.isRequired,
-    name: PropTypes.string,
-    data: PropTypes.any.isRequired,
-    isNonenumerable: PropTypes.bool,
-    expanded: PropTypes.bool.isRequired,
-  };
 
   return (
     <Inspector
