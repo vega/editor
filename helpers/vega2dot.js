@@ -1,3 +1,5 @@
+import { EventStream, Operator, Dataflow } from "vega-dataflow";
+
 const markTypes = {
   datajoin: 1,
   encode: 1,
@@ -18,6 +20,8 @@ function nodeLabel(node) {
     ? "root"
     : node.type === "collect" && node.data
     ? node.data
+    : node.event
+    ? node.event
     : node.type;
 }
 
@@ -32,6 +36,8 @@ function nodeFillColor(node, stamp) {
     ? "#ffcccc"
     : node.type === "axisticks" || node.type === "legendentries"
     ? "#ffffcc"
+    : node.type === "eventstream"
+    ? "#ccffff"
     : node.isMark || node.root
     ? "#ccccff"
     : "#ffffff";
@@ -140,7 +146,7 @@ function subView2dot(rt) {
   return [rt, ops, keys, signals, scales, data, nodes, ids];
 }
 
-export function view2dot(view, stamp) {
+export async function view2dot(view, stamp) {
   console.log(view);
   const rt = view._runtime;
   let ops = rt.nodes,
@@ -224,11 +230,7 @@ export function view2dot(view, stamp) {
     if (op._targets)
       op._targets.forEach((t) => {
         if (op.stamp === undefined) {
-          if (!ids["e" + t.id]) return;
-          edges.push({
-            nodes: ["e" + op.id, "e" + t.id],
-            param: "",
-          });
+          return;
         } else {
           if (!ids[t.id]) return;
           edges.push({
@@ -245,6 +247,224 @@ export function view2dot(view, stamp) {
         }
       });
   });
+
+  // dig out all event streams using hijack method
+  const _receive = EventStream.prototype.receive;
+  const _evaluate = Operator.prototype.evaluate;
+  const _pulse = Dataflow.prototype.pulse;
+  const _update = Dataflow.prototype.update;
+
+  const eventStreamList = [];
+  for (let eventType of Object.keys(view._handler._handlers)) {
+    for (let handler of view._handler._handlers[eventType]) {
+      if (handler.handler && handler.handler instanceof Function) {
+        const eventStream = await new Promise((res) => {
+          EventStream.prototype.receive = function () {
+            res(this);
+          };
+          const fakeEvent = { preventDefault: () => {} };
+          handler.handler(fakeEvent);
+          setTimeout(() => res(null), 1000); // hope this will not be invoked
+        });
+        if (eventStream) eventStreamList.push({ eventStream, eventType });
+      }
+    }
+  }
+
+  const extendTopoNodes = (eventStream) => {
+    if (eventStream._targets && eventStream._targets instanceof Array) {
+      eventStream._targets.forEach((op) => {
+        if (!ids["e" + op.id]) {
+          const node = {
+            id: "e" + op.id,
+            type: "eventstream",
+            stamp: undefined,
+            value: op,
+            tooltip: "",
+          };
+          nodes.push(node);
+          ids["e" + op.id] = node;
+        }
+        edges.push({
+          nodes: ["e" + eventStream.id, "e" + op.id],
+          param: "pulse",
+        });
+        extendTopoNodes(op);
+      });
+    }
+  };
+
+  const getNodeListWithFilter = (scenegraph, filter) => {
+    const nodeList = [];
+    if (scenegraph.interactive !== false) {
+      try {
+        if (filter({ item: scenegraph })) {
+          nodeList.push(scenegraph);
+        }
+      } catch (e) {}
+      if (scenegraph.items && scenegraph.items instanceof Array) {
+        scenegraph.items.forEach((child) => {
+          const subNodeList = getNodeListWithFilter(child, filter);
+          for (let node of subNodeList) {
+            if (!nodeList.includes(node)) {
+              nodeList.push(node);
+            }
+          }
+        });
+      }
+    }
+    return nodeList;
+  };
+
+  const getNodeListWithListAndFilter = (list, filter) => {
+    const nodeList = [];
+    for (let scenegraph of list) {
+      try {
+        if (filter({ item: scenegraph })) {
+          nodeList.push(scenegraph);
+        }
+      } catch (e) {}
+    }
+    return nodeList;
+  };
+
+  const extendStream2Node = async (stream, list = null) => {
+    if (!list)
+      list = getNodeListWithFilter(view._scenegraph.root, stream._filter);
+    else list = getNodeListWithListAndFilter(list, stream._filter);
+    if (stream.hasOwnProperty("_apply") && list.length) {
+      const receiveList = [];
+      for (let node of list) {
+        try {
+          let { op, param } = await new Promise((res) => {
+            Operator.prototype.evaluate = function () {
+              const op = this;
+              let param = null;
+              if (op._update) {
+                const nestedGet = (target, path) => {
+                  if (path === "$$realpath$$") return target.base;
+                  return new Proxy(
+                    { base: target.base + "[" + path + "]" },
+                    {
+                      get: nestedGet,
+                    }
+                  );
+                };
+                const fakeDatum = new Proxy(
+                  { base: "datum" },
+                  {
+                    get: nestedGet,
+                  }
+                );
+                param = op._update(op._argval, {
+                  item: { datum: fakeDatum },
+                  vega: {
+                    view: () => ({
+                      changeset: () => ({
+                        encode: (_, name) => ({
+                          $$realpath$$: JSON.stringify(name)
+                            .replace(/\[/g, "\\[")
+                            .replace(/\]/g, "\\]")
+                            .replace(/\{/g, "\\{")
+                            .replace(/\}/g, "\\}")
+                            .replace(/\"/g, '\\"'),
+                        }),
+                      }),
+                    }),
+                  },
+                }).$$realpath$$;
+              }
+              res({ op, param });
+            };
+            Dataflow.prototype.pulse = () => {};
+            Dataflow.prototype.update = () => {};
+            stream._apply({ item: list[0] });
+            setTimeout(() => res({ op: null, param: null }), 1000);
+          });
+          if (op && param && !receiveList.includes(op)) {
+            edges.push({
+              nodes: ["e" + stream.id, op.id],
+              param: "event",
+            });
+            edges.push({
+              nodes: [op.id, "e" + stream.id],
+              param,
+            });
+            receiveList.push(op);
+            if (!ids[op.id]) {
+              const node = {
+                id: op.id,
+                type: "operator",
+                stamp: op.stamp,
+                value: op,
+                tooltip: "",
+              };
+              nodes.push(node);
+              ids[op.id] = node;
+            }
+          }
+          ({ op, param } = await new Promise((res) => {
+            Operator.prototype.evaluate = () => {};
+            Dataflow.prototype.pulse = function (op, changeset, options) {
+              console.log("pulse", op, changeset, options);
+              res({ op, param: "pulse" });
+            };
+            Dataflow.prototype.update = function (op, changeset, options) {
+              console.log("update", op, changeset, options);
+              res({ op, param: "update" });
+            };
+            stream._apply({ item: node });
+            setTimeout(() => res({ op: null, param: null }), 1000);
+          }));
+          if (op && param && !receiveList.includes(op)) {
+            edges.push({
+              nodes: ["e" + stream.id, op.id],
+              param,
+            });
+            receiveList.push(op);
+            if (!ids[op.id]) {
+              const node = {
+                id: op.id,
+                type: "operator",
+                stamp: op.stamp,
+                value: op,
+                tooltip: "",
+              };
+              nodes.push(node);
+              ids[op.id] = node;
+            }
+          }
+        } catch (e) {}
+      }
+    }
+    if (stream._targets && stream._targets instanceof Array) {
+      for (let child of stream._targets) {
+        await extendStream2Node(child, list);
+      }
+    }
+  };
+
+  for (let { eventStream, eventType } of eventStreamList) {
+    if (!ids["e" + eventStream.id]) {
+      const node = {
+        id: "e" + eventStream.id,
+        type: "eventstream",
+        stamp: undefined,
+        value: eventStream,
+        tooltip: "",
+      };
+      nodes.push(node);
+      ids["e" + eventStream.id] = node;
+    }
+    ids["e" + eventStream.id].event = eventType;
+    extendTopoNodes(eventStream);
+    await extendStream2Node(eventStream);
+  }
+
+  EventStream.prototype.receive = _receive;
+  Operator.prototype.evaluate = _evaluate;
+  Dataflow.prototype.pulse = _pulse;
+  Dataflow.prototype.update = _update;
 
   console.log(nodes, edges);
 

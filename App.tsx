@@ -56,7 +56,7 @@ const App: React.FC = () => {
     if (view !== null) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const internalSceneGraph = (view as any)["_scenegraph"];
-      setDataFlow(view2dot(view));
+      view2dot(view).then(setDataFlow);
       setSceneGraph(exportScene(internalSceneGraph.root));
     }
   };
