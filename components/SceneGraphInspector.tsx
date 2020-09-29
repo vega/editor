@@ -77,7 +77,7 @@ export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = (
     const object = data;
     return (
       <span
-        className="font-mono text-sm"
+        className="px-1 font-mono text-sm rounded select-none hover:bg-gray-300"
         onMouseOver={(): void => onLabelMouseEnter(data)}
         onMouseLeave={(): void => onLabelMouseLeave(data)}
       >
@@ -96,7 +96,7 @@ export const SceneGraphInsepector: React.FC<SceneGraphInsepectorProps> = (
         </span>
       );
     } else {
-      return <span className="font-mono text-sm">scenegraph</span>;
+      return <span className="font-mono text-sm">root</span>;
     }
   };
 
