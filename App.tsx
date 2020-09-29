@@ -18,6 +18,7 @@ import {
   EmptyStatus,
 } from "./components/common";
 import DataFlowGraphPanel from "./components/DataFlowGraphPanel";
+import TutorialPopup from "./components/TutorialPopup";
 
 const AppHeader = styled.nav.attrs({ className: "bg-gray-900" })`
   grid-column: 1 / span 2;
@@ -45,6 +46,7 @@ const AppLayout = styled.div`
 `;
 
 const App: React.FC = () => {
+  const [showTutorial, setShowTutorial] = useState(false);
   const [view, setView] = useState<View | null>(null);
   const [sceneGraph, setSceneGraph] = useState<object | null>(null);
   const [dataFlow, setDataFlow] = useState<string | null>(null);
@@ -62,55 +64,68 @@ const App: React.FC = () => {
   };
 
   return (
-    <AppLayout>
-      <AppHeader>
-        <img className="mr-2 h-6 w-6" src={brandImage} alt="Vega Inspector" />
-        <span className="text-xl font-bold">Vega Inspector</span>
-      </AppHeader>
-      <Panel>
-        <PanelHeader className="uppercase">Source Code</PanelHeader>
-        <PanelContent className="relative">
-          <EditorPanel
-            onVisualize={(source) => {
-              setSpec(source);
-              setErrorBoundaryKey(errorBoundaryKey + 1);
-            }}
-          />
-        </PanelContent>
-      </Panel>
-      <Panel className="relative border-l border-gray-400">
-        <PanelHeader className="uppercase">Visualization</PanelHeader>
-        <PanelContent className="flex justify-center items-center bg-gray-200 overflow-auto">
-          <ErrorBoundary key={errorBoundaryKey}>
-            <VegaWrapper
-              spec={spec}
-              onNewView={(view): void => {
-                console.log("A new view was created");
-                setView(view);
+    <>
+      <AppLayout>
+        <AppHeader>
+          <img className="mr-2 h-6 w-6" src={brandImage} alt="Vega Inspector" />
+          <span className="text-xl font-bold">Vega Inspector</span>
+          <button
+            className="ml-auto px-2 py-1 bg-gray-200 text-gray-900 rounded shadow transition duration-150 hover:gray-100"
+            onClick={() => setShowTutorial(!showTutorial)}
+          >
+            <FontAwesomeIcon icon="question-circle" fixedWidth />
+            Tutorials
+          </button>
+        </AppHeader>
+        <Panel>
+          <PanelHeader className="uppercase">Source Code</PanelHeader>
+          <PanelContent className="relative">
+            <EditorPanel
+              onVisualize={(source) => {
+                setSpec(source);
+                setErrorBoundaryKey(errorBoundaryKey + 1);
               }}
             />
-          </ErrorBoundary>
-        </PanelContent>
-        <FloatingButton onClick={updateDisplay}>
-          <FontAwesomeIcon className="mr-1" icon="diagnoses" fixedWidth />
-          Analyze
-        </FloatingButton>
-      </Panel>
-      <Panel>
-        <PanelHeader className="uppercase">Scene Graph</PanelHeader>
-        <PanelContent padded>
-          {sceneGraph === null ? (
-            <EmptyStatus>
-              Click “Analyze” to extract scene graph and display here
-            </EmptyStatus>
-          ) : (
-            <SceneGraphInsepector sceneGraph={sceneGraph} expandLevel={2} />
-          )}
-        </PanelContent>
-      </Panel>
-      <DataFlowGraphPanel source={dataFlow} />
-      <AppFooter />
-    </AppLayout>
+          </PanelContent>
+        </Panel>
+        <Panel className="relative border-l border-gray-400">
+          <PanelHeader className="uppercase">Visualization</PanelHeader>
+          <PanelContent className="flex justify-center items-center bg-gray-200 overflow-auto">
+            <ErrorBoundary key={errorBoundaryKey}>
+              <VegaWrapper
+                spec={spec}
+                onNewView={(view): void => {
+                  console.log("A new view was created");
+                  setView(view);
+                }}
+              />
+            </ErrorBoundary>
+          </PanelContent>
+          <FloatingButton onClick={updateDisplay}>
+            <FontAwesomeIcon className="mr-1" icon="diagnoses" fixedWidth />
+            Analyze
+          </FloatingButton>
+        </Panel>
+        <Panel>
+          <PanelHeader className="uppercase">Scene Graph</PanelHeader>
+          <PanelContent padded>
+            {sceneGraph === null ? (
+              <EmptyStatus>
+                Click “Analyze” to extract scene graph and display here
+              </EmptyStatus>
+            ) : (
+              <SceneGraphInsepector sceneGraph={sceneGraph} expandLevel={2} />
+            )}
+          </PanelContent>
+        </Panel>
+        <DataFlowGraphPanel source={dataFlow} />
+        <AppFooter />
+      </AppLayout>
+      <TutorialPopup
+        show={showTutorial}
+        onClose={() => setShowTutorial(!showTutorial)}
+      />
+    </>
   );
 };
 
