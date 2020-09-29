@@ -11,12 +11,15 @@ export type PanelContentProps = { fullscreen?: boolean; padded?: boolean };
 
 export const PanelContent = styled.main.attrs<PanelContentProps>(
   ({ fullscreen }) => ({
-    className: fullscreen ? "fixed top-0 right-0 bottom-0 left-0" : "",
+    className: fullscreen
+      ? ("fixed top-0 right-0 bottom-0 left-0" as string)
+      : ("" as string),
   })
 )<PanelContentProps>`
   padding: ${({ padded = false }): string => (padded ? "0.5rem" : "0")};
   height: ${({ fullscreen }) =>
     fullscreen ? "100%" : `calc(100% - ${TITLE_HEIGHT})`};
+  overflow: auto;
 `;
 
 export const PanelHeader = styled.header.attrs({
