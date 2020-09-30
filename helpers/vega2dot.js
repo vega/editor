@@ -1,4 +1,5 @@
 import { EventStream, Operator, Dataflow } from "vega-dataflow";
+import { functionContext } from "vega-functions";
 
 const markTypes = {
   datajoin: 1,
@@ -81,6 +82,18 @@ function argop(t, s) {
     }
   return "";
 }
+
+function escapeDotString(string) {
+  return string
+    ? string
+        .replace(/\[/g, "\\[")
+        .replace(/\]/g, "\\]")
+        .replace(/\{/g, "\\{")
+        .replace(/\}/g, "\\}")
+        .replace(/\"/g, '\\"')
+    : "";
+}
+
 function subView2dot(rt) {
   const ops = rt.nodes,
     keys = Object.keys(ops);
@@ -181,12 +194,7 @@ export async function view2dot(view, stamp) {
         type = "eventstream";
       } else if (rt.root !== op) {
         type = "operator";
-        tooltip = JSON.stringify(op.value)
-          .replace(/\[/g, "\\[")
-          .replace(/\]/g, "\\]")
-          .replace(/\{/g, "\\{")
-          .replace(/\}/g, "\\}")
-          .replace(/\"/g, '\\"');
+        tooltip = escapeDotString(JSON.stringify(op.value));
         console.log(tooltip);
       }
     }
@@ -253,6 +261,10 @@ export async function view2dot(view, stamp) {
   const _evaluate = Operator.prototype.evaluate;
   const _pulse = Dataflow.prototype.pulse;
   const _update = Dataflow.prototype.update;
+  const _functions = {};
+  Object.keys(functionContext).forEach(
+    (key) => (_functions[key] = functionContext[key])
+  );
 
   const eventStreamList = [];
   for (let eventType of Object.keys(view._handler._handlers)) {
@@ -344,11 +356,35 @@ export async function view2dot(view, stamp) {
                 const nestedGet = (target, path) => {
                   if (path === "$$realpath$$") return target.base;
                   return new Proxy(
-                    { base: target.base + "[" + path + "]" },
+                    { base: target.base + "['" + path + "']" },
                     {
                       get: nestedGet,
                     }
                   );
+                };
+                const nestedFunctionGet = (target, path) => {
+                  if (path === "$$realpath$$") return target.base;
+                  return (...args) =>
+                    new Proxy(
+                      {
+                        base:
+                          target.base +
+                          "['" +
+                          path +
+                          "'](" +
+                          args
+                            .map((arg) =>
+                              arg.$$realpath$$
+                                ? arg.$$realpath$$
+                                : JSON.stringify(arg)
+                            )
+                            .join(", ") +
+                          ")",
+                      },
+                      {
+                        get: nestedFunctionGet,
+                      }
+                    );
                 };
                 const fakeDatum = new Proxy(
                   { base: "datum" },
@@ -356,23 +392,51 @@ export async function view2dot(view, stamp) {
                     get: nestedGet,
                   }
                 );
-                param = op._update(op._argval, {
-                  item: { datum: fakeDatum },
-                  vega: {
-                    view: () => ({
-                      changeset: () => ({
-                        encode: (_, name) => ({
-                          $$realpath$$: JSON.stringify(name)
-                            .replace(/\[/g, "\\[")
-                            .replace(/\]/g, "\\]")
-                            .replace(/\{/g, "\\{")
-                            .replace(/\}/g, "\\}")
-                            .replace(/\"/g, '\\"'),
+                const fakeVega = (func, param) =>
+                  new Proxy(
+                    {
+                      base: `vega.${func}(${
+                        param !== undefined ? JSON.stringify(param) : ""
+                      })`,
+                    },
+                    {
+                      get: nestedGet,
+                    }
+                  );
+                const fakeThis = new Proxy(
+                  { base: "this" },
+                  { get: nestedFunctionGet }
+                );
+                const serializeItem = (item) =>
+                  item
+                    ? {
+                        x: item.x,
+                        y: item.y,
+                        markGroup: item.mark && item.mark.group,
+                      }
+                    : undefined;
+                Object.keys(functionContext).forEach(
+                  (key) => (functionContext[key] = fakeThis[key])
+                );
+                param = escapeDotString(
+                  op._update.call(fakeThis, op._argval, {
+                    item: { datum: fakeDatum },
+                    vega: {
+                      view: () => ({
+                        changeset: () => ({
+                          encode: (_, name) => ({
+                            $$realpath$$: JSON.stringify(name),
+                          }),
                         }),
                       }),
-                    }),
-                  },
-                }).$$realpath$$;
+                      item: () => ({ datum: fakeDatum }),
+                      group: (item) => fakeVega("group", item),
+                      xy: (item) => fakeVega("xy", serializeItem(item)),
+                      x: (item) => fakeVega("x", serializeItem(item)),
+                      y: (item) => fakeVega("y", serializeItem(item)),
+                    },
+                  }).$$realpath$$
+                );
               }
               res({ op, param });
             };
@@ -465,6 +529,9 @@ export async function view2dot(view, stamp) {
   Operator.prototype.evaluate = _evaluate;
   Dataflow.prototype.pulse = _pulse;
   Dataflow.prototype.update = _update;
+  Object.keys(functionContext).forEach(
+    (key) => (functionContext[key] = _functions[key])
+  );
 
   console.log(nodes, edges);
 
