@@ -149,6 +149,7 @@ class Header extends React.PureComponent<PropsType, State> {
     this.props.setSettingsState(!this.props.settings);
   }
   public openCommandPalette() {
+    this.props.editorRef.focus();
     this.props.editorRef.trigger('', 'editor.action.quickCommand', '');
   }
 
