@@ -24,7 +24,6 @@ type State = Readonly<typeof defaultState>;
 
 class Editor extends React.PureComponent<Props, State> {
   public static pathname: string;
-  public unlisten: () => void;
   constructor(props) {
     super(props);
     this.state = defaultState;
@@ -32,14 +31,14 @@ class Editor extends React.PureComponent<Props, State> {
     this.onOpenPortal = this.onOpenPortal.bind(this);
     this.onClosePortal = this.onClosePortal.bind(this);
   }
-  // Callback to opening portal
+
   public onOpenPortal() {
-    const pathname = Editor.pathname;
-    if (pathname !== '/' && pathname !== '/edited') {
+    const {pathname} = Editor;
+    if (pathname !== '/' && pathname !== '/edited' && !pathname.endsWith('/view')) {
       this.props.history.push(pathname + '/view');
     }
   }
-  // Callback to closing portal
+
   public onClosePortal() {
     let pathname = Editor.pathname;
     pathname = pathname
@@ -50,8 +49,9 @@ class Editor extends React.PureComponent<Props, State> {
       this.props.history.push(pathname);
     }
   }
-  // Close portal on pressing escape key
+
   public handleKeydown(e) {
+    // Close portal on pressing escape key
     if (e.keyCode === KEYCODES.ESCAPE && this.state.fullscreen) {
       this.setState({fullscreen: false}, this.onClosePortal);
     }
@@ -68,7 +68,7 @@ class Editor extends React.PureComponent<Props, State> {
     const spec = this.props.vegaSpec;
     let responsiveWidth = false;
     let responsiveHeight = false;
-    // Check for signals
+
     if (spec.signals) {
       for (const signal of spec.signals) {
         if (
@@ -92,11 +92,13 @@ class Editor extends React.PureComponent<Props, State> {
 
   public handleResizeMouseDown(eDown: React.MouseEvent) {
     const {responsiveWidth, responsiveHeight} = this.isResponsive();
+
     // Record initial mouse position and view size
     const x0 = eDown.pageX;
     const y0 = eDown.pageY;
     const width0 = this.state.width;
     const height0 = this.state.height;
+
     // Update size on window.mousemove
     const onMove = (eMove: MouseEvent) => {
       const x1 = eMove.pageX;
@@ -113,17 +115,15 @@ class Editor extends React.PureComponent<Props, State> {
         }
       );
     };
-    // Remove listeners on window.mouseup
+
     const onUp = () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
     };
-    // Add listeners
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
   }
 
-  // Initialize the view instance
   public initView() {
     const {vegaSpec, vegaLiteSpec, normalizedVegaLiteSpec, config, baseURL, mode, setView, hoverEnable} = this.props;
 
@@ -216,19 +216,6 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public componentDidMount() {
-    this.unlisten = this.props.history.listen((listener) => {
-      // FIXME: remove the string casting
-      if (String(listener.location).endsWith('view')) {
-        this.setState({
-          fullscreen: true,
-        });
-      } else {
-        this.setState({
-          fullscreen: false,
-        });
-      }
-    });
-
     this.initView();
     this.renderVega();
 
@@ -273,7 +260,6 @@ class Editor extends React.PureComponent<Props, State> {
   public componentWillUnmount() {
     // Remove listener to event keydown
     document.removeEventListener('keydown', this.handleKeydown);
-    this.unlisten();
   }
 
   // Render resize handle for responsive charts
@@ -293,6 +279,7 @@ class Editor extends React.PureComponent<Props, State> {
 
   public render() {
     const {responsiveWidth, responsiveHeight} = this.isResponsive();
+
     // Determine chart element style based on responsiveness
     const chartStyle =
       responsiveWidth || responsiveHeight
@@ -301,6 +288,7 @@ class Editor extends React.PureComponent<Props, State> {
             height: responsiveHeight ? this.state.height + 'px' : null,
           }
         : {};
+
     return (
       <div>
         <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
