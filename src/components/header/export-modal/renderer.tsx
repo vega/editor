@@ -50,7 +50,7 @@ class ExportModal extends React.PureComponent<Props, State> {
       spec: content,
       baseURL: this.props.baseURL,
     };
-    const pdf = await fetch('https://render-vega.now.sh', {
+    const pdf = await fetch('https://render-vega.vercel.app', {
       body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
@@ -211,8 +211,8 @@ class ExportModal extends React.PureComponent<Props, State> {
             <p>
               <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
               patient. Use absolute URLs to ensure that the data is loaded correctly. Your chart is sent to{' '}
-              <a href="https://render-vega.now.sh/" target="_blank" rel="noopener noreferrer">
-                render-vega.now.sh
+              <a href="https://render-vega.vercel.app/" target="_blank" rel="noopener noreferrer">
+                render-vega.vercel.app
               </a>{' '}
               for processing.
             </p>
