@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Book, Code, Image, Map} from 'react-feather';
 import {withRouter} from 'react-router-dom';
 import {mergeConfig} from 'vega';
+import stringify from 'json-stringify-pretty-compact';
 import {mapStateToProps} from '.';
 import {Mode} from '../../../constants/consts';
 import './index.css';
@@ -102,7 +103,7 @@ class ExportModal extends React.PureComponent<Props, State> {
       content.config = mergeConfig({}, this.props.config, content.config);
     }
 
-    const blob = new Blob([JSON.stringify(content, null, 2)], {
+    const blob = new Blob([stringify(content)], {
       type: `application/json`,
     });
     const url = window.URL.createObjectURL(blob);
