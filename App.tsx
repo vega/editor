@@ -51,6 +51,7 @@ const App: React.FC = () => {
   const [sceneGraph, setSceneGraph] = useState<object | null>(null);
   const [dataFlow, setDataFlow] = useState<string | null>(null);
   const [spec, setSpec] = useState(JSON.stringify(defaultSpec, undefined, 2));
+  const [specDirty, setDirty] = useState(true);
   // Reference: https://sung.codes/blog/2018/09/29/resetting-error-boundary-error-state/
   const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
 
@@ -82,6 +83,7 @@ const App: React.FC = () => {
           <PanelContent className="relative">
             <EditorPanel
               onVisualize={(source) => {
+                setDirty(true);
                 setSpec(source);
                 setErrorBoundaryKey(errorBoundaryKey + 1);
               }}
@@ -96,7 +98,10 @@ const App: React.FC = () => {
                 spec={spec}
                 onNewView={(view): void => {
                   console.log("A new view was created");
-                  setView(view);
+                  if (specDirty) {
+                    setView(view);
+                    setDirty(false);
+                  }
                 }}
               />
             </ErrorBoundary>
