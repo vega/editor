@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View } from "vega-typings";
 import { exportScene } from "./helpers/scenegraph";
-import { view2dot } from "./helpers/vega2dot";
+import { vega2dot } from "./helpers/vega2dot";
 import { VegaWrapper } from "./components/VegaWrapper";
 import { SceneGraphInsepector } from "./components/SceneGraphInspector";
 import styled from "styled-components";
@@ -59,7 +59,7 @@ const App: React.FC = () => {
     if (view !== null) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const internalSceneGraph = (view as any)["_scenegraph"];
-      view2dot(view).then(setDataFlow);
+      setDataFlow(vega2dot(spec));
       setSceneGraph(exportScene(internalSceneGraph.root));
     }
   };
