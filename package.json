@@ -114,7 +114,7 @@
     }
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development",
+    "start": "webpack serve --mode development",
     "build": "yarn clean && yarn vendor && yarn build:only",
     "build:only": "webpack --mode production",
     "clean": "rimraf dist public/spec public/data",
