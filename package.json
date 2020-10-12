@@ -34,7 +34,7 @@
     "d3-array": "^2.8.0",
     "d3-geo-projection": "^3.0.0",
     "d3-scale": "^3.2.3",
-    "file-loader": "^6.1.0",
+    "file-loader": "^6.1.1",
     "history": "^5.0.0",
     "json-stringify-pretty-compact": "^2.0.0",
     "lz-string": "^1.4.4",
