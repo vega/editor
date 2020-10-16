@@ -99,17 +99,16 @@ class ConfigEditor extends React.PureComponent<Props> {
           }}
         ></ReactResizeDetector>
         <MonacoEditor
+          language="json"
           options={{
-            autoClosingBrackets: 'never',
-            autoClosingQuotes: 'never',
             cursorBlinking: 'smooth',
             folding: true,
             lineNumbersMinChars: 4,
             minimap: {enabled: false},
             scrollBeyondLastLine: false,
             wordWrap: 'on',
+            quickSuggestions: {other: true, comments: true, strings: true},
           }}
-          language="json"
           onChange={debounce(700, this.handleEditorChange)}
           value={this.props.configEditorString}
           editorDidMount={(e) => this.handleEditorMount(e)}

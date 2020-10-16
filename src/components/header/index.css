@@ -1,4 +1,4 @@
-.header {
+.app-header {
   display: flex;
   height: 60px;
   justify-content: space-between;
@@ -6,7 +6,7 @@
 }
 
 .header-button,
-.header a {
+.app-header a {
   display: flex;
   height: 100%;
   align-items: center;
@@ -26,7 +26,7 @@
   background: var(--transparent-color);
 }
 
-.header section > span {
+.app-header section > span {
   display: flex;
   align-items: center;
   height: 100%;
@@ -38,7 +38,7 @@
   width: 20px;
 }
 
-.header section {
+.app-header section {
   display: flex;
   align-items: center;
 }

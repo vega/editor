@@ -385,7 +385,7 @@ class Header extends React.PureComponent<PropsType, State> {
     const shareContent = <ShareModal />;
 
     return (
-      <div className="header" role="banner">
+      <div className="app-header" role="banner">
         <section className="left-section">
           {modeSwitcher}
           <span ref="splitButton" className={splitClass}>
