@@ -268,11 +268,7 @@ class Editor extends React.PureComponent<Props> {
             minimap: {enabled: false},
             scrollBeyondLastLine: false,
             wordWrap: 'on',
-            quickSuggestions: {other: true, comments: true, strings: true},
-            snippetSuggestions: 'top',
-            suggest: {
-              snippetsPreventQuickSuggestions: false,
-            },
+            quickSuggestions: true,
           }}
           value={this.props.value}
           onChange={debounce(700, this.handleEditorChange)}

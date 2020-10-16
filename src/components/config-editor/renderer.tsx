@@ -107,7 +107,7 @@ class ConfigEditor extends React.PureComponent<Props> {
             minimap: {enabled: false},
             scrollBeyondLastLine: false,
             wordWrap: 'on',
-            quickSuggestions: {other: true, comments: true, strings: true},
+            quickSuggestions: true,
           }}
           onChange={debounce(700, this.handleEditorChange)}
           value={this.props.configEditorString}
