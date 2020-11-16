@@ -16,7 +16,7 @@
     "postcss": "^8.1.6",
     "postcss-loader": "^4.0.4",
     "style-loader": "^2.0.0",
-    "ts-loader": "^8.0.10",
+    "ts-loader": "^8.0.11",
     "typescript": "~4.0.5",
     "vega-lite-dev-config": "^0.14.7",
     "webpack": "^4.44.2",
