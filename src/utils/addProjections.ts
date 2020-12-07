@@ -97,6 +97,6 @@ export default function (vegaProjections: any) {
     'wiechel',
     'winkel3',
   ]) {
-    vegaProjections(p, d3['geo' + p[0].toUpperCase() + p.slice(1)]);
+    vegaProjections(p, d3[`geo${p[0].toUpperCase()}${p.slice(1)}`]);
   }
 }
