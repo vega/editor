@@ -159,7 +159,7 @@ export default class DataViewer extends React.PureComponent<Props, State> {
         <div className="data-viewer-header">
           <Select
             className="data-dropdown"
-            value={{label: selected}}
+            value={{label: selected, value: selected}}
             onChange={this.handleChange}
             options={datasets.map((d) => ({
               label: d,

@@ -172,7 +172,7 @@ class Header extends React.PureComponent<PropsType, State> {
         ? [{value: Mode.VegaLite, label: NAMES[Mode.VegaLite]}]
         : [{value: Mode.Vega, label: NAMES[Mode.Vega]}];
 
-    const value = [{label: `${NAMES[this.props.mode]}`}];
+    const value = {label: `${NAMES[this.props.mode]}`, value: this.props.mode};
 
     const modeSwitcher = (
       <Select
