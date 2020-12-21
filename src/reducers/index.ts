@@ -159,6 +159,7 @@ function parseVega(
   extend: Partial<State> = {}
 ) {
   const currLogger = new LocalLogger();
+  currLogger.level(state.logLevel);
 
   try {
     const spec = JSON.parse(action.spec);
@@ -213,6 +214,7 @@ function parseVegaLite(
   extend: Partial<State> = {}
 ) {
   const currLogger = new LocalLogger();
+  currLogger.level(state.logLevel);
 
   let spec: string;
   let configEditorString: string;
