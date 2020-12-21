@@ -180,7 +180,7 @@ class Editor extends React.PureComponent<Props, State> {
     setView(view);
   }
 
-  public renderVega() {
+  public async renderVega() {
     // Selecting chart for rendering vega
     const chart = this.state.fullscreen ? (this.refs.fchart as any) : (this.refs.chart as any);
     if (!(this.isResponsive().responsiveWidth || this.isResponsive().responsiveHeight)) {
@@ -199,11 +199,12 @@ class Editor extends React.PureComponent<Props, State> {
 
     view.renderer(renderer).initialize(chart);
 
-    view.runAsync().then(
-      () =>
-        // Tooltip needs to be added after initializing the view with `chart`
-        tooltipEnable && vegaTooltip(view)
-    );
+    await view.runAsync();
+
+    if (tooltipEnable) {
+      // Tooltip needs to be added after initializing the view with `chart`
+      vegaTooltip(view);
+    }
   }
 
   public triggerResize() {
