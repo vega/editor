@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
+const monacoLanguages = ['json'];
+
 module.exports = (env, argv) => {
   const config = {
     entry: {
@@ -93,6 +95,11 @@ module.exports = (env, argv) => {
           test: /\.ttf$/,
           use: ['file-loader'],
         },
+        // fixes: https://github.com/microsoft/monaco-editor/issues/2179
+        {
+          test: new RegExp(`basic-languages\/(?!${monacoLanguages.join('|')}|_|monaco|fillers)`),
+          use: 'null-loader',
+        },
       ],
     },
 
@@ -102,7 +109,7 @@ module.exports = (env, argv) => {
         template: 'public/index.html',
       }),
       new MonacoWebpackPlugin({
-        languages: ['json'],
+        languages: monacoLanguages,
       }),
     ],
 
