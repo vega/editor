@@ -1814,11 +1814,12 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-select@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-4.0.2.tgz#fae357370637e0c387c26fda0d0b4853c46ad2e1"
-  integrity sha512-RSsBRVig8pP7ezKCpgxwtMuq5c5eefi5SxXA+ozKmo30UxpwRJrE7RoOjBWy2t9Bbdb4JBamdbW7LAXxutBHuw==
+"@types/react-select@^4.0.11":
+  version "4.0.11"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-4.0.11.tgz#9a9079f52775c7cb63e8db5f095360400ce47933"
+  integrity sha512-3Wi9Tp7j+t/bQL9xzoqDQNRYUlNF8X/TLYvHDxirCDlaK4GIY1shh4CylfqG1jweJOJaX1z7zn50A1uwEtcS9g==
   dependencies:
+    "@emotion/serialize" "^1.0.0"
     "@types/react" "*"
     "@types/react-dom" "*"
     "@types/react-transition-group" "*"
