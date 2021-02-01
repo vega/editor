@@ -49,7 +49,7 @@
     "react-paginate": "^7.0.0",
     "react-portal": "^4.2.1",
     "react-redux": "^7.2.2",
-    "react-resize-detector": "^5.2.0",
+    "react-resize-detector": "^6.3.1",
     "react-router-dom": "^5.2.0",
     "react-select": "^4.0.2",
     "react-split-pane": "^0.1.92",
