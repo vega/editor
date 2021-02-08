@@ -1807,10 +1807,10 @@
     hoist-non-react-statics "^3.3.0"
     redux "^4.0.0"
 
-"@types/react-select@^4.0.11":
-  version "4.0.11"
-  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-4.0.11.tgz#9a9079f52775c7cb63e8db5f095360400ce47933"
-  integrity sha512-3Wi9Tp7j+t/bQL9xzoqDQNRYUlNF8X/TLYvHDxirCDlaK4GIY1shh4CylfqG1jweJOJaX1z7zn50A1uwEtcS9g==
+"@types/react-select@^4.0.13":
+  version "4.0.13"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-4.0.13.tgz#8d2c41a0df7fbf67ab0b995797b0e9b4e6b38cde"
+  integrity sha512-rXYEc565IzzjgQzs9C0YCFxV/QajMZnCHG5QwRQ5BZMfH0Lj90VI/xohawemRkD46IvpaLRbO6xzSquJlgBGUA==
   dependencies:
     "@emotion/serialize" "^1.0.0"
     "@types/react" "*"
