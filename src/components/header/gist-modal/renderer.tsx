@@ -107,7 +107,7 @@ class GistModal extends React.PureComponent<PropsType, State> {
 
     let gistUrl: URL;
 
-    if (url.match(/gist.githubusercontent.com/)) {
+    if (url.match(/gist\.githubusercontent\.com/)) {
       gistUrl = new URL(url, 'https://gist.githubusercontent.com');
       const [revision, filename] = gistUrl.pathname.split('/').slice(4);
       this.setState({
@@ -117,7 +117,7 @@ class GistModal extends React.PureComponent<PropsType, State> {
           revision,
         },
       });
-    } else if (url.match(/gist.github.com/)) {
+    } else if (url.match(/gist\.github\.com/)) {
       gistUrl = new URL(url, 'https://gist.github.com');
     }
     const gistId = gistUrl.pathname.split('/')[2];
