@@ -30,7 +30,7 @@ export const LAYOUT = {
 
 export const SCHEMA = {
   [Mode.Vega]: 'https://vega.github.io/schema/vega/v5.json',
-  [Mode.VegaLite]: 'https://vega.github.io/schema/vega-lite/v4.json',
+  [Mode.VegaLite]: 'https://vega.github.io/schema/vega-lite/v5.json',
 };
 
 export const VEGA_START_SPEC = `{
