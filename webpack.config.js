@@ -123,10 +123,6 @@ module.exports = (env, argv) => {
         ignored: /node_modules/,
       },
     },
-
-    node: {
-      fs: 'empty',
-    },
   };
 
   return config;

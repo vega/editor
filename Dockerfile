@@ -14,7 +14,8 @@ RUN apt-get -y install rsync
 RUN apt-get -y install dos2unix
 
 RUN apt-get -y install ruby-full
-RUN gem install image_optim image_optim_pack
+RUN gem install bundle
+RUN bundle
 RUN curl -L "http://www.jonof.id.au/files/kenutils/pngout-20200115-linux.tar.gz" | tar -xz -C /usr/local/bin --strip-components 2 --wildcards '*/amd64/pngout'
 
 # Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile
