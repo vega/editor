@@ -5,7 +5,6 @@ const config: Config = {
   drivers: ['typescript', 'prettier', 'eslint'],
   settings: {
     react: true,
-    node: false,
   },
 };
 
