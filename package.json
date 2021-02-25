@@ -18,8 +18,8 @@
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.17",
     "typescript": "~4.1.0",
-    "vega-lite-dev-config": "^0.15.1",
-    "webpack": "^5.24.1",
+    "vega-lite-dev-config": "^0.16.6",
+    "webpack": "^5.24.2",
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2"
@@ -59,11 +59,11 @@
     "tslib": "^2.1.0",
     "vega-cli": "5.19.1",
     "vega-datasets": "^2.2.0",
-    "vega-embed": "^6.15.1",
+    "vega-embed": "^6.15.2",
     "vega-lite": "5.0.0",
     "vega-schema-url-parser": "^2.1.0",
-    "vega-themes": "^2.9.1",
-    "vega-tooltip": "^0.25.0"
+    "vega-themes": "^2.10.0",
+    "vega-tooltip": "^0.25.1"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -75,39 +75,6 @@
       "git add"
     ]
   },
-  "beemo": {
-    "module": "vega-lite-dev-config",
-    "drivers": [
-      "typescript",
-      "prettier",
-      "eslint"
-    ],
-    "eslint": {
-      "rules": {
-        "react/no-deprecated": "warn",
-        "react/no-string-refs": "warn",
-        "no-alert": "off",
-        "@typescript-eslint/no-require-imports": "off",
-        "@typescript-eslint/no-var-requires": "off",
-        "react/no-find-dom-node": "warn",
-        "react/no-unescaped-entities": "off",
-        "@typescript-eslint/no-unused-vars": "warn",
-        "no-prototype-builtins": "warn"
-      },
-      "ignore": [
-        "webpack.config.js"
-      ]
-    },
-    "typescript": {
-      "compilerOptions": {
-        "lib": [
-          "esnext",
-          "dom"
-        ],
-        "strict": false
-      }
-    }
-  },
   "scripts": {
     "start": "webpack serve --mode development",
     "build": "yarn clean && yarn vendor && yarn build:only",
@@ -116,9 +83,9 @@
     "postbuild": "rsync --ignore-existing -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
     "vendor": "scripts/vendor.sh",
-    "prepare": "yarn vendor && beemo create-config --react",
+    "prepare": "yarn vendor && beemo create-config",
     "prettierbase": "beemo prettier '{src,public}/**/*.{css,html}'",
-    "eslintbase": "beemo eslint . --react",
+    "eslintbase": "beemo eslint .",
     "format": "yarn eslintbase --fix && yarn prettierbase --write",
     "lint": "yarn eslintbase && yarn prettierbase --check",
     "predeploy": "yarn build",

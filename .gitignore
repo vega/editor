@@ -15,5 +15,6 @@ prettier.config.js
 public/data/
 public/spec/
 stats.json
+tsconfig.json
 yarn-debug.log*
 yarn-error.log*
