@@ -83,6 +83,7 @@
     "postbuild": "rsync --ignore-existing -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
     "vendor": "scripts/vendor.sh",
+    "prepare": "yarn vendor && beemo create-config --react",
     "prettierbase": "beemo prettier '{src,public}/**/*.{css,html}'",
     "eslintbase": "beemo eslint .",
     "format": "yarn eslintbase --fix && yarn prettierbase --write",
