@@ -9061,12 +9061,7 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^4.0.0, typescript@^4.2.2:
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.2.tgz#1450f020618f872db0ea17317d16d8da8ddb8c4c"
-  integrity sha512-tbb+NVrLfnsJy3M59lsDgrzWIflR4d4TIUjz+heUnHZwdF7YsrMTKoRERiIvI2lvBG95dfpLxB21WZhys1bgaQ==
-
-typescript@~4.1.0:
+typescript@^4.0.0, typescript@^4.1.0, typescript@~4.1.0:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.5.tgz#123a3b214aaff3be32926f0d8f1f6e704eb89a72"
   integrity sha512-6OSu9PTIzmn9TCDiovULTnET6BgXtDYL4Gg4szY+cGsc3JP1dQL8qvE8kShTRx1NIw4Q9IBHlwODjkjWEtMUyA==
@@ -9281,7 +9276,7 @@ vega-datasets@^2.2.0:
   resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.2.0.tgz#45a95b8a04707babca9d83a74481157eac7be830"
   integrity sha512-8WgehTGic6fHbQKyxApM29vnwGGeYqgan9xW0jW2d/L3jWngF2qIDkZktt+Y+vUpW2qp9MJWelNSVhplWhL8EA==
 
-vega-embed@^6.15.1:
+vega-embed@^6.15.2:
   version "6.15.2"
   resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.15.2.tgz#9fb8f7d77f202e68d6a10a3775f82b88c8db6aad"
   integrity sha512-/Qk+YdDP8hELbvtGzxnKbNzk1oi33k3qrdwE/bpSQdHoM2UoQoR7lePq6/uEgGQtIMEm34XcMte9/rWkmnUPWA==
@@ -9386,10 +9381,10 @@ vega-label@~1.0.0:
     vega-scenegraph "^4.9.2"
     vega-util "^1.15.2"
 
-vega-lite-dev-config@^0.16.2:
-  version "0.16.2"
-  resolved "https://registry.yarnpkg.com/vega-lite-dev-config/-/vega-lite-dev-config-0.16.2.tgz#60561801306d16e965cf64a2dd3df89ee89496f8"
-  integrity sha512-/5mnBJzDTGiReaSUczv1FEhTq/ZwWfMutUQIQ6LNfvkO7MjRf1GWAl3y6ueUtNdk3d7Yh4esnGmwwaf2LBs+HQ==
+vega-lite-dev-config@^0.16.6:
+  version "0.16.6"
+  resolved "https://registry.yarnpkg.com/vega-lite-dev-config/-/vega-lite-dev-config-0.16.6.tgz#dc55543ee8b1fec4d02a9fb0a4083878bca09ae7"
+  integrity sha512-oVD3BZuMmcPh3ee2z2Ed8SAC1lgaaCjXHlAewVWlAomNKsRgRHLpZnwKRKX9Wk6pVC0oVLKddBB6OcMNbF6MTA==
   dependencies:
     "@babel/core" "^7.13.1"
     "@babel/preset-env" "^7.13.5"
@@ -9412,7 +9407,7 @@ vega-lite-dev-config@^0.16.2:
     eslint-plugin-react "^7.22.0"
     jest "^26.6.3"
     prettier "^2.2.1"
-    typescript "^4.2.2"
+    typescript "^4.1.0"
 
 vega-lite@5.0.0:
   version "5.0.0"
@@ -9523,7 +9518,7 @@ vega-statistics@^1.7.9, vega-statistics@~1.7.9:
   dependencies:
     d3-array "^2.7.1"
 
-vega-themes@^2.9.1:
+vega-themes@^2.10.0, vega-themes@^2.9.1:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/vega-themes/-/vega-themes-2.10.0.tgz#82768b14686e3fbfbdab0e77cb63e12c62b4911e"
   integrity sha512-prePRUKFUFGWniuZsJOfkdb+27Gwrrm82yAlVuU+912kcknsx1DVmMSg2yF79f4jdtqnAFIGycZgxoj13SEIuQ==
@@ -9537,7 +9532,7 @@ vega-time@^2.0.3, vega-time@^2.0.4, vega-time@~2.0.4:
     d3-time "^2.0.0"
     vega-util "^1.15.2"
 
-vega-tooltip@^0.25.0:
+vega-tooltip@^0.25.0, vega-tooltip@^0.25.1:
   version "0.25.1"
   resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.25.1.tgz#cb7e438438649eb46896e7bee6f54e25d25b3c09"
   integrity sha512-ugGwGi2/p3OpB8N15xieuzP8DyV5DreqMWcmJ9zpWT8GlkyKtef4dGRXnvHeHQ+iJFmWrq4oZJ+kLTrdiECjAg==

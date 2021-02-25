@@ -18,7 +18,7 @@
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.17",
     "typescript": "~4.1.0",
-    "vega-lite-dev-config": "^0.16.2",
+    "vega-lite-dev-config": "^0.16.6",
     "webpack": "^5.24.2",
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.5.0",
@@ -59,11 +59,11 @@
     "tslib": "^2.1.0",
     "vega-cli": "5.19.1",
     "vega-datasets": "^2.2.0",
-    "vega-embed": "^6.15.1",
+    "vega-embed": "^6.15.2",
     "vega-lite": "5.0.0",
     "vega-schema-url-parser": "^2.1.0",
-    "vega-themes": "^2.9.1",
-    "vega-tooltip": "^0.25.0"
+    "vega-themes": "^2.10.0",
+    "vega-tooltip": "^0.25.1"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -83,7 +83,7 @@
     "postbuild": "rsync --ignore-existing -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
     "vendor": "scripts/vendor.sh",
-    "prepare": "yarn vendor && beemo create-config --react",
+    "prepare": "yarn vendor && beemo create-config",
     "prettierbase": "beemo prettier '{src,public}/**/*.{css,html}'",
     "eslintbase": "beemo eslint .",
     "format": "yarn eslintbase --fix && yarn prettierbase --write",
