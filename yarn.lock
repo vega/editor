@@ -7568,10 +7568,10 @@ react-monaco-editor@^0.43.0:
     monaco-editor "*"
     prop-types "^15.7.2"
 
-react-paginate@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-7.1.0.tgz#7dc244ad7ca2db59b6eb83472655de3c126be1bc"
-  integrity sha512-OZm87+Qsixw3UlpR57Va6I32wC3SJ9eRsMDi2PjWSdoMVszi3B35A6AcuXB0If/AwxJeEqspYVBJLNf8UScB7g==
+react-paginate@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-7.1.2.tgz#3a94f36a774f9d2e82b877e30474a16088b00a4d"
+  integrity sha512-yAl7taPNIUegS5b6kdNvEMh7iu9T3spuzOCUw+BB0ScTLaC4dfSl686Kl+rVCvkOr67qcbi6T8+tpo4hEVCC1Q==
   dependencies:
     prop-types "^15.6.1"
 
