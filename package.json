@@ -33,7 +33,7 @@
     "ajv-formats": "^1.6.0",
     "d3-array": "^2.12.1",
     "d3-geo-projection": "^3.0.0",
-    "d3-scale": "^3.2.3",
+    "d3-scale": "^3.2.4",
     "file-loader": "^6.2.0",
     "history": "^5.0.0",
     "json-stringify-pretty-compact": "^3.0.0",
