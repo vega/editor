@@ -30,7 +30,7 @@
     "@types/react-redux": "^7.1.16",
     "@types/semver": "^7.3.4",
     "ajv": "^7.2.4",
-    "ajv-formats": "^1.6.0",
+    "ajv-formats": "^2.0.2",
     "d3-array": "^2.12.1",
     "d3-geo-projection": "^3.0.0",
     "d3-scale": "^3.2.4",
