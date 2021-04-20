@@ -62,7 +62,7 @@ The Vega editor supports [React Developer Tools](https://github.com/facebook/rea
 
 ## Building preview images
 
-Build images with `yarn generate-example-images`. For best results, install [image_optim](https://github.com/toy/image_optim).
+Build images with `yarn generate-example-images`.
 
 ## Contributing guidelines
 
@@ -71,4 +71,4 @@ We welcome contributions and promptly review pull requests. For instructions abo
 ## Creating a release on gh-pages
 
 - Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature.
-- Push the tag. Github will automatically deploy the editor.
+- Push the tag. GitHub will automatically deploy the editor.
