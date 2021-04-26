@@ -9077,14 +9077,13 @@ trim-repeated@^1.0.0:
   dependencies:
     escape-string-regexp "^1.0.2"
 
-ts-loader@^9.0.1:
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-9.0.1.tgz#de3daa2057ef949a6bf68d2ff1c1f6a346f2fc93"
-  integrity sha512-b08vtDzkH+dVIjickgNbsOyfTaIDzX1idCxkcrVDAgPpsnL79RJn7Q944k7YTc9yPXRX/iBsAgefMHX/yqxa2g==
+ts-loader@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-9.1.1.tgz#83f598c37e648f3b6b2350bfac6f58f9253d078c"
+  integrity sha512-u91MdIE4rtN/06Q881uUzVeMoYy+CdFXoanCQXVGRubKKxgLjqQ/H9nkDbp6klkiPv3t18KLjZbEofkJodM3ow==
   dependencies:
     chalk "^4.1.0"
     enhanced-resolve "^5.0.0"
-    loader-utils "^2.0.0"
     micromatch "^4.0.0"
     semver "^7.3.4"
 
