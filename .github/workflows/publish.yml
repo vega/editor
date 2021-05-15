@@ -7,9 +7,9 @@ on:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
-
     name: Publish to Github Pages
+
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
