@@ -36,6 +36,7 @@
     "d3-geo-projection": "^3.0.0",
     "d3-scale": "^3.3.0",
     "file-loader": "^6.2.0",
+    "graphviz-react": "1.2.0",
     "history": "^5.0.0",
     "json-stringify-pretty-compact": "^3.0.0",
     "lz-string": "^1.4.4",

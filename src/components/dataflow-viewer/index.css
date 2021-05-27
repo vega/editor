@@ -1,0 +1,5 @@
+.dataflow-pane {
+  overflow: auto;
+  width: 100%;
+  flex: 1;
+}
