@@ -51,7 +51,7 @@
     "react-portal": "^4.2.1",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
-    "react-select": "^4.3.0",
+    "react-select": "^4.3.1",
     "react-split-pane": "^0.1.92",
     "react-tooltip": "^4.2.18",
     "redux": "^4.1.0",
