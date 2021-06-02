@@ -53,7 +53,7 @@
     "react-router-dom": "^5.2.0",
     "react-select": "^4.3.0",
     "react-split-pane": "^0.1.92",
-    "react-tooltip": "^4.2.18",
+    "react-tooltip": "^4.2.21",
     "redux": "^4.1.0",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.3.0",
