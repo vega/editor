@@ -2,15 +2,15 @@ import {Graphviz} from 'graphviz-react';
 import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';
 import {mapStateToProps} from '.';
-import {view2dot} from '../../utils/view2dot';
+import {runtime2dot} from '../../utils/vega2dot';
 import './index.css';
 
 type StoreProps = ReturnType<typeof mapStateToProps>;
 
-export default function DataflowViewer({view}: StoreProps) {
+export default function DataflowViewer({runtime}: StoreProps) {
   const componentRef = useRef();
 
-  const dot = view2dot(view, 0);
+  const dot = runtime2dot(runtime);
   // TODO: Use webworker for graphviz
   // https://github.com/DomParfitt/graphviz-react/issues/37
 
