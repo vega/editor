@@ -852,7 +852,7 @@ function enrichNodeInformation(node, op) {
     node.tooltip =
       (node.tooltip ? node.tooltip + '\\n' : '') +
       op.params.fields
-        .map((fd, i) => fd.$field + (nodeOutput instanceof Array ? ' → ' + nodeOutput[i] : ''))
+        .map((fd, i) => (fd === null ? 'null' : fd.$field + (nodeOutput instanceof Array ? ' → ' + nodeOutput[i] : '')))
         .join(', ') +
       (typeof nodeOutput === 'string' ? ' → ' + nodeOutput : '');
   } else if (nodeOutput) {
