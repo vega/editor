@@ -53,6 +53,7 @@ export const NAVBAR = {
 export const SIDEPANE = {
   Config: 'Config',
   Editor: 'Editor',
+  Dataflow: 'Dataflow',
 } as const;
 
 export const COMPILEDPANE = {

@@ -1,6 +1,5 @@
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {Renderers, Spec} from 'vega';
-import {TopLevelSpec} from 'vega-lite/src/spec';
+import {Renderers, Runtime} from 'vega';
 import {Mode, View} from '../constants';
 
 export const RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER' as const;
@@ -20,6 +19,7 @@ export const SET_RENDERER = 'SET_RENDERER' as const;
 export const SET_VEGA_EXAMPLE = 'SET_VEGA_EXAMPLE' as const;
 export const SET_VEGA_LITE_EXAMPLE = 'SET_VEGA_LITE_EXAMPLE' as const;
 export const SET_VIEW = 'SET_VIEW' as const;
+export const SET_RUNTIME = 'SET_RUNTIME' as const;
 export const SHOW_LOGS = 'SHOW_LOGS' as const;
 export const TOGGLE_AUTO_PARSE = 'TOGGLE_AUTO_PARSE' as const;
 export const TOGGLE_COMPILED_VEGA_SPEC = 'TOGGLE_COMPILED_VEGA_SPEC' as const;
@@ -76,6 +76,7 @@ export type Action =
   | SetRenderer
   | SetBaseUrl
   | SetView
+  | SetRuntime
   | SetDebugPaneSize
   | ShowLogs
   | SetCompiledVegaPaneSize
@@ -257,6 +258,14 @@ export function setView(view: View) {
   };
 }
 export type SetView = ReturnType<typeof setView>;
+
+export function setRuntime(runtime: Runtime) {
+  return {
+    type: SET_RUNTIME,
+    runtime,
+  };
+}
+export type SetRuntime = ReturnType<typeof setRuntime>;
 
 export function setDebugPaneSize(size: number) {
   return {

@@ -9,6 +9,7 @@ import {
   Action,
   CLEAR_CONFIG,
   DEBUG,
+  ERROR,
   EXPORT_VEGA,
   EXTRACT_CONFIG_SPEC,
   INFO,
@@ -16,12 +17,14 @@ import {
   PARSE_SPEC,
   RECEIVE_CURRENT_USER,
   SetConfig,
+  setConfig,
   SetGistVegaLiteSpec,
   SetGistVegaSpec,
   SetVegaExample,
   SetVegaLiteExample,
   SET_BACKGROUND_COLOR,
   SET_BASEURL,
+  SET_COMPILEDPANE_ITEM,
   SET_COMPILED_EDITOR_REFERENCE,
   SET_COMPILED_VEGA_PANE_SIZE,
   SET_CONFIG,
@@ -35,6 +38,7 @@ import {
   SET_MODE,
   SET_MODE_ONLY,
   SET_RENDERER,
+  SET_RUNTIME,
   SET_SCROLL_POSITION,
   SET_SIGNALS,
   SET_VEGA_EXAMPLE,
@@ -52,9 +56,6 @@ import {
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
   WARN,
-  ERROR,
-  SET_COMPILEDPANE_ITEM,
-  setConfig,
 } from '../actions/editor';
 import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
 import {State} from '../constants/default-state';
@@ -436,6 +437,11 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         view: action.view,
+      };
+    case SET_RUNTIME:
+      return {
+        ...state,
+        runtime: action.runtime,
       };
     case SET_DEBUG_PANE_SIZE:
       return {

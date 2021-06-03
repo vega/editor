@@ -125,7 +125,17 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public initView() {
-    const {vegaSpec, vegaLiteSpec, normalizedVegaLiteSpec, config, baseURL, mode, setView, hoverEnable} = this.props;
+    const {
+      vegaSpec,
+      vegaLiteSpec,
+      normalizedVegaLiteSpec,
+      config,
+      baseURL,
+      mode,
+      setView,
+      setRuntime,
+      hoverEnable,
+    } = this.props;
 
     let runtime: vega.Runtime;
     if (mode === Mode.VegaLite) {
@@ -177,6 +187,7 @@ class Editor extends React.PureComponent<Props, State> {
       debug.vegaLiteSpec = debug.normalizedVegaLiteSpec = undefined;
     }
 
+    setRuntime(runtime);
     setView(view);
   }
 

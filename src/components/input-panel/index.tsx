@@ -6,11 +6,12 @@ import * as EditorActions from '../../actions/editor';
 import {LAYOUT, Mode, SIDEPANE} from '../../constants';
 import {State} from '../../constants/default-state';
 import ConfigEditor from '../config-editor';
+import DataflowEditor from '../dataflow-editor';
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
+import './index.css';
 import SpecEditor from './spec-editor';
 import SpecEditorHeader from './spec-editor-header';
-import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -56,6 +57,14 @@ class InputPanel extends React.PureComponent<Props> {
           }}
         >
           <ConfigEditor key="configEditor" />
+        </div>
+        <div
+          style={{
+            height: 'calc(100% - 30px)', // - header
+            display: this.props.sidePaneItem === SIDEPANE.Dataflow ? '' : 'none',
+          }}
+        >
+          <DataflowEditor key="dataflowEditor" />
         </div>
       </div>,
       this.props.compiledVegaSpec ? (
