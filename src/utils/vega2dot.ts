@@ -1,7 +1,7 @@
-import {Runtime} from 'vega';
+import {Runtime} from 'vega-typings';
 
 type Node = {
-  id: number;
+  id: number | string;
   type: string;
   value: any;
   tooltip: string;
@@ -248,18 +248,18 @@ function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
       tooltip: '',
     };
     if (markTypes[op.type]) node.isMark = true;
-    if (op.signal) {
+    if ('signal' in op) {
       node.signal = op.signal;
       node.tooltip = escapeDotString(JSON.stringify(op.value));
     }
-    if (op.scale) node.scale = op.scale;
+    if ('scale' in op) node.scale = op.scale;
     if (op.type === 'collect' && op.data) {
       node.data = Object.keys(op.data)[0];
       if (op.value && op.value.$ingest instanceof Array) {
         node.tooltip = op.value.$ingest.length + ' data rows';
       }
     }
-    if (op.root) {
+    if ('root' in op) {
       node.root = true;
     }
     enrichNodeInformation(node, op);
@@ -277,8 +277,8 @@ function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
       value: op,
       tooltip: '',
     };
-    if (op.type) node.event = op.source + ':' + op.type;
-    if (op.filter) node.tooltip = op.filter.code;
+    if ('type' in op) node.event = op.source + ':' + op.type;
+    if ('filter' in op) node.tooltip = op.filter.code;
     nodes.push(node);
   });
 
