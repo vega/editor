@@ -1,3 +1,24 @@
+import {Runtime} from 'vega';
+
+type Node = {
+  id: number;
+  type: string;
+  value: any;
+  tooltip: string;
+  isMark: boolean;
+  signal: string | undefined;
+  scale: string | undefined;
+  data: string | undefined;
+  root: boolean;
+  event: string;
+};
+
+type Edge = {
+  source: number;
+  target: number;
+  param: string;
+};
+
 const markTypes = {
   datajoin: 1,
   encode: 1,
@@ -9,7 +30,7 @@ const markTypes = {
   viewlayout: 1,
 };
 
-function nodeLabel(node) {
+function nodeLabel(node: Node) {
   return node.signal
     ? node.signal
     : node.scale
@@ -23,7 +44,7 @@ function nodeLabel(node) {
     : node.type;
 }
 
-function nodeFillColor(node, stamp) {
+function nodeFillColor(node: Node, stamp?: number) {
   return stamp && node.value.stamp < stamp
     ? '#ffffff'
     : node.signal
@@ -41,17 +62,16 @@ function nodeFillColor(node, stamp) {
     : '#ffffff';
 }
 
-function nodeColor(node, stamp) {
+function nodeColor(node: Node, stamp?: number) {
   return stamp && node.value.stamp < stamp ? '#dddddd' : '#000000';
 }
 
-function nodeFontColor(node, stamp) {
+function nodeFontColor(node: Node, stamp?: number) {
   return stamp && node.value.stamp < stamp ? '#cccccc' : '#000000';
 }
 
-function edgeColor(edge, nodes, stamp) {
-  const n = edge.nodes;
-  return stamp && nodes[n[0]].value.stamp < stamp
+function edgeColor(edge: Edge, nodes: Node[], stamp?: number) {
+  return stamp && nodes[edge.source].value.stamp < stamp
     ? '#dddddd'
     : edge.param !== 'pulse'
     ? edge.param.startsWith('$$')
@@ -60,35 +80,25 @@ function edgeColor(edge, nodes, stamp) {
     : '#000000';
 }
 
-function edgeLabelColor(edge, nodes, stamp) {
-  const n = edge.nodes;
-  return stamp && nodes[n[0]].value.stamp < stamp ? '#dddddd' : '#000000';
+function edgeLabelColor(edge: Edge, nodes: Node[], stamp?: number) {
+  return stamp && nodes[edge.source].value.stamp < stamp ? '#dddddd' : '#000000';
 }
 
-function escapeDotString(string) {
+function escapeDotString(string: string): string {
   return string
     ? string
         .replace(/\[/g, '\\[')
         .replace(/\]/g, '\\]')
         .replace(/\{/g, '\\{')
         .replace(/\}/g, '\\}')
-        .replace(/\"/g, '\\"')
+        .replace(/"/g, '\\"')
     : '';
 }
 
-/**
- *
- * @param {any} obj
- * @param {string} prefix
- * @returns {[{
- *  path: string,
- *  ref: number
- * }]}
- */
-function findRefsInObject(obj, prefix = '') {
+function findRefsInObject(obj: any, prefix = ''): {path: string; ref: number}[] {
   let result = [];
   if (obj && typeof obj === 'object') {
-    for (let key in obj) {
+    for (const key in obj) {
       if (key === 'subflow') continue;
       if (obj[key] && obj[key].$ref !== undefined) {
         result.push({path: prefix + key, ref: obj[key].$ref});
@@ -147,20 +157,20 @@ function getNodeOutputOrDefault(op) {
     return op.params.as
       ? op.params.as
       : op.params.ops
-      ? op.params.ops.map((op, i) => op + (op.params.fields[i] ? '_' + op.params.fields[i] : ''))
+      ? op.params.ops.map((o: any, i: number) => o + (op.params.fields[i] ? '_' + op.params.fields[i] : ''))
       : undefined;
   }
   return op.params.as ? escapeDotString(JSON.stringify(op.params.as)) : undefined;
 }
 
-function enrichNodeInformation(node, op) {
+function enrichNodeInformation(node: Partial<Node>, op) {
   if (op.type === 'mark') {
     node.tooltip = op.params.markdef.marktype + (op.params.markdef.name ? ` \\"${op.params.markdef.name}\\"` : '');
   }
   if (op.type === 'encode' && op.params.encoders) {
     node.tooltip = escapeDotString(
       Object.entries(op.params.encoders.$encode)
-        .map(([k, v]) => {
+        .map(([k, v]: [string, any]) => {
           return `${k}: ${JSON.stringify(v.$fields)} → ${JSON.stringify(v.$output)}`;
         })
         .join('\\n')
@@ -226,34 +236,12 @@ function enrichNodeInformation(node, op) {
   }
 }
 
-/**
- *
- * @param {vega.Runtime} dataflow
- * @returns {[
- *  {
- *    id: number,
- *    type: string,
- *    value: any,
- *    tooltip: string,
- *    isMark: boolean,
- *    signal: string | undefined,
- *    scale: string | undefined,
- *    data: string | undefined,
- *    root: boolean
- *  }[],
- *  {
- *    source: number,
- *    target: number,
- *    param: string
- *  }[]
- * ]}
- */
-function buildGraph(dataflow) {
+function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
   let nodes = [];
   let edges = [];
 
   dataflow.operators.forEach((op) => {
-    const node = {
+    const node: Partial<Node> & Pick<Node, 'id' | 'type' | 'value'> = {
       id: op.id,
       type: op.type,
       value: op,
@@ -283,7 +271,7 @@ function buildGraph(dataflow) {
   });
 
   dataflow.streams.forEach((op) => {
-    const node = {
+    const node: Partial<Node> = {
       id: op.id,
       type: 'eventstream',
       value: op,
@@ -307,8 +295,8 @@ function buildGraph(dataflow) {
         if (
           src.path === 'pulse' &&
           node.type === 'collect' &&
-          nodes.find((node) => node.id === src.ref) &&
-          nodes.find((node) => node.id === src.ref).type === 'datajoin'
+          nodes.find((n) => n.id === src.ref) &&
+          nodes.find((n) => n.id === src.ref).type === 'datajoin'
         ) {
           node.isMark = true;
         }
@@ -363,55 +351,55 @@ function buildGraph(dataflow) {
   return [nodes, edges];
 }
 
-function NEList2Dot([nodes, edges]) {
+function NEList2Dot([nodes, edges]: [Node[], Edge[]]): string {
   return `digraph {
-     rankdir = LR;
-     node [style=filled];
-     ${nodes
-       .map((node) => {
-         return (
-           node.id +
-           ' [label="' +
-           nodeLabel(node) +
-           (node.tooltip ? '\\n' + node.tooltip : '') +
-           '"]' +
-           ' [color="' +
-           nodeColor(node) +
-           '"]' +
-           ' [fillcolor="' +
-           nodeFillColor(node) +
-           '"]' +
-           ' [fontcolor="' +
-           nodeFontColor(node) +
-           '"]'
-         );
-       })
-       .join(';\n  ')};
-     ${edges
-       .map((e) => {
-         return (
-           e.source +
-           ' -> ' +
-           e.target +
-           ' [label="' +
-           (e.param === 'pulse' ? '' : e.param.startsWith('$$') ? e.param.slice(2) : e.param) +
-           '"]' +
-           ' [color="' +
-           edgeColor(e) +
-           '"]' +
-           ' [fontcolor="' +
-           edgeLabelColor(e) +
-           '"]' +
-           ' [style="' +
-           (e.param.startsWith('$$') ? 'dashed' : 'solid') +
-           '"]'
-         );
-       })
-       .join(';\n  ')};
-   }`;
+       rankdir = LR;
+       node [style=filled];
+       ${nodes
+         .map((node) => {
+           return (
+             node.id +
+             ' [label="' +
+             nodeLabel(node) +
+             (node.tooltip ? '\\n' + node.tooltip : '') +
+             '"]' +
+             ' [color="' +
+             nodeColor(node) +
+             '"]' +
+             ' [fillcolor="' +
+             nodeFillColor(node) +
+             '"]' +
+             ' [fontcolor="' +
+             nodeFontColor(node) +
+             '"]'
+           );
+         })
+         .join(';\n  ')};
+       ${edges
+         .map((e) => {
+           return (
+             e.source +
+             ' -> ' +
+             e.target +
+             ' [label="' +
+             (e.param === 'pulse' ? '' : e.param.startsWith('$$') ? e.param.slice(2) : e.param) +
+             '"]' +
+             ' [color="' +
+             edgeColor(e, nodes) +
+             '"]' +
+             ' [fontcolor="' +
+             edgeLabelColor(e, nodes) +
+             '"]' +
+             ' [style="' +
+             (e.param.startsWith('$$') ? 'dashed' : 'solid') +
+             '"]'
+           );
+         })
+         .join(';\n  ')};
+     }`;
 }
 
-export function runtime2dot(runtime) {
+export function runtime2dot(runtime: Runtime): string {
   const dataflowGraph = buildGraph(runtime);
   return NEList2Dot(dataflowGraph);
 }
