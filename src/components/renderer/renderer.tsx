@@ -7,7 +7,6 @@ import * as vega from 'vega';
 import {Config as VgConfig} from 'vega';
 import {deepEqual} from 'vega-lite';
 import vegaTooltip from 'vega-tooltip';
-import {expressionInterpreter} from 'vega-interpreter';
 import {mapDispatchToProps, mapStateToProps} from '.';
 import {KEYCODES, Mode} from '../../constants';
 import addProjections from '../../utils/addProjections';
@@ -139,12 +138,11 @@ class Editor extends React.PureComponent<Props, State> {
     } = this.props;
 
     let runtime: vega.Runtime;
-    const parseConfig = {ast: true};
     if (mode === Mode.VegaLite) {
       // In vl mode, we compile Vega-Lite spec along with config to Vega spec
-      runtime = vega.parse(vegaSpec, null, parseConfig);
+      runtime = vega.parse(vegaSpec);
     } else {
-      runtime = vega.parse(vegaSpec, config as VgConfig, parseConfig);
+      runtime = vega.parse(vegaSpec, config as VgConfig);
     }
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
@@ -173,7 +171,6 @@ class Editor extends React.PureComponent<Props, State> {
     const view = new vega.View(runtime, {
       hover,
       loader,
-      expr: expressionInterpreter,
     });
 
     (view as any).logger(dispatchingLogger);
