@@ -282,6 +282,11 @@ function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
     if ('stream' in op) {
       edges.push({source: op.stream, target: op.id, param: 'pulse'});
     }
+    if ('between' in op) {
+      const [before, after] = op.between;
+      edges.push({source: before, target: op.id, param: 'pulse'});
+      edges.push({source: after, target: op.id, param: 'pulse'});
+    }
     if ('merge' in op) {
       op.merge.forEach((source) => {
         edges.push({source: source, target: op.id, param: 'pulse'});
