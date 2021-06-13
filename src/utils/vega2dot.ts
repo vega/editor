@@ -279,6 +279,14 @@ function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
     };
     if ('type' in op) node.event = op.source + ':' + op.type;
     if ('filter' in op) node.tooltip = op.filter.code;
+    if ('stream' in op) {
+      edges.push({source: op.stream, target: op.id, param: 'pulse'});
+    }
+    if ('merge' in op) {
+      op.merge.forEach((source) => {
+        edges.push({source: source, target: op.id, param: 'pulse'});
+      });
+    }
     nodes.push(node);
   });
 
@@ -301,9 +309,6 @@ function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
           node.isMark = true;
         }
       });
-    }
-    if (op.stream) {
-      edges.push({source: op.stream, target: op.id, param: 'pulse'});
     }
   });
 
