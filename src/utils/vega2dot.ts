@@ -277,19 +277,31 @@ function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
       value: op,
       tooltip: '',
     };
-    if ('type' in op) node.event = op.source + ':' + op.type;
-    if ('filter' in op) node.tooltip = op.filter.code;
+    node.event =
+      'type' in op ? `${op.source}:${op.type}` : 'merge' in op ? 'merge' : 'stream' in op ? 'stream' : (null as never);
+
+    node.tooltip = Object.entries({
+      filter: op.filter?.code,
+      throttle: op.throttle,
+      debounce: op.debounce,
+      consume: op.consume,
+    })
+      .filter(([k, v]) => v)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join('\n');
+
     if ('stream' in op) {
-      edges.push({source: op.stream, target: op.id, param: 'pulse'});
+      edges.push({source: op.stream, target: op.id, param: 'stream'});
     }
     if ('between' in op) {
       const [before, after] = op.between;
-      edges.push({source: before, target: op.id, param: 'pulse'});
-      edges.push({source: after, target: op.id, param: 'pulse'});
+
+      edges.push({source: before, target: op.id, param: 'between[0]'});
+      edges.push({source: after, target: op.id, param: 'between[1]'});
     }
     if ('merge' in op) {
       op.merge.forEach((source) => {
-        edges.push({source: source, target: op.id, param: 'pulse'});
+        edges.push({source: source, target: op.id, param: 'merge'});
       });
     }
     nodes.push(node);
@@ -317,19 +329,20 @@ function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
     }
   });
 
-  dataflow.updates.forEach((update) => {
-    if (update.update && update.update.$expr)
+  dataflow.updates.forEach(({target, source, update}) => {
+    if (typeof update === 'object' && '$expr' in update) {
+      const sourceID = typeof source === 'object' ? source.$ref : source;
       edges.push({
-        source: update.source.$ref === undefined ? update.source : update.source.$ref,
-        target: update.target.$ref === undefined ? update.target : update.target.$ref,
-        param: escapeDotString(update.update.$expr.code),
+        source: sourceID,
+        // If the target is an expression, don't save an ID for it
+        target: typeof target === 'object' ? undefined : target,
+        param: escapeDotString(update.$expr.code),
       });
-    if (update.update && update.update.$params) {
-      const params = findRefsInObject(update.update.$params);
+      const params = findRefsInObject(update.$params);
       params.forEach((src) =>
         edges.push({
           source: src.ref,
-          target: update.source.$ref === undefined ? update.source : update.source.$ref,
+          target: sourceID,
           param: escapeDotString(src.path),
         })
       );
