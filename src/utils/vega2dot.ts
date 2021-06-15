@@ -281,15 +281,17 @@ function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
     node.event =
       'type' in op ? `${op.source}:${op.type}` : 'merge' in op ? 'merge' : 'stream' in op ? 'stream' : (null as never);
 
-    node.tooltip = Object.entries({
-      filter: op.filter?.code,
-      throttle: op.throttle,
-      debounce: op.debounce,
-      consume: op.consume,
-    })
-      .filter(([k, v]) => v)
-      .map(([k, v]) => `${k}: ${v}`)
-      .join('\n');
+    node.tooltip = escapeDotString(
+      Object.entries({
+        filter: op.filter?.code,
+        throttle: op.throttle,
+        debounce: op.debounce,
+        consume: op.consume,
+      })
+        .filter(([k, v]) => v)
+        .map(([k, v]) => `${k}: ${v}`)
+        .join('\n')
+    );
 
     if ('stream' in op) {
       edges.push({source: op.stream, target: op.id, param: 'stream'});
@@ -331,23 +333,43 @@ function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
   });
 
   dataflow.updates.forEach(({target, source, update}) => {
+    // Adds an extra node for each update to represent the value
+    const sourceID = typeof source === 'object' ? source.$ref : source;
+
+    // TODO: Make sure unique
+    const updateID = `${sourceID}:${target}`;
+
+    let tooltip: string;
     if (typeof update === 'object' && '$expr' in update) {
-      const sourceID = typeof source === 'object' ? source.$ref : source;
-      edges.push({
-        source: sourceID,
-        // If the target is an expression, don't save an ID for it
-        target: typeof target === 'object' ? undefined : target,
-        param: escapeDotString(update.$expr.code),
-      });
-      const params = findRefsInObject(update.$params);
-      params.forEach((src) =>
+      tooltip = update.$expr.code;
+      // If this update is an expression, add edges for that
+      for (const [signalName, ref] of Object.entries(update?.$params)) {
         edges.push({
-          source: src.ref,
-          target: sourceID,
-          param: escapeDotString(src.path),
-        })
-      );
+          source: ref.$ref,
+          target: updateID,
+          param: escapeDotString(signalName),
+        });
+      }
+    } else {
+      tooltip = JSON.stringify(update);
     }
+
+    nodes.push({
+      id: updateID,
+      type: 'update',
+      tooltip: escapeDotString(tooltip),
+    });
+
+    edges.push({
+      source: sourceID,
+      target: updateID,
+      param: 'pulse',
+    });
+    edges.push({
+      source: updateID,
+      target,
+      param: 'pulse',
+    });
   });
 
   // assuming no more than 10k nodes in dataflow
