@@ -1,4 +1,5 @@
 import {Runtime} from 'vega-typings';
+import {Entry} from '../../../vega/packages/vega-typings/types/runtime/runtime';
 
 type Node = {
   id: number | string;
@@ -112,7 +113,7 @@ function findRefsInObject(obj: any, prefix = ''): {path: string; ref: number}[] 
 
 const concatType = ['aggregate', 'joinaggregate', 'window'];
 
-function getNodeOutputOrDefault(op) {
+function getNodeOutputOrDefault(op: Entry) {
   if (!op.params) return undefined;
   // Extracted from https://vega.github.io/vega/docs/transforms/
   const defaultMap = {
@@ -163,7 +164,7 @@ function getNodeOutputOrDefault(op) {
   return op.params.as ? escapeDotString(JSON.stringify(op.params.as)) : undefined;
 }
 
-function enrichNodeInformation(node: Partial<Node>, op) {
+function enrichNodeInformation(node: Partial<Node>, op: Entry) {
   if (op.type === 'mark') {
     node.tooltip = op.params.markdef.marktype + (op.params.markdef.name ? ` \\"${op.params.markdef.name}\\"` : '');
   }
@@ -204,7 +205,7 @@ function enrichNodeInformation(node: Partial<Node>, op) {
       ' → ' +
       normalizeDR('range');
   }
-  if (concatType.includes(op.type) && op.params) {
+  if (concatType.includes(op.type) && op.params && op.params?.groupby) {
     node.tooltip =
       op.params.groupby instanceof Array
         ? op.params.groupby.map((gp) => gp.$field).join(', ') + (!op.params.fields ? ' → count' : '')
