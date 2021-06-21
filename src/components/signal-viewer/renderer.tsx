@@ -153,7 +153,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
         isHovered: false,
       },
       () => {
-        setImmediate(() =>
+        Promise.resolve().then(() =>
           this.setState({
             // remove the maskListener
             maskListener: false,
