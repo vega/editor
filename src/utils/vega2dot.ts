@@ -1,451 +1,229 @@
 import {Runtime} from 'vega-typings';
-import {Entry} from '../../../vega/packages/vega-typings/types/runtime/runtime';
+import {
+  Binding,
+  BuiltinParameter,
+  ID,
+  ObjectOrAny,
+  Operator,
+  Parameter,
+  Stream,
+  Subflow,
+  Update,
+} from 'vega-typings/types/runtime/runtime';
 
-type Node = {
-  id: number | string;
-  type: string;
-  value: any;
-  tooltip: string;
-  isMark: boolean;
-  signal: string | undefined;
-  scale: string | undefined;
-  data: string | undefined;
-  root: boolean;
-  event: string;
+export const nodeTypes = ['binding', 'stream', 'update', 'operator'] as const;
+
+export class Graph {
+  // Mapping from graph ID to node
+  nodes: Record<ID, Node> = {};
+  edges: Edge[] = [];
+
+  constructor(dataflow: Runtime) {
+    dataflow.bindings.forEach(this.addBinding.bind(this));
+    this.addFlow(dataflow);
+  }
+
+  private addFlow({streams, operators, updates}: Subflow, parent?: ID): void {
+    streams.forEach((s) => this.addStream(s, parent));
+    operators.forEach((o) => this.addOperator(o, parent));
+    updates.forEach((u, i) => this.addUpdate(u, i, parent));
+  }
+
+  private addOperator({id, type, params, ...rest}: Operator, parent?: ID): void {
+    const {params: nodeParams} = this.node('operator', id, parent, type);
+
+    // Don't show metadata
+    delete rest['metadata'];
+    // Refs is always null
+    delete rest['refs'];
+
+    if ('update' in rest) {
+      nodeParams.update = rest.update.code;
+      delete rest['update'];
+    }
+    if (rest.parent !== undefined) {
+      this.edge(rest.parent.$ref, id, 'parent');
+      delete rest['parent'];
+    }
+    // If we have a node for the signal, it was added as a binding
+    // in which case, add edge from that
+    if (rest.signal !== undefined) {
+      if (rest.signal in this.nodes) {
+        this.edge(rest.signal, id, 'signal');
+      } else {
+        nodeParams['signal'] = rest.signal;
+      }
+      delete rest['signal'];
+    }
+    for (const [k, v] of Object.entries(params ?? {})) {
+      if (v === undefined) {
+        continue;
+      }
+      if (Array.isArray(v)) {
+        const added = new Set<number>();
+        for (const [i, vI] of v.entries()) {
+          if (this.addOperatorParameter(id, nodeParams, `${k}[${i}]`, vI)) {
+            added.add(i);
+          }
+        }
+        // If we didn't add any operators, then add them all as one array
+        if (added.size === 0) {
+          nodeParams[k] = JSON.stringify(v);
+          continue;
+        }
+        // otherwise add all that aren't added
+        for (const [i, vI] of v.entries()) {
+          if (!added.has(i)) {
+            nodeParams[`${k}[${i}]`] = JSON.stringify(vI);
+          }
+        }
+        continue;
+      }
+      if (!this.addOperatorParameter(id, nodeParams, k, v)) {
+        nodeParams[k] = JSON.stringify(v);
+      }
+    }
+    for (const [k, v] of Object.entries(rest)) {
+      if (v === undefined) {
+        continue;
+      }
+      nodeParams[k] = JSON.stringify(v);
+    }
+  }
+
+  /**
+   * Adds a parameter, returning whether it was added or not
+   */
+  private addOperatorParameter(
+    id: ID,
+    params: Node['params'],
+    k: string,
+    v: Parameter | ObjectOrAny<BuiltinParameter>
+  ): boolean {
+    if (typeof v !== 'object') {
+      return false;
+    }
+    if (v === null) {
+      return false;
+    }
+    if ('$ref' in v) {
+      this.edge(v.$ref, id, k);
+    } else if ('$subflow' in v) {
+      this.addFlow(v.$subflow, id);
+    } else if ('$expr' in v) {
+      params['k'] = v.$expr.code;
+      for (const [label, {$ref}] of Object.entries(v.$params)) {
+        this.edge($ref, id, `${k}.${label}`);
+      }
+    } else if ('$encode' in v) {
+      // Turn an encode into a nested graph, assuming there is only one encode per operation
+      // Assumes that the marktype is the same in all stages
+
+      const addedChannels = new Set<string>();
+      for (const [stage, {$expr}] of Object.entries(v.$encode)) {
+        params[`Encode Mark Type`] = $expr.marktype;
+
+        for (const [channel, {code}] of Object.entries($expr.channels)) {
+          const exprID = `${id}-${stage}-${channel}`;
+          this.node('operator', exprID, id, code);
+          const channelID = `${id}-channel-${channel}`;
+          this.edge(exprID, channelID, stage);
+          if (!addedChannels.has(channel)) {
+            addedChannels.add(channel);
+            this.node('operator', channelID, id, channel);
+          }
+        }
+      }
+    } else {
+      return false;
+    }
+    return true;
+  }
+
+  private addUpdate({source, target, update, options}: Update, index: number, parent?: ID): void {
+    // ID updates by index
+    const id = `update-${parent || 'root'}.${index}`;
+    const node = this.node('update', id, parent);
+    if (options?.force) {
+      node.params.force = 'true';
+    }
+    if (update && typeof update === 'object' && '$expr' in update) {
+      node.label = update.$expr.code;
+      for (const [k, v] of Object.entries(update.$params ?? {})) {
+        this.edge(v.$ref, id, k);
+      }
+    } else {
+      node.label = JSON.stringify(update);
+    }
+    this.edge(typeof source === 'object' ? source.$ref : source, id);
+    this.edge(id, target);
+  }
+  private addBinding({signal, ...rest}: Binding) {
+    this.node(
+      'binding',
+      signal,
+      undefined,
+      signal,
+      Object.fromEntries(Object.entries(rest).map(([k, v]) => [k, JSON.stringify(v)]))
+    );
+  }
+
+  private addStream(stream: Stream, parent?: ID) {
+    const node = this.node('stream', stream.id, parent);
+
+    if ('stream' in stream) {
+      this.edge(stream.stream, stream.id);
+    } else if ('merge' in stream) {
+      node.label = 'merge';
+      stream.merge.forEach((from) => {
+        this.edge(from, stream.id);
+      });
+    } else {
+      node.label = `${stream.source}:${stream.type}`;
+    }
+    if ('between' in stream) {
+      const [before, after] = stream.between;
+
+      this.edge(before, stream.id, 'after', 'light');
+      this.edge(after, stream.id, 'before', 'light');
+    }
+    if (stream.consume) {
+      node.params.consume = 'true';
+    }
+    if (stream.debounce) {
+      node.params.debounce = stream.debounce.toString();
+    }
+    if (stream.throttle) {
+      node.params.throttle = stream.throttle.toString();
+    }
+    if (stream.filter) {
+      node.params.filter = stream.filter.code;
+    }
+  }
+  private edge(source: ID, target: ID, label?: string, style?: Edge['style']) {
+    this.edges.push({source, target, label, style});
+  }
+  private node(type: Node['type'], id: ID, parent?: ID, label?: string, params?: Node['params']): Node {
+    if (id in this.nodes) {
+      throw new Error(`Cannot create node with duplicate ID: ${id}`);
+    }
+    return (this.nodes[id] = {type, params: params ?? {}, label, parent});
+  }
+}
+
+export type Node = {
+  type: typeof nodeTypes[number];
+  parent?: ID;
+  // Optional label for node
+  label?: string;
+  // Optional params to display
+  params: Record<string, string>;
 };
 
 type Edge = {
-  source: number;
-  target: number;
-  param: string;
+  source: ID;
+  target: ID;
+  // Optional label to display
+  label?: string;
+  style?: 'light' | 'dark';
 };
-
-const markTypes = {
-  datajoin: 1,
-  encode: 1,
-  mark: 1,
-  bound: 1,
-  overlap: 1,
-  sortitems: 1,
-  render: 1,
-  viewlayout: 1,
-};
-
-function nodeLabel(node: Node) {
-  return node.signal
-    ? node.signal
-    : node.scale
-    ? node.scale
-    : node.root
-    ? 'root'
-    : node.type === 'collect' && node.data
-    ? node.data
-    : node.event
-    ? node.event
-    : node.type;
-}
-
-function nodeFillColor(node: Node, stamp?: number) {
-  return stamp && node.value.stamp < stamp
-    ? '#ffffff'
-    : node.signal
-    ? '#dddddd'
-    : node.scale
-    ? '#ccffcc'
-    : node.data
-    ? '#ffcccc'
-    : node.type === 'axisticks' || node.type === 'legendentries'
-    ? '#ffffcc'
-    : node.type === 'eventstream'
-    ? '#ccffff'
-    : node.isMark || node.root
-    ? '#ccccff'
-    : '#ffffff';
-}
-
-function nodeColor(node: Node, stamp?: number) {
-  return stamp && node.value.stamp < stamp ? '#dddddd' : '#000000';
-}
-
-function nodeFontColor(node: Node, stamp?: number) {
-  return stamp && node.value.stamp < stamp ? '#cccccc' : '#000000';
-}
-
-function edgeColor(edge: Edge, nodes: Node[], stamp?: number) {
-  return stamp && nodes[edge.source].value.stamp < stamp
-    ? '#dddddd'
-    : edge.param !== 'pulse'
-    ? edge.param.startsWith('$$')
-      ? 'cyan'
-      : '#aaaaaa'
-    : '#000000';
-}
-
-function edgeLabelColor(edge: Edge, nodes: Node[], stamp?: number) {
-  return stamp && nodes[edge.source].value.stamp < stamp ? '#dddddd' : '#000000';
-}
-
-function escapeDotString(string: string): string {
-  return string
-    ? string
-        .replace(/\[/g, '\\[')
-        .replace(/\]/g, '\\]')
-        .replace(/\{/g, '\\{')
-        .replace(/\}/g, '\\}')
-        .replace(/"/g, '\\"')
-    : '';
-}
-
-function findRefsInObject(obj: any, prefix = ''): {path: string; ref: number}[] {
-  let result = [];
-  if (obj && typeof obj === 'object') {
-    for (const key in obj) {
-      if (key === 'subflow') continue;
-      if (obj[key] && obj[key].$ref !== undefined) {
-        result.push({path: prefix + key, ref: obj[key].$ref});
-        continue;
-      }
-      result = result.concat(findRefsInObject(obj[key], prefix + key + '.'));
-    }
-  }
-  return result;
-}
-
-const concatType = ['aggregate', 'joinaggregate', 'window'];
-
-function getNodeOutputOrDefault(op: Entry) {
-  if (!op.params) return undefined;
-  // Extracted from https://vega.github.io/vega/docs/transforms/
-  const defaultMap = {
-    bin: 'bin0, bin1',
-    countpattern: 'text, count',
-    cross: 'a, b',
-    density: 'value, density',
-    dotbin: 'bin',
-    fold: 'key, value',
-    kde: 'value, density',
-    quantile: 'prob, value',
-    sequence: 'data',
-    timeunit: 'unit0, unit1',
-    geopath: 'as',
-    geopoint: 'x, y',
-    geoshape: 'shape',
-    heatmap: 'image',
-    isocontour: 'contour',
-    kde2d: 'grid',
-    force: 'x, y, vx, vy',
-    label: 'x, y, opacity, align, baseline',
-    linkpath: 'path',
-    pie: 'startAngle, endAngle',
-    stack: 'y0, y1',
-    voronoi: 'path',
-    wordcloud: 'x, y, font, fontSize, fontStyle, fontWeight, angle',
-    pack: 'x, y, r, depth, children',
-    partition: 'x0, y0, x1, y1, depth, children',
-    tree: 'x, y, depth, children',
-    treemap: 'x0, y0, x1, y1, depth, children',
-  };
-  if (op.type in defaultMap) {
-    return op.params.as
-      ? op.params.as instanceof Array
-        ? op.params.as.join(', ')
-        : typeof op.params.as === 'string'
-        ? op.params.as
-        : escapeDotString(JSON.stringify(op.params.as))
-      : defaultMap[op.type];
-  }
-  if (concatType.includes(op.type)) {
-    return op.params.as
-      ? op.params.as
-      : op.params.ops
-      ? op.params.ops.map((o: any, i: number) => o + (op.params.fields[i] ? '_' + op.params.fields[i] : ''))
-      : undefined;
-  }
-  return op.params.as ? escapeDotString(JSON.stringify(op.params.as)) : undefined;
-}
-
-function enrichNodeInformation(node: Partial<Node>, op: Entry) {
-  if (op.type === 'mark') {
-    node.tooltip = op.params.markdef.marktype + (op.params.markdef.name ? ` \\"${op.params.markdef.name}\\"` : '');
-  }
-  if (op.type === 'encode' && op.params.encoders) {
-    node.tooltip = escapeDotString(
-      Object.entries(op.params.encoders.$encode)
-        .map(([k, v]: [string, any]) => {
-          return `${k}: ${JSON.stringify(v.$fields)} → ${JSON.stringify(v.$output)}`;
-        })
-        .join('\\n')
-    );
-  }
-  if (op.type === 'scale') {
-    const params = op.params;
-    const normalizeDR = (key) => {
-      if (params[key] instanceof Array) {
-        return `[${params[key].map((item, idx) => (item.$ref !== undefined ? `${key}.${idx}` : item)).join(', ')}]`;
-      } else if (params[key] && params[key].$ref !== undefined) {
-        return `${key}`;
-      }
-      return `unknown(${key})`;
-    };
-    node.tooltip =
-      [
-        params.type,
-        params.reverse ? 'reverse' : '',
-        params.round ? 'round' : '',
-        params.clamp ? 'clamp' : '',
-        params.nice ? 'nice' : '',
-        params.zero ? 'zero' : '',
-        params.domainImplicit ? 'domainImplicit' : '',
-        params.sort ? 'sort' : '',
-      ]
-        .filter((x) => x)
-        .join(', ') +
-      '\\n' +
-      normalizeDR('domain') +
-      ' → ' +
-      normalizeDR('range');
-  }
-  if (concatType.includes(op.type) && op.params && op.params?.groupby) {
-    node.tooltip =
-      op.params.groupby instanceof Array
-        ? op.params.groupby.map((gp) => gp.$field).join(', ') + (!op.params.fields ? ' → count' : '')
-        : op.params.groupby.$field + (op.params.groupby.$name ? ' → ' + op.params.groupby.$name : '');
-  }
-  if (op.params && op.params.expr) {
-    node.tooltip = (node.tooltip ? node.tooltip + '\\n' : '') + escapeDotString(op.params.expr.$expr.code);
-  }
-  const nodeOutput = getNodeOutputOrDefault(op);
-  if (op.params && op.params.field && op.params.field.$field) {
-    node.tooltip =
-      (node.tooltip ? node.tooltip + '\\n' : '') + op.params.field.$field + (nodeOutput ? ' → ' + nodeOutput : '');
-  } else if (op.params && op.params.fields) {
-    node.tooltip =
-      (node.tooltip ? node.tooltip + '\\n' : '') +
-      op.params.fields
-        .map((fd, i) => (fd === null ? 'null' : fd.$field + (nodeOutput instanceof Array ? ' → ' + nodeOutput[i] : '')))
-        .join(', ') +
-      (typeof nodeOutput === 'string' ? ' → ' + nodeOutput : '');
-  } else if (nodeOutput) {
-    node.tooltip =
-      (node.tooltip ? node.tooltip + '\\n' : '') +
-      ' → ' +
-      (nodeOutput instanceof Array
-        ? nodeOutput.join(', ')
-        : typeof nodeOutput === 'string'
-        ? nodeOutput
-        : escapeDotString(JSON.stringify(nodeOutput)));
-  }
-}
-
-function buildGraph(dataflow: Runtime): [Node[], Edge[]] {
-  let nodes = [];
-  let edges = [];
-
-  dataflow.operators.forEach((op) => {
-    const node: Partial<Node> & Pick<Node, 'id' | 'type' | 'value'> = {
-      id: op.id,
-      type: op.type,
-      value: op,
-      tooltip: '',
-    };
-    if (markTypes[op.type]) node.isMark = true;
-    if ('signal' in op) {
-      node.signal = op.signal;
-      node.tooltip = escapeDotString(JSON.stringify(op.value));
-    }
-    if ('scale' in op) node.scale = op.scale;
-    if (op.type === 'collect' && op.data) {
-      node.data = Object.keys(op.data)[0];
-      if (op.value && op.value.$ingest instanceof Array) {
-        node.tooltip = op.value.$ingest.length + ' data rows';
-      }
-    }
-    if ('root' in op) {
-      node.root = true;
-    }
-    enrichNodeInformation(node, op);
-    nodes.push(node);
-    if (op.type === 'prefacet') {
-      const [n] = buildGraph(op.params.subflow.$subflow);
-      nodes = nodes.concat(n);
-    }
-  });
-
-  dataflow.streams.forEach((op) => {
-    const node: Partial<Node> = {
-      id: op.id,
-      type: 'eventstream',
-      value: op,
-      tooltip: '',
-    };
-    node.event =
-      'type' in op ? `${op.source}:${op.type}` : 'merge' in op ? 'merge' : 'stream' in op ? 'stream' : (null as never);
-
-    node.tooltip = escapeDotString(
-      Object.entries({
-        filter: op.filter?.code,
-        throttle: op.throttle,
-        debounce: op.debounce,
-        consume: op.consume,
-      })
-        .filter(([k, v]) => v)
-        .map(([k, v]) => `${k}: ${v}`)
-        .join('\n')
-    );
-
-    if ('stream' in op) {
-      edges.push({source: op.stream, target: op.id, param: 'stream'});
-    }
-    if ('between' in op) {
-      const [before, after] = op.between;
-
-      edges.push({source: before, target: op.id, param: 'between[0]'});
-      edges.push({source: after, target: op.id, param: 'between[1]'});
-    }
-    if ('merge' in op) {
-      op.merge.forEach((source) => {
-        edges.push({source: source, target: op.id, param: 'merge'});
-      });
-    }
-    nodes.push(node);
-  });
-
-  nodes.forEach((node) => {
-    const op = node.value;
-    if (op.params) {
-      const params = findRefsInObject(op.params);
-      params.forEach((src) => {
-        edges.push({
-          source: src.ref,
-          target: op.id,
-          param: escapeDotString(src.path),
-        });
-        if (
-          src.path === 'pulse' &&
-          node.type === 'collect' &&
-          nodes.find((n) => n.id === src.ref) &&
-          nodes.find((n) => n.id === src.ref).type === 'datajoin'
-        ) {
-          node.isMark = true;
-        }
-      });
-    }
-  });
-
-  dataflow.updates.forEach(({target, source, update}) => {
-    // Adds an extra node for each update to represent the value
-    const sourceID = typeof source === 'object' ? source.$ref : source;
-
-    // TODO: Make sure unique
-    const updateID = `${sourceID}:${target}`;
-
-    let tooltip: string;
-    if (typeof update === 'object' && '$expr' in update) {
-      tooltip = update.$expr.code;
-      // If this update is an expression, add edges for that
-      for (const [signalName, ref] of Object.entries(update?.$params)) {
-        edges.push({
-          source: ref.$ref,
-          target: updateID,
-          param: escapeDotString(signalName),
-        });
-      }
-    } else {
-      tooltip = JSON.stringify(update);
-    }
-
-    nodes.push({
-      id: updateID,
-      type: 'update',
-      tooltip: escapeDotString(tooltip),
-    });
-
-    edges.push({
-      source: sourceID,
-      target: updateID,
-      param: 'pulse',
-    });
-    edges.push({
-      source: updateID,
-      target,
-      param: 'pulse',
-    });
-  });
-
-  // assuming no more than 10k nodes in dataflow
-  nodes = nodes.map((node) => {
-    let id = node.id.toString().split(':');
-    id = id.reduce((p, v) => p * 10000 + parseInt(v), 0);
-    return {
-      ...node,
-      id,
-    };
-  });
-  edges = edges
-    .filter((edge) => edge.source !== edge.target)
-    .map((edge) => {
-      let source = edge.source.toString().split(':');
-      let target = edge.target.toString().split(':');
-      source = source.reduce((p, v) => p * 10000 + parseInt(v), 0);
-      target = target.reduce((p, v) => p * 10000 + parseInt(v), 0);
-      return {
-        ...edge,
-        source,
-        target,
-      };
-    });
-  return [nodes, edges];
-}
-
-function NEList2Dot([nodes, edges]: [Node[], Edge[]]): string {
-  return `digraph {
-       rankdir = LR;
-       node [style=filled];
-       ${nodes
-         .map((node) => {
-           return (
-             node.id +
-             ' [label="' +
-             nodeLabel(node) +
-             (node.tooltip ? '\\n' + node.tooltip : '') +
-             '"]' +
-             ' [color="' +
-             nodeColor(node) +
-             '"]' +
-             ' [fillcolor="' +
-             nodeFillColor(node) +
-             '"]' +
-             ' [fontcolor="' +
-             nodeFontColor(node) +
-             '"]'
-           );
-         })
-         .join(';\n  ')};
-       ${edges
-         .map((e) => {
-           return (
-             e.source +
-             ' -> ' +
-             e.target +
-             ' [label="' +
-             (e.param === 'pulse' ? '' : e.param.startsWith('$$') ? e.param.slice(2) : e.param) +
-             '"]' +
-             ' [color="' +
-             edgeColor(e, nodes) +
-             '"]' +
-             ' [fontcolor="' +
-             edgeLabelColor(e, nodes) +
-             '"]' +
-             ' [style="' +
-             (e.param.startsWith('$$') ? 'dashed' : 'solid') +
-             '"]'
-           );
-         })
-         .join(';\n  ')};
-     }`;
-}
-
-export function runtime2dot(runtime: Runtime): string {
-  const dataflowGraph = buildGraph(runtime);
-  return NEList2Dot(dataflowGraph);
-}

@@ -1,21 +1,30 @@
-import {Graphviz} from 'graphviz-react';
+import {ElementsDefinition} from 'cytoscape';
 import * as React from 'react';
-import {useEffect, useRef, useState} from 'react';
+import {Runtime} from 'vega';
 import {mapStateToProps} from '.';
-import {runtime2dot} from '../../utils/vega2dot';
+import {Graph, nodeTypes} from '../../utils/vega2dot';
 import './index.css';
+import cytoscape from 'cytoscape';
+import elk from 'cytoscape-elk';
+import Cytoscape from 'react-cytoscapejs';
+import {scheme} from 'vega-scale';
+import dagre from 'cytoscape-dagre';
+
+cytoscape.use(elk);
+cytoscape.use(dagre);
 
 type StoreProps = ReturnType<typeof mapStateToProps>;
-
-type State = {
-  error: Error | null;
-};
 
 // Wrap the component so we can catch the errors. We don't use the previously defined
 // error boundary component, since we want to seperate errors in graph generation from
 // errors in spec rendering
-export default class DataflowViewer extends React.Component<StoreProps, State> {
-  state: State = {
+export default class DataflowViewer extends React.Component<
+  StoreProps,
+  {
+    error: Error | null;
+  }
+> {
+  state = {
     error: null,
   };
   public componentDidCatch(error: Error) {
@@ -30,49 +39,135 @@ export default class DataflowViewer extends React.Component<StoreProps, State> {
   }
 }
 
+// https://vega.github.io/vega/docs/schemes/#categorical
+const colorScheme: string[] = scheme('set1');
+
+const style: cytoscape.Stylesheet[] = [
+  {
+    selector: 'node',
+    style: {
+      // Labels
+      'text-wrap': 'wrap',
+      'text-valign': 'center',
+      'text-halign': 'center',
+      'background-opacity': 0,
+      shape: 'rectangle',
+      width: 'label',
+      height: 'label',
+    } as any,
+  },
+  {
+    selector: ':parent',
+    style: {
+      'text-valign': 'top',
+    },
+  },
+  {
+    selector: ':selected',
+    style: {
+      'overlay-opacity': 0.2,
+    },
+  },
+  {
+    selector: 'node.around-selected',
+    style: {
+      'overlay-opacity': 0.1,
+    },
+  },
+  {selector: 'node, edge', css: {'text-outline-width': 5, 'text-outline-color': 'white'}},
+  {
+    selector: 'edge',
+    css: {
+      'target-arrow-shape': 'vee',
+      width: 1,
+      'text-rotation': 'autorotate',
+    },
+  },
+  {
+    selector: 'edge[label]',
+    css: {
+      label: 'data(label)',
+    },
+  },
+  ...nodeTypes.map((t, i) => ({
+    selector: `node[type=${JSON.stringify(t)}]`,
+    style: {color: colorScheme[i]},
+  })),
+];
+
+// https://github.com/cytoscape/cytoscape.js-elk
+const layout = {
+  name: 'elk',
+  nodeDimensionsIncludeLabels: true,
+  fit: true,
+  elk: {
+    algorithm: 'layered',
+    'org.eclipse.elk.direction': 'DOWN',
+    // 'org.eclipse.elk.layered.compaction.postCompaction.strategy': 'EDGE_LENGTH',
+    // https://github.com/kieler/elkjs/issues/44#issuecomment-412283358
+    // 'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
+    // Seems to give better layouts
+    edgeRouting: 'SPLINES',
+  },
+};
+// const layout = {
+//   name: 'dagre',
+//   nodeDimensionsIncludeLabels: true,
+//   fit: true,
+// }
+
 function DataflowViewerInternal({runtime}: StoreProps) {
-  const componentRef = useRef();
+  const elements = React.useMemo(() => runtimeToCytoscape(runtime), [runtime]);
 
-  const dot = runtime2dot(runtime);
-  // TODO: Use webworker for graphviz
-  // https://github.com/DomParfitt/graphviz-react/issues/37
-
-  // Can't set to parent width, so manually get parent container and use this to set
-  // https://github.com/DomParfitt/graphviz-react/issues/11
-  const {width, height} = useContainerDimensions(componentRef);
+  const onCytoscape = React.useCallback((cy: cytoscape.Core) => {
+    cy.on('select', ({target}) => {
+      const aroundSelected = target.successors().add(target.predecessors());
+      aroundSelected.addClass('around-selected');
+      const allSelected = aroundSelected.add(target);
+      cy.fit(allSelected);
+      // const subLayout = allSelected.layout(layout);
+      // subLayout.promiseOn('layoutstop').then(() => cy.fit(allSelected));
+      // (async () => {
+      //   subLayout.run();
+      // })();
+    });
+    cy.on('unselect', () => {
+      cy.elements('.around-selected').removeClass('around-selected');
+      cy.fit();
+      // cy.layout(layout)
+      //   .run()
+      //   .promiseOn('layoutstop')
+      //   .then(() => cy.fit());
+    });
+  }, []);
   return (
-    <div ref={componentRef} className="dataflow-pane">
-      <Graphviz dot={dot} options={{fit: true, zoom: true, width, height}} />
-    </div>
+    <Cytoscape
+      className="dataflow-pane"
+      elements={[...elements.nodes, ...elements.edges]}
+      stylesheet={style}
+      layout={layout}
+      cy={onCytoscape}
+    />
   );
 }
 
-/**
- * From https://stackoverflow.com/a/60978633/907060
- */
-export const useContainerDimensions = (myRef) => {
-  const getDimensions = () => ({
-    width: myRef.current.offsetWidth,
-    height: myRef.current.offsetHeight,
-  });
-
-  const [dimensions, setDimensions] = useState({width: 0, height: 0});
-
-  useEffect(() => {
-    const handleResize = () => {
-      setDimensions(getDimensions());
-    };
-
-    if (myRef.current) {
-      setDimensions(getDimensions());
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [myRef]);
-
-  return dimensions;
-};
+function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
+  const g = new Graph(runtime);
+  return {
+    nodes: Object.entries(g.nodes).map(([id, n]) => ({
+      data: {
+        id,
+        type: n.type,
+        parent: n.parent?.toString(),
+      },
+      style: {
+        // Set label in style instead of based on data to work around
+        // https://github.com/cytoscape/cytoscape.js/issues/2888
+        label: [...[n.label ? [n.label] : []], ...Object.entries(n.params).map(([k, v]) => `${k}: ${v}`)].join('\n'),
+      },
+    })),
+    edges: g.edges.map((e, i) => ({
+      data: {label: e.label, id: `edge:${i}`, source: e.source.toString(), target: e.target.toString(), style: e.style},
+    })),
+  };
+}

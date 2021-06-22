@@ -28,10 +28,14 @@
   "dependencies": {
     "@types/d3": "^6.3.0",
     "@types/react": "^17.0.4",
+    "@types/react-cytoscapejs": "1.2.1",
     "@types/react-redux": "^7.1.16",
     "@types/semver": "^7.3.5",
     "ajv": "^8.2.0",
     "ajv-formats": "^2.0.2",
+    "cytoscape": "3.19.0",
+    "cytoscape-dagre": "2.3.2",
+    "cytoscape-elk": "2.0.2",
     "d3-array": "^2.12.1",
     "d3-geo-projection": "^3.0.0",
     "d3-scale": "^3.3.0",
@@ -45,6 +49,7 @@
     "rc-resize-observer": "^1.0.0",
     "react": "^17.0.2",
     "react-clipboard.js": "^2.0.16",
+    "react-cytoscapejs": "1.2.1",
     "react-dom": "^17.0.2",
     "react-feather": "^2.0.9",
     "react-monaco-editor": "^0.43.0",
@@ -62,10 +67,12 @@
     "vega-cli": "5.20.2",
     "vega-datasets": "^2.2.0",
     "vega-embed": "^6.17.0",
+    "vega-interpreter": "1.0.4",
     "vega-lite": "5.1.0",
     "vega-schema-url-parser": "^2.1.0",
     "vega-themes": "^2.10.0",
-    "vega-tooltip": "^0.25.1"
+    "vega-tooltip": "^0.25.1",
+    "web-worker": "1.0.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
