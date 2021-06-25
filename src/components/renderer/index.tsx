@@ -26,6 +26,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setView: EditorActions.setView,
+      setRuntime: EditorActions.setRuntime,
     },
     dispatch
   );

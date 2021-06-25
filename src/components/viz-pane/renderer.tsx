@@ -1,17 +1,18 @@
 import * as React from 'react';
 import SplitPane from 'react-split-pane';
+import {version as VG_VERSION} from 'vega';
+import {version as VL_VERSION} from 'vega-lite';
+import {version as TOOLTIP_VERSION} from 'vega-tooltip';
 import {mapDispatchToProps, mapStateToProps} from '.';
 import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants';
 import DataViewer from '../data-viewer';
+import DataflowViewer from '../dataflow-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
 import SignalViewer from '../signal-viewer';
 import DebugPaneHeader from './debug-pane-header';
 import './index.css';
-import {version as VG_VERSION} from 'vega';
-import {version as VL_VERSION} from 'vega-lite';
-import {version as TOOLTIP_VERSION} from 'vega-tooltip';
 const pjson = require('../../../package.json');
 
 const defaultState = {
@@ -98,6 +99,8 @@ export default class VizPane extends React.PureComponent<Props, State> {
           return <DataViewer onClickHandler={(header) => this.onClickHandler(header)} />;
         case NAVBAR.SignalViewer:
           return <SignalViewer onClickHandler={(header) => this.onClickHandler(header)} />;
+        case NAVBAR.DataflowViewer:
+          return <DataflowViewer />;
         default:
           return null;
       }

@@ -71,6 +71,20 @@ class DebugPaneHeader extends React.PureComponent<Props> {
               Signal Viewer
             </li>
           )}
+          {error === null && (
+            <li
+              className={navItem === NAVBAR.DataflowViewer ? 'active-tab' : undefined}
+              onClick={(e) => {
+                if (debugPane) {
+                  e.stopPropagation();
+                }
+                showLogs(false);
+                toggleNavbar(NAVBAR.DataflowViewer);
+              }}
+            >
+              Dataflow Viewer
+            </li>
+          )}
         </ul>
         {debugPane ? <ChevronDown /> : <ChevronUp />}
       </div>

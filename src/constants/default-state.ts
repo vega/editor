@@ -1,17 +1,17 @@
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {Renderers, Spec} from 'vega';
+import {Renderers, Runtime, Spec} from 'vega';
 import {Config, vega} from 'vega-embed';
 import {TopLevelSpec as VlSpec} from 'vega-lite';
 import {
+  COMPILEDPANE,
   EDITOR_FOCUS,
+  GistPrivacy,
   LAYOUT,
   Mode,
   NAVBAR,
   SIDEPANE,
   VEGA_LITE_START_SPEC,
   View,
-  GistPrivacy,
-  COMPILEDPANE,
 } from './consts';
 
 export interface State {
@@ -54,6 +54,7 @@ export interface State {
   normalizedVegaLiteSpec: any;
   vegaSpec: Spec;
   view: View;
+  runtime: Runtime;
   errors: string[];
   warns: string[];
   infos: string[];
@@ -103,6 +104,7 @@ export const DEFAULT_STATE: State = {
   normalizedVegaLiteSpec: null,
   vegaSpec: {},
   view: null,
+  runtime: {},
   errors: [],
   warns: [],
   debugs: [],

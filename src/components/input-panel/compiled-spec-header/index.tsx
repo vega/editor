@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor';
-import {State} from '../../../constants/default-state';
 import {COMPILEDPANE} from '../../../constants';
+import {State} from '../../../constants/default-state';
 
 const toggleStyle = {
   cursor: 'pointer',

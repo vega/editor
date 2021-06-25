@@ -47,11 +47,13 @@ export const NAVBAR = {
   DataViewer: 'DataViewer',
   Logs: 'Logs',
   SignalViewer: 'SignalViewer',
+  DataflowViewer: 'DataflowViewer',
 } as const;
 
 export const SIDEPANE = {
   Config: 'Config',
   Editor: 'Editor',
+  Dataflow: 'Dataflow',
 } as const;
 
 export const COMPILEDPANE = {
