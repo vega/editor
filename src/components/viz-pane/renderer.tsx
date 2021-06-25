@@ -66,7 +66,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
       editor.revealRangeInCenter(rangeValue[0].range);
       editor.focus();
       editor.layout();
-      setImmediate(() => {
+      Promise.resolve().then(() => {
         (document.activeElement as HTMLElement).blur();
       });
     }

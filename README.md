@@ -46,7 +46,7 @@ $ docker-compose up
 
 ## Local Testing & Debugging
 
-The editor is useful for testing if you are involved in Vega and Vega-Lite development. To use Vega, Vega-Lite, or Vega Datasets from another directory on your computer, you need to link it. For this, run `yarn link` in the directory of the library that you want to link. Then, in this directory run `yarn link <name of library>`, e.g. `yarn link vega`.
+The editor is useful for testing if you are involved in Vega and Vega-Lite development. To use Vega, Vega-Lite, or Vega Datasets from another directory on your computer, you need to link it. For this, run `yarn link` in the directory of the library that you want to link. Then, in this directory run `yarn link <name of library>`, e.g. `yarn link vega` or `yarn link vega-lite`.
 
 For example, to link Vega, run
 
@@ -54,8 +54,12 @@ For example, to link Vega, run
 cd VEGA_DIR
 yarn link
 
+cd VEGA_LITE_DIR
+yarn link
+
 cd VEGA_EDITOR_DIR
 yarn link vega
+yarn link vega-lite
 ```
 
 The Vega editor supports [React Developer Tools](https://github.com/facebook/react-devtools) and [Redux DevTools](https://github.com/zalmoxisus/redux-devtools-extension).
