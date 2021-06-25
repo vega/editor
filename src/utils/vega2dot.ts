@@ -107,7 +107,7 @@ export class Graph {
       return false;
     }
     if ('$ref' in v) {
-      this.edge(v.$ref, id, k);
+      this.edge(v.$ref, id, k === 'pulse' ? undefined : k);
     } else if ('$subflow' in v) {
       this.addFlow(v.$subflow, id);
     } else if ('$expr' in v) {
@@ -118,22 +118,20 @@ export class Graph {
     } else if ('$encode' in v) {
       // Turn an encode into a nested graph, assuming there is only one encode per operation
       // Assumes that the marktype is the same in all stages
-
-      const addedChannels = new Set<string>();
-      for (const [stage, {$expr}] of Object.entries(v.$encode)) {
-        params[`Encode Mark Type`] = $expr.marktype;
-
-        for (const [channel, {code}] of Object.entries($expr.channels)) {
-          const exprID = `${id}-${stage}-${channel}`;
-          this.node('operator', exprID, id, code);
-          const channelID = `${id}-channel-${channel}`;
-          this.edge(exprID, channelID, stage);
-          if (!addedChannels.has(channel)) {
-            addedChannels.add(channel);
-            this.node('operator', channelID, id, channel);
-          }
-        }
-      }
+      // const addedChannels = new Set<string>();
+      // for (const [stage, {$expr}] of Object.entries(v.$encode)) {
+      //   params[`Encode Mark Type`] = $expr.marktype;
+      //   for (const [channel, {code}] of Object.entries($expr.channels)) {
+      //     const exprID = `${id}-${stage}-${channel}`;
+      //     this.node('operator', exprID, id, code);
+      //     const channelID = `${id}-channel-${channel}`;
+      //     this.edge(exprID, channelID, stage);
+      //     if (!addedChannels.has(channel)) {
+      //       addedChannels.add(channel);
+      //       this.node('operator', channelID, id, channel);
+      //     }
+      //   }
+      // }
     } else {
       return false;
     }
@@ -143,17 +141,21 @@ export class Graph {
   private addUpdate({source, target, update, options}: Update, index: number, parent?: ID): void {
     // ID updates by index
     const id = `update-${parent || 'root'}.${index}`;
-    const node = this.node('update', id, parent);
+    const node = this.node('update', id, parent, 'update');
     if (options?.force) {
       node.params.force = 'true';
     }
     if (update && typeof update === 'object' && '$expr' in update) {
-      node.label = update.$expr.code;
+      node.params['value'] = update.$expr.code;
       for (const [k, v] of Object.entries(update.$params ?? {})) {
+        // If arg was from the target node itself, don't include it to break cycles
+        if (v.$ref === target) {
+          continue;
+        }
         this.edge(v.$ref, id, k);
       }
     } else {
-      node.label = JSON.stringify(update);
+      node.params['value'] = JSON.stringify(update);
     }
     this.edge(typeof source === 'object' ? source.$ref : source, id);
     this.edge(id, target);
@@ -172,6 +174,7 @@ export class Graph {
     const node = this.node('stream', stream.id, parent);
 
     if ('stream' in stream) {
+      // node.label = 'stream'
       this.edge(stream.stream, stream.id);
     } else if ('merge' in stream) {
       node.label = 'merge';

@@ -79,6 +79,7 @@ const style: cytoscape.Stylesheet[] = [
     selector: 'edge',
     css: {
       'target-arrow-shape': 'vee',
+      'curve-style': 'straight',
       width: 1,
       'text-rotation': 'autorotate',
     },
@@ -103,11 +104,11 @@ const layout = {
   elk: {
     algorithm: 'layered',
     'org.eclipse.elk.direction': 'DOWN',
-    // 'org.eclipse.elk.layered.compaction.postCompaction.strategy': 'EDGE_LENGTH',
+    'org.eclipse.elk.layered.compaction.postCompaction.strategy': 'EDGE_LENGTH',
     // https://github.com/kieler/elkjs/issues/44#issuecomment-412283358
-    // 'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
+    'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
     // Seems to give better layouts
-    edgeRouting: 'SPLINES',
+    // edgeRouting: 'SPLINES',
   },
 };
 // const layout = {
@@ -120,24 +121,29 @@ function DataflowViewerInternal({runtime}: StoreProps) {
   const elements = React.useMemo(() => runtimeToCytoscape(runtime), [runtime]);
 
   const onCytoscape = React.useCallback((cy: cytoscape.Core) => {
+    let removed;
     cy.on('select', ({target}) => {
       const aroundSelected = target.successors().add(target.predecessors());
-      aroundSelected.addClass('around-selected');
+      // aroundSelected.addClass('around-selected');
       const allSelected = aroundSelected.add(target);
-      cy.fit(allSelected);
-      // const subLayout = allSelected.layout(layout);
-      // subLayout.promiseOn('layoutstop').then(() => cy.fit(allSelected));
+      const allSelectdAndParents = allSelected.add(allSelected.ancestors());
+      removed = allSelectdAndParents.absoluteComplement();
+      removed.remove();
+      // cy.fit(allSelected);
+      const subLayout = allSelectdAndParents.layout(layout);
+      subLayout.run();
+      subLayout.promiseOn('layoutstop').then(() => allSelectdAndParents.fit());
       // (async () => {
       //   subLayout.run();
       // })();
     });
     cy.on('unselect', () => {
-      cy.elements('.around-selected').removeClass('around-selected');
-      cy.fit();
-      // cy.layout(layout)
-      //   .run()
-      //   .promiseOn('layoutstop')
-      //   .then(() => cy.fit());
+      removed.restore();
+      // cy.fit();
+      cy.layout(layout)
+        .run()
+        .promiseOn('layoutstop')
+        .then(() => cy.fit());
     });
   }, []);
   return (
@@ -163,11 +169,12 @@ function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
       style: {
         // Set label in style instead of based on data to work around
         // https://github.com/cytoscape/cytoscape.js/issues/2888
-        label: [...[n.label ? [n.label] : []], ...Object.entries(n.params).map(([k, v]) => `${k}: ${v}`)].join('\n'),
+        label: [...[n.label ? [n.label] : []]].join('\n') || '...',
+        // ...Object.entries(n.params).map(([k, v]) => `${k}: ${v}`)ß
       },
     })),
     edges: g.edges.map((e, i) => ({
-      data: {label: e.label, id: `edge:${i}`, source: e.source.toString(), target: e.target.toString(), style: e.style},
+      data: {label: e.label, id: `edge:${i}`, source: e.source.toString(), target: e.target.toString()},
     })),
   };
 }
