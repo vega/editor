@@ -1,4 +1,4 @@
-import {ElementsDefinition} from 'cytoscape';
+import {CollectionReturnValue, EdgeCollection, ElementsDefinition, NodeCollection, NodeSingular} from 'cytoscape';
 import * as React from 'react';
 import {Runtime} from 'vega';
 import {mapStateToProps} from '.';
@@ -90,6 +90,22 @@ const style: cytoscape.Stylesheet[] = [
       label: 'data(label)',
     },
   },
+  {
+    selector: 'edge[pulse="true"]',
+    css: {
+      color: 'black',
+      'line-color': 'black',
+      'target-arrow-color': 'black',
+    },
+  },
+  {
+    selector: 'edge[pulse="false"]',
+    css: {
+      color: '#ddd',
+      'line-color': '#ddd',
+      'target-arrow-color': '#ddd',
+    },
+  },
   ...nodeTypes.map((t, i) => ({
     selector: `node[type=${JSON.stringify(t)}]`,
     style: {color: colorScheme[i]},
@@ -108,42 +124,40 @@ const layout = {
     // https://github.com/kieler/elkjs/issues/44#issuecomment-412283358
     'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
     // Seems to give better layouts
-    // edgeRouting: 'SPLINES',
+    // edgeRouting: 'ORTHOGONAL',
+    // 'org.eclipse.elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
   },
 };
-// const layout = {
-//   name: 'dagre',
-//   nodeDimensionsIncludeLabels: true,
-//   fit: true,
-// }
 
 function DataflowViewerInternal({runtime}: StoreProps) {
   const elements = React.useMemo(() => runtimeToCytoscape(runtime), [runtime]);
-
   const onCytoscape = React.useCallback((cy: cytoscape.Core) => {
-    let removed;
-    cy.on('select', ({target}) => {
-      const aroundSelected = target.successors().add(target.predecessors());
-      // aroundSelected.addClass('around-selected');
-      const allSelected = aroundSelected.add(target);
-      const allSelectdAndParents = allSelected.add(allSelected.ancestors());
-      removed = allSelectdAndParents.absoluteComplement();
-      removed.remove();
-      // cy.fit(allSelected);
-      const subLayout = allSelectdAndParents.layout(layout);
-      subLayout.run();
-      subLayout.promiseOn('layoutstop').then(() => allSelectdAndParents.fit());
-      // (async () => {
-      //   subLayout.run();
-      // })();
+    let removed: cytoscape.NodeCollection = null;
+    const restore = () => {
+      if (removed) {
+        removed.restore();
+        removed = null;
+      }
+    };
+    // On select, filter nodes to successors and predecessors of selected and re-layout.
+    cy.on('select', () => {
+      let relatedNodes: cytoscape.NodeCollection;
+      cy.batch(() => {
+        restore();
+        const selectedNodes = cy.elements('node:selected');
+        const selectedEdges = cy.elements('edge:selected');
+
+        relatedNodes = allRelated(cy, selectedNodes, selectedEdges);
+
+        removed = relatedNodes.absoluteComplement();
+        removed.remove();
+      });
+      layoutAndFit(cy, relatedNodes);
     });
+    // On unselect, show all nodes and refit
     cy.on('unselect', () => {
-      removed.restore();
-      // cy.fit();
-      cy.layout(layout)
-        .run()
-        .promiseOn('layoutstop')
-        .then(() => cy.fit());
+      restore();
+      layoutAndFit(cy, cy.elements());
     });
   }, []);
   return (
@@ -155,6 +169,11 @@ function DataflowViewerInternal({runtime}: StoreProps) {
       cy={onCytoscape}
     />
   );
+}
+
+async function layoutAndFit(cy: cytoscape.Core, nodes: cytoscape.NodeCollection) {
+  await nodes.layout(layout).run().promiseOn('layoutstop');
+  cy.fit(nodes);
 }
 
 function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
@@ -169,12 +188,75 @@ function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
       style: {
         // Set label in style instead of based on data to work around
         // https://github.com/cytoscape/cytoscape.js/issues/2888
-        label: [...[n.label ? [n.label] : []]].join('\n') || '...',
-        // ...Object.entries(n.params).map(([k, v]) => `${k}: ${v}`)ß
+        label:
+          // Combine labels with keys and values, with values truncated to reduce node width
+          [...[n.label ? [n.label] : []], ...Object.entries(n.params).map(([k, v]) => `${k}: ${truncate(v, 10)}`)].join(
+            '\n'
+          ) || '...',
       },
     })),
     edges: g.edges.map((e, i) => ({
-      data: {label: e.label, id: `edge:${i}`, source: e.source.toString(), target: e.target.toString()},
+      data: {
+        label: e.label,
+        id: `edge:${i}`,
+        source: e.source.toString(),
+        target: e.target.toString(),
+        pulse: e.pulse.toString(),
+      },
     })),
   };
+}
+
+/**
+ * Returns all related nodes to the input nodes and edges. This includes all ancestor parents and children.
+ *
+ * It treats compound relationships as both parents and children.
+ */
+function allRelated(cy: cytoscape.Core, nodes: NodeCollection, edges: EdgeCollection): CollectionReturnValue {
+  const relatedNodes = (['up', 'down'] as const).flatMap((direction): Array<NodeSingular> => {
+    // Map from ID to node
+    const toProcess = new Map<string, NodeSingular>(
+      nodes.add(direction === 'up' ? edges.sources() : edges.targets()).map((n: NodeSingular) => [n.id(), n])
+    );
+    const processed = new Map<string, NodeSingular>();
+    // Pop off node and all it's parents
+    while (toProcess.size > 0) {
+      const [id, node] = pop(toProcess);
+      processed.set(id, node);
+
+      // Mark the compound node relations as visited
+      // and add their immediate parents to the queue
+      const relatedCompound = node.parents().add(node.children());
+      relatedCompound.forEach((n) => {
+        processed.set(n.id(), n);
+      });
+      const currentNodes = relatedCompound.add(node);
+      (direction === 'up' ? currentNodes.incomers() : currentNodes.outgoers()).forEach((n) => {
+        if (processed.has(n.id())) {
+          return;
+        }
+        toProcess.set(n.id(), n);
+      });
+    }
+    return [...processed.values()];
+  });
+  return cy.collection(relatedNodes);
+}
+/**
+ * Pops the first value from the map, throwing an error if it's empty.
+ */
+function pop<K, V>(m: Map<K, V>): [K, V] {
+  const {done, value} = m[Symbol.iterator]().next();
+  if (done) {
+    throw new Error('Cannot pop from empty map');
+  }
+  m.delete(value[0]);
+  return value;
+}
+
+function truncate(s: string, max: number) {
+  if (s.length > max) {
+    return `${s.substring(0, max - 1)}…`;
+  }
+  return s;
 }

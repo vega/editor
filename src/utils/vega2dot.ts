@@ -107,9 +107,12 @@ export class Graph {
       return false;
     }
     if ('$ref' in v) {
-      this.edge(v.$ref, id, k === 'pulse' ? undefined : k);
+      const pulse = k === 'pulse';
+      this.edge(v.$ref, id, pulse ? undefined : k, pulse);
     } else if ('$subflow' in v) {
       this.addFlow(v.$subflow, id);
+      // Add edge to first node, which is root node and is used to detach the subflow
+      this.edge(id, v.$subflow.operators[0].id, 'root');
     } else if ('$expr' in v) {
       params['k'] = v.$expr.code;
       for (const [label, {$ref}] of Object.entries(v.$params)) {
@@ -157,8 +160,10 @@ export class Graph {
     } else {
       node.params['value'] = JSON.stringify(update);
     }
-    this.edge(typeof source === 'object' ? source.$ref : source, id);
-    this.edge(id, target);
+    this.edge(typeof source === 'object' ? source.$ref : source, id, 'source');
+    // The target edges should be reversed, but doing so adds cycles to the graph.
+    // This way, all edges point into an update, removing any cycles
+    this.edge(target, id, 'target');
   }
   private addBinding({signal, ...rest}: Binding) {
     this.node(
@@ -187,8 +192,8 @@ export class Graph {
     if ('between' in stream) {
       const [before, after] = stream.between;
 
-      this.edge(before, stream.id, 'after', 'light');
-      this.edge(after, stream.id, 'before', 'light');
+      this.edge(before, stream.id, 'after');
+      this.edge(after, stream.id, 'before');
     }
     if (stream.consume) {
       node.params.consume = 'true';
@@ -203,8 +208,8 @@ export class Graph {
       node.params.filter = stream.filter.code;
     }
   }
-  private edge(source: ID, target: ID, label?: string, style?: Edge['style']) {
-    this.edges.push({source, target, label, style});
+  private edge(source: ID, target: ID, label?: string, pulse?: boolean) {
+    this.edges.push({source, target, label, pulse: pulse || false});
   }
   private node(type: Node['type'], id: ID, parent?: ID, label?: string, params?: Node['params']): Node {
     if (id in this.nodes) {
@@ -228,5 +233,5 @@ type Edge = {
   target: ID;
   // Optional label to display
   label?: string;
-  style?: 'light' | 'dark';
+  pulse: boolean;
 };
