@@ -25,6 +25,8 @@ const keyBoardShortcuts = shortcuts.map((shortcut, i) => {
   );
 });
 
+// defined by webpack
+declare const __COMMIT_HASH__: string;
 export const COMMIT_HASH: string = __COMMIT_HASH__ || 'unknown';
 
 const HelpModal = () => {
