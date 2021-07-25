@@ -74,5 +74,4 @@ We welcome contributions and promptly review pull requests. For instructions abo
 
 ## Creating a release on gh-pages
 
-- Create a pull rquest into the `publish` branch. You can create a pull request from [this comparison](https://github.com/vega/editor/compare/publish...master).
-- Merge the pull request. GitHub will automatically deploy the editor.
+Add all changes from master into the `publish` branch with `git checkout publish && git merge master --ff-only`. You can preview the changes in [this comparison](https://github.com/vega/editor/compare/publish...master). GitHub will automatically deploy the editor.
