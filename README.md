@@ -74,5 +74,5 @@ We welcome contributions and promptly review pull requests. For instructions abo
 
 ## Creating a release on gh-pages
 
-- Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature.
-- Push the tag. GitHub will automatically deploy the editor.
+- Create a pull rquest into the `publish` branch. You can create a pull request from [this comparison](https://github.com/vega/editor/compare/publish...master).
+- Merge the pull request. GitHub will automatically deploy the editor.
