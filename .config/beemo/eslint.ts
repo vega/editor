@@ -13,6 +13,7 @@ const config: ESLintConfig = {
     'no-prototype-builtins': 'warn',
   },
   ignore: ['webpack.config.js'],
+  globals: {__COMMIT_HASH__: true},
 };
 
 export default config;

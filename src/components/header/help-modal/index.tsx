@@ -6,7 +6,6 @@ import {version as TOOLTIP_VERSION} from 'vega-tooltip';
 import isMac from '../../../utils/isMac';
 import shortcuts from '../../../utils/keyboardShortcuts';
 import './index.css';
-const pjson = require('../../../../package.json');
 
 // Will generate keyboard shortcuts based on OS
 // 1. Check OS (isMac)
@@ -25,6 +24,8 @@ const keyBoardShortcuts = shortcuts.map((shortcut, i) => {
     </li>
   );
 });
+
+export const COMMIT_HASH: string = __COMMIT_HASH__ || 'unknown';
 
 const HelpModal = () => {
   return (
@@ -48,7 +49,7 @@ const HelpModal = () => {
         Here you can clear the spec, extract or merge the config, or format the specification.
       </p>
       <a
-        href={`https://github.com/vega/editor/issues/new?body=**Vega-Editor ${pjson.version}**`}
+        href={`https://github.com/vega/editor/issues/new?body=**Vega-Editor ${COMMIT_HASH}**`}
         target="_blank"
         rel="noopener noreferrer"
         className="report-button button"
@@ -78,7 +79,7 @@ const HelpModal = () => {
         <li>Vega: {VG_VERSION}</li>
         <li>Vega-Lite: {VL_VERSION}</li>
         <li>Vega-Tooltip: {TOOLTIP_VERSION}</li>
-        <li>Editor: {pjson.version}</li>
+        <li>Editor: {COMMIT_HASH}</li>
       </ul>
     </div>
   );
