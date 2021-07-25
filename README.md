@@ -1,4 +1,4 @@
-# Vega Editor [![Build Status](https://github.com/vega/editor/workflows/Test/badge.svg)](https://github.com/vega/editor/actions)
+# Vega Editor [![Build Status](https://github.com/vega/editor/workflows/Test/badge.svg)](https://github.com/vega/editor/actions) [![Publish](https://github.com/vega/editor/actions/workflows/publish.yml/badge.svg?branch=publish)](https://github.com/vega/editor/actions/workflows/publish.yml)
 
 The **Vega editor** is a web application for authoring and testing [Vega](https://github.com/vega/vega) and [Vega-Lite](https://vega.github.io/vega-lite) visualizations. It includes a number of example specifications that showcase both the visual encodings and interaction techniques. It is deployed at https://vega.github.io/editor/.
 
@@ -74,5 +74,15 @@ We welcome contributions and promptly review pull requests. For instructions abo
 
 ## Creating a release on gh-pages
 
-- Tag a new version with `yarn version`. Pre 1.x, update the minor version if there is a new feature.
-- Push the tag. GitHub will automatically deploy the editor.
+Add all changes from master into the `publish` branch with the following commands:
+
+```
+git checkout master
+git pull
+git checkout publish
+git merge master --ff-only
+git push
+git checkout master
+```
+
+You can preview the changes in [this comparison](https://github.com/vega/editor/compare/publish...master). GitHub will automatically deploy the editor.

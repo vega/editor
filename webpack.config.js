@@ -1,6 +1,9 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+
+let commitHash = require('child_process').execSync('git rev-parse --short HEAD').toString();
 
 module.exports = (env, argv) => {
   const config = {
@@ -97,6 +100,9 @@ module.exports = (env, argv) => {
     },
 
     plugins: [
+      new webpack.DefinePlugin({
+        __COMMIT_HASH__: JSON.stringify(commitHash),
+      }),
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'public/index.html',
