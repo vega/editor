@@ -118,23 +118,6 @@ export class Graph {
       for (const [label, {$ref}] of Object.entries(v.$params)) {
         this.edge($ref, id, `${k}.${label}`);
       }
-    } else if ('$encode' in v) {
-      // Turn an encode into a nested graph, assuming there is only one encode per operation
-      // Assumes that the marktype is the same in all stages
-      // const addedChannels = new Set<string>();
-      // for (const [stage, {$expr}] of Object.entries(v.$encode)) {
-      //   params[`Encode Mark Type`] = $expr.marktype;
-      //   for (const [channel, {code}] of Object.entries($expr.channels)) {
-      //     const exprID = `${id}-${stage}-${channel}`;
-      //     this.node('operator', exprID, id, code);
-      //     const channelID = `${id}-channel-${channel}`;
-      //     this.edge(exprID, channelID, stage);
-      //     if (!addedChannels.has(channel)) {
-      //       addedChannels.add(channel);
-      //       this.node('operator', channelID, id, channel);
-      //     }
-      //   }
-      // }
     } else {
       return false;
     }
