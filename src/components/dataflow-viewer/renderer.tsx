@@ -9,6 +9,7 @@ import elk from 'cytoscape-elk';
 import Cytoscape from 'react-cytoscapejs';
 import {scheme} from 'vega-scale';
 import dagre from 'cytoscape-dagre';
+import {vega} from 'vega-embed';
 
 cytoscape.use(elk);
 cytoscape.use(dagre);
@@ -40,7 +41,7 @@ export default class DataflowViewer extends React.Component<
 }
 
 // https://vega.github.io/vega/docs/schemes/#categorical
-const colorScheme: string[] = scheme('set1');
+const colorScheme: string[] = [...scheme('tableau20'), ...scheme('category20b')];
 
 const style: cytoscape.Stylesheet[] = [
   {
@@ -106,9 +107,10 @@ const style: cytoscape.Stylesheet[] = [
       'target-arrow-color': '#ddd',
     },
   },
-  ...nodeTypes.map((t, i) => ({
+  // Add types for operator types as well as other types
+  ...[...nodeTypes, ...Object.keys(vega.transforms).map((t) => `operator:${t}`)].map((t, i) => ({
     selector: `node[type=${JSON.stringify(t)}]`,
-    style: {color: colorScheme[i]},
+    style: {color: colorScheme[i % colorScheme.length]},
   })),
 ];
 
@@ -182,7 +184,8 @@ function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
     nodes: Object.entries(g.nodes).map(([id, n]) => ({
       data: {
         id,
-        type: n.type,
+        // Add operator type to operator type, so we can color by it
+        type: n.type === 'operator' && n.label !== 'operator' ? `operator:${n.label}` : n.type,
         parent: n.parent?.toString(),
       },
       style: {
