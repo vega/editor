@@ -74,4 +74,15 @@ We welcome contributions and promptly review pull requests. For instructions abo
 
 ## Creating a release on gh-pages
 
-Add all changes from master into the `publish` branch with `git checkout publish && git merge master --ff-only`. You can preview the changes in [this comparison](https://github.com/vega/editor/compare/publish...master). GitHub will automatically deploy the editor.
+Add all changes from master into the `publish` branch with the following commands:
+
+```
+git checkout master
+git pull
+git checkout publish
+git merge master --ff-only
+git push
+git checkout master
+```
+
+You can preview the changes in [this comparison](https://github.com/vega/editor/compare/publish...master). GitHub will automatically deploy the editor.
