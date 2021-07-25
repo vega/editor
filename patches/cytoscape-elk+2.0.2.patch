@@ -1,0 +1,16 @@
+diff --git a/node_modules/cytoscape-elk/dist/cytoscape-elk.js b/node_modules/cytoscape-elk/dist/cytoscape-elk.js
+index e64b4d1..22bffa2 100644
+--- a/node_modules/cytoscape-elk/dist/cytoscape-elk.js
++++ b/node_modules/cytoscape-elk/dist/cytoscape-elk.js
+@@ -293,9 +293,8 @@ var Layout = /*#__PURE__*/function () {
+       var edges = eles.edges();
+       var elk = new (external_commonjs_elkjs_commonjs2_elkjs_amd_elkjs_root_ELK_default())();
+       var graph = makeGraph(nodes, edges, options);
+-      elk.layout(graph, {
+-        layoutOptions: options.elk
+-      }).then(function () {
++      graph['layoutOptions'] = options.elk;
++      elk.layout(graph).then(function () {
+         nodes.filter(function (n) {
+           return !n.isParent();
+         }).layoutPositions(layout, options, function (n) {
