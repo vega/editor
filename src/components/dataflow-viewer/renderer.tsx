@@ -147,73 +147,70 @@ const dummyDomEle = document.createElement('div');
 
 function DataflowViewerInternal({runtime}: StoreProps) {
   const elements = React.useMemo(() => runtimeToCytoscape(runtime), [runtime]);
-  const onCytoscape = React.useCallback(
-    (cy: cytoscape.Core) => {
-      let removed: cytoscape.NodeCollection = null;
-      const restore = () => {
-        if (removed) {
-          removed.restore();
-          removed = null;
-        }
-      };
-      // On select, filter nodes to successors and predecessors of selected and re-layout.
-      cy.on('select', () => {
-        let relatedNodes: cytoscape.NodeCollection;
-        cy.batch(() => {
-          restore();
-          const selectedNodes = cy.elements('node:selected');
-          const selectedEdges = cy.elements('edge:selected');
-
-          relatedNodes = allRelated(cy, selectedNodes, selectedEdges);
-
-          removed = relatedNodes.absoluteComplement();
-          removed.remove();
-        });
-        layoutAndFit(cy, relatedNodes);
-      });
-      // On unselect, show all nodes and refit
-      cy.on('unselect', () => {
+  const onCytoscape = React.useCallback((cy: cytoscape.Core) => {
+    let removed: cytoscape.NodeCollection = null;
+    const restore = () => {
+      if (removed) {
+        removed.restore();
+        removed = null;
+      }
+    };
+    // On select, filter nodes to successors and predecessors of selected and re-layout.
+    cy.on('select', () => {
+      let relatedNodes: cytoscape.NodeCollection;
+      cy.batch(() => {
         restore();
-        layoutAndFit(cy, cy.elements());
-      });
+        const selectedNodes = cy.elements('node:selected');
+        const selectedEdges = cy.elements('edge:selected');
 
-      // Show details on hover using tippy and popper
-      // https://atomiks.github.io/tippyjs/v6/addons/#singleton
-      // https://stackoverflow.com/a/54556015/907060
-      // https://github.com/cytoscape/cytoscape.js-popper#usage-with-tippyjs
+        relatedNodes = allRelated(cy, selectedNodes, selectedEdges);
 
-      cy.on('mouseover', ({target}) => {
-        if (!('isNode' in target) || !target.isNode()) {
-          return;
-        }
-        const t = (target.tippy = tippy(dummyDomEle, {
-          getReferenceClientRect: (target as any).popperRef().getBoundingClientRect,
-          content: `<dl><dt>ID</dt><dd>${target.id()}</dd>${Object.entries(target.data().params)
-            .map(([k, v]) => `<dt>${k}</dt><dd><pre><code>${v}</code></pre></dd>`)
-            .join('')}</dl>`,
-          trigger: 'manual',
-          placement: 'left',
-          arrow: true,
-          theme: 'light-border',
-          allowHTML: true,
-          maxWidth: 550,
-          interactive: true,
-          // Needed for interactive
-          // https://stackoverflow.com/a/63270536/907060
-          appendTo: document.body,
-        }));
-        t.show();
+        removed = relatedNodes.absoluteComplement();
+        removed.remove();
       });
-      cy.on('mouseout', ({target}) => {
-        if (!('tippy' in target)) {
-          return;
-        }
-        target.tippy.destroy();
-        delete target.tippy;
-      });
-    },
-    [elements]
-  );
+      layoutAndFit(cy, relatedNodes);
+    });
+    // On unselect, show all nodes and refit
+    cy.on('unselect', () => {
+      restore();
+      layoutAndFit(cy, cy.elements());
+    });
+
+    // Show details on hover using tippy and popper
+    // https://atomiks.github.io/tippyjs/v6/addons/#singleton
+    // https://stackoverflow.com/a/54556015/907060
+    // https://github.com/cytoscape/cytoscape.js-popper#usage-with-tippyjs
+
+    cy.on('mouseover', ({target}) => {
+      if (!('isNode' in target) || !target.isNode()) {
+        return;
+      }
+      const t = (target.tippy = tippy(dummyDomEle, {
+        getReferenceClientRect: (target as any).popperRef().getBoundingClientRect,
+        content: `<dl><dt>ID</dt><dd>${target.id()}</dd>${Object.entries(target.data().params)
+          .map(([k, v]) => `<dt>${k}</dt><dd><pre><code>${v}</code></pre></dd>`)
+          .join('')}</dl>`,
+        trigger: 'manual',
+        placement: 'left',
+        arrow: true,
+        theme: 'light-border',
+        allowHTML: true,
+        maxWidth: 550,
+        interactive: true,
+        // Needed for interactive
+        // https://stackoverflow.com/a/63270536/907060
+        appendTo: document.body,
+      }));
+      t.show();
+    });
+    cy.on('mouseout', ({target}) => {
+      if (!('tippy' in target)) {
+        return;
+      }
+      target.tippy.destroy();
+      delete target.tippy;
+    });
+  }, []);
   return (
     <Cytoscape
       className="dataflow-pane"
