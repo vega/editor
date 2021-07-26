@@ -8,7 +8,6 @@ import cytoscape, {
 import elk from 'cytoscape-elk';
 import popper from 'cytoscape-popper';
 import * as React from 'react';
-import Cytoscape from 'react-cytoscapejs';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light-border.css';
@@ -147,84 +146,118 @@ const dummyDomEle = document.createElement('div');
 
 function DataflowViewerInternal({runtime}: StoreProps) {
   const elements = React.useMemo(() => runtimeToCytoscape(runtime), [runtime]);
-  const onCytoscape = React.useCallback((cy: cytoscape.Core) => {
-    let removed: cytoscape.NodeCollection = null;
-    const restore = () => {
-      if (removed) {
-        removed.restore();
-        removed = null;
-      }
-    };
-    // On select, filter nodes to successors and predecessors of selected and re-layout.
-    cy.on('select', () => {
-      let relatedNodes: cytoscape.NodeCollection;
-      cy.batch(() => {
-        restore();
-        const selectedNodes = cy.elements('node:selected');
-        const selectedEdges = cy.elements('edge:selected');
+  const divRef = React.useRef<HTMLDivElement | null>(null);
+  const cyRef = React.useRef<cytoscape.Core | null>(null);
+  // The nodes we have removed for filtering, which we can re-add when we are done
+  const removedNodesRef = React.useRef<cytoscape.NodeCollection | null>(null);
 
-        relatedNodes = allRelated(cy, selectedNodes, selectedEdges);
+  // Instantiate cytoscape
+  React.useEffect(() => {
+    if (divRef.current === null) {
+      return;
+    }
+    const cy = cytoscape({
+      container: divRef.current,
+      style,
+    });
+    cyRef.current = cy;
+    triggerPopups(cy);
+    triggerFiltering(cy, removedNodesRef);
+    return () => cyRef.current.destroy();
+  }, [divRef.current]);
 
-        removed = relatedNodes.absoluteComplement();
-        removed.remove();
-      });
-      layoutAndFit(cy, relatedNodes);
+  // Update the elements when the graph changes
+  React.useEffect(() => {
+    if (cyRef.current === null) {
+      return;
+    }
+    const cy = cyRef.current;
+    removedNodesRef.current = null;
+    cy.batch(() => {
+      cy.elements().remove();
+      cy.add(elements);
     });
-    // On unselect, show all nodes and refit
-    cy.on('unselect', () => {
-      restore();
-      layoutAndFit(cy, cy.elements());
-    });
-
-    // Show details on hover using tippy and popper
-    // https://atomiks.github.io/tippyjs/v6/addons/#singleton
-    // https://stackoverflow.com/a/54556015/907060
-    // https://github.com/cytoscape/cytoscape.js-popper#usage-with-tippyjs
-
-    cy.on('mouseover', ({target}) => {
-      if (!('isNode' in target) || !target.isNode()) {
-        return;
-      }
-      const t = (target.tippy = tippy(dummyDomEle, {
-        getReferenceClientRect: (target as any).popperRef().getBoundingClientRect,
-        content: `<dl><dt>ID</dt><dd>${target.id()}</dd>${Object.entries(target.data().params)
-          .map(([k, v]) => `<dt>${k}</dt><dd><pre><code>${v}</code></pre></dd>`)
-          .join('')}</dl>`,
-        trigger: 'manual',
-        placement: 'left',
-        arrow: true,
-        theme: 'light-border',
-        allowHTML: true,
-        maxWidth: 550,
-        interactive: true,
-        // Needed for interactive
-        // https://stackoverflow.com/a/63270536/907060
-        appendTo: document.body,
-      }));
-      t.show();
-    });
-    cy.on('mouseout', ({target}) => {
-      if (!('tippy' in target)) {
-        return;
-      }
-      target.tippy.destroy();
-      delete target.tippy;
-    });
-  }, []);
-  return (
-    <Cytoscape
-      className="dataflow-pane"
-      elements={[...elements.nodes, ...elements.edges]}
-      stylesheet={style}
-      layout={layout}
-      cy={onCytoscape}
-    />
-  );
+    layoutAndFit(cy);
+  }, [cyRef.current, elements]);
+  return <div className="dataflow-pane" ref={divRef} />;
 }
 
-async function layoutAndFit(cy: cytoscape.Core, nodes: cytoscape.NodeCollection) {
-  await nodes.layout(layout).run().promiseOn('layoutstop');
-  cy.fit(nodes);
+/**
+ * Filters the nodes on the graph to the nodes that are related to the selected nodes.
+ **/
+function triggerFiltering(cy: cytoscape.Core, removedNodesRef: React.MutableRefObject<NodeCollection | null>): void {
+  const restore = () => {
+    if (removedNodesRef.current) {
+      removedNodesRef.current.restore();
+      removedNodesRef.current = null;
+    }
+  };
+  // On select, filter nodes to successors and predecessors of selected and re-layout.
+  cy.on('select', () => {
+    let relatedNodes: cytoscape.NodeCollection;
+    cy.batch(() => {
+      restore();
+      const selectedNodes = cy.elements('node:selected');
+      const selectedEdges = cy.elements('edge:selected');
+
+      relatedNodes = allRelated(cy, selectedNodes, selectedEdges);
+
+      removedNodesRef.current = relatedNodes.absoluteComplement();
+      removedNodesRef.current.remove();
+    });
+    layoutAndFit(cy);
+  });
+  // On unselect, show all nodes and refit
+  cy.on('unselect', () => {
+    restore();
+    layoutAndFit(cy);
+  });
+}
+
+/**
+ * Show details on hover using tippy and popper
+ * https://atomiks.github.io/tippyjs/v6/addons/#singleton
+ * https://stackoverflow.com/a/54556015/907060
+ * https://github.com/cytoscape/cytoscape.js-popper#usage-with-tippyjs
+ **/
+function triggerPopups(cy: cytoscape.Core): void {
+  cy.on('mouseover', ({target}) => {
+    if (!('isNode' in target) || !target.isNode()) {
+      return;
+    }
+    const t = (target.tippy = tippy(dummyDomEle, {
+      getReferenceClientRect: (target as any).popperRef().getBoundingClientRect,
+      content: `<dl><dt>ID</dt><dd>${target.id()}</dd>${Object.entries(target.data().params)
+        .map(([k, v]) => `<dt>${k}</dt><dd><pre><code>${v}</code></pre></dd>`)
+        .join('')}</dl>`,
+      trigger: 'manual',
+      placement: 'left',
+      arrow: true,
+      theme: 'light-border',
+      allowHTML: true,
+      maxWidth: 550,
+      interactive: true,
+      // Needed for interactive
+      // https://stackoverflow.com/a/63270536/907060
+      appendTo: document.body,
+    }));
+    t.show();
+  });
+  cy.on('mouseout', ({target}) => {
+    if (!('tippy' in target)) {
+      return;
+    }
+    target.tippy.destroy();
+    delete target.tippy;
+  });
+}
+
+/**
+ * Run the layout and fit the graph to the window when it finishes
+ **/
+async function layoutAndFit(cy: cytoscape.Core) {
+  await cy.layout(layout).run().promiseOn('layoutstop');
+  cy.fit();
 }
 
 function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {

@@ -3324,7 +3324,7 @@ cytoscape-popper@2.0.0:
   dependencies:
     "@popperjs/core" "^2.0.0"
 
-cytoscape@3.19.0, cytoscape@^3.2.19:
+cytoscape@3.19.0:
   version "3.19.0"
   resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.19.0.tgz#b3e3136f823ca00a1c7752741c2a349e52545f57"
   integrity sha512-DANM8bM4EuSTS3DraPK0nLSmzANrzQ2g/cb3u5Biexu/NVsJA+xAoXVvWHRIHDXz3y0gpMjTPv3Z13ZbkNrEPw==
@@ -7649,14 +7649,6 @@ react-clipboard.js@^2.0.16:
     "@types/clipboard" "^2.0.1"
     clipboard "^2.0.0"
     prop-types "^15.5.0"
-
-react-cytoscapejs@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/react-cytoscapejs/-/react-cytoscapejs-1.2.1.tgz#ccce46acabf4f0c41dce9070743854f92b0dc050"
-  integrity sha512-8exVCetpzyGCAKuRjXPWGjFCnb22boZ3SXUPpPB/+wQI8Q8BwkT1URN3A7J1Czvj1qAbShh5QQ514mBUp7i7kw==
-  dependencies:
-    cytoscape "^3.2.19"
-    prop-types "^15.6.2"
 
 react-devtools-core@^4.6.0:
   version "4.14.0"
