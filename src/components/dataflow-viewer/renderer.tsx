@@ -1,18 +1,26 @@
-import {CollectionReturnValue, EdgeCollection, ElementsDefinition, NodeCollection, NodeSingular} from 'cytoscape';
+import cytoscape, {
+  CollectionReturnValue,
+  EdgeCollection,
+  ElementsDefinition,
+  NodeCollection,
+  NodeSingular,
+} from 'cytoscape';
+import elk from 'cytoscape-elk';
+import popper from 'cytoscape-popper';
 import * as React from 'react';
+import Cytoscape from 'react-cytoscapejs';
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/themes/light-border.css';
 import {Runtime} from 'vega';
+import {vega} from 'vega-embed';
+import {scheme} from 'vega-scale';
 import {mapStateToProps} from '.';
 import {Graph, nodeTypes} from '../../utils/vega2dot';
 import './index.css';
-import cytoscape from 'cytoscape';
-import elk from 'cytoscape-elk';
-import Cytoscape from 'react-cytoscapejs';
-import {scheme} from 'vega-scale';
-import dagre from 'cytoscape-dagre';
-import {vega} from 'vega-embed';
 
+cytoscape.use(popper);
 cytoscape.use(elk);
-cytoscape.use(dagre);
 
 type StoreProps = ReturnType<typeof mapStateToProps>;
 
@@ -133,6 +141,10 @@ const layout = {
   },
 };
 
+// A dummy element must be passed as tippy only accepts dom element(s) as the target
+// https://atomiks.github.io/tippyjs/v6/constructor/#target-types
+const dummyDomEle = document.createElement('div');
+
 function DataflowViewerInternal({runtime}: StoreProps) {
   const elements = React.useMemo(() => runtimeToCytoscape(runtime), [runtime]);
   const onCytoscape = React.useCallback((cy: cytoscape.Core) => {
@@ -163,6 +175,44 @@ function DataflowViewerInternal({runtime}: StoreProps) {
       restore();
       layoutAndFit(cy, cy.elements());
     });
+
+    // Create popups with details on hover, usinf poppy and topper
+    // https://stackoverflow.com/a/54556015/907060
+    // https://github.com/cytoscape/cytoscape.js-popper#usage-with-tippyjs
+    cy.on('mouseover', (e: cytoscape.EventObject) => {
+      const node = e.target;
+      if (!('isNode' in node)) {
+        return;
+      }
+      if (!node.isNode()) {
+        return;
+      }
+      const t = (node.tippy = tippy(dummyDomEle, {
+        placement: 'left',
+        getReferenceClientRect: node.popperRef().getBoundingClientRect,
+        trigger: 'manual',
+        arrow: true,
+        theme: 'light-border',
+        content: `<dl><dt>ID</dt><dd>${node.id()}</dd>${Object.entries(node.data().params)
+          .map(([k, v]) => `<dt>${k}</dt><dd><pre><code>${v}</code></pre></dd>`)
+          .join('')}</dl>`,
+        allowHTML: true,
+        interactive: true,
+        // Needed for interactive
+        // https://stackoverflow.com/a/63270536/907060
+        appendTo: document.body,
+        maxWidth: 550,
+        delay: [0, 1000],
+      }));
+      t.show();
+    });
+    cy.on('mouseout', (e: cytoscape.EventObject) => {
+      const node = e.target;
+      if (node.tippy) {
+        node.tippy.destroy();
+        delete node.tippy;
+      }
+    });
   }, []);
   return (
     <Cytoscape
@@ -189,15 +239,12 @@ function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
         // Add operator type to operator type, so we can color by it
         type: n.type === 'operator' && n.label !== 'operator' ? `operator:${n.label}` : n.type,
         parent: n.parent?.toString(),
+        params: n.params,
       },
       style: {
         // Set label in style instead of based on data to work around
         // https://github.com/cytoscape/cytoscape.js/issues/2888
-        label:
-          // Combine labels with keys and values, with values truncated to reduce node width
-          [...[n.label ? [n.label] : []], ...Object.entries(n.params).map(([k, v]) => `${k}: ${truncate(v, 10)}`)].join(
-            '\n'
-          ) || '...',
+        label: n.label,
       },
     })),
     edges: g.edges.map((e, i) => ({

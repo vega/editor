@@ -11,6 +11,8 @@ import {
   Update,
 } from 'vega-typings/types/runtime/runtime';
 
+import * as prettier from 'prettier/standalone';
+import * as parserBabel from 'prettier/parser-babel';
 export const nodeTypes = ['binding', 'stream', 'update', 'operator'] as const;
 
 export class Graph {
@@ -38,7 +40,7 @@ export class Graph {
     delete rest['refs'];
 
     if ('update' in rest) {
-      nodeParams.update = rest.update.code;
+      nodeParams.update = prettifyExpression(rest.update.code);
       delete rest['update'];
     }
     if (rest.parent !== undefined) {
@@ -68,26 +70,26 @@ export class Graph {
         }
         // If we didn't add any operators, then add them all as one array
         if (added.size === 0) {
-          nodeParams[k] = JSON.stringify(v);
+          nodeParams[k] = prettifyJSON(v);
           continue;
         }
         // otherwise add all that aren't added
         for (const [i, vI] of v.entries()) {
           if (!added.has(i)) {
-            nodeParams[`${k}[${i}]`] = JSON.stringify(vI);
+            nodeParams[`${k}[${i}]`] = prettifyJSON(vI);
           }
         }
         continue;
       }
       if (!this.addOperatorParameter(id, nodeParams, k, v)) {
-        nodeParams[k] = JSON.stringify(v);
+        nodeParams[k] = prettifyJSON(v);
       }
     }
     for (const [k, v] of Object.entries(rest)) {
       if (v === undefined) {
         continue;
       }
-      nodeParams[k] = JSON.stringify(v);
+      nodeParams[k] = prettifyJSON(v);
     }
   }
 
@@ -106,6 +108,10 @@ export class Graph {
     if (v === null) {
       return false;
     }
+    // Hide null parent params
+    if (k === 'parent' && v === null) {
+      return true;
+    }
     if ('$ref' in v) {
       const pulse = k === 'pulse';
       this.edge(v.$ref, id, pulse ? undefined : k, pulse);
@@ -114,9 +120,18 @@ export class Graph {
       // Add edge to first node, which is root node and is used to detach the subflow
       this.edge(id, v.$subflow.operators[0].id, 'root');
     } else if ('$expr' in v) {
-      params['k'] = v.$expr.code;
+      params['k'] = prettifyExpression(v.$expr.code);
       for (const [label, {$ref}] of Object.entries(v.$params)) {
         this.edge($ref, id, `${k}.${label}`);
+      }
+    } else if ('$encode' in v) {
+      for (const [stage, {$expr}] of Object.entries(v.$encode)) {
+        // Assumes that the marktype is the same in all stages
+        params[`encode marktype`] = $expr.marktype;
+        // Add each stage as a param, mapping each channel to its value
+        params[`encode:${stage}`] = Object.entries($expr.channels)
+          .map(([channel, {code}]) => `${channel}: ${prettifyExpression(code)}`)
+          .join('\n');
       }
     } else {
       return false;
@@ -132,7 +147,7 @@ export class Graph {
       node.params.force = 'true';
     }
     if (update && typeof update === 'object' && '$expr' in update) {
-      node.params['value'] = update.$expr.code;
+      node.params['value'] = prettifyExpression(update.$expr.code);
       for (const [k, v] of Object.entries(update.$params ?? {})) {
         // If arg was from the target node itself, don't include it to break cycles
         if (v.$ref === target) {
@@ -141,7 +156,7 @@ export class Graph {
         this.edge(v.$ref, id, k);
       }
     } else {
-      node.params['value'] = JSON.stringify(update);
+      node.params['value'] = prettifyJSON(update);
     }
     this.edge(typeof source === 'object' ? source.$ref : source, id, 'source');
     // The target edges should be reversed, but doing so adds cycles to the graph.
@@ -154,7 +169,7 @@ export class Graph {
       signal,
       undefined,
       signal,
-      Object.fromEntries(Object.entries(rest).map(([k, v]) => [k, JSON.stringify(v)]))
+      Object.fromEntries(Object.entries(rest).map(([k, v]) => [k, prettifyJSON(v)]))
     );
   }
 
@@ -200,6 +215,20 @@ export class Graph {
     }
     return (this.nodes[id] = {type, params: params ?? {}, label, parent});
   }
+}
+
+/**
+ * Prettify a JSON value as Javascript literal.
+ */
+function prettifyJSON(value: unknown): string {
+  return prettifyExpression(JSON.stringify(value));
+}
+
+/**
+ * Prettify a JS expression, by creating a statement out of it, then removing the variable decleration and trailing semi-colon.
+ **/
+function prettifyExpression(expression: string): string {
+  return prettier.format(`i = ${expression}`, {parser: 'babel', printWidth: 60, plugins: [parserBabel]}).slice(4, -2);
 }
 
 export type Node = {
