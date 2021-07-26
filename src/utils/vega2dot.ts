@@ -102,15 +102,15 @@ export class Graph {
     k: string,
     v: Parameter | ObjectOrAny<BuiltinParameter>
   ): boolean {
+    // Hide null parent params
+    if (k === 'parent' && v === null) {
+      return true;
+    }
     if (typeof v !== 'object') {
       return false;
     }
     if (v === null) {
       return false;
-    }
-    // Hide null parent params
-    if (k === 'parent' && v === null) {
-      return true;
     }
     if ('$ref' in v) {
       const pulse = k === 'pulse';
