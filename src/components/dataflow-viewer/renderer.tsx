@@ -227,7 +227,7 @@ function triggerPopups(cy: cytoscape.Core): void {
     }
     const t = (target.tippy = tippy(dummyDomEle, {
       getReferenceClientRect: (target as any).popperRef().getBoundingClientRect,
-      content: `<dl><dt>ID</dt><dd>${target.id()}</dd>${Object.entries(target.data().params)
+      content: `<dl>${Object.entries(target.data().params)
         .map(([k, v]) => `<dt>${k}</dt><dd><pre><code>${v}</code></pre></dd>`)
         .join('')}</dl>`,
       trigger: 'manual',
