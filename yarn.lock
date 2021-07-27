@@ -4330,14 +4330,6 @@ file-entry-cache@^6.0.1:
   dependencies:
     flat-cache "^3.0.4"
 
-file-loader@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-6.2.0.tgz#baef7cf8e1840df325e4390b4484879480eebe4d"
-  integrity sha512-qo3glqyTa61Ytg4u73GultjHGjdRyig3tG6lPtyX/jOEJvHif9uB0/OCI2Kif6ctF3caQTW2G5gym21oAsI4pw==
-  dependencies:
-    loader-utils "^2.0.0"
-    schema-utils "^3.0.0"
-
 file-uri-to-path@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
@@ -6556,7 +6548,7 @@ monaco-editor-webpack-plugin@^4.1.1:
   dependencies:
     loader-utils "^2.0.0"
 
-monaco-editor@*, monaco-editor@^0.26.1:
+monaco-editor@^0.26.1:
   version "0.26.1"
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.26.1.tgz#62bb5f658bc95379f8abb64b147632bd1c019d73"
   integrity sha512-mm45nUrBDk0DgZKgbD7+bhDOtcAFNGPJJRAdS6Su1kTGl6XEgC7U3xOmDUW/0RrLf+jlvCGaqLvD4p2VjwuwwQ==
@@ -7528,12 +7520,12 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-monaco-editor@^0.43.0:
-  version "0.43.0"
-  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.43.0.tgz#495578470db7b27ab306af813b31f206a6bf9d1c"
-  integrity sha512-2PXSDwOzjUDlwdsK8psrmezSB2lPnjLQ/SRNwqoRF2+TAB2n4Q+Bs1wGlWOZbU8WI7s6Wnni0+3PdT9nSPtzRA==
+react-monaco-editor@^0.44.0:
+  version "0.44.0"
+  resolved "https://registry.yarnpkg.com/react-monaco-editor/-/react-monaco-editor-0.44.0.tgz#9f966fd00b6c30e8be8873a3fbc86f14a0da2ba4"
+  integrity sha512-GPheXTIpBXpwv857H7/jA8HX5yae4TJ7vFwDJ5iTvy05LxIQTsD3oofXznXGi66lVA93ST/G7wRptEf4CJ9dOg==
   dependencies:
-    monaco-editor "*"
+    monaco-editor "^0.26.1"
     prop-types "^15.7.2"
 
 react-paginate@^7.1.3:
