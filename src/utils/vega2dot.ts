@@ -31,13 +31,13 @@ export class Graph {
   constructor(dataflow: Runtime) {
     dataflow.bindings.forEach(this.addBinding.bind(this));
     this.addFlow(dataflow);
+    this.addViewNode();
   }
 
   private addFlow({streams, operators, updates}: Subflow, parent?: ID): void {
     streams.forEach((s) => this.addStream(s, parent));
     operators.forEach((o) => this.addOperator(o, parent));
     updates.forEach((u, i) => this.addUpdate(u, i, parent));
-    this.addViewNode();
   }
 
   private addViewNode() {
