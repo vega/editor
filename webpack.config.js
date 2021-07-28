@@ -94,7 +94,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.ttf$/,
-          use: ['file-loader'],
+          type: 'asset/resource',
         },
       ],
     },
