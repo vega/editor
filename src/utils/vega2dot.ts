@@ -52,7 +52,7 @@ export class Graph {
   }
 
   private addOperator({id, type, params, ...rest}: Operator, parent?: ID): void {
-    const {params: nodeParams} = this.node('operator', id, parent, type, {ID: id.toString()});
+    const {params: nodeParams} = this.node('operator', id, parent, type, {type: 'operator', ID: id.toString()});
     // Don't show metadata
     delete rest['metadata'];
     // Refs is always null
@@ -163,7 +163,7 @@ export class Graph {
   private addUpdate({source, target, update, options}: Update, index: number, parent?: ID): void {
     // ID updates by index
     const id = `update-${parent || 'root'}.${index}`;
-    const node = this.node('update', id, parent, 'update');
+    const node = this.node('update', id, parent, 'update', {type: 'update'});
     if (options?.force) {
       node.params.force = 'true';
     }
@@ -185,17 +185,14 @@ export class Graph {
     this.edge(target, id, 'target');
   }
   private addBinding({signal, ...rest}: Binding) {
-    this.node(
-      'binding',
-      signal,
-      undefined,
-      signal,
-      Object.fromEntries(Object.entries(rest).map(([k, v]) => [k, prettifyJSON(v)]))
-    );
+    this.node('binding', signal, undefined, signal, {
+      type: 'binding',
+      ...Object.fromEntries(Object.entries(rest).map(([k, v]) => [k, prettifyJSON(v)])),
+    });
   }
 
   private addStream(stream: Stream, parent?: ID) {
-    const node = this.node('stream', stream.id, parent);
+    const node = this.node('stream', stream.id, parent, undefined, {type: 'stream', ID: stream.id.toString()});
 
     if ('stream' in stream) {
       // node.label = 'stream'
