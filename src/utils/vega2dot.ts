@@ -193,7 +193,7 @@ export class Graph {
     const node = this.node('stream', stream.id, parent, undefined, {type: 'stream', ID: stream.id.toString()});
 
     if ('stream' in stream) {
-      // node.label = 'stream'
+      node.label = 'stream';
       this.edge(stream.stream, stream.id);
     } else if ('merge' in stream) {
       node.label = 'merge';
