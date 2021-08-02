@@ -87,7 +87,7 @@ const style: cytoscape.Stylesheet[] = [
     selector: 'edge',
     css: {
       'target-arrow-shape': 'vee',
-      'curve-style': 'straight',
+      'curve-style': 'bezier',
       'text-outline-width': 5,
       'text-outline-color': 'white',
       width: 1,
