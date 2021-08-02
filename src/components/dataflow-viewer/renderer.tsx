@@ -136,7 +136,7 @@ const layout = {
     'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
     // Seems to give better layouts
     // edgeRouting: 'ORTHOGONAL',
-    // 'org.eclipse.elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
+    'org.eclipse.elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
   },
 };
 
