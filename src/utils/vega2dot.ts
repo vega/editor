@@ -179,10 +179,8 @@ export class Graph {
     } else {
       node.params['value'] = prettifyJSON(update);
     }
-    this.edge(typeof source === 'object' ? source.$ref : source, id, 'source');
-    // The target edges should be reversed, but doing so adds cycles to the graph.
-    // This way, all edges point into an update, removing any cycles
-    this.edge(target, id, 'target');
+    this.edge(typeof source === 'object' ? source.$ref : source, id);
+    this.edge(id, target);
   }
   private addBinding({signal, ...rest}: Binding) {
     this.node('binding', signal, undefined, signal, {
