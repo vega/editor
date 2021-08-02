@@ -219,7 +219,7 @@ export class Graph {
       node.params.throttle = stream.throttle.toString();
     }
     if (stream.filter) {
-      node.params.filter = stream.filter.code;
+      node.params.filter = prettifyExpression(stream.filter.code);
     }
   }
   private edge(source: ID, target: ID, label?: string, pulse?: boolean) {
