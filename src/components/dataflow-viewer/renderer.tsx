@@ -134,9 +134,8 @@ const layout = {
     'org.eclipse.elk.layered.compaction.postCompaction.strategy': 'EDGE_LENGTH',
     // https://github.com/kieler/elkjs/issues/44#issuecomment-412283358
     'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
-    // Seems to give better layouts
-    // edgeRouting: 'ORTHOGONAL',
     'org.eclipse.elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
+    'org.eclipse.elk.partitioning.activate': true,
   },
 };
 
@@ -163,6 +162,7 @@ function DataflowViewerInternal({runtime}: StoreProps) {
     cyRef.current = cy;
     triggerPopups(cy);
     triggerFiltering(cy, removedNodesRef);
+    (window as any).layout = (l) => layoutAndFit(cy, l);
     return () => cyRef.current.destroy();
   }, [divRef.current]);
 
@@ -255,8 +255,11 @@ function triggerPopups(cy: cytoscape.Core): void {
 /**
  * Run the layout and fit the graph to the window when it finishes
  **/
-async function layoutAndFit(cy: cytoscape.Core) {
-  await cy.layout(layout).run().promiseOn('layoutstop');
+async function layoutAndFit(cy: cytoscape.Core, layoutOveride?: cytoscape.LayoutOptions) {
+  await cy
+    .layout(layoutOveride ?? layout)
+    .run()
+    .promiseOn('layoutstop');
   cy.fit();
 }
 
@@ -270,6 +273,10 @@ function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
         type: n.type === 'operator' && n.label !== 'operator' ? `operator:${n.label}` : n.type,
         parent: n.parent?.toString(),
         params: n.params,
+        // layoutOptions: {
+        //   // Move bindings and streams to the top
+        //   'org.eclipse.elk.partitioning.partition': n.type === 'binding' ? 0 : n.type === 'stream' ? 1 : 2,
+        // },
       },
       style: {
         // Set label in style instead of based on data to work around
@@ -283,7 +290,7 @@ function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
         id: `edge:${i}`,
         source: e.source.toString(),
         target: e.target.toString(),
-        pulse: e.pulse.toString(),
+        pulse: (e.pulse || false).toString(),
       },
     })),
   };
@@ -295,33 +302,35 @@ function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
  * It treats compound relationships as both parents and children.
  */
 function allRelated(cy: cytoscape.Core, nodes: NodeCollection, edges: EdgeCollection): CollectionReturnValue {
-  const relatedNodes = (['up', 'down'] as const).flatMap((direction): Array<NodeSingular> => {
-    // Map from ID to node
-    const toProcess = new Map<string, NodeSingular>(
-      nodes.add(direction === 'up' ? edges.sources() : edges.targets()).map((n: NodeSingular) => [n.id(), n])
-    );
-    const processed = new Map<string, NodeSingular>();
-    // Pop off node and all it's parents
-    while (toProcess.size > 0) {
-      const [id, node] = pop(toProcess);
-      processed.set(id, node);
+  const relatedNodes = (['up', 'down'] as const).flatMap(
+    (direction): Array<NodeSingular> => {
+      // Map from ID to node
+      const toProcess = new Map<string, NodeSingular>(
+        nodes.add(direction === 'up' ? edges.sources() : edges.targets()).map((n: NodeSingular) => [n.id(), n])
+      );
+      const processed = new Map<string, NodeSingular>();
+      // Pop off node and all it's parents
+      while (toProcess.size > 0) {
+        const [id, node] = pop(toProcess);
+        processed.set(id, node);
 
-      // Mark the compound node relations as visited
-      // and add their immediate parents to the queue
-      const relatedCompound = node.parents().add(node.children());
-      relatedCompound.forEach((n) => {
-        processed.set(n.id(), n);
-      });
-      const currentNodes = relatedCompound.add(node);
-      (direction === 'up' ? currentNodes.incomers() : currentNodes.outgoers()).forEach((n) => {
-        if (processed.has(n.id())) {
-          return;
-        }
-        toProcess.set(n.id(), n);
-      });
+        // Mark the compound node relations as visited
+        // and add their immediate parents to the queue
+        const relatedCompound = node.parents().add(node.children());
+        relatedCompound.forEach((n) => {
+          processed.set(n.id(), n);
+        });
+        const currentNodes = relatedCompound.add(node);
+        (direction === 'up' ? currentNodes.incomers() : currentNodes.outgoers()).forEach((n) => {
+          if (processed.has(n.id())) {
+            return;
+          }
+          toProcess.set(n.id(), n);
+        });
+      }
+      return [...processed.values()];
     }
-    return [...processed.values()];
-  });
+  );
   return cy.collection(relatedNodes);
 }
 /**

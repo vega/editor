@@ -17,38 +17,20 @@ import * as parserBabel from 'prettier/parser-babel';
 // from the actual view
 export const nodeTypes = ['binding', 'stream', 'update', 'operator', 'semantic'] as const;
 
-// Special signals that are used by the view
-// https://github.com/vega/vega/blob/1f14aa2acfa34825e3809a7076553504b0ef90db/packages/vega-view/src/View.js#L210-L230
-export const viewSpecialSignals = new Set(['width', 'height', 'padding', 'autosize', 'background']);
-
 export class Graph {
   // Mapping from graph ID to node
   nodes: Record<ID, Node> = {};
   edges: Edge[] = [];
-  // Mapping of nodes that are used in the view, to their edge name
-  private viewNodes: Map<ID, string | undefined> = new Map();
 
   constructor(dataflow: Runtime) {
     dataflow.bindings.forEach(this.addBinding.bind(this));
     this.addFlow(dataflow);
-    this.addViewNode();
   }
 
   private addFlow({streams, operators, updates}: Subflow, parent?: ID): void {
     streams.forEach((s) => this.addStream(s, parent));
     operators.forEach((o) => this.addOperator(o, parent));
     updates.forEach((u, i) => this.addUpdate(u, i, parent));
-  }
-
-  private addViewNode() {
-    if (this.viewNodes.size === 0) {
-      return;
-    }
-    const id = 'semantic:view';
-    this.node('semantic', id, undefined, 'View', {'': 'All parents are used by the Vega view renderer'});
-    for (const [nodeId, edgeName] of this.viewNodes) {
-      this.edge(nodeId, id, edgeName, false);
-    }
   }
 
   private addOperator({id, type, params, ...rest}: Operator, parent?: ID): void {
@@ -72,8 +54,6 @@ export class Graph {
       const signal = rest.signal;
       if (signal in this.nodes) {
         this.edge(signal, id, 'signal');
-      } else if (viewSpecialSignals.has(signal)) {
-        this.viewNodes.set(id, signal);
       }
       nodeParams['signal'] = signal;
       delete rest['signal'];
