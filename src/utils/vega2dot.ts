@@ -21,6 +21,7 @@ export class Graph {
   // Mapping from graph ID to node
   nodes: Record<ID, Node> = {};
   edges: Edge[] = [];
+  addedDatasetNodes = new Set<string>();
 
   constructor(dataflow: Runtime) {
     dataflow.bindings.forEach(this.addBinding.bind(this));
@@ -48,6 +49,27 @@ export class Graph {
       this.edge(rest.parent.$ref, id, 'parent');
       delete rest['parent'];
     }
+    // Handle data seperately to show in graph as nodes
+
+    if (rest.data !== undefined) {
+      for (const [name, dataset] of Object.entries(rest.data)) {
+        const datasetNodeID = `data.${name}`;
+        if (!this.addedDatasetNodes.has(name)) {
+          this.addedDatasetNodes.add(name);
+          this.node('semantic', datasetNodeID, undefined, name, {type: 'dataset', dataset: name});
+        }
+        for (const stage of new Set(dataset)) {
+          const datasetStageNodeID = `${datasetNodeID}.${stage}`;
+          this.node('semantic', datasetStageNodeID, datasetNodeID, stage, {
+            type: 'dataset value',
+            dataset: name,
+            stage: stage,
+          });
+          this.edge(datasetStageNodeID, id, 'data');
+        }
+      }
+      delete rest['data'];
+    }
     // If we have a node for the signal, it was added as a binding
     // in which case, add edge from that
     if (rest.signal !== undefined) {
@@ -62,6 +84,8 @@ export class Graph {
       if (v === undefined) {
         continue;
       }
+      // We have to check to see if the parameter values is a either a regular JSON value,
+      // or a special case parameter, or a list of values/special case parameters.
       if (Array.isArray(v)) {
         const added = new Set<number>();
         for (const [i, vI] of v.entries()) {
@@ -95,7 +119,7 @@ export class Graph {
   }
 
   /**
-   * Adds a parameter, returning whether it was added or not
+   * Adds a parameter, returning whether it was added or not.
    */
   private addOperatorParameter(
     id: ID,
@@ -116,16 +140,22 @@ export class Graph {
     if ('$ref' in v) {
       const pulse = k === 'pulse';
       this.edge(v.$ref, id, pulse ? undefined : k, pulse);
-    } else if ('$subflow' in v) {
+      return true;
+    }
+    if ('$subflow' in v) {
       this.addFlow(v.$subflow, id);
       // Add edge to first node, which is root node and is used to detach the subflow
       this.edge(id, v.$subflow.operators[0].id, 'root');
-    } else if ('$expr' in v) {
+      return true;
+    }
+    if ('$expr' in v) {
       params['k'] = prettifyExpression(v.$expr.code);
       for (const [label, {$ref}] of Object.entries(v.$params)) {
         this.edge($ref, id, `${k}.${label}`);
       }
-    } else if ('$encode' in v) {
+      return true;
+    }
+    if ('$encode' in v) {
       for (const [stage, {$expr}] of Object.entries(v.$encode)) {
         // Assumes that the marktype is the same in all stages
         params[`encode marktype`] = $expr.marktype;
@@ -134,10 +164,9 @@ export class Graph {
           .map(([channel, {code}]) => `${channel}: ${prettifyExpression(code)}`)
           .join('\n');
       }
-    } else {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   private addUpdate({source, target, update, options}: Update, index: number, parent?: ID): void {
