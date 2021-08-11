@@ -58,40 +58,45 @@ const style: cytoscape.Stylesheet[] = [
       'text-wrap': 'wrap',
       'text-valign': 'center',
       'text-halign': 'center',
-      'background-color': 'white',
-      'background-opacity': 0.8,
-      shape: 'rectangle',
+
+      'background-opacity': 0.6,
+      shape: 'round-rectangle',
       width: 'label',
       height: 'label',
+      padding: '8px',
+      color: 'black',
     } as any,
   },
   {
     selector: ':parent',
     style: {
       'text-valign': 'top',
+      'background-opacity': 0.05,
     },
   },
   {
     selector: ':selected',
     style: {
-      'overlay-opacity': 0.2,
+      'overlay-opacity': 0.05,
     },
   },
   {
     selector: 'node.around-selected',
     style: {
-      'overlay-opacity': 0.1,
+      'overlay-opacity': 0.05,
     },
   },
   {
     selector: 'edge',
     css: {
-      'target-arrow-shape': 'vee',
+      'target-arrow-shape': 'triangle',
       'curve-style': 'bezier',
-      'text-outline-width': 5,
-      'text-outline-color': 'white',
-      width: 1,
+      'text-background-padding': '5',
+      'text-background-shape': 'round-rectangle' as any,
+      'text-background-color': 'white',
+      'text-background-opacity': 1,
       'text-rotation': 'autorotate',
+      width: 1,
     },
   },
   {
@@ -119,7 +124,7 @@ const style: cytoscape.Stylesheet[] = [
   // Add types for operator types as well as other types
   ...[...nodeTypes, ...Object.keys(vega.transforms).map((t) => `operator:${t}`)].map((t, i) => ({
     selector: `node[type=${JSON.stringify(t)}]`,
-    style: {color: colorScheme[i % colorScheme.length]},
+    style: {'background-color': colorScheme[i % colorScheme.length]},
   })),
 ];
 
