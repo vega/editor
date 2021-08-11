@@ -171,7 +171,10 @@ function DataflowViewerInternal({runtime}: StoreProps) {
     cyRef.current = cy;
     triggerPopups(cy);
     triggerFiltering(cy, removedNodesRef);
-    (window as any).layout = (l) => layoutAndFit(cy, l);
+    // (window as any).l = async (l: any) => {
+    //   await layoutAndFit(cy, {...layout, elk: {...layout.elk, ...l}} as any);
+    //   console.log('done');
+    // };
     return () => cyRef.current.destroy();
   }, [divRef.current]);
 
