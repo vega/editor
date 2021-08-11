@@ -159,22 +159,43 @@ function DataflowViewerInternal({runtime}: StoreProps) {
   // The nodes we have removed for filtering, which we can re-add when we are done
   const removedNodesRef = React.useRef<cytoscape.NodeCollection | null>(null);
 
+  // The currently running layout. If null, then no layout is running.
+  const runningLayoutRef = React.useRef<cytoscape.Layouts | null>(null);
+  const [isLayoutRunning, setIsLayoutRunning] = React.useState<boolean>(false);
+
+  const runLayout = React.useCallback(() => {
+    console.log(`Running layout`, {isLayoutRunning});
+    if (runningLayoutRef.current) {
+      runningLayoutRef.current.stop();
+    }
+    const newLayout = cyRef.current.layout(layout);
+    newLayout.promiseOn('layoutstop').then((e) => {
+      // If the running layout was stopped, then set to null and refit
+      if (e.layout === runningLayoutRef.current) {
+        cyRef.current.fit();
+        runningLayoutRef.current = null;
+        setIsLayoutRunning(false);
+      }
+    });
+    newLayout.run();
+    runningLayoutRef.current = newLayout;
+    setIsLayoutRunning(true);
+  }, []);
+
   // Instantiate cytoscape
   React.useEffect(() => {
     if (divRef.current === null) {
       return;
     }
+    console.log(`Initializing cytoscape`);
     const cy = cytoscape({
       container: divRef.current,
       style,
     });
     cyRef.current = cy;
     triggerPopups(cy);
-    triggerFiltering(cy, removedNodesRef);
-    // (window as any).l = async (l: any) => {
-    //   await layoutAndFit(cy, {...layout, elk: {...layout.elk, ...l}} as any);
-    //   console.log('done');
-    // };
+    triggerFiltering(cy, removedNodesRef, runLayout);
+
     return () => cyRef.current.destroy();
   }, [divRef.current]);
 
@@ -189,15 +210,25 @@ function DataflowViewerInternal({runtime}: StoreProps) {
       cy.elements().remove();
       cy.add(elements);
     });
-    layoutAndFit(cy);
-  }, [cyRef.current, elements]);
-  return <div className="dataflow-pane" ref={divRef} />;
+    console.log('Update when elements change', {ref: cyRef.current, elements, runLayout});
+    runLayout();
+  }, [cyRef.current, elements, runLayout]);
+  return (
+    <div className="dataflow-pane">
+      <div className={isLayoutRunning ? 'overlay' : 'display-none'}>Laying out graph...</div>
+      <div className="cytoscape" ref={divRef} />
+    </div>
+  );
 }
 
 /**
  * Filters the nodes on the graph to the nodes that are related to the selected nodes.
  **/
-function triggerFiltering(cy: cytoscape.Core, removedNodesRef: React.MutableRefObject<NodeCollection | null>): void {
+function triggerFiltering(
+  cy: cytoscape.Core,
+  removedNodesRef: React.MutableRefObject<NodeCollection | null>,
+  runLayout: () => void
+): void {
   const restore = () => {
     if (removedNodesRef.current) {
       removedNodesRef.current.restore();
@@ -217,12 +248,12 @@ function triggerFiltering(cy: cytoscape.Core, removedNodesRef: React.MutableRefO
       removedNodesRef.current = relatedNodes.absoluteComplement();
       removedNodesRef.current.remove();
     });
-    layoutAndFit(cy);
+    runLayout();
   });
   // On unselect, show all nodes and refit
   cy.on('unselect', () => {
     restore();
-    layoutAndFit(cy);
+    runLayout();
   });
 }
 
@@ -262,17 +293,6 @@ function triggerPopups(cy: cytoscape.Core): void {
     target.tippy.destroy();
     delete target.tippy;
   });
-}
-
-/**
- * Run the layout and fit the graph to the window when it finishes
- **/
-async function layoutAndFit(cy: cytoscape.Core, layoutOveride?: cytoscape.LayoutOptions) {
-  await cy
-    .layout(layoutOveride ?? layout)
-    .run()
-    .promiseOn('layoutstop');
-  cy.fit();
 }
 
 function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
