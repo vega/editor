@@ -164,7 +164,6 @@ function DataflowViewerInternal({runtime}: StoreProps) {
   const [isLayoutRunning, setIsLayoutRunning] = React.useState<boolean>(false);
 
   const runLayout = React.useCallback(() => {
-    console.log(`Running layout`, {isLayoutRunning});
     if (runningLayoutRef.current) {
       runningLayoutRef.current.stop();
     }
@@ -187,7 +186,6 @@ function DataflowViewerInternal({runtime}: StoreProps) {
     if (divRef.current === null) {
       return;
     }
-    console.log(`Initializing cytoscape`);
     const cy = cytoscape({
       container: divRef.current,
       style,
@@ -210,7 +208,6 @@ function DataflowViewerInternal({runtime}: StoreProps) {
       cy.elements().remove();
       cy.add(elements);
     });
-    console.log('Update when elements change', {ref: cyRef.current, elements, runLayout});
     runLayout();
   }, [cyRef.current, elements, runLayout]);
   return (
