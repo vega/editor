@@ -53,10 +53,10 @@ export class Graph {
 
     if (rest.data !== undefined) {
       for (const [name, dataset] of Object.entries(rest.data)) {
-        const datasetNodeID = `data.${name}`;
+        const datasetNodeID = `data.${parent ?? 'root'}.${name}`;
         if (!this.addedDatasetNodes.has(name)) {
           this.addedDatasetNodes.add(name);
-          this.node('semantic', datasetNodeID, undefined, name, {type: 'dataset', dataset: name});
+          this.node('semantic', datasetNodeID, parent, name, {type: 'dataset', dataset: name});
         }
         for (const stage of new Set(dataset)) {
           const datasetStageNodeID = `${datasetNodeID}.${stage}`;
