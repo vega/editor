@@ -130,11 +130,15 @@ const layout = {
   fit: true,
   elk: {
     algorithm: 'layered',
-    'org.eclipse.elk.direction': 'DOWN',
+    'org.eclipse.elk.direction': 'RIGHT',
+
     'org.eclipse.elk.layered.compaction.postCompaction.strategy': 'EDGE_LENGTH',
-    // https://github.com/kieler/elkjs/issues/44#issuecomment-412283358
+
+    // Require to layout childrenhttps://github.com/kieler/elkjs/issues/44#issuecomment-412283358
     'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
+
     'org.eclipse.elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
+    // Add partitioning to move signal and bindings to top
     'org.eclipse.elk.partitioning.activate': true,
   },
 };
