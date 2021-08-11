@@ -281,7 +281,7 @@ function runtimeToCytoscape(runtime: Runtime): ElementsDefinition {
     nodes: Object.entries(g.nodes).map(([id, n]) => ({
       data: {
         id,
-        // Add operator type to operator type, so we can color by it
+        // Add append operator type to use for coloring
         type: n.type === 'operator' && n.label !== 'operator' ? `operator:${n.label}` : n.type,
         parent: n.parent?.toString(),
         params: n.params,
