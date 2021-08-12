@@ -242,8 +242,8 @@ function triggerFiltering(
 
       relatedNodes = allRelated(cy, selectedNodes, selectedEdges);
 
-      removedNodesRef.current = relatedNodes.absoluteComplement();
-      removedNodesRef.current.remove();
+      // Remove all nodes that are not related to the selected nodes, and save all removed elements
+      removedNodesRef.current = relatedNodes.absoluteComplement().nodes().remove();
     });
     runLayout();
   });
@@ -334,9 +334,9 @@ function allRelated(cy: cytoscape.Core, nodes: NodeCollection, edges: EdgeCollec
   const relatedNodes = (['up', 'down'] as const).flatMap(
     (direction): Array<NodeSingular> => {
       // Map from ID to node
-      const toProcess = new Map<string, NodeSingular>(
-        nodes.add(direction === 'up' ? edges.sources() : edges.targets()).map((n: NodeSingular) => [n.id(), n])
-      );
+      const fromEdges = direction === 'up' ? edges.sources() : edges.targets();
+      console.log({nodes, edges, fromEdges, direction});
+      const toProcess = new Map<string, NodeSingular>(nodes.add(fromEdges).map((n: NodeSingular) => [n.id(), n]));
       const processed = new Map<string, NodeSingular>();
       // Pop off node and all it's parents
       while (toProcess.size > 0) {
@@ -351,6 +351,10 @@ function allRelated(cy: cytoscape.Core, nodes: NodeCollection, edges: EdgeCollec
         });
         const currentNodes = relatedCompound.add(node);
         (direction === 'up' ? currentNodes.incomers() : currentNodes.outgoers()).forEach((n) => {
+          // Don't add edges, just nodes
+          if (!n.isNode()) {
+            return;
+          }
           if (processed.has(n.id())) {
             return;
           }
