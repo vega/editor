@@ -61,6 +61,7 @@ export interface State {
   debugs: string[];
   themeName: string;
   backgroundColor: string;
+  pulses: {clock: number; values: Record<string, unknown>}[];
 }
 
 export const DEFAULT_STATE: State = {
@@ -104,10 +105,11 @@ export const DEFAULT_STATE: State = {
   normalizedVegaLiteSpec: null,
   vegaSpec: {},
   view: null,
-  runtime: {},
+  runtime: null,
   errors: [],
   warns: [],
   debugs: [],
   infos: [],
   backgroundColor: '#ffffff',
+  pulses: [],
 };

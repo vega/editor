@@ -2,23 +2,42 @@
   overflow: auto;
   width: 100%;
   flex: 1;
+  display: flex;
 }
 
-/* Make definition lists tighter */
-.tippy-box dl {
-  margin: 0;
+.pulses {
+  flex: none;
+  padding: 10px;
+  border-left: solid 2px var(--box-shadow-color);
 }
-.tippy-box pre {
-  margin: 0;
-}
-
-.tippy-box dd {
-  margin-inline-start: 0;
-  overflow: auto;
+.pulses h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.tippy-box dt {
-  font-weight: 700;
+.pulses button {
+  margin-bottom: 10px;
+}
+
+.pulses p {
+  font-size: small;
+  color: var(--extra-dark-gray-color);
+  margin-bottom: 10px;
+}
+
+.pulses table {
+  display: block;
+  overflow-y: scroll;
+}
+
+.active-pulse {
+  border: 4px solid var(--extra-dark-gray-color);
+}
+
+.graph {
+  flex: auto;
+  min-width: 0;
+  position: relative;
 }
 
 .overlay {
@@ -40,4 +59,21 @@
 .cytoscape {
   width: 100%;
   height: 100%;
+}
+
+/* Make definition lists tighter */
+.tippy-box dl {
+  margin: 0;
+}
+.tippy-box pre {
+  margin: 0;
+}
+
+.tippy-box dd {
+  margin-inline-start: 0;
+  overflow: auto;
+}
+
+.tippy-box dt {
+  font-weight: 700;
 }

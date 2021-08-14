@@ -27,6 +27,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       setView: EditorActions.setView,
       setRuntime: EditorActions.setRuntime,
+      addPulse: EditorActions.addPulse,
     },
     dispatch
   );

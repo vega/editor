@@ -30,6 +30,7 @@ class Editor extends React.PureComponent<Props, State> {
     this.handleKeydown = this.handleKeydown.bind(this);
     this.onOpenPortal = this.onOpenPortal.bind(this);
     this.onClosePortal = this.onClosePortal.bind(this);
+    this.runAfter = this.runAfter.bind(this);
   }
 
   public onOpenPortal() {
@@ -164,6 +165,10 @@ class Editor extends React.PureComponent<Props, State> {
 
     // Finalize previous view so that memory can be freed
     if (this.props.view) {
+      // Remove run after callback for the previous view
+      // to disable logging from an evaluate that will run after we finalize it
+      (this.props.view as any)._postrun = [];
+
       this.props.view.finalize();
     }
 
@@ -173,6 +178,7 @@ class Editor extends React.PureComponent<Props, State> {
       loader,
     });
 
+    view.runAfter(this.runAfter, true);
     (view as any).logger(dispatchingLogger);
 
     const debug = (window as any).VEGA_DEBUG;
@@ -189,6 +195,34 @@ class Editor extends React.PureComponent<Props, State> {
 
     setRuntime(runtime);
     setView(view);
+  }
+
+  private runAfter(df: any) {
+    const clock = df._clock;
+
+    // Mapping from ID to value
+    const values: Record<string, unknown> = {};
+    const toProcessContexts = new Set<any>([df._runtime]);
+    const processedContexts = new Set<any>();
+    while (toProcessContexts.size > 0) {
+      const context = toProcessContexts.values().next().value;
+      toProcessContexts.delete(context);
+      processedContexts.add(context);
+      for (const [id, operator] of Object.entries(context.nodes as Record<string, any>)) {
+        if (operator.stamp === clock) {
+          values[id] = operator.value;
+        }
+      }
+      for (const subContext of (context.subcontext as undefined | any[]) ?? []) {
+        if (!processedContexts.has(subContext)) {
+          toProcessContexts.add(subContext);
+        }
+      }
+    }
+    this.props.addPulse(clock, values);
+
+    // Set it up to run again
+    df.runAfter(this.runAfter, true, 10);
   }
 
   public async renderVega() {

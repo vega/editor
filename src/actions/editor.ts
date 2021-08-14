@@ -47,6 +47,8 @@ export const SET_DECORATION = 'SET_DECORATION' as const;
 export const SET_COMPILED_EDITOR_REFERENCE = 'SET_COMPILED_EDITOR_REFERENCE' as const;
 export const SET_EDITOR_FOCUS = 'SET_EDITOR_FOCUS' as const;
 export const SET_BACKGROUND_COLOR = 'SET_BACKGROUND_COLOR' as const;
+export const ADD_PULSE = 'ADD_PULSE' as const;
+export const CLEAR_PULSES = 'CLEAR_PULSES' as const;
 
 export const ERROR = 'ERROR' as const;
 export const WARN = 'WARN' as const;
@@ -102,7 +104,9 @@ export type Action =
   | AddError
   | AddWarning
   | AddInfo
-  | AddDebug;
+  | AddDebug
+  | AddPulse
+  | ClearPulses;
 
 export function setMode(mode: Mode) {
   return {
@@ -521,3 +525,19 @@ export function addDebug(debug: string) {
 }
 
 export type AddDebug = ReturnType<typeof addDebug>;
+
+export function addPulse(clock: number, values: Record<string, unknown>) {
+  return {
+    type: ADD_PULSE,
+    clock,
+    values,
+  };
+}
+export type AddPulse = ReturnType<typeof addPulse>;
+
+export function clearPulses() {
+  return {
+    type: CLEAR_PULSES,
+  };
+}
+export type ClearPulses = ReturnType<typeof clearPulses>;

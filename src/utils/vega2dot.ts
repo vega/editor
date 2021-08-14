@@ -21,7 +21,6 @@ export class Graph {
   // Mapping from graph ID to node
   nodes: Record<ID, Node> = {};
   edges: Edge[] = [];
-  addedDatasetNodes = new Set<string>();
 
   constructor(dataflow: Runtime) {
     dataflow.bindings.forEach(this.addBinding.bind(this));
@@ -35,7 +34,14 @@ export class Graph {
   }
 
   private addOperator({id, type, params, ...rest}: Operator, parent?: ID): void {
-    const {params: nodeParams} = this.node('operator', id, parent, type, {type: 'operator', ID: id.toString()});
+    const {params: nodeParams} = this.node({
+      type: 'operator',
+      id,
+      parent,
+      label: type,
+      params: {type: 'operator', ID: id.toString()},
+      relatedIDs: [id],
+    });
     // Don't show metadata
     delete rest['metadata'];
     // Refs is always null
@@ -46,7 +52,8 @@ export class Graph {
       delete rest['update'];
     }
     if (rest.parent !== undefined) {
-      this.edge(rest.parent.$ref, id, 'parent');
+      const parentID = rest.parent.$ref;
+      this.edge({source: parentID, target: id});
       delete rest['parent'];
     }
     // Handle data seperately to show in graph as nodes
@@ -54,18 +61,32 @@ export class Graph {
     if (rest.data !== undefined) {
       for (const [name, dataset] of Object.entries(rest.data)) {
         const datasetNodeID = `data.${parent ?? 'root'}.${name}`;
-        if (!this.addedDatasetNodes.has(name)) {
-          this.addedDatasetNodes.add(name);
-          this.node('semantic', datasetNodeID, parent, name, {type: 'dataset', dataset: name});
+        if (datasetNodeID in this.nodes) {
+          this.nodes[datasetNodeID].relatedIDs.add(id);
+        } else {
+          this.node({
+            type: 'semantic',
+            id: datasetNodeID,
+            parent,
+            label: name,
+            params: {type: 'dataset', dataset: name},
+            relatedIDs: [id],
+          });
         }
         for (const stage of new Set(dataset)) {
           const datasetStageNodeID = `${datasetNodeID}.${stage}`;
-          this.node('semantic', datasetStageNodeID, datasetNodeID, stage, {
-            type: 'dataset value',
-            dataset: name,
-            stage: stage,
+          this.node({
+            type: 'semantic',
+            id: datasetStageNodeID,
+            parent: datasetNodeID,
+            label: stage,
+            relatedIDs: [id],
+            params: {
+              dataset: name,
+              stage: stage,
+            },
           });
-          this.edge(datasetStageNodeID, id, 'data');
+          this.edge({source: datasetStageNodeID, target: id});
         }
       }
       delete rest['data'];
@@ -75,7 +96,8 @@ export class Graph {
     if (rest.signal !== undefined) {
       const signal = rest.signal;
       if (signal in this.nodes) {
-        this.edge(signal, id, 'signal');
+        this.nodes[signal].relatedIDs.add(id);
+        this.edge({source: signal, target: id, label: 'signal'});
       }
       nodeParams['signal'] = signal;
       delete rest['signal'];
@@ -138,20 +160,23 @@ export class Graph {
       return false;
     }
     if ('$ref' in v) {
+      const vID = v.$ref;
       const pulse = k === 'pulse';
-      this.edge(v.$ref, id, pulse ? undefined : k, pulse);
+      const label = pulse ? undefined : k;
+      this.edge({source: vID, target: id, label, pulse});
       return true;
     }
     if ('$subflow' in v) {
       this.addFlow(v.$subflow, id);
       // Add edge to first node, which is root node and is used to detach the subflow
-      this.edge(id, v.$subflow.operators[0].id, 'root');
+      const rootID = v.$subflow.operators[0].id;
+      this.edge({source: id, target: rootID, label: 'root'});
       return true;
     }
     if ('$expr' in v) {
-      params['k'] = prettifyExpression(v.$expr.code);
+      params[k] = prettifyExpression(v.$expr.code);
       for (const [label, {$ref}] of Object.entries(v.$params)) {
-        this.edge($ref, id, `${k}.${label}`);
+        this.edge({source: $ref, target: id, label: `${k}.${label}`});
       }
       return true;
     }
@@ -172,42 +197,54 @@ export class Graph {
   private addUpdate({source, target, update, options}: Update, index: number, parent?: ID): void {
     // ID updates by index
     const id = `update-${parent || 'root'}.${index}`;
-    const node = this.node('update', id, parent, 'update', {type: 'update'});
+    const node = this.node({type: 'update', id: id, parent, label: 'update', params: {type: 'update'}});
     if (options?.force) {
       node.params.force = 'true';
     }
     if (update && typeof update === 'object' && '$expr' in update) {
       node.params['value'] = prettifyExpression(update.$expr.code);
       for (const [k, v] of Object.entries(update.$params ?? {})) {
-        // If arg was from the target node itself, don't include it to break cycles
-        if (v.$ref === target) {
-          continue;
-        }
-        this.edge(v.$ref, id, k);
+        const paramID = v.$ref;
+        node.relatedIDs.add(paramID);
+        this.edge({source: paramID, target: id, label: k});
       }
     } else {
       node.params['value'] = prettifyJSON(update);
     }
-    this.edge(typeof source === 'object' ? source.$ref : source, id);
-    this.edge(id, target);
+    const sourceID = typeof source === 'object' ? source.$ref : source;
+    node.relatedIDs.add(sourceID);
+    node.relatedIDs.add(target);
+    this.edge({source: sourceID, target: id});
+    this.edge({source: id, target});
   }
   private addBinding({signal, ...rest}: Binding) {
-    this.node('binding', signal, undefined, signal, {
+    this.node({
       type: 'binding',
-      ...Object.fromEntries(Object.entries(rest).map(([k, v]) => [k, prettifyJSON(v)])),
+      id: signal,
+      label: signal,
+      params: {
+        type: 'binding',
+        ...Object.fromEntries(Object.entries(rest).map(([k, v]) => [k, prettifyJSON(v)])),
+      },
     });
   }
 
   private addStream(stream: Stream, parent?: ID) {
-    const node = this.node('stream', stream.id, parent, undefined, {type: 'stream', ID: stream.id.toString()});
+    const node = this.node({
+      type: 'stream',
+      id: stream.id,
+      parent,
+      params: {type: 'stream', ID: stream.id.toString()},
+      relatedIDs: [stream.id],
+    });
 
     if ('stream' in stream) {
       node.label = 'stream';
-      this.edge(stream.stream, stream.id);
+      this.edge({source: stream.stream, target: stream.id});
     } else if ('merge' in stream) {
       node.label = 'merge';
       stream.merge.forEach((from) => {
-        this.edge(from, stream.id);
+        this.edge({source: from, target: stream.id});
       });
     } else {
       node.label = `${stream.source}:${stream.type}`;
@@ -215,8 +252,8 @@ export class Graph {
     if ('between' in stream) {
       const [before, after] = stream.between;
 
-      this.edge(before, stream.id, 'after');
-      this.edge(after, stream.id, 'before');
+      this.edge({source: before, target: stream.id, label: 'before'});
+      this.edge({source: stream.id, target: after, label: 'after'});
     }
     if (stream.consume) {
       node.params.consume = 'true';
@@ -231,14 +268,28 @@ export class Graph {
       node.params.filter = prettifyExpression(stream.filter.code);
     }
   }
-  private edge(source: ID, target: ID, label?: string, pulse?: boolean) {
+  private edge({source, target, label, pulse}: {source: ID; target: ID; label?: string; pulse?: boolean}) {
     this.edges.push({source, target, label, pulse: pulse || false});
   }
-  private node(type: Node['type'], id: ID, parent?: ID, label?: string, params?: Node['params']): Node {
+  private node({
+    type,
+    id,
+    parent,
+    label,
+    params,
+    relatedIDs,
+  }: {
+    type: Node['type'];
+    id: ID;
+    parent?: ID;
+    label?: string;
+    params?: Node['params'];
+    relatedIDs?: ID[];
+  }): Node {
     if (id in this.nodes) {
       throw new Error(`Cannot create node with duplicate ID: ${id}`);
     }
-    return (this.nodes[id] = {type, params: params ?? {}, label, parent});
+    return (this.nodes[id] = {type, params: params ?? {}, label, parent, relatedIDs: new Set(relatedIDs || [])});
   }
 }
 
@@ -263,6 +314,8 @@ export type Node = {
   label?: string;
   // Optional params to display
   params: Record<string, string>;
+  // Set of node IDs this node is created by, to be usef when filtering nodes by ID
+  relatedIDs: Set<ID>;
 };
 
 type Edge = {

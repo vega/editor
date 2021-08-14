@@ -56,6 +56,8 @@ import {
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
   WARN,
+  ADD_PULSE,
+  CLEAR_PULSES,
 } from '../actions/editor';
 import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
 import {State} from '../constants/default-state';
@@ -442,6 +444,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         runtime: action.runtime,
+        pulses: [],
       };
     case SET_DEBUG_PANE_SIZE:
       return {
@@ -583,6 +586,16 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         debugs: [...state.debugs, action.debug],
+      };
+    case ADD_PULSE:
+      return {
+        ...state,
+        pulses: [...state.pulses, {clock: action.clock, values: action.values}],
+      };
+    case CLEAR_PULSES:
+      return {
+        ...state,
+        pulses: [],
       };
     default:
       return state;

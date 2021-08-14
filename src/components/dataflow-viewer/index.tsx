@@ -1,12 +1,25 @@
 import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import {State} from '../../constants/default-state';
-import Renderer from './renderer';
+import * as EditorActions from '../../actions/editor';
 
-export function mapStateToProps(state: State) {
+import DataflowViewerErrorBoundary from './DataflowViewerErrorBoundary';
+
+function mapStateToProps(state: State) {
   return {
-    editorRef: state.editorRef,
     runtime: state.runtime,
+    pulses: state.pulses,
   };
 }
 
-export default connect(mapStateToProps)(Renderer);
+export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
+  return bindActionCreators(
+    {
+      clearPulses: EditorActions.clearPulses,
+    },
+    dispatch
+  );
+}
+export type StoreProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataflowViewerErrorBoundary);
