@@ -13,10 +13,10 @@ export default function runtimeToCytoscape(runtime: Runtime): ElementsDefinition
         parent: n.parent?.toString(),
         params: n.params,
         relatedIDs: [...n.relatedIDs].map((i) => i.toString()),
-        // layoutOptions: {
-        //   // Move bindings and streams to the top
-        //   'org.eclipse.elk.partitioning.partition': n.type === 'binding' ? 0 : n.type === 'stream' ? 1 : 2,
-        // },
+        layoutOptions: {
+          //   // Move bindings and streams to the top
+          'org.eclipse.elk.partitioning.partition': n.type === 'binding' ? 0 : n.type === 'stream' ? 1 : 2,
+        },
       },
       style: {
         // Set label in style instead of based on data to work around
