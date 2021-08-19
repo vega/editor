@@ -36,7 +36,7 @@ export const pulsesSlice = createSlice({
 });
 
 // Sort pulses by clock
-export const selectPulses = (state: State) => state.pulses.value.sort((l, r) => r.clock - l.clock);
+export const selectPulses = (state: State) => [...state.pulses.value].sort((l, r) => r.clock - l.clock);
 export const selectSelectedPulse = (state: State) => state.pulses.selected;
 export const selectSelectedValues = (state: State) =>
   selectPulses(state).find((p) => p.clock === selectSelectedPulse(state))?.values || null;
