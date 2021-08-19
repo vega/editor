@@ -3,7 +3,6 @@ import SplitPane from 'react-split-pane';
 import {mapDispatchToProps, mapStateToProps} from '.';
 import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants';
 import DataViewer from '../data-viewer';
-import DataflowViewer from '../dataflow-viewer';
 import ErrorBoundary from '../error-boundary';
 import ErrorPane from '../error-pane';
 import Renderer from '../renderer';
@@ -14,6 +13,7 @@ import {version as VG_VERSION} from 'vega';
 import {version as VL_VERSION} from 'vega-lite';
 import {version as TOOLTIP_VERSION} from 'vega-tooltip';
 import {COMMIT_HASH} from '../header/help-modal';
+import {DataflowViewer} from '../../features/dataflow/DataflowViewer';
 
 const defaultState = {
   header: '',

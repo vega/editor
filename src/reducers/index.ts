@@ -38,7 +38,6 @@ import {
   SET_MODE,
   SET_MODE_ONLY,
   SET_RENDERER,
-  SET_RUNTIME,
   SET_SCROLL_POSITION,
   SET_SIGNALS,
   SET_VEGA_EXAMPLE,
@@ -56,11 +55,10 @@ import {
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
   WARN,
-  ADD_PULSE,
-  CLEAR_PULSES,
 } from '../actions/editor';
 import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
 import {State} from '../constants/default-state';
+import {dataflowReducer} from '../features/dataflow';
 import {validateVega, validateVegaLite} from '../utils/validate';
 import {
   MERGE_CONFIG_SPEC,
@@ -323,6 +321,8 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
 }
 
 export default (state: State = DEFAULT_STATE, action: Action): State => {
+  // Copy all changes to state from dataflow reducer to state
+  state = {...state, ...dataflowReducer(state, action)};
   switch (action.type) {
     case SET_MODE:
       return {
@@ -439,12 +439,6 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         view: action.view,
-      };
-    case SET_RUNTIME:
-      return {
-        ...state,
-        runtime: action.runtime,
-        pulses: [],
       };
     case SET_DEBUG_PANE_SIZE:
       return {
@@ -586,16 +580,6 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
       return {
         ...state,
         debugs: [...state.debugs, action.debug],
-      };
-    case ADD_PULSE:
-      return {
-        ...state,
-        pulses: [...state.pulses, {clock: action.clock, values: action.values}],
-      };
-    case CLEAR_PULSES:
-      return {
-        ...state,
-        pulses: [],
       };
     default:
       return state;

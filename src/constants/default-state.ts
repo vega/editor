@@ -1,7 +1,9 @@
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {Renderers, Runtime, Spec} from 'vega';
+import {Renderers, Spec} from 'vega';
 import {Config, vega} from 'vega-embed';
 import {TopLevelSpec as VlSpec} from 'vega-lite';
+import {dataflowInitialState} from '../features/dataflow';
+
 import {
   COMPILEDPANE,
   EDITOR_FOCUS,
@@ -14,7 +16,7 @@ import {
   View,
 } from './consts';
 
-export interface State {
+export type State = {
   isAuthenticated: boolean;
   baseURL: string;
   compiledVegaSpec: boolean;
@@ -54,15 +56,13 @@ export interface State {
   normalizedVegaLiteSpec: any;
   vegaSpec: Spec;
   view: View;
-  runtime: Runtime;
   errors: string[];
   warns: string[];
   infos: string[];
   debugs: string[];
   themeName: string;
   backgroundColor: string;
-  pulses: {clock: number; values: Record<string, unknown>}[];
-}
+} & typeof dataflowInitialState;
 
 export const DEFAULT_STATE: State = {
   baseURL: null,
@@ -105,11 +105,10 @@ export const DEFAULT_STATE: State = {
   normalizedVegaLiteSpec: null,
   vegaSpec: {},
   view: null,
-  runtime: null,
   errors: [],
   warns: [],
   debugs: [],
   infos: [],
   backgroundColor: '#ffffff',
-  pulses: [],
+  ...dataflowInitialState,
 };
