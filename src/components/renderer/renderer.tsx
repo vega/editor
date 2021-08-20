@@ -145,7 +145,6 @@ class Editor extends React.PureComponent<Props, State> {
     } else {
       runtime = vega.parse(vegaSpec, config as VgConfig);
     }
-    setRuntime(runtime);
 
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
@@ -194,7 +193,7 @@ class Editor extends React.PureComponent<Props, State> {
     } else {
       debug.vegaLiteSpec = debug.normalizedVegaLiteSpec = undefined;
     }
-
+    setRuntime(runtime);
     setView(view);
   }
 

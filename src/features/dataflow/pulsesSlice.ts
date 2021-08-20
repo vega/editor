@@ -1,12 +1,15 @@
-import {createAction, createSlice} from '@reduxjs/toolkit';
+import {createAction, createSelector, createSlice} from '@reduxjs/toolkit';
 import {State} from '../../constants/default-state';
 import {setRuntime} from './runtimeSlice';
-import {SanitizedValue, sanitizeValue} from './sanitizeValue';
+import {SanitizedValue, sanitizeValue} from './utils/sanitizeValue';
 
 export type Values = Record<string, SanitizedValue>;
-export type Pulse = {clock: number; values: Values};
+export type Pulse = {clock: number; values: Values; nValues: number};
 export type PulsesState = Pulse[];
 const initialState: PulsesState = [];
+
+// Trim stored pulses to this maximum. If new pulses are recorded past this, drop them
+const MAX_PULSES = 100;
 
 export const recordPulse = createAction('recordPulse', (clock: number, values: Record<string, unknown>) => ({
   payload: {
@@ -26,9 +29,14 @@ export const pulsesSlice = createSlice({
       .addCase(setRuntime, () => initialState)
       .addCase(resetPulses, () => initialState)
       .addCase(recordPulse, (state, {payload}) => {
-        state.push(payload);
+        if (state.length > MAX_PULSES) {
+          state.shift();
+        }
+        state.push({...payload, nValues: Object.keys(payload.values).length});
       }),
 });
 
-// Sort pulses by clock
-export const selectPulses = (state: State) => [...state.pulses].sort((l, r) => r.clock - l.clock);
+export const pulsesSelector = (state: State) => state.pulses;
+// Sort pulses by clock, by reversing them
+export const sortedPulsesSelector = createSelector(pulsesSelector, (pulses) => pulses.slice(0).reverse());
+export const pulsesEmptySelector = createSelector(pulsesSelector, (pulses) => pulses.length === 0);

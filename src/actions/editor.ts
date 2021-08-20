@@ -19,7 +19,6 @@ export const SET_RENDERER = 'SET_RENDERER' as const;
 export const SET_VEGA_EXAMPLE = 'SET_VEGA_EXAMPLE' as const;
 export const SET_VEGA_LITE_EXAMPLE = 'SET_VEGA_LITE_EXAMPLE' as const;
 export const SET_VIEW = 'SET_VIEW' as const;
-export const SET_RUNTIME = 'SET_RUNTIME' as const;
 export const SHOW_LOGS = 'SHOW_LOGS' as const;
 export const TOGGLE_AUTO_PARSE = 'TOGGLE_AUTO_PARSE' as const;
 export const TOGGLE_COMPILED_VEGA_SPEC = 'TOGGLE_COMPILED_VEGA_SPEC' as const;
