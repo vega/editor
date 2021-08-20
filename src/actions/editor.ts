@@ -76,7 +76,6 @@ export type Action =
   | SetRenderer
   | SetBaseUrl
   | SetView
-  | SetRuntime
   | SetDebugPaneSize
   | ShowLogs
   | SetCompiledVegaPaneSize
@@ -258,14 +257,6 @@ export function setView(view: View) {
   };
 }
 export type SetView = ReturnType<typeof setView>;
-
-export function setRuntime(runtime: Runtime) {
-  return {
-    type: SET_RUNTIME,
-    runtime,
-  };
-}
-export type SetRuntime = ReturnType<typeof setRuntime>;
 
 export function setDebugPaneSize(size: number) {
   return {
