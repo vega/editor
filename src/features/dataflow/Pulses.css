@@ -1,0 +1,40 @@
+.pulses {
+  flex: none;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  border-left: solid 2px var(--light-gray-color);
+}
+.pulses h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.pulses button {
+  margin-bottom: 10px;
+}
+
+.pulses p {
+  font-size: small;
+  color: var(--extra-dark-gray-color);
+  margin-bottom: 10px;
+}
+
+.pulses table {
+  height: 100%;
+  display: block;
+  overflow-y: scroll;
+}
+
+.pulses table thead {
+  position: sticky;
+  top: 0;
+}
+
+.pulses .buttons {
+  display: flex;
+}
+
+.active-pulse {
+  border: 4px solid var(--extra-dark-gray-color);
+}
