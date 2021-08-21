@@ -8,12 +8,11 @@ export type Elements = {nodes: string[]; edges: string[]};
  * It treats compound relationships as both parents and children.
  */
 export function allRelated({nodes, edges}: Graph, selected: Elements): Set<string> {
-  const node = (id: string) => nodes.get(id);
   return new Set(
     (['up', 'down'] as const).flatMap((direction) => {
       // Map from ID to node
       const fromEdges = selected.edges.map((id) => {
-        const {source, target} = edges.get(id);
+        const {source, target} = edges[id];
         return direction === 'up' ? source : target;
       });
 
@@ -26,10 +25,12 @@ export function allRelated({nodes, edges}: Graph, selected: Elements): Set<strin
 
         // Mark the compound node relations as visited
         // and add their immediate parents to the queue
-        const relatedCompound = [...node(id).parents, ...node(id).children];
+        const node = nodes[id];
+        const parents = node.parent !== undefined ? [node.parent] : [];
+        const relatedCompound = [...parents, ...node.children];
         relatedCompound.forEach((i) => processed.add(i));
         for (const relatedID of [...relatedCompound, id].flatMap((i) =>
-          direction === 'up' ? node(i).incoming : node(i).outgoing
+          direction === 'up' ? nodes[i].incoming : nodes[i].outgoing
         )) {
           if (processed.has(relatedID)) {
             continue;

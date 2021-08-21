@@ -1,6 +1,6 @@
 import {createAction, createSelector, createSlice} from '@reduxjs/toolkit';
-import {State} from '../../constants/default-state';
 import {setRuntime} from './runtimeSlice';
+import {createSliceSelector} from './utils/createSliceSelector';
 import {SanitizedValue, sanitizeValue} from './utils/sanitizeValue';
 
 export type Values = Record<string, SanitizedValue>;
@@ -36,7 +36,7 @@ export const pulsesSlice = createSlice({
       }),
 });
 
-export const pulsesSelector = (state: State) => state.pulses;
+export const pulsesSelector = createSliceSelector(pulsesSlice);
 // Sort pulses by clock, by reversing them
 export const sortedPulsesSelector = createSelector(pulsesSelector, (pulses) => pulses.slice(0).reverse());
 export const pulsesEmptySelector = createSelector(pulsesSelector, (pulses) => pulses.length === 0);

@@ -3,6 +3,7 @@
  */
 
 import {vega} from 'vega-embed';
+import {Size} from './measureText';
 
 type ID = string;
 
@@ -34,7 +35,10 @@ export type Node = {
   // Mapping of keys to values, for display
   params: Record<string, string>;
 
-  parents: ID[];
+  // Compute node sizes for layout and display based on label text
+  // As reccomended by cytoscape https://github.com/cytoscape/cytoscape.js/issues/2713#issuecomment-712247855
+  size: Size;
+
   children: ID[];
   incoming: ID[];
   outgoing: ID[];
@@ -51,14 +55,16 @@ export type Edge = {
 };
 
 export type Graph = {
-  nodes: Map<ID, Node>;
-  edges: Map<ID, Edge>;
+  nodes: Record<ID, Node>;
+  edges: Record<ID, Edge>;
 };
 
 export function filterGraph(graph: Graph, nodes: Set<ID>): Graph {
   return {
-    nodes: new Map([...graph.nodes.entries()].filter(([id]) => nodes.has(id))),
-    edges: new Map([...graph.edges.entries()].filter(([, {source, target}]) => nodes.has(source) && nodes.has(target))),
+    nodes: Object.fromEntries(Object.entries(graph.nodes).filter(([id]) => nodes.has(id))),
+    edges: Object.fromEntries(
+      Object.entries(graph.edges).filter(([, {source, target}]) => nodes.has(source) && nodes.has(target))
+    ),
   };
 }
 
@@ -67,7 +73,9 @@ export function filterGraph(graph: Graph, nodes: Set<ID>): Graph {
  */
 export function associatedWith({nodes}: Graph, ids: string[]): Set<string> {
   return new Set(
-    [...nodes.entries()].filter(([, {associated}]) => associated.some((id) => ids.includes(id))).map(([id]) => id)
+    Object.entries(nodes)
+      .filter(([, {associated}]) => associated.some((id) => ids.includes(id)))
+      .map(([id]) => id)
   );
 }
 

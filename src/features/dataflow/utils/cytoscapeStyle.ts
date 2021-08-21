@@ -5,7 +5,17 @@ import {colorKeys} from './graph';
 // https://vega.github.io/vega/docs/schemes/#categorical
 const colorScheme: string[] = [...scheme('tableau20'), ...scheme('category20b')];
 
+const computedStyle = getComputedStyle(document.documentElement);
+export const fontFamily = computedStyle.getPropertyValue('--base-font-family');
+export const fontSize = computedStyle.getPropertyValue('font-size');
 export const style: cytoscape.Stylesheet[] = [
+  {
+    selector: 'node, edge',
+    style: {
+      'font-family': fontFamily,
+      'font-size': fontSize,
+    },
+  },
   {
     selector: 'node',
     style: {

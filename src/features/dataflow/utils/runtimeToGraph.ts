@@ -18,11 +18,12 @@ import {
 
 import {prettifyExpression, prettifyJSON} from './prettify';
 import {Graph, Node, Edge} from './graph';
+import {measureText} from './measureText';
 
 // TODO: Add transitive asociate nodes to signals, to track
 
 export function runtimeToGraph(runtime: Runtime): Graph {
-  const graph = {nodes: new Map(), edges: new Map()} as Graph;
+  const graph = {nodes: {}, edges: {}} as Graph;
   addRuntime(graph, runtime);
   return graph;
 }
@@ -296,10 +297,11 @@ function addNode(
   const id = runtimeID.toString();
   const node = getNode(graph, id);
   Object.assign(node, rest);
+  node.size = measureText(node.label);
   node.associated.push(id);
   if (parentRuntimeID) {
     const parentID = parentRuntimeID.toString();
-    node.parents.push(parentID);
+    node.parent = parentID;
     getNode(graph, parentID).children.push(id);
   }
 }
@@ -311,7 +313,7 @@ function addEdge(
   const source = runtimeSource.toString();
   const target = runtimeTarget.toString();
   // Increment edge ids to make each unique
-  graph.edges.set(`edge:${graph.edges.size}`, {source, target, ...rest});
+  graph.edges[`edge:${graph.edges.size}`] = {source, target, ...rest};
   getNode(graph, source).outgoing.push(target);
   getNode(graph, target).incoming.push(source);
 }
@@ -321,24 +323,24 @@ function addParam(graph: Graph, id: ID, key: string, value: string): void {
 }
 
 function hasNode(graph: Graph, id: ID): boolean {
-  return graph.nodes.has(id.toString());
+  return graph.nodes[id] !== undefined;
 }
 
 function associateNode(graph: Graph, nodeID: ID, relatedID: ID): void {
   getNode(graph, nodeID.toString()).associated.push(relatedID.toString());
 }
 function getNode({nodes}: Graph, id: string): Node {
-  let node = nodes.get(id);
+  let node = nodes[id];
   if (!node) {
     node = {
-      parents: [],
       children: [],
       incoming: [],
       outgoing: [],
       associated: [],
       params: {},
+      size: null,
     };
-    nodes.set(id, node);
+    nodes[id] = node;
   }
   return node;
 }
