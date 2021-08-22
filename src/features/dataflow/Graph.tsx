@@ -6,6 +6,7 @@ import {currentLayoutSelector, layoutKeySelector, computeLayout} from './layoutS
 export function Graph() {
   const dispatch = useDispatch();
   const layoutKey = useAppSelector(layoutKeySelector);
+
   // Compute the layout for the current selections the graph loads
   React.useEffect(() => {
     dispatch(computeLayout(layoutKey));
@@ -21,11 +22,21 @@ export function Graph() {
 }
 
 function Overlay() {
-  // When selectors change, start another layout, if not already started.
+  const layout = useAppSelector(currentLayoutSelector);
 
-  //   const dataflowLoading = useAppSelector((state) => state.dataflowLoading);
-  const dataflowLoading = false;
-  return <div className={dataflowLoading ? 'overlay' : 'display-none'}>Laying out graph...</div>;
+  const layingOut = <div className="overlay">Laying out graph...</div>;
+  // If we haven't started laying out this graph yet, just default to saying laying out.
+  if (layout === null) {
+    return layingOut;
+  }
+  switch (layout.type) {
+    case 'loading':
+      return layingOut;
+    case 'done':
+      return <></>;
+    case 'error':
+      return <div className="overlay">Error laying out graph: {layout.error}</div>;
+  }
 }
 
 function Cytoscape() {

@@ -41,6 +41,11 @@ export const computeLayout = createAsyncThunk<ElkNode, LayoutKey, {state: State}
   }
 );
 
+// TODO: Layout based on included nodes instead?
+// Use set to track?
+
+// Then add cytoscape JS conversion ;)
+
 export const layoutSlice = createSlice({
   name: 'layout',
   initialState,
@@ -88,6 +93,6 @@ const currentLayoutStatusSelector = createSelector(
     Object.values(layout).find(({key}) => runtime === key.runtime && deepEqual(selection, key.selection)) ?? null
 );
 
-export const currentLayoutSelector = createSelector(currentLayoutStatusSelector, (status) => status?.value);
+export const currentLayoutSelector = createSelector(currentLayoutStatusSelector, (status) => status?.value || null);
 
 export const elkGraphSelector = createSelector(graphSelector, (graph) => (graph === null ? null : toELKGraph(graph)));
