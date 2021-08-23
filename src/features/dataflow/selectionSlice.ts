@@ -28,7 +28,8 @@ export const selectionSlice = createSlice({
       })
       .addCase(setSelectedElements, (state, {payload}) => {
         // Sort them, to aid in easy equality checking
-        state.elements = {nodes: payload.nodes.slice().sort(), edges: payload.edges.slice().sort()};
+        state.elements =
+          payload === null ? null : {nodes: payload.nodes.slice().sort(), edges: payload.edges.slice().sort()};
       }),
 });
 
