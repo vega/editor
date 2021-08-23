@@ -17,6 +17,7 @@ export const style: cytoscape.Stylesheet[] = [
     style: {
       'font-family': fontFamily,
       'font-size': fontSize,
+      'min-zoomed-font-size': 10,
     },
   },
   {
