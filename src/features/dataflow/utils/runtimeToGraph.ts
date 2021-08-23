@@ -42,6 +42,7 @@ function addOperator(graph: Graph, {id, type, params, ...rest}: Operator, parent
     type: 'operator',
     id,
     parent,
+    colorKey: `operator:${type}`,
     label: type,
   });
   addParam(graph, id, 'ID', id.toString());
@@ -95,7 +96,7 @@ function addSignal(graph: Graph, id: ID, signal: string, parent: ID | undefined)
     });
   }
   associateNode(graph, signalID, id);
-  addEdge(graph, {source: signal, target: id, label: 'signal'});
+  addEdge(graph, {source: signalID, target: id, label: 'signal'});
 }
 
 function addData(graph: Graph, id: ID, data: BaseOperator['data'], parent: ID | undefined): void {
@@ -291,29 +292,41 @@ function addNode(
   {
     id: runtimeID,
     parent: parentRuntimeID,
+    colorKey,
     ...rest
   }: {id: ID; parent?: ID} & Required<Pick<Node, 'type' | 'label'>> & Pick<Node, 'colorKey'>
 ): void {
   const id = runtimeID.toString();
+
   const node = getNode(graph, id);
   Object.assign(node, rest);
+
+  node.colorKey = colorKey ?? rest.type;
   node.size = measureText(node.label);
   node.associated.push(id);
+  node.partition =
+    rest.type === 'binding' || rest.type === 'signal' ? 0 : rest.type === 'stream' || rest.type === 'data' ? 1 : 2;
+
   if (parentRuntimeID) {
     const parentID = parentRuntimeID.toString();
     node.parent = parentID;
     getNode(graph, parentID).children.push(id);
   }
 }
-
+// TODO Namespace signal by parent?
 function addEdge(
   graph: Graph,
-  {source: runtimeSource, target: runtimeTarget, ...rest}: {source: ID; target: ID} & Pick<Edge, 'label' | 'primary'>
+  {
+    source: runtimeSource,
+    target: runtimeTarget,
+    primary,
+    label,
+  }: {source: ID; target: ID; label?: string; primary?: boolean}
 ): void {
   const source = runtimeSource.toString();
   const target = runtimeTarget.toString();
   // Increment edge ids to make each unique
-  graph.edges[`edge:${graph.edges.size}`] = {source, target, ...rest};
+  graph.edges[`edge:${Object.keys(graph.edges).length}`] = {source, target, label, primary: primary ?? false};
   getNode(graph, source).outgoing.push(target);
   getNode(graph, target).incoming.push(source);
 }

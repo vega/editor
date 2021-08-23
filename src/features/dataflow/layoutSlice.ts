@@ -4,7 +4,6 @@
 import {resetPulses} from './pulsesSlice';
 import {graphSelector, runtimeSelector, setRuntime} from './runtimeSlice';
 import {selectionSelector} from './selectionSlice';
-import {measureText} from './utils/measureText';
 import {toELKGraph} from './utils/elk';
 import {ElkNode} from 'elkjs';
 import ELK from 'elkjs/lib/elk.bundled.js';
@@ -92,7 +91,8 @@ const currentLayoutStatusSelector = createSelector(
     // Compare runtime by identity, to speed up comparison
     Object.values(layout).find(({key}) => runtime === key.runtime && deepEqual(selection, key.selection)) ?? null
 );
-
-export const currentLayoutSelector = createSelector(currentLayoutStatusSelector, (status) => status?.value || null);
-
 export const elkGraphSelector = createSelector(graphSelector, (graph) => (graph === null ? null : toELKGraph(graph)));
+export const currentLayoutSelector = createSelector(currentLayoutStatusSelector, (status) => status?.value || null);
+export const elkGraphWithPositionSelector = createSelector(currentLayoutSelector, (value) =>
+  value?.type === 'done' ? value.layout : null
+);

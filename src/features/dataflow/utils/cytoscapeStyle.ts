@@ -26,8 +26,9 @@ export const style: cytoscape.Stylesheet[] = [
 
       'background-opacity': 0.6,
       shape: 'round-rectangle',
-      width: 'label',
-      height: 'label',
+      width: 'data(width)',
+      height: 'data(width)',
+      label: 'data(label)',
       padding: '8px',
       color: 'black',
     } as any,

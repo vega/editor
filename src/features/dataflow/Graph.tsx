@@ -2,6 +2,7 @@ import * as React from 'react';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';
 import {currentLayoutSelector, layoutKeySelector, computeLayout} from './layoutSlice';
+import {Cytoscape} from './Cytoscape';
 
 export function Graph() {
   const dispatch = useDispatch();
@@ -35,11 +36,11 @@ function Overlay() {
     case 'done':
       return <></>;
     case 'error':
-      return <div className="overlay">Error laying out graph: {layout.error}</div>;
+      return (
+        <div>
+          Error laying out graph
+          <pre>{layout.error.stack}</pre>
+        </div>
+      );
   }
-}
-
-function Cytoscape() {
-  const layout = useAppSelector(currentLayoutSelector);
-  return <pre>{JSON.stringify(layout ?? null, undefined, 2)}</pre>;
 }

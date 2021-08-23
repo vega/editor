@@ -30,11 +30,14 @@ export type Node = {
   // A parent node, if this node is inside a compound node
   parent?: ID;
   // A string that can be used to identify the node for coloring
-  // If absent, uses the type
-  colorKey?: typeof colorKeys;
+  // should always be present
+  colorKey?: typeof colorKeys[number];
   // Mapping of keys to values, for display
   params: Record<string, string>;
 
+  // Lower partition are laid out closer to the begining of the graph
+  // https://www.eclipse.org/elk/reference/options/org-eclipse-elk-partitioning-partition.html
+  partition?: number;
   // Compute node sizes for layout and display based on label text
   // As reccomended by cytoscape https://github.com/cytoscape/cytoscape.js/issues/2713#issuecomment-712247855
   size: Size;
@@ -50,8 +53,8 @@ export type Edge = {
   target: ID;
   // Optional label to display on the edge
   label?: string;
-  // Whether this is a primary edge, used for pulses, or a secondary edge. Defaults to false
-  primary?: boolean;
+  // Whether this is a primary edge, used for pulses, or a secondary edge
+  primary: boolean;
 };
 
 export type Graph = {
