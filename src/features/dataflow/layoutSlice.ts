@@ -4,9 +4,9 @@
 import {resetPulses} from './pulsesSlice';
 import {graphSelector, runtimeSelector, setRuntime} from './runtimeSlice';
 import {selectionSelector} from './selectionSlice';
-import {toELKGraph} from './utils/elk';
+import {toELKGraph} from './utils/toELKGraph';
 import {ElkNode} from 'elkjs';
-import ELK from 'elkjs/lib/elk.bundled.js';
+import ELK from 'elkjs/lib/elk-api';
 import {State} from '../../constants/default-state';
 import {deepEqual} from 'vega-lite';
 import {createAsyncThunk, createSelector, createSlice, SerializedError} from '@reduxjs/toolkit';
@@ -24,7 +24,13 @@ type LayoutStatus = {
 type LayoutState = Record<string, LayoutStatus>;
 
 const initialState: LayoutState = {};
-const elk = new ELK();
+
+// We copy the ELK worker file to the webpack build as is, from the ELK package, so we can load it as a webworker.
+
+const elkWorker = new Worker('./elk-worker.js');
+const elk = new ELK({
+  workerFactory: () => elkWorker,
+});
 
 export const computeLayout = createAsyncThunk<ElkNode, LayoutKey, {state: State}>(
   'computeLayout',
