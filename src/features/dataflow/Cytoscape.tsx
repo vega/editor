@@ -17,7 +17,6 @@ export function Cytoscape() {
   const elements = useAppSelector(cytoscapeElementsSelector);
 
   React.useEffect(() => {
-    console.log('creating');
     const cy = (cyRef.current = cytoscape({container: divRef.current, style}));
     cy.on('select', () =>
       dispatch(

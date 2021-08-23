@@ -5,8 +5,10 @@ import {colorKeys} from './graph';
 // https://vega.github.io/vega/docs/schemes/#categorical
 const colorScheme: string[] = [...scheme('tableau20'), ...scheme('category20b')];
 
-// Copy'--base-font-family
-export const fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+// Copy --base-font-family but remove BlinkMacSystemFont because of Chrome bug that cytoscape hits
+// https://bugs.chromium.org/p/chromium/issues/detail?id=1056386#c12
+
+export const fontFamily = '-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 export const fontSize = '16px';
 export const nodePaddingPx = 8;
 export const style: cytoscape.Stylesheet[] = [

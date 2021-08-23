@@ -23,10 +23,7 @@ const LAYOUT_OPTIONS: LayoutOptions = {
   // We are placing the labels directly on the edges
   'org.eclipse.elk.edgeLabels.inline': 'true',
 
-  // 'org.eclipse.elk.padding': '10',
-
-  // 'org.eclipse.elk.spacing.edgeNode': '20',
-
+  // Add more spacing between layers, to make room for edges without labels
   'org.eclipse.elk.layered.spacing.nodeNodeBetweenLayers': '30',
 };
 
