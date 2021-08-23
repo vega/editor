@@ -8,7 +8,7 @@ const colorScheme: string[] = [...scheme('tableau20'), ...scheme('category20b')]
 // Copy'--base-font-family
 export const fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 export const fontSize = '16px';
-
+export const nodePaddingPx = 8;
 export const style: cytoscape.Stylesheet[] = [
   {
     selector: 'node, edge',
@@ -28,9 +28,9 @@ export const style: cytoscape.Stylesheet[] = [
       'background-opacity': 0.6,
       shape: 'round-rectangle',
       width: 'data(width)',
-      height: 'data(width)',
+      height: 'data(height)',
       label: 'data(label)',
-      padding: '8px',
+      padding: `${nodePaddingPx}px`,
       color: 'black',
     } as any,
   },

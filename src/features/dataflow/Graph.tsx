@@ -25,14 +25,12 @@ export function Graph() {
 function Overlay() {
   const layout = useAppSelector(currentLayoutSelector);
 
-  const layingOut = <div className="overlay">Laying out graph...</div>;
-  // If we haven't started laying out this graph yet, just default to saying laying out.
   if (layout === null) {
-    return layingOut;
+    return <div className="overlay">No active dataflow runtime</div>;
   }
   switch (layout.type) {
     case 'loading':
-      return layingOut;
+      return <div className="overlay">Laying out graph...</div>;
     case 'done':
       return <></>;
     case 'error':

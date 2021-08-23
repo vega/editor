@@ -53,6 +53,7 @@ export type Edge = {
   target: ID;
   // Optional label to display on the edge
   label?: string;
+  size: Size;
   // Whether this is a primary edge, used for pulses, or a secondary edge
   primary: boolean;
 };

@@ -33,8 +33,8 @@ export function Cytoscape() {
 
   React.useEffect(() => {
     if (elements !== null) {
-      console.log('rendering', elements);
       cyRef.current.json({elements});
+      cyRef.current.fit();
     }
   }, [cyRef.current, elements]);
 

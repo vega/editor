@@ -16,8 +16,18 @@ const LAYOUT_OPTIONS: LayoutOptions = {
   // Sometimes seems to improve layouts
   'org.eclipse.elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
 
+  // Disable temporarily, becuase it sometimes crashes ELK
   // Add partitioning to move signal and bindings to top
-  'org.eclipse.elk.partitioning.activate': 'true',
+  // 'org.eclipse.elk.partitioning.activate': 'true',
+
+  // We are placing the labels directly on the edges
+  'org.eclipse.elk.edgeLabels.inline': 'true',
+
+  // 'org.eclipse.elk.padding': '10',
+
+  // 'org.eclipse.elk.spacing.edgeNode': '20',
+
+  'org.eclipse.elk.layered.spacing.nodeNodeBetweenLayers': '30',
 };
 
 const ROOT_ID = 'ELK:root';
@@ -27,7 +37,12 @@ export function toELKGraph(graph: Graph): ElkNode {
   // Therefore, we keep track of every node we add, so that when we add a node, to we add it to its parent
   const idToNode: Map<string, ElkNode> = new Map();
 
-  const edges = Object.entries(graph.edges).map(([id, {source, target}]) => ({id, source, target}));
+  const edges = Object.entries(graph.edges).map(([id, {source, target, size, label}]) => ({
+    id,
+    source,
+    target,
+    labels: label ? [{id: `edge-label:${id}`, text: label, ...size}] : [],
+  }));
   const rootNode: ElkNode = {
     id: ROOT_ID,
     children: [],

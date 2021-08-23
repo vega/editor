@@ -19,6 +19,7 @@ import {
 import {prettifyExpression, prettifyJSON} from './prettify';
 import {Graph, Node, Edge} from './graph';
 import {measureText} from './measureText';
+import {nodePaddingPx} from './cytoscapeStyle';
 
 // TODO: Add transitive asociate nodes to signals, to track
 
@@ -300,7 +301,6 @@ function addNode(
 
   const node = getNode(graph, id);
   Object.assign(node, rest);
-
   node.colorKey = colorKey ?? rest.type;
   node.size = measureText(node.label);
   node.associated.push(id);
@@ -326,7 +326,13 @@ function addEdge(
   const source = runtimeSource.toString();
   const target = runtimeTarget.toString();
   // Increment edge ids to make each unique
-  graph.edges[`edge:${Object.keys(graph.edges).length}`] = {source, target, label, primary: primary ?? false};
+  graph.edges[`edge:${Object.keys(graph.edges).length}`] = {
+    source,
+    target,
+    label,
+    primary: primary ?? false,
+    size: measureText(label ?? ''),
+  };
   getNode(graph, source).outgoing.push(target);
   getNode(graph, target).incoming.push(source);
 }
