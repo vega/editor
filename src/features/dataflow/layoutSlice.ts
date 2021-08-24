@@ -54,13 +54,14 @@ const computeLayout = createAsyncThunk(
  */
 export function conditionallyComputeLayout(key: LayoutKey) {
   return (dispatch: Dispatch<any>, getState: () => State) => {
-    const alreadyLayingOut = currentLayoutStatusSelector(getState()) !== null;
+    const state = getState();
+    const alreadyLayingOut = currentLayoutStatusSelector(state) !== null;
     if (alreadyLayingOut) {
       return;
     }
     // Use selector inside thunk, to delay resolving it till we have passed the condition,
     // Because resolving selector is potentially expensive, requires full graph traversal
-    const node = elkGraphSelector(key);
+    const node = elkGraphSelector(state);
     return dispatch(computeLayout({node, key}));
   };
 }
