@@ -17,14 +17,13 @@
   width: 100%;
   height: 100%;
   z-index: 1;
-  /* Center */
+  opacity: 0.9;
+  padding: 10px;
+}
+.center-text {
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0.9;
-}
-.display-none {
-  display: none;
 }
 
 .cytoscape {
