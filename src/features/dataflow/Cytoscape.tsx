@@ -4,7 +4,7 @@ import * as React from 'react';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';
 import {elkGraphWithPositionSelector} from './layoutSlice';
-import {graphSelector} from './runtimeSlice';
+import {filteredGraphSelector} from './selectionSlice';
 import {setSelectedElements} from './selectionSlice';
 import {toCytoscape} from './utils/toCytoscape';
 import {style} from './utils/cytoscapeStyle';
@@ -46,6 +46,6 @@ function connectCytoscapeEvent(cy: cytoscape.Core) {
   // cy.on('mouseout', ({target}) => dispatch({type: 'mouseout-graph', target}));
 }
 
-const cytoscapeElementsSelector = createSelector(elkGraphWithPositionSelector, graphSelector, (layout, graph) =>
+const cytoscapeElementsSelector = createSelector(elkGraphWithPositionSelector, filteredGraphSelector, (layout, graph) =>
   layout && graph ? toCytoscape(graph, layout) : null
 );
