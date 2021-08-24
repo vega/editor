@@ -2,8 +2,8 @@
  * Computes layouts for graphs with ELK js and caches them.
  */
 import {resetPulses} from './pulsesSlice';
-import {graphSelector, runtimeSelector, setRuntime} from './runtimeSlice';
-import {selectionSelector} from './selectionSlice';
+import {runtimeSelector, setRuntime} from './runtimeSlice';
+import {filteredGraphSelector, selectionSelector} from './selectionSlice';
 import {toELKGraph} from './utils/toELKGraph';
 import {ElkNode} from 'elkjs';
 import ELK from 'elkjs/lib/elk-api';
@@ -11,6 +11,7 @@ import {State} from '../../constants/default-state';
 import {deepEqual} from 'vega-lite';
 import {createAsyncThunk, createSelector, createSlice, SerializedError} from '@reduxjs/toolkit';
 import {createSliceSelector} from './utils/createSliceSelector';
+import {Dispatch} from 'redux';
 
 // Mapping of action request ID to computed layout, keyed by the selection and runtime
 // We keep the runtime as a key, even though we clear all values after changing the runtime,
@@ -32,19 +33,37 @@ const elk = new ELK({
   workerFactory: () => elkWorker,
 });
 
-export const computeLayout = createAsyncThunk<ElkNode, LayoutKey, {state: State}>(
+const computeLayout = createAsyncThunk(
   'computeLayout',
-  async (key) => {
+  async ({node}: {node: ElkNode; key: LayoutKey}): Promise<ElkNode> => {
+    // If we encounter an error, log to console as well as raising to set state
+    try {
+      return elk.layout(node);
+    } catch (error) {
+      console.warn('Error laying out with ELK', {node, error});
+      throw error;
+    }
+  }
+);
+
+/**
+ * Wraps compute layout dispatch in conditional to first check if we are already computing.
+ *
+ * We use this over setting the condition on creatAsyncThunk, so that elkGraphSelector
+ * errors are not caught
+ */
+export function conditionallyComputeLayout(key: LayoutKey) {
+  return (dispatch: Dispatch<any>, getState: () => State) => {
+    const alreadyLayingOut = currentLayoutStatusSelector(getState()) !== null;
+    if (alreadyLayingOut) {
+      return;
+    }
     // Use selector inside thunk, to delay resolving it till we have passed the condition,
     // Because resolving selector is potentially expensive, requires full graph traversal
     const node = elkGraphSelector(key);
-    return await elk.layout(node);
-  },
-  {
-    // If layout already is being computed, don't recompute
-    condition: (_elkGraph, {getState}) => currentLayoutStatusSelector(getState()) === null,
-  }
-);
+    return dispatch(computeLayout({node, key}));
+  };
+}
 
 // TODO: Layout based on included nodes instead?
 // Use set to track?
@@ -71,7 +90,7 @@ export const layoutSlice = createSlice({
       .addCase(computeLayout.pending, (state, action) => {
         state[action.meta.requestId] = {
           value: {type: 'loading'},
-          key: action.meta.arg,
+          key: action.meta.arg.key,
         };
       })
       .addCase(computeLayout.fulfilled, (state, action) => {
@@ -97,7 +116,9 @@ const currentLayoutStatusSelector = createSelector(
     // Compare runtime by identity, to speed up comparison
     Object.values(layout).find(({key}) => runtime === key.runtime && deepEqual(selection, key.selection)) ?? null
 );
-export const elkGraphSelector = createSelector(graphSelector, (graph) => (graph === null ? null : toELKGraph(graph)));
+export const elkGraphSelector = createSelector(filteredGraphSelector, (graph) =>
+  graph === null ? null : toELKGraph(graph)
+);
 export const currentLayoutSelector = createSelector(currentLayoutStatusSelector, (status) => status?.value || null);
 export const elkGraphWithPositionSelector = createSelector(currentLayoutSelector, (value) =>
   value?.type === 'done' ? value.layout : null

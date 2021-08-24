@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';
-import {currentLayoutSelector, layoutKeySelector, computeLayout} from './layoutSlice';
+import {currentLayoutSelector, layoutKeySelector, conditionallyComputeLayout} from './layoutSlice';
 import {Cytoscape} from './Cytoscape';
 
 export function Graph() {
@@ -10,7 +10,7 @@ export function Graph() {
 
   // Compute the layout for the current selections the graph loads
   React.useEffect(() => {
-    dispatch(computeLayout(layoutKey));
+    dispatch(conditionallyComputeLayout(layoutKey));
   }, [layoutKey.runtime, layoutKey.selection]);
 
   const cytoscape = React.useMemo(() => <Cytoscape />, []);
