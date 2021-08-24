@@ -26,17 +26,17 @@ function Overlay() {
   const layout = useAppSelector(currentLayoutSelector);
 
   if (layout === null) {
-    return <div className="overlay">No active dataflow runtime</div>;
+    return <div className="overlay center-text">No active dataflow runtime</div>;
   }
   switch (layout.type) {
     case 'loading':
-      return <div className="overlay">Laying out graph...</div>;
+      return <div className="overlay center-text">Laying out graph...</div>;
     case 'done':
       return <></>;
     case 'error':
       return (
-        <div>
-          Error laying out graph
+        <div className="overlay">
+          <h2>Encountered an error running ELK layout:</h2>
           <pre>{layout.error.stack}</pre>
         </div>
       );
