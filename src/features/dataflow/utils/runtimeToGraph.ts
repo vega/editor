@@ -19,7 +19,6 @@ import {
 import {prettifyExpression, prettifyJSON} from './prettify';
 import {Graph, Node, Edge} from './graph';
 import {measureText} from './measureText';
-import {nodePaddingPx} from './cytoscapeStyle';
 
 // TODO: Add transitive asociate nodes to signals, to track
 
