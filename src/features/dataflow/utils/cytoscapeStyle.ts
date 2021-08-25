@@ -1,12 +1,25 @@
-import {vega} from 'vega-embed';
 import {scheme} from 'vega-scale';
-import {nodeTypes} from '../../utils/vega2dot';
+import {colorKeys} from './graph';
 
 // Use these color schemes for the nodes
 // https://vega.github.io/vega/docs/schemes/#categorical
 const colorScheme: string[] = [...scheme('tableau20'), ...scheme('category20b')];
 
-const style: cytoscape.Stylesheet[] = [
+// Copy --base-font-family but remove BlinkMacSystemFont because of Chrome bug that cytoscape hits
+// https://bugs.chromium.org/p/chromium/issues/detail?id=1056386#c12
+
+export const fontFamily = '-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+export const fontSize = '16px';
+export const nodePaddingPx = 8;
+export const style: cytoscape.Stylesheet[] = [
+  {
+    selector: 'node, edge',
+    style: {
+      'font-family': fontFamily,
+      'font-size': fontSize,
+      'min-zoomed-font-size': 10,
+    },
+  },
   {
     selector: 'node',
     style: {
@@ -17,9 +30,10 @@ const style: cytoscape.Stylesheet[] = [
 
       'background-opacity': 0.6,
       shape: 'round-rectangle',
-      width: 'label',
-      height: 'label',
-      padding: '8px',
+      width: 'data(width)',
+      height: 'data(height)',
+      label: 'data(label)',
+      padding: `${nodePaddingPx}px`,
       color: 'black',
     } as any,
   },
@@ -62,7 +76,7 @@ const style: cytoscape.Stylesheet[] = [
     },
   },
   {
-    selector: 'edge[pulse="true"]',
+    selector: 'edge[primary="true"]',
     css: {
       color: 'black',
       'line-color': 'black',
@@ -70,7 +84,7 @@ const style: cytoscape.Stylesheet[] = [
     },
   },
   {
-    selector: 'edge[pulse="false"]',
+    selector: 'edge[primary="false"]',
     css: {
       color: '#ddd',
       'line-color': '#ddd',
@@ -78,9 +92,8 @@ const style: cytoscape.Stylesheet[] = [
     },
   },
   // Add types for operator types as well as other types
-  ...[...nodeTypes, ...Object.keys(vega.transforms).map((t) => `operator:${t}`)].map((t, i) => ({
-    selector: `node[type=${JSON.stringify(t)}]`,
+  ...colorKeys.map((t, i) => ({
+    selector: `node[colorKey=${JSON.stringify(t)}]`,
     style: {'background-color': colorScheme[i % colorScheme.length]},
   })),
 ];
-export default style;

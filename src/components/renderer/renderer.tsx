@@ -145,6 +145,7 @@ class Editor extends React.PureComponent<Props, State> {
     } else {
       runtime = vega.parse(vegaSpec, config as VgConfig);
     }
+
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
 
@@ -192,7 +193,6 @@ class Editor extends React.PureComponent<Props, State> {
     } else {
       debug.vegaLiteSpec = debug.normalizedVegaLiteSpec = undefined;
     }
-
     setRuntime(runtime);
     setView(view);
   }
@@ -219,7 +219,7 @@ class Editor extends React.PureComponent<Props, State> {
         }
       }
     }
-    this.props.addPulse(clock, values);
+    this.props.recordPulse(clock, values);
 
     // Set it up to run again
     df.runAfter(this.runAfter, true, 10);

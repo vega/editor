@@ -40,18 +40,6 @@ class SpecEditorHeader extends React.PureComponent<Props> {
           >
             Config
           </li>
-          <li
-            className={this.props.sidePaneItem === SIDEPANE.Dataflow ? 'active-tab' : undefined}
-            onClick={(e) => {
-              if (this.props.sidePaneItem === SIDEPANE.Dataflow) {
-                e.stopPropagation();
-              }
-              e.stopPropagation();
-              this.props.setSidePaneItem(SIDEPANE.Dataflow);
-            }}
-          >
-            Dataflow Runtime
-          </li>
         </ul>
 
         {this.props.sidePaneItem === SIDEPANE.Config && <ConfigEditorHeader />}
