@@ -16,17 +16,18 @@ export function Popup() {
   }
   const makeTippy = (placement: Placement, params: Record<string, string>) => (
     <Tippy
+      key={placement}
       content={
         <dl>
           {Object.entries(params).map(([k, v]) => (
-            <>
+            <React.Fragment key={k}>
               <dt>{k}</dt>
               <dd>
                 <pre>
                   <code>{v}</code>
                 </pre>
               </dd>
-            </>
+            </React.Fragment>
           ))}
         </dl>
       }
@@ -47,20 +48,18 @@ export function Popup() {
     }
     return makeTippy('top', {Label: popup.edge.label});
   }
-  console.log(popup);
   const {node, value} = popup;
+  if (Object.keys(node.params).length === 0) {
+    return <></>;
+  }
   const paramsTippy = makeTippy('top', node.params);
-  if (!value) {
+  if (!value || value.type === 'error') {
     return paramsTippy;
   }
 
   const valueTippy = makeTippy(
     'bottom',
-    value.type === 'function'
-      ? {'Value (function name)': value.functionName}
-      : value.type === 'error'
-      ? {'Value (error serializing': value.error}
-      : {Value: prettifyJSON(value.value)}
+    value.type === 'function' ? {'Value (function name)': value.functionName} : {Value: prettifyJSON(value.value)}
   );
   return (
     <>

@@ -26,11 +26,10 @@ export function toCytoscape(graph: Graph, layout: ElkNode): cytoscape.ElementsDe
   });
 
   const edges = Object.entries(graph.edges).map(
-    ([id, {label, source, target, primary}]) =>
+    ([id, {source, target, primary}]) =>
       ({
         data: {
           id,
-          label,
           source,
           target,
           primary: primary.toString(),
