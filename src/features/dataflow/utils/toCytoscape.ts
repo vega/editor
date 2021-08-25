@@ -33,7 +33,7 @@ export function toCytoscape(graph: Graph, layout: ElkNode): cytoscape.ElementsDe
           label,
           source,
           target,
-          primary,
+          primary: primary.toString(),
         },
       } as cytoscape.EdgeDefinition)
   );
