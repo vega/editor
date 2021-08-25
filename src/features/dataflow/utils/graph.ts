@@ -73,14 +73,21 @@ export function filterGraph(graph: Graph, nodes: Set<ID>): Graph {
 }
 
 /**
- * Returns all nodes ID that are associated to the IDs passed in.
+ * Returns all nodes ID that are associated to the IDs passed in, plus all their parents.
  */
 export function associatedWith({nodes}: Graph, ids: string[]): Set<string> {
-  return new Set(
-    Object.entries(nodes)
-      .filter(([, {associated}]) => associated.some((id) => ids.includes(id)))
-      .map(([id]) => id)
-  );
+  const results = new Set<string>();
+  for (const [key, node] of Object.entries(nodes)) {
+    if (node.associated.some((id) => ids.includes(id))) {
+      results.add(key);
+      let parent = node.parent;
+      while (parent) {
+        results.add(parent);
+        parent = nodes[parent].parent;
+      }
+    }
+  }
+  return results;
 }
 
 /**
