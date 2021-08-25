@@ -5,7 +5,6 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light-border.css';
 import {Placement} from 'tippy.js';
-import {lab} from 'd3';
 import {prettifyJSON} from './utils/prettify';
 
 export function Popup() {
@@ -37,6 +36,7 @@ export function Popup() {
       interactive={true}
       placement={placement}
       arrow={true}
+      maxWidth="550px"
     >
       <div />
     </Tippy>
