@@ -2,23 +2,25 @@
 const MAX_ARRAY_LENGTH = 20;
 
 // Sentinal value to add at end of clipped arrays
-const CLIPPED_SENTINAL =
-  'CLIPPED: The rest of the items in the array have not been saved for debugging to reduce memory consumption';
+const CLIPPED_SENTINAL = 'CLIPPED';
 
-export type SanitizedValue = {value: unknown} | {error: string} | {functionName: string};
+export type SanitizedValue =
+  | {type: 'value'; value: unknown}
+  | {type: 'error'; error: string}
+  | {type: 'function'; functionName: string};
 
 /**
  * Sanitizes the value of an operator, to make it suitable for storing in redux.
  */
 export function sanitizeValue(v: unknown): SanitizedValue {
   if (typeof v === 'function') {
-    return {functionName: v.name};
+    return {type: 'function', functionName: v.name};
   }
   try {
     // If we can't stringify, it probably has cyclical references, so we'll just skip it
-    return {value: JSON.parse(JSON.stringify(v, replacer))};
+    return {type: 'value', value: JSON.parse(JSON.stringify(v, replacer))};
   } catch (e) {
-    return {error: e.toString()};
+    return {type: 'error', error: e.toString()};
   }
 }
 
