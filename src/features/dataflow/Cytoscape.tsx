@@ -50,13 +50,18 @@ export function Cytoscape() {
       }
       dispatch(setPopup(null));
     });
-    return () => cy.destroy();
+    return () => {
+      cy.destroy();
+      dispatch(setPopup(null));
+    };
   }, [divRef.current, dispatch]);
 
   React.useEffect(() => {
     if (elements !== null) {
       cyRef.current.json({elements});
       cyRef.current.fit();
+      // Remove poup when relaying out
+      dispatch(setPopup(null));
     }
   }, [cyRef.current, elements]);
 
