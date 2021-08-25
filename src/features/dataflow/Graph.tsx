@@ -3,6 +3,7 @@ import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';
 import {currentLayoutSelector, layoutKeySelector, conditionallyComputeLayout} from './layoutSlice';
 import {Cytoscape} from './Cytoscape';
+import {Popup} from './Popup';
 
 export function Graph() {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export function Graph() {
   return (
     <div className="graph">
       <Overlay />
+      <Popup />
       {cytoscape}
     </div>
   );

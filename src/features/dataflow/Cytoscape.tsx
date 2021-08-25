@@ -8,6 +8,10 @@ import {filteredGraphSelector} from './selectionSlice';
 import {setSelectedElements} from './selectionSlice';
 import {toCytoscape} from './utils/toCytoscape';
 import {style} from './utils/cytoscapeStyle';
+import {setPopup} from './popupSlice';
+import popper from 'cytoscape-popper';
+
+cytoscape.use(popper);
 
 export function Cytoscape() {
   const divRef = React.useRef<HTMLDivElement | null>(null);
@@ -27,6 +31,25 @@ export function Cytoscape() {
       )
     );
     cy.on('unselect', () => dispatch(setSelectedElements(null)));
+    cy.on('mouseover', ({target}) => {
+      if (target === cy) {
+        // mouseover background
+        return;
+      }
+      dispatch(
+        setPopup({
+          type: target.isNode() ? 'node' : 'edge',
+          id: target.id(),
+          referenceClientRect: target.popperRef().getBoundingClientRect(),
+        })
+      );
+    });
+    cy.on('mouseout', ({target}) => {
+      if (target === cy) {
+        return;
+      }
+      dispatch(setPopup(null));
+    });
     return () => cy.destroy();
   }, [divRef.current, dispatch]);
 
@@ -39,11 +62,6 @@ export function Cytoscape() {
 
   //
   return <div className="cytoscape" ref={divRef} />;
-}
-
-function connectCytoscapeEvent(cy: cytoscape.Core) {
-  // cy.on('mouseover', ({target}) => dispatch({type: 'mouseover-graph', target}));
-  // cy.on('mouseout', ({target}) => dispatch({type: 'mouseout-graph', target}));
 }
 
 const cytoscapeElementsSelector = createSelector(elkGraphWithPositionSelector, filteredGraphSelector, (layout, graph) =>
