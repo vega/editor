@@ -184,8 +184,9 @@ function addOperatorParameter(graph: Graph, id: ID, k: string, v: Parameter | Ob
   if ('$subflow' in v) {
     addFlow(graph, v.$subflow, id);
     // Add edge to first node, which is root node and is used to detach the subflow
-    const rootID = v.$subflow.operators[0].id;
-    addEdge(graph, {source: id, target: rootID, label: 'root'});
+    // TODO: Disable for now, until we understand its purpose
+    // const rootID = v.$subflow.operators[0].id;
+    // addEdge(graph, {source: id, target: rootID, label: 'root'});
     return true;
   }
   if ('$expr' in v) {
