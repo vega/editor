@@ -19,6 +19,7 @@
   z-index: 1;
   opacity: 0.9;
   padding: 10px;
+  overflow: auto;
 }
 .center-text {
   display: flex;
