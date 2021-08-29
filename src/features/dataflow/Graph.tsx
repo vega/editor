@@ -1,19 +1,12 @@
 import * as React from 'react';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';
-import {currentLayoutSelector, layoutKeySelector, conditionallyComputeLayout} from './layoutSlice';
+import {currentLayoutSelector, useRecomputeLayout} from './layoutSlice';
 import {Cytoscape} from './Cytoscape';
 import {Popup} from './Popup';
 
 export function Graph() {
-  const dispatch = useDispatch();
-  const layoutKey = useAppSelector(layoutKeySelector);
-
-  // Compute the layout for the current selections the graph loads
-  React.useEffect(() => {
-    dispatch(conditionallyComputeLayout(layoutKey));
-  }, [layoutKey.runtime, layoutKey.selection]);
-
+  useRecomputeLayout();
   const cytoscape = React.useMemo(() => <Cytoscape />, []);
   return (
     <div className="graph">

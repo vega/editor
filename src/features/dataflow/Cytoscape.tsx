@@ -1,74 +1,45 @@
-import {createSelector} from '@reduxjs/toolkit';
 import cytoscape from 'cytoscape';
 import * as React from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useAppSelector} from '../../hooks';
-import {elkGraphWithPositionSelector} from './layoutSlice';
-import {filteredGraphSelector} from './selectionSlice';
-import {setSelectedElements} from './selectionSlice';
-import {toCytoscape} from './utils/toCytoscape';
-import {style} from './utils/cytoscapeStyle';
+import {currentPositionsSelector} from './layoutSlice';
+import {setSelectedElements, visibleElementsSelector} from './selectionSlice';
 import {setPopup} from './popupSlice';
-import popper from 'cytoscape-popper';
-
-cytoscape.use(popper);
+import {CytoscapeControlled} from './CytoscapeControlled';
+import {graphSelector} from './runtimeSlice';
+import {Graph} from './utils/graph';
 
 export function Cytoscape() {
-  const divRef = React.useRef<HTMLDivElement | null>(null);
-  const cyRef = React.useRef<cytoscape.Core | null>(null);
-
   const dispatch = useDispatch();
-  const elements = useAppSelector(cytoscapeElementsSelector);
+  const graph = useAppSelector(graphSelector);
+  const elements = React.useMemo(() => (graph === null ? null : toCytoscape(graph)), [graph]);
+  const positions = useSelector(currentPositionsSelector);
+  const visibleElements = useSelector(visibleElementsSelector);
 
-  React.useEffect(() => {
-    const cy = (cyRef.current = cytoscape({container: divRef.current, style}));
-    cy.on('select', () =>
-      dispatch(
-        setSelectedElements({
-          edges: cy.edges(':selected').map((e) => e.id()),
-          nodes: cy.nodes(':selected').map((n) => n.id()),
-        })
-      )
-    );
-    cy.on('unselect', () => dispatch(setSelectedElements(null)));
-    cy.on('mouseover', ({target}) => {
-      if (target === cy) {
-        // mouseover background
-        return;
-      }
-      dispatch(
-        setPopup({
-          type: target.isNode() ? 'node' : 'edge',
-          id: target.id(),
-          referenceClientRect: target.popperRef().getBoundingClientRect(),
-        })
-      );
-    });
-    cy.on('mouseout', ({target}) => {
-      if (target === cy) {
-        return;
-      }
-      dispatch(setPopup(null));
-    });
-    return () => {
-      cy.destroy();
-      dispatch(setPopup(null));
-    };
-  }, [divRef.current, dispatch]);
-
-  React.useEffect(() => {
-    if (elements !== null) {
-      cyRef.current.json({elements});
-      cyRef.current.fit();
-      // Remove poup when relaying out
-      dispatch(setPopup(null));
-    }
-  }, [cyRef.current, elements]);
-
-  //
-  return <div className="cytoscape" ref={divRef} />;
+  return (
+    <CytoscapeControlled
+      elements={elements}
+      visible={visibleElements}
+      positions={positions}
+      onSelect={(elements) => dispatch(setSelectedElements(elements))}
+      onHover={(target) => dispatch(setPopup(target))}
+    />
+  );
 }
 
-const cytoscapeElementsSelector = createSelector(elkGraphWithPositionSelector, filteredGraphSelector, (layout, graph) =>
-  layout && graph ? toCytoscape(graph, layout) : null
-);
+function toCytoscape(graph: Graph): cytoscape.ElementsDefinition {
+  // Keep a mapping of all IDs so we can add their position when traversing the ELK graph
+  const nodes = Object.entries(graph.nodes).map(([id, {parent, label, colorKey, size}]) => ({
+    data: {id, parent, label, colorKey, ...size},
+  }));
+
+  const edges = Object.entries(graph.edges).map(([id, {source, target, primary}]) => ({
+    data: {
+      id,
+      source,
+      target,
+      primary: primary.toString(),
+    },
+  }));
+  return {nodes, edges};
+}

@@ -2,8 +2,8 @@
  * Computes layouts for graphs with ELK js and caches them.
  */
 import {resetPulses} from './pulsesSlice';
-import {runtimeSelector, setRuntime} from './runtimeSlice';
-import {filteredGraphSelector, selectionSelector} from './selectionSlice';
+import {graphSelector, setRuntime} from './runtimeSlice';
+import {visibleElementsSelector, VisibleElements, visibleNodesSelector} from './selectionSlice';
 import {toELKGraph} from './utils/toELKGraph';
 import {ElkNode} from 'elkjs';
 import ELK from 'elkjs/lib/elk-api';
@@ -11,13 +11,19 @@ import {State} from '../../constants/default-state';
 import {deepEqual} from 'vega-lite';
 import {createAsyncThunk, createSelector, createSlice, SerializedError} from '@reduxjs/toolkit';
 import {createSliceSelector} from './utils/createSliceSelector';
-import {Dispatch} from 'redux';
+import {useAppSelector} from '../../hooks';
+import {useDispatch} from 'react-redux';
+import * as React from 'react';
+import {Graph} from './utils/graph';
+import {ELKToPositions} from './utils/ELKToPositions';
 
-// Mapping of action request ID to computed layout, keyed by the selection and runtime
-// We keep the runtime as a key, even though we clear all values after changing the runtime,
-// so that late returning layouts will be keyed with previous runtime and wont be used
-type LayoutKey = Pick<State, 'selection' | 'runtime'>;
-type LayoutValue = {type: 'done'; layout: ElkNode} | {type: 'loading'} | {type: 'error'; error: SerializedError};
+// Mapping of action request ID to computed layout, keyed by the visible nodes and runtime
+
+// We keep the graph as a key, even though we clear all values after changing the runtime,
+// so that late returning layouts will be keyed with previous graph and wont be used
+type LayoutKey = {graph: Graph | null; visibleNodes: Set<string> | null};
+type Positions = Record<string, {x: number; y: number}>;
+type LayoutValue = {type: 'done'; positions: Positions} | {type: 'loading'} | {type: 'error'; error: SerializedError};
 type LayoutStatus = {
   key: LayoutKey;
   value: LayoutValue;
@@ -33,43 +39,27 @@ const elk = new ELK({
   workerFactory: () => elkWorker,
 });
 
-const computeLayout = createAsyncThunk(
-  'computeLayout',
-  async ({node}: {node: ElkNode; key: LayoutKey}): Promise<ElkNode> => {
-    // If we encounter an error, log to console as well as raising to set state
-    try {
-      return elk.layout(node);
-    } catch (error) {
-      console.warn('Error laying out with ELK', {node, error});
-      throw error;
-    }
-  }
-);
+const computeLayout = createAsyncThunk<
+  ElkNode,
+  ElkNode,
+  {state: State; pendingMeta: {requestId: string; key: LayoutKey}}
+>('computeLayout', (node) => elk.layout(node), {
+  // Add key to pending metadata
+  getPendingMeta: ({requestId}, {getState}) => ({requestId, key: currentLayoutKeySelector(getState())}),
+});
 
 /**
- * Wraps compute layout dispatch in conditional to first check if we are already computing.
- *
- * We use this over setting the condition on creatAsyncThunk, so that elkGraphSelector
- * errors are not caught
+ * Try recomputing layout, when either runtime or selections change
  */
-export function conditionallyComputeLayout(key: LayoutKey) {
-  return (dispatch: Dispatch<any>, getState: () => State) => {
-    const state = getState();
-    const alreadyLayingOut = currentLayoutStatusSelector(state) !== null;
-    if (alreadyLayingOut) {
-      return;
-    }
-    // Use selector inside thunk, to delay resolving it till we have passed the condition,
-    // Because resolving selector is potentially expensive, requires full graph traversal
-    const node = elkGraphSelector(state);
-    return dispatch(computeLayout({node, key}));
-  };
+export function useRecomputeLayout() {
+  const dispatch = useDispatch();
+  const elkGraph = useAppSelector(elkGraphSelector);
+
+  // Compute the layout for the current selections the graph loads
+  React.useEffect(() => {
+    dispatch(computeLayout(elkGraph));
+  }, [elkGraph]);
 }
-
-// TODO: Layout based on included nodes instead?
-// Use set to track?
-
-// Then add cytoscape JS conversion ;)
 
 export const layoutSlice = createSlice({
   name: 'layout',
@@ -79,23 +69,16 @@ export const layoutSlice = createSlice({
   // https://github.com/reduxjs/redux-toolkit/issues/324#issuecomment-615391051
   extraReducers: (builder) => {
     builder
-      .addCase(setRuntime, () => ({}))
-      .addCase(resetPulses, (state) => {
-        // Remove caches for existing pulse layouts, when reseting pulses
-        for (const [requestID, layoutStatus] of Object.entries(state)) {
-          if (layoutStatus.key.selection.pulse !== null) {
-            delete state[requestID];
-          }
-        }
-      })
+      .addCase(setRuntime, () => initialState)
+      .addCase(resetPulses, () => initialState)
       .addCase(computeLayout.pending, (state, action) => {
         state[action.meta.requestId] = {
           value: {type: 'loading'},
-          key: action.meta.arg.key,
+          key: action.meta.key,
         };
       })
       .addCase(computeLayout.fulfilled, (state, action) => {
-        state[action.meta.requestId].value = {layout: action.payload, type: 'done'};
+        state[action.meta.requestId].value = {positions: ELKToPositions(action.payload), type: 'done'};
       })
       .addCase(computeLayout.rejected, (state, action) => {
         state[action.meta.requestId].value = {type: 'error', error: action.error};
@@ -105,22 +88,24 @@ export const layoutSlice = createSlice({
 
 const layoutSelector = createSliceSelector(layoutSlice);
 
-export const layoutKeySelector = createSelector(selectionSelector, runtimeSelector, (selection, runtime) => ({
-  selection,
-  runtime,
+const elkGraphSelector = createSelector(graphSelector, visibleElementsSelector, (graph, visible) =>
+  graph === null ? null : toELKGraph(graph, visible)
+);
+
+const currentLayoutKeySelector = createSelector(graphSelector, visibleNodesSelector, (graph, visibleNodes) => ({
+  graph,
+  visibleNodes,
 }));
 
 const currentLayoutStatusSelector = createSelector(
   layoutSelector,
-  layoutKeySelector,
-  (layout, {selection, runtime}) =>
-    // Compare runtime by identity, to speed up comparison
-    Object.values(layout).find(({key}) => runtime === key.runtime && deepEqual(selection, key.selection)) ?? null
+  currentLayoutKeySelector,
+  (layout, {graph, visibleNodes}) =>
+    // Compare graph by identity, to speed up comparison
+    Object.values(layout).find(({key}) => graph === key.graph && deepEqual(visibleNodes, key.visibleNodes)) ?? null
 );
-export const elkGraphSelector = createSelector(filteredGraphSelector, (graph) =>
-  graph === null ? null : toELKGraph(graph)
-);
-export const currentLayoutSelector = createSelector(currentLayoutStatusSelector, (status) => status?.value || null);
-export const elkGraphWithPositionSelector = createSelector(currentLayoutSelector, (value) =>
-  value?.type === 'done' ? value.layout : null
+
+export const currentLayoutSelector = createSelector(currentLayoutStatusSelector, (status) => status?.value ?? null);
+export const currentPositionsSelector = createSelector(currentLayoutSelector, (value) =>
+  value?.type === 'done' ? value.positions : null
 );

@@ -63,13 +63,13 @@ export type Graph = {
   edges: Record<ID, Edge>;
 };
 
-export function filterGraph(graph: Graph, nodes: Set<ID>): Graph {
-  return {
-    nodes: Object.fromEntries(Object.entries(graph.nodes).filter(([id]) => nodes.has(id))),
-    edges: Object.fromEntries(
-      Object.entries(graph.edges).filter(([, {source, target}]) => nodes.has(source) && nodes.has(target))
-    ),
-  };
+// Filters a graphs edges to only include thos related to the selected nodes
+export function filterEdges(graph: Graph, nodes: Set<ID>): Set<ID> {
+  return new Set(
+    Object.entries(graph.edges)
+      .filter(([, {source, target}]) => nodes.has(source) && nodes.has(target))
+      .map(([id]) => id)
+  );
 }
 
 /**
