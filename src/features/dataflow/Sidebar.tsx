@@ -2,12 +2,20 @@ import * as React from 'react';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';
 import {resetPulses, Pulse, sortedPulsesSelector, pulsesEmptySelector} from './pulsesSlice';
-import './Pulses.css';
+import './Sidebar.css';
 import {selectedPulseSelector, setSelectedPulse} from './selectionSlice';
 
-export function Pulses() {
+export function Sidebar() {
   return (
-    <div className="pulses">
+    <div className="sidebar">
+      <Pulses />
+    </div>
+  );
+}
+
+function Pulses() {
+  return (
+    <>
       <h3>Pulses</h3>
       <p>Click to filter nodes to those touched by the pulse</p>
       <PulsesButtons />
@@ -20,7 +28,7 @@ export function Pulses() {
         </thead>
         <PulsesRows />
       </table>
-    </div>
+    </>
   );
 }
 

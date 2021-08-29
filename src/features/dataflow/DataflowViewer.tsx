@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Pulses} from './Pulses';
+import {Sidebar} from './Sidebar';
 import './DataflowViewer.css';
 import {Graph} from './Graph';
 
@@ -28,7 +28,7 @@ export class DataflowViewer extends React.Component<
     return (
       <div className="dataflow-pane">
         <Graph />
-        <Pulses />
+        <Sidebar />
       </div>
     );
   }

@@ -17,10 +17,8 @@ import {
 } from 'vega-typings/types/runtime/runtime';
 
 import {prettifyExpression, prettifyJSON} from './prettify';
-import {Graph, Node, Edge} from './graph';
+import {Graph, Node} from './graph';
 import {measureText} from './measureText';
-
-// TODO: Add transitive asociate nodes to signals, to track
 
 export function runtimeToGraph(runtime: Runtime): Graph {
   const graph = {nodes: {}, edges: {}} as Graph;

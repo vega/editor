@@ -1,37 +1,37 @@
-.pulses {
+.sidebar {
   flex: none;
   padding: 10px;
   display: flex;
   flex-direction: column;
   border-left: solid 2px var(--light-gray-color);
 }
-.pulses h3 {
+.sidebar h3 {
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.pulses button {
+.sidebar button {
   margin-bottom: 10px;
 }
 
-.pulses p {
+.sidebar p {
   font-size: small;
   color: var(--extra-dark-gray-color);
   margin-bottom: 10px;
 }
 
-.pulses table {
+.sidebar table {
   height: 100%;
   display: block;
   overflow-y: scroll;
 }
 
-.pulses table thead {
+.sidebar table thead {
   position: sticky;
   top: 0;
 }
 
-.pulses .buttons {
+.sidebar .buttons {
   display: flex;
   gap: 10px;
 }
