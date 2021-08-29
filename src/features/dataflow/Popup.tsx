@@ -6,7 +6,9 @@ import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light-border.css';
 import {Placement} from 'tippy.js';
 import {prettifyJSON} from './utils/prettify';
+import './Popup.css';
 
+// TODO: Use one tippy and have max height for each pre
 export function Popup() {
   const popup = useAppSelector(popupValueSelector);
   const getReferenceClientRect = React.useCallback(() => popup.referenceClientRect, [popup?.referenceClientRect]);
@@ -37,6 +39,7 @@ export function Popup() {
       placement={placement}
       arrow={true}
       maxWidth="550px"
+      appendTo={document.body}
     >
       <div />
     </Tippy>
