@@ -7,14 +7,17 @@ import {Size} from './measureText';
 
 type ID = string;
 
+// Mappinf of types to their display label and whether to filter by them by default
 export const types = {
-  binding: {label: 'Bindings'},
-  stream: {label: 'Streams'},
-  update: {label: 'Updates'},
-  operator: {label: 'Operators'},
-  data: {label: 'Data'},
-  signal: {label: 'Signals'},
+  binding: {label: 'Bindings', default: true},
+  stream: {label: 'Streams', default: true},
+  update: {label: 'Updates', default: true},
+  operator: {label: 'Operators', default: true},
+  data: {label: 'Data', default: false},
+  signal: {label: 'Signals', default: false},
 };
+
+export type GraphType = keyof typeof types;
 
 // Nodes are keyed by their type, apart from operator nodes, which are sub-keyed by their name
 // We used a list of the registered operators to generate the keys, so they are consistant accross graphs
@@ -23,7 +26,7 @@ export const colorKeys = [...Object.keys(types), ...Object.keys(vega.transforms)
 export type Node = {
   // The type of the node, to use for filtering
   // Should always be present by the end of graph construction
-  type?: keyof typeof types;
+  type?: GraphType;
   // A short label describing the node
   // Should always be present by the end of graph construction
   label?: string;

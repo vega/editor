@@ -3,12 +3,41 @@ import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';
 import {resetPulses, Pulse, sortedPulsesSelector, pulsesEmptySelector} from './pulsesSlice';
 import './Sidebar.css';
-import {selectedPulseSelector, setSelectedPulse} from './selectionSlice';
+import {selectedPulseSelector, selectedTypesSelector, setSelectedPulse, setSelectedType} from './selectionSlice';
+import {GraphType, types} from './utils/graph';
 
 export function Sidebar() {
   return (
     <div className="sidebar">
+      <Types />
       <Pulses />
+    </div>
+  );
+}
+
+function Types() {
+  const selectedTypes = useAppSelector(selectedTypesSelector);
+
+  return (
+    <fieldset>
+      <legend>Filter by type</legend>
+      {Object.entries(types).map(([type, {label}]) => (
+        <Type key={type} type={type as GraphType} selected={selectedTypes[type]} label={label} />
+      ))}
+    </fieldset>
+  );
+}
+
+function Type({type, label, selected}: {type: GraphType; label: string; selected: boolean}) {
+  const dispatch = useDispatch();
+  return (
+    <div>
+      <input
+        type="checkbox"
+        checked={selected}
+        onChange={(event) => dispatch(setSelectedType({type, enabled: event.target.checked}))}
+      />
+      <label>{label}</label>
     </div>
   );
 }

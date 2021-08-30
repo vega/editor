@@ -2,16 +2,22 @@ import {createAction, createSlice, createSelector} from '@reduxjs/toolkit';
 import {graphSelector, setRuntime} from './runtimeSlice';
 import {resetPulses, pulsesSelector} from './pulsesSlice';
 import {allRelated} from './utils/allRelated';
-import {associatedWith, filterEdges, intersectIDs} from './utils/graph';
+import {associatedWith, filterEdges, intersectIDs, GraphType, types} from './utils/graph';
 import {createSliceSelector} from './utils/createSliceSelector';
+import {mapValues} from './utils/mapValues';
 
 export type Elements = {nodes: string[]; edges: string[]};
-export type SelectionState = {pulse: number | null; elements: Elements | null};
+export type SelectionState = {
+  pulse: number | null;
+  elements: Elements | null;
+  types: {[Type in GraphType]: boolean};
+};
 
-const initialState: SelectionState = {pulse: null, elements: null};
+const initialState: SelectionState = {pulse: null, elements: null, types: mapValues(types, (props) => props.default)};
 
 export const setSelectedPulse = createAction<number | null>('setSelectedPulse');
 export const setSelectedElements = createAction<Elements | null>('setSelectedElements');
+export const setSelectedType = createAction<{type: GraphType; enabled: boolean}>('setSelectedType');
 
 export const selectionSlice = createSlice({
   name: 'selection',
@@ -30,12 +36,16 @@ export const selectionSlice = createSlice({
         // Sort them, to aid in easy equality checking
         state.elements =
           payload === null ? null : {nodes: payload.nodes.slice().sort(), edges: payload.edges.slice().sort()};
+      })
+      .addCase(setSelectedType, (state, {payload}) => {
+        state.types[payload.type] = payload.enabled;
       }),
 });
 
 export const selectionSelector = createSliceSelector(selectionSlice);
 export const selectedPulseSelector = createSelector(selectionSelector, (state) => state.pulse);
 export const selectedElementsSelector = createSelector(selectionSelector, (state) => state.elements);
+export const selectedTypesSelector = createSelector(selectionSelector, (state) => state.types);
 
 export const selectedValuesSelector = createSelector(pulsesSelector, selectedPulseSelector, (pulses, selected) =>
   selected === null ? null : pulses.find((p) => p.clock === selected).values
@@ -53,11 +63,22 @@ export const visibleNodesFromElementsSelector = createSelector(
   (graph, elements) => (elements === null || graph === null ? null : allRelated(graph, elements))
 );
 
+export const visibleNodesFromTypesSelector = createSelector(graphSelector, selectedTypesSelector, (graph, types) =>
+  graph === null
+    ? null
+    : new Set(
+        Object.entries(graph.nodes)
+          .filter(([, {type}]) => types[type])
+          .map(([id]) => id)
+      )
+);
+
 // The intersection of all the selected nodes, or null if empty
 export const visibleNodesSelector = createSelector(
   visibleNodesFromPulseSelector,
   visibleNodesFromElementsSelector,
-  (fromPulse, fromElements) => intersectIDs(fromPulse, fromElements)
+  visibleNodesFromTypesSelector,
+  intersectIDs
 );
 
 export const filteredEdgesSelector = createSelector(graphSelector, visibleNodesSelector, (graph, nodes) =>
