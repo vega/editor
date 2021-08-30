@@ -117,20 +117,17 @@ module.exports = (env, argv) => {
     ],
 
     devServer: {
-      stats: {
-        colors: true,
-      },
-      overlay: {
-        warnings: true,
-        errors: true,
+      client: {
+        overlay: true,
       },
       hot: true,
-      stats: 'errors-only',
+      devMiddleware: {
+        stats: 'errors-only',
+      },
       open: false,
-      contentBase: path.join(__dirname, 'public'),
-      watchContentBase: true,
-      watchOptions: {
-        ignored: /node_modules/,
+      static: {
+        directory: path.resolve(__dirname, 'public'),
+        watch: true,
       },
     },
   };
