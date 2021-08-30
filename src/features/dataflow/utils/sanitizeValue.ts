@@ -27,7 +27,7 @@ export function sanitizeValue(v: unknown): SanitizedValue {
 /**
  * Replace long arrays with shorter ones, to minimze the size of the state
  */
-function replacer(key: string, value: unknown): unknown {
+function replacer(_key: string, value: unknown): unknown {
   if (Array.isArray(value) && value.length > MAX_ARRAY_LENGTH) {
     const trimmed = value.slice(0, MAX_ARRAY_LENGTH);
     trimmed.push(CLIPPED_SENTINAL);

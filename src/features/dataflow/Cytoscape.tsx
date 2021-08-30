@@ -1,4 +1,3 @@
-import cytoscape from 'cytoscape';
 import * as React from 'react';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';

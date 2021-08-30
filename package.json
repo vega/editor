@@ -28,6 +28,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "1.6.1",
     "@tippyjs/react": "4.2.5",
+    "@types/cytoscape": "3.14.17",
     "@types/d3": "^7.0.0",
     "@types/react": "^17.0.19",
     "@types/react-redux": "^7.1.18",

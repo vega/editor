@@ -1,9 +1,7 @@
-import cytoscape, {Position} from 'cytoscape';
+import cytoscape from 'cytoscape';
 import * as React from 'react';
 import {Elements} from './utils/allRelated';
 import popper from 'cytoscape-popper';
-import {ElkNode} from 'elkjs';
-import {Size} from './utils/measureText';
 import {style} from './utils/cytoscapeStyle';
 import {Positions} from './utils/ELKToPositions';
 cytoscape.use(popper);

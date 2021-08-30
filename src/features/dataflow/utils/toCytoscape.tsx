@@ -1,4 +1,5 @@
 import {Graph} from './graph';
+import cytoscape from 'cytoscape';
 
 export function toCytoscape(graph: Graph): cytoscape.ElementsDefinition {
   // Keep a mapping of all IDs so we can add their position when traversing the ELK graph

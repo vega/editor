@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';
 import {currentLayoutSelector, useRecomputeLayout} from './layoutSlice';
 import {Cytoscape} from './Cytoscape';

@@ -3,7 +3,7 @@
  */
 import {resetPulses} from './pulsesSlice';
 import {graphSelector, setRuntime} from './runtimeSlice';
-import {visibleElementsSelector, VisibleElements, visibleNodesSelector} from './selectionSlice';
+import {visibleElementsSelector, visibleNodesSelector} from './selectionSlice';
 import {toELKGraph} from './utils/toELKGraph';
 import {ElkNode} from 'elkjs';
 import ELK from 'elkjs/lib/elk-api';
