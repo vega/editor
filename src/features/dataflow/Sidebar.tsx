@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';
-import {resetPulses, Pulse, sortedPulsesSelector, pulsesEmptySelector} from './pulsesSlice';
+import {resetPulses, sortedPulsesSelector, pulsesEmptySelector} from './pulsesSlice';
 import './Sidebar.css';
 import {selectedPulseSelector, selectedTypesSelector, setSelectedPulse, setSelectedType} from './selectionSlice';
 import {GraphType, types} from './utils/graph';
