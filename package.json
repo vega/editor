@@ -37,7 +37,7 @@
     "history": "^5.0.1",
     "json-stringify-pretty-compact": "^3.0.0",
     "lz-string": "^1.4.4",
-    "monaco-editor": "^0.26.0",
+    "monaco-editor": "^0.27.0",
     "prop-types": "^15.7.2",
     "rc-resize-observer": "^1.0.0",
     "react": "^17.0.2",
