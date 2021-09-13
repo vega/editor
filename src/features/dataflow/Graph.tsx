@@ -3,6 +3,7 @@ import {useAppSelector} from '../../hooks';
 import {currentLayoutSelector, useRecomputeLayout} from './layoutSlice';
 import {Cytoscape} from './Cytoscape';
 import {Popup} from './Popup';
+import './Graph.css';
 
 export function Graph() {
   useRecomputeLayout();

@@ -4,6 +4,8 @@ import {Elements} from './utils/allRelated';
 import popper from 'cytoscape-popper';
 import {style} from './utils/cytoscapeStyle';
 import {Positions} from './utils/ELKToPositions';
+import './CytoscapeControlled.css';
+
 cytoscape.use(popper);
 
 /**

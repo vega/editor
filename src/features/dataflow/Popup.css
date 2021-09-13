@@ -1,4 +1,22 @@
+/* Support scrolling on long popups */
 .tippy-content {
   max-height: 300px;
   overflow: scroll;
+}
+
+/* Make definition lists tighter */
+.tippy-box dl {
+  margin: 0;
+}
+.tippy-box pre {
+  margin: 0;
+}
+
+.tippy-box dd {
+  margin-inline-start: 0;
+  overflow: auto;
+}
+
+.tippy-box dt {
+  font-weight: 700;
 }
