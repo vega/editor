@@ -35,5 +35,5 @@
 }
 
 .active-pulse {
-  border: 4px solid var(--extra-dark-gray-color);
+  outline: 1px solid var(--extra-dark-gray-color);
 }
