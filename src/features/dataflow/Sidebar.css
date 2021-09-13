@@ -6,9 +6,10 @@
   border-left: solid 10px var(--light-gray-color);
   background: var(--white-color);
   width: 250px;
+  gap: 10px;
 }
 .sidebar fieldset {
-  margin-bottom: 10px;
+  overflow: hidden;
 }
 
 .sidebar button {
@@ -31,10 +32,6 @@
 .sidebar table thead {
   position: sticky;
   top: 0;
-}
-
-.sidebar .buttons {
-  gap: 10px;
 }
 
 .active-pulse {
