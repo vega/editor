@@ -24,7 +24,7 @@ const LAYOUT_OPTIONS: LayoutOptions = {
   'org.eclipse.elk.edgeLabels.inline': 'true',
 
   // Add more spacing between layers, to make room for edges without labels
-  'org.eclipse.elk.layered.spacing.nodeNodeBetweenLayers': '30',
+  'org.eclipse.elk.layered.spacing.baseValue': '40',
 };
 
 const ROOT_ID = 'ELK:root';
