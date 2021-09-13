@@ -7,23 +7,26 @@ import {Graph} from './graph';
 const LAYOUT_OPTIONS: LayoutOptions = {
   algorithm: 'layered',
   'org.eclipse.elk.direction': 'RIGHT',
-  // Make layouts more compact
-  'org.eclipse.elk.layered.compaction.postCompaction.strategy': 'EDGE_LENGTH',
 
-  // Require to layout childrenhttps://github.com/kieler/elkjs/issues/44#issuecomment-412283358
+  // Disabled because ends up with un-alligned layers
+  // Make layouts more compact
+  // 'org.eclipse.elk.layered.compaction.postCompaction.strategy': 'EDGE_LENGTH',
+
+  // Required to layout children
+  // https://github.com/kieler/elkjs/issues/44#issuecomment-412283358
   'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
 
   // Sometimes seems to improve layouts
   'org.eclipse.elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
 
-  // Disable temporarily, becuase it sometimes crashes ELK
+  // Disable temporarily, because it sometimes crashes ELK
   // Add partitioning to move signal and bindings to top
   // 'org.eclipse.elk.partitioning.activate': 'true',
 
   // We are placing the labels directly on the edges
   'org.eclipse.elk.edgeLabels.inline': 'true',
 
-  // Add more spacing between layers, to make room for edges without labels
+  // Add more spacing overall to make it easier to read
   'org.eclipse.elk.layered.spacing.baseValue': '40',
 };
 
