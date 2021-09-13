@@ -1,7 +1,6 @@
 /**
  * Computes layouts for graphs with ELK js and caches them.
  */
-import {resetPulses} from './pulsesSlice';
 import {graphSelector, setRuntime} from './runtimeSlice';
 import {visibleElementsSelector, visibleNodesSelector} from './selectionSlice';
 import {toELKGraph} from './utils/toELKGraph';
@@ -74,7 +73,6 @@ export const layoutSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(setRuntime, () => initialState)
-      .addCase(resetPulses, () => initialState)
       .addCase(computeLayout.pending, (state, action) => {
         state[action.meta.requestId] = {
           value: {type: 'loading'},
