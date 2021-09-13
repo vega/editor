@@ -49,7 +49,14 @@ export function CytoscapeControlled({
     });
     cy.on('unselect', (e) => {
       e.preventDefault();
-      onSelect(null);
+    });
+    // Unselect when clicking on background
+    // We need this extra handler, instead of just relying on "unselect", because we can have a node semantically selected,
+    // but not visible anymore, so that cytoscope doesn't consider it selected
+    cy.on('click', ({target}) => {
+      if (target === cy) {
+        onSelect(null);
+      }
     });
     cy.on('mouseover', ({target}) => {
       if (target === cy) {
