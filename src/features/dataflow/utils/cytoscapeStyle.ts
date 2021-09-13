@@ -18,6 +18,14 @@ export const style: cytoscape.Stylesheet[] = [
       'font-family': fontFamily,
       'font-size': fontSize,
       'min-zoomed-font-size': 10,
+      'overlay-padding': 10,
+    },
+  },
+  {
+    // Increase active opacity so more visible
+    selector: ':active',
+    style: {
+      'overlay-opacity': 0.5,
     },
   },
   {
@@ -47,13 +55,7 @@ export const style: cytoscape.Stylesheet[] = [
   {
     selector: ':selected',
     style: {
-      'overlay-opacity': 0.05,
-    },
-  },
-  {
-    selector: 'node.around-selected',
-    style: {
-      'overlay-opacity': 0.05,
+      'overlay-opacity': 0.25,
     },
   },
   {
