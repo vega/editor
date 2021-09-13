@@ -3,4 +3,6 @@
   width: 100%;
   flex: 1;
   display: flex;
+  padding: 5px;
+  background: var(--light-gray-color);
 }

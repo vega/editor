@@ -3,7 +3,8 @@
   padding: 10px;
   display: flex;
   flex-direction: column;
-  border-left: solid 2px var(--light-gray-color);
+  border-left: solid 10px var(--light-gray-color);
+  background: var(--white-color);
 }
 .sidebar h3 {
   margin-top: 10px;
