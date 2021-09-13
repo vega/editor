@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Maximize} from 'react-feather';
 import {Portal} from 'react-portal';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
 import {Config as VgConfig} from 'vega';
 import {deepEqual} from 'vega-lite';
@@ -11,6 +10,7 @@ import {mapDispatchToProps, mapStateToProps} from '.';
 import {KEYCODES, Mode} from '../../constants';
 import addProjections from '../../utils/addProjections';
 import {dispatchingLogger} from '../../utils/logger';
+import {Popup} from '../popup';
 import './index.css';
 
 // Add additional projections
@@ -337,21 +337,25 @@ class Editor extends React.PureComponent<Props, State> {
     return (
       <div>
         <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
-          <div
-            data-tip={`Click on "Continue Recording" to make the chart interactive`}
-            data-place="right"
-            className="chart-overlay"
-          ></div>
+          <Popup
+            content={`Click on "Continue Recording" to make the chart interactive`}
+            placement="right"
+            // Make skinnier so it fits on the right side of the chart
+            maxWidth={200}
+          >
+            <div className="chart-overlay"></div>
+          </Popup>
           <div aria-label="visualization" ref="chart" style={chartStyle} />
           {this.renderResizeHandle()}
         </div>
         <div className="fullscreen-open">
-          <Maximize
-            data-tip="Fullscreen"
-            onClick={() => {
-              this.setState({fullscreen: true}, this.onOpenPortal);
-            }}
-          />
+          <Popup content="Fullscreen" placement="left">
+            <Maximize
+              onClick={() => {
+                this.setState({fullscreen: true}, this.onOpenPortal);
+              }}
+            />
+          </Popup>
         </div>
         {this.state.fullscreen && (
           <Portal>
@@ -371,7 +375,6 @@ class Editor extends React.PureComponent<Props, State> {
             </div>
           </Portal>
         )}
-        <ReactTooltip place="left" type="dark" effect="solid" />
       </div>
     );
   }

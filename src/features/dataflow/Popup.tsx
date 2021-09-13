@@ -1,9 +1,7 @@
 import * as React from 'react';
 import {useAppSelector} from '../../hooks';
 import {popupValueSelector} from './popupSlice';
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
-import 'tippy.js/themes/light-border.css';
+import {Popup as AppPopup} from '../../components/popup';
 import {Placement} from 'tippy.js';
 import {prettifyJSON} from './utils/prettify';
 import './Popup.css';
@@ -16,7 +14,7 @@ export function Popup() {
     return <></>;
   }
   const makeTippy = (placement: Placement, params: Record<string, string>) => (
-    <Tippy
+    <AppPopup
       key={placement}
       content={
         <dl>
@@ -34,7 +32,6 @@ export function Popup() {
       }
       getReferenceClientRect={getReferenceClientRect}
       visible={popup !== null}
-      theme="light-border"
       interactive={true}
       placement={placement}
       arrow={true}
@@ -42,7 +39,7 @@ export function Popup() {
       appendTo={document.body}
     >
       <div />
-    </Tippy>
+    </AppPopup>
   );
   if (popup.type === 'edge') {
     const label = popup.edge.label;
