@@ -44,9 +44,11 @@ function Type({type, label, selected}: {type: GraphType; label: string; selected
 
 function Pulses() {
   return (
-    <>
-      <h3>Pulses</h3>
-      <p>Click to filter nodes to those touched by the pulse</p>
+    <fieldset>
+      <legend>Filter by pulse</legend>
+      <p>
+        Selecting a pulse filters the nodes to those that were updated in that pulse and displays their values on hover
+      </p>
       <PulsesButtons />
       <table className="editor-table">
         <thead>
@@ -57,7 +59,7 @@ function Pulses() {
         </thead>
         <PulsesRows />
       </table>
-    </>
+    </fieldset>
   );
 }
 
@@ -68,10 +70,10 @@ function PulsesButtons() {
   return (
     <div className="buttons">
       <button onClick={() => dispatch(setSelectedPulse(null))} disabled={selectedPulse === null}>
-        Unselect
+        Unselect pulse
       </button>
       <button onClick={() => dispatch(resetPulses())} disabled={pulsesEmpty}>
-        Clear
+        Clear recorded pulses
       </button>
     </div>
   );
