@@ -29,6 +29,7 @@ export function CytoscapeControlled({
 }) {
   const divRef = React.useRef<HTMLDivElement | null>(null);
   const cyRef = React.useRef<cytoscape.Core | null>(null);
+  const layoutRef = React.useRef<cytoscape.Layouts | null>(null);
   // The elements that have been removed, from a selection
   const removedRef = React.useRef<cytoscape.CollectionReturnValue | null>(null);
 
@@ -37,6 +38,7 @@ export function CytoscapeControlled({
   // Set cytoscape ref in first effect and set up callbacks
   React.useEffect(() => {
     const cy = (cyRef.current = cytoscape({container: divRef.current, style}));
+    layoutRef.current = cy.makeLayout({name: 'preset'});
     removedRef.current = null;
     cy.on('select', (e) => {
       e.preventDefault();
@@ -92,6 +94,8 @@ export function CytoscapeControlled({
 
   // Update the positions
   React.useEffect(() => {
+    const layout = layoutRef.current;
+    layout.stop();
     if (positions === null) {
       return;
     }
@@ -120,10 +124,9 @@ export function CytoscapeControlled({
 
     // Toggle off hovering when moving positions
     onHover(null);
-
     // Update the layouts
     (cy.nodes() as any).layoutPositions(
-      cy.makeLayout({name: 'preset'}),
+      layout,
       {
         eles: cy.elements(),
         fit: true,
