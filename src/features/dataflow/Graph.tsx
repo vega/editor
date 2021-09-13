@@ -4,16 +4,34 @@ import {currentLayoutSelector, useRecomputeLayout} from './layoutSlice';
 import {Cytoscape} from './Cytoscape';
 import {Popup} from './Popup';
 import './Graph.css';
+import {useDispatch} from 'react-redux';
+import {elementsSelectedSelector, setSelectedElements} from './selectionSlice';
 
 export function Graph() {
+  // Trigger starting the async layout computation, when this node is rendered
   useRecomputeLayout();
   const cytoscape = React.useMemo(() => <Cytoscape />, []);
   return (
     <div className="graph">
+      <UnselectElements />
       <Overlay />
       <Popup />
       {cytoscape}
     </div>
+  );
+}
+
+function UnselectElements() {
+  const dispatch = useDispatch();
+  const elementsSelected = useAppSelector(elementsSelectedSelector);
+  return (
+    <button
+      className="unselect-elements"
+      onClick={() => dispatch(setSelectedElements(null))}
+      disabled={!elementsSelected}
+    >
+      Unselect elements
+    </button>
   );
 }
 

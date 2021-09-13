@@ -47,6 +47,11 @@ export const selectedPulseSelector = createSelector(selectionSelector, (state) =
 export const selectedElementsSelector = createSelector(selectionSelector, (state) => state.elements);
 export const selectedTypesSelector = createSelector(selectionSelector, (state) => state.types);
 
+/**
+ * Whether an element is selected.
+ */
+export const elementsSelectedSelector = createSelector(selectedElementsSelector, (selected) => selected !== null);
+
 export const selectedValuesSelector = createSelector(pulsesSelector, selectedPulseSelector, (pulses, selected) =>
   selected === null ? null : pulses.find((p) => p.clock === selected).values
 );

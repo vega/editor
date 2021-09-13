@@ -19,3 +19,11 @@
   justify-content: center;
   align-items: center;
 }
+
+.unselect-elements {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  z-index: 2;
+}
