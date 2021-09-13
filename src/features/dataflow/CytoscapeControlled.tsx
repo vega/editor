@@ -7,8 +7,8 @@ import {Positions} from './utils/ELKToPositions';
 cytoscape.use(popper);
 
 /**
- * A controlled Cytoscape component, which is mean to be rendered once with a given set of elements and list of visible
- * nodes, and then re-rendered updating those visible elements, before being re-rendered with new elements.
+ * A controlled Cytoscape component, which is meant to be rendered once with a given set of elements and list of visible
+ * nodes, and then re-rendered updating the positions and which elements are visible, before being re-rendered with new elements.
  */
 export function CytoscapeControlled({
   elements,
@@ -17,7 +17,7 @@ export function CytoscapeControlled({
   onSelect,
 }: {
   elements: cytoscape.ElementsDefinition | null;
-  // Mapping of each visible node to its position
+  // Mapping of each visible node to its position, the IDs being a subset of the `elements` props
   positions: Positions | null;
   onSelect: (elements: Elements | null) => void;
   onHover: (target: null | {type: 'node' | 'edge'; id: string; referenceClientRect: DOMRect}) => void;
@@ -27,7 +27,7 @@ export function CytoscapeControlled({
   // The elements that have been removed, from a selection
   const removedRef = React.useRef<cytoscape.CollectionReturnValue | null>(null);
 
-  // Set cytoscape ref in first effect
+  // Set cytoscape ref in first effect and set up callbacks
   React.useEffect(() => {
     const cy = (cyRef.current = cytoscape({container: divRef.current, style}));
     removedRef.current = null;
@@ -61,19 +61,17 @@ export function CytoscapeControlled({
     };
   }, [divRef.current, onHover, onSelect]);
 
-  // Start a batch update, if we habe changes to make with elements
-  React.useEffect(() => {
-    cyRef.current.startBatch();
-  }, [cyRef.current, elements, positions]);
-
   // Update the elements
   React.useEffect(() => {
     const cy = cyRef.current;
-
-    cy.elements().remove();
-    if (elements !== null) {
-      cy.add(elements);
-    }
+    cy.batch(() => {
+      // Delete all old new elements, add new ones, and reset temporarily
+      // removed elements reference
+      cy.elements().remove();
+      if (elements !== null) {
+        cy.add(elements);
+      }
+    });
     removedRef.current = null;
   }, [cyRef.current, elements]);
 
@@ -84,38 +82,35 @@ export function CytoscapeControlled({
     }
     const cy = cyRef.current;
 
+    // Record nodes we will restore, so don't animate them
+    const restoredNodeIDs = new Set(removedRef.current?.map((n) => n.id()));
+
+    // Restore all previously removed nodes
     if (removedRef.current) {
       removedRef.current.restore();
     }
-
-    // Convert from ELK's position, which is relative to the parent and for the top left corner,
-    // to cytoscape's which is absolute and in the center of the node
-    // https://github.com/cytoscape/cytoscape.js-elk/blob/ce1f11d8d9d472d92148f6ec101e69b40268c8b9/src/layout.js#L17-L26
-
-    for (const [id, position] of Object.entries(positions)) {
-      const node = cy.$id(id);
-      node.position(position);
-    }
-
     // Remove all nodes that don't have positions
     removedRef.current = cy
       .collection(Object.keys(positions).map((id) => cy.$id(id)))
       .absoluteComplement()
       .nodes()
       .remove();
+
+    // Update the layouts
+    (cy.nodes() as any).layoutPositions(
+      cy.makeLayout({name: 'preset'}),
+      {
+        eles: cy.elements(),
+        fit: true,
+        animate: true,
+        animationDuration: 1500,
+        animationEasing: 'ease-in-out-sine',
+        // Only animate if the node was not just restored
+        animateFilter: (node) => !restoredNodeIDs.has(node.id()),
+      } as any,
+      (node) => positions[node.id()]
+    );
   }, [cyRef.current, positions]);
 
-  React.useEffect(() => {
-    cyRef.current.endBatch();
-  }, [cyRef.current, elements, positions]);
-
-  // If we updated the positions, fit to viewport after ending batch
-  React.useEffect(() => {
-    if (positions !== null) {
-      cyRef.current.fit();
-    }
-  }, [cyRef.current, positions]);
-
-  //
   return <div className="cytoscape" ref={divRef} />;
 }
