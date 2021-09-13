@@ -11,7 +11,7 @@ export function Cytoscape() {
   const dispatch = useDispatch();
   const elements = useAppSelector(cytoscapeElementsSelector);
   const positions = useAppSelector(currentPositionsSelector);
-  const onSelect = React.useCallback((elements) => dispatch(setSelectedElements(elements)), [dispatch]);
+  const onSelect = React.useCallback((el) => dispatch(setSelectedElements(el)), [dispatch]);
   const onHover = React.useCallback((target) => dispatch(setPopup(target)), [dispatch]);
 
   return <CytoscapeControlled elements={elements} positions={positions} onSelect={onSelect} onHover={onHover} />;
