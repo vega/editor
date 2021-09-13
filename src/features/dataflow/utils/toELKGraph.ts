@@ -8,7 +8,7 @@ const LAYOUT_OPTIONS: LayoutOptions = {
   algorithm: 'layered',
   'org.eclipse.elk.direction': 'RIGHT',
 
-  // Disabled because ends up with un-alligned layers
+  // Disabled because ends up with unaligned layers
   // Make layouts more compact
   // 'org.eclipse.elk.layered.compaction.postCompaction.strategy': 'EDGE_LENGTH',
 
