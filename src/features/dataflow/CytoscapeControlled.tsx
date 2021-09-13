@@ -5,6 +5,7 @@ import popper from 'cytoscape-popper';
 import {style} from './utils/cytoscapeStyle';
 import {Positions} from './utils/ELKToPositions';
 import './CytoscapeControlled.css';
+import {setsEqual} from './utils/setsEqual';
 
 cytoscape.use(popper);
 
@@ -15,12 +16,14 @@ cytoscape.use(popper);
 export function CytoscapeControlled({
   elements,
   positions,
+  selected,
   onHover,
   onSelect,
 }: {
   elements: cytoscape.ElementsDefinition | null;
   // Mapping of each visible node to its position, the IDs being a subset of the `elements` props
   positions: Positions | null;
+  selected: Elements | null;
   onSelect: (elements: Elements | null) => void;
   onHover: (target: null | {type: 'node' | 'edge'; id: string; referenceClientRect: DOMRect}) => void;
 }) {
@@ -29,17 +32,23 @@ export function CytoscapeControlled({
   // The elements that have been removed, from a selection
   const removedRef = React.useRef<cytoscape.CollectionReturnValue | null>(null);
 
+  const getRemovedNodeIDs = () => new Set(removedRef.current?.map((n) => n.id()) ?? []);
+
   // Set cytoscape ref in first effect and set up callbacks
   React.useEffect(() => {
     const cy = (cyRef.current = cytoscape({container: divRef.current, style}));
     removedRef.current = null;
-    cy.on('select', () =>
+    cy.on('select', (e) => {
+      e.preventDefault();
       onSelect({
         edges: cy.edges(':selected').map((e) => e.id()),
         nodes: cy.nodes(':selected').map((n) => n.id()),
-      })
-    );
-    cy.on('unselect', () => onSelect(null));
+      });
+    });
+    cy.on('unselect', (e) => {
+      e.preventDefault();
+      onSelect(null);
+    });
     cy.on('mouseover', ({target}) => {
       if (target === cy) {
         // mouseover background
@@ -66,6 +75,10 @@ export function CytoscapeControlled({
   // Update the elements
   React.useEffect(() => {
     const cy = cyRef.current;
+
+    // Toggle off hovering when changing elements
+    onHover(null);
+
     cy.batch(() => {
       // Delete all old new elements, add new ones, and reset temporarily
       // removed elements reference
@@ -79,8 +92,6 @@ export function CytoscapeControlled({
 
   // Update the positions
   React.useEffect(() => {
-    // Toggle off hovering when moving positions
-    onHover(null);
     if (positions === null) {
       return;
     }
@@ -88,7 +99,7 @@ export function CytoscapeControlled({
     const cy = cyRef.current;
 
     // Record nodes we will restore, so don't animate them
-    const restoredNodeIDs = new Set(removedRef.current?.map((n) => n.id()));
+    const restoredNodeIDs = getRemovedNodeIDs();
 
     // Restore all previously removed nodes
     if (removedRef.current) {
@@ -100,6 +111,15 @@ export function CytoscapeControlled({
       .absoluteComplement()
       .nodes()
       .remove();
+
+    // If the previously removed nodes are equal to the current removed nodes, dont layout,
+    // the nodes haven't changed
+    if (setsEqual(restoredNodeIDs, getRemovedNodeIDs())) {
+      return;
+    }
+
+    // Toggle off hovering when moving positions
+    onHover(null);
 
     // Update the layouts
     (cy.nodes() as any).layoutPositions(
@@ -116,6 +136,18 @@ export function CytoscapeControlled({
       (node) => positions[node.id()]
     );
   }, [cyRef.current, positions, onHover]);
+
+  // Update the selected elements
+  React.useEffect(() => {
+    const cy = cyRef.current;
+    cy.batch(() => {
+      const selectedElements = cy.collection(
+        selected ? [...selected.edges, ...selected.nodes].map((id) => cy.$id(id)) : []
+      );
+      selectedElements.select();
+      selectedElements.absoluteComplement().unselect();
+    });
+  }, [cyRef.current, selected]);
 
   return <div className="cytoscape" ref={divRef} />;
 }
