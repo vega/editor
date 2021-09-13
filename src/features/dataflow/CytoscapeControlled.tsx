@@ -77,9 +77,12 @@ export function CytoscapeControlled({
 
   // Update the positions
   React.useEffect(() => {
+    // Toggle off hovering when moving positions
+    onHover(null);
     if (positions === null) {
       return;
     }
+
     const cy = cyRef.current;
 
     // Record nodes we will restore, so don't animate them
@@ -110,7 +113,7 @@ export function CytoscapeControlled({
       } as any,
       (node) => positions[node.id()]
     );
-  }, [cyRef.current, positions]);
+  }, [cyRef.current, positions, onHover]);
 
   return <div className="cytoscape" ref={divRef} />;
 }
