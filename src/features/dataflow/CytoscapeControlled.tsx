@@ -140,6 +140,7 @@ export function CytoscapeControlled({
         animate: true,
         animationDuration: 1500,
         animationEasing: 'ease-in-out-sine',
+        padding: 10,
         // Only animate if the node was not just restored
         animateFilter: (node) => !restoredNodeIDs.has(node.id()),
       } as any,
