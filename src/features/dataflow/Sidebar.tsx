@@ -19,7 +19,7 @@ function Types() {
   const selectedTypes = useAppSelector(selectedTypesSelector);
 
   return (
-    <fieldset>
+    <fieldset className="type-filter">
       <legend>Filter by type</legend>
       {Object.entries(types).map(([type, {label}]) => (
         <Type key={type} type={type as GraphType} selected={selectedTypes[type]} label={label} />

@@ -37,3 +37,8 @@
 .active-pulse {
   outline: 1px solid var(--extra-dark-gray-color);
 }
+
+/* Don't shrink type input */
+.type-filter {
+  flex-shrink: 0;
+}
