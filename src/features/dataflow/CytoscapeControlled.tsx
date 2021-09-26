@@ -1,4 +1,4 @@
-import cytoscape from 'cytoscape';
+import cytoscape, {CytoscapeOptions} from 'cytoscape';
 import * as React from 'react';
 import {Elements} from './utils/allRelated';
 import popper from 'cytoscape-popper';
@@ -8,6 +8,14 @@ import './CytoscapeControlled.css';
 import {setsEqual} from './utils/setsEqual';
 
 cytoscape.use(popper);
+
+// https://js.cytoscape.org/#core/initialisation
+const OPTIONS: CytoscapeOptions = {
+  style,
+  // Make zoom more constrained than default so we don't get lost
+  minZoom: 1e-2,
+  maxZoom: 1e1,
+};
 
 /**
  * A controlled Cytoscape component, which is meant to be rendered once with a given set of elements and list of visible
@@ -37,7 +45,7 @@ export function CytoscapeControlled({
 
   // Set cytoscape ref in first effect and set up callbacks
   React.useEffect(() => {
-    const cy = (cyRef.current = cytoscape({container: divRef.current, style}));
+    const cy = (cyRef.current = cytoscape({container: divRef.current, ...OPTIONS}));
     layoutRef.current = cy.makeLayout({name: 'preset'});
     removedRef.current = null;
     cy.on('select', (e) => {
