@@ -100,11 +100,15 @@ export function CytoscapeControlled({
       // Delete all old new elements, add new ones, and reset temporarily
       // removed elements reference
       cy.elements().remove();
-      if (elements !== null) {
-        cy.add(elements);
+      if (elements === null) {
+        removedRef.current = null;
+      } else {
+        // Remove all the new elements after adding,
+        // so that when their layouts are updated, they aren't animated,
+        // since they were previously off screen
+        removedRef.current = cy.add(elements).remove();
       }
     });
-    removedRef.current = null;
   }, [cyRef.current, elements]);
 
   // Update the positions
@@ -140,17 +144,24 @@ export function CytoscapeControlled({
     // Toggle off hovering when moving positions
     onHover(null);
     // Update the layouts
+    const allNodes = cy.nodes();
+
+    const wasNotRestored = (n: cytoscape.NodeSingular) => !restoredNodeIDs.has(n.id());
+    // Only animate fit if there are some nodes that weren't restored
+    const animate = allNodes.some(wasNotRestored);
+
     (cy.nodes() as any).layoutPositions(
       layout,
       {
-        eles: cy.elements(),
+        eles: allNodes,
         fit: true,
-        animate: true,
+        animate,
         animationDuration: 1500,
         animationEasing: 'ease-in-out-sine',
         padding: 10,
-        // Only animate if the node was not just restored
-        animateFilter: (node) => !restoredNodeIDs.has(node.id()),
+        // Only animate if the node was not just restored, b/c just restored
+        // nodes positions aren't meaningful
+        animateFilter: wasNotRestored,
       } as any,
       (node) => positions[node.id()]
     );
