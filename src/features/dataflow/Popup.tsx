@@ -3,8 +3,8 @@ import {useAppSelector} from '../../hooks';
 import {popupValueSelector} from './popupSlice';
 import {Popup as AppPopup} from '../../components/popup';
 import {Placement} from 'tippy.js';
-import {prettifyJSON} from './utils/prettify';
 import './Popup.css';
+import {prettifyExpression} from './utils/prettify';
 
 // TODO: Use one tippy and have max height for each pre
 export function Popup() {
@@ -17,18 +17,16 @@ export function Popup() {
     <AppPopup
       key={placement}
       content={
-        <dl>
+        <>
           {Object.entries(params).map(([k, v]) => (
-            <React.Fragment key={k}>
-              <dt>{k}</dt>
-              <dd>
-                <pre>
-                  <code>{v}</code>
-                </pre>
-              </dd>
-            </React.Fragment>
+            <div key={k}>
+              <span className="label">{k}: </span>
+              <pre key={k}>
+                <code>{v}</code>
+              </pre>
+            </div>
           ))}
-        </dl>
+        </>
       }
       getReferenceClientRect={getReferenceClientRect}
       visible={popup !== null}
@@ -57,7 +55,9 @@ export function Popup() {
 
   const valueTippy = makeTippy(
     'bottom',
-    value.type === 'function' ? {'Value (function name)': value.functionName} : {Value: prettifyJSON(value.value)}
+    value.type === 'function'
+      ? {'Value (function name)': value.functionName}
+      : {Value: prettifyExpression(JSON.stringify(value.value), 'Value'.length)}
   );
   return (
     <>

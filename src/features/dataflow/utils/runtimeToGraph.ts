@@ -16,7 +16,7 @@ import {
   BaseOperator,
 } from 'vega-typings/types/runtime/runtime';
 
-import {prettifyExpression, prettifyJSON} from './prettify';
+import {prettifyExpression} from './prettify';
 import {Graph, Node} from './graph';
 import {measureText} from './measureText';
 
@@ -43,7 +43,7 @@ function addOperator(graph: Graph, {id, type, params, ...rest}: Operator, parent
     colorKey: `operator:${type}`,
     label: type,
   });
-  addParam(graph, id, 'ID', id.toString());
+  addParam(graph, id, 'ID', id.toString(), false);
   addOperatorParameters(graph, id, params);
 
   // Don't show metadata
@@ -52,7 +52,7 @@ function addOperator(graph: Graph, {id, type, params, ...rest}: Operator, parent
   delete rest['refs'];
 
   if ('update' in rest) {
-    addParam(graph, id, 'update', prettifyExpression(rest.update.code));
+    addParam(graph, id, 'update', rest.update.code);
     delete rest['update'];
   }
   if (rest.parent !== undefined) {
@@ -60,7 +60,7 @@ function addOperator(graph: Graph, {id, type, params, ...rest}: Operator, parent
     addEdge(graph, {source: parentID, target: id});
     delete rest['parent'];
   }
-  // Handle data seperately to show in graph as nodes
+  // Handle data separately to show in graph as nodes
   if (rest.data !== undefined) {
     addData(graph, id, rest.data, parent);
     delete rest['data'];
@@ -75,7 +75,7 @@ function addOperator(graph: Graph, {id, type, params, ...rest}: Operator, parent
     if (v === undefined) {
       continue;
     }
-    addParam(graph, id, k, prettifyJSON(v));
+    addParam(graph, id, k, JSON.stringify(v));
   }
 }
 
@@ -140,21 +140,21 @@ function addOperatorParameters(graph: Graph, id: ID, params: Operator['params'])
       }
       // If we didn't add any operators, then add them all as one array
       if (added.size === 0) {
-        addParam(graph, id, k, prettifyJSON(v));
+        addParam(graph, id, k, JSON.stringify(v));
         continue;
       }
-      // otherwise add all that aren't added
+      // otherwise, add all that aren't added
       for (const [i, vI] of v.entries()) {
         if (!added.has(i)) {
-          addParam(graph, id, `${k}[${i}]`, prettifyJSON(vI));
+          addParam(graph, id, `${k}[${i}]`, JSON.stringify(vI));
         }
       }
       continue;
     }
-    // Tries adding the operator paremeter as a special case, if that fails,
+    // Tries adding the operator parameter as a special case, if that fails,
     // then add as a regular parameter by stringifying
     if (!addOperatorParameter(graph, id, k, v)) {
-      addParam(graph, id, k, prettifyJSON(v));
+      addParam(graph, id, k, JSON.stringify(v));
     }
   }
 }
@@ -188,7 +188,7 @@ function addOperatorParameter(graph: Graph, id: ID, k: string, v: Parameter | Ob
     return true;
   }
   if ('$expr' in v) {
-    addParam(graph, id, k, prettifyExpression(v.$expr.code));
+    addParam(graph, id, k, v.$expr.code);
     for (const [label, {$ref}] of Object.entries(v.$params)) {
       addEdge(graph, {source: $ref, target: id, label: `${k}.${label}`});
     }
@@ -202,10 +202,12 @@ function addOperatorParameter(graph: Graph, id: ID, k: string, v: Parameter | Ob
       addParam(
         graph,
         id,
-        `encode:${stage}`,
-        Object.entries($expr.channels)
-          .map(([channel, {code}]) => `${channel}: ${prettifyExpression(code)}`)
-          .join('\n')
+        `encode.${stage}`,
+        '{' +
+          Object.entries($expr.channels)
+            .map(([channel, {code}]) => `${channel}: ${prettifyExpression(code)},`)
+            .join('\n') +
+          '}'
       );
     }
     return true;
@@ -220,14 +222,14 @@ function addUpdate(graph: Graph, {source, target, update, options}: Update, inde
     addParam(graph, id, 'force', 'true');
   }
   if (update && typeof update === 'object' && '$expr' in update) {
-    addParam(graph, id, 'value', prettifyExpression(update.$expr.code));
+    addParam(graph, id, 'value', update.$expr.code);
     for (const [k, v] of Object.entries(update.$params ?? {})) {
       const paramID = v.$ref;
       associateNode(graph, id, paramID);
       addEdge(graph, {source: paramID, target: id, label: k});
     }
   } else {
-    addParam(graph, id, 'value', prettifyJSON(update));
+    addParam(graph, id, 'value', JSON.stringify(update));
   }
   const sourceID = typeof source === 'object' ? source.$ref : source;
   associateNode(graph, id, sourceID);
@@ -245,7 +247,7 @@ function addBinding(graph: Graph, {signal, ...rest}: Binding) {
     if (v === undefined) {
       continue;
     }
-    addParam(graph, signal, k, prettifyJSON(v));
+    addParam(graph, signal, k, JSON.stringify(v));
   }
 }
 function addStream(graph: Graph, stream: Stream, parent: ID) {
@@ -280,7 +282,7 @@ function addStream(graph: Graph, stream: Stream, parent: ID) {
     addParam(graph, id, 'throttle', stream.throttle.toString());
   }
   if (stream.filter) {
-    addParam(graph, id, 'filter', prettifyExpression(stream.filter.code));
+    addParam(graph, id, 'filter', stream.filter.code);
   }
 }
 // Helper function to assist in adding to the graph, taking care of denormalization, converting node IDs
@@ -335,8 +337,9 @@ function addEdge(
   getNode(graph, target).incoming.push(source);
 }
 
-function addParam(graph: Graph, id: ID, key: string, value: string): void {
-  getNode(graph, id.toString()).params[key] = value;
+function addParam(graph: Graph, id: ID, key: string, value: string, prettify = true): void {
+  console.log({key, value});
+  getNode(graph, id.toString()).params[key] = prettify ? prettifyExpression(value, key.length) : value;
 }
 
 function hasNode(graph: Graph, id: ID): boolean {
