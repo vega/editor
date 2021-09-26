@@ -42,11 +42,9 @@ export function Popup() {
     </AppPopup>
   );
   if (popup.type === 'edge') {
-    const label = popup.edge.label;
-    if (!label) {
-      return <></>;
-    }
-    return makeTippy('top', {Label: popup.edge.label});
+    // If we want to enable popups on edges again, we can add functionality back
+    // here
+    return <></>;
   }
   const {node, value} = popup;
   if (Object.keys(node.params).length === 0) {

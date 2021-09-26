@@ -7,12 +7,13 @@ export function toCytoscape(graph: Graph): cytoscape.ElementsDefinition {
     data: {id, parent, label, colorKey, ...size},
   }));
 
-  const edges = Object.entries(graph.edges).map(([id, {source, target, primary}]) => ({
+  const edges = Object.entries(graph.edges).map(([id, {source, target, primary, label}]) => ({
     data: {
       id,
       source,
       target,
       primary: primary.toString(),
+      label: label,
     },
   }));
   return {nodes, edges};

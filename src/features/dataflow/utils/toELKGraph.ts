@@ -43,8 +43,7 @@ export function toELKGraph(graph: Graph, visible: {nodes: Set<string>; edges: Se
       id,
       source,
       target,
-      // Removed labels and instead added to popups
-      // labels: label ? [{id: `edge-label:${id}`, text: label, ...size}] : [],
+      labels: label ? [{id: `edge-label:${id}`, text: label, ...size}] : [],
     }));
   const rootNode: ElkNode = {
     id: ROOT_ID,
