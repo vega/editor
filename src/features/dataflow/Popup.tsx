@@ -16,6 +16,7 @@ export function Popup() {
   const makeTippy = (placement: Placement, params: Record<string, string>) => (
     <AppPopup
       key={placement}
+      className="dataflow-popup"
       content={
         <>
           {Object.entries(params).map(([k, v]) => (
