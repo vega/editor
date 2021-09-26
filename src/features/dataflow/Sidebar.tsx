@@ -47,7 +47,8 @@ function Pulses() {
     <fieldset>
       <legend>Filter by pulse</legend>
       <p>
-        Selecting a pulse filters the nodes to those that were updated in that pulse and displays their values on hover
+        Clicking on a pulse filters the nodes to those that were updated in that pulse and displays their values on
+        hover.
       </p>
       <PulsesButtons />
       <table className="editor-table">
