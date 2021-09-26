@@ -244,7 +244,7 @@ class Editor extends React.PureComponent<Props> {
         this.props.updateVegaLiteSpec(spec, config);
         break;
       default:
-        console.exception(`Unknown mode:  ${parsedMode}`);
+        console.error(`Unknown mode:  ${parsedMode}`);
         break;
     }
   }
