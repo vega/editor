@@ -4,5 +4,6 @@
   flex: 1;
   display: flex;
   padding: 5px;
+  padding-top: 0;
   background: var(--light-gray-color);
 }
