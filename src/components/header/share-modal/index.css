@@ -4,11 +4,15 @@
   padding: 2em 0;
 }
 
-.sharing-buttons .editor-button svg {
+.sharing-buttons button svg {
   width: 22px;
   height: 22px;
   stroke: var(--black-color);
   padding-right: 5px;
+}
+
+.sharing-buttons button {
+  margin-right: 8px;
 }
 
 .user-pref {
