@@ -13,8 +13,8 @@ export const types = {
   stream: {label: 'Streams', default: true},
   update: {label: 'Updates', default: true},
   operator: {label: 'Operators', default: true},
-  data: {label: 'Data', default: false},
-  signal: {label: 'Signals', default: false},
+  data: {label: 'Data', default: true},
+  signal: {label: 'Signals', default: true},
 };
 
 export type GraphType = keyof typeof types;
