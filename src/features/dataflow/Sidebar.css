@@ -35,6 +35,16 @@
   top: 0;
 }
 
+/* By default the table editor has clickable headers. Revert those to default. */
+.sidebar table.editor-table th {
+  cursor: default;
+}
+
+/* Make rows clickable instead */
+.sidebar table.editor-table tr {
+  cursor: pointer;
+}
+
 .active-pulse {
   outline: 1px solid var(--extra-dark-gray-color);
 }
