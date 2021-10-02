@@ -3269,10 +3269,10 @@ d3-scale@^3.2.2:
     d3-time "^2.1.1"
     d3-time-format "2 - 3"
 
-d3-scale@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-4.0.1.tgz#c65aa7a357e4f58954a66e1edacc712bab4b1034"
-  integrity sha512-akUAsUujCFnw6Sf1dF7y/FXTxz+VvEIOB3ValKtLhNrzFp8q5wPO3VCAmsbCLJWRTxyJCZDoooodjOI1plFqlw==
+d3-scale@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-4.0.2.tgz#82b38e8e8ff7080764f8dcec77bd4be393689396"
+  integrity sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ==
   dependencies:
     d3-array "2.10.0 - 3"
     d3-format "1 - 3"
