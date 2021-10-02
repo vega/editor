@@ -259,12 +259,12 @@ class ShareModal extends React.PureComponent<Props, State> {
           </label>
         </div>
         <div className="sharing-buttons">
-          <button className="editor-button" onClick={() => this.previewURL()}>
+          <button onClick={() => this.previewURL()}>
             <Link />
             <span>Open Link</span>
           </button>
           <Clipboard
-            className="editor-button copy-icon"
+            className="copy-icon"
             data-clipboard-text={this.state.generatedURL}
             onSuccess={this.onCopy.bind(this)}
           >
@@ -272,7 +272,7 @@ class ShareModal extends React.PureComponent<Props, State> {
             <span>Copy Link to Clipboard</span>
           </Clipboard>
           <Clipboard
-            className="editor-button copy-icon"
+            className="copy-icon"
             data-clipboard-text={`[Open the Chart in the Vega Editor](${this.state.generatedURL})`}
             onSuccess={this.onCopy.bind(this)}
           >
@@ -330,7 +330,6 @@ class ShareModal extends React.PureComponent<Props, State> {
               )}
               <div className="sharing-buttons">
                 <button
-                  className="editor-button"
                   onClick={this.updateGist.bind(this)}
                   disabled={!this.state.gistFileNameSelected || this.state.updating}
                 >
@@ -338,7 +337,7 @@ class ShareModal extends React.PureComponent<Props, State> {
                   {this.state.updating ? 'Updating...' : 'Update'}
                 </button>
                 {this.state.gistEditorURL && this.state.updating !== undefined && (
-                  <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistEditorURL}>
+                  <Clipboard className="copy-icon" data-clipboard-text={this.state.gistEditorURL}>
                     <Copy />
                     <span>Copy Link to Clipboard</span>
                   </Clipboard>
@@ -389,12 +388,12 @@ class ShareModal extends React.PureComponent<Props, State> {
                 </label>
               </div>
               <div className="sharing-buttons">
-                <button className="editor-button" onClick={this.createGist.bind(this)} disabled={this.state.creating}>
+                <button onClick={this.createGist.bind(this)} disabled={this.state.creating}>
                   <Save />
                   {this.state.creating ? 'Creating...' : 'Create'}
                 </button>
                 {this.state.gistEditorURL && this.state.creating !== undefined && (
-                  <Clipboard className="editor-button copy-icon" data-clipboard-text={this.state.gistEditorURL}>
+                  <Clipboard className="copy-icon" data-clipboard-text={this.state.gistEditorURL}>
                     <Copy />
                     <span>Copy Link to Clipboard</span>
                   </Clipboard>
