@@ -48,15 +48,15 @@ export function CytoscapeControlled({
     const cy = (cyRef.current = cytoscape({container: divRef.current, ...OPTIONS}));
     layoutRef.current = cy.makeLayout({name: 'preset'});
     removedRef.current = null;
-    cy.on('select', (e) => {
-      e.preventDefault();
+    cy.on('select', (event) => {
+      event.preventDefault();
       onSelect({
         edges: cy.edges(':selected').map((e) => e.id()),
         nodes: cy.nodes(':selected').map((n) => n.id()),
       });
     });
-    cy.on('unselect', (e) => {
-      e.preventDefault();
+    cy.on('unselect', (event) => {
+      event.preventDefault();
     });
     // Unselect when clicking on background
     // We need this extra handler, instead of just relying on "unselect", because we can have a node semantically selected,

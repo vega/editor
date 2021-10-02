@@ -13,8 +13,11 @@ export function ELKToPositions(node: ElkNode): Positions {
 /**
  * Traverses all nodes, besides the root, and calls the callback with its absolute position, size, and ID.
  */
-function traverseELKNodes(node: ElkNode, callback: (id: string, position: {x: number; y: number}, size: Size) => void) {
-  const toProcess = (node?.children || []).map((n) => [n, {x: 0 as number, y: 0 as number}] as const);
+function traverseELKNodes(
+  rootNode: ElkNode,
+  callback: (id: string, position: {x: number; y: number}, size: Size) => void
+) {
+  const toProcess = (rootNode?.children || []).map((n) => [n, {x: 0 as number, y: 0 as number}] as const);
   while (toProcess.length) {
     const [node, origin] = toProcess.pop();
     const position = {x: node.x + origin.x, y: node.y + origin.y};

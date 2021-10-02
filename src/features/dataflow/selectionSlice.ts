@@ -68,14 +68,17 @@ export const visibleNodesFromElementsSelector = createSelector(
   (graph, elements) => (elements === null || graph === null ? null : allRelated(graph, elements))
 );
 
-export const visibleNodesFromTypesSelector = createSelector(graphSelector, selectedTypesSelector, (graph, types) =>
-  graph === null
-    ? null
-    : new Set(
-        Object.entries(graph.nodes)
-          .filter(([, {type}]) => types[type])
-          .map(([id]) => id)
-      )
+export const visibleNodesFromTypesSelector = createSelector(
+  graphSelector,
+  selectedTypesSelector,
+  (graph, selectedTypes) =>
+    graph === null
+      ? null
+      : new Set(
+          Object.entries(graph.nodes)
+            .filter(([, {type}]) => selectedTypes[type])
+            .map(([id]) => id)
+        )
 );
 
 // The intersection of all the selected nodes, or null if empty
