@@ -120,41 +120,30 @@ class ExportModal extends React.PureComponent<Props, State> {
   }
 
   public downloadHTML() {
-    const filename = 'visualization.html';
-
     let content = this.props.mode === Mode.Vega ? this.props.vegaSpec : this.props.vegaLiteSpec;
-
     if (this.props.config) {
       content = {...content};
       content.config = mergeConfig({}, this.props.config, content.config);
     }
+    const opt = {mode: this.props.mode};
 
-    // Below, try to update the URL data path if found at any common place, so that they are in absolute URL path.
-    // However, even with the URL path updates, due to browser's default security restriction, local html file is not
-    // allowed to access remote URL, unless the restriction is disabled manually. For example in Google
-    // Chrome, use the --disable-web-security flag.
-    // The common places to specify the data in content spec below cover most of the existing Vega examples.
-    const commonDataUrlPaths = ['data.url', 'spec.data.url', 'transform[0].from.data.url'];
-    commonDataUrlPaths.forEach((dataUrlPath) => this.updateContentDataUrl(content, dataUrlPath));
-
-    const contentString = stringify(content);
     const htmlTemplate = `<!DOCTYPE html>
 <html>
   <head>
-    <style>.error {color: red;}</style>
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.19.1"></script>
   </head>
   <body>
     <div id="vis"/>
     <script> 
-      const spec = ${contentString};
-      vegaEmbed("#vis", spec).then(console.log).catch(console.warn);
+      const spec = ${stringify(content)};
+      vegaEmbed("#vis", spec, ${stringify(opt)}).then(console.log).catch(console.warn);
     </script>
   </body>
 </html>`;
 
+    const filename = 'visualization.html';
     const blob = new Blob([htmlTemplate], {type: `text/html;charset=utf-8`});
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement(`a`);
@@ -162,28 +151,6 @@ class ExportModal extends React.PureComponent<Props, State> {
     link.setAttribute(`target`, `_blank`);
     link.setAttribute(`download`, filename);
     link.dispatchEvent(new MouseEvent(`click`));
-  }
-
-  private updateContentDataUrl(content, dataUrlPath) {
-    const get = (obj, path, defValue) => {
-      if (!path) return undefined;
-      const pathArray = Array.isArray(path) ? path : path.match(/([^[.\]])+/g);
-      const result = pathArray.reduce((prevObj, key) => prevObj && prevObj[key], obj);
-      return result === undefined ? defValue : result;
-    };
-    const set = (obj, path, value) => {
-      const pathArray = Array.isArray(path) ? path : path.match(/([^[.\]])+/g);
-      pathArray.reduce((acc, key, i) => {
-        if (acc[key] === undefined) acc[key] = {};
-        if (i === pathArray.length - 1) acc[key] = value;
-        return acc[key];
-      }, obj);
-    };
-
-    if (get(content, dataUrlPath, undefined)) {
-      set(content, dataUrlPath, new URL(get(content, dataUrlPath, ''), document.location.href).href);
-      console.log(`updated ${dataUrlPath} : ` + get(content, dataUrlPath, ''));
-    }
   }
 
   public render() {
@@ -303,13 +270,9 @@ class ExportModal extends React.PureComponent<Props, State> {
               <span>HTML</span>
             </div>
             <p>
-              <br /> HTML is the standard markup language for documents designed to be displayed in a web browser. Your
-              chart is embedded in the downloaded html file. This is an ideal format if you want to share and view an
-              interactive chart with 'inline data' offline.{' '}
-              <strong>
-                Due to browser security restriction, any chart with 'data from URL' won't show properly in the
-                downloaded file.
-              </strong>
+              <br /> HTML is a document format to be displayed in a browser. Your chart is embedded in the downloaded
+              html file. It is an ideal format if you want to view or share an interactive chart. Use absolute URLs to
+              ensure that the data is loaded correctly.
             </p>
             <button onClick={() => this.downloadHTML()}>Download</button>
           </div>
