@@ -1,6 +1,5 @@
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {Renderers, Spec} from 'vega';
-import {TopLevelSpec} from 'vega-lite/src/spec';
+import {Renderers, Runtime} from 'vega';
 import {Mode, View} from '../constants';
 
 export const RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER' as const;

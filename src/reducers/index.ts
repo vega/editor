@@ -9,6 +9,7 @@ import {
   Action,
   CLEAR_CONFIG,
   DEBUG,
+  ERROR,
   EXPORT_VEGA,
   EXTRACT_CONFIG_SPEC,
   INFO,
@@ -16,12 +17,14 @@ import {
   PARSE_SPEC,
   RECEIVE_CURRENT_USER,
   SetConfig,
+  setConfig,
   SetGistVegaLiteSpec,
   SetGistVegaSpec,
   SetVegaExample,
   SetVegaLiteExample,
   SET_BACKGROUND_COLOR,
   SET_BASEURL,
+  SET_COMPILEDPANE_ITEM,
   SET_COMPILED_EDITOR_REFERENCE,
   SET_COMPILED_VEGA_PANE_SIZE,
   SET_CONFIG,
@@ -52,12 +55,10 @@ import {
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
   WARN,
-  ERROR,
-  SET_COMPILEDPANE_ITEM,
-  setConfig,
 } from '../actions/editor';
 import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
 import {State} from '../constants/default-state';
+import {dataflowReducer} from '../features/dataflow';
 import {validateVega, validateVegaLite} from '../utils/validate';
 import {
   MERGE_CONFIG_SPEC,
@@ -320,6 +321,8 @@ function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {
 }
 
 export default (state: State = DEFAULT_STATE, action: Action): State => {
+  // Copy all changes to state from dataflow reducer to state
+  state = {...state, ...dataflowReducer(state, action)};
   switch (action.type) {
     case SET_MODE:
       return {

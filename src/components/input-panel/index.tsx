@@ -8,9 +8,9 @@ import {State} from '../../constants/default-state';
 import ConfigEditor from '../config-editor';
 import CompiledSpecDisplay from './compiled-spec-display';
 import CompiledSpecHeader from './compiled-spec-header';
+import './index.css';
 import SpecEditor from './spec-editor';
 import SpecEditorHeader from './spec-editor-header';
-import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 

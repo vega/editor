@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 let commitHash = require('child_process').execSync('git rev-parse --short HEAD').toString();
 
@@ -109,6 +110,9 @@ module.exports = (env, argv) => {
       }),
       new MonacoWebpackPlugin({
         languages: ['json'],
+      }),
+      new CopyPlugin({
+        patterns: [{from: require.resolve('elkjs/lib/elk-worker.js'), to: 'elk-worker.js'}],
       }),
     ],
 

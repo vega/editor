@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Maximize} from 'react-feather';
 import {Portal} from 'react-portal';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
 import * as vega from 'vega';
 import {Config as VgConfig} from 'vega';
 import {deepEqual} from 'vega-lite';
@@ -11,6 +10,7 @@ import {mapDispatchToProps, mapStateToProps} from '.';
 import {KEYCODES, Mode} from '../../constants';
 import addProjections from '../../utils/addProjections';
 import {dispatchingLogger} from '../../utils/logger';
+import {Popup} from '../popup';
 import './index.css';
 
 // Add additional projections
@@ -30,6 +30,7 @@ class Editor extends React.PureComponent<Props, State> {
     this.handleKeydown = this.handleKeydown.bind(this);
     this.onOpenPortal = this.onOpenPortal.bind(this);
     this.onClosePortal = this.onClosePortal.bind(this);
+    this.runAfter = this.runAfter.bind(this);
   }
 
   public onOpenPortal() {
@@ -125,7 +126,17 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public initView() {
-    const {vegaSpec, vegaLiteSpec, normalizedVegaLiteSpec, config, baseURL, mode, setView, hoverEnable} = this.props;
+    const {
+      vegaSpec,
+      vegaLiteSpec,
+      normalizedVegaLiteSpec,
+      config,
+      baseURL,
+      mode,
+      setView,
+      setRuntime,
+      hoverEnable,
+    } = this.props;
 
     let runtime: vega.Runtime;
     if (mode === Mode.VegaLite) {
@@ -134,6 +145,7 @@ class Editor extends React.PureComponent<Props, State> {
     } else {
       runtime = vega.parse(vegaSpec, config as VgConfig);
     }
+
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
 
@@ -154,6 +166,10 @@ class Editor extends React.PureComponent<Props, State> {
 
     // Finalize previous view so that memory can be freed
     if (this.props.view) {
+      // Remove run after callback for the previous view
+      // to disable logging from an evaluate that will run after we finalize it
+      (this.props.view as any)._postrun = [];
+
       this.props.view.finalize();
     }
 
@@ -163,6 +179,7 @@ class Editor extends React.PureComponent<Props, State> {
       loader,
     });
 
+    view.runAfter(this.runAfter, true);
     (view as any).logger(dispatchingLogger);
 
     const debug = (window as any).VEGA_DEBUG;
@@ -176,8 +193,36 @@ class Editor extends React.PureComponent<Props, State> {
     } else {
       debug.vegaLiteSpec = debug.normalizedVegaLiteSpec = undefined;
     }
-
+    setRuntime(runtime);
     setView(view);
+  }
+
+  private runAfter(df: any) {
+    const clock = df._clock;
+
+    // Mapping from ID to value
+    const values: Record<string, unknown> = {};
+    const toProcessContexts = new Set<any>([df._runtime]);
+    const processedContexts = new Set<any>();
+    while (toProcessContexts.size > 0) {
+      const context = toProcessContexts.values().next().value;
+      toProcessContexts.delete(context);
+      processedContexts.add(context);
+      for (const [id, operator] of Object.entries(context.nodes as Record<string, any>)) {
+        if (operator.stamp === clock) {
+          values[id] = operator.value;
+        }
+      }
+      for (const subContext of (context.subcontext as undefined | any[]) ?? []) {
+        if (!processedContexts.has(subContext)) {
+          toProcessContexts.add(subContext);
+        }
+      }
+    }
+    this.props.recordPulse(clock, values);
+
+    // Set it up to run again
+    df.runAfter(this.runAfter, true, 10);
   }
 
   public async renderVega() {
@@ -292,21 +337,25 @@ class Editor extends React.PureComponent<Props, State> {
     return (
       <div>
         <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
-          <div
-            data-tip={`Click on "Continue Recording" to make the chart interactive`}
-            data-place="right"
-            className="chart-overlay"
-          ></div>
+          <Popup
+            content={`Click on "Continue Recording" to make the chart interactive`}
+            placement="right"
+            // Make skinnier so it fits on the right side of the chart
+            maxWidth={200}
+          >
+            <div className="chart-overlay"></div>
+          </Popup>
           <div aria-label="visualization" ref="chart" style={chartStyle} />
           {this.renderResizeHandle()}
         </div>
         <div className="fullscreen-open">
-          <Maximize
-            data-tip="Fullscreen"
-            onClick={() => {
-              this.setState({fullscreen: true}, this.onOpenPortal);
-            }}
-          />
+          <Popup content="Fullscreen" placement="left">
+            <Maximize
+              onClick={() => {
+                this.setState({fullscreen: true}, this.onOpenPortal);
+              }}
+            />
+          </Popup>
         </div>
         {this.state.fullscreen && (
           <Portal>
@@ -326,7 +375,6 @@ class Editor extends React.PureComponent<Props, State> {
             </div>
           </Portal>
         )}
-        <ReactTooltip place="left" type="dark" effect="solid" />
       </div>
     );
   }

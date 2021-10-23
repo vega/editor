@@ -1,0 +1,29 @@
+.graph {
+  flex: auto;
+  min-width: 0;
+  position: relative;
+}
+
+.overlay {
+  background-color: white;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.9;
+  padding: 10px;
+  overflow: auto;
+}
+.center-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.unselect-elements {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  z-index: 2;
+}

@@ -3,6 +3,7 @@ import persistState from 'redux-localstorage';
 import thunk from 'redux-thunk';
 
 import rootReducer from '../reducers';
+import {dataflowInitialState} from '../features/dataflow';
 import {DEFAULT_STATE, State} from './../constants/default-state';
 
 export default function configureStore(initialState: State = DEFAULT_STATE) {
@@ -21,10 +22,12 @@ export default function configureStore(initialState: State = DEFAULT_STATE) {
       e !== 'view' &&
       e !== 'isAuthenticated' &&
       e !== 'errors' &&
+      e !== 'error' &&
       e !== 'warns' &&
       e !== 'infos' &&
       e !== 'debugs' &&
-      e !== 'view'
+      e !== 'view' &&
+      !Object.keys(dataflowInitialState).includes(e)
   );
   const enhancer = composeEnhancers(middleware, persistState(paths));
 

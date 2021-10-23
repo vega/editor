@@ -2,6 +2,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor';
 import {State} from '../../constants/default-state';
+import {recordPulse} from '../../features/dataflow/pulsesSlice';
+import {setRuntime} from '../../features/dataflow/runtimeSlice';
 import Renderer from './renderer';
 
 export function mapStateToProps(state: State) {
@@ -26,6 +28,8 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   return bindActionCreators(
     {
       setView: EditorActions.setView,
+      setRuntime: setRuntime,
+      recordPulse: recordPulse,
     },
     dispatch
   );

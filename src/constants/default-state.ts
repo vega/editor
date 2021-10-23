@@ -2,19 +2,21 @@ import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {Renderers, Spec} from 'vega';
 import {Config, vega} from 'vega-embed';
 import {TopLevelSpec as VlSpec} from 'vega-lite';
+import {dataflowInitialState} from '../features/dataflow';
+
 import {
+  COMPILEDPANE,
   EDITOR_FOCUS,
+  GistPrivacy,
   LAYOUT,
   Mode,
   NAVBAR,
   SIDEPANE,
   VEGA_LITE_START_SPEC,
   View,
-  GistPrivacy,
-  COMPILEDPANE,
 } from './consts';
 
-export interface State {
+export type State = {
   isAuthenticated: boolean;
   baseURL: string;
   compiledVegaSpec: boolean;
@@ -60,7 +62,7 @@ export interface State {
   debugs: string[];
   themeName: string;
   backgroundColor: string;
-}
+} & typeof dataflowInitialState;
 
 export const DEFAULT_STATE: State = {
   baseURL: null,
@@ -108,4 +110,5 @@ export const DEFAULT_STATE: State = {
   debugs: [],
   infos: [],
   backgroundColor: '#ffffff',
+  ...dataflowInitialState,
 };

@@ -1,0 +1,14 @@
+/* Support scrolling on long popups */
+.dataflow-popup .tippy-content {
+  max-height: 300px;
+  overflow: scroll;
+}
+
+.dataflow-popup span {
+  font-weight: 700;
+}
+
+.dataflow-popup pre {
+  margin: 0;
+  display: inline;
+}
