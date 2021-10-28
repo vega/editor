@@ -165,8 +165,8 @@ export default class DataViewer extends React.PureComponent<Props, State> {
               label: d,
               value: d,
             }))}
-            clearable={false}
-            searchable={true}
+            isClearable={false}
+            isSearchable={true}
           />
           <div className="pagination-wrapper">{pagination}</div>
         </div>

@@ -52,12 +52,10 @@ export default class VizPane extends React.PureComponent<Props, State> {
 
     const decorations = editor.deltaDecorations(
       [],
-      rangeValue.map((match) => {
-        return {
-          options: {inlineClassName: 'myInlineDecoration'},
-          range: match.range,
-        };
-      })
+      rangeValue.map((match) => ({
+        options: {inlineClassName: 'myInlineDecoration'},
+        range: match.range,
+      }))
     );
 
     this.props.setDecorations(decorations);

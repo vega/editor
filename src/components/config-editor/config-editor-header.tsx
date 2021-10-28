@@ -32,13 +32,11 @@ class ConfigEditorHeader extends React.PureComponent<any, any> {
           }}
         >
           <option value="custom">Custom</option>
-          {Object.keys(vegaThemes).map((keyName) => {
-            return (
-              <option key={keyName} value={keyName}>
-                {keyName}
-              </option>
-            );
-          })}
+          {Object.keys(vegaThemes).map((keyName) => (
+            <option key={keyName} value={keyName}>
+              {keyName}
+            </option>
+          ))}
         </select>
       </label>
     );

@@ -17,29 +17,25 @@ export default class TimelineRow extends React.PureComponent<{
     const scaleNew = scaleBand as any;
     const scale = scaleNew(range(0, xCount), [0, width]);
 
-    const row =
-      data &&
-      data.map((d) => {
-        return (
-          <rect
-            key={d.xCount}
-            onMouseOver={() => this.props.onHoverInit(d)}
-            onClick={() => this.props.onClickInit(d)}
-            onMouseLeave={() => this.props.onHoverEnd()}
-            className="svg-rect"
-            height={31}
-            style={{
-              cursor: 'pointer',
-              fill: clickedValue === d.xCount ? '#A4F9C8' : '#b7b7b7',
-              pointerEvents: 'all',
-              stroke: 'white',
-              strokeWidth: '0.5px',
-            }}
-            width={scale.bandwidth()}
-            x={scale(d.xCount)}
-          ></rect>
-        );
-      });
+    const row = data?.map((d) => (
+      <rect
+        key={d.xCount}
+        onMouseOver={() => this.props.onHoverInit(d)}
+        onClick={() => this.props.onClickInit(d)}
+        onMouseLeave={() => this.props.onHoverEnd()}
+        className="svg-rect"
+        height={31}
+        style={{
+          cursor: 'pointer',
+          fill: clickedValue === d.xCount ? '#A4F9C8' : '#b7b7b7',
+          pointerEvents: 'all',
+          stroke: 'white',
+          strokeWidth: '0.5px',
+        }}
+        width={scale.bandwidth()}
+        x={scale(d.xCount)}
+      ></rect>
+    ));
 
     return (
       <svg style={{width: window.innerWidth * 0.3, height: 31}} width={window.innerWidth * 0.3} height={31}>

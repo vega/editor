@@ -57,21 +57,21 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
         ...this.props.signals,
         [changedSignal]: newSignals,
       });
-      this.setState((current) => {
-        return {
-          ...current,
-          xCount: current.xCount + 1,
-        };
-      });
+      this.setState((current) => ({
+        ...current,
+        xCount: current.xCount + 1,
+      }));
     } else {
       const obj = {};
       this.state.keys.map((key) => {
-        obj[key]
-          ? obj[key].push({
-              value: this.props.view.signal(key),
-              xCount: this.state.xCount,
-            })
-          : (obj[key] = [{value: this.props.view.signal(key), xCount: this.state.xCount}]);
+        if (obj[key]) {
+          obj[key].push({
+            value: this.props.view.signal(key),
+            xCount: this.state.xCount,
+          });
+        } else {
+          obj[key] = [{value: this.props.view.signal(key), xCount: this.state.xCount}];
+        }
       });
       this.props.setSignals(obj);
       this.setState({
@@ -109,17 +109,19 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           if (this.state.timeline) {
             const obj = {};
             this.state.keys.map((key) => {
-              obj[key]
-                ? obj[key].push({
+              if (obj[key]) {
+                obj[key].push({
+                  value: this.props.view.signal(key),
+                  xCount: this.state.xCount,
+                });
+              } else {
+                obj[key] = [
+                  {
                     value: this.props.view.signal(key),
                     xCount: this.state.xCount,
-                  })
-                : (obj[key] = [
-                    {
-                      value: this.props.view.signal(key),
-                      xCount: this.state.xCount,
-                    },
-                  ]);
+                  },
+                ];
+              }
             });
 
             this.props.setSignals(obj);
@@ -274,41 +276,39 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               </tr>
             </thead>
             <tbody>
-              {this.state.keys.map((signal) => {
-                return (
-                  <SignalRow
-                    isHovered={this.state.isHovered}
-                    isTimelineSelected={this.state.isTimelineSelected}
-                    clickedSignal={this.state.signal[signal]}
-                    hoverValue={this.state.hoverValue[signal]}
-                    maskListener={this.state.maskListener}
-                    onValueChange={(key, value) => this.valueChange(key, value)}
-                    key={signal}
-                    signal={signal}
-                    view={this.props.view}
-                    timeline={this.state.timeline}
-                    onClickHandler={this.props.onClickHandler}
-                  >
-                    {this.state.timeline && (
-                      <TimelineRow
-                        onHoverInit={(hoverValue) => this.onHoverInit(signal, hoverValue)}
-                        onClickInit={(hoverValue) => this.onClickInit(signal, hoverValue)}
-                        onHoverEnd={() => {
-                          this.setState({
-                            hoverValue: {},
-                            isHovered: false,
-                          });
-                        }}
-                        isTimelineSelected={this.state.isTimelineSelected}
-                        clickedValue={this.state.countSignal[signal]}
-                        data={this.props.signals[signal]}
-                        width={window.innerWidth * 0.3}
-                        xCount={this.state.xCount}
-                      />
-                    )}
-                  </SignalRow>
-                );
-              })}
+              {this.state.keys.map((signal) => (
+                <SignalRow
+                  isHovered={this.state.isHovered}
+                  isTimelineSelected={this.state.isTimelineSelected}
+                  clickedSignal={this.state.signal[signal]}
+                  hoverValue={this.state.hoverValue[signal]}
+                  maskListener={this.state.maskListener}
+                  onValueChange={(key, value) => this.valueChange(key, value)}
+                  key={signal}
+                  signal={signal}
+                  view={this.props.view}
+                  timeline={this.state.timeline}
+                  onClickHandler={this.props.onClickHandler}
+                >
+                  {this.state.timeline && (
+                    <TimelineRow
+                      onHoverInit={(hoverValue) => this.onHoverInit(signal, hoverValue)}
+                      onClickInit={(hoverValue) => this.onClickInit(signal, hoverValue)}
+                      onHoverEnd={() => {
+                        this.setState({
+                          hoverValue: {},
+                          isHovered: false,
+                        });
+                      }}
+                      isTimelineSelected={this.state.isTimelineSelected}
+                      clickedValue={this.state.countSignal[signal]}
+                      data={this.props.signals[signal]}
+                      width={window.innerWidth * 0.3}
+                      xCount={this.state.xCount}
+                    />
+                  )}
+                </SignalRow>
+              ))}
             </tbody>
           </table>
         </div>

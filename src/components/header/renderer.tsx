@@ -31,12 +31,11 @@ interface State {
   mode: string;
 }
 
-const formatExampleName = (name: string) => {
-  return name
+const formatExampleName = (name: string) =>
+  name
     .split(/[_-]/)
     .map((i) => i[0].toUpperCase() + i.substring(1))
     .join(' ');
-};
 
 class Header extends React.PureComponent<PropsType, State> {
   private examplePortal = React.createRef<HTMLDivElement>();
@@ -311,26 +310,24 @@ class Header extends React.PureComponent<PropsType, State> {
             <div className="item-group" key={i}>
               <h4 className="spec-type">{specType}</h4>
               <div className="items" onClick={closePortal}>
-                {specs.map((spec, j) => {
-                  return (
+                {specs.map((spec, j) => (
+                  <div
+                    key={j}
+                    onClick={() => {
+                      this.onSelectVega(spec.name);
+                      closePortal();
+                    }}
+                    className="item"
+                  >
                     <div
-                      key={j}
-                      onClick={() => {
-                        this.onSelectVega(spec.name);
-                        closePortal();
+                      style={{
+                        backgroundImage: `url(images/examples/vg/${spec.name}.vg.png)`,
                       }}
-                      className="item"
-                    >
-                      <div
-                        style={{
-                          backgroundImage: `url(images/examples/vg/${spec.name}.vg.png)`,
-                        }}
-                        className="img"
-                      />
-                      <div className="name">{formatExampleName(spec.name)}</div>
-                    </div>
-                  );
-                })}
+                      className="img"
+                    />
+                    <div className="name">{formatExampleName(spec.name)}</div>
+                  </div>
+                ))}
               </div>
             </div>
           );
@@ -340,43 +337,39 @@ class Header extends React.PureComponent<PropsType, State> {
 
     const vegalite = (closePortal) => (
       <div className="vega-Lite">
-        {Object.keys(VEGA_LITE_SPECS).map((specGroup, i) => {
-          return (
-            <div key={i}>
-              <h3>{specGroup}</h3>
-              {Object.keys(VEGA_LITE_SPECS[specGroup]).map((specType, j) => {
-                const specs = VEGA_LITE_SPECS[specGroup][specType];
-                return (
-                  <div className="item-group" key={j}>
-                    <h4 className="spec-type">{specType}</h4>
-                    <div className="items">
-                      {specs.map((spec, k) => {
-                        return (
-                          <div
-                            key={k}
-                            onClick={() => {
-                              this.onSelectVegaLite(spec.name);
-                              closePortal();
-                            }}
-                            className="item"
-                          >
-                            <div
-                              style={{
-                                backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`,
-                              }}
-                              className="img"
-                            />
-                            <div className="name">{spec.title}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
+        {Object.keys(VEGA_LITE_SPECS).map((specGroup, i) => (
+          <div key={i}>
+            <h3>{specGroup}</h3>
+            {Object.keys(VEGA_LITE_SPECS[specGroup]).map((specType, j) => {
+              const specs = VEGA_LITE_SPECS[specGroup][specType];
+              return (
+                <div className="item-group" key={j}>
+                  <h4 className="spec-type">{specType}</h4>
+                  <div className="items">
+                    {specs.map((spec, k) => (
+                      <div
+                        key={k}
+                        onClick={() => {
+                          this.onSelectVegaLite(spec.name);
+                          closePortal();
+                        }}
+                        className="item"
+                      >
+                        <div
+                          style={{
+                            backgroundImage: `url(images/examples/vl/${spec.name}.vl.png)`,
+                          }}
+                          className="img"
+                        />
+                        <div className="name">{spec.title}</div>
+                      </div>
+                    ))}
                   </div>
-                );
-              })}
-            </div>
-          );
-        })}
+                </div>
+              );
+            })}
+          </div>
+        ))}
       </div>
     );
 

@@ -126,17 +126,8 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public initView() {
-    const {
-      vegaSpec,
-      vegaLiteSpec,
-      normalizedVegaLiteSpec,
-      config,
-      baseURL,
-      mode,
-      setView,
-      setRuntime,
-      hoverEnable,
-    } = this.props;
+    const {vegaSpec, vegaLiteSpec, normalizedVegaLiteSpec, config, baseURL, mode, setView, setRuntime, hoverEnable} =
+      this.props;
 
     let runtime: vega.Runtime;
     if (mode === Mode.VegaLite) {
@@ -268,12 +259,10 @@ class Editor extends React.PureComponent<Props, State> {
     document.addEventListener('keydown', (e) => {
       // Keycode of f11 is 122
       if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
-        this.setState((current) => {
-          return {
-            ...current,
-            fullscreen: !current.fullscreen,
-          };
-        });
+        this.setState((current) => ({
+          ...current,
+          fullscreen: !current.fullscreen,
+        }));
       }
     });
 
