@@ -338,7 +338,6 @@ function addEdge(
 }
 
 function addParam(graph: Graph, id: ID, key: string, value: string, prettify = true): void {
-  console.log({key, value});
   getNode(graph, id.toString()).params[key] = prettify ? prettifyExpression(value, key.length) : value;
 }
 
