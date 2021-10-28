@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Book, BookOpen, Code, Image, Map} from 'react-feather';
 import {version as VG_VERSION} from 'vega';
 import {version as VL_VERSION} from 'vega-lite';
+import {version as VE_VERSION} from 'vega-embed';
 import {withRouter} from 'react-router-dom';
 import {mergeConfig} from 'vega';
 import stringify from 'json-stringify-pretty-compact';
@@ -129,7 +130,6 @@ class ExportModal extends React.PureComponent<Props, State> {
       content.config = mergeConfig({}, config, content.config);
     }
     const opt = {mode: mode};
-    const VE_VERSION = '6.19.1'; // needs an more elegant way to retrieve it, similar to VG_VERSION and VL_VERSION
     const htmlTemplate =
       `<!DOCTYPE html>\n` +
       `<html>\n` +
