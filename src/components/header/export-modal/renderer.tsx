@@ -1,5 +1,7 @@
 import * as React from 'react';
 import {Book, BookOpen, Code, Image, Map} from 'react-feather';
+import {version as VG_VERSION} from 'vega';
+import {version as VL_VERSION} from 'vega-lite';
 import {withRouter} from 'react-router-dom';
 import {mergeConfig} from 'vega';
 import stringify from 'json-stringify-pretty-compact';
@@ -120,28 +122,30 @@ class ExportModal extends React.PureComponent<Props, State> {
   }
 
   public downloadHTML() {
-    let content = this.props.mode === Mode.Vega ? this.props.vegaSpec : this.props.vegaLiteSpec;
-    if (this.props.config) {
+    const {mode, vegaSpec, vegaLiteSpec, config} = this.props;
+    let content = mode === Mode.Vega ? vegaSpec : vegaLiteSpec;
+    if (config) {
       content = {...content};
-      content.config = mergeConfig({}, this.props.config, content.config);
+      content.config = mergeConfig({}, config, content.config);
     }
-    const opt = {mode: this.props.mode};
-
-    const htmlTemplate = `<!DOCTYPE html>
-<html>
-  <head>
-    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.1"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.19.1"></script>
-  </head>
-  <body>
-    <div id="vis"/>
-    <script> 
-      const spec = ${stringify(content)};
-      vegaEmbed("#vis", spec, ${stringify(opt)}).then(console.log).catch(console.warn);
-    </script>
-  </body>
-</html>`;
+    const opt = {mode: mode};
+    const VE_VERSION = '6.19.1'; // needs an more elegant way to retrieve it, similar to VG_VERSION and VL_VERSION
+    const htmlTemplate =
+      `<!DOCTYPE html>\n` +
+      `<html>\n` +
+      `<head>\n` +
+      `  <script src="https://cdn.jsdelivr.net/npm/vega@${VG_VERSION}"></script>\n` +
+      `  <script src="https://cdn.jsdelivr.net/npm/vega-lite@${VL_VERSION}"></script>\n` +
+      `  <script src="https://cdn.jsdelivr.net/npm/vega-embed@${VE_VERSION}"></script>\n` +
+      `</head>\n` +
+      `<body>\n` +
+      `  <div id="vis"/>\n` +
+      `  <script>\n` +
+      `    const spec = ${stringify(content)};\n` +
+      `    vegaEmbed("#vis", spec, ${stringify(opt)}).then(console.log).catch(console.warn);\n` +
+      `  </script>\n` +
+      `</body>\n` +
+      `</html>`;
 
     const filename = 'visualization.html';
     const blob = new Blob([htmlTemplate], {type: `text/html;charset=utf-8`});
@@ -271,8 +275,7 @@ class ExportModal extends React.PureComponent<Props, State> {
             </div>
             <p>
               <br /> HTML is a document format to be displayed in a browser. Your chart is embedded in the downloaded
-              html file. It is an ideal format if you want to view or share an interactive chart. Use absolute URLs to
-              ensure that the data is loaded correctly.
+              html file. Use absolute URLs to ensure that the data is loaded correctly.
             </p>
             <button onClick={() => this.downloadHTML()}>Download</button>
           </div>
