@@ -1,5 +1,8 @@
 import * as React from 'react';
-import {Book, Code, Image, Map} from 'react-feather';
+import {Book, BookOpen, Code, Image, Map} from 'react-feather';
+import {version as VG_VERSION} from 'vega';
+import {version as VL_VERSION} from 'vega-lite';
+import {version as VE_VERSION} from 'vega-embed';
 import {withRouter} from 'react-router-dom';
 import {mergeConfig} from 'vega';
 import stringify from 'json-stringify-pretty-compact';
@@ -119,6 +122,39 @@ class ExportModal extends React.PureComponent<Props, State> {
     this.setState({downloadVegaJSON: event.currentTarget.value === 'vega'});
   }
 
+  public downloadHTML() {
+    const {mode, vegaSpec, vegaLiteSpec, config} = this.props;
+    let content = mode === Mode.Vega ? vegaSpec : vegaLiteSpec;
+    if (config) {
+      content = {...content};
+      content.config = mergeConfig({}, config, content.config);
+    }
+    const opt = {mode: mode};
+    const htmlTemplate =
+      `<!DOCTYPE html>\n` +
+      `<html>\n` +
+      `<head>\n` +
+      `  <script src="https://cdn.jsdelivr.net/npm/vega@${VG_VERSION}"></script>\n` +
+      `  <script src="https://cdn.jsdelivr.net/npm/vega-lite@${VL_VERSION}"></script>\n` +
+      `  <script src="https://cdn.jsdelivr.net/npm/vega-embed@${VE_VERSION}"></script>\n` +
+      `</head>\n` +
+      `<body>\n` +
+      `  <div id="vis"/>\n` +
+      `  <script>\n` +
+      `    const spec = ${stringify(content)};\n` +
+      `    vegaEmbed("#vis", spec, ${stringify(opt)}).then(console.log).catch(console.warn);\n` +
+      `  </script>\n` +
+      `</body>\n` +
+      `</html>`;
+
+    const blob = new Blob([htmlTemplate], {type: `text/html;charset=utf-8`});
+    const link = document.createElement(`a`);
+    link.setAttribute(`href`,  window.URL.createObjectURL(blob));
+    link.setAttribute(`target`, `_blank`);
+    link.setAttribute(`download`, 'visualization.html');
+    link.dispatchEvent(new MouseEvent(`click`));
+  }
+
   public render() {
     return (
       <>
@@ -229,6 +265,17 @@ class ExportModal extends React.PureComponent<Props, State> {
                 .
               </p>
             )}
+          </div>
+          <div className="export-container">
+            <div className="header-text">
+              <BookOpen />
+              <span>HTML</span>
+            </div>
+            <p>
+              <br /> HTML is a document format to be displayed in a browser. Your chart is embedded in the downloaded
+              html file. Use absolute URLs to ensure that the data is loaded correctly.
+            </p>
+            <button onClick={() => this.downloadHTML()}>Download</button>
           </div>
         </div>
         <div className="user-notes">
