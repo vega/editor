@@ -147,13 +147,11 @@ class ExportModal extends React.PureComponent<Props, State> {
       `</body>\n` +
       `</html>`;
 
-    const filename = 'visualization.html';
     const blob = new Blob([htmlTemplate], {type: `text/html;charset=utf-8`});
-    const url = window.URL.createObjectURL(blob);
     const link = document.createElement(`a`);
-    link.setAttribute(`href`, url);
+    link.setAttribute(`href`,  window.URL.createObjectURL(blob));
     link.setAttribute(`target`, `_blank`);
-    link.setAttribute(`download`, filename);
+    link.setAttribute(`download`, 'visualization.html');
     link.dispatchEvent(new MouseEvent(`click`));
   }
 
