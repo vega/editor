@@ -23,7 +23,11 @@ const LOG_OPTIONS = [
   {label: LEVEL_NAMES[4], value: 4},
 ];
 
-const HOVER_OPTIONS = [{label: 'Auto'}, {label: 'On'}, {label: 'Off'}];
+const HOVER_OPTIONS = [
+  {label: 'Auto', value: 'Auto'},
+  {label: 'On', value: 'On'},
+  {label: 'Off', value: 'Off'},
+];
 
 class Sidebar extends Component<any, any> {
   private listenerAttached = false;
@@ -53,10 +57,8 @@ class Sidebar extends Component<any, any> {
 
   public handleEscClick(event) {
     // check if the window size is smaller than 1000(threshold)
-    if (window.innerWidth <= SIZE_THRESHOLD) {
-      if (event.key === 'Escape') {
-        this.props.setSettingsState(false);
-      }
+    if (window.innerWidth <= SIZE_THRESHOLD && event.key === 'Escape') {
+      this.props.setSettingsState(false);
     }
   }
 
@@ -159,12 +161,12 @@ class Sidebar extends Component<any, any> {
         </div>
         <p className="settings-description">Set log level for Vega.</p>
         <div className="select-container">
-          <span>Hover :</span>
+          <span>Hover:</span>
           <div className="hover-enable-select">
             <Select
               className="hover-enable-dropdown-wrapper"
               classNamePrefix="hover-enable-dropdown"
-              value={{label: hover}}
+              value={{label: hover, value: hover}}
               options={HOVER_OPTIONS}
               onChange={this.setHover}
               isClearable={false}

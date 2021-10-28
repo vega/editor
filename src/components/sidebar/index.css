@@ -35,24 +35,6 @@
   margin-left: 10px;
 }
 
-.renderer-dropdown__option,
-.log-level-dropdown__option,
-.hover-enable-dropdown__option {
-  background-color: var(--white-color) !important;
-  color: var(--black-color) !important;
-}
-.renderer-dropdown__option:hover,
-.log-level-dropdown__option:hover,
-.hover-enable-dropdown__option:hover {
-  background-color: var(--transparent-color) !important;
-}
-
-.renderer-dropdown__single-value,
-.log-level-dropdown__single-value,
-.hover-enable-dropdown_-single-value {
-  line-height: normal !important;
-}
-
 .tooltips,
 .hover-enable {
   width: 150px;

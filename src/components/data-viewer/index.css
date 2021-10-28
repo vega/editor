@@ -7,10 +7,6 @@
   vertical-align: middle;
 }
 
-.data-dropdown:focus {
-  outline: 0;
-}
-
 .data-viewer-header {
   width: 100%;
   margin-left: 10px;
