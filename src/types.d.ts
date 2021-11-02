@@ -8,7 +8,7 @@ declare module 'react-router-dom' {
 
   export interface RouteChildrenProps<Params extends {[K in keyof Params]?: string} = {}, S = any> {
     history: H.History;
-    location: H.Location<any>;
+    location: H.Location;
     match: any;
   }
 
