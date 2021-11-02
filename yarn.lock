@@ -8362,10 +8362,10 @@ vega-label@~1.1.0:
     vega-scenegraph "^4.9.2"
     vega-util "^1.15.2"
 
-vega-lite-dev-config@0.19.0--canary.628.f6a12e6.0:
-  version "0.19.0--canary.628.f6a12e6.0"
-  resolved "https://registry.yarnpkg.com/vega-lite-dev-config/-/vega-lite-dev-config-0.19.0--canary.628.f6a12e6.0.tgz#309bf452c88207a055613e8e06971417224ef327"
-  integrity sha512-NQMX2lS2tuY0quMoeDefkX012tj7dqwVC9L6+AiC7nVweQEjzUfEuCi4MVIJ7UDiVWcj5xjm3oPbLINP+80nEg==
+vega-lite-dev-config@0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/vega-lite-dev-config/-/vega-lite-dev-config-0.19.0.tgz#8a35f7a7dd46926d41b9ead9780703fabf0ba837"
+  integrity sha512-yI5Dp3e/mJgiEBGR51YjL84MhafikB7GIs0sgM6UhiCSaPAeqWUNIKz+GfItDZEhGjcwm9yxvm6zizlrCVJ92A==
   dependencies:
     "@babel/core" "^7.15.8"
     "@babel/preset-env" "^7.15.8"
