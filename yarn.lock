@@ -7916,10 +7916,10 @@ tiny-warning@^1.0.0, tiny-warning@^1.0.3:
   resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
 
-tippy.js@^6.3.1, tippy.js@^6.3.2:
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.2.tgz#c03a0b88f170dffeba42f569771801dddc1f6340"
-  integrity sha512-35XVQI7Zl/jHZ51+8eHu/vVRXBjWYGobPm5G9FxOchj4r5dWhghKGS0nm0ARUKZTF96V7pPn7EbXS191NTwldw==
+tippy.js@^6.3.1, tippy.js@^6.3.3:
+  version "6.3.3"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.3.tgz#04810e79fc217acacc4bd4acb5acf428d7c33974"
+  integrity sha512-Y3bLm4p33a8TJ49idtxfe6YYxcrmGKkOosry5clshy+wue622nhOxpf+KDfOQmif8etqsoIYFfVyVyXKQDqWVw==
   dependencies:
     "@popperjs/core" "^2.9.0"
 
