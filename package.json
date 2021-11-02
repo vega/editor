@@ -59,7 +59,7 @@
     "react-router-dom": "^5.3.0",
     "react-select": "^5.1.0",
     "react-split-pane": "^0.1.92",
-    "redux": "^4.1.1",
+    "redux": "^4.1.2",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.4.0",
     "tippy.js": "^6.3.2",
