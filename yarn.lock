@@ -8330,10 +8330,10 @@ vega-datasets@^2.2.0:
   resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.2.0.tgz#45a95b8a04707babca9d83a74481157eac7be830"
   integrity sha512-8WgehTGic6fHbQKyxApM29vnwGGeYqgan9xW0jW2d/L3jWngF2qIDkZktt+Y+vUpW2qp9MJWelNSVhplWhL8EA==
 
-vega-embed@^6.20.0:
-  version "6.20.0"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.20.0.tgz#6a35e58695709b2c2d75eb767509498f44b3dc9f"
-  integrity sha512-CHBBK7g7id351JHHl0nBzjvolN6PpiRJqV9BRFsOvX1EYXRxMCMvz5b0lU+mN6OSdEISI30EmY2ArXEuqjp/6A==
+vega-embed@^6.20.4:
+  version "6.20.4"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.20.4.tgz#2b654a3fd9f55240d226babbb40b03c58ccd3b3d"
+  integrity sha512-diU4AFu0g/Gl1qFjxYlmKoFbSVbnpXnitJp3jaGvVmUaCWV1qyaIMhi9ok1L4t1deosN4bzkh1gCE91EASRHqQ==
   dependencies:
     fast-json-patch "^3.1.0"
     json-stringify-pretty-compact "^3.0.0"
