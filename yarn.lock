@@ -6914,10 +6914,10 @@ raw-body@2.4.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-rc-resize-observer@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/rc-resize-observer/-/rc-resize-observer-1.1.0.tgz#25402811874410c43e7bcf63472ca13089983a52"
-  integrity sha512-I2CgjpLceKbJIzX5cSujRFIxOEtB+9Idcx8vc39JEqtmj8Vv8TQROFeTniku3tekjIS9EuA8Iw9H56Q0eBU2Og==
+rc-resize-observer@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/rc-resize-observer/-/rc-resize-observer-1.1.1.tgz#ef666e38065f550730176404bae2ce8ca5fb1ac4"
+  integrity sha512-5A3B9ha297ItltzXl812WFE36SyRDTNclfrXE3FL1pEwXkBh7iSEzxjzfwsPeMcF9ahy3ZoxLgLuRksXBGGD6A==
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.1"
