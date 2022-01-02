@@ -27,7 +27,7 @@
     "webpack-dev-server": "^4.7.2"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.6.2",
+    "@reduxjs/toolkit": "^1.7.1",
     "@tippyjs/react": "^4.2.6",
     "@types/cytoscape": "^3.19.2",
     "@types/d3": "^7.1.0",
