@@ -47,7 +47,7 @@
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.30.1",
     "prettier": "^2.5.x",
-    "prop-types": "^15.7.2",
+    "prop-types": "^15.8.0",
     "rc-resize-observer": "^1.1.1",
     "react": "^17.0.2",
     "react-clipboard.js": "^2.0.16",
