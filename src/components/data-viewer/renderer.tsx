@@ -117,7 +117,7 @@ export default class DataViewer extends React.PureComponent<Props, State> {
       selected = datasets[0];
     }
 
-    let pagination: ReactPaginate;
+    let pagination: React.ReactElement;
 
     const data = this.props.view.data(selected) || [];
 
