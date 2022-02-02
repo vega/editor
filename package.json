@@ -14,7 +14,7 @@
     "lint-staged": "^12.1.4",
     "monaco-editor-webpack-plugin": "^6.0.0",
     "patch-package": "^6.4.7",
-    "postcss": "^8.4.5",
+    "postcss": "^8.4.6",
     "postcss-loader": "^6.2.1",
     "postinstall-postinstall": "^2.1.0",
     "style-loader": "^3.3.1",
