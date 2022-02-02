@@ -71,7 +71,7 @@
     "vega-lite": "5.2.0",
     "vega-schema-url-parser": "^2.2.0",
     "vega-themes": "^2.10.0",
-    "vega-tooltip": "^0.27.0",
+    "vega-tooltip": "^0.28.0",
     "vega-typings": "^0.22.2"
   },
   "lint-staged": {
