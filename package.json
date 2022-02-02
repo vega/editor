@@ -34,7 +34,7 @@
     "@types/react": "^17.0.38",
     "@types/react-redux": "^7.1.22",
     "@types/semver": "^7.3.9",
-    "ajv": "^8.8.2",
+    "ajv": "^8.9.0",
     "ajv-formats": "^2.1.1",
     "cytoscape": "^3.20.0",
     "cytoscape-popper": "^2.0.0",
