@@ -1,4 +1,5 @@
 import stringify from 'json-stringify-pretty-compact';
+import {parse} from 'jsonc-parser';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
@@ -127,7 +128,7 @@ class App extends React.PureComponent<PropsType> {
       const gistData = await gistResponse.json();
       const contentResponse = await fetch(gistData.files[parameter.filename].raw_url); // fetch from raw_url to handle large files
       const content = await contentResponse.text();
-      const contentObj = JSON.parse(content);
+      const contentObj = parse(content);
 
       if (!('$schema' in contentObj)) {
         this.props.setGistVegaLiteSpec('', content);

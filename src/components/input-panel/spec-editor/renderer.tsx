@@ -10,6 +10,7 @@ import parser from 'vega-schema-url-parser';
 import {mapDispatchToProps, mapStateToProps} from '.';
 import {EDITOR_FOCUS, KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants';
 import './index.css';
+import {parse, printParseErrorCode, visit} from 'jsonc-parser';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
@@ -73,7 +74,7 @@ class Editor extends React.PureComponent<Props> {
   }
 
   public addVegaSchemaURL() {
-    let spec = JSON.parse(this.props.editorString);
+    let spec = parse(this.props.editorString);
     if (spec.$schema === undefined) {
       spec = {
         $schema: SCHEMA[Mode.Vega],
@@ -86,7 +87,7 @@ class Editor extends React.PureComponent<Props> {
   }
 
   public addVegaLiteSchemaURL() {
-    let spec = JSON.parse(this.props.editorString);
+    let spec = parse(this.props.editorString);
     if (spec.$schema === undefined) {
       spec = {
         $schema: SCHEMA[Mode.VegaLite],
@@ -173,7 +174,7 @@ class Editor extends React.PureComponent<Props> {
         const newlines = (spec.match(/\n/g) || '').length + 1;
         if (newlines <= 1) {
           console.log('Formatting spec string from URL that did not contain newlines.');
-          spec = stringify(JSON.parse(spec));
+          spec = stringify(parse(spec));
         }
 
         this.updateSpec(spec);
@@ -220,7 +221,17 @@ class Editor extends React.PureComponent<Props> {
     let parsedMode = this.props.mode;
 
     try {
-      const schema = JSON.parse(spec).$schema;
+      visit(
+        spec,
+        {
+          onError: (error, _offset, _length, startLine, startCharacter) => {
+            const errorMessage = `${printParseErrorCode(error)} at Ln ${startLine + 1}, Col ${startCharacter + 1}`;
+            throw SyntaxError(errorMessage);
+          },
+        },
+        {disallowComments: false, allowTrailingComma: true}
+      ).$schema;
+      const schema = parse(spec).$schema;
 
       if (schema) {
         switch (parser(schema).library) {
@@ -234,6 +245,7 @@ class Editor extends React.PureComponent<Props> {
       }
     } catch (err) {
       console.warn('Error parsing JSON string', err);
+      throw this.props.logError(err);
     }
 
     switch (parsedMode) {

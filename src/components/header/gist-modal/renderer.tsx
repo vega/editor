@@ -5,6 +5,7 @@ import {mapStateToProps} from '.';
 import GistSelectWidget from '../../gist-select-widget';
 import {Mode} from '../../../constants';
 import './index.css';
+import {parse} from 'jsonc-parser';
 
 export type Props = {
   closePortal: () => void;
@@ -179,7 +180,7 @@ class GistModal extends React.PureComponent<PropsType, State> {
             },
             () => {
               const {revision, filename} = this.state.gist;
-              JSON.parse(gistSummary.files[jsonFiles[0]].content);
+              parse(gistSummary.files[jsonFiles[0]].content);
               if (this.state.latestRevision) {
                 this.props.history.push(`/gist/${gistId}/${filename}`);
               } else {
@@ -199,7 +200,9 @@ class GistModal extends React.PureComponent<PropsType, State> {
         }
 
         const rawResponse = await fetch(gistSummary.files[this.state.gist.filename].raw_url); // fetch from raw_url to handle large files
-        await rawResponse.json(); // check if the loaded file is a JSON
+        const errors = [];
+        parse(await rawResponse.text(), errors);
+        if (errors.length > 0) throw SyntaxError; // check if the loaded file is a JSON
 
         const {revision, filename} = this.state.gist;
         if (this.state.latestRevision) {
