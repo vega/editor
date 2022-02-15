@@ -44,7 +44,9 @@ const schemas = [
 
 export default function setupMonaco() {
   Monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-    allowComments: false,
+    // allowComments: false,
+    comments: 'warning',
+    trailingCommas: 'warning',
     enableSchemaRequest: true,
     schemas,
     validate: true,

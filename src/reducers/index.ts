@@ -70,6 +70,7 @@ import {
   SET_TOOLTIP,
 } from './../actions/editor';
 import {LocalLogger} from './../utils/logger';
+import {parse} from 'jsonc-parser';
 
 function errorLine(code: string, error: string) {
   const pattern = /(position\s)(\d+)/;
@@ -105,8 +106,8 @@ function mergeConfigIntoSpec(state: State) {
   let spec: TopLevelSpec;
   let config: Config;
   try {
-    spec = JSON.parse(state.editorString);
-    config = JSON.parse(state.configEditorString);
+    spec = parse(state.editorString);
+    config = parse(state.configEditorString);
     if (spec.config) {
       spec.config = vega.mergeConfig(config, spec.config);
     } else {
@@ -133,8 +134,8 @@ function extractConfig(state: State) {
   let spec: TopLevelSpec;
   let config: Config;
   try {
-    spec = JSON.parse(state.editorString);
-    config = JSON.parse(state.configEditorString);
+    spec = parse(state.editorString);
+    config = parse(state.configEditorString);
     if (spec.config) {
       config = vega.mergeConfig(config, spec.config);
       delete spec.config;
@@ -163,7 +164,7 @@ function parseVega(
   currLogger.level(state.logLevel);
 
   try {
-    const spec = JSON.parse(action.spec);
+    const spec = parse(action.spec);
 
     if (spec.$schema) {
       try {
@@ -232,8 +233,8 @@ function parseVegaLite(
         configEditorString = state.configEditorString;
     }
 
-    const vegaLiteSpec: vegaLite.TopLevelSpec = JSON.parse(spec);
-    const config: Config = JSON.parse(configEditorString);
+    const vegaLiteSpec: vegaLite.TopLevelSpec = parse(spec);
+    const config: Config = parse(configEditorString);
 
     const options = {
       config,
@@ -295,7 +296,7 @@ function parseVegaLite(
 function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {}) {
   let config: Config;
   try {
-    config = JSON.parse(action.configEditorString);
+    config = parse(action.configEditorString);
   } catch (e) {
     const errorMessage = errorLine(action.configEditorString, e.message);
     console.warn(e);
