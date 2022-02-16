@@ -1,4 +1,5 @@
 import stringify from 'json-stringify-pretty-compact';
+import {parse as parseJSONC} from 'jsonc-parser';
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {mergeDeep} from 'vega-lite';
 import addMarkdownProps from './markdownProps';
@@ -44,7 +45,8 @@ const schemas = [
 
 export default function setupMonaco() {
   Monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-    allowComments: false,
+    comments: 'warning',
+    trailingCommas: 'warning',
     enableSchemaRequest: true,
     schemas,
     validate: true,
@@ -71,7 +73,7 @@ export default function setupMonaco() {
       return [
         {
           range: model.getFullModelRange(),
-          text: stringify(JSON.parse(model.getValue())),
+          text: stringify(parseJSONC(model.getValue())),
         },
       ];
     },

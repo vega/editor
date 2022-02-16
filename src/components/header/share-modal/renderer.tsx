@@ -1,3 +1,5 @@
+import stringify from 'json-stringify-pretty-compact';
+import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
@@ -56,7 +58,7 @@ class ShareModal extends React.PureComponent<Props, State> {
   public exportURL() {
     const specString = this.state.whitespace
       ? this.props.editorString
-      : JSON.stringify(JSON.parse(this.props.editorString));
+      : JSON.stringify(parseJSONC(this.props.editorString));
 
     const serializedSpec = LZString.compressToEncodedURIComponent(specString) + (this.state.fullScreen ? '/view' : '');
 
@@ -132,7 +134,7 @@ class ShareModal extends React.PureComponent<Props, State> {
     });
 
     const body = {
-      content: this.props.editorString,
+      content: this.state.whitespace ? this.props.editorString : stringify(parseJSONC(this.props.editorString)),
       name: this.state.gistFileName || 'spec',
       title: this.state.gistTitle,
       privacy: this.state.gistPrivate,
@@ -255,7 +257,7 @@ class ShareModal extends React.PureComponent<Props, State> {
               name="whitespace"
               onChange={this.handleWhitespaceCheck.bind(this)}
             />
-            Preserve whitespaces
+            Preserve whitespace, comments, and trailing commas
           </label>
         </div>
         <div className="sharing-buttons">
@@ -352,6 +354,17 @@ class ShareModal extends React.PureComponent<Props, State> {
                 that you can share. You can also load the specification via the Gist loading functionality in the
                 editor.
               </p>
+              <div>
+                <label className="user-pref">
+                  <input
+                    type="checkbox"
+                    defaultChecked={this.state.whitespace}
+                    name="whitespace"
+                    onChange={this.handleWhitespaceCheck.bind(this)}
+                  />
+                  Preserve whitespace, comments, and trailing commas
+                </label>
+              </div>
               <div className="share-input-container">
                 <label>
                   Title:
