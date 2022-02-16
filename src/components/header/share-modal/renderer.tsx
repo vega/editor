@@ -1,5 +1,5 @@
 import stringify from 'json-stringify-pretty-compact';
-import {parse} from 'jsonc-parser';
+import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
 import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
@@ -56,7 +56,9 @@ class ShareModal extends React.PureComponent<Props, State> {
   }
 
   public exportURL() {
-    const specString = this.state.whitespace ? this.props.editorString : JSON.stringify(parse(this.props.editorString));
+    const specString = this.state.whitespace
+      ? this.props.editorString
+      : JSON.stringify(parseJSONC(this.props.editorString));
 
     const serializedSpec = LZString.compressToEncodedURIComponent(specString) + (this.state.fullScreen ? '/view' : '');
 
@@ -132,7 +134,7 @@ class ShareModal extends React.PureComponent<Props, State> {
     });
 
     const body = {
-      content: this.state.whitespace ? this.props.editorString : stringify(parse(this.props.editorString)),
+      content: this.state.whitespace ? this.props.editorString : stringify(parseJSONC(this.props.editorString)),
       name: this.state.gistFileName || 'spec',
       title: this.state.gistTitle,
       privacy: this.state.gistPrivate,

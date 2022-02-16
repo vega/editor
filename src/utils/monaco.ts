@@ -1,5 +1,5 @@
 import stringify from 'json-stringify-pretty-compact';
-import {parse} from 'jsonc-parser';
+import {parse as parseJSONC} from 'jsonc-parser';
 import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {mergeDeep} from 'vega-lite';
 import addMarkdownProps from './markdownProps';
@@ -73,7 +73,7 @@ export default function setupMonaco() {
       return [
         {
           range: model.getFullModelRange(),
-          text: stringify(parse(model.getValue())),
+          text: stringify(parseJSONC(model.getValue())),
         },
       ];
     },
