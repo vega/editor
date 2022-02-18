@@ -70,29 +70,16 @@ import {
   SET_TOOLTIP,
 } from './../actions/editor';
 import {LocalLogger} from './../utils/logger';
-import {parse as parseJSONC} from 'jsonc-parser';
+import {parse as parseJSONC, visit as visitJSONC, printParseErrorCode as printJSONCParseErrorCode} from 'jsonc-parser';
 
-function errorLine(code: string, error: string) {
-  const pattern = /(position\s)(\d+)/;
-  let charPos: any = error.match(pattern);
+function throwJSONCParseError(error, _offset, _length, startLine, startCharacter): SyntaxError {
+  const errorMessage = `${printJSONCParseErrorCode(error)} at Ln ${startLine + 1}, Col ${startCharacter + 1}`;
+  throw SyntaxError(errorMessage);
+}
 
-  if (charPos !== null) {
-    charPos = charPos[2];
-    if (!isNaN(charPos)) {
-      let line = 1;
-      let cursorPos = 0;
-
-      while (cursorPos < charPos && code.indexOf('\n', cursorPos) < charPos && code.indexOf('\n', cursorPos) > -1) {
-        const newlinePos = code.indexOf('\n', cursorPos);
-        line = line + 1;
-        cursorPos = newlinePos + 1;
-      }
-
-      return `${error} and line ${line}`;
-    }
-  } else {
-    return error;
-  }
+function parseJSONCOrThrow(spec: string) {
+  visitJSONC(spec, {onError: throwJSONCParseError}, {disallowComments: false, allowTrailingComma: true});
+  return parseJSONC(spec);
 }
 
 function mergeConfigIntoSpec(state: State) {
@@ -164,7 +151,7 @@ function parseVega(
   currLogger.level(state.logLevel);
 
   try {
-    const spec = parseJSONC(action.spec);
+    const spec = parseJSONCOrThrow(action.spec);
 
     if (spec.$schema) {
       try {
@@ -183,12 +170,11 @@ function parseVega(
       vegaSpec: spec,
     };
   } catch (e) {
-    const errorMessage = errorLine(action.spec, e.message);
     console.warn(e);
 
     extend = {
       ...extend,
-      error: {message: errorMessage},
+      error: {message: e.message},
     };
   }
 
@@ -233,8 +219,8 @@ function parseVegaLite(
         configEditorString = state.configEditorString;
     }
 
-    const vegaLiteSpec: vegaLite.TopLevelSpec = parseJSONC(spec);
-    const config: Config = parseJSONC(configEditorString);
+    const vegaLiteSpec: vegaLite.TopLevelSpec = parseJSONCOrThrow(spec);
+    const config: Config = parseJSONCOrThrow(configEditorString);
 
     const options = {
       config,
@@ -266,12 +252,11 @@ function parseVegaLite(
       vegaSpec,
     };
   } catch (e) {
-    const errorMessage = errorLine(spec, e.message);
     console.warn(e);
 
     extend = {
       ...extend,
-      error: {message: errorMessage},
+      error: {message: e.message},
     };
   }
 
@@ -296,14 +281,13 @@ function parseVegaLite(
 function parseConfig(state: State, action: SetConfig, extend: Partial<State> = {}) {
   let config: Config;
   try {
-    config = parseJSONC(action.configEditorString);
+    config = parseJSONCOrThrow(action.configEditorString);
   } catch (e) {
-    const errorMessage = errorLine(action.configEditorString, e.message);
     console.warn(e);
 
     extend = {
       ...extend,
-      error: {message: errorMessage},
+      error: {message: e.message},
     };
   }
 
