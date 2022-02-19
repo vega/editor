@@ -4,6 +4,7 @@ const config: TypeScriptConfig = {
   compilerOptions: {
     lib: ['esnext', 'dom'],
     strict: false,
+    skipLibCheck: true,
   },
 };
 
