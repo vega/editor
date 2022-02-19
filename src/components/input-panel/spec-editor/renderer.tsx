@@ -10,7 +10,7 @@ import parser from 'vega-schema-url-parser';
 import {mapDispatchToProps, mapStateToProps} from '.';
 import {EDITOR_FOCUS, KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants';
 import './index.css';
-import {parse as parseJSONC, printParseErrorCode as printJSONCParseErrorCode, visit as visitJSONC} from 'jsonc-parser';
+import {parse as parseJSONC} from 'jsonc-parser';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
@@ -220,32 +220,17 @@ class Editor extends React.PureComponent<Props> {
   public updateSpec(spec: string, config: string = undefined) {
     let parsedMode = this.props.mode;
 
-    try {
-      visitJSONC(
-        spec,
-        {
-          onError: (error, _offset, _length, startLine, startCharacter) => {
-            const errorMessage = `${printJSONCParseErrorCode(error)} at Ln ${startLine + 1}, Col ${startCharacter + 1}`;
-            throw SyntaxError(errorMessage);
-          },
-        },
-        {disallowComments: false, allowTrailingComma: true}
-      ).$schema;
-      const schema = parseJSONC(spec).$schema;
+    const schema = parseJSONC(spec).$schema;
 
-      if (schema) {
-        switch (parser(schema).library) {
-          case 'vega-lite':
-            parsedMode = Mode.VegaLite;
-            break;
-          case 'vega':
-            parsedMode = Mode.Vega;
-            break;
-        }
+    if (schema) {
+      switch (parser(schema).library) {
+        case 'vega-lite':
+          parsedMode = Mode.VegaLite;
+          break;
+        case 'vega':
+          parsedMode = Mode.Vega;
+          break;
       }
-    } catch (err) {
-      console.warn('Error parsing JSON string', err);
-      throw this.props.logError(err);
     }
 
     switch (parsedMode) {
