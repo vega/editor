@@ -33,7 +33,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   public getKeys(ref = this.props) {
     return Object.keys(
       ref.view.getState({
-        data: vega.truthy,
+        data: vega.falsy,
         signals: vega.truthy,
         recurse: true,
       }).signals
