@@ -4,6 +4,8 @@ import {isDate} from 'vega';
 import {View} from '../../constants';
 import {formatValueLong} from '../table/renderer';
 
+/* eslint-disable react/prop-types */
+
 interface Props {
   view: View;
   signal: string;
@@ -15,6 +17,7 @@ interface Props {
   hoverValue: any;
   timeline: boolean;
   onClickHandler?: (header: string) => void;
+  childen?: React.ReactNode;
 }
 
 interface State {

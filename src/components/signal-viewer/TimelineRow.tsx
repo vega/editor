@@ -34,7 +34,7 @@ export default class TimelineRow extends React.PureComponent<{
         }}
         width={scale.bandwidth()}
         x={scale(d.xCount)}
-      ></rect>
+      />
     ));
 
     return (
