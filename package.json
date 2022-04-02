@@ -66,7 +66,7 @@
     "redux-thunk": "^2.4.1",
     "tippy.js": "^6.3.7",
     "tslib": "^2.3.1",
-    "vega-cli": "5.22.0",
+    "vega-cli": "5.22.1",
     "vega-datasets": "^2.3.0",
     "vega-embed": "^6.20.8",
     "vega-lite": "5.2.0",
