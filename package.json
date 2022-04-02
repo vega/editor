@@ -47,7 +47,7 @@
     "jsonc-parser": "^3.0.0",
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.33.0",
-    "prettier": "^2.5.x",
+    "prettier": "^2.6.x",
     "prop-types": "^15.8.1",
     "rc-resize-observer": "^1.2.0",
     "react": "^17.0.2",
