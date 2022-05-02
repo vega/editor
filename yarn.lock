@@ -3382,10 +3382,10 @@ cytoscape@^3.21.0:
     lodash.set "^4.3.2"
     lodash.topath "^4.5.2"
 
-"d3-array@1 - 3", "d3-array@2 - 3", "d3-array@2.10.0 - 3", "d3-array@2.5.0 - 3", d3-array@^3.1.1, d3-array@^3.1.3:
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-3.1.3.tgz#6b293acd0e9fa035aa84da30ecc133f2c54c04d1"
-  integrity sha512-qwW+3phQqmogYyRDI9hC8AWNeTdyYexazuq/dDM7QgujVDVexwNOxVMUJt+0BRpCw/4S4+byuYTV51kttK/Bzw==
+"d3-array@1 - 3", "d3-array@2 - 3", "d3-array@2.10.0 - 3", "d3-array@2.5.0 - 3", d3-array@^3.1.1, d3-array@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-3.1.6.tgz#0342c835925826f49b4d16eb7027aec334ffc97d"
+  integrity sha512-DCbBBNuKOeiR9h04ySRBMW52TFVc91O9wJziuyXw6Ztmy8D3oZbmCkOO3UHKC7ceNJsN2Mavo9+vwV8EAEUXzA==
   dependencies:
     internmap "1 - 2"
 
