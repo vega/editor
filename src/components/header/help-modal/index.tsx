@@ -57,7 +57,7 @@ const HelpModal = () => (
       <span>Report a Bug</span>
     </a>
     <h2>Send us your feedback</h2>
-    <a href="https://bit.ly/join-vega-slack" target="_blank" rel="noopener noreferrer" className="doc-link">
+    <a href="https://bit.ly/join-vega-slack-2022" target="_blank" rel="noopener noreferrer" className="doc-link">
       <Slack className="doc-image" />
       Join our Slack channel
     </a>
