@@ -10,7 +10,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^5.5.0",
-    "husky": "^7.0.4",
+    "husky": "^8.0.1",
     "lint-staged": "^13.0.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "patch-package": "^6.4.7",
