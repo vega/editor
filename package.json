@@ -27,16 +27,16 @@
     "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.8.1",
+    "@reduxjs/toolkit": "^1.8.2",
     "@tippyjs/react": "^4.2.6",
     "@types/cytoscape": "^3.19.4",
-    "@types/d3": "^7.1.0",
+    "@types/d3": "^7.4.0",
     "@types/react": "^17.0.44",
     "@types/react-redux": "^7.1.24",
     "@types/semver": "^7.3.9",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
-    "cytoscape": "^3.21.0",
+    "cytoscape": "^3.21.1",
     "cytoscape-popper": "^2.0.0",
     "d3-array": "^3.1.6",
     "d3-geo-projection": "^4.0.0",
@@ -73,7 +73,7 @@
     "vega-schema-url-parser": "^2.2.0",
     "vega-themes": "^2.10.0",
     "vega-tooltip": "^0.28.0",
-    "vega-typings": "^0.22.2"
+    "vega-typings": "^0.22.3"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

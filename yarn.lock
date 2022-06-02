@@ -1550,10 +1550,10 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.2.tgz#830beaec4b4091a9e9398ac50f865ddea52186b9"
   integrity sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==
 
-"@reduxjs/toolkit@^1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.8.1.tgz#94ee1981b8cf9227cda40163a04704a9544c9a9f"
-  integrity sha512-Q6mzbTpO9nOYRnkwpDlFOAbQnd3g7zj7CtHAZWz5SzE5lcV97Tf8f3SzOO8BoPOMYBFgfZaqTUZqgGu+a0+Fng==
+"@reduxjs/toolkit@^1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.8.2.tgz#352fd17bc858af51d21ce8d28183a930cab9e638"
+  integrity sha512-CtPw5TkN1pHRigMFCOS/0qg3b/yfPV5qGCsltVnIz7bx4PKTJlGHYfIxm97qskLknMzuGfjExaYdXJ77QTL0vg==
   dependencies:
     immer "^9.0.7"
     redux "^4.1.2"
@@ -1840,10 +1840,10 @@
     "@types/d3-interpolate" "*"
     "@types/d3-selection" "*"
 
-"@types/d3@^7.1.0":
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-7.1.0.tgz#8f32a7e7f434d8f920c8b1ebdfed55e18c033720"
-  integrity sha512-gYWvgeGjEl+zmF8c+U1RNIKqe7sfQwIXeLXO5Os72TjDjCEtgpvGBvZ8dXlAuSS1m6B90Y1Uo6Bm36OGR/OtCA==
+"@types/d3@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-7.4.0.tgz#fc5cac5b1756fc592a3cf1f3dc881bf08225f515"
+  integrity sha512-jIfNVK0ZlxcuRDKtRS/SypEyOQ6UHaFQBKv032X45VvxSJ6Yi5G9behy9h6tNTHTDGh5Vq+KbmBjUWLgY4meCA==
   dependencies:
     "@types/d3-array" "*"
     "@types/d3-axis" "*"
@@ -3378,10 +3378,10 @@ cytoscape-popper@^2.0.0:
   dependencies:
     "@popperjs/core" "^2.0.0"
 
-cytoscape@^3.21.0:
-  version "3.21.0"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.21.0.tgz#8a73f6f0f3a44f948e266ac7df9b2eff65e8bd3c"
-  integrity sha512-xPINMzQNGN4WIog93gYRScT4y/CyZMmqunnhU59/8LynhWwzepJtUydMfvIPuz5TmJ9rSCMdw6rmxhfbb1eofw==
+cytoscape@^3.21.1:
+  version "3.21.1"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.21.1.tgz#2d3a8b8ade8661c9efab2e9bf7a354b374d6cf0e"
+  integrity sha512-mxdxCzuGHOMSWHUFO+/ZQPeMNtJAm81LGzdwP02LhT592ZRfHWCvHUY++HpnSjg/SgrKg1CMqegY/HvYLUS1qg==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
@@ -8618,10 +8618,10 @@ vega-transforms@~4.10.0:
     vega-time "^2.1.0"
     vega-util "^1.16.1"
 
-vega-typings@^0.22.2, vega-typings@~0.22.0:
-  version "0.22.2"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.22.2.tgz#c5f5037680778664f5246c19a56e4cfffeb0d90b"
-  integrity sha512-op4bNiyS150V7gnuIdjwFYB1belYB8qnapqLQQ+ZBJQ+r7a+IbvXphEUf8AkBlOoGPN1ITNdhlIsq9WWiuxu8Q==
+vega-typings@^0.22.3, vega-typings@~0.22.0:
+  version "0.22.3"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.22.3.tgz#f6c73b5ffcdb152539cfcc5ad240a413af579ba7"
+  integrity sha512-PREcya3nXT9Tk7xU0IhEpOLVTlqizNtKXV55NhI6ApBjJtqVYbJL7IBh2ckKxGBy3YeUQ37BQZl56UqqiYVWBw==
   dependencies:
     vega-event-selector "^3.0.0"
     vega-expression "^5.0.0"
