@@ -60,7 +60,8 @@ export function useRecomputeLayout() {
 
   // Recompute layout whenever any key for computing it changes
   React.useEffect(() => {
-    dispatch(computeLayout());
+    // FIXME: remove as any
+    dispatch(computeLayout() as any);
   }, [layoutKey]);
 }
 
