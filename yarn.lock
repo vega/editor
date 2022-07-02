@@ -1661,10 +1661,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/cytoscape@^3.19.4":
-  version "3.19.4"
-  resolved "https://registry.yarnpkg.com/@types/cytoscape/-/cytoscape-3.19.4.tgz#f41214103b80ff3d7d8741bacc32265ed90e45b5"
-  integrity sha512-0IozTg1vdZrA3nuAK5o9Pa8nl2INUnTaXwcGwoiALDcsD8/TiVnp0Zi+R1IiPRG6edoy0Ya61/3osFLtfkhhmw==
+"@types/cytoscape@^3.19.5":
+  version "3.19.5"
+  resolved "https://registry.yarnpkg.com/@types/cytoscape/-/cytoscape-3.19.5.tgz#73c4266fd66f62b2f4ea8082a7b6b8403d955a65"
+  integrity sha512-g0jVF8lywg+SpQRhtrHRZicNgKSx54G6JubkiI7O14kWRx4AGGhCIdHg6a7pbEPQg462r/Lr+vJ6C7cxpaw4mA==
 
 "@types/d3-array@*":
   version "3.0.2"
@@ -3378,10 +3378,10 @@ cytoscape-popper@^2.0.0:
   dependencies:
     "@popperjs/core" "^2.0.0"
 
-cytoscape@^3.21.1:
-  version "3.21.1"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.21.1.tgz#2d3a8b8ade8661c9efab2e9bf7a354b374d6cf0e"
-  integrity sha512-mxdxCzuGHOMSWHUFO+/ZQPeMNtJAm81LGzdwP02LhT592ZRfHWCvHUY++HpnSjg/SgrKg1CMqegY/HvYLUS1qg==
+cytoscape@^3.21.2:
+  version "3.21.2"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.21.2.tgz#95ce212092e82decf6a446ac06c64462b34d9d73"
+  integrity sha512-VFvgKCaiPnZHpBQFZP6lYAQrnzNAy62Dw7ehcgejxn1Lb2xX2oaVxTuMrAz0kwRifJK/z9sc6M6I3dObSckUrw==
   dependencies:
     heap "^0.2.6"
     lodash.debounce "^4.0.8"
