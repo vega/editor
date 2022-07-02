@@ -17,7 +17,7 @@ interface Props {
   hoverValue: any;
   timeline: boolean;
   onClickHandler?: (header: string) => void;
-  childen?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 interface State {
