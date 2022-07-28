@@ -26,24 +26,6 @@ $ yarn start
 
 3. The local web server will be accessible from [http://localhost:8080](http://localhost:8080).
 
-### Docker
-
-If you'd like to use [Docker](https://docs.docker.com/engine/docker-overview/), there's a [Docker Compose](https://docs.docker.com/compose/overview/) setup that you can use:
-
-1. Build the docker container:
-
-```
-$ docker-compose build
-```
-
-2. Run the Docker Compose service:
-
-```
-$ docker-compose up
-```
-
-1. The local web server will be accessible from [http://localhost:8080](http://localhost:8080). You can run yarn commands with `docker-compose run editor CMD`.
-
 ## Local Testing & Debugging
 
 The editor is useful for testing if you are involved in Vega and Vega-Lite development. To use Vega, Vega-Lite, or Vega Datasets from another directory on your computer, you need to link it. For this, run `yarn link` in the directory of the library that you want to link. Then, in this directory run `yarn link <name of library>`, e.g. `yarn link vega` or `yarn link vega-lite`.
