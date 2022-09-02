@@ -8624,10 +8624,10 @@ vega-statistics@^1.7.9, vega-statistics@^1.8.0, vega-statistics@~1.8.0:
   dependencies:
     d3-array "^3.1.1"
 
-vega-themes@^2.10.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/vega-themes/-/vega-themes-2.10.0.tgz#82768b14686e3fbfbdab0e77cb63e12c62b4911e"
-  integrity sha512-prePRUKFUFGWniuZsJOfkdb+27Gwrrm82yAlVuU+912kcknsx1DVmMSg2yF79f4jdtqnAFIGycZgxoj13SEIuQ==
+vega-themes@^2.10.0, vega-themes@^2.12.0:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/vega-themes/-/vega-themes-2.12.0.tgz#1005f67d64795ce239becc1005a605ee07a52e71"
+  integrity sha512-gHNYCzDgexSQDmGzQsxH57OYgFVbAOmvhIYN3MPOvVucyI+zhbUawBVIVNzG9ftucRp0MaaMVXi6ctC5HLnBsg==
 
 vega-time@^2.0.3, vega-time@^2.1.0, vega-time@~2.1.0:
   version "2.1.0"
