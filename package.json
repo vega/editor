@@ -43,7 +43,7 @@
     "elkjs": "^0.7.1",
     "history": "^5.3.0",
     "json-stringify-pretty-compact": "^3.0.0",
-    "jsonc-parser": "^3.1.0",
+    "jsonc-parser": "^3.2.0",
     "lz-string": "^1.4.4",
     "monaco-editor": "^0.34.0",
     "prettier": "^2.7.x",
