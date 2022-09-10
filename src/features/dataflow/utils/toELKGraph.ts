@@ -41,10 +41,11 @@ export function toELKGraph(graph: Graph, visible: {nodes: Set<string>; edges: Se
     .filter(([id]) => visible?.edges.has(id) ?? true)
     .map(([id, {source, target, size, label}]) => ({
       id,
-      source,
-      target,
+      sources: [source],
+      targets: [target],
       labels: label ? [{id: `edge-label:${id}`, text: label, ...size}] : [],
     }));
+
   const rootNode: ElkNode = {
     id: ROOT_ID,
     children: [],
