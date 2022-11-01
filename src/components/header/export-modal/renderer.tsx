@@ -30,7 +30,7 @@ class ExportModal extends React.PureComponent<Props, State> {
   }
 
   public async downloadViz(ext: string) {
-    const url = await this.props.view.toImageURL(ext);
+    const url = await this.props.view.toImageURL(ext, 2);
     const link = document.createElement('a');
     link.setAttribute('href', url);
     link.setAttribute('target', '_blank');
