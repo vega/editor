@@ -57,7 +57,7 @@
     "react-paginate": "^8.1.4",
     "react-portal": "^4.2.2",
     "react-redux": "^8.0.5",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "^6.4.3",
     "react-select": "^5.6.1",
     "react-split-pane": "^0.1.92",
     "redux": "^4.2.0",
