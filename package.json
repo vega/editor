@@ -11,7 +11,7 @@
     "gh-pages": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^8.0.2",
-    "lint-staged": "^13.0.3",
+    "lint-staged": "^13.0.4",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "patch-package": "^6.5.0",
     "postcss": "^8.4.19",
