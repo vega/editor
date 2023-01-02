@@ -6,7 +6,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "copy-webpack-plugin": "^11.0.0",
-    "css-loader": "^6.7.2",
+    "css-loader": "^6.7.3",
     "eslint-plugin-prettier": "4.2.1",
     "gh-pages": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
