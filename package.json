@@ -37,7 +37,7 @@
     "ajv-formats": "^2.1.1",
     "cytoscape": "^3.23.0",
     "cytoscape-popper": "^2.0.0",
-    "d3-array": "^3.2.0",
+    "d3-array": "^3.2.1",
     "d3-geo-projection": "^4.0.0",
     "d3-scale": "^4.0.2",
     "elkjs": "^0.8.2",
