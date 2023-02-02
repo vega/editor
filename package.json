@@ -13,7 +13,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
-    "patch-package": "^6.5.0",
+    "patch-package": "^6.5.1",
     "postcss": "^8.4.20",
     "postcss-loader": "^7.0.2",
     "postinstall-postinstall": "^2.1.0",
