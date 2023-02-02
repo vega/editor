@@ -33,7 +33,7 @@
     "@types/d3": "^7.4.0",
     "@types/react": "^17.0.44",
     "@types/semver": "^7.3.13",
-    "ajv": "^8.11.2",
+    "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "cytoscape": "^3.23.0",
     "cytoscape-popper": "^2.0.0",
