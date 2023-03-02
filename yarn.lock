@@ -3941,9 +3941,9 @@ dns-equal@^1.0.0:
   integrity sha1-s55/HabrCnW6nBcySzR1PEfgZU0=
 
 dns-packet@^5.2.2:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/dns-packet/-/dns-packet-5.3.1.tgz#eb94413789daec0f0ebe2fcc230bdc9d7c91b43d"
-  integrity sha512-spBwIj0TK0Ey3666GwIdWVfUpLyubpU53BTCu8iPn4r4oXd9O14Hjg3EHw3ts2oed77/SeckunUYCyRlSngqHw==
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/dns-packet/-/dns-packet-5.4.0.tgz#1f88477cf9f27e78a213fb6d118ae38e759a879b"
+  integrity sha512-EgqGeaBB8hLiHLZtp/IbaDQTL8pZ0+IvwzSHA6d7VyMDM+B9hgddEMa9xjK5oYnw0ci0JQ6g2XCD7/f6cafU6g==
   dependencies:
     "@leichtgewicht/ip-codec" "^2.0.1"
 
@@ -9380,7 +9380,7 @@ y18n@^5.0.5:
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-5.0.8.tgz#7f4934d0f7ca8c56f95314939ddcd2dd91ce1d55"
   integrity sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==
 
-yallist@*, yallist@^4.0.0:
+yallist@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
