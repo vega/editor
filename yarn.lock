@@ -8600,10 +8600,10 @@ vega-datasets@^2.5.4:
   resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.5.4.tgz#a8071d88ca82635e0df7368bb0a37c923538cbbb"
   integrity sha512-GTOXrEVVkjJiSeye1SECCnEI+jGSyZbzhgYdoXpAnfNKOKyLX4zrfeQ+GeEwFVs0ctDwIL07he4yxaz5Iog7vw==
 
-vega-embed@^6.21.2:
-  version "6.21.2"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.21.2.tgz#621758af189455ef5055db8a2ce70aeac93740e0"
-  integrity sha512-bjNBXplR8ApmTT924jdx3+BmMN70KmzlnD7q2m2rWKYc/0Vrxx+OHU+oIEE7dbGV7hiUBLKcQPN1e1u2F07CWw==
+vega-embed@^6.21.3:
+  version "6.21.3"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.21.3.tgz#9d3dc899d1bdc4b3f28d65b602d6e0a3cf801635"
+  integrity sha512-Aus0pD//D7mVxNARQnfODfQ7yy3Ys3ftDd8Keyh11AY09SCqIZcJOa+BstwBhp0bhNWKE7zv5KL0fxP5zePxbw==
   dependencies:
     fast-json-patch "^3.1.1"
     json-stringify-pretty-compact "^3.0.0"
@@ -8613,6 +8613,7 @@ vega-embed@^6.21.2:
     vega-schema-url-parser "^2.2.0"
     vega-themes "^2.12.1"
     vega-tooltip "^0.30.1"
+    yallist "*"
 
 vega-encode@~4.9.0:
   version "4.9.0"
