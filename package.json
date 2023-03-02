@@ -72,7 +72,7 @@
     "vega-schema-url-parser": "^2.2.0",
     "vega-themes": "^2.12.1",
     "vega-tooltip": "^0.30.1",
-    "vega-typings": "^0.22.3"
+    "vega-typings": "^0.23.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
