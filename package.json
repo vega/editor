@@ -15,7 +15,7 @@
     "monaco-editor-webpack-plugin": "^7.0.1",
     "patch-package": "^6.5.1",
     "postcss": "^8.4.21",
-    "postcss-loader": "^7.2.4",
+    "postcss-loader": "^7.3.0",
     "postinstall-postinstall": "^2.1.0",
     "style-loader": "^3.3.2",
     "ts-loader": "^9.4.2",
