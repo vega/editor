@@ -102,7 +102,7 @@ class Editor extends React.PureComponent<Props> {
   public editorDidMount(editor: Monaco.editor.IStandaloneCodeEditor, monaco: typeof Monaco) {
     editor.onDidFocusEditorText(() => {
       this.props.compiledEditorRef && this.props.compiledEditorRef.deltaDecorations(this.props.decorations, []);
-      editor.deltaDecorations(this.props.decorations, []);
+      editor.createDecorationsCollection(this.props.decorations);
       this.props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
     });
 
@@ -149,6 +149,7 @@ class Editor extends React.PureComponent<Props> {
     editor.getModel().getOptions();
 
     this.editor = editor;
+    this.props.setEditorReference(editor);
 
     if (this.props.sidePaneItem === SIDEPANE.Editor) {
       editor.focus();
@@ -189,7 +190,6 @@ class Editor extends React.PureComponent<Props> {
       if (prevProps.sidePaneItem !== this.props.sidePaneItem) {
         this.editor.focus();
         this.editor.layout();
-        prevProps.setEditorReference(this.editor);
       }
     }
 
