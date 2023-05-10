@@ -34,9 +34,7 @@ type LayoutState = Record<string, LayoutStatus>;
 
 const initialState: LayoutState = {};
 
-// We copy the ELK worker file to the webpack build as is, from the ELK package, so we can load it as a webworker.
-
-const elkWorker = new Worker('./elk-worker.js');
+const elkWorker = new Worker('elkjs/lib/elk-worker.js');
 const elk = new ELK({
   workerFactory: () => elkWorker,
 });

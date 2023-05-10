@@ -23,7 +23,7 @@ const keyBoardShortcuts = shortcuts.map((shortcut, i) => (
   </li>
 ));
 
-// defined by webpack
+// defined by vite
 declare const __COMMIT_HASH__: string;
 export const COMMIT_HASH: string = __COMMIT_HASH__ || 'unknown';
 

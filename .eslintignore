@@ -6,4 +6,3 @@ build
 build-es5
 dist
 coverage
-webpack.config.js

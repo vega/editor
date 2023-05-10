@@ -35,8 +35,8 @@ export default function configureStore(initialState: State = DEFAULT_STATE) {
   // TODO: remove as any
   const store = createStore(rootReducer, initialState as any, enhancer);
 
-  if ((module as any).hot) {
-    (module as any).hot.accept('../reducers', () => {
+  if ((import.meta as any).hot) {
+    (import.meta as any).hot.accept('../reducers', () => {
       const nextRootReducer = require('../reducers').default;
 
       store.replaceReducer(nextRootReducer);
