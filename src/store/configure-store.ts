@@ -35,6 +35,7 @@ export default function configureStore(initialState: State = DEFAULT_STATE) {
   // TODO: remove as any
   const store = createStore(rootReducer, initialState as any, enhancer);
 
+  // TODO: enable HMR again
   // if ((import.meta as any).hot) {
   //   (import.meta as any).hot.accept('../reducers', () => {
   //     const nextRootReducer = require('../reducers').default;
@@ -42,5 +43,6 @@ export default function configureStore(initialState: State = DEFAULT_STATE) {
   //     store.replaceReducer(nextRootReducer);
   //   });
   // }
+
   return store;
 }
