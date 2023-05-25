@@ -2,6 +2,7 @@
 babel.config.js
 prettier.config.js
 rollup.config.js
+vite.config.js
 build
 build-es5
 dist
