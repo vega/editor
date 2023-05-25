@@ -1,11 +1,13 @@
 import stringify from 'json-stringify-pretty-compact';
 import {parse as parseJSONC} from 'jsonc-parser';
-import * as Monaco from 'monaco-editor';
+import type * as Monaco from 'monaco-editor';
 import {mergeDeep} from 'vega-lite';
 import addMarkdownProps from './markdownProps';
 
 import vegaLiteSchema from 'vega-lite/build/vega-lite-schema.json';
 import vegaSchema from 'vega/build/vega-schema.json';
+
+import {loader} from '@monaco-editor/react';
 
 addMarkdownProps(vegaSchema);
 addMarkdownProps(vegaLiteSchema);
@@ -44,38 +46,40 @@ const schemas = [
 ];
 
 export default function setupMonaco() {
-  Monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-    comments: 'warning',
-    trailingCommas: 'warning',
-    enableSchemaRequest: true,
-    schemas,
-    validate: true,
-  });
+  loader.init().then((monaco) => {
+    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+      comments: 'warning',
+      trailingCommas: 'warning',
+      enableSchemaRequest: true,
+      schemas,
+      validate: true,
+    });
 
-  Monaco.languages.json.jsonDefaults.setModeConfiguration({
-    documentFormattingEdits: false,
-    documentRangeFormattingEdits: false,
-    completionItems: true,
-    hovers: true,
-    documentSymbols: true,
-    tokens: true,
-    colors: true,
-    foldingRanges: true,
-    diagnostics: true,
-  });
+    monaco.languages.json.jsonDefaults.setModeConfiguration({
+      documentFormattingEdits: false,
+      documentRangeFormattingEdits: false,
+      completionItems: true,
+      hovers: true,
+      documentSymbols: true,
+      tokens: true,
+      colors: true,
+      foldingRanges: true,
+      diagnostics: true,
+    });
 
-  Monaco.languages.registerDocumentFormattingEditProvider('json', {
-    provideDocumentFormattingEdits(
-      model: Monaco.editor.ITextModel,
-      options: Monaco.languages.FormattingOptions,
-      token: Monaco.CancellationToken
-    ): Monaco.languages.TextEdit[] {
-      return [
-        {
-          range: model.getFullModelRange(),
-          text: stringify(parseJSONC(model.getValue())),
-        },
-      ];
-    },
+    monaco.languages.registerDocumentFormattingEditProvider('json', {
+      provideDocumentFormattingEdits(
+        model: Monaco.editor.ITextModel,
+        options: Monaco.languages.FormattingOptions,
+        token: Monaco.CancellationToken
+      ): Monaco.languages.TextEdit[] {
+        return [
+          {
+            range: model.getFullModelRange(),
+            text: stringify(parseJSONC(model.getValue())),
+          },
+        ];
+      },
+    });
   });
 }

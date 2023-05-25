@@ -1,6 +1,6 @@
-import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
-import MonacoEditor from 'react-monaco-editor';
+import MonacoEditor from '@monaco-editor/react';
 import ResizeObserver from 'rc-resize-observer';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {debounce} from 'vega';
@@ -92,11 +92,11 @@ class ConfigEditor extends React.PureComponent<Props> {
     return (
       <ResizeObserver
         onResize={({width, height}) => {
-          this.editor.layout({width, height: height});
+          this.editor?.layout({width, height});
         }}
       >
         <MonacoEditor
-          language="json"
+          defaultLanguage="json"
           options={{
             cursorBlinking: 'smooth',
             folding: true,
@@ -107,8 +107,8 @@ class ConfigEditor extends React.PureComponent<Props> {
             quickSuggestions: true,
           }}
           onChange={debounce(700, this.handleEditorChange)}
-          value={this.props.configEditorString}
-          editorDidMount={(e) => this.handleEditorMount(e)}
+          defaultValue={this.props.configEditorString}
+          onMount={(e) => this.handleEditorMount(e)}
         />
       </ResizeObserver>
     );

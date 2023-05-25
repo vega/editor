@@ -35,12 +35,12 @@ export default function configureStore(initialState: State = DEFAULT_STATE) {
   // TODO: remove as any
   const store = createStore(rootReducer, initialState as any, enhancer);
 
-  if ((import.meta as any).hot) {
-    (import.meta as any).hot.accept('../reducers', () => {
-      const nextRootReducer = require('../reducers').default;
+  // if ((import.meta as any).hot) {
+  //   (import.meta as any).hot.accept('../reducers', () => {
+  //     const nextRootReducer = require('../reducers').default;
 
-      store.replaceReducer(nextRootReducer);
-    });
-  }
+  //     store.replaceReducer(nextRootReducer);
+  //   });
+  // }
   return store;
 }
