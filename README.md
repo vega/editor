@@ -1,4 +1,4 @@
-# Vega Editor [![Build Status](https://github.com/vega/editor/workflows/Test/badge.svg)](https://github.com/vega/editor/actions) [![Publish](https://github.com/vega/editor/actions/workflows/publish.yml/badge.svg?branch=publish)](https://github.com/vega/editor/actions/workflows/publish.yml)
+# Vega Editor [![Build Status](https://github.com/vega/editor/workflows/Test/badge.svg)](https://github.com/vega/editor/actions) [![Deploy to Pages](https://github.com/vega/editor/actions/workflows/publish.yml/badge.svg)](https://github.com/vega/editor/actions/workflows/publish.yml)
 
 The **Vega editor** is a web application for authoring and testing [Vega](https://github.com/vega/vega) and [Vega-Lite](https://vega.github.io/vega-lite) visualizations. It includes a number of example specifications that showcase both the visual encodings and interaction techniques. It is deployed at https://vega.github.io/editor/.
 
