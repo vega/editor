@@ -1,17 +1,20 @@
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import {LocalLogger} from './logger';
+import vegaLiteSchema from 'vega-lite/build/vega-lite-schema.json';
+import vegaSchema from 'vega/build/vega-schema.json';
+import schema from 'ajv/lib/refs/json-schema-draft-06.json';
 
 const ajv = new Ajv({
   strict: false, // needed for Vega schema
 });
 
 addFormats(ajv);
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
+ajv.addMetaSchema(schema);
 ajv.addFormat('color-hex', () => true);
 
-const vegaValidator = ajv.compile(require('vega/build/vega-schema.json'));
-const vegaLiteValidator = ajv.compile(require('vega-lite/build/vega-lite-schema.json'));
+const vegaValidator = ajv.compile(vegaSchema);
+const vegaLiteValidator = ajv.compile(vegaLiteSchema);
 
 export function validateVegaLite(spec, logger: LocalLogger) {
   const valid = vegaLiteValidator(spec);

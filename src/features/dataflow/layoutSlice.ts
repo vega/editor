@@ -15,6 +15,9 @@ import * as React from 'react';
 import {Graph} from './utils/graph';
 import {ELKToPositions} from './utils/ELKToPositions';
 
+// @ts-ignore
+import Worker from 'elkjs/lib/elk-worker.js?worker';
+
 // Mapping of action request ID to computed layout, keyed by the visible nodes and runtime
 
 type LayoutKey = {
@@ -34,9 +37,7 @@ type LayoutState = Record<string, LayoutStatus>;
 
 const initialState: LayoutState = {};
 
-// We copy the ELK worker file to the webpack build as is, from the ELK package, so we can load it as a webworker.
-
-const elkWorker = new Worker('./elk-worker.js');
+const elkWorker = new Worker();
 const elk = new ELK({
   workerFactory: () => elkWorker,
 });

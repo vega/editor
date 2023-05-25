@@ -1,5 +1,5 @@
-import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {Renderers, Runtime} from 'vega';
+import type * as Monaco from 'monaco-editor';
+import {Renderers} from 'vega';
 import {Mode, View} from '../constants';
 
 export const RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER' as const;

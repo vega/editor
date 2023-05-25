@@ -1,6 +1,6 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import MonacoEditor from 'react-monaco-editor';
+import MonacoEditor from '@monaco-editor/react';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor';
@@ -24,7 +24,7 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
         <CompiledSpecDisplayHeader />
         <ResizeObserver
           onResize={({width, height}) => {
-            this.editor.layout({width, height: height});
+            this.editor?.layout({width, height});
           }}
         >
           <MonacoEditor
@@ -38,7 +38,7 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
             }}
             language="json"
             value={stringify(this.props.value)}
-            editorDidMount={(editor) => {
+            onMount={(editor) => {
               editor.onDidFocusEditorText(() => {
                 this.props.compiledEditorRef &&
                   this.props.compiledEditorRef.deltaDecorations(this.props.decorations, []);
