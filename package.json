@@ -51,7 +51,7 @@
     "react-feather": "^2.0.10",
     "react-paginate": "^8.2.0",
     "react-portal": "^4.2.2",
-    "react-redux": "^8.0.5",
+    "react-redux": "^8.0.7",
     "react-router-dom": "^5.3.0",
     "react-select": "^5.7.3",
     "react-split-pane": "^0.1.92",
