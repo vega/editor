@@ -9,4 +9,7 @@ export default defineConfig({
     __COMMIT_HASH__: JSON.stringify(commitHash),
   },
   plugins: [react()],
+  resolve: {
+    preserveSymlinks: true
+  }
 });
