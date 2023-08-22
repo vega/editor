@@ -34,7 +34,7 @@ export type Node = {
   parent?: ID;
   // A string that can be used to identify the node for coloring
   // should always be present
-  colorKey?: typeof colorKeys[number];
+  colorKey?: (typeof colorKeys)[number];
   // Mapping of keys to values, for display
   params: Record<string, string>;
 

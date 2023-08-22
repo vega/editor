@@ -12,7 +12,7 @@ import {popupSlice} from './popupSlice';
 // them into the rest of the redux state.
 
 const slices = [pulsesSlice, runtimeSlice, selectionSlice, layoutSlice, popupSlice] as const;
-type SliceType = typeof slices[number];
+type SliceType = (typeof slices)[number];
 /**
  * Combines the slicers reducers manually, to account for leaving the rest
  * of the global reducer unchanged.
