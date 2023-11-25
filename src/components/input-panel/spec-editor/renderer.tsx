@@ -198,7 +198,7 @@ class Editor extends React.PureComponent<Props> {
       prevProps.editorRef && prevProps.editorRef.deltaDecorations(prevProps.decorations, []);
     }
 
-    if (this.props.parse) {
+    if (this.editor && this.props.parse) {
       this.editor.focus();
       this.editor.layout();
       this.updateSpec(this.props.value, this.props.configEditorString);
