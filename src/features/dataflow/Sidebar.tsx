@@ -3,13 +3,20 @@ import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../hooks';
 import {resetPulses, sortedPulsesSelector, pulsesEmptySelector} from './pulsesSlice';
 import './Sidebar.css';
-import {selectedPulseSelector, selectedTypesSelector, setSelectedPulse, setSelectedType} from './selectionSlice';
+import {
+  setSelectedElements,
+  selectedPulseSelector,
+  selectedTypesSelector,
+  setSelectedPulse,
+  setSelectedType,
+} from './selectionSlice';
 import {GraphType, types} from './utils/graph';
 
 export function Sidebar() {
   return (
     <div className="sidebar">
       <Types />
+      <Id />
       <Pulses />
     </div>
   );
@@ -39,6 +46,28 @@ function Type({type, label, selected}: {type: GraphType; label: string; selected
       />
       <label>{label}</label>
     </div>
+  );
+}
+
+function Id() {
+  const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
+  const dispatch = useDispatch();
+  return (
+    <fieldset className="id-filter">
+      <legend>Filter by id</legend>
+      <input title="Pulse Id Search" onChange={(e) => setSearchTerm(e.target.value)} />
+      <button
+        onClick={() => {
+          if (!searchTerm) {
+            return;
+          }
+          dispatch(setSelectedElements({nodes: [searchTerm], edges: []}));
+          setSearchTerm(null);
+        }}
+      >
+        Search
+      </button>
+    </fieldset>
   );
 }
 
