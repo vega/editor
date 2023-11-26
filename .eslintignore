@@ -1,4 +1,4 @@
 .eslintrc.cjs
 prettier.config.cjs
-vite.config.js
+vite.config.ts
 dist
