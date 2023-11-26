@@ -50,7 +50,7 @@ const computeLayout = createAsyncThunk<ElkNode, void, {state: State; pendingMeta
     getPendingMeta: ({requestId}, {getState}) => ({requestId, key: currentLayoutKeySelector(getState())}),
     // Only run if we can't find a layout already for this key
     condition: (_node, {getState}) => !hasLayoutSelector(getState()),
-  }
+  },
 );
 /**
  * Try recomputing layout, when either runtime or selections change
@@ -93,14 +93,14 @@ export const layoutSlice = createSlice({
 const layoutSelector = createSliceSelector(layoutSlice);
 
 const elkGraphSelector = createSelector(graphSelector, visibleElementsSelector, (graph, visible) =>
-  graph === null ? null : toELKGraph(graph, visible)
+  graph === null ? null : toELKGraph(graph, visible),
 );
 
 function idsToString(ids: Set<string>): string {
   return [...ids].sort().join(',');
 }
 const visibleNodesStringSelector = createSelector(visibleNodesSelector, (nodes) =>
-  nodes === null ? null : idsToString(nodes)
+  nodes === null ? null : idsToString(nodes),
 );
 
 const currentLayoutKeySelector = createSelector(
@@ -109,7 +109,7 @@ const currentLayoutKeySelector = createSelector(
   (graph, visibleNodesString) => ({
     graph,
     visibleNodesString,
-  })
+  }),
 );
 
 const currentLayoutStatusSelector = createSelector(
@@ -117,12 +117,12 @@ const currentLayoutStatusSelector = createSelector(
   currentLayoutKeySelector,
   (layout, {graph, visibleNodesString}) =>
     // Compare graph by identity, to speed up comparison
-    Object.values(layout).find(({key}) => graph === key.graph && visibleNodesString === key.visibleNodesString) ?? null
+    Object.values(layout).find(({key}) => graph === key.graph && visibleNodesString === key.visibleNodesString) ?? null,
 );
 
 const hasLayoutSelector = createSelector(currentLayoutStatusSelector, (status) => status !== null);
 
 export const currentLayoutSelector = createSelector(currentLayoutStatusSelector, (status) => status?.value ?? null);
 export const currentPositionsSelector = createSelector(currentLayoutSelector, (value) =>
-  value?.type === 'done' ? value.positions : null
+  value?.type === 'done' ? value.positions : null,
 );

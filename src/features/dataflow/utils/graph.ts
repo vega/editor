@@ -71,7 +71,7 @@ export function filterEdges(graph: Graph, nodes: Set<ID>): Set<ID> {
   return new Set(
     Object.entries(graph.edges)
       .filter(([, {source, target}]) => nodes.has(source) && nodes.has(target))
-      .map(([id]) => id)
+      .map(([id]) => id),
   );
 }
 

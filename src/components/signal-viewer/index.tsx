@@ -18,7 +18,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setSignals: EditorActions.setSignals,
       setView: EditorActions.setView,
     },
-    dispatch
+    dispatch,
   );
 }
 

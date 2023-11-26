@@ -163,7 +163,7 @@ export function CytoscapeControlled({
         // nodes positions aren't meaningful
         animateFilter: wasNotRestored,
       } as any,
-      (node) => positions[node.id()]
+      (node) => positions[node.id()],
     );
   }, [cyRef.current, positions, onHover]);
 
@@ -172,7 +172,7 @@ export function CytoscapeControlled({
     const cy = cyRef.current;
     cy.batch(() => {
       const selectedElements = cy.collection(
-        selected ? [...selected.edges, ...selected.nodes].map((id) => cy.$id(id)) : []
+        selected ? [...selected.edges, ...selected.nodes].map((id) => cy.$id(id)) : [],
       );
       selectedElements.select();
       selectedElements.absoluteComplement().unselect();

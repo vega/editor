@@ -207,7 +207,7 @@ function addOperatorParameter(graph: Graph, id: ID, k: string, v: Parameter | Ob
           Object.entries($expr.channels)
             .map(([channel, {code}]) => `${channel}: ${prettifyExpression(code)},`)
             .join('\n') +
-          '}'
+          '}',
       );
     }
     return true;
@@ -295,7 +295,7 @@ function addNode(
     parent: parentRuntimeID,
     colorKey,
     ...rest
-  }: {id: ID; parent?: ID} & Required<Pick<Node, 'type' | 'label'>> & Pick<Node, 'colorKey'>
+  }: {id: ID; parent?: ID} & Required<Pick<Node, 'type' | 'label'>> & Pick<Node, 'colorKey'>,
 ): void {
   const id = runtimeID.toString();
 
@@ -321,7 +321,7 @@ function addEdge(
     target: runtimeTarget,
     primary,
     label,
-  }: {source: ID; target: ID; label?: string; primary?: boolean}
+  }: {source: ID; target: ID; label?: string; primary?: boolean},
 ): void {
   const source = runtimeSource.toString();
   const target = runtimeTarget.toString();

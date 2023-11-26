@@ -83,7 +83,7 @@ class ShareModal extends React.PureComponent<Props, State> {
           setTimeout(() => {
             this.setState({copied: false});
           }, 2500);
-        }
+        },
       );
     }
   }
@@ -167,7 +167,7 @@ class ShareModal extends React.PureComponent<Props, State> {
             },
             () => {
               this.props.receiveCurrentUser(data.isAuthenticated);
-            }
+            },
           );
         } else {
           const {fileName, gistId} = data;
@@ -176,7 +176,7 @@ class ShareModal extends React.PureComponent<Props, State> {
             gistEditorURL: `${EDITOR_BASE}#/gist/${gistId}/${fileName}`,
           });
         }
-      }
+      },
     );
   }
 

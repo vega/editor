@@ -18,7 +18,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       receiveCurrentUser: EditorActions.receiveCurrentUser,
     },
-    dispatch
+    dispatch,
   );
 }
 

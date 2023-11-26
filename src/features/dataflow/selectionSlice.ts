@@ -53,19 +53,19 @@ export const selectedTypesSelector = createSelector(selectionSelector, (state) =
 export const elementsSelectedSelector = createSelector(selectedElementsSelector, (selected) => selected !== null);
 
 export const selectedValuesSelector = createSelector(pulsesSelector, selectedPulseSelector, (pulses, selected) =>
-  selected === null ? null : pulses.find((p) => p.clock === selected).values
+  selected === null ? null : pulses.find((p) => p.clock === selected).values,
 );
 
 // The nodes that are filtered based on the selector pulse
 export const visibleNodesFromPulseSelector = createSelector(graphSelector, selectedValuesSelector, (graph, values) =>
-  values === null || graph === null ? null : associatedWith(graph, Object.keys(values))
+  values === null || graph === null ? null : associatedWith(graph, Object.keys(values)),
 );
 
 // The nodes that are filtered based on the selected elements
 export const visibleNodesFromElementsSelector = createSelector(
   graphSelector,
   selectedElementsSelector,
-  (graph, elements) => (elements === null || graph === null ? null : allRelated(graph, elements))
+  (graph, elements) => (elements === null || graph === null ? null : allRelated(graph, elements)),
 );
 
 export const visibleNodesFromTypesSelector = createSelector(
@@ -77,8 +77,8 @@ export const visibleNodesFromTypesSelector = createSelector(
       : new Set(
           Object.entries(graph.nodes)
             .filter(([, {type}]) => selectedTypes[type])
-            .map(([id]) => id)
-        )
+            .map(([id]) => id),
+        ),
 );
 
 // The intersection of all the selected nodes, or null if empty
@@ -86,11 +86,11 @@ export const visibleNodesSelector = createSelector(
   visibleNodesFromPulseSelector,
   visibleNodesFromElementsSelector,
   visibleNodesFromTypesSelector,
-  intersectIDs
+  intersectIDs,
 );
 
 export const filteredEdgesSelector = createSelector(graphSelector, visibleNodesSelector, (graph, nodes) =>
-  nodes === null || graph === null ? null : filterEdges(graph, nodes)
+  nodes === null || graph === null ? null : filterEdges(graph, nodes),
 );
 
 export type VisibleElements = {nodes: Set<string>; edges: Set<string>};
@@ -101,5 +101,5 @@ export const visibleElementsSelector = createSelector(visibleNodesSelector, filt
     : ({
         nodes,
         edges,
-      } as VisibleElements)
+      } as VisibleElements),
 );

@@ -36,7 +36,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
         data: vega.falsy,
         signals: vega.truthy,
         recurse: true,
-      }).signals
+      }).signals,
     );
   }
 
@@ -129,7 +129,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
               xCount: 1,
             });
           }
-        }
+        },
       );
     }
   }
@@ -159,9 +159,9 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
           this.setState({
             // remove the maskListener
             maskListener: false,
-          })
+          }),
         );
-      }
+      },
     );
   }
 
@@ -198,7 +198,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
         },
         () => {
           this.props.view.setState({signals: hoverObj});
-        }
+        },
       );
     }
   }
@@ -239,7 +239,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
                   if (!this.state.timeline) {
                     this.resetTimeline();
                   }
-                }
+                },
               );
             }}
           >
@@ -255,7 +255,7 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
                   () => {
                     this.props.setSignals({});
                     this.getSignals();
-                  }
+                  },
                 );
               }}
             >

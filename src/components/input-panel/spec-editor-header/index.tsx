@@ -66,7 +66,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
     {
       setSidePaneItem: EditorActions.setSidePaneItem,
     },
-    dispatch
+    dispatch,
   );
 }
 

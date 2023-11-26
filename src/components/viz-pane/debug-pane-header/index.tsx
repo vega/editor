@@ -110,7 +110,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       toggleDebugPane: EditorActions.toggleDebugPane,
       toggleNavbar: EditorActions.toggleNavbar,
     },
-    dispatch
+    dispatch,
   );
 }
 

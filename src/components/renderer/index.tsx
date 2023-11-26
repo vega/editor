@@ -31,7 +31,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setRuntime: setRuntime,
       recordPulse: recordPulse,
     },
-    dispatch
+    dispatch,
   );
 }
 

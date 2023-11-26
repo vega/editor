@@ -24,7 +24,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setTooltip: EditorActions.setTooltip,
       setBackgroundColor: EditorActions.setBackgroundColor,
     },
-    dispatch
+    dispatch,
   );
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Renderer);

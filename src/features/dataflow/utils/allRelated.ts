@@ -30,7 +30,7 @@ export function allRelated({nodes, edges}: Graph, selected: Elements): Set<strin
         const relatedCompound = [...parents, ...node.children];
         relatedCompound.forEach((i) => processed.add(i));
         for (const relatedID of [...relatedCompound, id].flatMap((i) =>
-          direction === 'up' ? nodes[i].incoming : nodes[i].outgoing
+          direction === 'up' ? nodes[i].incoming : nodes[i].outgoing,
         )) {
           if (processed.has(relatedID)) {
             continue;
@@ -39,7 +39,7 @@ export function allRelated({nodes, edges}: Graph, selected: Elements): Set<strin
         }
       }
       return [...processed];
-    })
+    }),
   );
 }
 

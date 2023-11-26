@@ -54,7 +54,7 @@ export default class DataViewer extends React.PureComponent<Props, State> {
         data: vega.truthy,
         signals: vega.falsy,
         recurse: true,
-      }).data
+      }).data,
     );
   }
 

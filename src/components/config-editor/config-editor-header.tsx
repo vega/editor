@@ -50,7 +50,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setConfigEditorString: EditorActions.setConfigEditorString,
       setThemeName: EditorActions.setThemeName,
     },
-    dispatch
+    dispatch,
   );
 }
 

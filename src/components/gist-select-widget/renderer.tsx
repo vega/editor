@@ -58,7 +58,7 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
         },
         () => {
           this.handlePageChange({selected: this.state.currentPage});
-        }
+        },
       );
     }
     if (this.props.private !== prevProps.private) {
@@ -69,7 +69,7 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
         },
         () => {
           this.handlePageChange({selected: this.state.currentPage});
-        }
+        },
       );
     }
   }
@@ -92,7 +92,7 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
               {
                 credentials: 'include',
                 method: 'get',
-              }
+              },
             );
           }
           const data = await response.json();
@@ -107,7 +107,7 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
           } else {
             this.props.receiveCurrentUser(data.isAuthenticated);
           }
-        }
+        },
       );
     }
   }

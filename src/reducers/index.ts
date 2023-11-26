@@ -145,7 +145,7 @@ function extractConfig(state: State) {
 function parseVega(
   state: State,
   action: SetVegaExample | UpdateVegaSpec | SetGistVegaSpec,
-  extend: Partial<State> = {}
+  extend: Partial<State> = {},
 ) {
   const currLogger = new LocalLogger();
   currLogger.level(state.logLevel);
@@ -199,7 +199,7 @@ function parseVega(
 function parseVegaLite(
   state: State,
   action: SetVegaLiteExample | UpdateVegaLiteSpec | SetGistVegaLiteSpec | SetConfig,
-  extend: Partial<State> = {}
+  extend: Partial<State> = {},
 ) {
   const currLogger = new LocalLogger();
   currLogger.level(state.logLevel);
@@ -232,7 +232,7 @@ function parseVegaLite(
         const parsed = schemaParser(vegaLiteSpec.$schema);
         if (!satisfies(vegaLite.version, `^${parsed.version.slice(1)}`))
           currLogger.warn(
-            `The specification expects Vega-Lite ${parsed.version} but the editor uses v${vegaLite.version}.`
+            `The specification expects Vega-Lite ${parsed.version} but the editor uses v${vegaLite.version}.`,
           );
       } catch (e) {
         throw new Error('Could not parse $schema url.');

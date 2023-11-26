@@ -72,7 +72,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setCompiledEditorReference: EditorActions.setCompiledEditorRef,
       setEditorFocus: EditorActions.setEditorFocus,
     },
-    dispatch
+    dispatch,
   );
 }
 

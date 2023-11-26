@@ -71,7 +71,7 @@ export default function setupMonaco() {
       provideDocumentFormattingEdits(
         model: Monaco.editor.ITextModel,
         options: Monaco.languages.FormattingOptions,
-        token: Monaco.CancellationToken
+        token: Monaco.CancellationToken,
       ): Monaco.languages.TextEdit[] {
         return [
           {

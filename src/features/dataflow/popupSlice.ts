@@ -33,11 +33,11 @@ export const popupValueSelector = createSelector(
     popup === null || graph === null
       ? null
       : popup.type === 'node'
-      ? {
-          node: graph.nodes[popup.id],
-          value: values === null ? null : values[popup.id] ?? null,
-          ...popup,
-          type: 'node' as const,
-        }
-      : {edge: graph.edges[popup.id], ...popup, type: 'edge' as const}
+        ? {
+            node: graph.nodes[popup.id],
+            value: values === null ? null : values[popup.id] ?? null,
+            ...popup,
+            type: 'node' as const,
+          }
+        : {edge: graph.edges[popup.id], ...popup, type: 'edge' as const},
 );

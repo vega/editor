@@ -18,9 +18,9 @@ export const runtimeSlice = createSlice({
 
 export const runtimeSelector = createSliceSelector(runtimeSlice);
 export const graphSelector = createSelector(runtimeSelector, (runtime) =>
-  runtime === null ? null : runtimeToGraph(runtime)
+  runtime === null ? null : runtimeToGraph(runtime),
 );
 
 export const cytoscapeElementsSelector = createSelector(graphSelector, (graph) =>
-  graph === null ? null : toCytoscape(graph)
+  graph === null ? null : toCytoscape(graph),
 );

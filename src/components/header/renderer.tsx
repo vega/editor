@@ -402,7 +402,7 @@ class Header extends React.PureComponent<PropsType, State> {
                     </div>
                     <div className="modal-body">{exportContent}</div>
                   </div>
-                </div>
+                </div>,
               ),
             ]}
           </PortalWithState>
@@ -422,7 +422,7 @@ class Header extends React.PureComponent<PropsType, State> {
                     </div>
                     <div className="modal-body">{shareContent}</div>
                   </div>
-                </div>
+                </div>,
               ),
             ]}
           </PortalWithState>
@@ -442,7 +442,7 @@ class Header extends React.PureComponent<PropsType, State> {
                     </div>
                     <div className="modal-body">{gist(closePortal)}</div>
                   </div>
-                </div>
+                </div>,
               ),
             ]}
           </PortalWithState>
@@ -501,7 +501,7 @@ class Header extends React.PureComponent<PropsType, State> {
                       {this.state.showVega ? vega(closePortal) : vegalite(closePortal)}
                     </div>
                   </div>
-                </div>
+                </div>,
               ),
             ]}
           </PortalWithState>
@@ -529,7 +529,7 @@ class Header extends React.PureComponent<PropsType, State> {
                         <HelpModal />
                       </div>
                     </div>
-                  </div>
+                  </div>,
                 ),
               ];
             }}

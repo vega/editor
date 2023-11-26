@@ -117,7 +117,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setCompiledVegaPaneSize: EditorActions.setCompiledVegaPaneSize,
       toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
     },
-    dispatch
+    dispatch,
   );
 }
 

@@ -17,7 +17,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       receiveCurrentUser: EditorActions.receiveCurrentUser,
       toggleGistPrivacy: EditorActions.toggleGistPrivacy,
     },
-    dispatch
+    dispatch,
   );
 }
 

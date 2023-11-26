@@ -115,7 +115,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
       setCompiledPaneItem: EditorActions.setCompiledPaneItem,
     },
-    dispatch
+    dispatch,
   );
 }
 

@@ -55,7 +55,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
       rangeValue.map((match) => ({
         options: {inlineClassName: 'myInlineDecoration'},
         range: match.range,
-      }))
+      })),
     );
 
     this.props.setDecorations(decorations);

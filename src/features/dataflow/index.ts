@@ -27,7 +27,7 @@ export function dataflowReducer(state: State, action: AnyAction): State {
       }
       return [{...prevValue[0], [slice.name]: nextState}, true];
     },
-    [[], false]
+    [[], false],
   );
 
   return stateChanged ? {...state, ...changedStates} : state;

@@ -15,7 +15,7 @@ export default class ErrorPane extends React.Component<Props> {
         <li key={0}>
           <span className="error">[Error] </span>
           {this.props.error.message}
-        </li>
+        </li>,
       );
     }
 
@@ -24,7 +24,7 @@ export default class ErrorPane extends React.Component<Props> {
         <li key={i++}>
           <span className="error">[Error] </span>
           {error}
-        </li>
+        </li>,
       );
     });
     this.props.warns.forEach((warning) => {
@@ -32,7 +32,7 @@ export default class ErrorPane extends React.Component<Props> {
         <li key={i++}>
           <span className="warning">[Warning] </span>
           {warning}
-        </li>
+        </li>,
       );
     });
     this.props.infos.forEach((info) => {
@@ -40,7 +40,7 @@ export default class ErrorPane extends React.Component<Props> {
         <li key={i++}>
           <span className="info">[Info] </span>
           {info}
-        </li>
+        </li>,
       );
     });
     if (this.props.debugs.length > 0) {
@@ -54,7 +54,7 @@ export default class ErrorPane extends React.Component<Props> {
         <li key={'no error'}>
           <span className="info">[Info] </span>
           No error, infos, or warnings
-        </li>
+        </li>,
       );
     }
 

@@ -58,7 +58,7 @@ class App extends React.PureComponent<PropsType> {
           this.props.setRenderer(data.renderer);
         }
       },
-      false
+      false,
     );
 
     const parameter = this.props.match.params;
@@ -123,7 +123,7 @@ class App extends React.PureComponent<PropsType> {
       const gistResponse = await fetch(
         `https://api.github.com/gists/${parameter.id}${
           parameter.revision !== undefined ? `/${parameter.revision}` : ''
-        }`
+        }`,
       );
       const gistData = await gistResponse.json();
       const contentResponse = await fetch(gistData.files[parameter.filename].raw_url); // fetch from raw_url to handle large files
@@ -199,7 +199,7 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
       updateVegaSpec: EditorActions.updateVegaSpec,
     },
-    dispatch
+    dispatch,
   );
 }
 

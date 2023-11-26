@@ -41,7 +41,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
         {
           signalValue: this.props.view.signal(this.props.signal),
         },
-        () => this.props.onValueChange(this.props.signal, this.props.view.signal(this.props.signal))
+        () => this.props.onValueChange(this.props.signal, this.props.view.signal(this.props.signal)),
       );
     }
   }
@@ -163,7 +163,7 @@ export default class SignalRow extends React.PureComponent<Props, State> {
       },
       () => {
         this.props.onValueChange(this.props.signal, currentValue);
-      }
+      },
     );
   }
 }

@@ -37,7 +37,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       toggleAutoParse: EditorActions.toggleAutoParse,
       updateVegaSpec: EditorActions.updateVegaSpec,
     },
-    dispatch
+    dispatch,
   );
 }
 

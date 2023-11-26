@@ -42,7 +42,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
       updateVegaSpec: EditorActions.updateVegaSpec,
     },
-    dispatch
+    dispatch,
   );
 }
 

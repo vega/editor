@@ -58,7 +58,7 @@ export function Popup() {
     'bottom',
     value.type === 'function'
       ? {'Value (function name)': value.functionName}
-      : {Value: prettifyExpression(JSON.stringify(value.value), 'Value'.length)}
+      : {Value: prettifyExpression(JSON.stringify(value.value), 'Value'.length)},
   );
   return (
     <>

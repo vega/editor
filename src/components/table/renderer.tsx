@@ -76,10 +76,10 @@ function formatNumberValue(value: number) {
   return isNaN(value)
     ? 'NaN'
     : value === Number.POSITIVE_INFINITY
-    ? 'Infinity'
-    : value === Number.NEGATIVE_INFINITY
-    ? '-Infinity'
-    : stringify(value, MAX_DEPTH);
+      ? 'Infinity'
+      : value === Number.NEGATIVE_INFINITY
+        ? '-Infinity'
+        : stringify(value, MAX_DEPTH);
 }
 
 export function formatValueLong(value: any) {
@@ -87,10 +87,10 @@ export function formatValueLong(value: any) {
     value === undefined
       ? 'undefined'
       : typeof value == 'number'
-      ? formatNumberValue(value)
-      : isFunction(value)
-      ? value.toString()
-      : stringify(value, MAX_DEPTH);
+        ? formatNumberValue(value)
+        : isFunction(value)
+          ? value.toString()
+          : stringify(value, MAX_DEPTH);
   if (formatted.length > MAX_LENGTH) {
     return {formatted: null, tooLong: true};
   }

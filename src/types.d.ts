@@ -51,7 +51,7 @@ declare module 'react-router-dom' {
   // you will see a bunch of errors from TypeScript. The current workaround is to use withRouter() as a function call
   // on a separate line instead of as a decorator.
   export function withRouter<P extends RouteComponentProps<any>, C extends React.ComponentType<P>>(
-    component: C & React.ComponentType<P>
+    component: C & React.ComponentType<P>,
   ): React.ComponentClass<Omit<P, keyof RouteComponentProps<any>> & WithRouterProps<C>> & WithRouterStatics<C>;
 
   export type RouteComponentProps<T = {}> = {

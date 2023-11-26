@@ -27,7 +27,7 @@ export default function configureStore(initialState: State = DEFAULT_STATE) {
       e !== 'infos' &&
       e !== 'debugs' &&
       e !== 'view' &&
-      !Object.keys(dataflowInitialState).includes(e)
+      !Object.keys(dataflowInitialState).includes(e),
   );
   const enhancer = composeEnhancers(middleware, persistState(paths));
 

@@ -16,7 +16,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       logError: EditorActions.logError,
       toggleDebugPane: EditorActions.toggleDebugPane,
     },
-    dispatch
+    dispatch,
   );
 }
 

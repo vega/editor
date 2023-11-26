@@ -187,7 +187,7 @@ class GistModal extends React.PureComponent<PropsType, State> {
                 this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
               }
               closePortal();
-            }
+            },
           );
         }
       } else {

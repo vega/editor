@@ -113,7 +113,7 @@ class Editor extends React.PureComponent<Props, State> {
         () => {
           // Dispatch window.resize, that currently the only way to inform Vega about container size change.
           this.triggerResize();
-        }
+        },
       );
     };
 

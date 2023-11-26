@@ -34,7 +34,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setEditorReference: EditorActions.setEditorReference,
       setThemeName: EditorActions.setThemeName,
     },
-    dispatch
+    dispatch,
   );
 }
 
