@@ -54,19 +54,21 @@ function Id() {
   const dispatch = useDispatch();
   return (
     <fieldset className="id-filter">
-      <legend>Filter by id</legend>
-      <input title="Pulse Id Search" onChange={(e) => setSearchTerm(e.target.value)} />
-      <button
-        onClick={() => {
-          if (!searchTerm) {
-            return;
-          }
-          dispatch(setSelectedElements({nodes: [searchTerm], edges: []}));
-          setSearchTerm(null);
-        }}
-      >
-        Search
-      </button>
+      <legend>Filter by ID</legend>
+      <div>
+        <input type="search" title="Pulse Id Search" onChange={(e) => setSearchTerm(e.target.value)} />
+        <button
+          onClick={() => {
+            if (!searchTerm) {
+              return;
+            }
+            dispatch(setSelectedElements({nodes: [searchTerm], edges: []}));
+            setSearchTerm(null);
+          }}
+        >
+          Search
+        </button>
+      </div>
     </fieldset>
   );
 }

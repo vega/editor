@@ -26,6 +26,10 @@ export function allRelated({nodes, edges}: Graph, selected: Elements): Set<strin
         // Mark the compound node relations as visited
         // and add their immediate parents to the queue
         const node = nodes[id];
+        // if the user inputs an invalid node, just ignore it
+        if (node === undefined) {
+          continue;
+        }
         const parents = node.parent !== undefined ? [node.parent] : [];
         const relatedCompound = [...parents, ...node.children];
         relatedCompound.forEach((i) => processed.add(i));

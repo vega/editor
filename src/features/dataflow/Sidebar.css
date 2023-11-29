@@ -8,6 +8,7 @@
   width: 250px;
   gap: 10px;
 }
+
 .sidebar fieldset {
   overflow: hidden;
   border-color: var(--light-gray-color);
@@ -52,4 +53,24 @@
 /* Don't shrink type input */
 .type-filter {
   flex-shrink: 0;
+}
+
+.sidebar .id-filter {
+  padding-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.sidebar .id-filter > div {
+  display: flex;
+  height: 30px;
+}
+
+.sidebar .id-filter > div input {
+  width: 70px;
+  height: 100%;
+}
+
+.sidebar .id-filter > div button {
+  width: 100%;
+  height: 100%;
 }
