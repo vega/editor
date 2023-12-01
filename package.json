@@ -5,7 +5,7 @@
   "license": "BSD-3-Clause",
   "type": "module",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.12.0",
     "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.16",
