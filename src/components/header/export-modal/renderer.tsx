@@ -15,7 +15,7 @@ interface State {
   downloadVegaJSON: boolean;
   includeConfig: boolean;
   loadingPDF: boolean;
-  errorLoadingPdf: boolean;
+  errorLoadingPdf: string;
 }
 
 class ExportModal extends React.PureComponent<Props, State> {
@@ -25,7 +25,7 @@ class ExportModal extends React.PureComponent<Props, State> {
       downloadVegaJSON: false,
       includeConfig: true,
       loadingPDF: false,
-      errorLoadingPdf: false,
+      errorLoadingPdf: null,
     };
   }
 
@@ -48,25 +48,27 @@ class ExportModal extends React.PureComponent<Props, State> {
   public async downloadPDF() {
     this.setState({loadingPDF: true});
 
-    const content = this.props.mode === Mode.Vega ? this.props.vegaSpec : this.props.vegaLiteSpec;
-    const body = {
-      spec: content,
-      baseURL: this.props.baseURL,
-    };
-    const pdf = await fetch('https://render-vega.vercel.app', {
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/pdf',
+    const isVega = this.props.mode === Mode.Vega;
+    const spec = isVega ? this.props.vegaSpec : this.props.vegaLiteSpec;
+
+    const pdf = await fetch(
+      `https://vl-convert-service.vercel.app/api/${isVega ? 'vg' : 'vl'}2pdf/?baseURL=${this.props.baseURL}`,
+      {
+        body: JSON.stringify(spec),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/pdf',
+        },
+        method: 'post',
+        mode: 'cors',
       },
-      method: 'post',
-      mode: 'cors',
-    });
-    if (pdf.status !== 200) {
-      this.setState({loadingPDF: false, errorLoadingPdf: true});
+    );
+    if (!pdf.ok) {
+      console.error('Error loading PDF', pdf);
+      this.setState({loadingPDF: false, errorLoadingPdf: pdf.statusText || `Unknown error (code ${pdf.status})`});
       return;
     }
-    this.setState({loadingPDF: false, errorLoadingPdf: false});
+    this.setState({loadingPDF: false, errorLoadingPdf: null});
     const blob = await pdf.blob();
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -162,10 +164,7 @@ class ExportModal extends React.PureComponent<Props, State> {
               <Image />
               <span>PNG</span>
             </div>
-            <p>
-              PNG is a bitmap image format which is made up of a fixed number of pixels. They have a fixed resolution
-              and cannot be scaled.
-            </p>
+            <p>PNG is a bitmap image format which is made up of a fixed number of pixels.</p>
             <button onClick={() => this.downloadViz('png')}>Download </button>
           </div>
 
@@ -244,23 +243,18 @@ class ExportModal extends React.PureComponent<Props, State> {
             </div>
             <p>
               <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
-              patient. Use absolute URLs to ensure that the data is loaded correctly. Your chart is sent to{' '}
-              <a href="https://render-vega.vercel.app/" target="_blank" rel="noopener noreferrer">
-                render-vega.vercel.app
+              patient. Use absolute URLs to data or <a href="https://github.com/vega/vega-datasets">Vega datasets</a> at{' '}
+              <code>/data/...</code>. Your chart is sent to{' '}
+              <a href="https://github.com/jonmmease/vl-convert-service" target="_blank" rel="noopener noreferrer">
+                vl-convert-service.vercel.app
               </a>{' '}
-              for processing.
+              for rendering.
             </p>
             <button onClick={() => this.downloadPDF()} disabled={this.state.loadingPDF}>
               {this.state.loadingPDF ? 'Downloading...' : 'Download'}
             </button>
             {this.state.errorLoadingPdf && (
-              <p style={{color: 'red'}}>
-                Render service cannot handle external data, please only use external datasets from{' '}
-                <a href="http://vega.github.io/" target="_blank" rel="noopener noreferrer">
-                  Vega dataset
-                </a>
-                .
-              </p>
+              <p style={{color: 'red'}}>Render service failed with error: {this.state.errorLoadingPdf}.</p>
             )}
           </div>
           <div className="export-container">
