@@ -245,7 +245,7 @@ class ExportModal extends React.PureComponent<Props, State> {
               <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
               patient. Use absolute URLs to data or <a href="https://github.com/vega/vega-datasets">Vega datasets</a> at{' '}
               <code>/data/...</code>. Your chart is sent to{' '}
-              <a href="https://github.com/jonmmease/vl-convert-service" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/vega/vl-convert-service" target="_blank" rel="noopener noreferrer">
                 vl-convert-service.vercel.app
               </a>{' '}
               for rendering.
