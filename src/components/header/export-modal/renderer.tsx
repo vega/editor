@@ -52,7 +52,7 @@ class ExportModal extends React.PureComponent<Props, State> {
     const spec = isVega ? this.props.vegaSpec : this.props.vegaLiteSpec;
 
     const pdf = await fetch(
-      `https://vl-convert-service.vercel.app/api/${isVega ? 'vg' : 'vl'}2pdf/?baseURL=${this.props.baseURL}`,
+      `https://vl-convert.vercel.app/api/${isVega ? 'vg' : 'vl'}2pdf/?baseURL=${this.props.baseURL}`,
       {
         body: JSON.stringify(spec),
         headers: {
@@ -245,8 +245,8 @@ class ExportModal extends React.PureComponent<Props, State> {
               <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
               patient. Use absolute URLs to data or <a href="https://github.com/vega/vega-datasets">Vega datasets</a> at{' '}
               <code>/data/...</code>. Your chart is sent to{' '}
-              <a href="https://github.com/vega/vl-convert-service" target="_blank" rel="noopener noreferrer">
-                vl-convert-service.vercel.app
+              <a href="https://github.com/vega/vl-convert" target="_blank" rel="noopener noreferrer">
+                vl-convert.vercel.app
               </a>{' '}
               for rendering.
             </p>
