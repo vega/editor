@@ -15,7 +15,7 @@ import * as React from 'react';
 import {Graph} from './utils/graph';
 import {ELKToPositions} from './utils/ELKToPositions';
 
-// @ts-ignore
+// @ts-expect-error There are no typings for the worker
 import Worker from 'elkjs/lib/elk-worker.js?worker';
 
 // Mapping of action request ID to computed layout, keyed by the visible nodes and runtime
