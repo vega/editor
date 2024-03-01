@@ -38,7 +38,7 @@
     "d3-array": "^3.2.4",
     "d3-geo-projection": "^4.0.0",
     "d3-scale": "^4.0.2",
-    "elkjs": "^0.8.2",
+    "elkjs": "^0.9.2",
     "history": "^5.3.0",
     "json-stringify-pretty-compact": "^4.0.0",
     "jsonc-parser": "^3.2.1",
