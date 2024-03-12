@@ -62,14 +62,14 @@
     "redux-thunk": "^2.4.2",
     "tippy.js": "^6.3.7",
     "tslib": "^2.6.2",
-    "vega-cli": "5.25.0",
+    "vega-cli": "5.28.0",
     "vega-datasets": "^2.8.0",
     "vega-embed": "^6.24.0",
-    "vega-lite": "5.16.3",
+    "vega-lite": "5.17.0",
     "vega-schema-url-parser": "^2.2.0",
     "vega-themes": "^2.14.0",
     "vega-tooltip": "^0.34.0",
-    "vega-typings": "^1.0.1"
+    "vega-typings": "^1.2.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
