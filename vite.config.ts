@@ -6,6 +6,16 @@ const commitHash = childProcess.execSync('git rev-parse --short HEAD').toString(
 
 import type {PluginOption} from 'vite';
 
+const vegaPackages = [
+  'vega-lite',
+  'vega',
+  'vega-scale',
+  'vega-embed',
+  'vega-schema-url-parser',
+  'vega-themes',
+  'vega-tooltip',
+];
+
 function watchNodeModules(modules: string[]): PluginOption {
   return {
     name: 'watch-node-modules',
@@ -29,18 +39,7 @@ const config: UserConfig = {
   define: {
     __COMMIT_HASH__: JSON.stringify(commitHash),
   },
-  plugins: [
-    react(),
-    watchNodeModules([
-      'vega-lite',
-      'vega',
-      'vega-scale',
-      'vega-embed',
-      'vega-schema-url-parser',
-      'vega-themes',
-      'vega-tooltip',
-    ]),
-  ],
+  plugins: [react(), watchNodeModules(vegaPackages)],
   resolve: {
     preserveSymlinks: true,
 
