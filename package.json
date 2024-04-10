@@ -16,7 +16,6 @@
     "gh-pages": "^6.1.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.0",
-    "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.2.5",
     "typescript": "^5.3.3",
@@ -95,6 +94,6 @@
     "lint": "eslint . && yarn prettierbase --check",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist",
-    "postinstall": "husky install && npx patch-package"
+    "postinstall": "husky install"
   }
 }
