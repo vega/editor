@@ -4,12 +4,6 @@
   "private": true,
   "license": "BSD-3-Clause",
   "type": "module",
-  "app": "dist/index.html",
-  "targets": {
-    "app": {
-      "publicUrl": "./editor/"
-    }
-  },
   "devDependencies": {
     "@parcel/resolver-glob": "^2.12.0",
     "@parcel/transformer-inline-string": "2.12.0",
@@ -93,7 +87,7 @@
   "scripts": {
     "start": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel --watch-dir .. index.html",
     "build": "yarn clean && yarn vendor && yarn build:only",
-    "build:only": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel build index.html",
+    "build:only": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel build --public-url /editor/ index.html",
     "clean": "rimraf dist public/spec public/data",
     "postbuild": "rsync --ignore-existing -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
