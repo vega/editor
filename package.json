@@ -109,7 +109,8 @@
   "alias": {
     "vega-lite/build/vega-lite-schema.json": "vega-lite/build/vega-lite-schema.json",
     "vega-lite": "vega-lite/src/index.ts",
-    "buffer": false
+    "buffer": false,
+    "process": false
   },
   "staticFiles": {
     "staticPath": "public"
