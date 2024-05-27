@@ -23,9 +23,7 @@ const keyBoardShortcuts = shortcuts.map((shortcut, i) => (
   </li>
 ));
 
-// defined by vite
-declare const __COMMIT_HASH__: string;
-export const COMMIT_HASH: string = __COMMIT_HASH__ || 'unknown';
+export const COMMIT_HASH: string = process.env.PARCEL_BUILD_COMMIT_HASH || 'unknown';
 
 const HelpModal = () => (
   <div className="help-modal">

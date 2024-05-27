@@ -11,3 +11,4 @@ public/spec/
 stats.json
 yarn-debug.log*
 yarn-error.log*
+.parcel-cache

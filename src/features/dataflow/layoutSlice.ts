@@ -1,22 +1,20 @@
 /**
  * Computes layouts for graphs with ELK js and caches them.
  */
+import {SerializedError, createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit';
+import ELK, {ElkNode} from 'elkjs';
+import * as React from 'react';
+import {useDispatch} from 'react-redux';
+import {State} from '../../constants/default-state';
+import {useAppSelector} from '../../hooks';
 import {graphSelector, setRuntime} from './runtimeSlice';
 import {visibleElementsSelector, visibleNodesSelector} from './selectionSlice';
-import {toELKGraph} from './utils/toELKGraph';
-import {ElkNode} from 'elkjs';
-import ELK from 'elkjs/lib/elk-api';
-import {State} from '../../constants/default-state';
-import {createAsyncThunk, createSelector, createSlice, SerializedError} from '@reduxjs/toolkit';
-import {createSliceSelector} from './utils/createSliceSelector';
-import {useAppSelector} from '../../hooks';
-import {useDispatch} from 'react-redux';
-import * as React from 'react';
-import {Graph} from './utils/graph';
 import {ELKToPositions} from './utils/ELKToPositions';
+import {createSliceSelector} from './utils/createSliceSelector';
+import {Graph} from './utils/graph';
+import {toELKGraph} from './utils/toELKGraph';
 
-// @ts-expect-error There are no typings for the worker
-import Worker from 'elkjs/lib/elk-worker.js?worker';
+import {Worker as ElkWorker} from 'elkjs/lib/elk-worker';
 
 // Mapping of action request ID to computed layout, keyed by the visible nodes and runtime
 
@@ -37,9 +35,9 @@ type LayoutState = Record<string, LayoutStatus>;
 
 const initialState: LayoutState = {};
 
-const elkWorker = new Worker();
 const elk = new ELK({
-  workerFactory: () => elkWorker,
+  // @ts-expect-error Worker types broken
+  workerFactory: (url) => new ElkWorker(url),
 });
 
 const computeLayout = createAsyncThunk<ElkNode, void, {state: State; pendingMeta: {requestId: string; key: LayoutKey}}>(
