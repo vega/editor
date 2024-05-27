@@ -87,7 +87,7 @@
   "scripts": {
     "start": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel --watch-dir .. index.html",
     "build": "yarn clean && yarn vendor && yarn build:only",
-    "build:only": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel build --public-url /editor/ index.html",
+    "build:only": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel build --public-url /editor --no-optimize --no-scope-hoist index.html",
     "clean": "rimraf dist public/spec public/data",
     "postbuild": "rsync --ignore-existing -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
