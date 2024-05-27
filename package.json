@@ -4,10 +4,18 @@
   "private": true,
   "license": "BSD-3-Clause",
   "type": "module",
+  "app": "dist/index.html",
+  "targets": {
+    "app": {
+      "publicUrl": "./editor/"
+    }
+  },
   "devDependencies": {
+    "@parcel/resolver-glob": "^2.12.0",
+    "@parcel/transformer-inline-string": "2.12.0",
+    "@types/node": "^20.12.12",
     "@typescript-eslint/eslint-plugin": "^7.10.0",
     "@typescript-eslint/parser": "^7.10.0",
-    "@vitejs/plugin-react": "^4.3.0",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -16,12 +24,12 @@
     "gh-pages": "^6.1.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.5",
+    "parcel": "^2.12.0",
+    "parcel-reporter-static-files-copy": "^1.5.3",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.2.5",
-    "typescript": "^5.3.3",
-    "vite": "^5.2.11",
-    "vite-plugin-html": "^3.2.2"
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
@@ -69,7 +77,8 @@
     "vega-schema-url-parser": "^2.2.0",
     "vega-themes": "^2.14.0",
     "vega-tooltip": "^0.34.0",
-    "vega-typings": "^1.3.0"
+    "vega-typings": "^1.3.0",
+    "web-worker": "^1.3.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -82,9 +91,9 @@
     ]
   },
   "scripts": {
-    "start": "vite serve",
+    "start": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel --watch-dir .. index.html",
     "build": "yarn clean && yarn vendor && yarn build:only",
-    "build:only": "vite build",
+    "build:only": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel build index.html",
     "clean": "rimraf dist public/spec public/data",
     "postbuild": "rsync --ignore-existing -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
@@ -95,6 +104,15 @@
     "lint": "eslint . && yarn prettierbase --check",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist",
-    "postinstall": "husky install && npx patch-package"
+    "postinstall": "husky && npx patch-package"
+  },
+  "alias": {
+    "vega-lite/build/vega-lite-schema.json": "vega-lite/build/vega-lite-schema.json",
+    "vega-lite": "vega-lite/src/index.ts",
+    "buffer": false,
+    "process": false
+  },
+  "staticFiles": {
+    "staticPath": "public"
   }
 }
