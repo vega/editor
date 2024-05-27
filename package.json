@@ -9,6 +9,7 @@
     "@typescript-eslint/parser": "^7.10.0",
     "@vitejs/plugin-react": "^4.3.0",
     "autoprefixer": "^10.4.19",
+    "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
@@ -82,7 +83,9 @@
     ]
   },
   "scripts": {
-    "start": "vite serve",
+    "preview": "vite preview",
+    "build-watch": "vite build --watch",
+    "start": "concurrently \"npm:build-watch\" \"npm:preview\"",
     "build": "yarn clean && yarn vendor && yarn build:only",
     "build:only": "vite build",
     "clean": "rimraf dist public/spec public/data",
