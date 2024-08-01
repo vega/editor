@@ -1155,10 +1155,10 @@
   dependencies:
     clipboard "*"
 
-"@types/cytoscape@^3.21.4":
-  version "3.21.4"
-  resolved "https://registry.yarnpkg.com/@types/cytoscape/-/cytoscape-3.21.4.tgz#1bfdb7f79c20f410e5e9030ed7192694499a4d20"
-  integrity sha512-g4M57Zho+AMNYuEptTWH+aZ5VpyF8VcaI2t0+1/PWRZp5XQM6hku1Vo5/Ui721i+L+WCGkI1EjGAeHcYUQ2PRg==
+"@types/cytoscape@^3.21.5":
+  version "3.21.5"
+  resolved "https://registry.yarnpkg.com/@types/cytoscape/-/cytoscape-3.21.5.tgz#43ea460b2809ff424225377f270750f674c27f75"
+  integrity sha512-fzYT3vqY5J4gxVXDOsCgDpm0ZdU8bQq+wCv0ucS0MSTtvQdjs3lcb2VetJiUSAd4WBgouqizI+JT1f8Yc6eY7Q==
 
 "@types/d3-array@*":
   version "3.2.1"
@@ -2133,10 +2133,10 @@ cytoscape-popper@^2.0.0:
   dependencies:
     "@popperjs/core" "^2.0.0"
 
-cytoscape@^3.30.0:
-  version "3.30.0"
-  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.30.0.tgz#5b0c13f7bb305481e2c70414d4c5f149d92eda82"
-  integrity sha512-l590mjTHT6/Cbxp13dGPC2Y7VXdgc+rUeF8AnF/JPzhjNevbDJfObnJgaSjlldOgBQZbue+X6IUZ7r5GAgvauQ==
+cytoscape@^3.30.1:
+  version "3.30.1"
+  resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.30.1.tgz#9855a284aaefbaf2628fdc6cf956ba83c0ae511b"
+  integrity sha512-TRJc3HbBPkHd50u9YfJh2FxD1lDLZ+JXnJoyBn5LkncoeuT7fapO/Hq/Ed8TdFclaKshzInge2i30bg7VKeoPQ==
 
 "d3-array@1 - 3", "d3-array@2 - 3", "d3-array@2.10.0 - 3", "d3-array@2.5.0 - 3", d3-array@3.2.4, d3-array@^3.2.2, d3-array@^3.2.4:
   version "3.2.4"
