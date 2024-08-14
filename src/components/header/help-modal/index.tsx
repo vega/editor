@@ -76,7 +76,7 @@ const HelpModal = () => (
       <li>Vega: {VG_VERSION}</li>
       <li>Vega-Lite: {VL_VERSION}</li>
       <li>Vega-Tooltip: {TOOLTIP_VERSION}</li>
-      <li>Editor: {COMMIT_HASH}</li>
+      <li>Editor: {COMMIT_HASH.slice(0, 7)}</li>
     </ul>
   </div>
 );
