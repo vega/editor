@@ -114,7 +114,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
           <Renderer />
         </ErrorBoundary>
         <div className="versions">
-          Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {COMMIT_HASH}
+          Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {COMMIT_HASH.slice(0, 7)}
         </div>
       </div>
     );

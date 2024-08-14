@@ -59,6 +59,7 @@ const HelpModal = () => (
       <Slack className="doc-image" />
       Join our Slack channel
     </a>
+    <br />
     <a href="https://twitter.com/vega_vis" target="_blank" rel="noopener noreferrer" className="doc-link">
       <Twitter className="doc-image" />
       Follow us on Twitter
@@ -76,7 +77,9 @@ const HelpModal = () => (
       <li>Vega: {VG_VERSION}</li>
       <li>Vega-Lite: {VL_VERSION}</li>
       <li>Vega-Tooltip: {TOOLTIP_VERSION}</li>
-      <li>Editor: {COMMIT_HASH.slice(0, 7)}</li>
+      <li>
+        Editor: <a href={`https://github.com/vega/editor/commit/${COMMIT_HASH}`}>{COMMIT_HASH.slice(0, 7)}</a>
+      </li>
     </ul>
   </div>
 );
