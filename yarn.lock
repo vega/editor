@@ -1155,10 +1155,10 @@
   dependencies:
     clipboard "*"
 
-"@types/cytoscape@^3.21.6":
-  version "3.21.6"
-  resolved "https://registry.yarnpkg.com/@types/cytoscape/-/cytoscape-3.21.6.tgz#ad39b10abec5a9d6858638909aa634baac88f42f"
-  integrity sha512-kJjnDvtXm/bAOUlcIxPBkqCd5vevCsVQKprwOyVihy8mktEcN5QeUqo/6VRniAxp6YqCTgkIdQUfy1ZrWHsp6g==
+"@types/cytoscape@^3.21.7":
+  version "3.21.7"
+  resolved "https://registry.yarnpkg.com/@types/cytoscape/-/cytoscape-3.21.7.tgz#8220e638624654e50bd0c3b464c01d0231331eb9"
+  integrity sha512-dP4UByJtfu5GjMJuv58yCIRxjCp4cP0Wp+Qd46L3Gom0hcV4OPmSOLqt83vArNcYRZLFCAyAk+lcC8oqQtcsqw==
 
 "@types/d3-array@*":
   version "3.2.1"
