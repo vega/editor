@@ -10,7 +10,7 @@ You can reset the Vega Editor by going to https://vega.github.io/editor/#/reset 
 
 ## Usage Instructions
 
-To run the editor locally, you must first install the dependencies and then launch a local web server. We assume you have [yarn](https://yarnpkg.com/) installed.
+To run the editor locally, you must first install the dependencies and then launch a local web server. We assume you have [yarn](https://yarnpkg.com/), `bash`, `curl`, and `tar` installed.
 
 1. Install the dependencies:
 
