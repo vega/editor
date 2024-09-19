@@ -10,21 +10,26 @@ You can reset the Vega Editor by going to https://vega.github.io/editor/#/reset 
 
 ## Usage Instructions
 
-To run the editor locally, you must first install the dependencies and then launch a local web server. We assume you have [yarn](https://yarnpkg.com/) installed.
-
-1. Install the dependencies:
-
-```
-$ yarn
+### Run Vega-Editor With Docker
+```bash
+sudo docker run -it --rm -p 1234:1234 node:21 bash -xc 'mkdir -p vega/editor && git clone --depth=1 https://github.com/vega/editor.git vega/editor && cd vega/editor && yarn && yarn start'
 ```
 
-2. Start the server:
+### Development Setup
+We assume you have [yarn](https://yarnpkg.com/), `bash`, `curl`, and `tar` installed.
 
-```
-$ yarn start
-```
+Your working copy of this git repository must be located at least two levels below the system root `/`.
+E.g. `/home/user/editor` or `/vega/editor`, but not `/editor`. 
 
-3. The local web server will be accessible from [http://localhost:8080](http://localhost:8080).
+Inside your working copy ...
+
+1. Install the dependencies:  
+   `$ yarn`
+
+2. Launch the local web server:  
+   `$ yarn start`
+
+3. The local web server will be accessible via [http://localhost:1234](http://localhost:1234).
 
 ## Local Testing & Debugging
 
