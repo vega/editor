@@ -35,7 +35,7 @@ export const popupValueSelector = createSelector(
       : popup.type === 'node'
         ? {
             node: graph.nodes[popup.id],
-            value: values === null ? null : values[popup.id] ?? null,
+            value: values === null ? null : (values[popup.id] ?? null),
             ...popup,
             type: 'node' as const,
           }
