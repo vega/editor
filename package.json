@@ -86,17 +86,17 @@
   },
   "scripts": {
     "start": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel --watch-dir .. index.html",
-    "build": "yarn clean && yarn vendor && yarn build:only",
+    "build": "npm run clean && npm run vendor && npm run build:only",
     "build:only": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel build --public-url /editor --no-scope-hoist index.html",
     "clean": "rimraf dist public/spec public/data",
     "postbuild": "rsync --ignore-existing -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
     "vendor": "scripts/vendor.sh",
-    "prepare": "yarn vendor",
+    "prepare": "npm run vendor",
     "prettierbase": "prettier '{src,public}/**/*.{css,html}'",
-    "format": "eslint . --fix && yarn prettierbase --write",
-    "lint": "eslint . && yarn prettierbase --check",
-    "predeploy": "yarn build",
+    "format": "eslint . --fix && npm run prettierbase -- --write",
+    "lint": "eslint . && npm run prettierbase -- --check",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "postinstall": "husky && npx patch-package"
   },
@@ -108,5 +108,6 @@
   },
   "staticFiles": {
     "staticPath": "public"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
