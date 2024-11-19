@@ -3,7 +3,7 @@ import {parse as parseJSONC} from 'jsonc-parser';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import SplitPane from 'react-split-pane';
+import SplitPane from 'react-split-pane-r17';
 import {bindActionCreators, Dispatch} from 'redux';
 import {MessageData} from 'vega-embed';
 import {hash} from 'vega-lite';

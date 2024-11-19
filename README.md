@@ -12,11 +12,11 @@ You can reset the Vega Editor by going to https://vega.github.io/editor/#/reset 
 
 ### Run Vega-Editor With Docker
 ```bash
-sudo docker run -it --rm -p 1234:1234 node:21 bash -xc 'mkdir -p vega/editor && git clone --depth=1 https://github.com/vega/editor.git vega/editor && cd vega/editor && yarn && yarn start'
+sudo docker run -it --rm -p 1234:1234 node:21 bash -xc 'mkdir -p vega/editor && git clone --depth=1 https://github.com/vega/editor.git vega/editor && cd vega/editor && npm install && npm start'
 ```
 
 ### Development Setup
-We assume you have [yarn](https://yarnpkg.com/), `bash`, `curl`, and `tar` installed.
+We assume you have [Node.js and npm](https://nodejs.org/), `bash`, `curl`, and `tar` installed.
 
 Your working copy of this git repository must be located at least two levels below the system root `/`.
 E.g. `/home/user/editor` or `/vega/editor`, but not `/editor`. 
@@ -24,29 +24,29 @@ E.g. `/home/user/editor` or `/vega/editor`, but not `/editor`.
 Inside your working copy ...
 
 1. Install the dependencies:  
-   `$ yarn`
+   `$ npm install`
 
 2. Launch the local web server:  
-   `$ yarn start`
+   `$ npm start`
 
 3. The local web server will be accessible via [http://localhost:1234](http://localhost:1234).
 
 ## Local Testing & Debugging
 
-The editor is useful for testing if you are involved in Vega and Vega-Lite development. To use Vega, Vega-Lite, or Vega Datasets from another directory on your computer, you need to link it. For this, run `yarn link` in the directory of the library that you want to link. Then, in this directory run `yarn link <name of library>`, e.g. `yarn link vega` or `yarn link vega-lite`.
+The editor is useful for testing if you are involved in Vega and Vega-Lite development. To use Vega, Vega-Lite, or Vega Datasets from another directory on your computer, you need to link it. For this, run `npm link` in the directory of the library that you want to link. Then, in this directory run `npm link <name of library>`, e.g. `npm link vega` or `npm link vega-lite`.
 
 For example, to link Vega, run
 
 ```bash
 cd VEGA_DIR
-yarn link
+npm link
 
 cd VEGA_LITE_DIR
-yarn link
+npm link
 
 cd VEGA_EDITOR_DIR
-yarn link vega
-yarn link vega-lite
+npm link vega
+npm link vega-lite
 ```
 
 The Vega editor supports [React Developer Tools](https://github.com/facebook/react-devtools) and [Redux DevTools](https://github.com/zalmoxisus/redux-devtools-extension).
