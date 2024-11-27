@@ -53,7 +53,7 @@ The Vega editor supports [React Developer Tools](https://github.com/facebook/rea
 
 ## Building preview images
 
-Build images with `yarn generate-example-images`.
+Build images with `npm run generate-example-images`.
 
 ## Contributing guidelines
 
