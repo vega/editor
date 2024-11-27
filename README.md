@@ -25,9 +25,7 @@ Inside your working copy ...
 
 1. Install the dependencies:  
    `$ npm install`
-   * macOS Apple Silicon: if you encounter installation errors related to `canvas`, ensure the necessary system libraries are present by running:   
-     `$ brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman python-setuptools`  
-     For more details, refer to the [canvas installation guide](https://github.com/Automattic/node-canvas?tab=readme-ov-file#installation)
+   * If you are running into issues with installing canvas, follow the [canvas installation guide](https://github.com/Automattic/node-canvas?tab=readme-ov-file#installation).
 
 2. Launch the local web server:  
    `$ npm start`
