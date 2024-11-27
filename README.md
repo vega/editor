@@ -16,7 +16,7 @@ sudo docker run -it --rm -p 1234:1234 node:21 bash -xc 'mkdir -p vega/editor && 
 ```
 
 ### Development Setup
-We assume you have [Node.js and npm](https://nodejs.org/), [yarn v1](https://classic.yarnpkg.com), `bash`, `curl`, and `tar` installed.
+We assume you have [Node.js and npm](https://nodejs.org/), `bash`, `curl`, and `tar` installed.
 
 Your working copy of this git repository must be located at least two levels below the system root `/`.
 E.g. `/home/user/editor` or `/vega/editor`, but not `/editor`. 
