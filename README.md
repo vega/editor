@@ -25,6 +25,7 @@ Inside your working copy ...
 
 1. Install the dependencies:  
    `$ npm install`
+   * If you are running into issues with installing canvas, follow the [canvas installation guide](https://github.com/Automattic/node-canvas?tab=readme-ov-file#installation).
 
 2. Launch the local web server:  
    `$ npm start`
