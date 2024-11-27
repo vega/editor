@@ -29,10 +29,10 @@ Inside your working copy ...
      `$ brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman python-setuptools`  
      For more details, refer to the [canvas installation guide](https://github.com/Automattic/node-canvas?tab=readme-ov-file#installation)
 
-3. Launch the local web server:  
+2. Launch the local web server:  
    `$ npm start`
 
-4. The local web server will be accessible via [http://localhost:1234](http://localhost:1234).
+3. The local web server will be accessible via [http://localhost:1234](http://localhost:1234).
 
 ## Local Testing & Debugging
 
