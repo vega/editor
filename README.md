@@ -16,7 +16,7 @@ sudo docker run -it --rm -p 1234:1234 node:21 bash -xc 'mkdir -p vega/editor && 
 ```
 
 ### Development Setup
-We assume you have [Node.js and npm](https://nodejs.org/), `bash`, `curl`, and `tar` installed.
+We assume you have [Node.js and npm](https://nodejs.org/), [yarn v1](https://classic.yarnpkg.com), `bash`, `curl`, and `tar` installed.
 
 Your working copy of this git repository must be located at least two levels below the system root `/`.
 E.g. `/home/user/editor` or `/vega/editor`, but not `/editor`. 
@@ -25,11 +25,14 @@ Inside your working copy ...
 
 1. Install the dependencies:  
    `$ npm install`
+   * macOS Apple Silicon: if you encounter installation errors related to `canvas`, ensure the necessary system libraries are present by running:   
+     `$ brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman python-setuptools`  
+     For more details, refer to the [canvas installation guide](https://github.com/Automattic/node-canvas?tab=readme-ov-file#installation)
 
-2. Launch the local web server:  
+3. Launch the local web server:  
    `$ npm start`
 
-3. The local web server will be accessible via [http://localhost:1234](http://localhost:1234).
+4. The local web server will be accessible via [http://localhost:1234](http://localhost:1234).
 
 ## Local Testing & Debugging
 
