@@ -21,6 +21,7 @@ export function mapStateToProps(state: State) {
     vegaSpec: state.vegaSpec,
     view: state.view,
     backgroundColor: state.backgroundColor,
+    expressionInterpreter: state.expressionInterpreter,
   };
 }
 

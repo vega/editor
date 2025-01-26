@@ -12,6 +12,7 @@ import addProjections from '../../utils/addProjections';
 import {dispatchingLogger} from '../../utils/logger';
 import {Popup} from '../popup';
 import './index.css';
+import {expressionInterpreter as vegaInterpreter} from 'vega-interpreter';
 
 // Add additional projections
 addProjections(vega.projection);
@@ -126,16 +127,23 @@ class Editor extends React.PureComponent<Props, State> {
   }
 
   public initView() {
-    const {vegaSpec, vegaLiteSpec, normalizedVegaLiteSpec, config, baseURL, mode, setView, setRuntime, hoverEnable} =
-      this.props;
+    const {
+      vegaSpec,
+      vegaLiteSpec,
+      normalizedVegaLiteSpec,
+      config,
+      baseURL,
+      mode,
+      setView,
+      setRuntime,
+      hoverEnable,
+      expressionInterpreter,
+    } = this.props;
 
-    let runtime: vega.Runtime;
-    if (mode === Mode.VegaLite) {
-      // In vl mode, we compile Vega-Lite spec along with config to Vega spec
-      runtime = vega.parse(vegaSpec);
-    } else {
-      runtime = vega.parse(vegaSpec, config as VgConfig);
-    }
+    const parseOptions = expressionInterpreter ? {ast: true} : {};
+
+    // In vl mode, we compile Vega-Lite spec along with config to Vega spec
+    const runtime = vega.parse(vegaSpec, mode === Mode.VegaLite ? {} : (config as VgConfig), parseOptions);
 
     const loader = vega.loader();
     const originalLoad = loader.load.bind(loader);
@@ -163,15 +171,15 @@ class Editor extends React.PureComponent<Props, State> {
 
       this.props.view.finalize();
     }
-
     const hover = typeof hoverEnable === 'boolean' ? hoverEnable : mode === Mode.Vega;
     const view = new vega.View(runtime, {
       hover,
       loader,
+      expr: expressionInterpreter ? vegaInterpreter : undefined,
     });
 
     view.runAfter(this.runAfter, true);
-    (view as any).logger(dispatchingLogger);
+    view.logger(dispatchingLogger);
 
     const debug = (window as any).VEGA_DEBUG;
     debug.view = view;
@@ -284,7 +292,8 @@ class Editor extends React.PureComponent<Props, State> {
       !deepEqual(prevProps.logLevel, this.props.logLevel) ||
       !deepEqual(prevProps.mode, this.props.mode) ||
       !deepEqual(prevProps.hoverEnable, this.props.hoverEnable) ||
-      !deepEqual(prevProps.tooltipEnable, this.props.tooltipEnable)
+      !deepEqual(prevProps.tooltipEnable, this.props.tooltipEnable) ||
+      prevProps.expressionInterpreter !== this.props.expressionInterpreter
     ) {
       this.initView();
     }

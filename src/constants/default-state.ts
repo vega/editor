@@ -62,6 +62,8 @@ export type State = {
   debugs: string[];
   themeName: string;
   backgroundColor: string;
+  /** https://vega.github.io/vega/usage/interpreter/ */
+  expressionInterpreter: boolean;
 } & typeof dataflowInitialState;
 
 export const DEFAULT_STATE: State = {
@@ -110,5 +112,6 @@ export const DEFAULT_STATE: State = {
   debugs: [],
   infos: [],
   backgroundColor: '#ffffff',
+  expressionInterpreter: false,
   ...dataflowInitialState,
 };
