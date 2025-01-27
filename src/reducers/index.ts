@@ -2,8 +2,8 @@ import stringify from 'json-stringify-pretty-compact';
 import {satisfies} from 'semver';
 import * as vega from 'vega';
 import * as vegaLite from 'vega-lite';
-import {Config} from 'vega-lite/src/config';
-import {TopLevelSpec} from 'vega-lite/src/spec';
+import {Config} from 'vega-lite';
+import {TopLevelSpec} from 'vega-lite';
 import schemaParser from 'vega-schema-url-parser';
 import {
   Action,
