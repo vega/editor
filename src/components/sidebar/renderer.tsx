@@ -103,6 +103,8 @@ class Sidebar extends Component<any, any> {
       setLogLevel,
       setTooltip,
       tooltipEnable,
+      expressionInterpreter,
+      setExpressionInterpreter,
     } = this.props;
 
     const hover = typeof this.props.hoverEnable !== 'boolean' ? 'Auto' : this.props.hoverEnable ? 'On' : 'Off';
@@ -199,6 +201,29 @@ class Sidebar extends Component<any, any> {
             Vega Tooltip
           </a>{' '}
           handler.
+        </p>
+        <div className="expression-interpreter">
+          <label>
+            <input
+              onChange={(e) => setExpressionInterpreter(e.target.checked)}
+              type="checkbox"
+              name=""
+              id="expressionInterpreter"
+              checked={expressionInterpreter}
+            />
+            Expression Interpreter
+          </label>
+        </div>
+        <p className="settings-description">
+          Enables the{' '}
+          <a href="https://vega.github.io/vega/usage/interpreter/" rel="noopener noreferrer" target="_blank">
+            Expression Interpreter
+          </a>
+          , which is{' '}
+          <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" rel="noopener noreferrer" target="_blank">
+            CSP
+          </a>{' '}
+          compliant.
         </p>
       </div>
     );

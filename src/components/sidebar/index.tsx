@@ -11,6 +11,7 @@ export function mapStateToProps(state: State) {
     renderer: state.renderer,
     tooltipEnable: state.tooltipEnable,
     backgroundColor: state.backgroundColor,
+    expressionInterpreter: state.expressionInterpreter,
   };
 }
 
@@ -23,6 +24,7 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
       setSettingsState: EditorActions.setSettingsState,
       setTooltip: EditorActions.setTooltip,
       setBackgroundColor: EditorActions.setBackgroundColor,
+      setExpressionInterpreter: EditorActions.setExpressionInterpreter,
     },
     dispatch,
   );

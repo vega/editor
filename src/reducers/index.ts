@@ -43,6 +43,7 @@ import {
   SET_VEGA_EXAMPLE,
   SET_VEGA_LITE_EXAMPLE,
   SET_VIEW,
+  SET_EXPRESSION_INTERPRETER,
   SHOW_LOGS,
   TOGGLE_AUTO_PARSE,
   TOGGLE_COMPILED_VEGA_SPEC,
@@ -328,6 +329,7 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         warns: [],
         infos: [],
         debugs: [],
+        expressionInterpreter: false,
       };
     case SET_MODE_ONLY:
       return {
@@ -528,6 +530,13 @@ export default (state: State = DEFAULT_STATE, action: Action): State => {
         ...state,
         editorFocus: action.editorFocus,
       };
+
+    case SET_EXPRESSION_INTERPRETER:
+      return {
+        ...state,
+        expressionInterpreter: action.expressionInterpreter,
+      };
+
     case RECEIVE_CURRENT_USER:
       return {
         ...state,

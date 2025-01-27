@@ -46,6 +46,7 @@ export const SET_DECORATION = 'SET_DECORATION' as const;
 export const SET_COMPILED_EDITOR_REFERENCE = 'SET_COMPILED_EDITOR_REFERENCE' as const;
 export const SET_EDITOR_FOCUS = 'SET_EDITOR_FOCUS' as const;
 export const SET_BACKGROUND_COLOR = 'SET_BACKGROUND_COLOR' as const;
+export const SET_EXPRESSION_INTERPRETER = 'SET_EXPRESSION_INTERPRETER' as const;
 
 export const ERROR = 'ERROR' as const;
 export const WARN = 'WARN' as const;
@@ -100,7 +101,8 @@ export type Action =
   | AddError
   | AddWarning
   | AddInfo
-  | AddDebug;
+  | AddDebug
+  | SetExpressionInterpreter;
 
 export function setMode(mode: Mode) {
   return {
@@ -511,3 +513,12 @@ export function addDebug(debug: string) {
 }
 
 export type AddDebug = ReturnType<typeof addDebug>;
+
+export function setExpressionInterpreter(value: boolean) {
+  return {
+    type: SET_EXPRESSION_INTERPRETER,
+    expressionInterpreter: value,
+  };
+}
+
+export type SetExpressionInterpreter = ReturnType<typeof setExpressionInterpreter>;
