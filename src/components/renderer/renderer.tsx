@@ -13,6 +13,9 @@ import {dispatchingLogger} from '../../utils/logger';
 import {Popup} from '../popup';
 import './index.css';
 
+// **Import the LabelDebugger**
+import {LabelDebugger} from '../../utils/labelDebugger';
+
 // Add additional projections
 addProjections(vega.projection);
 
@@ -24,6 +27,10 @@ type State = Readonly<typeof defaultState>;
 
 class Editor extends React.PureComponent<Props, State> {
   public static pathname: string;
+
+  // **Add a class property to store the LabelDebugger instance**
+  private labelDebugger: LabelDebugger | null = null;
+
   constructor(props) {
     super(props);
     this.state = defaultState;
@@ -31,6 +38,7 @@ class Editor extends React.PureComponent<Props, State> {
     this.onOpenPortal = this.onOpenPortal.bind(this);
     this.onClosePortal = this.onClosePortal.bind(this);
     this.runAfter = this.runAfter.bind(this);
+    // No need to bind handleVisualizeBitmap since it's an arrow function
   }
 
   public onOpenPortal() {
@@ -233,7 +241,7 @@ class Editor extends React.PureComponent<Props, State> {
       return;
     }
 
-    view.renderer(renderer).initialize(chart);
+    view.renderer('canvas').initialize(chart);
 
     await view.runAsync();
 
@@ -254,6 +262,11 @@ class Editor extends React.PureComponent<Props, State> {
   public componentDidMount() {
     this.initView();
     this.renderVega();
+
+    // **Initialize LabelDebugger if view is available**
+    if (this.props.view) {
+      this.labelDebugger = new LabelDebugger(this.props.view);
+    }
 
     // Add Event Listener to ctrl+f11 key
     document.addEventListener('keydown', (e) => {
@@ -289,6 +302,11 @@ class Editor extends React.PureComponent<Props, State> {
       this.initView();
     }
     this.renderVega();
+
+    // **Initialize LabelDebugger if view has changed**
+    if (this.props.view !== prevProps.view && this.props.view) {
+      this.labelDebugger = new LabelDebugger(this.props.view);
+    }
   }
 
   public componentWillUnmount() {
@@ -310,6 +328,15 @@ class Editor extends React.PureComponent<Props, State> {
       );
     }
   }
+
+  // **Handle the click on Visualize Bitmap button**
+  private handleVisualizeBitmap = () => {
+    if (this.labelDebugger) {
+      this.labelDebugger.visualizeBitmap();
+    } else {
+      console.error('LabelDebugger is not initialized');
+    }
+  };
 
   public render() {
     const {responsiveWidth, responsiveHeight} = this.isResponsive();
@@ -364,6 +391,8 @@ class Editor extends React.PureComponent<Props, State> {
             </div>
           </Portal>
         )}
+        {/* **Add Visualize Bitmap button** */}
+        <button onClick={this.handleVisualizeBitmap}>Visualize Bitmap</button>
       </div>
     );
   }
