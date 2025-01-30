@@ -62,3 +62,11 @@ We welcome contributions and promptly review pull requests. For instructions abo
 ## Creating a release on gh-pages
 
 Run the publish action at https://github.com/vega/editor/actions/workflows/publish.yml.
+
+## State of Changes from Original Repository
+
+This fork of the Vega editor includes the following modifications:
+
+- Added support for vega-label bitmap history visualization:
+   - New visualization components for displaying bitmap history
+   - Enhanced rendering capabilities for bitmap-based visualizations
