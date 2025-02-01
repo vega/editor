@@ -9,7 +9,7 @@
     "@parcel/transformer-inline-string": "2.13.3",
     "@types/node": "^22.5.5",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
-    "@typescript-eslint/parser": "^7.15.0",
+    "@typescript-eslint/parser": "^8.22.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
