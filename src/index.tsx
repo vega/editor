@@ -9,27 +9,15 @@ import setupMonaco from './utils/monaco';
 import AppShell from './components/app-shell';
 import configureStore from './store/configure-store';
 
-declare global {
-  interface Window {
-    VEGA_DEBUG: {
-      vega?: typeof vega;
-      vegaSpec?: vega.Spec;
-      view?: vega.View;
-      vegaLite?: typeof vegaLite;
-      normalizedVegaLiteSpec?: any;
-      vegaLiteSpec?: vegaLite.TopLevelSpec;
-      VEGA_VERSION?: string;
-      VEGA_LITE_VERSION?: string;
-    };
-  }
+if (typeof window !== 'undefined') {
+  const w = window as any;
+  w.VEGA_DEBUG = w.VEGA_DEBUG ?? {};
+  w.VEGA_DEBUG = {};
+  w.VEGA_DEBUG.vega = vega;
+  w.VEGA_DEBUG.vegaLite = vegaLite;
+  w.VEGA_DEBUG.VEGA_VERSION = vega.version;
+  w.VEGA_DEBUG.VEGA_LITE_VERSION = vegaLite.version;
 }
-
-window.VEGA_DEBUG = window.VEGA_DEBUG || {};
-window.VEGA_DEBUG = {};
-window.VEGA_DEBUG.vega = vega;
-window.VEGA_DEBUG.vegaLite = vegaLite;
-window.VEGA_DEBUG.VEGA_VERSION = vega.version;
-window.VEGA_DEBUG.VEGA_LITE_VERSION = vegaLite.version;
 
 setupMonaco();
 

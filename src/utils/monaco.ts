@@ -45,41 +45,41 @@ const schemas = [
   },
 ];
 
-export default function setupMonaco() {
-  loader.init().then((monaco) => {
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-      comments: 'warning',
-      trailingCommas: 'warning',
-      enableSchemaRequest: true,
-      schemas,
-      validate: true,
-    });
+export default async function setupMonaco() {
+  const monaco = await loader.init();
 
-    monaco.languages.json.jsonDefaults.setModeConfiguration({
-      documentFormattingEdits: false,
-      documentRangeFormattingEdits: false,
-      completionItems: true,
-      hovers: true,
-      documentSymbols: true,
-      tokens: true,
-      colors: true,
-      foldingRanges: true,
-      diagnostics: true,
-    });
+  monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+    comments: 'warning',
+    trailingCommas: 'warning',
+    enableSchemaRequest: true,
+    schemas,
+    validate: true,
+  });
 
-    monaco.languages.registerDocumentFormattingEditProvider('json', {
-      provideDocumentFormattingEdits(
-        model: Monaco.editor.ITextModel,
-        options: Monaco.languages.FormattingOptions,
-        token: Monaco.CancellationToken,
-      ): Monaco.languages.TextEdit[] {
-        return [
-          {
-            range: model.getFullModelRange(),
-            text: stringify(parseJSONC(model.getValue())),
-          },
-        ];
-      },
-    });
+  monaco.languages.json.jsonDefaults.setModeConfiguration({
+    documentFormattingEdits: false,
+    documentRangeFormattingEdits: false,
+    completionItems: true,
+    hovers: true,
+    documentSymbols: true,
+    tokens: true,
+    colors: true,
+    foldingRanges: true,
+    diagnostics: true,
+  });
+
+  monaco.languages.registerDocumentFormattingEditProvider('json', {
+    provideDocumentFormattingEdits(
+      model: Monaco.editor.ITextModel,
+      options: Monaco.languages.FormattingOptions,
+      token: Monaco.CancellationToken,
+    ): Monaco.languages.TextEdit[] {
+      return [
+        {
+          range: model.getFullModelRange(),
+          text: stringify(parseJSONC(model.getValue())),
+        },
+      ];
+    },
   });
 }
