@@ -204,14 +204,12 @@ export default class SignalViewer extends React.PureComponent<Props, any> {
   }
 
   public componentDidMount() {
-    window.addEventListener('resize', () => {
-      this.forceUpdate();
-    });
     const keys = this.getKeys();
     this.setState({
       keys,
     });
   }
+
   public valueChange = (key: string, value: any) => {
     if (this.state.timeline && !this.state.maskListener) {
       this.getSignals(key);

@@ -1,13 +1,35 @@
 import cytoscape, {CytoscapeOptions} from 'cytoscape';
 import * as React from 'react';
 import {Elements} from './utils/allRelated';
-import popper from 'cytoscape-popper';
+import cytoscapePopper from 'cytoscape-popper';
 import {style} from './utils/cytoscapeStyle';
 import {Positions} from './utils/ELKToPositions';
 import './CytoscapeControlled.css';
 import {setsEqual} from './utils/setsEqual';
+import {computePosition, flip, shift, limitShift} from '@floating-ui/dom';
 
-cytoscape.use(popper);
+function popperFactory(ref, content, opts) {
+  // see https://floating-ui.com/docs/computePosition#options
+  const popperOptions = {
+    // matching the default behaviour from Popper@2
+    // https://floating-ui.com/docs/migration#configure-middleware
+    middleware: [flip(), shift({limiter: limitShift()})],
+    ...opts,
+  };
+
+  function update() {
+    computePosition(ref, content, popperOptions).then(({x, y}) => {
+      Object.assign(content.style, {
+        left: `${x}px`,
+        top: `${y}px`,
+      });
+    });
+  }
+  update();
+  return {update};
+}
+
+cytoscape.use(cytoscapePopper(popperFactory));
 
 // https://js.cytoscape.org/#core/initialisation
 const OPTIONS: CytoscapeOptions = {

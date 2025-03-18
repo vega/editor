@@ -11,7 +11,7 @@ const colorScheme: string[] = [...scheme('tableau20'), ...scheme('category20b')]
 export const fontFamily = '-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 export const fontSize = '16px';
 export const nodePaddingPx = 8;
-export const style: cytoscape.Stylesheet[] = [
+export const style: cytoscape.StylesheetJson = [
   {
     selector: 'node, edge',
     style: {
@@ -60,7 +60,7 @@ export const style: cytoscape.Stylesheet[] = [
   },
   {
     selector: 'edge',
-    css: {
+    style: {
       'target-arrow-shape': 'triangle',
       'curve-style': 'bezier',
       'text-background-padding': '5',
@@ -73,13 +73,13 @@ export const style: cytoscape.Stylesheet[] = [
   },
   {
     selector: 'edge[label]',
-    css: {
+    style: {
       label: 'data(label)',
     },
   },
   {
     selector: 'edge[primary="true"]',
-    css: {
+    style: {
       color: 'black',
       'line-color': 'black',
       'target-arrow-color': 'black',
@@ -87,7 +87,7 @@ export const style: cytoscape.Stylesheet[] = [
   },
   {
     selector: 'edge[primary="false"]',
-    css: {
+    style: {
       color: '#ddd',
       'line-color': '#ddd',
       'target-arrow-color': '#ddd',
