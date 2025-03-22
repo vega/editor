@@ -13,7 +13,7 @@
     "@parcel/transformer-inline-string": "2.14.0",
     "@types/node": "^22.13.10",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
-    "@typescript-eslint/parser": "^7.15.0",
+    "@typescript-eslint/parser": "^8.26.1",
     "autoprefixer": "^10.4.21",
     "browserify-zlib": "^0.2.0",
     "eslint": "^8.57.0",
