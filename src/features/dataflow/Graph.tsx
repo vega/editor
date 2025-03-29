@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {useAppSelector} from '../../hooks';
-import {currentLayoutSelector, useRecomputeLayout} from './layoutSlice';
-import {Cytoscape} from './Cytoscape';
-import {Popup} from './Popup';
+import {useAppSelector} from '../../hooks.js';
+import {currentLayoutSelector, useRecomputeLayout} from './layoutSlice.js';
+import {Cytoscape} from './Cytoscape.js';
+import {Popup} from './Popup.js';
 import './Graph.css';
 import {useDispatch} from 'react-redux';
-import {elementsSelectedSelector, setSelectedElements} from './selectionSlice';
+import {elementsSelectedSelector, setSelectedElements} from './selectionSlice.js';
 
 export function Graph() {
   // Trigger starting the async layout computation, when this node is rendered

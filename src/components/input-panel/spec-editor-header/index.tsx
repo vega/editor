@@ -2,10 +2,10 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../../actions/editor';
-import {SIDEPANE} from '../../../constants';
-import {State} from '../../../constants/default-state';
-import ConfigEditorHeader from '../../config-editor/config-editor-header';
+import * as EditorActions from '../../../actions/editor.js';
+import {SIDEPANE} from '../../../constants/index.js';
+import {State} from '../../../constants/default-state.js';
+import ConfigEditorHeader from '../../config-editor/config-editor-header.js';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;

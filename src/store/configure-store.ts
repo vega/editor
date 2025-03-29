@@ -2,9 +2,9 @@ import {applyMiddleware, compose, createStore} from 'redux';
 import persistState from 'redux-localstorage';
 import thunk from 'redux-thunk';
 
-import rootReducer from '../reducers';
-import {dataflowInitialState} from '../features/dataflow';
-import {DEFAULT_STATE, State} from './../constants/default-state';
+import rootReducer from '../reducers/index.js';
+import {dataflowInitialState} from '../features/dataflow/index.js';
+import {DEFAULT_STATE, State} from './../constants/default-state.js';
 
 export default function configureStore(initialState: State = DEFAULT_STATE) {
   // Compose final middleware

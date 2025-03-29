@@ -4,8 +4,8 @@ import MonacoEditor from '@monaco-editor/react';
 import ResizeObserver from 'rc-resize-observer';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {debounce} from 'vega';
-import {mapDispatchToProps, mapStateToProps} from '.';
-import {SIDEPANE} from '../../constants';
+import {mapDispatchToProps, mapStateToProps} from './index.js';
+import {SIDEPANE} from '../../constants/index.js';
 import './config-editor.css';
 
 type Props = ReturnType<typeof mapStateToProps> &

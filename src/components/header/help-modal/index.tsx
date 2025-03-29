@@ -3,8 +3,8 @@ import {AlertCircle, Slack, Twitter} from 'react-feather';
 import {version as VG_VERSION} from 'vega';
 import {version as VL_VERSION} from 'vega-lite';
 import {version as TOOLTIP_VERSION} from 'vega-tooltip';
-import isMac from '../../../utils/isMac';
-import shortcuts from '../../../utils/keyboardShortcuts';
+import isMac from '../../../utils/isMac.js';
+import shortcuts from '../../../utils/keyboardShortcuts.js';
 import './index.css';
 
 // Will generate keyboard shortcuts based on OS

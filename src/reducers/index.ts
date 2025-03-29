@@ -56,11 +56,11 @@ import {
   UPDATE_VEGA_LITE_SPEC,
   UPDATE_VEGA_SPEC,
   WARN,
-} from '../actions/editor';
-import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants';
-import {State} from '../constants/default-state';
-import {dataflowReducer} from '../features/dataflow';
-import {validateVega, validateVegaLite} from '../utils/validate';
+} from '../actions/editor.js';
+import {DEFAULT_STATE, GistPrivacy, Mode} from '../constants/index.js';
+import {State} from '../constants/default-state.js';
+import {dataflowReducer} from '../features/dataflow/index.js';
+import {validateVega, validateVegaLite} from '../utils/validate.js';
 import {
   MERGE_CONFIG_SPEC,
   SET_HOVER,
@@ -69,8 +69,8 @@ import {
   SET_SIDEPANE_ITEM,
   SET_THEME_NAME,
   SET_TOOLTIP,
-} from './../actions/editor';
-import {LocalLogger} from './../utils/logger';
+} from './../actions/editor.js';
+import {LocalLogger} from './../utils/logger.js';
 import {parse as parseJSONC, visit as visitJSONC, printParseErrorCode as printJSONCParseErrorCode} from 'jsonc-parser';
 
 function throwJSONCParseError(error, _offset, _length, startLine, startCharacter): SyntaxError {

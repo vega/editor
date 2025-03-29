@@ -2,15 +2,15 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import SplitPane from 'react-split-pane-r17';
 import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../actions/editor';
-import {LAYOUT, Mode, SIDEPANE} from '../../constants';
-import {State} from '../../constants/default-state';
-import ConfigEditor from '../config-editor';
-import CompiledSpecDisplay from './compiled-spec-display';
-import CompiledSpecHeader from './compiled-spec-header';
+import * as EditorActions from '../../actions/editor.js';
+import {LAYOUT, Mode, SIDEPANE} from '../../constants/index.js';
+import {State} from '../../constants/default-state.js';
+import ConfigEditor from '../config-editor/index.js';
+import CompiledSpecDisplay from './compiled-spec-display/index.js';
+import CompiledSpecHeader from './compiled-spec-header/index.js';
 import './index.css';
-import SpecEditor from './spec-editor';
-import SpecEditorHeader from './spec-editor-header';
+import SpecEditor from './spec-editor/index.js';
+import SpecEditorHeader from './spec-editor-header/index.js';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 

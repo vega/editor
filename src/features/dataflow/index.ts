@@ -1,11 +1,11 @@
 import {AnyAction} from '@reduxjs/toolkit';
-import {State} from '../../constants/default-state';
+import {State} from '../../constants/default-state.js';
 
-import {pulsesSlice} from './pulsesSlice';
-import {runtimeSlice} from './runtimeSlice';
-import {selectionSlice} from './selectionSlice';
-import {layoutSlice} from './layoutSlice';
-import {popupSlice} from './popupSlice';
+import {pulsesSlice} from './pulsesSlice.js';
+import {runtimeSlice} from './runtimeSlice.js';
+import {selectionSlice} from './selectionSlice.js';
+import {layoutSlice} from './layoutSlice.js';
+import {popupSlice} from './popupSlice.js';
 
 // Since we are using a number of pulses defined here with the rest of the global redux state
 // we need a few custom functions to combine these reducers and state types, to integrate

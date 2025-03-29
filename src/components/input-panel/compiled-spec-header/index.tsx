@@ -4,9 +4,9 @@ import {ChevronDown, ChevronUp} from 'react-feather';
 import {connect} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../../actions/editor';
-import {COMPILEDPANE} from '../../../constants';
-import {State} from '../../../constants/default-state';
+import * as EditorActions from '../../../actions/editor.js';
+import {COMPILEDPANE} from '../../../constants/index.js';
+import {State} from '../../../constants/default-state.js';
 
 const toggleStyle = {
   cursor: 'pointer',

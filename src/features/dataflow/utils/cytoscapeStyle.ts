@@ -1,5 +1,5 @@
 import {scheme} from 'vega-scale';
-import {colorKeys} from './graph';
+import {colorKeys} from './graph.js';
 
 // Use these color schemes for the nodes
 // https://vega.github.io/vega/docs/schemes/#categorical

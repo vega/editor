@@ -1,4 +1,4 @@
-import {fontSize, fontFamily} from './cytoscapeStyle';
+import {fontSize, fontFamily} from './cytoscapeStyle.js';
 const ctx = document.createElement('canvas').getContext('2d');
 
 ctx.font = `${fontSize} ${fontFamily}`;

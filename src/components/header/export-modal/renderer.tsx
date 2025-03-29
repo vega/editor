@@ -5,8 +5,8 @@ import {withRouter} from 'react-router-dom';
 import {mergeConfig, version as VG_VERSION} from 'vega';
 import {version as VE_VERSION} from 'vega-embed';
 import {version as VL_VERSION} from 'vega-lite';
-import {mapStateToProps} from '.';
-import {Mode} from '../../../constants/consts';
+import {mapStateToProps} from './index.js';
+import {Mode} from '../../../constants/consts.js';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;

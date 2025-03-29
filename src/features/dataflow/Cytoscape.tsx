@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {useDispatch} from 'react-redux';
-import {useAppSelector} from '../../hooks';
-import {currentPositionsSelector} from './layoutSlice';
-import {selectedElementsSelector, setSelectedElements} from './selectionSlice';
-import {setPopup} from './popupSlice';
-import {CytoscapeControlled} from './CytoscapeControlled';
-import {cytoscapeElementsSelector} from './runtimeSlice';
+import {useAppSelector} from '../../hooks.js';
+import {currentPositionsSelector} from './layoutSlice.js';
+import {selectedElementsSelector, setSelectedElements} from './selectionSlice.js';
+import {setPopup} from './popupSlice.js';
+import {CytoscapeControlled} from './CytoscapeControlled.js';
+import {cytoscapeElementsSelector} from './runtimeSlice.js';
 
 export function Cytoscape() {
   const dispatch = useDispatch();

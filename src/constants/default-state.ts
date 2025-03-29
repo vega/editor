@@ -2,7 +2,7 @@ import type * as Monaco from 'monaco-editor';
 import {Renderers, Spec} from 'vega';
 import {Config, vega} from 'vega-embed';
 import {TopLevelSpec as VlSpec} from 'vega-lite';
-import {dataflowInitialState} from '../features/dataflow';
+import {dataflowInitialState} from '../features/dataflow/index.js';
 
 import {
   COMPILEDPANE,
@@ -14,7 +14,7 @@ import {
   SIDEPANE,
   VEGA_LITE_START_SPEC,
   View,
-} from './consts';
+} from './consts.js';
 
 export type State = {
   isAuthenticated: boolean;

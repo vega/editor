@@ -3,9 +3,9 @@ import {ChevronDown, ChevronUp} from 'react-feather';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../../actions/editor';
-import {NAVBAR} from '../../../constants/consts';
-import {State} from '../../../constants/default-state';
+import * as EditorActions from '../../../actions/editor.js';
+import {NAVBAR} from '../../../constants/consts.js';
+import {State} from '../../../constants/default-state.js';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 

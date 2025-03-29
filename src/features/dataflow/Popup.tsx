@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {useAppSelector} from '../../hooks';
-import {popupValueSelector} from './popupSlice';
-import {Popup as AppPopup} from '../../components/popup';
+import {useAppSelector} from '../../hooks.js';
+import {popupValueSelector} from './popupSlice.js';
+import {Popup as AppPopup} from '../../components/popup/index.js';
 import {Placement} from 'tippy.js';
 import './Popup.css';
-import {prettifyExpression} from './utils/prettify';
+import {prettifyExpression} from './utils/prettify.js';
 
 // TODO: Use one tippy and have max height for each pre
 export function Popup() {

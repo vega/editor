@@ -5,16 +5,16 @@ import {SerializedError, createAsyncThunk, createSelector, createSlice} from '@r
 import ELK, {ElkNode} from 'elkjs';
 import * as React from 'react';
 import {useDispatch} from 'react-redux';
-import {State} from '../../constants/default-state';
-import {useAppSelector} from '../../hooks';
-import {graphSelector, setRuntime} from './runtimeSlice';
-import {visibleElementsSelector, visibleNodesSelector} from './selectionSlice';
-import {ELKToPositions} from './utils/ELKToPositions';
-import {createSliceSelector} from './utils/createSliceSelector';
-import {Graph} from './utils/graph';
-import {toELKGraph} from './utils/toELKGraph';
+import {State} from '../../constants/default-state.js';
+import {useAppSelector} from '../../hooks.js';
+import {graphSelector, setRuntime} from './runtimeSlice.js';
+import {visibleElementsSelector, visibleNodesSelector} from './selectionSlice.js';
+import {ELKToPositions} from './utils/ELKToPositions.js';
+import {createSliceSelector} from './utils/createSliceSelector.js';
+import {Graph} from './utils/graph.js';
+import {toELKGraph} from './utils/toELKGraph.js';
 
-import {Worker as ElkWorker} from 'elkjs/lib/elk-worker';
+import {Worker as ElkWorker} from 'elkjs/lib/elk-worker.js';
 
 // Mapping of action request ID to computed layout, keyed by the visible nodes and runtime
 

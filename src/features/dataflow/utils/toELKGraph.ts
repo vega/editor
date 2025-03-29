@@ -1,5 +1,5 @@
 import {ElkNode, LayoutOptions} from 'elkjs';
-import {Graph} from './graph';
+import {Graph} from './graph.js';
 
 // We do our own layouts with ELK instead of using the cytoscape ELK plugin, so we can cache the layouts more easily
 // https://github.com/cytoscape/cytoscape.js-elk/blob/master/src/layout.js

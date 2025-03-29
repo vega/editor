@@ -1,5 +1,5 @@
-import * as prettier from 'prettier2/standalone';
-import * as parserBabel from 'prettier2/parser-babel';
+import * as prettier from 'prettier2/standalone.js';
+import * as parserBabel from 'prettier2/parser-babel.js';
 
 /**
  * Prettify a JS expression, by creating a statement out of it, then removing the variable decleration and trailing semi-colon.

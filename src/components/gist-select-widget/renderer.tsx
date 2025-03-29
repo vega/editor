@@ -1,9 +1,9 @@
 import React from 'react';
 import {File, Lock} from 'react-feather';
 import ReactPaginate from 'react-paginate';
-import {mapDispatchToProps, mapStateToProps} from '.';
-import {BACKEND_URL, GistPrivacy} from '../../constants';
-import LoginConditional from '../login-conditional';
+import {mapDispatchToProps, mapStateToProps} from './index.js';
+import {BACKEND_URL, GistPrivacy} from '../../constants/index.js';
+import LoginConditional from '../login-conditional/index.js';
 import './index.css';
 
 interface State {

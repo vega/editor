@@ -1,4 +1,4 @@
-import {Graph} from './graph';
+import {Graph} from './graph.js';
 import cytoscape from 'cytoscape';
 
 export function toCytoscape(graph: Graph): cytoscape.ElementsDefinition {

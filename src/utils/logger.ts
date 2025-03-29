@@ -1,4 +1,4 @@
-import {store} from './../index';
+import {store} from './../index.js';
 import * as vega from 'vega';
 
 export class LocalLogger implements vega.LoggerInterface {

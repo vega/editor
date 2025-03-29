@@ -3,9 +3,9 @@ import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
 import {debounce} from 'vega';
-import {mapStateToProps} from '.';
-import ErrorBoundary from '../error-boundary';
-import Table from '../table';
+import {mapStateToProps} from './index.js';
+import ErrorBoundary from '../error-boundary/index.js';
+import Table from '../table/index.js';
 import './index.css';
 
 type StoreProps = ReturnType<typeof mapStateToProps>;

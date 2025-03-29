@@ -7,15 +7,15 @@ import SplitPane from 'react-split-pane-r17';
 import {bindActionCreators, Dispatch} from 'redux';
 import {MessageData} from 'vega-embed';
 import {hash} from 'vega-lite';
-import * as EditorActions from '../actions/editor';
-import {LAYOUT, Mode} from '../constants';
-import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
-import {State} from '../constants/default-state';
+import * as EditorActions from '../actions/editor.js';
+import {LAYOUT, Mode} from '../constants/index.js';
+import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts.js';
+import {State} from '../constants/default-state.js';
 import './app.css';
-import Header from './header';
-import InputPanel from './input-panel';
-import Sidebar from './sidebar';
-import VizPane from './viz-pane';
+import Header from './header/index.js';
+import InputPanel from './input-panel/index.js';
+import Sidebar from './sidebar/index.js';
+import VizPane from './viz-pane/index.js';
 
 type Props = {showExample: boolean};
 

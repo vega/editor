@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Route, Switch} from 'react-router-dom';
 
-import App from './app';
-import Reset from './reset';
+import App from './app.js';
+import Reset from './reset.js';
 
 export default class AppShell extends React.PureComponent {
   public render() {

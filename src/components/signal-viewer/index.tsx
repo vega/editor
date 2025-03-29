@@ -1,8 +1,8 @@
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../actions/editor';
-import {State} from '../../constants/default-state';
-import Renderer from './renderer';
+import * as EditorActions from '../../actions/editor.js';
+import {State} from '../../constants/default-state.js';
+import Renderer from './renderer.js';
 
 export function mapStateToProps(state: State) {
   return {

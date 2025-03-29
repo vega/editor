@@ -5,15 +5,15 @@ import {ExternalLink, GitHub, Grid, HelpCircle, Play, Settings, Share2, Terminal
 import {PortalWithState} from 'react-portal';
 import {RouteComponentProps} from 'react-router-dom';
 import Select from 'react-select';
-import {mapDispatchToProps, mapStateToProps} from '.';
-import {BACKEND_URL, KEYCODES, Mode} from '../../constants';
-import {NAMES} from '../../constants/consts';
-import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs';
-import ExportModal from './export-modal/index';
-import GistModal from './gist-modal/index';
-import HelpModal from './help-modal/index';
+import {mapDispatchToProps, mapStateToProps} from './index.js';
+import {BACKEND_URL, KEYCODES, Mode} from '../../constants/index.js';
+import {NAMES} from '../../constants/consts.js';
+import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs.js';
+import ExportModal from './export-modal/index.js';
+import GistModal from './gist-modal/index.js';
+import HelpModal from './help-modal/index.js';
 import './index.css';
-import ShareModal from './share-modal/index';
+import ShareModal from './share-modal/index.js';
 
 export interface Props {
   showExample: boolean;

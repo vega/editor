@@ -4,8 +4,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {omit} from 'vega-lite';
 import * as themes from 'vega-themes';
-import * as EditorActions from '../../actions/editor';
-import {State} from '../../constants/default-state';
+import * as EditorActions from '../../actions/editor.js';
+import {State} from '../../constants/default-state.js';
 import './config-editor.css';
 
 class ConfigEditorHeader extends React.PureComponent<any, any> {

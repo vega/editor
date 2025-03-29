@@ -1,10 +1,10 @@
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../actions/editor';
-import {State} from '../../constants/default-state';
-import {recordPulse} from '../../features/dataflow/pulsesSlice';
-import {setRuntime} from '../../features/dataflow/runtimeSlice';
-import Renderer from './renderer';
+import * as EditorActions from '../../actions/editor.js';
+import {State} from '../../constants/default-state.js';
+import {recordPulse} from '../../features/dataflow/pulsesSlice.js';
+import {setRuntime} from '../../features/dataflow/runtimeSlice.js';
+import Renderer from './renderer.js';
 
 export function mapStateToProps(state: State) {
   return {

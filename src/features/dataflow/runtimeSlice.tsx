@@ -1,8 +1,8 @@
 import {createAction, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Runtime} from 'vega-typings/types';
-import {toCytoscape} from './utils/toCytoscape';
-import {createSliceSelector} from './utils/createSliceSelector';
-import {runtimeToGraph} from './utils/runtimeToGraph';
+import {Runtime} from 'vega-typings/types/index.js';
+import {toCytoscape} from './utils/toCytoscape.js';
+import {createSliceSelector} from './utils/createSliceSelector.js';
+import {runtimeToGraph} from './utils/runtimeToGraph.js';
 
 export type RuntimeState = Runtime | null;
 const initialState: RuntimeState = null;

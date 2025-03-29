@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {AlertCircle} from 'react-feather';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {mapStateToProps} from '.';
-import GistSelectWidget from '../../gist-select-widget';
-import {Mode} from '../../../constants';
+import {mapStateToProps} from './index.js';
+import GistSelectWidget from '../../gist-select-widget/index.js';
+import {Mode} from '../../../constants/index.js';
 import './index.css';
 import {parse as parseJSONC} from 'jsonc-parser';
 

@@ -14,11 +14,11 @@ import {
   Update,
   ID,
   BaseOperator,
-} from 'vega-typings/types/runtime/runtime';
+} from 'vega-typings/types/runtime/runtime.js';
 
-import {prettifyExpression} from './prettify';
-import {Graph, Node} from './graph';
-import {measureText} from './measureText';
+import {prettifyExpression} from './prettify.js';
+import {Graph, Node} from './graph.js';
+import {measureText} from './measureText.js';
 
 export function runtimeToGraph(runtime: Runtime): Graph {
   const graph = {nodes: {}, edges: {}} as Graph;

@@ -1,5 +1,5 @@
 import {ElkNode} from 'elkjs';
-import {Size} from './measureText';
+import {Size} from './measureText.js';
 
 export type Positions = Record<string, {x: number; y: number}>;
 export function ELKToPositions(node: ElkNode): Positions {

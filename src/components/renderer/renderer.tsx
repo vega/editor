@@ -6,11 +6,11 @@ import * as vega from 'vega';
 import {Config as VgConfig} from 'vega';
 import {deepEqual} from 'vega-lite';
 import vegaTooltip from 'vega-tooltip';
-import {mapDispatchToProps, mapStateToProps} from '.';
-import {KEYCODES, Mode} from '../../constants';
-import addProjections from '../../utils/addProjections';
-import {dispatchingLogger} from '../../utils/logger';
-import {Popup} from '../popup';
+import {mapDispatchToProps, mapStateToProps} from './index.js';
+import {KEYCODES, Mode} from '../../constants/index.js';
+import addProjections from '../../utils/addProjections.js';
+import {dispatchingLogger} from '../../utils/logger.js';
+import {Popup} from '../popup/index.js';
 import './index.css';
 import {expressionInterpreter as vegaInterpreter} from 'vega-interpreter';
 

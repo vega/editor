@@ -1,6 +1,6 @@
 import React from 'react';
-import {mapStateToProps} from '.';
-import {BACKEND_URL} from '../../constants';
+import {mapStateToProps} from './index.js';
+import {BACKEND_URL} from '../../constants/index.js';
 
 type Props = ReturnType<typeof mapStateToProps> & {children?: React.ReactNode};
 

@@ -7,8 +7,8 @@ import ResizeObserver from 'rc-resize-observer';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {debounce} from 'vega';
 import parser from 'vega-schema-url-parser';
-import {mapDispatchToProps, mapStateToProps} from '.';
-import {EDITOR_FOCUS, KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants';
+import {mapDispatchToProps, mapStateToProps} from './index.js';
+import {EDITOR_FOCUS, KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants/index.js';
 import './index.css';
 import {parse as parseJSONC} from 'jsonc-parser';
 

@@ -1,8 +1,8 @@
 import {createAction, createSelector, createSlice} from '@reduxjs/toolkit';
 import {GetReferenceClientRect} from 'tippy.js';
-import {graphSelector} from './runtimeSlice';
-import {selectedValuesSelector} from './selectionSlice';
-import {createSliceSelector} from './utils/createSliceSelector';
+import {graphSelector} from './runtimeSlice.js';
+import {selectedValuesSelector} from './selectionSlice.js';
+import {createSliceSelector} from './utils/createSliceSelector.js';
 
 export type PopupState = null | {
   type: 'node' | 'edge';

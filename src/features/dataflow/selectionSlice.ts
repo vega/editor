@@ -1,10 +1,10 @@
 import {createAction, createSlice, createSelector} from '@reduxjs/toolkit';
-import {graphSelector, setRuntime} from './runtimeSlice';
-import {resetPulses, pulsesSelector} from './pulsesSlice';
-import {allRelated} from './utils/allRelated';
-import {associatedWith, filterEdges, intersectIDs, GraphType, types} from './utils/graph';
-import {createSliceSelector} from './utils/createSliceSelector';
-import {mapValues} from './utils/mapValues';
+import {graphSelector, setRuntime} from './runtimeSlice.js';
+import {resetPulses, pulsesSelector} from './pulsesSlice.js';
+import {allRelated} from './utils/allRelated.js';
+import {associatedWith, filterEdges, intersectIDs, GraphType, types} from './utils/graph.js';
+import {createSliceSelector} from './utils/createSliceSelector.js';
+import {mapValues} from './utils/mapValues.js';
 
 export type Elements = {nodes: string[]; edges: string[]};
 export type SelectionState = {

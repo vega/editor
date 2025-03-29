@@ -1,11 +1,11 @@
 import cytoscape, {CytoscapeOptions} from 'cytoscape';
 import * as React from 'react';
-import {Elements} from './utils/allRelated';
+import {Elements} from './utils/allRelated.js';
 import cytoscapePopper from 'cytoscape-popper';
-import {style} from './utils/cytoscapeStyle';
-import {Positions} from './utils/ELKToPositions';
+import {style} from './utils/cytoscapeStyle.js';
+import {Positions} from './utils/ELKToPositions.js';
 import './CytoscapeControlled.css';
-import {setsEqual} from './utils/setsEqual';
+import {setsEqual} from './utils/setsEqual.js';
 import {computePosition, flip, shift, limitShift} from '@floating-ui/dom';
 
 function popperFactory(ref, content, opts) {

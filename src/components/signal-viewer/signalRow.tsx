@@ -1,8 +1,8 @@
 import React from 'react';
 import {Search} from 'react-feather';
 import {isDate} from 'vega';
-import {View} from '../../constants';
-import {formatValueLong} from '../table/renderer';
+import {View} from '../../constants/index.js';
+import {formatValueLong} from '../table/renderer.js';
 
 /* eslint-disable react/prop-types */
 

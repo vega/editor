@@ -1,19 +1,19 @@
 import * as React from 'react';
 import SplitPane from 'react-split-pane-r17';
-import {mapDispatchToProps, mapStateToProps} from '.';
-import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants';
-import DataViewer from '../data-viewer';
-import ErrorBoundary from '../error-boundary';
-import ErrorPane from '../error-pane';
-import Renderer from '../renderer';
-import SignalViewer from '../signal-viewer';
-import DebugPaneHeader from './debug-pane-header';
+import {mapDispatchToProps, mapStateToProps} from './index.js';
+import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants/index.js';
+import DataViewer from '../data-viewer/index.js';
+import ErrorBoundary from '../error-boundary/index.js';
+import ErrorPane from '../error-pane/index.js';
+import Renderer from '../renderer/index.js';
+import SignalViewer from '../signal-viewer/index.js';
+import DebugPaneHeader from './debug-pane-header/index.js';
 import './index.css';
 import {version as VG_VERSION} from 'vega';
 import {version as VL_VERSION} from 'vega-lite';
 import {version as TOOLTIP_VERSION} from 'vega-tooltip';
-import {COMMIT_HASH} from '../header/help-modal';
-import {DataflowViewer} from '../../features/dataflow/DataflowViewer';
+import {COMMIT_HASH} from '../header/help-modal/index.js';
+import {DataflowViewer} from '../../features/dataflow/DataflowViewer.js';
 
 const defaultState = {
   header: '',

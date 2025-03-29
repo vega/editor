@@ -1,8 +1,8 @@
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../actions/editor';
-import {State} from '../../constants/default-state';
-import Renderer, {Props} from './renderer';
+import * as EditorActions from '../../actions/editor.js';
+import {State} from '../../constants/default-state.js';
+import Renderer, {Props} from './renderer.js';
 import {withRouter} from 'react-router-dom';
 
 export function mapStateToProps(state: State, ownProps: Props) {

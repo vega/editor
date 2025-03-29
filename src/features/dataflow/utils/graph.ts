@@ -3,7 +3,7 @@
  */
 
 import {vega} from 'vega-embed';
-import {Size} from './measureText';
+import {Size} from './measureText.js';
 
 type ID = string;
 

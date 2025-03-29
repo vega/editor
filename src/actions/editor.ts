@@ -1,6 +1,6 @@
 import type * as Monaco from 'monaco-editor';
 import {Renderers} from 'vega';
-import {Mode, View} from '../constants';
+import {Mode, View} from '../constants/index.js';
 
 export const RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER' as const;
 export const EXPORT_VEGA = 'EXPORT_VEGA' as const;

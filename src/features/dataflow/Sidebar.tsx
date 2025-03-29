@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useDispatch} from 'react-redux';
-import {useAppSelector} from '../../hooks';
-import {resetPulses, sortedPulsesSelector, pulsesEmptySelector} from './pulsesSlice';
+import {useAppSelector} from '../../hooks.js';
+import {resetPulses, sortedPulsesSelector, pulsesEmptySelector} from './pulsesSlice.js';
 import './Sidebar.css';
 import {
   setSelectedElements,
@@ -9,8 +9,8 @@ import {
   selectedTypesSelector,
   setSelectedPulse,
   setSelectedType,
-} from './selectionSlice';
-import {GraphType, types} from './utils/graph';
+} from './selectionSlice.js';
+import {GraphType, types} from './utils/graph.js';
 
 export function Sidebar() {
   return (

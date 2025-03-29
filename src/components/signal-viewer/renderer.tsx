@@ -1,9 +1,9 @@
 import React from 'react';
 import * as vega from 'vega';
-import {mapDispatchToProps, mapStateToProps} from '.';
+import {mapDispatchToProps, mapStateToProps} from './index.js';
 import './index.css';
-import SignalRow from './signalRow';
-import TimelineRow from './TimelineRow';
+import SignalRow from './signalRow.js';
+import TimelineRow from './TimelineRow.js';
 
 type StoreProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 

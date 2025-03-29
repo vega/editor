@@ -5,11 +5,11 @@ import * as React from 'react';
 import Clipboard from 'react-clipboard.js';
 import {Copy, Link, Save} from 'react-feather';
 import {withRouter} from 'react-router-dom';
-import {mapDispatchToProps, mapStateToProps} from '.';
-import {BACKEND_URL, COOKIE_NAME, NAMES} from '../../../constants/consts';
-import getCookie from '../../../utils/getCookie';
-import GistSelectWidget from '../../gist-select-widget';
-import LoginConditional from '../../login-conditional';
+import {mapDispatchToProps, mapStateToProps} from './index.js';
+import {BACKEND_URL, COOKIE_NAME, NAMES} from '../../../constants/consts.js';
+import getCookie from '../../../utils/getCookie.js';
+import GistSelectWidget from '../../gist-select-widget/index.js';
+import LoginConditional from '../../login-conditional/index.js';
 import './index.css';
 
 const EDITOR_BASE = window.location.origin + window.location.pathname;

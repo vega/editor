@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Sidebar} from './Sidebar';
+import {Sidebar} from './Sidebar.js';
 import './DataflowViewer.css';
-import {Graph} from './Graph';
+import {Graph} from './Graph.js';
 
 /**
  * Wrap the component so we can catch the errors. We don't use the previously defined

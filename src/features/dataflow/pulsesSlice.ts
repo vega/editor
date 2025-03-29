@@ -1,7 +1,7 @@
 import {createAction, createSelector, createSlice} from '@reduxjs/toolkit';
-import {setRuntime} from './runtimeSlice';
-import {createSliceSelector} from './utils/createSliceSelector';
-import {SanitizedValue, sanitizeValue} from './utils/sanitizeValue';
+import {setRuntime} from './runtimeSlice.js';
+import {createSliceSelector} from './utils/createSliceSelector.js';
+import {SanitizedValue, sanitizeValue} from './utils/sanitizeValue.js';
 
 export type Values = Record<string, SanitizedValue>;
 export type Pulse = {clock: number; values: Values; nValues: number};

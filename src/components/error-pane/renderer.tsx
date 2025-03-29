@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {mapStateToProps} from '.';
+import {mapStateToProps} from './index.js';
 import './index.css';
 
 type Props = ReturnType<typeof mapStateToProps>;

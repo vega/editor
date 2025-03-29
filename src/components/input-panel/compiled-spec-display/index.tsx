@@ -3,10 +3,10 @@ import * as React from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../../actions/editor';
-import {EDITOR_FOCUS, LAYOUT, COMPILEDPANE} from '../../../constants';
-import {State} from '../../../constants/default-state';
-import CompiledSpecDisplayHeader from '../compiled-spec-header';
+import * as EditorActions from '../../../actions/editor.js';
+import {EDITOR_FOCUS, LAYOUT, COMPILEDPANE} from '../../../constants/index.js';
+import {State} from '../../../constants/default-state.js';
+import CompiledSpecDisplayHeader from '../compiled-spec-header/index.js';
 import ResizeObserver from 'rc-resize-observer';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
