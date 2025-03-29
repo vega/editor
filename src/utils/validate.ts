@@ -1,8 +1,8 @@
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import {LocalLogger} from './logger';
-import vegaLiteSchema from 'vega-lite/build/vega-lite-schema.json';
-import vegaSchema from 'vega/build/vega-schema.json';
+import {LocalLogger} from './logger.js';
+import vegaLiteSchema from 'vega-lite/vega-lite-schema.json';
+import vegaSchema from 'vega/vega-schema.json';
 import schema from 'ajv/lib/refs/json-schema-draft-06.json';
 
 const ajv = new Ajv({

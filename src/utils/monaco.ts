@@ -2,10 +2,10 @@ import stringify from 'json-stringify-pretty-compact';
 import {parse as parseJSONC} from 'jsonc-parser';
 import type * as Monaco from 'monaco-editor';
 import {mergeDeep} from 'vega-lite';
-import addMarkdownProps from './markdownProps';
+import addMarkdownProps from './markdownProps.js';
 
-import vegaLiteSchema from 'vega-lite/build/vega-lite-schema.json';
-import vegaSchema from 'vega/build/vega-schema.json';
+import vegaLiteSchema from 'vega-lite/vega-lite-schema.json';
+import vegaSchema from 'vega/vega-schema.json';
 
 import {loader} from '@monaco-editor/react';
 
