@@ -105,6 +105,9 @@ class ConfigEditor extends React.PureComponent<Props> {
             scrollBeyondLastLine: false,
             wordWrap: 'on',
             quickSuggestions: true,
+            stickyScroll: {
+              enabled: false,
+            },
           }}
           onChange={debounce(700, this.handleEditorChange)}
           defaultValue={this.props.configEditorString}

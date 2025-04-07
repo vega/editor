@@ -35,6 +35,9 @@ class CompiledSpecDisplay extends React.PureComponent<Props> {
               readOnly: true,
               scrollBeyondLastLine: false,
               wordWrap: 'on',
+              stickyScroll: {
+                enabled: false,
+              },
             }}
             language="json"
             value={stringify(this.props.value)}
