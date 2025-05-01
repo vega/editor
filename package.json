@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
-    "@reduxjs/toolkit": "^1.9.7",
+    "@reduxjs/toolkit": "^2.7.0",
     "@tippyjs/react": "^4.2.6",
     "@types/cytoscape": "^3.21.9",
     "@types/d3": "^7.4.3",
