@@ -69,25 +69,30 @@ class Header extends React.PureComponent<PropsType, State> {
     try {
       const response = await fetch(`${BACKEND_URL}auth/github/check`, {
         credentials: 'include',
+        cache: 'no-store',
       });
       const data = await response.json();
       const {isAuthenticated, handle, name, profilePicUrl} = data;
       this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
     } catch (error) {
-      console.error(error);
+      console.error('Initial authentication check failed:', error);
+      this.props.receiveCurrentUser(false, '', '', '');
     }
 
     window.addEventListener('message', async (e) => {
-      if (e.data.type === 'auth') {
+      if (e.data && e.data.type === 'auth') {
         try {
           const response = await fetch(`${BACKEND_URL}auth/github/check`, {
             credentials: 'include',
+            cache: 'no-store',
           });
           const data = await response.json();
           const {isAuthenticated, handle, name, profilePicUrl} = data;
           this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
         } catch (error) {
-          console.error(error);
+          console.error('Authentication check failed:', error);
+          // Handle the error state
+          this.props.receiveCurrentUser(false, '', '', '');
         }
       }
     });
@@ -159,10 +164,29 @@ class Header extends React.PureComponent<PropsType, State> {
     this.listenerAttached = false;
   }
   public signIn() {
-    window.open(`${BACKEND_URL}auth/github`, '_blank');
+    const popup = window.open(`${BACKEND_URL}auth/github`, 'github-login', 'width=600,height=600,resizable=yes');
+    if (popup) {
+      popup.focus();
+    } else {
+      // If popup is blocked or fails, redirect directly
+      window.location.href = `${BACKEND_URL}auth/github`;
+    }
   }
   public signOut() {
-    window.open(`${BACKEND_URL}auth/github/logout`, '_blank');
+    const popup = window.open(
+      `${BACKEND_URL}auth/github/logout`,
+      'github-logout',
+      'width=600,height=600,resizable=yes',
+    );
+    if (popup) {
+      popup.focus();
+    } else {
+      // If popup is blocked or fails, redirect directly
+      window.location.href = `${BACKEND_URL}auth/github/logout`;
+    }
+
+    // Also clear local state
+    this.props.receiveCurrentUser(false, '', '', '');
   }
 
   public render() {

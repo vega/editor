@@ -9,3 +9,4 @@ public/data/
 public/spec/
 stats.json
 .parcel-cache
+.vercel
