@@ -1,0 +1,34 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build artifacts
+.parcel-cache
+
+# Testing
+coverage
+.nyc_output
+test-results
+
+# Development configs
+.vscode
+.idea
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Version control
+.git
+.github
+
+# Documentation
+docs
+
+# Large data files
+public/data
+
+# Example images (these can be generated during build or served from a CDN)
+public/images/examples/vl
+public/images/examples/vg 

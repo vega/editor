@@ -9,6 +9,8 @@ import setupMonaco from './utils/monaco.js';
 import AppShell from './components/app-shell.js';
 import configureStore from './store/configure-store.js';
 
+console.log('Vega Editor initializing...');
+
 if (typeof window !== 'undefined') {
   const w = window as any;
   w.VEGA_DEBUG = w.VEGA_DEBUG ?? {};
@@ -17,22 +19,36 @@ if (typeof window !== 'undefined') {
   w.VEGA_DEBUG.vegaLite = vegaLite;
   w.VEGA_DEBUG.VEGA_VERSION = vega.version;
   w.VEGA_DEBUG.VEGA_LITE_VERSION = vegaLite.version;
+  console.log('Vega versions set on window.VEGA_DEBUG');
 }
 
-setupMonaco();
+try {
+  console.log('Setting up Monaco editor...');
+  setupMonaco();
+  console.log('Monaco editor setup complete');
+} catch (error) {
+  console.error('Error during setup of Monaco editor:', error);
+}
 
 export const store = configureStore();
+console.log('Store configuration complete');
 
-// Now that redux and react-router have been configured, we can render the
-// React application to the DOM!
-ReactDOM.render(
-  <Provider store={store}>
-    <HashRouter>
-      <AppShell />
-    </HashRouter>
-  </Provider>,
-  document.getElementById('root'),
-);
+try {
+  console.log('Rendering React application...');
+  // Now that redux and react-router have been configured, we can render the
+  // React application to the DOM!
+  ReactDOM.render(
+    <Provider store={store}>
+      <HashRouter>
+        <AppShell />
+      </HashRouter>
+    </Provider>,
+    document.getElementById('root'),
+  );
+  console.log('React application rendered');
+} catch (error) {
+  console.error('Error during React rendering:', error);
+}
 
 /* tslint:disable */
 console.log('%cWelcome to the Vega-Editor!', 'font-size: 16px; font-weight: bold;');

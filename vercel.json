@@ -1,0 +1,26 @@
+{
+    "framework": null,
+    "buildCommand": "npm run vercel-build",
+    "outputDirectory": "dist",
+    "routes": [
+        {
+            "handle": "filesystem"
+        },
+        {
+            "src": "/assets/(.*)\\.js",
+            "headers": {
+                "content-type": "application/javascript; charset=utf-8"
+            }
+        },
+        {
+            "src": "/assets/(.*)\\.mjs",
+            "headers": {
+                "content-type": "application/javascript; charset=utf-8"
+            }
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.html"
+        }
+    ]
+}
