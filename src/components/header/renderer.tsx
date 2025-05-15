@@ -72,14 +72,12 @@ class Header extends React.PureComponent<PropsType, State> {
       }
     });
 
-    // Check if we're in Safari and have localStorage auth data
     const usingLocalStorage = isSafari();
     if (usingLocalStorage) {
       const localAuthData = getAuthFromLocalStorage();
       if (localAuthData && localAuthData.isAuthenticated && localAuthData.authToken) {
         console.log('Using localStorage auth data:', localAuthData.handle);
 
-        // Try to verify the token locally first
         try {
           const isValid = await this.verifyTokenLocally(localAuthData.authToken);
           if (isValid) {
@@ -104,7 +102,6 @@ class Header extends React.PureComponent<PropsType, State> {
         Expires: '0',
       };
 
-      // For Safari, add token if available
       if (usingLocalStorage) {
         const token = localStorage.getItem('vega_editor_auth_token');
         if (token) {
@@ -124,7 +121,6 @@ class Header extends React.PureComponent<PropsType, State> {
 
       console.log('Auth response:', isAuthenticated ? 'Authenticated as ' + handle : 'Not authenticated');
 
-      // Store auth data in localStorage for Safari
       if (usingLocalStorage && isAuthenticated && authToken) {
         console.log('Saving new auth token to localStorage');
         saveAuthToLocalStorage({
@@ -144,12 +140,10 @@ class Header extends React.PureComponent<PropsType, State> {
 
     window.addEventListener('message', async (e) => {
       if (e.data && e.data.type === 'auth') {
-        // For Safari, store token from message
         if (usingLocalStorage && e.data.token) {
           console.log('Received auth token from popup:', e.data.token.substring(0, 10) + '...');
           localStorage.setItem('vega_editor_auth_token', e.data.token);
 
-          // For Safari, we can try to immediately use the token without making another request
           try {
             const tokenData = await this.verifyTokenLocally(e.data.token);
             if (tokenData && tokenData.isAuthenticated) {
@@ -174,7 +168,6 @@ class Header extends React.PureComponent<PropsType, State> {
             Expires: '0',
           };
 
-          // Add token header for Safari
           if (usingLocalStorage) {
             const token = e.data.token || localStorage.getItem('vega_editor_auth_token');
             if (token) {
@@ -191,7 +184,6 @@ class Header extends React.PureComponent<PropsType, State> {
           const data = await response.json();
           const {isAuthenticated, handle, name, profilePicUrl, authToken} = data;
 
-          // Store auth data in localStorage for Safari
           if (usingLocalStorage && isAuthenticated) {
             saveAuthToLocalStorage({
               isAuthenticated,
@@ -205,7 +197,6 @@ class Header extends React.PureComponent<PropsType, State> {
           this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
         } catch (error) {
           console.error('Authentication check failed:', error);
-          // Handle the error state
           this.props.receiveCurrentUser(false, '', '', '');
         }
       }
@@ -271,10 +262,6 @@ class Header extends React.PureComponent<PropsType, State> {
     this.props.editorRef.trigger('', 'editor.action.quickCommand', '');
   }
 
-  /**
-   * Attempts to decode and verify a token locally
-   * This is a helper method for Safari users to avoid an extra network request
-   */
   private async verifyTokenLocally(token: string): Promise<any> {
     try {
       // For a proper implementation, we should verify the token signature
@@ -306,49 +293,41 @@ class Header extends React.PureComponent<PropsType, State> {
     this.listenerAttached = false;
   }
   public signIn() {
-    // For Safari, ensure we open in a popup that can communicate back to this window
     if (isSafari()) {
       const popup = window.open(`${BACKEND_URL}auth/github`, 'github-login', 'width=600,height=600,resizable=yes');
       if (popup) {
         popup.focus();
       } else {
-        // If popup is blocked or fails, redirect directly
         window.location.href = `${BACKEND_URL}auth/github`;
       }
       return;
     }
 
-    // For other browsers, use the regular method
     const popup = window.open(`${BACKEND_URL}auth/github`, 'github-login', 'width=600,height=600,resizable=yes');
     if (popup) {
       popup.focus();
     } else {
-      // If popup is blocked or fails, redirect directly
       window.location.href = `${BACKEND_URL}auth/github`;
     }
   }
   public signOut() {
-    // For Safari, clear localStorage
     if (isSafari()) {
       clearAuthFromLocalStorage();
 
-      // Instead of fetch, create an iframe for logout in Safari
       const token = localStorage.getItem('vega_editor_auth_token');
       if (token) {
-        // Create a hidden iframe to handle the logout without CORS issues
+        // Creating hidden iframe (to handle CORS issues)
         const iframe = document.createElement('iframe');
         iframe.style.display = 'none';
         iframe.src = `${BACKEND_URL}auth/github/logout?token=${encodeURIComponent(token)}`;
         document.body.appendChild(iframe);
 
-        // Remove iframe after it's loaded or failed
         iframe.onload = iframe.onerror = () => {
           setTimeout(() => {
             document.body.removeChild(iframe);
           }, 500);
         };
 
-        // Clear token
         localStorage.removeItem('vega_editor_auth_token');
       }
     }
