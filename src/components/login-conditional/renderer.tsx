@@ -12,9 +12,13 @@ class LoginConditional extends React.PureComponent<Props> {
 
   handleLogin = (e) => {
     e.preventDefault();
-    const popup = window.open(`${BACKEND_URL}auth/github`, 'github-login', 'width=600,height=600');
 
-    if (popup) popup.focus();
+    const popup = window.open(`${BACKEND_URL}auth/github`, 'github-login', 'width=600,height=600,resizable=yes');
+    if (popup) {
+      popup.focus();
+    } else {
+      window.location.href = `${BACKEND_URL}auth/github`;
+    }
 
     return false;
   };

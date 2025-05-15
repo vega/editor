@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate';
 import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {BACKEND_URL, GistPrivacy} from '../../constants/index.js';
 import LoginConditional from '../login-conditional/index.js';
+import {isSafari} from '../../utils/browser.js';
 import './index.css';
 
 interface State {
@@ -80,11 +81,25 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
           loading: false,
         },
         async () => {
+          const headers: HeadersInit = {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            Pragma: 'no-cache',
+            Expires: '0',
+          };
+
+          if (isSafari()) {
+            const token = localStorage.getItem('vega_editor_auth_token');
+            if (token) {
+              headers['X-Auth-Token'] = token;
+            }
+          }
+
           let response;
           if (page.selected === 0) {
             response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=${this.props.private}`, {
               credentials: 'include',
               method: 'get',
+              headers,
             });
           } else {
             response = await fetch(
@@ -92,6 +107,7 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
               {
                 credentials: 'include',
                 method: 'get',
+                headers,
               },
             );
           }
