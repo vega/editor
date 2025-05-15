@@ -9,6 +9,12 @@ import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {BACKEND_URL, KEYCODES, Mode} from '../../constants/index.js';
 import {NAMES} from '../../constants/consts.js';
 import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs.js';
+import {
+  isSafari,
+  getAuthFromLocalStorage,
+  saveAuthToLocalStorage,
+  clearAuthFromLocalStorage,
+} from '../../utils/browser.js';
 import ExportModal from './export-modal/index.js';
 import GistModal from './gist-modal/index.js';
 import HelpModal from './help-modal/index.js';
@@ -66,13 +72,64 @@ class Header extends React.PureComponent<PropsType, State> {
       }
     });
 
+    const usingLocalStorage = isSafari();
+    if (usingLocalStorage) {
+      const localAuthData = getAuthFromLocalStorage();
+      if (localAuthData && localAuthData.isAuthenticated && localAuthData.authToken) {
+        console.log('Using localStorage auth data:', localAuthData.handle);
+
+        try {
+          const isValid = await this.verifyTokenLocally(localAuthData.authToken);
+          if (isValid) {
+            this.props.receiveCurrentUser(
+              localAuthData.isAuthenticated,
+              localAuthData.handle,
+              localAuthData.name,
+              localAuthData.profilePicUrl,
+            );
+            return;
+          }
+        } catch (error) {
+          console.error('Error verifying stored token:', error);
+        }
+      }
+    }
+
     try {
+      const headers: HeadersInit = {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        Pragma: 'no-cache',
+        Expires: '0',
+      };
+
+      if (usingLocalStorage) {
+        const token = localStorage.getItem('vega_editor_auth_token');
+        if (token) {
+          console.log('Adding token to request:', token.substring(0, 10) + '...');
+          headers['X-Auth-Token'] = token;
+        }
+      }
+
       const response = await fetch(`${BACKEND_URL}auth/github/check`, {
         credentials: 'include',
         cache: 'no-store',
       });
       const data = await response.json();
-      const {isAuthenticated, handle, name, profilePicUrl} = data;
+      const {isAuthenticated, handle, name, profilePicUrl, authToken} = data;
+
+      console.log('Auth response:', isAuthenticated ? 'Authenticated as ' + handle : 'Not authenticated');
+
+      if (usingLocalStorage && isAuthenticated && authToken) {
+        console.log('Saving new auth token to localStorage');
+        saveAuthToLocalStorage({
+          isAuthenticated,
+          handle,
+          name,
+          profilePicUrl,
+          authToken,
+        });
+      }
+
       this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
     } catch (error) {
       console.error('Initial authentication check failed:', error);
@@ -81,17 +138,61 @@ class Header extends React.PureComponent<PropsType, State> {
 
     window.addEventListener('message', async (e) => {
       if (e.data && e.data.type === 'auth') {
+        if (usingLocalStorage && e.data.token) {
+          console.log('Received auth token from popup:', e.data.token.substring(0, 10) + '...');
+          localStorage.setItem('vega_editor_auth_token', e.data.token);
+
+          try {
+            const tokenData = await this.verifyTokenLocally(e.data.token);
+            if (tokenData && tokenData.isAuthenticated) {
+              saveAuthToLocalStorage(tokenData);
+              this.props.receiveCurrentUser(
+                tokenData.isAuthenticated,
+                tokenData.handle,
+                tokenData.name,
+                tokenData.profilePicUrl,
+              );
+              return;
+            }
+          } catch (error) {
+            console.error('Error verifying token locally:', error);
+          }
+        }
+
         try {
+          const headers: HeadersInit = {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            Pragma: 'no-cache',
+            Expires: '0',
+          };
+
+          if (usingLocalStorage) {
+            const token = e.data.token || localStorage.getItem('vega_editor_auth_token');
+            if (token) {
+              headers['X-Auth-Token'] = token;
+            }
+          }
+
           const response = await fetch(`${BACKEND_URL}auth/github/check`, {
             credentials: 'include',
             cache: 'no-store',
           });
           const data = await response.json();
-          const {isAuthenticated, handle, name, profilePicUrl} = data;
+          const {isAuthenticated, handle, name, profilePicUrl, authToken} = data;
+
+          if (usingLocalStorage && isAuthenticated) {
+            saveAuthToLocalStorage({
+              isAuthenticated,
+              handle,
+              name,
+              profilePicUrl,
+              authToken,
+            });
+          }
+
           this.props.receiveCurrentUser(isAuthenticated, handle, name, profilePicUrl);
         } catch (error) {
           console.error('Authentication check failed:', error);
-          // Handle the error state
           this.props.receiveCurrentUser(false, '', '', '');
         }
       }
@@ -157,6 +258,29 @@ class Header extends React.PureComponent<PropsType, State> {
     this.props.editorRef.trigger('', 'editor.action.quickCommand', '');
   }
 
+  private async verifyTokenLocally(token: string): Promise<any> {
+    try {
+      // TODO: verify the token signature
+      const decoded = atob(token);
+      const tokenData = JSON.parse(decoded);
+
+      if (tokenData && tokenData.data) {
+        const userData = JSON.parse(tokenData.data);
+        return {
+          isAuthenticated: true,
+          handle: userData.login,
+          name: userData.name,
+          profilePicUrl: userData.avatar_url,
+          authToken: token,
+        };
+      }
+      return null;
+    } catch (error) {
+      console.error('Error verifying token locally:', error);
+      return null;
+    }
+  }
+
   public componentWillUnmount() {
     window.removeEventListener('keydown', () => {
       return;
@@ -164,15 +288,45 @@ class Header extends React.PureComponent<PropsType, State> {
     this.listenerAttached = false;
   }
   public signIn() {
+    if (isSafari()) {
+      const popup = window.open(`${BACKEND_URL}auth/github`, 'github-login', 'width=600,height=600,resizable=yes');
+      if (popup) {
+        popup.focus();
+      } else {
+        window.location.href = `${BACKEND_URL}auth/github`;
+      }
+      return;
+    }
+
     const popup = window.open(`${BACKEND_URL}auth/github`, 'github-login', 'width=600,height=600,resizable=yes');
     if (popup) {
       popup.focus();
     } else {
-      // If popup is blocked or fails, redirect directly
       window.location.href = `${BACKEND_URL}auth/github`;
     }
   }
   public signOut() {
+    if (isSafari()) {
+      clearAuthFromLocalStorage();
+
+      const token = localStorage.getItem('vega_editor_auth_token');
+      if (token) {
+        // Creating hidden iframe (to handle CORS issues)
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = `${BACKEND_URL}auth/github/logout?token=${encodeURIComponent(token)}`;
+        document.body.appendChild(iframe);
+
+        iframe.onload = iframe.onerror = () => {
+          setTimeout(() => {
+            document.body.removeChild(iframe);
+          }, 500);
+        };
+
+        localStorage.removeItem('vega_editor_auth_token');
+      }
+    }
+
     const popup = window.open(
       `${BACKEND_URL}auth/github/logout`,
       'github-logout',
