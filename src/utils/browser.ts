@@ -1,13 +1,4 @@
 /**
- * Detects if the current browser is Safari
- * @returns {boolean} True if the browser is Safari
- */
-export const isSafari = (): boolean => {
-  const userAgent = navigator.userAgent;
-  return userAgent.includes('Safari') && !userAgent.includes('Chrome');
-};
-
-/**
  * User authentication data stored in localStorage
  */
 export interface AuthData {
