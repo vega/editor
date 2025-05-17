@@ -4,7 +4,6 @@ import ReactPaginate from 'react-paginate';
 import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {BACKEND_URL, GistPrivacy} from '../../constants/index.js';
 import LoginConditional from '../login-conditional/index.js';
-import {isSafari} from '../../utils/browser.js';
 import './index.css';
 
 interface State {
@@ -87,11 +86,9 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
             Expires: '0',
           };
 
-          if (isSafari()) {
-            const token = localStorage.getItem('vega_editor_auth_token');
-            if (token) {
-              headers['X-Auth-Token'] = token;
-            }
+          const token = localStorage.getItem('vega_editor_auth_token');
+          if (token) {
+            headers['X-Auth-Token'] = token;
           }
 
           let response;
