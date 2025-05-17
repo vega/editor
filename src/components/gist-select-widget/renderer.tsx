@@ -92,7 +92,6 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
               this.props.receiveCurrentUser(false);
               return;
             }
-            const privacy = this.props.private ? 'all' : 'public';
             const response = await fetch(`https://api.github.com/gists?per_page=30&page=${page.selected + 1}`, {
               method: 'GET',
               headers: {
