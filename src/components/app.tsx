@@ -120,14 +120,53 @@ class App extends React.PureComponent<PropsType> {
 
   public async setGist(parameter: {id: string; filename: string; revision?: string}) {
     try {
-      const gistResponse = await fetch(
-        `https://api.github.com/gists/${parameter.id}${
-          parameter.revision !== undefined ? `/${parameter.revision}` : ''
-        }`,
-      );
+      const gistApiUrl = `https://api.github.com/gists/${parameter.id}${
+        parameter.revision !== undefined ? `/${parameter.revision}` : ''
+      }`;
+
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      const githubToken = localStorage.getItem('vega_editor_github_token');
+      if (githubToken) {
+        headers['Authorization'] = `token ${githubToken}`;
+      }
+
+      const gistResponse = await fetch(gistApiUrl, {
+        headers,
+      });
+
+      if (!gistResponse.ok) {
+        throw new Error(`Failed to fetch gist: ${gistResponse.status}`);
+      }
+
       const gistData = await gistResponse.json();
-      const contentResponse = await fetch(gistData.files[parameter.filename].raw_url); // fetch from raw_url to handle large files
-      const content = await contentResponse.text();
+
+      if (!gistData.files[parameter.filename]) {
+        throw new Error(`File ${parameter.filename} not found in gist`);
+      }
+
+      let content;
+
+      if (gistData.files[parameter.filename].content) {
+        content = gistData.files[parameter.filename].content;
+      } else if (gistData.files[parameter.filename].truncated) {
+        console.warn('File content truncated - using proxy approach');
+
+        const contentResponse = await fetch(gistData.files[parameter.filename].raw_url, {
+          headers,
+        });
+
+        if (!contentResponse.ok) {
+          throw new Error(`Failed to fetch content: ${contentResponse.status}`);
+        }
+
+        content = await contentResponse.text();
+      } else {
+        throw new Error('Could not retrieve file content');
+      }
+
       const contentObj = parseJSONC(content);
 
       if (!('$schema' in contentObj)) {
@@ -141,7 +180,7 @@ class App extends React.PureComponent<PropsType> {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error('Error loading gist:', error);
     }
   }
 

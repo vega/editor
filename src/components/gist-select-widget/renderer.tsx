@@ -5,6 +5,7 @@ import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {BACKEND_URL, GistPrivacy} from '../../constants/index.js';
 import LoginConditional from '../login-conditional/index.js';
 import './index.css';
+import {getAuthFromLocalStorage} from '../../utils/browser.js';
 
 interface State {
   currentPage: number;
@@ -17,6 +18,9 @@ interface State {
       name: string;
       previewUrl: string;
     }[];
+    id?: string;
+    url?: string;
+    owner?: string;
   }[];
   pages: Record<string, unknown>;
   loading: boolean;
@@ -80,50 +84,82 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
           loading: false,
         },
         async () => {
-          const headers: HeadersInit = {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            Pragma: 'no-cache',
-            Expires: '0',
-          };
+          try {
+            const authData = getAuthFromLocalStorage();
+            const githubToken = authData?.githubAccessToken || localStorage.getItem('vega_editor_github_token');
 
-          const token = localStorage.getItem('vega_editor_auth_token');
-          if (token) {
-            headers['X-Auth-Token'] = token;
-          }
-
-          let response;
-          if (page.selected === 0) {
-            response = await fetch(`${BACKEND_URL}gists/user?cursor=init&privacy=${this.props.private}`, {
-              credentials: 'include',
-              method: 'get',
-              headers,
-            });
-          } else {
-            response = await fetch(
-              `${BACKEND_URL}gists/user?cursor=${this.state.pages[page.selected]}&privacy=${this.props.private}`,
-              {
-                credentials: 'include',
-                method: 'get',
-                headers,
+            if (!githubToken) {
+              this.props.receiveCurrentUser(false);
+              return;
+            }
+            const privacy = this.props.private ? 'all' : 'public';
+            const response = await fetch(`https://api.github.com/gists?per_page=30&page=${page.selected + 1}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `token ${githubToken}`,
               },
-            );
-          }
-          const data = await response.json();
-          if (Array.isArray(data.data)) {
+            });
+
+            if (!response.ok) {
+              throw new Error(`Failed to fetch gists: ${response.status}`);
+            }
+
+            const gists = await response.json();
+
+            let pageCount = 1;
+            const linkHeader = response.headers.get('Link');
+            if (linkHeader) {
+              const lastPageMatch = linkHeader.match(/page=(\d+)>; rel="last"/);
+              if (lastPageMatch && lastPageMatch[1]) {
+                pageCount = parseInt(lastPageMatch[1], 10);
+              }
+            }
+
+            const pages = {};
+            for (let i = 0; i < pageCount; i++) {
+              pages[i] = i + 1;
+            }
+
+            const filteredGists = gists.filter((gist) => {
+              return Object.keys(gist.files || {}).some((filename) => filename.endsWith('.json'));
+            });
+
+            const formattedGists = filteredGists.map((gist) => {
+              const jsonFiles = Object.keys(gist.files || {})
+                .filter((filename) => filename.endsWith('.json'))
+                .map((filename) => ({
+                  name: filename,
+                  previewUrl: '',
+                }));
+
+              return {
+                name: gist.id,
+                isPublic: gist.public,
+                title: gist.description || '',
+                spec: jsonFiles,
+                id: gist.id,
+                url: gist.html_url,
+                owner: gist.owner?.login || '',
+              };
+            });
+
             this.setState({
               currentPage: page.selected,
               loaded: true,
-              pages: page.selected === 0 ? data.cursors : this.state.pages,
+              pages: pages,
               loading: true,
-              personalGist: data.data,
+              personalGist: formattedGists,
             });
-          } else {
-            this.props.receiveCurrentUser(data.isAuthenticated);
+          } catch (error) {
+            console.error('Error fetching gists:', error);
+            this.props.receiveCurrentUser(false);
           }
         },
       );
     }
   }
+
   public render() {
     return (
       <LoginConditional>
@@ -158,7 +194,7 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
                 <div className={`gist-wrapper ${!this.state.loading && 'loading'}`}>
                   {this.state.personalGist.map((gist) => (
                     <div
-                      key={gist.name}
+                      key={gist.id || gist.name}
                       className={`gist-container ${this.state.selected.gist === gist.name && 'gist-active'}`}
                     >
                       <div className="personal-gist-description">
@@ -168,41 +204,44 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
                           <Lock width="14" height="14" fill="#FDD300" />
                         )}
                         <span className={`text ${gist.title ? '' : 'play-down'}`}>
-                          {gist.title ? gist.title : 'No description provided'}
+                          {gist.title || 'No description provided'}
                         </span>
                       </div>
                       <div className="personal-gist-files">
-                        {gist.spec.map((spec, index) => (
-                          <div key={index} className="file">
-                            <div className="arrow"></div>
-                            <div
-                              className={`filename ${
-                                this.state.selected.file === spec.name &&
-                                this.state.selected.gist === gist.name &&
-                                'file-active'
-                              }`}
-                              key={spec.name}
-                              onClick={() => {
-                                this.props.selectGist(gist.name, spec.name, spec.previewUrl);
-                                this.setState({
-                                  selected: {
-                                    gist: gist.name,
-                                    file: spec.name,
-                                  },
-                                });
-                              }}
-                            >
-                              {spec.name}
+                        {gist.spec && gist.spec.length > 0 ? (
+                          gist.spec.map((spec, index) => (
+                            <div key={index} className="file">
+                              <div className="arrow"></div>
+                              <div
+                                className={`filename ${
+                                  this.state.selected.file === spec.name &&
+                                  this.state.selected.gist === gist.name &&
+                                  'file-active'
+                                }`}
+                                onClick={() => {
+                                  this.props.selectGist(gist.name, spec.name, spec.previewUrl);
+                                  this.setState({
+                                    selected: {
+                                      gist: gist.name,
+                                      file: spec.name,
+                                    },
+                                  });
+                                }}
+                              >
+                                {spec.name}
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ))
+                        ) : (
+                          <div className="no-files">No JSON files found</div>
+                        )}
                       </div>
                     </div>
                   ))}
                 </div>
               </>
             ) : (
-              <>You have no Vega or Vega-Lite compatible gists.</>
+              <div className="no-gists">You have no Vega or Vega-Lite compatible gists.</div>
             )}
           </>
         ) : (
