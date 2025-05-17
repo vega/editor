@@ -124,11 +124,32 @@ class GistModal extends React.PureComponent<PropsType, State> {
     const gistId = gistUrl.pathname.split('/')[2];
 
     try {
-      const gistCommitsResponse = await fetch(`https://api.github.com/gists/${gistId}/commits`);
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      const githubToken = localStorage.getItem('vega_editor_github_token');
+      if (githubToken) {
+        headers['Authorization'] = `token ${githubToken}`;
+      }
+
+      const gistCommitsResponse = await fetch(`https://api.github.com/gists/${gistId}/commits`, {
+        headers,
+      });
+
       this.setState({
         invalidUrl: !gistCommitsResponse.ok,
       });
+
+      if (!gistCommitsResponse.ok) {
+        this.setState({
+          gistLoadClicked: false,
+        });
+        throw new Error(`Failed to fetch gist commits: ${gistCommitsResponse.status}`);
+      }
+
       const gistCommits = await gistCommitsResponse.json();
+
       if (!this.state.gist.revision && !this.state.invalidUrl) {
         this.setState({
           gist: {
@@ -142,15 +163,28 @@ class GistModal extends React.PureComponent<PropsType, State> {
         });
         throw new Error('Invalid Gist URL');
       }
+
       if (gistCommits[0].version === this.state.gist.revision) {
         this.setState({
           latestRevision: true,
         });
       }
-      const gistSummaryResponse = await fetch(`https://api.github.com/gists/${gistId}/${this.state.gist.revision}`);
+
+      const gistSummaryResponse = await fetch(`https://api.github.com/gists/${gistId}/${this.state.gist.revision}`, {
+        headers,
+      });
+
       this.setState({
         invalidRevision: !gistSummaryResponse.ok,
       });
+
+      if (!gistSummaryResponse.ok) {
+        this.setState({
+          gistLoadClicked: false,
+        });
+        throw new Error(`Failed to fetch gist summary: ${gistSummaryResponse.status}`);
+      }
+
       const gistSummary = await gistSummaryResponse.json();
 
       if (this.state.invalidRevision) {
@@ -199,18 +233,28 @@ class GistModal extends React.PureComponent<PropsType, State> {
           throw new Error('Invalid file name');
         }
 
-        const rawResponse = await fetch(gistSummary.files[this.state.gist.filename].raw_url); // fetch from raw_url to handle large files
-        const errors = [];
-        parseJSONC(await rawResponse.text(), errors);
-        if (errors.length > 0) throw SyntaxError; // check if the loaded file is a JSON
+        try {
+          const content = await this.fetchGistContent(gistSummary, this.state.gist.filename);
 
-        const {revision, filename} = this.state.gist;
-        if (this.state.latestRevision) {
-          this.props.history.push(`/gist/${gistId}/${filename}`);
-        } else {
-          this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+          const errors = [];
+          parseJSONC(content, errors);
+          if (errors.length > 0) throw SyntaxError; // check if the loaded file is a JSON
+
+          const {revision, filename} = this.state.gist;
+          if (this.state.latestRevision) {
+            this.props.history.push(`/gist/${gistId}/${filename}`);
+          } else {
+            this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+          }
+          closePortal();
+        } catch (error) {
+          if (error instanceof SyntaxError) {
+            this.setState({
+              gistLoadClicked: false,
+              syntaxError: true,
+            });
+          }
         }
-        closePortal();
       }
     } catch (error) {
       if (error instanceof SyntaxError) {
@@ -222,12 +266,37 @@ class GistModal extends React.PureComponent<PropsType, State> {
     }
   }
 
+  private async fetchGistContent(gistSummary, filename) {
+    const githubToken = localStorage.getItem('vega_editor_github_token');
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+
+    if (githubToken) {
+      headers['Authorization'] = `token ${githubToken}`;
+    }
+
+    try {
+      const content = gistSummary.files[filename].content;
+
+      if (!content && gistSummary.files[filename].truncated) {
+        console.warn('File content truncated, would need backend proxy for full content');
+        throw new Error('File too large to load directly');
+      }
+
+      return content;
+    } catch (error) {
+      console.error('Error fetching gist content:', error);
+      throw error;
+    }
+  }
+
   public preview(id, file, image) {
     this.setState({
       gist: {
         ...this.state.gist,
         filename: file,
-        image,
+        image: image || '',
         imageStyle: {
           ...this.state.gist.imageStyle,
           bottom: 0,

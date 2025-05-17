@@ -134,10 +134,22 @@ class Header extends React.PureComponent<PropsType, State> {
           console.log('Received auth token from popup:', e.data.token.substring(0, 10) + '...');
           localStorage.setItem('vega_editor_auth_token', e.data.token);
 
+          if (e.data.githubToken) {
+            console.log('Received GitHub token from popup');
+            localStorage.setItem('vega_editor_github_token', e.data.githubToken);
+          }
+
           try {
             const tokenData = await this.verifyTokenLocally(e.data.token);
             if (tokenData && tokenData.isAuthenticated) {
-              saveAuthToLocalStorage(tokenData);
+              saveAuthToLocalStorage({
+                isAuthenticated: tokenData.isAuthenticated,
+                handle: tokenData.handle,
+                name: tokenData.name,
+                profilePicUrl: tokenData.profilePicUrl,
+                authToken: tokenData.authToken,
+                githubAccessToken: tokenData.githubAccessToken || e.data.githubToken,
+              });
               this.props.receiveCurrentUser(
                 tokenData.isAuthenticated,
                 tokenData.handle,
@@ -168,7 +180,7 @@ class Header extends React.PureComponent<PropsType, State> {
             cache: 'no-store',
           });
           const data = await response.json();
-          const {isAuthenticated, handle, name, profilePicUrl, authToken} = data;
+          const {isAuthenticated, handle, name, profilePicUrl, authToken, githubAccessToken} = data;
 
           if (isAuthenticated) {
             saveAuthToLocalStorage({
@@ -177,6 +189,7 @@ class Header extends React.PureComponent<PropsType, State> {
               name,
               profilePicUrl,
               authToken,
+              githubAccessToken,
             });
           }
 
@@ -303,6 +316,7 @@ class Header extends React.PureComponent<PropsType, State> {
       };
 
       localStorage.removeItem('vega_editor_auth_token');
+      localStorage.removeItem('vega_editor_github_token');
     }
 
     const popup = window.open(

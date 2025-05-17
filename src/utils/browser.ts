@@ -7,6 +7,7 @@ export interface AuthData {
   name: string;
   profilePicUrl: string;
   authToken?: string;
+  githubAccessToken?: string;
 }
 
 const AUTH_KEY = 'vega_editor_auth_data';
