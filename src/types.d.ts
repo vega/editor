@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
+// TODO: Use default types from packages
+// Current Issues: For a lot of the components,
+// our usage isn't compatible with the default type definitions.
+
 declare module 'react-router-dom' {
   // working version of https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react-router/index.d.ts
   // and https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react-router-dom/index.d.ts
