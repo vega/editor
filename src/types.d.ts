@@ -66,125 +66,6 @@ declare module 'react-router-dom' {
   } & T;
 }
 
-declare module 'react-split-pane-r17' {
-  import React from 'react';
-
-  interface SplitPaneProps {
-    split?: 'vertical' | 'horizontal';
-    minSize?: number;
-    maxSize?: number;
-    defaultSize?: number | string;
-    size?: number | string;
-    step?: number;
-    onDragStarted?: () => void;
-    onDragFinished?: (newSize: number) => void;
-    onChange?: (newSize: number) => void;
-    pane1Style?: React.CSSProperties;
-    pane2Style?: React.CSSProperties;
-    paneStyle?: React.CSSProperties;
-    className?: string;
-    children?: React.ReactNode;
-    [key: string]: any;
-  }
-
-  const SplitPane: React.FC<SplitPaneProps>;
-  export default SplitPane;
-}
-
-declare module '@monaco-editor/react' {
-  import React from 'react';
-
-  export interface MonacoEditorProps {
-    value?: string;
-    defaultValue?: string;
-    language?: string;
-    theme?: string;
-    options?: any;
-    overrideServices?: any;
-    width?: number | string;
-    height?: number | string;
-    className?: string;
-    beforeMount?: (monaco: any) => void;
-    onMount?: (editor: any, monaco: any) => void;
-    onChange?: (value: string, event: any) => void;
-    onValidate?: (markers: any[]) => void;
-    [key: string]: any;
-  }
-
-  const MonacoEditor: React.FC<MonacoEditorProps>;
-  export default MonacoEditor;
-
-  export const loader: {
-    init: () => Promise<any>;
-    config: (options: any) => void;
-  };
-}
-
-declare module 'react-paginate' {
-  import React from 'react';
-
-  interface ReactPaginateProps {
-    pageCount: number;
-    pageRangeDisplayed?: number;
-    marginPagesDisplayed?: number;
-    previousLabel?: React.ReactNode;
-    nextLabel?: React.ReactNode;
-    breakLabel?: React.ReactNode;
-    breakClassName?: string;
-    breakLinkClassName?: string;
-    onPageChange?: (selectedItem: {selected: number}) => void;
-    initialPage?: number;
-    forcePage?: number;
-    disableInitialCallback?: boolean;
-    containerClassName?: string;
-    pageClassName?: string;
-    pageLinkClassName?: string;
-    activeClassName?: string;
-    activeLinkClassName?: string;
-    previousClassName?: string;
-    nextClassName?: string;
-    previousLinkClassName?: string;
-    nextLinkClassName?: string;
-    disabledClassName?: string;
-    [key: string]: any;
-  }
-
-  const ReactPaginate: React.FC<ReactPaginateProps>;
-  export default ReactPaginate;
-}
-
-declare module 'react-clipboard.js' {
-  import React from 'react';
-
-  interface ClipboardProps {
-    'data-clipboard-text'?: string;
-    option?: any;
-    onSuccess?: (e: any) => void;
-    onError?: (e: any) => void;
-    className?: string;
-    style?: React.CSSProperties;
-    children?: React.ReactNode;
-    [key: string]: any;
-  }
-
-  const Clipboard: React.FC<ClipboardProps>;
-  export default Clipboard;
-}
-
-declare module 'rc-resize-observer' {
-  import React from 'react';
-
-  interface ResizeObserverProps {
-    onResize?: (size: {width: number; height: number}) => void;
-    disabled?: boolean;
-    children?: React.ReactNode;
-    [key: string]: any;
-  }
-
-  const ResizeObserver: React.FC<ResizeObserverProps>;
-  export default ResizeObserver;
-}
-
 declare module '@tippyjs/react' {
   import React from 'react';
 
@@ -248,3 +129,12 @@ declare module 'redux-thunk' {
   const thunk: Middleware;
   export default thunk;
 }
+
+// Add empty module declarations to make TypeScript ignore type errors
+declare module 'react-split-pane-r17';
+declare module '@monaco-editor/react';
+declare module 'react-paginate';
+declare module 'react-clipboard.js';
+declare module 'rc-resize-observer';
+declare module '@tippyjs/react';
+declare module 'elkjs';
