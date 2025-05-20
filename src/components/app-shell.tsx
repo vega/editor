@@ -1,27 +1,25 @@
 import * as React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Routes, Route} from 'react-router';
 
 import App from './app.js';
 import Reset from './reset.js';
 
-export default class AppShell extends React.PureComponent {
-  public render() {
-    return (
-      <div>
-        <Switch>
-          <Route path="/" exact component={App} />
-          <Route path="/reset" component={() => <Reset />} />
-          <Route path="/edited" component={App} />
-          <Route exact path="/gist/:id/:filename" component={App} />
-          <Route exact path="/gist/:id/:filename/view" component={App} />
-          <Route path="/gist/:id/:revision/:filename" component={App} />
-          <Route path="/examples/:mode/:example_name" component={App} />
-          <Route path="/examples/:mode" component={() => <App showExample={true} />} />
-          <Route path="/examples" component={() => <App showExample={true} />} />
-          <Route path="/custom/:mode" component={App} />
-          <Route path="/url/:mode/:compressed" component={App} />
-        </Switch>
-      </div>
-    );
-  }
+export default function AppShell() {
+  return (
+    <div>
+      <Routes>
+        <Route path="/" element={<App showExample={false} />} />
+        <Route path="/reset" element={<Reset />} />
+        <Route path="/edited" element={<App showExample={false} />} />
+        <Route path="/gist/:id/:filename" element={<App showExample={false} />} />
+        <Route path="/gist/:id/:filename/view" element={<App showExample={false} />} />
+        <Route path="/gist/:id/:revision/:filename" element={<App showExample={false} />} />
+        <Route path="/examples/:mode/:example_name" element={<App showExample={false} />} />
+        <Route path="/examples/:mode" element={<App showExample={true} />} />
+        <Route path="/examples" element={<App showExample={true} />} />
+        <Route path="/custom/:mode" element={<App showExample={false} />} />
+        <Route path="/url/:mode/:compressed" element={<App showExample={false} />} />
+      </Routes>
+    </div>
+  );
 }

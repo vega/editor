@@ -1,7 +1,7 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import {Provider} from 'react-redux';
-import {HashRouter} from 'react-router-dom';
+import {HashRouter as Router} from 'react-router-dom';
 import * as vega from 'vega';
 import * as vegaLite from 'vega-lite';
 import setupMonaco from './utils/monaco.js';
@@ -35,15 +35,19 @@ console.log('Store configuration complete');
 
 try {
   console.log('Rendering React application...');
-  // Now that redux and react-router have been configured, we can render the
-  // React application to the DOM!
-  ReactDOM.render(
-    <Provider store={store}>
-      <HashRouter>
-        <AppShell />
-      </HashRouter>
-    </Provider>,
-    document.getElementById('root'),
+  const container = document.getElementById('root');
+  if (!container) {
+    throw new Error('Root element not found');
+  }
+  const root = createRoot(container);
+  root.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <Router basename="/">
+          <AppShell />
+        </Router>
+      </Provider>
+    </React.StrictMode>,
   );
   console.log('React application rendered');
 } catch (error) {

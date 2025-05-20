@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import SplitPane from 'react-split-pane-r17';
+import SplitPane from 'react-split-pane';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor.js';
 import {LAYOUT, Mode, SIDEPANE} from '../../constants/index.js';

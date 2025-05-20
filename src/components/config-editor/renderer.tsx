@@ -2,15 +2,18 @@ import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import ResizeObserver from 'rc-resize-observer';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router';
+import {connect} from 'react-redux';
 import {debounce} from 'vega';
 import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {SIDEPANE} from '../../constants/index.js';
 import './config-editor.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> &
-  RouteComponentProps<{compressed: string}>;
+  ReturnType<typeof mapDispatchToProps> & {
+    navigate: (path: string) => void;
+    params: {compressed?: string};
+  };
 
 class ConfigEditor extends React.PureComponent<Props> {
   public editor: Monaco.editor.IStandaloneCodeEditor;
@@ -29,9 +32,7 @@ class ConfigEditor extends React.PureComponent<Props> {
     if (!confirmation) {
       return;
     }
-    if (this.props.history.location.pathname !== '/edited') {
-      this.props.history.push('/edited');
-    }
+    this.props.navigate('/edited');
     this.props.mergeConfigSpec();
   }
 
@@ -118,4 +119,11 @@ class ConfigEditor extends React.PureComponent<Props> {
   }
 }
 
-export default withRouter(ConfigEditor);
+// Create a wrapper component to provide the navigation hook
+const ConfigEditorWithNavigation = (props: Omit<Props, 'navigate' | 'params'>) => {
+  const navigate = useNavigate();
+  const params = useParams();
+  return <ConfigEditor {...props} navigate={navigate} params={params} />;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConfigEditorWithNavigation);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import SplitPane from 'react-split-pane-r17';
+import SplitPane from 'react-split-pane';
 import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants/index.js';
 import DataViewer from '../data-viewer/index.js';

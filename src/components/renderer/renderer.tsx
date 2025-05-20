@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {Maximize} from 'react-feather';
 import {Portal} from 'react-portal';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router';
+import {connect} from 'react-redux';
 import * as vega from 'vega';
 import {Config as VgConfig} from 'vega';
 import {deepEqual} from 'vega-lite';
@@ -17,7 +18,11 @@ import {expressionInterpreter as vegaInterpreter} from 'vega-interpreter';
 // Add additional projections
 addProjections(vega.projection);
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
+type Props = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> & {
+    navigate: (path: string) => void;
+    location: {pathname: string};
+  };
 
 const defaultState = {fullscreen: false, width: 500, height: 300};
 
@@ -25,6 +30,9 @@ type State = Readonly<typeof defaultState>;
 
 class Editor extends React.PureComponent<Props, State> {
   public static pathname: string;
+  private chartRef = React.createRef<HTMLDivElement>();
+  private fullscreenChartRef = React.createRef<HTMLDivElement>();
+
   constructor(props) {
     super(props);
     this.state = defaultState;
@@ -37,7 +45,7 @@ class Editor extends React.PureComponent<Props, State> {
   public onOpenPortal() {
     const {pathname} = Editor;
     if (pathname !== '/' && pathname !== '/edited' && !pathname.endsWith('/view')) {
-      this.props.history.push(pathname + '/view');
+      this.props.navigate(pathname + '/view');
     }
   }
 
@@ -48,7 +56,7 @@ class Editor extends React.PureComponent<Props, State> {
       .filter((e) => e !== 'view')
       .join('/');
     if (pathname !== '/' && pathname !== '/edited') {
-      this.props.history.push(pathname);
+      this.props.navigate(pathname);
     }
   }
 
@@ -226,7 +234,7 @@ class Editor extends React.PureComponent<Props, State> {
 
   public async renderVega() {
     // Selecting chart for rendering vega
-    const chart = this.state.fullscreen ? (this.refs.fchart as any) : (this.refs.chart as any);
+    const chart = this.state.fullscreen ? this.fullscreenChartRef.current : this.chartRef.current;
     if (!(this.isResponsive().responsiveWidth || this.isResponsive().responsiveHeight)) {
       chart.style.width = chart.getBoundingClientRect().width + 'px';
       chart.style.width = 'auto';
@@ -246,136 +254,106 @@ class Editor extends React.PureComponent<Props, State> {
     await view.runAsync();
 
     if (tooltipEnable) {
-      // Tooltip needs to be added after initializing the view with `chart`
       vegaTooltip(view);
     }
   }
 
   public triggerResize() {
-    try {
-      window.dispatchEvent(new Event('resize'));
-    } catch (e) {
-      console.error(e);
-    }
+    window.dispatchEvent(new Event('resize'));
   }
 
   public componentDidMount() {
+    document.addEventListener('keydown', this.handleKeydown);
     this.initView();
     this.renderVega();
-
-    // Add Event Listener to ctrl+f11 key
-    document.addEventListener('keydown', (e) => {
-      // Keycode of f11 is 122
-      if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
-        this.setState((current) => ({
-          ...current,
-          fullscreen: !current.fullscreen,
-        }));
-      }
-    });
-
-    document.addEventListener('keydown', this.handleKeydown);
-
-    // Enter fullscreen mode if url ends with /view
-    const params = Editor.pathname.split('/');
-    if (params[params.length - 1] === 'view') {
-      this.setState({fullscreen: true});
-    }
   }
 
   public componentDidUpdate(prevProps) {
     if (
       !deepEqual(prevProps.vegaSpec, this.props.vegaSpec) ||
-      !deepEqual(prevProps.vegaLiteSpec, this.props.vegaLiteSpec) ||
-      prevProps.baseURL !== this.props.baseURL ||
       !deepEqual(prevProps.config, this.props.config) ||
-      !deepEqual(prevProps.logLevel, this.props.logLevel) ||
-      !deepEqual(prevProps.mode, this.props.mode) ||
-      !deepEqual(prevProps.hoverEnable, this.props.hoverEnable) ||
-      !deepEqual(prevProps.tooltipEnable, this.props.tooltipEnable) ||
+      prevProps.mode !== this.props.mode ||
+      prevProps.renderer !== this.props.renderer ||
+      prevProps.tooltipEnable !== this.props.tooltipEnable ||
+      prevProps.hoverEnable !== this.props.hoverEnable ||
       prevProps.expressionInterpreter !== this.props.expressionInterpreter
     ) {
       this.initView();
+      this.renderVega();
     }
-    this.renderVega();
   }
 
   public componentWillUnmount() {
-    // Remove listener to event keydown
     document.removeEventListener('keydown', this.handleKeydown);
-  }
-
-  // Render resize handle for responsive charts
-  public renderResizeHandle() {
-    const {responsiveWidth, responsiveHeight} = this.isResponsive();
-    if (responsiveWidth || responsiveHeight) {
-      // The handle is defined as a inline SVG
-      return (
-        <div className="chart-resize-handle" onMouseDown={this.handleResizeMouseDown.bind(this)}>
-          <svg width="10" height="10">
-            <path d="M-2,13L13,-2 M-2,16L16,-2 M-2,19L19,-2" />
-          </svg>
-        </div>
-      );
+    if (this.props.view) {
+      this.props.view.finalize();
     }
   }
 
-  public render() {
+  public renderResizeHandle() {
     const {responsiveWidth, responsiveHeight} = this.isResponsive();
+    if (!responsiveWidth && !responsiveHeight) {
+      return null;
+    }
+    return (
+      <div
+        className="resize-handle"
+        onMouseDown={this.handleResizeMouseDown.bind(this)}
+        style={{
+          cursor: responsiveWidth && responsiveHeight ? 'nwse-resize' : responsiveWidth ? 'ew-resize' : 'ns-resize',
+        }}
+      />
+    );
+  }
 
-    // Determine chart element style based on responsiveness
-    const chartStyle =
-      responsiveWidth || responsiveHeight
-        ? {
-            width: responsiveWidth ? this.state.width + 'px' : null,
-            height: responsiveHeight ? this.state.height + 'px' : null,
-          }
-        : {};
+  public render() {
+    const {fullscreen} = this.state;
+    const {view, renderer} = this.props;
+
+    if (!view) {
+      return null;
+    }
 
     return (
-      <div>
-        <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
-          <Popup
-            content={`Click on "Continue Recording" to make the chart interactive`}
-            placement="right"
-            // Make skinnier so it fits on the right side of the chart
-            maxWidth={200}
-          >
-            <div className="chart-overlay"></div>
-          </Popup>
-          <div aria-label="visualization" ref="chart" style={chartStyle} />
-          {this.renderResizeHandle()}
-        </div>
-        <div className="fullscreen-open">
-          <Popup content="Fullscreen" placement="left">
-            <Maximize
-              onClick={() => {
-                this.setState({fullscreen: true}, this.onOpenPortal);
-              }}
-            />
-          </Popup>
-        </div>
-        {this.state.fullscreen && (
+      <div className="chart-wrapper">
+        <div
+          ref={this.chartRef}
+          className="chart"
+          style={{
+            width: this.state.width,
+            height: this.state.height,
+          }}
+        />
+        {this.renderResizeHandle()}
+        {fullscreen && (
           <Portal>
-            <div className="fullscreen-chart">
-              <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
-                <div ref="fchart" style={chartStyle} />
-                {this.renderResizeHandle()}
-              </div>
-              <button
-                className="fullscreen-close"
-                onClick={() => {
-                  this.setState({fullscreen: false}, this.onClosePortal);
+            <Popup content={<div>Fullscreen View</div>} onClose={this.onClosePortal}>
+              <div
+                ref={this.fullscreenChartRef}
+                className="chart"
+                style={{
+                  width: this.state.width * 2,
+                  height: this.state.height * 2,
                 }}
               >
-                <span>Edit Visualization</span>
-              </button>
-            </div>
+                {this.renderResizeHandle()}
+              </div>
+            </Popup>
           </Portal>
         )}
+        <button className="fullscreen-button" onClick={this.onOpenPortal}>
+          <Maximize />
+        </button>
       </div>
     );
   }
 }
 
-export default withRouter(Editor);
+// Create a wrapper component to provide the navigation hook
+const EditorWithNavigation = (props: Omit<Props, 'navigate' | 'location'>) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  return <Editor {...props} navigate={navigate} location={location} />;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditorWithNavigation);

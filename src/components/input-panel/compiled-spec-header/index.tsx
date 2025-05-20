@@ -2,7 +2,7 @@ import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {ChevronDown, ChevronUp} from 'react-feather';
 import {connect} from 'react-redux';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {useNavigate} from 'react-router';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor.js';
 import {COMPILEDPANE} from '../../../constants/index.js';
@@ -12,7 +12,10 @@ const toggleStyle = {
   cursor: 'pointer',
 } as const;
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
+type Props = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> & {
+    navigate: (path: string) => void;
+  };
 
 class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   constructor(props) {
@@ -21,8 +24,8 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
   }
 
   public editVegaSpec() {
-    if (this.props.history.location.pathname.indexOf('/edited') === -1) {
-      this.props.history.push('/edited');
+    if (window.location.pathname.indexOf('/edited') === -1) {
+      this.props.navigate('/edited');
     }
     this.props.clearConfig();
     if (this.props.compiledPaneItem == COMPILEDPANE.Vega) {
@@ -119,4 +122,10 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplayHeader));
+// Create a wrapper component to provide the navigation hook
+const CompiledSpecDisplayHeaderWithNavigation = (props: Omit<Props, 'navigate'>) => {
+  const navigate = useNavigate();
+  return <CompiledSpecDisplayHeader {...props} navigate={navigate} />;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplayHeaderWithNavigation);

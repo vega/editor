@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {ChevronDown, ChevronUp} from 'react-feather';
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor.js';
 import {NAVBAR} from '../../../constants/consts.js';
@@ -114,4 +113,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DebugPaneHeader));
+export default connect(mapStateToProps, mapDispatchToProps)(DebugPaneHeader);

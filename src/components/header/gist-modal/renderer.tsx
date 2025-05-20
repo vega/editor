@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {AlertCircle} from 'react-feather';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {useNavigate} from 'react-router';
+import {connect} from 'react-redux';
 import {mapStateToProps} from './index.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
 import {Mode} from '../../../constants/index.js';
@@ -11,7 +12,10 @@ export type Props = {
   closePortal: () => void;
 };
 
-type PropsType = ReturnType<typeof mapStateToProps> & Props & RouteComponentProps;
+type PropsType = ReturnType<typeof mapStateToProps> &
+  Props & {
+    navigate: (path: string) => void;
+  };
 
 interface State {
   gist: {
@@ -216,9 +220,9 @@ class GistModal extends React.PureComponent<PropsType, State> {
               const {revision, filename} = this.state.gist;
               parseJSONC(gistSummary.files[jsonFiles[0]].content);
               if (this.state.latestRevision) {
-                this.props.history.push(`/gist/${gistId}/${filename}`);
+                this.props.navigate(`/gist/${gistId}/${filename}`);
               } else {
-                this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+                this.props.navigate(`/gist/${gistId}/${revision}/${filename}`);
               }
               closePortal();
             },
@@ -242,9 +246,9 @@ class GistModal extends React.PureComponent<PropsType, State> {
 
           const {revision, filename} = this.state.gist;
           if (this.state.latestRevision) {
-            this.props.history.push(`/gist/${gistId}/${filename}`);
+            this.props.navigate(`/gist/${gistId}/${filename}`);
           } else {
-            this.props.history.push(`/gist/${gistId}/${revision}/${filename}`);
+            this.props.navigate(`/gist/${gistId}/${revision}/${filename}`);
           }
           closePortal();
         } catch (error) {
@@ -257,69 +261,41 @@ class GistModal extends React.PureComponent<PropsType, State> {
         }
       }
     } catch (error) {
-      if (error instanceof SyntaxError) {
-        this.setState({
-          gistLoadClicked: false,
-          syntaxError: true,
-        });
-      }
+      console.error('Error loading gist:', error);
+      this.setState({
+        gistLoadClicked: false,
+      });
     }
   }
 
   private async fetchGistContent(gistSummary, filename) {
-    const githubToken = localStorage.getItem('vega_editor_github_token');
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-    };
-
-    if (githubToken) {
-      headers['Authorization'] = `token ${githubToken}`;
+    const file = gistSummary.files[filename];
+    if (file.truncated) {
+      const response = await fetch(file.raw_url);
+      return await response.text();
     }
-
-    try {
-      const content = gistSummary.files[filename].content;
-
-      if (!content && gistSummary.files[filename].truncated) {
-        console.warn('File content truncated, would need backend proxy for full content');
-        throw new Error('File too large to load directly');
-      }
-
-      return content;
-    } catch (error) {
-      console.error('Error fetching gist content:', error);
-      throw error;
-    }
+    return file.content;
   }
 
   public preview(id, file, image) {
     this.setState({
       gist: {
         ...this.state.gist,
-        filename: file,
-        image: image || '',
+        image,
         imageStyle: {
-          ...this.state.gist.imageStyle,
           bottom: 0,
         },
-        revision: '',
-        url: `https://gist.github.com/${this.props.handle}/${id}`,
       },
-      invalidFilename: false,
-      invalidRevision: false,
-      invalidUrl: false,
-      syntaxError: false,
     });
   }
 
   public slideImage(event) {
-    const imageHeight = event.target.height;
+    const imageStyle = this.state.gist.imageStyle;
+    imageStyle.bottom = imageStyle.bottom + event.deltaY;
     this.setState({
       gist: {
         ...this.state.gist,
-        imageStyle: {
-          ...this.state.gist.imageStyle,
-          bottom: imageHeight > 100 ? imageHeight - 100 : 0,
-        },
+        imageStyle,
       },
     });
   }
@@ -328,8 +304,8 @@ class GistModal extends React.PureComponent<PropsType, State> {
     this.setState({
       gist: {
         ...this.state.gist,
+        image: '',
         imageStyle: {
-          ...this.state.gist.imageStyle,
           bottom: 0,
         },
       },
@@ -338,130 +314,78 @@ class GistModal extends React.PureComponent<PropsType, State> {
 
   public render() {
     return (
-      <div>
-        <h1>
-          Load{' '}
-          <a href="https://gist.github.com/" target="_blank" rel="noopener noreferrer">
-            GitHub Gist
-          </a>
-        </h1>
-        <div className="gist-split">
-          <div className="personal-gist">
-            <h3>Your gists</h3>
-            <p>
-              To load a gist, select it in the list below or specify its details on the right. View all your Gists on{' '}
-              <a href={`https://gist.github.com/${this.props.handle}`}>GitHub</a>.
-            </p>
-            <GistSelectWidget selectGist={this.preview.bind(this)} />
+      <div className="gist-modal">
+        <div className="gist-modal-content">
+          <div className="gist-modal-header">
+            <h2>Load Gist</h2>
           </div>
-          <div className="load-gist">
-            <h3>Load gists</h3>
-            <form ref={(form) => (this.refGistForm = form)}>
-              <div className="gist-input-container">
-                <label>
-                  Gist URL
-                  <div style={{marginTop: '2px'}}>
-                    <small>
-                      Example:{' '}
-                      <span
-                        className="gist-url"
-                        onClick={(e) =>
-                          this.setState({
-                            gist: {
-                              ...this.state.gist,
-                              filename: '',
-                              image: '',
-                              revision: '',
-                              url: 'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9',
-                            },
-                          })
-                        }
-                      >
-                        {'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9'}
-                      </span>
-                    </small>
-                  </div>
-                  <input
-                    required
-                    className="gist-input"
-                    type="text"
-                    placeholder="Enter URL"
-                    value={this.state.gist.url}
-                    onChange={this.updateGistUrl.bind(this)}
-                  />
-                </label>
-                <div className="error-message">{this.state.invalidUrl && <span>Please enter a valid URL.</span>}</div>
-              </div>
-              <div className="gist-optional">
-                <div className="gist-input-container gist-optional-input-container">
-                  <label>
-                    Revision (optional)
-                    <input
-                      className="gist-input"
-                      type="text"
-                      placeholder="Enter revision"
-                      value={this.state.gist.revision}
-                      onChange={this.updateGistRevision.bind(this)}
-                    />
-                  </label>
+          <div className="gist-modal-body">
+            <form ref={(ref) => (this.refGistForm = ref)}>
+              <div className="gist-modal-section">
+                <h3>Gist URL</h3>
+                <input
+                  type="text"
+                  placeholder="Enter Gist URL"
+                  value={this.state.gist.url}
+                  onChange={this.updateGistUrl.bind(this)}
+                  required
+                />
+                {this.state.invalidUrl && (
                   <div className="error-message">
-                    {this.state.invalidRevision && <span>Please enter a valid revision.</span>}
+                    <AlertCircle size={16} />
+                    <span>Invalid Gist URL</span>
                   </div>
-                </div>
-                <div className="gist-input-container gist-optional-input-container">
-                  <label>
-                    Filename (optional)
-                    <input
-                      className="gist-input"
-                      type="text"
-                      placeholder="Enter filename"
-                      value={this.state.gist.filename}
-                      onChange={this.updateGistFile.bind(this)}
-                    />
-                  </label>
-                  <div className="error-message">
-                    {this.state.invalidFilename ? (
-                      <span>Please enter a valid JSON file</span>
-                    ) : (
-                      this.state.syntaxError && <span>JSON is syntactically incorrect</span>
-                    )}
-                  </div>
-                </div>
+                )}
               </div>
-              {this.state.gist.url && this.state.gist.filename ? (
-                this.state.gist.image ? (
-                  <div className="preview-container">
-                    <div className="preview-text">Preview:</div>
-                    <div className="preview-image-container">
-                      <div className="preview-image-wrapper">
-                        <img
-                          src={this.state.gist.image}
-                          onMouseOver={this.slideImage.bind(this)}
-                          onMouseOut={this.slideImageBack.bind(this)}
-                          style={{
-                            transform: `translateY(-${this.state.gist.imageStyle.bottom}px)`,
-                          }}
-                        />
-                      </div>
-                    </div>
+              <div className="gist-modal-section">
+                <h3>Revision</h3>
+                <input
+                  type="text"
+                  placeholder="Enter revision (optional)"
+                  value={this.state.gist.revision}
+                  onChange={this.updateGistRevision.bind(this)}
+                />
+                {this.state.invalidRevision && (
+                  <div className="error-message">
+                    <AlertCircle size={16} />
+                    <span>Invalid revision</span>
                   </div>
-                ) : (
-                  <div className="preview-error-message-container">
-                    <div className="preview-error-message">
-                      <AlertCircle className="preview-error-icon" />
-                      <span>No preview available for this gist file.</span>
-                    </div>
-                    <span className="preview-error-fix">
-                      Upload an image file with name {this.state.gist.filename.replace(/\.json/i, '.(png/jpg)')}.
-                    </span>
+                )}
+              </div>
+              <div className="gist-modal-section">
+                <h3>File Name</h3>
+                <input
+                  type="text"
+                  placeholder="Enter file name (optional)"
+                  value={this.state.gist.filename}
+                  onChange={this.updateGistFile.bind(this)}
+                />
+                {this.state.invalidFilename && (
+                  <div className="error-message">
+                    <AlertCircle size={16} />
+                    <span>Invalid file name</span>
                   </div>
-                )
-              ) : (
-                <></>
-              )}
-              <button type="button" onClick={() => this.onSelectGist(this.props.closePortal)}>
-                {this.state.gistLoadClicked ? 'Loading..' : 'Load'}
-              </button>
+                )}
+                {this.state.syntaxError && (
+                  <div className="error-message">
+                    <AlertCircle size={16} />
+                    <span>Invalid JSON syntax</span>
+                  </div>
+                )}
+              </div>
+              <div className="gist-modal-section">
+                <h3>Select from Your Gists</h3>
+                <GistSelectWidget selectGist={this.preview.bind(this)} />
+              </div>
+              <div className="gist-modal-actions">
+                <button
+                  className="gist-modal-load"
+                  onClick={() => this.onSelectGist(this.props.closePortal)}
+                  disabled={this.state.gistLoadClicked}
+                >
+                  {this.state.gistLoadClicked ? 'Loading...' : 'Load Gist'}
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -470,4 +394,10 @@ class GistModal extends React.PureComponent<PropsType, State> {
   }
 }
 
-export default withRouter(GistModal);
+// Create a wrapper component to provide the navigation hook
+const GistModalWithNavigation = (props: Omit<PropsType, 'navigate'>) => {
+  const navigate = useNavigate();
+  return <GistModal {...props} navigate={navigate} />;
+};
+
+export default connect(mapStateToProps)(GistModalWithNavigation);

@@ -1,7 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {Book, BookOpen, Code, Image, Map} from 'react-feather';
-import {withRouter} from 'react-router-dom';
+import {useNavigate} from 'react-router';
 import {mergeConfig, version as VG_VERSION} from 'vega';
 import {version as VE_VERSION} from 'vega-embed';
 import {version as VL_VERSION} from 'vega-lite';
@@ -9,7 +9,9 @@ import {mapStateToProps} from './index.js';
 import {Mode} from '../../../constants/consts.js';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps>;
+type Props = ReturnType<typeof mapStateToProps> & {
+  navigate: (path: string) => void;
+};
 
 interface State {
   downloadVegaJSON: boolean;
@@ -248,13 +250,13 @@ class ExportModal extends React.PureComponent<Props, State> {
               <a href="https://github.com/vega/vl-convert" target="_blank" rel="noopener noreferrer">
                 vl-convert.vercel.app
               </a>{' '}
-              for rendering.
+              to be converted.
             </p>
             <button onClick={() => this.downloadPDF()} disabled={this.state.loadingPDF}>
-              {this.state.loadingPDF ? 'Downloading...' : 'Download'}
+              {this.state.loadingPDF ? 'Loading...' : 'Download'}
             </button>
             {this.state.errorLoadingPdf && (
-              <p style={{color: 'red'}}>Render service failed with error: {this.state.errorLoadingPdf}.</p>
+              <p className="error-message">Error loading PDF: {this.state.errorLoadingPdf}</p>
             )}
           </div>
           <div className="export-container">
@@ -262,21 +264,19 @@ class ExportModal extends React.PureComponent<Props, State> {
               <BookOpen />
               <span>HTML</span>
             </div>
-            <p>
-              <br /> HTML is a document format to be displayed in a browser. Your chart is embedded in the downloaded
-              html file. Use absolute URLs to ensure that the data is loaded correctly.
-            </p>
+            <p>HTML is a markup language for creating web pages.</p>
             <button onClick={() => this.downloadHTML()}>Download</button>
           </div>
-        </div>
-        <div className="user-notes">
-          <p>
-            <strong>Note:</strong> To get a PDF, open the SVG which you can print as a PDF from your browser.
-          </p>
         </div>
       </>
     );
   }
 }
 
-export default withRouter(ExportModal);
+// Create a wrapper component to provide the navigation hook
+const ExportModalWithNavigation = (props: Omit<Props, 'navigate'>) => {
+  const navigate = useNavigate();
+  return <ExportModal {...props} navigate={navigate} />;
+};
+
+export default ExportModalWithNavigation;

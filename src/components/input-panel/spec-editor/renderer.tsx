@@ -4,7 +4,8 @@ import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import ResizeObserver from 'rc-resize-observer';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router';
+import {connect} from 'react-redux';
 import {debounce} from 'vega';
 import parser from 'vega-schema-url-parser';
 import {mapDispatchToProps, mapStateToProps} from './index.js';
@@ -13,11 +14,15 @@ import './index.css';
 import {parse as parseJSONC} from 'jsonc-parser';
 
 type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> &
-  RouteComponentProps<{compressed: string}>;
+  ReturnType<typeof mapDispatchToProps> & {
+    navigate: (path: string) => void;
+    params: {compressed?: string};
+  };
 
 class Editor extends React.PureComponent<Props> {
   public editor: Monaco.editor.IStandaloneCodeEditor;
+  private parseButtonRef = React.createRef<HTMLButtonElement>();
+
   constructor(props: Props) {
     super(props);
     this.handleKeydown = this.handleKeydown.bind(this);
@@ -32,7 +37,7 @@ class Editor extends React.PureComponent<Props> {
       if ((e.keyCode === KEYCODES.B || e.keyCode === KEYCODES.S) && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         this.props.parseSpec(true);
-        const parseButton = this.refs.parse as any;
+        const parseButton = this.parseButtonRef.current;
         parseButton.classList.add('pressed');
         setTimeout(() => {
           parseButton.classList.remove('pressed');
@@ -46,9 +51,7 @@ class Editor extends React.PureComponent<Props> {
     if (!confirmation) {
       return;
     }
-    if (this.props.history.location.pathname !== '/edited') {
-      this.props.history.push('/edited');
-    }
+    this.props.navigate('/edited');
     this.props.mergeConfigSpec();
   }
 
@@ -62,11 +65,11 @@ class Editor extends React.PureComponent<Props> {
   }
 
   public onSelectNewVega() {
-    this.props.history.push('/custom/vega');
+    this.props.navigate('/custom/vega');
   }
 
   public onSelectNewVegaLite() {
-    this.props.history.push('/custom/vega-lite');
+    this.props.navigate('/custom/vega-lite');
   }
 
   public onClear() {
@@ -160,14 +163,11 @@ class Editor extends React.PureComponent<Props> {
 
   public handleEditorChange(spec: string) {
     this.props.manualParse ? this.props.updateEditorString(spec) : this.updateSpec(spec);
-
-    if (this.props.history.location.pathname.indexOf('/edited') === -1) {
-      this.props.history.push('/edited');
-    }
+    this.props.navigate('/edited');
   }
 
   public editorWillMount(monaco: typeof Monaco) {
-    const compressed = this.props.match.params.compressed;
+    const compressed = this.props.params.compressed;
     if (compressed) {
       let spec: string = LZString.decompressFromEncodedURIComponent(compressed);
 
@@ -267,14 +267,21 @@ class Editor extends React.PureComponent<Props> {
               enabled: false,
             },
           }}
-          value={this.props.value}
           onChange={debounce(700, this.handleEditorChange)}
-          beforeMount={this.editorWillMount}
+          defaultValue={this.props.editorString}
           onMount={this.editorDidMount}
+          beforeMount={this.editorWillMount}
         />
       </ResizeObserver>
     );
   }
 }
 
-export default withRouter(Editor);
+// Create a wrapper component to provide the navigation hook
+const EditorWithNavigation = (props: Omit<Props, 'navigate' | 'params'>) => {
+  const navigate = useNavigate();
+  const params = useParams();
+  return <Editor {...props} navigate={navigate} params={params} />;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditorWithNavigation);

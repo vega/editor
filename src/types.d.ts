@@ -5,6 +5,7 @@ declare module 'react-router-dom' {
   // and https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react-router-dom/index.d.ts
 
   import * as H from 'history';
+  import {NavigateFunction, Location, Params} from 'react-router';
 
   export interface RouteChildrenProps<Params extends {[K in keyof Params]?: string} = {}, S = any> {
     history: H.History;
@@ -14,8 +15,8 @@ declare module 'react-router-dom' {
 
   export interface RouteProps {
     location?: H.Location;
-    component?: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
-    render?: (props: RouteComponentProps<any>) => React.ReactNode;
+    component?: React.ComponentType<any>;
+    render?: (props: any) => React.ReactNode;
     children?: ((props: RouteChildrenProps<any>) => React.ReactNode) | React.ReactNode;
     path?: string | string[];
     exact?: boolean;
@@ -36,6 +37,7 @@ declare module 'react-router-dom' {
     basename?: string;
     getUserConfirmation?: (message: string, callback: (ok: boolean) => void) => void;
     hashType?: 'slash' | 'noslash' | 'hashbang';
+    children?: React.ReactNode;
   }
 
   export type WithRouterProps<C extends React.ComponentType<any>> = C extends React.ComponentClass
@@ -126,7 +128,7 @@ declare module 'redux-thunk' {
   export default thunk;
 }
 
-declare module 'react-split-pane-r17';
+declare module 'react-split-pane';
 declare module '@monaco-editor/react';
 declare module 'react-paginate';
 declare module 'react-clipboard.js';

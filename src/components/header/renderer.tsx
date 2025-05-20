@@ -3,7 +3,7 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import {ExternalLink, GitHub, Grid, HelpCircle, Play, Settings, Share2, Terminal, X} from 'react-feather';
 import {PortalWithState} from 'react-portal';
-import {RouteComponentProps} from 'react-router-dom';
+import {useNavigate} from 'react-router';
 import Select from 'react-select';
 import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {BACKEND_URL, KEYCODES, Mode} from '../../constants/index.js';
@@ -22,8 +22,9 @@ export interface Props {
 
 type PropsType = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
-  Props &
-  RouteComponentProps;
+  Props & {
+    navigate: (path: string) => void;
+  };
 
 interface State {
   open: boolean;
@@ -40,6 +41,7 @@ const formatExampleName = (name: string) =>
 
 class Header extends React.PureComponent<PropsType, State> {
   private examplePortal = React.createRef<HTMLDivElement>();
+  private splitButtonRef = React.createRef<HTMLSpanElement>();
   private listenerAttached = false;
 
   constructor(props) {
@@ -205,19 +207,19 @@ class Header extends React.PureComponent<PropsType, State> {
   }
 
   public onSelectVega(name) {
-    this.props.history.push(`/examples/vega/${name}`);
+    this.props.navigate(`/examples/vega/${name}`);
   }
 
   public onSelectNewVega() {
-    this.props.history.push('/custom/vega');
+    this.props.navigate('/custom/vega');
   }
 
   public onSelectVegaLite(name) {
-    this.props.history.push(`/examples/vega-lite/${name}`);
+    this.props.navigate(`/examples/vega-lite/${name}`);
   }
 
   public onSelectNewVegaLite() {
-    this.props.history.push('/custom/vega-lite');
+    this.props.navigate('/custom/vega-lite');
   }
 
   public onSwitchMode(option) {
@@ -554,7 +556,7 @@ class Header extends React.PureComponent<PropsType, State> {
       <div className="app-header" role="banner">
         <section className="left-section">
           {modeSwitcher}
-          <span ref="splitButton" className={splitClass}>
+          <span ref={this.splitButtonRef} className={splitClass}>
             {runButton}
             {autoRunToggle}
           </span>
@@ -624,7 +626,7 @@ class Header extends React.PureComponent<PropsType, State> {
             closeOnEsc
             defaultOpen={this.props.showExample}
             onOpen={() => {
-              const node = ReactDOM.findDOMNode(this.examplePortal.current) as Element;
+              const node = this.examplePortal.current;
               node.scrollTop = this.props.lastPosition;
               node.addEventListener('scroll', () => {
                 this.setState({
@@ -649,7 +651,7 @@ class Header extends React.PureComponent<PropsType, State> {
                           className={this.state.showVega ? 'selected' : ''}
                           onClick={() => {
                             this.setState({showVega: true});
-                            const node = ReactDOM.findDOMNode(this.examplePortal.current) as Element;
+                            const node = this.examplePortal.current;
                             node.scrollTop = 0;
                           }}
                         >
@@ -659,7 +661,7 @@ class Header extends React.PureComponent<PropsType, State> {
                           className={this.state.showVega ? '' : 'selected'}
                           onClick={() => {
                             this.setState({showVega: false});
-                            const node = ReactDOM.findDOMNode(this.examplePortal.current) as Element;
+                            const node = this.examplePortal.current;
                             node.scrollTop = 0;
                           }}
                         >
@@ -715,4 +717,10 @@ class Header extends React.PureComponent<PropsType, State> {
   }
 }
 
-export default Header;
+// Create a wrapper component to provide the navigation hook
+const HeaderWithNavigation = (props: Omit<PropsType, 'navigate'>) => {
+  const navigate = useNavigate();
+  return <Header {...props} navigate={navigate} />;
+};
+
+export default HeaderWithNavigation;

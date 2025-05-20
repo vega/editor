@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {useNavigate} from 'react-router';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor.js';
 import {SIDEPANE} from '../../../constants/index.js';
@@ -8,7 +8,10 @@ import {State} from '../../../constants/default-state.js';
 import ConfigEditorHeader from '../../config-editor/config-editor-header.js';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
+type Props = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> & {
+    navigate: (path: string) => void;
+  };
 
 class SpecEditorHeader extends React.PureComponent<Props> {
   public render() {
@@ -70,4 +73,10 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SpecEditorHeader));
+// Create a wrapper component to provide the navigation hook
+const SpecEditorHeaderWithNavigation = (props: Omit<Props, 'navigate'>) => {
+  const navigate = useNavigate();
+  return <SpecEditorHeader {...props} navigate={navigate} />;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SpecEditorHeaderWithNavigation);

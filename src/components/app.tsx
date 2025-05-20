@@ -2,8 +2,8 @@ import stringify from 'json-stringify-pretty-compact';
 import {parse as parseJSONC} from 'jsonc-parser';
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
-import SplitPane from 'react-split-pane-r17';
+import {useParams, useNavigate} from 'react-router';
+import SplitPane from 'react-split-pane';
 import {bindActionCreators, Dispatch} from 'redux';
 import {MessageData} from 'vega-embed';
 import {hash} from 'vega-lite';
@@ -21,8 +21,10 @@ type Props = {showExample: boolean};
 
 type PropsType = ReturnType<typeof mapDispatchToProps> &
   ReturnType<typeof mapStateToProps> &
-  Props &
-  RouteComponentProps;
+  Props & {
+    params: Record<string, string>;
+    navigate: (path: string) => void;
+  };
 
 class App extends React.PureComponent<PropsType> {
   public w = window.innerWidth;
@@ -61,18 +63,19 @@ class App extends React.PureComponent<PropsType> {
       false,
     );
 
-    const parameter = this.props.match.params;
+    const parameter = this.props.params;
     if (parameter.mode) {
-      if (parameter.mode === 'vega' || parameter.mode === 'vega-lite') {
-        this.props.setModeOnly(parameter.mode);
+      const mode = parameter.mode.toLowerCase();
+      if (mode === 'vega' || mode === 'vega-lite') {
+        this.props.setModeOnly(mode as Mode);
       }
     }
     this.setSpecInUrl(parameter);
   }
 
   public componentDidUpdate(prevProps) {
-    if (hash(this.props.match.params) !== hash(prevProps.match.params)) {
-      this.setSpecInUrl(this.props.match.params);
+    if (hash(this.props.params) !== hash(prevProps.params)) {
+      this.setSpecInUrl(this.props.params);
     }
   }
 
@@ -198,10 +201,13 @@ class App extends React.PureComponent<PropsType> {
             split="vertical"
             minSize={300}
             defaultSize={Math.min(this.w * 0.4, 800)}
+            style={{
+              position: 'relative',
+              height: '100%',
+            }}
             pane1Style={{display: 'flex'}}
             className="main-pane"
             pane2Style={{overflow: 'scroll'}}
-            style={{position: 'relative'}}
           >
             <InputPanel />
             <VizPane />
@@ -242,4 +248,11 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
+// Create a wrapper component to provide the navigation and params
+const AppWithRouter = (props: Omit<PropsType, 'params' | 'navigate'>) => {
+  const params = useParams();
+  const navigate = useNavigate();
+  return <App {...props} params={params} navigate={navigate} />;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppWithRouter);
