@@ -4,6 +4,63 @@ import {isDate, isFunction} from 'vega';
 import {stringify} from 'vega-tooltip';
 import './index.css';
 
+export default function Table(props: Props) {
+  let {header} = props;
+  const {data, onClickHandler} = props;
+
+  const singleColumn = header.length === 0;
+
+  if (singleColumn) {
+    header = ['datum'];
+  }
+
+  const headerNodes = header.map((h) => (
+    <th onClick={() => onClickHandler && onClickHandler(h)} key={h}>
+      {h}
+      <Search />
+    </th>
+  ));
+
+  const tableBody = data.map((row, i) => {
+    if (singleColumn) {
+      row = {datum: row};
+    }
+
+    const rowNodes = header.map((field, j) => {
+      let tooLong = false;
+      let formatted = '';
+      if (!isDate(row[field])) {
+        tooLong = formatValueLong(row[field]).tooLong;
+        formatted = formatValueLong(row[field]).formatted;
+      } else {
+        tooLong = false;
+        formatted = new Date(row[field]).toUTCString();
+      }
+      const key = `${field} ${j}`;
+      if (tooLong) {
+        return (
+          <td key={key} title="The field is too large to be displayed. Please use the view API (see JS console).">
+            <span>(...)</span>
+          </td>
+        );
+      } else {
+        return <td key={key}>{formatted}</td>;
+      }
+    });
+
+    return <tr key={i}>{rowNodes}</tr>;
+  });
+
+  return (
+    <table className="editor-table">
+      <thead>
+        <tr>{headerNodes}</tr>
+      </thead>
+      <tbody>{tableBody}</tbody>
+    </table>
+  );
+}
+
 interface Props {
   header: string[];
   data: any[];
@@ -12,65 +69,6 @@ interface Props {
 
 const MAX_DEPTH = 3;
 const MAX_LENGTH = 150;
-
-export default class Table extends React.PureComponent<Props> {
-  public render() {
-    let {header} = this.props;
-    const {data, onClickHandler} = this.props;
-
-    const singleColumn = this.props.header.length == 0;
-
-    if (singleColumn) {
-      header = ['datum'];
-    }
-
-    const headerNodes = header.map((h) => (
-      <th onClick={() => onClickHandler && onClickHandler(h)} key={h}>
-        {h}
-        <Search />
-      </th>
-    ));
-
-    const tableBody = data.map((row, i) => {
-      if (singleColumn) {
-        row = {datum: row};
-      }
-
-      const rowNodes = header.map((field, j) => {
-        let tooLong = false;
-        let formatted = '';
-        if (!isDate(row[field])) {
-          tooLong = formatValueLong(row[field]).tooLong;
-          formatted = formatValueLong(row[field]).formatted;
-        } else {
-          tooLong = false;
-          formatted = new Date(row[field]).toUTCString();
-        }
-        const key = `${field} ${j}`;
-        if (tooLong) {
-          return (
-            <td key={key} title="The field is too large to be displayed. Please use the view API (see JS console).">
-              <span>(...)</span>
-            </td>
-          );
-        } else {
-          return <td key={key}>{formatted}</td>;
-        }
-      });
-
-      return <tr key={i}>{rowNodes}</tr>;
-    });
-
-    return (
-      <table className="editor-table">
-        <thead>
-          <tr>{headerNodes}</tr>
-        </thead>
-        <tbody>{tableBody}</tbody>
-      </table>
-    );
-  }
-}
 
 function formatNumberValue(value: number) {
   return isNaN(value)
