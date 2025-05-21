@@ -229,7 +229,7 @@ export default function Editor() {
         </Popup>
         <div aria-label="visualization" ref={chartRef} style={chartStyle} />
         {(responsiveWidth || responsiveHeight) && (
-          <div className="chart-resize-handle" onMouseDown={() => {}}>
+          <div className="chart-resize-handle" onMouseDown={handleResizeMouseDown}>
             <svg width="10" height="10">
               <path d="M-2,13L13,-2 M-2,16L16,-2 M-2,19L19,-2" />
             </svg>

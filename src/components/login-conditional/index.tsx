@@ -1,3 +1,5 @@
+//Not need anymore
+
 import {connect} from 'react-redux';
 import {State} from '../../constants/default-state.js';
 import Renderer from './renderer.js';
