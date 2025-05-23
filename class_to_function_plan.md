@@ -118,8 +118,8 @@ We'll prioritize components based on complexity, impact, and dependencies:
 - LoginConditional (⚠️)
 - DebugPaneHeader
 - ConfigEditorHeader
-- TimelineRow
-- SignalRow
+- TimelineRow (✅)
+- SignalRow (✅)
 
 ### Phase 2: UI Components
 
