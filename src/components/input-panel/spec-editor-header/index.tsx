@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {useNavigate} from 'react-router';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor.js';
 import {SIDEPANE} from '../../../constants/index.js';
@@ -8,47 +7,44 @@ import {State} from '../../../constants/default-state.js';
 import ConfigEditorHeader from '../../config-editor/config-editor-header.js';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & {
-    navigate: (path: string) => void;
-  };
+function SpecEditorHeader() {
+  const props = useSelector((state: State) => mapStateToProps(state));
+  const dispatch = useDispatch();
+  const dispatchProps = mapDispatchToProps(dispatch);
 
-class SpecEditorHeader extends React.PureComponent<Props> {
-  public render() {
-    return (
-      <div className="editor-header spec-editor-header">
-        <ul className="tabs-nav">
-          <li
-            className={this.props.sidePaneItem === SIDEPANE.Editor ? 'active-tab' : undefined}
-            onClick={(e) => {
-              if (this.props.sidePaneItem === SIDEPANE.Editor) {
-                e.stopPropagation();
-              }
+  return (
+    <div className="editor-header spec-editor-header">
+      <ul className="tabs-nav">
+        <li
+          className={props.sidePaneItem === SIDEPANE.Editor ? 'active-tab' : undefined}
+          onClick={(e) => {
+            if (props.sidePaneItem === SIDEPANE.Editor) {
               e.stopPropagation();
-              this.props.setSidePaneItem(SIDEPANE.Editor);
-            }}
-          >
-            {this.props.mode}
-          </li>
+            }
+            e.stopPropagation();
+            dispatchProps.setSidePaneItem(SIDEPANE.Editor);
+          }}
+        >
+          {props.mode}
+        </li>
 
-          <li
-            className={this.props.sidePaneItem === SIDEPANE.Config ? 'active-tab' : undefined}
-            onClick={(e) => {
-              if (this.props.sidePaneItem === SIDEPANE.Config) {
-                e.stopPropagation();
-              }
+        <li
+          className={props.sidePaneItem === SIDEPANE.Config ? 'active-tab' : undefined}
+          onClick={(e) => {
+            if (props.sidePaneItem === SIDEPANE.Config) {
               e.stopPropagation();
-              this.props.setSidePaneItem(SIDEPANE.Config);
-            }}
-          >
-            Config
-          </li>
-        </ul>
+            }
+            e.stopPropagation();
+            dispatchProps.setSidePaneItem(SIDEPANE.Config);
+          }}
+        >
+          Config
+        </li>
+      </ul>
 
-        {this.props.sidePaneItem === SIDEPANE.Config && <ConfigEditorHeader />}
-      </div>
-    );
-  }
+      {props.sidePaneItem === SIDEPANE.Config && <ConfigEditorHeader />}
+    </div>
+  );
 }
 
 function mapStateToProps(state: State) {
@@ -73,10 +69,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-// Create a wrapper component to provide the navigation hook
-const SpecEditorHeaderWithNavigation = (props: Omit<Props, 'navigate'>) => {
-  const navigate = useNavigate();
-  return <SpecEditorHeader {...props} navigate={navigate} />;
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SpecEditorHeaderWithNavigation);
+export default connect(mapStateToProps, mapDispatchToProps)(SpecEditorHeader);

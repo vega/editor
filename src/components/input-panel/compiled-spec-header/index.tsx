@@ -1,7 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {ChevronDown, ChevronUp} from 'react-feather';
-import {connect} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor.js';
@@ -12,92 +12,86 @@ const toggleStyle = {
   cursor: 'pointer',
 } as const;
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & {
-    navigate: (path: string) => void;
+function CompiledSpecDisplayHeader() {
+  const props = useSelector((state: State) => mapStateToProps(state));
+  const dispatch = useDispatch();
+  const dispatchProps = mapDispatchToProps(dispatch);
+  const navigate = useNavigate();
+
+  const editVegaSpec = () => {
+    if (window.location.pathname.indexOf('/edited') === -1) {
+      navigate('/edited');
+    }
+    dispatchProps.clearConfig();
+    if (props.compiledPaneItem == COMPILEDPANE.Vega) {
+      dispatchProps.updateVegaSpec(stringify(props.value));
+    } else {
+      dispatchProps.updateVegaLiteSpec(stringify(props.value));
+    }
   };
 
-class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
-  constructor(props) {
-    super(props);
-    this.editVegaSpec = this.editVegaSpec.bind(this);
-  }
+  if (props.compiledVegaSpec) {
+    const toggleStyleUp = {...toggleStyle, position: 'static'} as const;
+    return (
+      <div className="editor-header" style={toggleStyleUp} onClick={dispatchProps.toggleCompiledVegaSpec}>
+        <ul className="tabs-nav">
+          <li
+            className={props.compiledPaneItem == COMPILEDPANE.Vega ? 'active-tab' : undefined}
+            onClick={(e) => {
+              dispatchProps.setCompiledPaneItem(COMPILEDPANE.Vega);
+              e.stopPropagation();
+            }}
+          >
+            Compiled Vega
+          </li>
 
-  public editVegaSpec() {
-    if (window.location.pathname.indexOf('/edited') === -1) {
-      this.props.navigate('/edited');
-    }
-    this.props.clearConfig();
-    if (this.props.compiledPaneItem == COMPILEDPANE.Vega) {
-      this.props.updateVegaSpec(stringify(this.props.value));
-    } else {
-      this.props.updateVegaLiteSpec(stringify(this.props.value));
-    }
-  }
-  public render() {
-    if (this.props.compiledVegaSpec) {
-      const toggleStyleUp = {...toggleStyle, position: 'static'} as const;
-      return (
-        <div className="editor-header" style={toggleStyleUp} onClick={this.props.toggleCompiledVegaSpec}>
-          <ul className="tabs-nav">
-            <li
-              className={this.props.compiledPaneItem == COMPILEDPANE.Vega ? 'active-tab' : undefined}
-              onClick={(e) => {
-                this.props.setCompiledPaneItem(COMPILEDPANE.Vega);
-                e.stopPropagation();
-              }}
-            >
-              Compiled Vega
-            </li>
-
-            <li
-              className={this.props.compiledPaneItem == COMPILEDPANE.NormalizedVegaLite ? 'active-tab' : undefined}
-              onClick={(e) => {
-                this.props.setCompiledPaneItem(COMPILEDPANE.NormalizedVegaLite);
-                e.stopPropagation();
-              }}
-            >
-              Extended Vega-Lite Spec
-            </li>
-          </ul>
-          {this.props.compiledPaneItem === COMPILEDPANE.Vega ? (
-            <button onClick={this.editVegaSpec} style={{cursor: 'pointer'}}>
-              Edit Vega Spec
-            </button>
-          ) : null}
-          {this.props.compiledPaneItem === COMPILEDPANE.NormalizedVegaLite ? (
-            <button onClick={this.editVegaSpec} style={{cursor: 'pointer'}}>
-              Edit Extended Vega-Lite Spec
-            </button>
-          ) : null}
-          <ChevronDown />
-        </div>
-      );
-    } else {
-      return (
-        <div onClick={this.props.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
-          <ul className="tabs-nav">
-            <li
-              className={this.props.compiledPaneItem == COMPILEDPANE.Vega ? 'active-tab' : undefined}
-              onClick={(e) => {
-                this.props.setCompiledPaneItem(COMPILEDPANE.Vega);
-              }}
-            >
-              Compiled Vega
-            </li>
-            <li
-              className={this.props.compiledPaneItem == COMPILEDPANE.NormalizedVegaLite ? 'active-tab' : undefined}
-              onClick={(e) => {
-                this.props.setCompiledPaneItem(COMPILEDPANE.NormalizedVegaLite);
-              }}
-            >
-              Extended Vega-Lite Spec
-            </li>
-          </ul>
-          <ChevronUp />
-        </div>
-      );
-    }
+          <li
+            className={props.compiledPaneItem == COMPILEDPANE.NormalizedVegaLite ? 'active-tab' : undefined}
+            onClick={(e) => {
+              dispatchProps.setCompiledPaneItem(COMPILEDPANE.NormalizedVegaLite);
+              e.stopPropagation();
+            }}
+          >
+            Extended Vega-Lite Spec
+          </li>
+        </ul>
+        {props.compiledPaneItem === COMPILEDPANE.Vega ? (
+          <button onClick={editVegaSpec} style={{cursor: 'pointer'}}>
+            Edit Vega Spec
+          </button>
+        ) : null}
+        {props.compiledPaneItem === COMPILEDPANE.NormalizedVegaLite ? (
+          <button onClick={editVegaSpec} style={{cursor: 'pointer'}}>
+            Edit Extended Vega-Lite Spec
+          </button>
+        ) : null}
+        <ChevronDown />
+      </div>
+    );
+  } else {
+    return (
+      <div onClick={dispatchProps.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
+        <ul className="tabs-nav">
+          <li
+            className={props.compiledPaneItem == COMPILEDPANE.Vega ? 'active-tab' : undefined}
+            onClick={() => {
+              dispatchProps.setCompiledPaneItem(COMPILEDPANE.Vega);
+            }}
+          >
+            Compiled Vega
+          </li>
+          <li
+            className={props.compiledPaneItem == COMPILEDPANE.NormalizedVegaLite ? 'active-tab' : undefined}
+            onClick={() => {
+              dispatchProps.setCompiledPaneItem(COMPILEDPANE.NormalizedVegaLite);
+            }}
+          >
+            Extended Vega-Lite Spec
+          </li>
+        </ul>
+        <ChevronUp />
+      </div>
+    );
   }
 }
 
@@ -122,10 +116,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-// Create a wrapper component to provide the navigation hook
-const CompiledSpecDisplayHeaderWithNavigation = (props: Omit<Props, 'navigate'>) => {
-  const navigate = useNavigate();
-  return <CompiledSpecDisplayHeader {...props} navigate={navigate} />;
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplayHeaderWithNavigation);
+export default connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplayHeader);

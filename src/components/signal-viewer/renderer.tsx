@@ -146,7 +146,6 @@ const SignalViewer = ({onClickHandler}: Props) => {
       const currentSignalKeys = Object.keys(signals);
 
       for (const key of currentSignalKeys) {
-        // Changed to 'for...of' for iterating keys array
         if (key === signalKey) continue; // Already handled
         if (signals[key] && signals[key].length > 0) {
           let i = 0;
@@ -233,19 +232,6 @@ const SignalViewer = ({onClickHandler}: Props) => {
     setHoverValue({});
     setIsHovered(false);
     setMaskListener(false);
-    // Reset counters and Redux state for signals
-    xTimelineEventCounterRef.current = 0;
-    setCurrentMaxXCount(0);
-    setReduxSignals({});
-    pendingSignalUpdatesRef.current = {};
-    if (signalUpdateDebounceTimeoutRef.current) {
-      clearTimeout(signalUpdateDebounceTimeoutRef.current);
-      signalUpdateDebounceTimeoutRef.current = null;
-    }
-    if (maxXCountUpdateTimeoutRef.current) {
-      clearTimeout(maxXCountUpdateTimeoutRef.current);
-      maxXCountUpdateTimeoutRef.current = null;
-    }
   }, [
     keys,
     signals,
@@ -323,13 +309,11 @@ const SignalViewer = ({onClickHandler}: Props) => {
         >
           {timeline ? 'Stop Recording & Reset' : 'Record signal changes'}
         </button>
-        {timeline && !maskListener && currentMaxXCount > 0 && (
+        {timeline && !maskListener && currentMaxXCount > 1 && (
           <button
             onClick={() => {
-              // Clear timeline: Reset counters, Redux state, and pending updates
               xTimelineEventCounterRef.current = 0;
               setCurrentMaxXCount(0);
-              setReduxSignals({});
               pendingSignalUpdatesRef.current = {};
               if (signalUpdateDebounceTimeoutRef.current) {
                 clearTimeout(signalUpdateDebounceTimeoutRef.current);
@@ -339,6 +323,8 @@ const SignalViewer = ({onClickHandler}: Props) => {
                 clearTimeout(maxXCountUpdateTimeoutRef.current);
                 maxXCountUpdateTimeoutRef.current = null;
               }
+              setReduxSignals({}); // Clear Redux store for signals immediately
+              setIsStartingRecording(true);
             }}
           >
             Clear Timeline

@@ -1,6 +1,5 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import ReactDOM from 'react-dom';
 import {ExternalLink, GitHub, Grid, HelpCircle, Play, Settings, Share2, Terminal, X} from 'react-feather';
 import {PortalWithState} from 'react-portal';
 import {useNavigate} from 'react-router';
