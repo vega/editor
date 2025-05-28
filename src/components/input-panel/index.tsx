@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import SplitPane from 'react-split-pane';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor.js';
 import {LAYOUT, Mode, SIDEPANE} from '../../constants/index.js';
@@ -9,8 +8,10 @@ import ConfigEditor from '../config-editor/index.js';
 import CompiledSpecDisplay from './compiled-spec-display/index.js';
 import CompiledSpecHeader from './compiled-spec-header/index.js';
 import './index.css';
+import '../split.css';
 import SpecEditor from './spec-editor/index.js';
 import SpecEditorHeader from './spec-editor-header/index.js';
+import Split from 'react-split';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -19,7 +20,8 @@ class InputPanel extends React.PureComponent<Props> {
     super(props);
     this.handleChange = this.handleChange.bind(this);
   }
-  public handleChange(size: number) {
+  public handleChange(sizes: number[]) {
+    const size = sizes[1] * window.innerHeight;
     this.props.setCompiledVegaPaneSize(size);
     if (
       (size > LAYOUT.MinPaneSize && !this.props.compiledVegaSpec) ||
@@ -68,26 +70,29 @@ class InputPanel extends React.PureComponent<Props> {
   public render() {
     const innerPanes = this.getInnerPanes();
 
+    // Calculate the initial sizes based on compiledVegaSpec
+    const initialSizes = this.props.compiledVegaSpec
+      ? [70, 30] // If we have a compiled spec, show it with 30% of space
+      : [100, 0]; // Otherwise, give full space to the editor
+
     return (
       // ! Never make this conditional based on modes
       // ! we will loose support for undo across modes
       // ! because the editor will be unmounted
-      <div role="group" aria-label="spec editors">
-        <SplitPane
-          split="horizontal"
-          primary="second"
-          className="editor-spitPane"
+      <div role="group" aria-label="spec editors" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+        <Split
+          sizes={initialSizes}
           minSize={LAYOUT.MinPaneSize}
-          defaultSize={this.props.compiledVegaSpec ? this.props.compiledVegaPaneSize : LAYOUT.MinPaneSize}
-          onChange={this.handleChange}
-          pane1Style={{minHeight: `${LAYOUT.MinPaneSize}px`}}
-          pane2Style={{
-            display: this.props.mode === Mode.Vega ? 'none' : 'block',
-            height: this.props.compiledVegaSpec
-              ? (this.props.compiledVegaPaneSize || window.innerHeight * 0.4) + 'px'
-              : LAYOUT.MinPaneSize + 'px',
-          }}
-          onDragFinished={() => {
+          expandToMin={false}
+          gutterSize={10}
+          gutterAlign="center"
+          snapOffset={30}
+          dragInterval={1}
+          direction="vertical"
+          cursor="row-resize"
+          className="editor-splitPane"
+          onDrag={this.handleChange}
+          onDragEnd={() => {
             if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
               this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.5);
               // Popping up the the compiled vega pane for the first time will set its
@@ -95,8 +100,9 @@ class InputPanel extends React.PureComponent<Props> {
             }
           }}
         >
-          {innerPanes}
-        </SplitPane>
+          {innerPanes[0]}
+          {innerPanes[1]}
+        </Split>
       </div>
     );
   }

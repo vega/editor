@@ -3,7 +3,6 @@ import {parse as parseJSONC} from 'jsonc-parser';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {useParams, useNavigate} from 'react-router';
-import SplitPane from 'react-split-pane';
 import {bindActionCreators, Dispatch} from 'redux';
 import {MessageData} from 'vega-embed';
 import {hash} from 'vega-lite';
@@ -12,10 +11,12 @@ import {LAYOUT, Mode} from '../constants/index.js';
 import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts.js';
 import {State} from '../constants/default-state.js';
 import './app.css';
+import './split.css';
 import Header from './header/index.js';
 import InputPanel from './input-panel/index.js';
 import Sidebar from './sidebar/index.js';
 import VizPane from './viz-pane/index.js';
+import Split from 'react-split';
 
 type Props = {showExample: boolean};
 
@@ -197,21 +198,21 @@ class App extends React.PureComponent<PropsType> {
           }}
           className="main-panel"
         >
-          <SplitPane
-            split="vertical"
+          <Split
+            sizes={[40, 60]}
             minSize={300}
-            defaultSize={Math.min(this.w * 0.4, 800)}
-            style={{
-              position: 'relative',
-              height: '100%',
-            }}
-            pane1Style={{display: 'flex'}}
+            expandToMin={false}
+            gutterSize={10}
+            gutterAlign="center"
+            snapOffset={30}
+            dragInterval={1}
+            direction="horizontal"
+            cursor="col-resize"
             className="main-pane"
-            pane2Style={{overflow: 'scroll'}}
           >
             <InputPanel />
             <VizPane />
-          </SplitPane>
+          </Split>
           {this.props.settings && <Sidebar />}
         </div>
       </div>

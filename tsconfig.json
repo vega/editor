@@ -18,11 +18,13 @@
     "skipLibCheck": true,
     "types": [
       "react",
-      "react-dom"
+      "react-dom",
+      "node"
     ]
   },
   "include": [
     "src/**/*.ts*",
-    "test/**/*.ts*"
+    "test/**/*.ts*",
+    "src/types/**/*.d.ts"
   ]
 }
