@@ -1,130 +1,92 @@
 import * as React from 'react';
 import {AlertCircle} from 'react-feather';
 import {useNavigate} from 'react-router';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {mapStateToProps} from './index.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
-import {Mode} from '../../../constants/index.js';
+import {State} from '../../../constants/default-state.js';
 import './index.css';
 import {parse as parseJSONC} from 'jsonc-parser';
+import {useRef, useState} from 'react';
 
 export type Props = {
   closePortal: () => void;
 };
 
-type PropsType = ReturnType<typeof mapStateToProps> &
-  Props & {
-    navigate: (path: string) => void;
-  };
+export default function GistModal({closePortal}: Props) {
+  const props = useSelector((state: State) => mapStateToProps(state));
+  const refGistForm = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
 
-interface State {
-  gist: {
-    image: string;
+  const [gist, setGist] = useState({
+    filename: '',
+    image: '',
     imageStyle: {
-      bottom: number;
-    };
-    filename: string;
-    revision: string;
-    type: Mode;
-    url: string;
+      bottom: 0,
+    },
+    revision: '',
+    type: props.mode,
+    url: '',
+  });
+
+  const [gistLoadClicked, setGistLoadClicked] = useState(false);
+  const [invalidFilename, setInvalidFilename] = useState(false);
+  const [invalidRevision, setInvalidRevision] = useState(false);
+  const [invalidUrl, setInvalidUrl] = useState(false);
+  const [latestRevision, setLatestRevision] = useState(false);
+  const [syntaxError, setSyntaxError] = useState(false);
+
+  const updateGist = (newGist) => {
+    setGist({
+      ...gist,
+      ...newGist,
+    });
   };
-  gistLoadClicked: boolean;
-  invalidFilename: boolean;
-  invalidRevision: boolean;
-  invalidUrl: boolean;
-  latestRevision: boolean;
-  syntaxError: boolean;
-}
 
-class GistModal extends React.PureComponent<PropsType, State> {
-  private refGistForm: HTMLFormElement;
+  const updateGistUrl = (event) => {
+    updateGist({url: event.currentTarget.value});
+    setInvalidUrl(false);
+  };
 
-  constructor(props: PropsType) {
-    super(props);
-    this.state = {
-      gist: {
-        filename: '',
-        image: '',
-        imageStyle: {
-          bottom: 0,
-        },
-        revision: '',
-        type: props.mode,
-        url: '',
-      },
-      gistLoadClicked: false,
-      invalidFilename: false,
-      invalidRevision: false,
-      invalidUrl: false,
-      latestRevision: false,
-      syntaxError: false,
-    };
-  }
+  const updateGistRevision = (event) => {
+    updateGist({revision: event.currentTarget.value});
+    setInvalidRevision(false);
+  };
 
-  public updateGist(gist) {
-    this.setState({
-      gist: {
-        ...this.state.gist,
-        ...gist,
-      },
-    });
-  }
+  const updateGistFile = (event) => {
+    updateGist({filename: event.currentTarget.value});
+    setInvalidFilename(false);
+  };
 
-  public updateGistUrl(event) {
-    this.updateGist({url: event.currentTarget.value});
-    this.setState({
-      invalidUrl: false,
-    });
-  }
+  const onSelectGist = async () => {
+    const url = gist.url.trim().toLowerCase();
 
-  public updateGistRevision(event) {
-    this.updateGist({revision: event.currentTarget.value});
-    this.setState({
-      invalidRevision: false,
-    });
-  }
-
-  public updateGistFile(event) {
-    this.updateGist({filename: event.currentTarget.value});
-    this.setState({
-      invalidFilename: false,
-    });
-  }
-
-  public async onSelectGist(closePortal) {
-    const url = this.state.gist.url.trim().toLowerCase();
-
-    this.setState({
-      gist: {
-        ...this.state.gist,
-        filename: this.state.gist.filename.trim(),
-        revision: this.state.gist.revision.trim().toLowerCase(),
-      },
+    setGist({
+      ...gist,
+      filename: gist.filename.trim(),
+      revision: gist.revision.trim().toLowerCase(),
     });
 
     if (url.length === 0) {
-      this.refGistForm.reportValidity();
+      refGistForm.current?.reportValidity();
       return;
     }
-    this.setState({
-      gistLoadClicked: true,
-    });
+    setGistLoadClicked(true);
 
     let gistUrl: URL;
 
     if (url.match(/gist\.githubusercontent\.com/)) {
       gistUrl = new URL(url, 'https://gist.githubusercontent.com');
       const [revision, filename] = gistUrl.pathname.split('/').slice(4);
-      this.setState({
-        gist: {
-          ...this.state.gist,
-          filename,
-          revision,
-        },
+      setGist({
+        ...gist,
+        filename,
+        revision,
       });
     } else if (url.match(/gist\.github\.com/)) {
       gistUrl = new URL(url, 'https://gist.github.com');
     }
+
     const gistId = gistUrl.pathname.split('/')[2];
 
     try {
@@ -141,263 +103,268 @@ class GistModal extends React.PureComponent<PropsType, State> {
         headers,
       });
 
-      this.setState({
-        invalidUrl: !gistCommitsResponse.ok,
-      });
+      setInvalidUrl(!gistCommitsResponse.ok);
 
       if (!gistCommitsResponse.ok) {
-        this.setState({
-          gistLoadClicked: false,
-        });
+        setGistLoadClicked(false);
         throw new Error(`Failed to fetch gist commits: ${gistCommitsResponse.status}`);
       }
 
       const gistCommits = await gistCommitsResponse.json();
 
-      if (!this.state.gist.revision && !this.state.invalidUrl) {
-        this.setState({
-          gist: {
-            ...this.state.gist,
-            revision: gistCommits[0].version,
-          },
+      if (!gist.revision && !invalidUrl) {
+        setGist({
+          ...gist,
+          revision: gistCommits[0].version,
         });
-      } else if (this.state.invalidUrl) {
-        this.setState({
-          gistLoadClicked: false,
-        });
+      } else if (invalidUrl) {
+        setGistLoadClicked(false);
         throw new Error('Invalid Gist URL');
       }
 
-      if (gistCommits[0].version === this.state.gist.revision) {
-        this.setState({
-          latestRevision: true,
-        });
+      if (gistCommits[0].version === gist.revision) {
+        setLatestRevision(true);
       }
 
-      const gistSummaryResponse = await fetch(`https://api.github.com/gists/${gistId}/${this.state.gist.revision}`, {
+      const gistSummaryResponse = await fetch(`https://api.github.com/gists/${gistId}/${gist.revision}`, {
         headers,
       });
 
-      this.setState({
-        invalidRevision: !gistSummaryResponse.ok,
-      });
+      setInvalidRevision(!gistSummaryResponse.ok);
 
       if (!gistSummaryResponse.ok) {
-        this.setState({
-          gistLoadClicked: false,
-        });
+        setGistLoadClicked(false);
         throw new Error(`Failed to fetch gist summary: ${gistSummaryResponse.status}`);
       }
 
       const gistSummary = await gistSummaryResponse.json();
 
-      if (this.state.invalidRevision) {
-        this.setState({
-          gistLoadClicked: false,
-        });
+      if (invalidRevision) {
+        setGistLoadClicked(false);
         throw new Error('Invalid Revision');
-      } else if (!this.state.invalidRevision && this.state.gist.filename === '') {
+      } else if (!invalidRevision && gist.filename === '') {
         const jsonFiles = Object.keys(gistSummary.files).filter((file) => {
           if (file.split('.').slice(-1)[0] === 'json') {
             return true;
           }
         });
         if (jsonFiles.length === 0) {
-          this.setState({
-            gistLoadClicked: false,
-            invalidUrl: true,
-          });
+          setGistLoadClicked(false);
+          setInvalidUrl(true);
           throw new Error('No JSON file exists in the gist');
         } else {
-          this.setState(
-            {
-              gist: {
-                ...this.state.gist,
-                filename: jsonFiles[0],
-              },
-            },
-            () => {
-              const {revision, filename} = this.state.gist;
-              parseJSONC(gistSummary.files[jsonFiles[0]].content);
-              if (this.state.latestRevision) {
-                this.props.navigate(`/gist/${gistId}/${filename}`);
-              } else {
-                this.props.navigate(`/gist/${gistId}/${revision}/${filename}`);
-              }
-              closePortal();
-            },
-          );
+          setGist({
+            ...gist,
+            filename: jsonFiles[0],
+          });
+          const {revision, filename} = gist;
+          parseJSONC(gistSummary.files[jsonFiles[0]].content);
+          if (latestRevision) {
+            navigate(`/gist/${gistId}/${filename}`);
+          } else {
+            navigate(`/gist/${gistId}/${revision}/${filename}`);
+          }
+          closePortal();
         }
       } else {
-        if (gistSummary.files[this.state.gist.filename] === undefined) {
-          this.setState({
-            gistLoadClicked: false,
-            invalidFilename: true,
-          });
+        if (gistSummary.files[gist.filename] === undefined) {
+          setGistLoadClicked(false);
+          setInvalidFilename(true);
           throw new Error('Invalid file name');
         }
 
         try {
-          const content = await this.fetchGistContent(gistSummary, this.state.gist.filename);
+          const content = await fetchGistContent(gistSummary, gist.filename);
 
           const errors = [];
           parseJSONC(content, errors);
           if (errors.length > 0) throw SyntaxError; // check if the loaded file is a JSON
 
-          const {revision, filename} = this.state.gist;
-          if (this.state.latestRevision) {
-            this.props.navigate(`/gist/${gistId}/${filename}`);
+          const {revision, filename} = gist;
+          if (latestRevision) {
+            navigate(`/gist/${gistId}/${filename}`);
           } else {
-            this.props.navigate(`/gist/${gistId}/${revision}/${filename}`);
+            navigate(`/gist/${gistId}/${revision}/${filename}`);
           }
           closePortal();
         } catch (error) {
           if (error instanceof SyntaxError) {
-            this.setState({
-              gistLoadClicked: false,
-              syntaxError: true,
-            });
+            setGistLoadClicked(false);
+            setSyntaxError(true);
           }
         }
       }
     } catch (error) {
       console.error('Error loading gist:', error);
-      this.setState({
-        gistLoadClicked: false,
-      });
+      setGistLoadClicked(false);
     }
-  }
+  };
 
-  private async fetchGistContent(gistSummary, filename) {
+  const fetchGistContent = async (gistSummary, filename) => {
     const file = gistSummary.files[filename];
     if (file.truncated) {
       const response = await fetch(file.raw_url);
       return await response.text();
     }
     return file.content;
-  }
+  };
 
-  public preview(id, file, image) {
-    this.setState({
-      gist: {
-        ...this.state.gist,
-        image,
+  const preview = (id, file, image) => {
+    if (id) {
+      setGist({
+        ...gist,
+        url: `https://gist.github.com/${id}`,
+        filename: file || '',
+        image: image || '',
         imageStyle: {
           bottom: 0,
         },
-      },
-    });
-  }
+      });
+    }
+  };
 
-  public slideImage(event) {
-    const imageStyle = this.state.gist.imageStyle;
+  const slideImage = (event) => {
+    const imageStyle = gist.imageStyle;
     imageStyle.bottom = imageStyle.bottom + event.deltaY;
-    this.setState({
-      gist: {
-        ...this.state.gist,
-        imageStyle,
+    setGist({
+      ...gist,
+      imageStyle,
+    });
+  };
+
+  const slideImageBack = () => {
+    setGist({
+      ...gist,
+      image: '',
+      imageStyle: {
+        bottom: 0,
       },
     });
-  }
-
-  public slideImageBack() {
-    this.setState({
-      gist: {
-        ...this.state.gist,
-        image: '',
-        imageStyle: {
-          bottom: 0,
-        },
-      },
-    });
-  }
-
-  public render() {
-    return (
-      <div className="gist-modal">
-        <div className="gist-modal-content">
-          <div className="gist-modal-header">
-            <h2>Load Gist</h2>
-          </div>
-          <div className="gist-modal-body">
-            <form ref={(ref) => (this.refGistForm = ref)}>
-              <div className="gist-modal-section">
-                <h3>Gist URL</h3>
+  };
+  return (
+    <div>
+      <h1>
+        Load{' '}
+        <a href="https://gist.github.com/" target="_blank" rel="noopener noreferrer">
+          GitHub Gist
+        </a>
+      </h1>
+      <div className="gist-split">
+        <div className="personal-gist">
+          <h3>Your gists</h3>
+          <p>
+            To load a gist, select it in the list below or specify its details on the right. View all your Gists on{' '}
+            <a href={`https://gist.github.com/${props.handle}`}>GitHub</a>.
+          </p>
+          <GistSelectWidget selectGist={preview} />
+        </div>
+        <div className="load-gist">
+          <h3>Load gists</h3>
+          <form ref={refGistForm}>
+            <div className="gist-input-container">
+              <label>
+                Gist URL
+                <div style={{marginTop: '2px'}}>
+                  <small>
+                    Example:{' '}
+                    <span
+                      className="gist-url"
+                      onClick={() =>
+                        setGist({
+                          ...gist,
+                          filename: '',
+                          image: '',
+                          revision: '',
+                          url: 'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9',
+                        })
+                      }
+                    >
+                      {'https://gist.github.com/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9'}
+                    </span>
+                  </small>
+                </div>
                 <input
-                  type="text"
-                  placeholder="Enter Gist URL"
-                  value={this.state.gist.url}
-                  onChange={this.updateGistUrl.bind(this)}
                   required
-                />
-                {this.state.invalidUrl && (
-                  <div className="error-message">
-                    <AlertCircle size={16} />
-                    <span>Invalid Gist URL</span>
-                  </div>
-                )}
-              </div>
-              <div className="gist-modal-section">
-                <h3>Revision</h3>
-                <input
+                  className="gist-input"
                   type="text"
-                  placeholder="Enter revision (optional)"
-                  value={this.state.gist.revision}
-                  onChange={this.updateGistRevision.bind(this)}
+                  placeholder="Enter URL"
+                  value={gist.url}
+                  onChange={updateGistUrl}
                 />
-                {this.state.invalidRevision && (
-                  <div className="error-message">
-                    <AlertCircle size={16} />
-                    <span>Invalid revision</span>
+              </label>
+              <div className="error-message">{invalidUrl && <span>Please enter a valid URL.</span>}</div>
+            </div>
+            <div className="gist-optional">
+              <div className="gist-input-container gist-optional-input-container">
+                <label>
+                  Revision (optional)
+                  <input
+                    className="gist-input"
+                    type="text"
+                    placeholder="Enter revision"
+                    value={gist.revision}
+                    onChange={updateGistRevision}
+                  />
+                </label>
+                <div className="error-message">{invalidRevision && <span>Please enter a valid revision.</span>}</div>
+              </div>
+              <div className="gist-input-container gist-optional-input-container">
+                <label>
+                  Filename (optional)
+                  <input
+                    className="gist-input"
+                    type="text"
+                    placeholder="Enter filename"
+                    value={gist.filename}
+                    onChange={updateGistFile}
+                  />
+                </label>
+                <div className="error-message">
+                  {invalidFilename ? (
+                    <span>Please enter a valid JSON file</span>
+                  ) : (
+                    syntaxError && <span>JSON is syntactically incorrect</span>
+                  )}
+                </div>
+              </div>
+            </div>
+            {gist.url && gist.filename ? (
+              gist.image ? (
+                <div className="preview-container">
+                  <div className="preview-text">Preview:</div>
+                  <div className="preview-image-container">
+                    <div className="preview-image-wrapper">
+                      <img
+                        src={gist.image}
+                        onMouseOver={slideImage}
+                        onMouseOut={slideImageBack}
+                        style={{
+                          transform: `translateY(-${gist.imageStyle.bottom}px)`,
+                        }}
+                      />
+                    </div>
                   </div>
-                )}
-              </div>
-              <div className="gist-modal-section">
-                <h3>File Name</h3>
-                <input
-                  type="text"
-                  placeholder="Enter file name (optional)"
-                  value={this.state.gist.filename}
-                  onChange={this.updateGistFile.bind(this)}
-                />
-                {this.state.invalidFilename && (
-                  <div className="error-message">
-                    <AlertCircle size={16} />
-                    <span>Invalid file name</span>
+                </div>
+              ) : (
+                <div className="preview-error-message-container">
+                  <div className="preview-error-message">
+                    <AlertCircle className="preview-error-icon" />
+                    <span>No preview available for this gist file.</span>
                   </div>
-                )}
-                {this.state.syntaxError && (
-                  <div className="error-message">
-                    <AlertCircle size={16} />
-                    <span>Invalid JSON syntax</span>
-                  </div>
-                )}
-              </div>
-              <div className="gist-modal-section">
-                <h3>Select from Your Gists</h3>
-                <GistSelectWidget selectGist={this.preview.bind(this)} />
-              </div>
-              <div className="gist-modal-actions">
-                <button
-                  className="gist-modal-load"
-                  onClick={() => this.onSelectGist(this.props.closePortal)}
-                  disabled={this.state.gistLoadClicked}
-                >
-                  {this.state.gistLoadClicked ? 'Loading...' : 'Load Gist'}
-                </button>
-              </div>
-            </form>
-          </div>
+                  <span className="preview-error-fix">
+                    Upload an image file with name {gist.filename.replace(/\.json/i, '.(png/jpg)')}.
+                  </span>
+                </div>
+              )
+            ) : (
+              <></>
+            )}
+            <button type="button" onClick={() => onSelectGist()}>
+              {gistLoadClicked ? 'Loading..' : 'Load'}
+            </button>
+          </form>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-// Create a wrapper component to provide the navigation hook
-const GistModalWithNavigation = (props: Omit<PropsType, 'navigate'>) => {
-  const navigate = useNavigate();
-  return <GistModal {...props} navigate={navigate} />;
-};
-
-export default connect(mapStateToProps)(GistModalWithNavigation);
