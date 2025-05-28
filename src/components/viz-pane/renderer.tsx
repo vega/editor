@@ -1,5 +1,4 @@
 import * as React from 'react';
-import SplitPane from 'react-split-pane';
 import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants/index.js';
 import DataViewer from '../data-viewer/index.js';
@@ -14,6 +13,7 @@ import {version as VL_VERSION} from 'vega-lite';
 import {version as TOOLTIP_VERSION} from 'vega-tooltip';
 import {COMMIT_HASH} from '../header/help-modal/index.js';
 import {DataflowViewer} from '../../features/dataflow/DataflowViewer.js';
+import Split from 'react-split';
 
 const defaultState = {
   header: '',
@@ -69,12 +69,15 @@ export default class VizPane extends React.PureComponent<Props, State> {
       });
     }
   }
-  public handleChange(size: number) {
+
+  public handleChange(sizes: number[]) {
+    const size = sizes[1] * window.innerHeight;
     this.props.setDebugPaneSize(size);
     if ((size > LAYOUT.MinPaneSize && !this.props.debugPane) || (size === LAYOUT.MinPaneSize && this.props.debugPane)) {
       this.props.toggleDebugPane();
     }
   }
+
   public componentDidUpdate() {
     if (this.props.debugPaneSize === LAYOUT.MinPaneSize) {
       this.props.setDebugPaneSize(LAYOUT.DebugPaneSize);
@@ -118,44 +121,48 @@ export default class VizPane extends React.PureComponent<Props, State> {
         </div>
       </div>
     );
-    return (
-      <SplitPane
-        split="horizontal"
-        primary="second"
-        minSize={LAYOUT.MinPaneSize}
-        defaultSize={this.props.debugPane ? this.props.debugPaneSize : LAYOUT.MinPaneSize}
-        onChange={this.handleChange}
-        pane1Style={{minHeight: `${LAYOUT.MinPaneSize}px`}}
-        pane2Style={{
-          height: this.props.debugPane
-            ? (this.props.debugPaneSize || window.innerHeight * 0.4) + 'px'
-            : LAYOUT.MinPaneSize + 'px',
-        }}
-        paneStyle={{display: 'flex'}}
-        onDragStarted={() => {
-          if (this.props.navItem === NAVBAR.Logs) {
-            this.props.showLogs(true);
-          }
-        }}
-        onDragFinished={() => {
-          if (this.props.debugPaneSize === LAYOUT.MinPaneSize) {
-            this.props.setDebugPaneSize(LAYOUT.DebugPaneSize);
-            // Popping up the the debug panel for the first time will set its
-            // height to LAYOUT.DebugPaneSize. This can change depending on the UI.
-          }
-        }}
-      >
-        {container}
 
-        <div className="debug-pane">
-          <DebugPaneHeader />
-          {this.props.error || (this.props.logs && this.props.navItem === NAVBAR.Logs) ? (
-            <ErrorPane />
-          ) : (
-            this.getContextViewer()
-          )}
-        </div>
-      </SplitPane>
+    // Calculate initial sizes based on debugPane state
+    const initialSizes = this.props.debugPane ? [70, 30] : [100, 0];
+
+    return (
+      <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+        <Split
+          sizes={initialSizes}
+          minSize={LAYOUT.MinPaneSize}
+          expandToMin={false}
+          gutterSize={10}
+          gutterAlign="center"
+          snapOffset={30}
+          dragInterval={1}
+          direction="vertical"
+          cursor="row-resize"
+          onDrag={this.handleChange}
+          onDragStart={() => {
+            if (this.props.navItem === NAVBAR.Logs) {
+              this.props.showLogs(true);
+            }
+          }}
+          onDragEnd={() => {
+            if (this.props.debugPaneSize === LAYOUT.MinPaneSize) {
+              this.props.setDebugPaneSize(LAYOUT.DebugPaneSize);
+              // Popping up the the debug panel for the first time will set its
+              // height to LAYOUT.DebugPaneSize. This can change depending on the UI.
+            }
+          }}
+        >
+          {container}
+
+          <div className="debug-pane">
+            <DebugPaneHeader />
+            {this.props.error || (this.props.logs && this.props.navItem === NAVBAR.Logs) ? (
+              <ErrorPane />
+            ) : (
+              this.getContextViewer()
+            )}
+          </div>
+        </Split>
+      </div>
     );
   }
 }

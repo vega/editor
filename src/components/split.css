@@ -1,0 +1,92 @@
+/* Styles for Split components */
+
+/* Common split styles */
+.split {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Horizontal split (vertical gutter) */
+.split.horizontal {
+  flex-direction: row;
+}
+
+/* Vertical split (horizontal gutter) */
+.split.vertical {
+  flex-direction: column;
+}
+
+/* Gutter common styles */
+.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  z-index: 10;
+}
+
+/* Horizontal gutter (for vertical splits) */
+.gutter.gutter-horizontal {
+  cursor: col-resize;
+  width: 10px;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
+}
+
+/* Vertical gutter (for horizontal splits) */
+.gutter.gutter-vertical {
+  cursor: row-resize;
+  height: 10px;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=");
+}
+
+/* Ensure split panels take full height/width */
+.split-panel {
+  height: 100%;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* Fix for main-pane */
+.main-pane {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+/* Fix for editor-splitPane */
+.editor-splitPane {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column !important;
+}
+
+/* Fix to ensure all children of Split take up proper space */
+.split > * {
+  overflow: hidden;
+}
+
+/* Ensure compiled spec display takes proper height */
+.compiled-spec-display {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Fix for pane container heights */
+.full-height-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fix for split-wrapper additional classes */
+.horizontal-split {
+  flex-direction: row !important;
+}
+
+.vertical-split {
+  flex-direction: column !important;
+}

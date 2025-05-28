@@ -73,7 +73,7 @@
     "react-router": "^6.21.1",
     "react-router-dom": "^6.21.1",
     "react-select": "^5.10.1",
-    "react-split-pane": "^0.1.92",
+    "react-split": "^2.0.14",
     "redux": "^4.2.1",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.4.2",

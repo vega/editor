@@ -128,7 +128,7 @@ declare module 'redux-thunk' {
   export default thunk;
 }
 
-declare module 'react-split-pane';
+declare module 'react-split';
 declare module '@monaco-editor/react';
 declare module 'react-paginate';
 declare module 'react-clipboard.js';
