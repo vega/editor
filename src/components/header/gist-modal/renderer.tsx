@@ -6,6 +6,7 @@ import GistSelectWidget from '../../gist-select-widget/index.js';
 import {Mode} from '../../../constants/index.js';
 import './index.css';
 import {parse as parseJSONC} from 'jsonc-parser';
+import {getGithubToken} from '../../../utils/github.js';
 
 export type Props = {
   closePortal: () => void;
@@ -128,9 +129,14 @@ class GistModal extends React.PureComponent<PropsType, State> {
         'Content-Type': 'application/json',
       };
 
-      const githubToken = localStorage.getItem('vega_editor_github_token');
-      if (githubToken) {
-        headers['Authorization'] = `token ${githubToken}`;
+      let githubToken;
+      try {
+        githubToken = await getGithubToken();
+        if (githubToken) {
+          headers['Authorization'] = `token ${githubToken}`;
+        }
+      } catch (error) {
+        console.error('Failed to get GitHub token:', error);
       }
 
       const gistCommitsResponse = await fetch(`https://api.github.com/gists/${gistId}/commits`, {
@@ -267,13 +273,18 @@ class GistModal extends React.PureComponent<PropsType, State> {
   }
 
   private async fetchGistContent(gistSummary, filename) {
-    const githubToken = localStorage.getItem('vega_editor_github_token');
+    let githubToken;
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
     };
 
-    if (githubToken) {
-      headers['Authorization'] = `token ${githubToken}`;
+    try {
+      githubToken = await getGithubToken();
+      if (githubToken) {
+        headers['Authorization'] = `token ${githubToken}`;
+      }
+    } catch (error) {
+      console.error('Failed to get GitHub token:', error);
     }
 
     try {

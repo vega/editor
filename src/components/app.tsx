@@ -16,6 +16,7 @@ import Header from './header/index.js';
 import InputPanel from './input-panel/index.js';
 import Sidebar from './sidebar/index.js';
 import VizPane from './viz-pane/index.js';
+import {getGithubToken} from '../utils/github.js';
 
 type Props = {showExample: boolean};
 
@@ -128,9 +129,14 @@ class App extends React.PureComponent<PropsType> {
         'Content-Type': 'application/json',
       };
 
-      const githubToken = localStorage.getItem('vega_editor_github_token');
-      if (githubToken) {
-        headers['Authorization'] = `token ${githubToken}`;
+      let githubToken;
+      try {
+        githubToken = await getGithubToken();
+        if (githubToken) {
+          headers['Authorization'] = `token ${githubToken}`;
+        }
+      } catch (error) {
+        console.error('Failed to get GitHub token:', error);
       }
 
       const gistResponse = await fetch(gistApiUrl, {

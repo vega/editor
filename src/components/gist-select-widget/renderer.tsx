@@ -6,6 +6,7 @@ import {BACKEND_URL, GistPrivacy} from '../../constants/index.js';
 import LoginConditional from '../login-conditional/index.js';
 import './index.css';
 import {getAuthFromLocalStorage} from '../../utils/browser.js';
+import {getGithubToken} from '../../utils/github.js';
 
 interface State {
   currentPage: number;
@@ -85,13 +86,16 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
         },
         async () => {
           try {
-            const authData = getAuthFromLocalStorage();
-            const githubToken = authData?.githubAccessToken || localStorage.getItem('vega_editor_github_token');
-
-            if (!githubToken) {
+            let githubToken;
+            try {
+              githubToken = await getGithubToken();
+            } catch (error) {
+              console.error('Failed to get GitHub token:', error);
               this.props.receiveCurrentUser(false);
               return;
             }
+
+            const privacy = this.props.private ? 'all' : 'public';
             const response = await fetch(`https://api.github.com/gists?per_page=30&page=${page.selected + 1}`, {
               method: 'GET',
               headers: {

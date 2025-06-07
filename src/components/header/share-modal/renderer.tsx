@@ -11,6 +11,7 @@ import {getAuthFromLocalStorage} from '../../../utils/browser.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
 import LoginConditional from '../../login-conditional/index.js';
 import './index.css';
+import {getGithubToken} from '../../../utils/github.js';
 
 const EDITOR_BASE = window.location.origin + window.location.pathname;
 
@@ -148,11 +149,12 @@ class ShareModal extends React.PureComponent<Props, State> {
     };
 
     try {
-      // Get GitHub access token from localStorage
-      const authData = getAuthFromLocalStorage();
-      const githubToken = authData?.githubAccessToken || localStorage.getItem('vega_editor_github_token');
-
-      if (!githubToken) {
+      // Get GitHub access token just-in-time
+      let githubToken;
+      try {
+        githubToken = await getGithubToken();
+      } catch (error) {
+        console.error('Failed to get GitHub token:', error);
         this.setState({
           creating: false,
           createError: true,
@@ -238,10 +240,12 @@ class ShareModal extends React.PureComponent<Props, State> {
 
     try {
       if (this.state.gistId) {
-        const authData = getAuthFromLocalStorage();
-        const githubToken = authData?.githubAccessToken || localStorage.getItem('vega_editor_github_token');
-
-        if (!githubToken) {
+        // Get GitHub access token just-in-time
+        let githubToken;
+        try {
+          githubToken = await getGithubToken();
+        } catch (error) {
+          console.error('Failed to get GitHub token:', error);
           this.setState({
             updating: false,
             updateError: true,
