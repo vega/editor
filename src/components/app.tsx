@@ -18,7 +18,7 @@ import Sidebar from './sidebar/index.js';
 import VizPane from './viz-pane/index.js';
 import {getGithubToken} from '../utils/github.js';
 
-type Props = {showExample: boolean};
+type Props = {showExample?: boolean};
 
 type PropsType = ReturnType<typeof mapDispatchToProps> &
   ReturnType<typeof mapStateToProps> &
@@ -219,7 +219,7 @@ class App extends React.PureComponent<PropsType> {
   }
 }
 
-function mapStateToProps(state: State, ownProps: Props) {
+function mapStateToProps(state: State) {
   return {
     configEditorString: state.configEditorString,
     editorRef: state.editorRef,
@@ -248,4 +248,4 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App)) as React.ComponentType<Props>;

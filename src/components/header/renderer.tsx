@@ -174,7 +174,7 @@ class Header extends React.PureComponent<PropsType, State> {
             cache: 'no-store',
           });
           const data = await response.json();
-          const {isAuthenticated, handle, name, profilePicUrl, authToken, githubAccessToken} = data;
+          const {isAuthenticated, handle, name, profilePicUrl, authToken} = data;
 
           if (isAuthenticated) {
             saveAuthToLocalStorage({

@@ -2,10 +2,9 @@ import React from 'react';
 import {File, Lock} from 'react-feather';
 import ReactPaginate from 'react-paginate';
 import {mapDispatchToProps, mapStateToProps} from './index.js';
-import {BACKEND_URL, GistPrivacy} from '../../constants/index.js';
+import {GistPrivacy} from '../../constants/index.js';
 import LoginConditional from '../login-conditional/index.js';
 import './index.css';
-import {getAuthFromLocalStorage} from '../../utils/browser.js';
 import {getGithubToken} from '../../utils/github.js';
 
 interface State {
@@ -95,7 +94,6 @@ class GistSelectWidget extends React.PureComponent<Props, State> {
               return;
             }
 
-            const privacy = this.props.private ? 'all' : 'public';
             const response = await fetch(`https://api.github.com/gists?per_page=30&page=${page.selected + 1}`, {
               method: 'GET',
               headers: {

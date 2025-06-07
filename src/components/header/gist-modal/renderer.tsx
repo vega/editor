@@ -376,7 +376,7 @@ class GistModal extends React.PureComponent<PropsType, State> {
                       Example:{' '}
                       <span
                         className="gist-url"
-                        onClick={(e) =>
+                        onClick={() =>
                           this.setState({
                             gist: {
                               ...this.state.gist,
