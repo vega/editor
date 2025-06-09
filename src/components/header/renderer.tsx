@@ -67,6 +67,48 @@ class Header extends React.PureComponent<PropsType, State> {
       }
     });
 
+    if (window.location.hash.includes('auth_token=') || window.location.hash.includes('logout=')) {
+      let hashContent = window.location.hash.substring(1);
+      if (hashContent.startsWith('/')) {
+        hashContent = hashContent.substring(1);
+      }
+
+      const hashParams = new URLSearchParams(hashContent);
+      const tokenFromHash = hashParams.get('auth_token');
+      const logoutFlag = hashParams.get('logout');
+
+      window.history.replaceState(null, '', window.location.pathname + window.location.search + '#/');
+
+      if (logoutFlag === 'true') {
+        clearAuthFromLocalStorage();
+        localStorage.removeItem('vega_editor_auth_token');
+        this.props.receiveCurrentUser(false, '', '', '');
+        return;
+      }
+
+      if (tokenFromHash) {
+        localStorage.setItem('vega_editor_auth_token', tokenFromHash);
+
+        const tokenData = await this.verifyTokenLocally(tokenFromHash);
+        if (tokenData && tokenData.isAuthenticated) {
+          saveAuthToLocalStorage({
+            isAuthenticated: tokenData.isAuthenticated,
+            handle: tokenData.handle,
+            name: tokenData.name,
+            profilePicUrl: tokenData.profilePicUrl,
+            authToken: tokenData.authToken,
+          });
+          this.props.receiveCurrentUser(
+            tokenData.isAuthenticated,
+            tokenData.handle,
+            tokenData.name,
+            tokenData.profilePicUrl,
+          );
+          return;
+        }
+      }
+    }
+
     const localAuthData = getAuthFromLocalStorage();
     const auth_token = localStorage.getItem('vega_editor_auth_token');
 
@@ -170,6 +212,7 @@ class Header extends React.PureComponent<PropsType, State> {
           }
 
           const response = await fetch(`${BACKEND_URL}auth/github/check`, {
+            headers,
             credentials: 'include',
             cache: 'no-store',
           });

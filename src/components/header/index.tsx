@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor.js';
@@ -41,4 +42,6 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Renderer));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Renderer)) as React.ComponentType<{
+  showExample: boolean;
+}>;
