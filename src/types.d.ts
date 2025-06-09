@@ -10,7 +10,7 @@ declare module 'react-router-dom' {
 
   import * as H from 'history';
 
-  export interface RouteChildrenProps<Params extends {[K in keyof Params]?: string} = {}, S = any> {
+  export interface RouteChildrenProps<Params extends {[K in keyof Params]?: string} = {}> {
     history: H.History;
     location: H.Location;
     match: any;

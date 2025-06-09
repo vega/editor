@@ -29,7 +29,7 @@ class InputPanel extends React.PureComponent<Props> {
     }
   }
 
-  public componentDidUpdate(prevProps, prevState) {
+  public componentDidUpdate() {
     if (this.props.mode === Mode.VegaLite) {
       if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
         this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);

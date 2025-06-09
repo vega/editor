@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {HashRouter} from 'react-router-dom';
 import * as vega from 'vega';

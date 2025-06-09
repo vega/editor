@@ -80,7 +80,7 @@ class ConfigEditor extends React.PureComponent<Props> {
     }
   }
 
-  public componentDidUpdate(prevProps, prevState) {
+  public componentDidUpdate() {
     if (this.props.sidePaneItem === SIDEPANE.Config) {
       this.editor.focus();
       this.editor.layout();
