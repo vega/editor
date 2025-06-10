@@ -141,7 +141,6 @@ class Header extends React.PureComponent<PropsType, State> {
         };
 
         const response = await fetch(`${BACKEND_URL}auth/github/check`, {
-          credentials: 'include',
           cache: 'no-store',
           headers,
         });
@@ -213,7 +212,6 @@ class Header extends React.PureComponent<PropsType, State> {
 
           const response = await fetch(`${BACKEND_URL}auth/github/check`, {
             headers,
-            credentials: 'include',
             cache: 'no-store',
           });
           const data = await response.json();

@@ -14,7 +14,6 @@ export const getGithubToken = async (): Promise<string> => {
 
   try {
     const response = await fetch(`${BACKEND_URL}auth/github/token`, {
-      credentials: 'include',
       cache: 'no-store',
       headers,
     });
