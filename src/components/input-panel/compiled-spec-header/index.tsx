@@ -76,7 +76,7 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
           <ul className="tabs-nav">
             <li
               className={this.props.compiledPaneItem == COMPILEDPANE.Vega ? 'active-tab' : undefined}
-              onClick={(e) => {
+              onClick={() => {
                 this.props.setCompiledPaneItem(COMPILEDPANE.Vega);
               }}
             >
@@ -84,7 +84,7 @@ class CompiledSpecDisplayHeader extends React.PureComponent<Props> {
             </li>
             <li
               className={this.props.compiledPaneItem == COMPILEDPANE.NormalizedVegaLite ? 'active-tab' : undefined}
-              onClick={(e) => {
+              onClick={() => {
                 this.props.setCompiledPaneItem(COMPILEDPANE.NormalizedVegaLite);
               }}
             >

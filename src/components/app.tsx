@@ -16,8 +16,9 @@ import Header from './header/index.js';
 import InputPanel from './input-panel/index.js';
 import Sidebar from './sidebar/index.js';
 import VizPane from './viz-pane/index.js';
+import {getGithubToken} from '../utils/github.js';
 
-type Props = {showExample: boolean};
+type Props = {showExample?: boolean};
 
 type PropsType = ReturnType<typeof mapDispatchToProps> &
   ReturnType<typeof mapStateToProps> &
@@ -120,14 +121,58 @@ class App extends React.PureComponent<PropsType> {
 
   public async setGist(parameter: {id: string; filename: string; revision?: string}) {
     try {
-      const gistResponse = await fetch(
-        `https://api.github.com/gists/${parameter.id}${
-          parameter.revision !== undefined ? `/${parameter.revision}` : ''
-        }`,
-      );
+      const gistApiUrl = `https://api.github.com/gists/${parameter.id}${
+        parameter.revision !== undefined ? `/${parameter.revision}` : ''
+      }`;
+
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      let githubToken;
+      try {
+        githubToken = await getGithubToken();
+        if (githubToken) {
+          headers['Authorization'] = `token ${githubToken}`;
+        }
+      } catch (error) {
+        console.error('Failed to get GitHub token:', error);
+      }
+
+      const gistResponse = await fetch(gistApiUrl, {
+        headers,
+      });
+
+      if (!gistResponse.ok) {
+        throw new Error(`Failed to fetch gist: ${gistResponse.status}`);
+      }
+
       const gistData = await gistResponse.json();
-      const contentResponse = await fetch(gistData.files[parameter.filename].raw_url); // fetch from raw_url to handle large files
-      const content = await contentResponse.text();
+
+      if (!gistData.files[parameter.filename]) {
+        throw new Error(`File ${parameter.filename} not found in gist`);
+      }
+
+      let content;
+
+      if (gistData.files[parameter.filename].content) {
+        content = gistData.files[parameter.filename].content;
+      } else if (gistData.files[parameter.filename].truncated) {
+        console.warn('File content truncated - using proxy approach');
+
+        const contentResponse = await fetch(gistData.files[parameter.filename].raw_url, {
+          headers,
+        });
+
+        if (!contentResponse.ok) {
+          throw new Error(`Failed to fetch content: ${contentResponse.status}`);
+        }
+
+        content = await contentResponse.text();
+      } else {
+        throw new Error('Could not retrieve file content');
+      }
+
       const contentObj = parseJSONC(content);
 
       if (!('$schema' in contentObj)) {
@@ -141,7 +186,7 @@ class App extends React.PureComponent<PropsType> {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error('Error loading gist:', error);
     }
   }
 
@@ -174,7 +219,7 @@ class App extends React.PureComponent<PropsType> {
   }
 }
 
-function mapStateToProps(state: State, ownProps: Props) {
+function mapStateToProps(state: State) {
   return {
     configEditorString: state.configEditorString,
     editorRef: state.editorRef,
@@ -203,4 +248,4 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App)) as React.ComponentType<Props>;

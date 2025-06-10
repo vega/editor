@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {HashRouter} from 'react-router-dom';
 import * as vega from 'vega';
@@ -26,11 +26,7 @@ export const store = configureStore();
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!
 ReactDOM.render(
-  <Provider store={store}>
-    <HashRouter>
-      <AppShell />
-    </HashRouter>
-  </Provider>,
+  <Provider store={store}>{React.createElement(HashRouter, {}, <AppShell />)}</Provider>,
   document.getElementById('root'),
 );
 

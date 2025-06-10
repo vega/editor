@@ -6,13 +6,20 @@ import Clipboard from 'react-clipboard.js';
 import {Copy, Link, Save} from 'react-feather';
 import {withRouter} from 'react-router-dom';
 import {mapDispatchToProps, mapStateToProps} from './index.js';
-import {BACKEND_URL, COOKIE_NAME, NAMES} from '../../../constants/consts.js';
-import getCookie from '../../../utils/getCookie.js';
+import {NAMES} from '../../../constants/consts.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
 import LoginConditional from '../../login-conditional/index.js';
 import './index.css';
+import {getGithubToken} from '../../../utils/github.js';
 
 const EDITOR_BASE = window.location.origin + window.location.pathname;
+
+function getCookie(name: string): string {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift() || '';
+  return '';
+}
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -140,44 +147,80 @@ class ShareModal extends React.PureComponent<Props, State> {
       privacy: this.state.gistPrivate,
     };
 
-    const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
+    try {
+      // Get GitHub access token just-in-time
+      let githubToken;
+      try {
+        githubToken = await getGithubToken();
+      } catch (error) {
+        console.error('Failed to get GitHub token:', error);
+        this.setState({
+          creating: false,
+          createError: true,
+        });
+        this.props.receiveCurrentUser(false);
+        return;
+      }
 
-    const res = await fetch(`${BACKEND_URL}gists/create`, {
-      body: JSON.stringify(body),
-      mode: 'cors',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: `${COOKIE_NAME}=${cookieValue}`,
-      },
-      method: 'post',
-    });
+      const gistBody = {
+        description: body.title,
+        public: !body.privacy,
+        files: {
+          [body.name.endsWith('.json') ? body.name : `${body.name}.json`]: {
+            content: body.content,
+          },
+        },
+      };
 
-    const data = await res.json();
-    this.setState(
-      {
+      // Direct API call to GitHub
+      const res = await fetch('https://api.github.com/gists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${githubToken}`,
+        },
+        body: JSON.stringify(gistBody),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to create gist: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      this.setState(
+        {
+          creating: false,
+          updating: undefined,
+        },
+        () => {
+          if (!data.id) {
+            this.setState(
+              {
+                createError: true,
+              },
+              () => {
+                if (res.status === 401) {
+                  this.props.receiveCurrentUser(false);
+                }
+              },
+            );
+          } else {
+            const fileName = Object.keys(data.files)[0];
+            this.setState({
+              createError: false,
+              gistEditorURL: `${EDITOR_BASE}#/gist/${data.id}/${fileName}`,
+            });
+          }
+        },
+      );
+    } catch (error) {
+      console.error('Error creating gist:', error);
+      this.setState({
         creating: false,
-        updating: undefined,
-      },
-      () => {
-        if (data.gistId === undefined) {
-          this.setState(
-            {
-              createError: true,
-            },
-            () => {
-              this.props.receiveCurrentUser(data.isAuthenticated);
-            },
-          );
-        } else {
-          const {fileName, gistId} = data;
-          this.setState({
-            createError: false,
-            gistEditorURL: `${EDITOR_BASE}#/gist/${gistId}/${fileName}`,
-          });
-        }
-      },
-    );
+        createError: true,
+      });
+    }
   }
 
   public selectGist(id, fileName) {
@@ -193,40 +236,67 @@ class ShareModal extends React.PureComponent<Props, State> {
     });
 
     const fileName = this.state.gistFileNameSelected;
-    if (this.state.gistId) {
-      const cookieValue = encodeURIComponent(getCookie(COOKIE_NAME));
-      const res = await fetch(`${BACKEND_URL}gists/update`, {
-        body: JSON.stringify({
-          gistId: this.state.gistId,
-          fileName: fileName,
-          content: this.props.editorString,
-        }),
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Cookie: `${COOKIE_NAME}=${cookieValue}`,
-        },
-        method: 'post',
-      });
 
-      const data = await res.json();
-      if (res.status === 205) {
-        const gistId = data.gistId;
-        const fileNameUpdated = data.fileName;
-        this.setState({
-          gistEditorURL: `${EDITOR_BASE}#/gist/${gistId}/${fileNameUpdated}`,
-          creating: undefined,
-          updating: false,
-          updateError: false,
+    try {
+      if (this.state.gistId) {
+        // Get GitHub access token just-in-time
+        let githubToken;
+        try {
+          githubToken = await getGithubToken();
+        } catch (error) {
+          console.error('Failed to get GitHub token:', error);
+          this.setState({
+            updating: false,
+            updateError: true,
+          });
+          this.props.receiveCurrentUser(false);
+          return;
+        }
+
+        const gistBody = {
+          files: {
+            [fileName]: {
+              content: this.props.editorString,
+            },
+          },
+        };
+        const res = await fetch(`https://api.github.com/gists/${this.state.gistId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${githubToken}`,
+          },
+          body: JSON.stringify(gistBody),
         });
-      } else {
-        this.setState({
-          creating: undefined,
-          updating: false,
-          updateError: true,
-        });
+
+        if (!res.ok) {
+          throw new Error(`Failed to update gist: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        if (data.id) {
+          this.setState({
+            gistEditorURL: `${EDITOR_BASE}#/gist/${data.id}/${fileName}`,
+            creating: undefined,
+            updating: false,
+            updateError: false,
+          });
+        } else {
+          this.setState({
+            creating: undefined,
+            updating: false,
+            updateError: true,
+          });
+        }
       }
+    } catch (error) {
+      console.error('Error updating gist:', error);
+      this.setState({
+        creating: undefined,
+        updating: false,
+        updateError: true,
+      });
     }
   }
 

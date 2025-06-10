@@ -78,6 +78,8 @@ export const KEYCODES = {
  */
 export const WORD_SEPARATORS = '`~!@#$%^&*()-=+[{]}\\|;:\'",.<>/?';
 
-export const BACKEND_URL = 'https://vega-editor-backend.vercel.app/';
+// Points to the server running from https://github.com/vega/editor-backend
+export const BACKEND_URL =
+  window.location.hostname === 'localhost' ? 'http://localhost:3000/' : 'https://vega-editor-backend.vercel.app/';
 
 export const COOKIE_NAME = 'vega_session';
