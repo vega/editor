@@ -1,19 +1,19 @@
 import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
-import {useCallback, useEffect, useRef} from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import ResizeObserver from 'rc-resize-observer';
-import {useNavigate, useParams} from 'react-router';
-import {connect} from 'react-redux';
-import {debounce} from 'vega';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
-import {SIDEPANE} from '../../constants/index.js';
+import { useNavigate, useParams } from 'react-router';
+import { connect } from 'react-redux';
+import { debounce } from 'vega';
+import { mapDispatchToProps, mapStateToProps } from './index.js';
+import { SIDEPANE } from '../../constants/index.js';
 import './config-editor.css';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> & {
     navigate: (path: string) => void;
-    params: {compressed?: string};
+    params: { compressed?: string };
   };
 
 const ConfigEditor: React.FC<Props> = (props) => {
@@ -82,14 +82,12 @@ const ConfigEditor: React.FC<Props> = (props) => {
     [props.decorations, props.setEditorReference, props.sidePaneItem, handleMergeConfig, handleExtractConfig],
   );
 
-  // Effect for component mount
   useEffect(() => {
     if (props.sidePaneItem === SIDEPANE.Config) {
       props.setEditorReference(editorRef.current);
     }
   }, [props.sidePaneItem, props.setEditorReference]);
 
-  // Effect for handling updates
   useEffect(() => {
     if (props.sidePaneItem === SIDEPANE.Config && editorRef.current) {
       editorRef.current.focus();
@@ -102,8 +100,8 @@ const ConfigEditor: React.FC<Props> = (props) => {
 
   return (
     <ResizeObserver
-      onResize={({width, height}) => {
-        editorRef.current?.layout({width, height});
+      onResize={({ width, height }) => {
+        editorRef.current?.layout({ width, height });
       }}
     >
       <MonacoEditor
@@ -112,7 +110,7 @@ const ConfigEditor: React.FC<Props> = (props) => {
           cursorBlinking: 'smooth',
           folding: true,
           lineNumbersMinChars: 4,
-          minimap: {enabled: false},
+          minimap: { enabled: false },
           scrollBeyondLastLine: false,
           wordWrap: 'on',
           quickSuggestions: true,

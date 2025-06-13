@@ -1,8 +1,7 @@
 import React from 'react';
-// import { mapStateToProps } from './index.js';
-import {useSelector} from 'react-redux';
-import {State} from '../../constants/default-state.js';
-import {BACKEND_URL} from '../../constants/index.js';
+import { useSelector } from 'react-redux';
+import { State } from '../../constants/default-state.js';
+import { BACKEND_URL } from '../../constants/index.js';
 
 // type Props = ReturnType<typeof mapStateToProps> & { children?: React.ReactNode };
 type Props = {
