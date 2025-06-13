@@ -716,7 +716,6 @@ class Header extends React.PureComponent<PropsType, State> {
   }
 }
 
-// Create a wrapper component to provide the navigation hook
 const HeaderWithNavigation = (props: Omit<PropsType, 'navigate'>) => {
   const navigate = useNavigate();
   return <Header {...props} navigate={navigate} />;

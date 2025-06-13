@@ -71,9 +71,16 @@ export default class VizPane extends React.PureComponent<Props, State> {
   }
 
   public handleChange(sizes: number[]) {
-    const size = sizes[1] * window.innerHeight;
+    // react-split passes sizes as percentages, convert to pixels
+    const size = (sizes[1] / 100) * window.innerHeight;
     this.props.setDebugPaneSize(size);
-    if ((size > LAYOUT.MinPaneSize && !this.props.debugPane) || (size === LAYOUT.MinPaneSize && this.props.debugPane)) {
+
+    // Use a small tolerance for floating point comparison
+    const tolerance = 5; // 5px tolerance
+    if (
+      (size > LAYOUT.MinPaneSize + tolerance && !this.props.debugPane) ||
+      (size <= LAYOUT.MinPaneSize + tolerance && this.props.debugPane)
+    ) {
       this.props.toggleDebugPane();
     }
   }
@@ -122,13 +129,28 @@ export default class VizPane extends React.PureComponent<Props, State> {
       </div>
     );
 
-    // Calculate initial sizes based on debugPane state
-    const initialSizes = this.props.debugPane ? [70, 30] : [100, 0];
+    // Calculate sizes exactly like the old implementation
+    // When collapsed, use exactly MinPaneSize, when open use stored size
+    const debugPaneSize = this.props.debugPane
+      ? Math.max(this.props.debugPaneSize || LAYOUT.DebugPaneSize, LAYOUT.DebugPaneSize)
+      : LAYOUT.MinPaneSize;
+
+    // Convert pixel sizes to percentages for react-split
+    const totalHeight = window.innerHeight;
+    const debugPanePercentage = (debugPaneSize / totalHeight) * 100;
+    const chartPercentage = 100 - debugPanePercentage;
+
+    // Ensure we don't go below minimum percentage
+    const minPercentage = (LAYOUT.MinPaneSize / totalHeight) * 100;
+    const finalDebugPercentage = Math.max(debugPanePercentage, minPercentage);
+    const finalChartPercentage = 100 - finalDebugPercentage;
+
+    const sizes = [finalChartPercentage, finalDebugPercentage];
 
     return (
       <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
         <Split
-          sizes={initialSizes}
+          sizes={sizes}
           minSize={LAYOUT.MinPaneSize}
           expandToMin={false}
           gutterSize={10}
@@ -146,7 +168,7 @@ export default class VizPane extends React.PureComponent<Props, State> {
           onDragEnd={() => {
             if (this.props.debugPaneSize === LAYOUT.MinPaneSize) {
               this.props.setDebugPaneSize(LAYOUT.DebugPaneSize);
-              // Popping up the the debug panel for the first time will set its
+              // Popping up the debug panel for the first time will set its
               // height to LAYOUT.DebugPaneSize. This can change depending on the UI.
             }
           }}
@@ -155,10 +177,14 @@ export default class VizPane extends React.PureComponent<Props, State> {
 
           <div className="debug-pane">
             <DebugPaneHeader />
-            {this.props.error || (this.props.logs && this.props.navItem === NAVBAR.Logs) ? (
-              <ErrorPane />
-            ) : (
-              this.getContextViewer()
+            {this.props.debugPane && (
+              <>
+                {this.props.error || (this.props.logs && this.props.navItem === NAVBAR.Logs) ? (
+                  <ErrorPane />
+                ) : (
+                  this.getContextViewer()
+                )}
+              </>
             )}
           </div>
         </Split>

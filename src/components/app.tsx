@@ -249,7 +249,6 @@ function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
   );
 }
 
-// Create a wrapper component to provide the navigation and params
 const AppWithRouter = (props: Omit<PropsType, 'params' | 'navigate'>) => {
   const params = useParams();
   const navigate = useNavigate();

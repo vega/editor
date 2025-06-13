@@ -119,7 +119,6 @@ class ConfigEditor extends React.PureComponent<Props> {
   }
 }
 
-// Create a wrapper component to provide the navigation hook
 const ConfigEditorWithNavigation = (props: Omit<Props, 'navigate' | 'params'>) => {
   const navigate = useNavigate();
   const params = useParams();

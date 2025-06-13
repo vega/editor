@@ -102,7 +102,6 @@
     "start": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel --watch-dir .. index.html",
     "build": "npm run clean && npm run vendor && npm run build:only",
     "build:only": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel build --public-url /editor --no-scope-hoist index.html",
-    "vercel-build": "npm run clean && npm run vendor && PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel build --no-scope-hoist index.html && cp -n -r public/* dist || true",
     "clean": "rimraf dist public/spec public/data",
     "postbuild": "cp -n -r public/* dist || true",
     "generate-example-images": "scripts/generate-example-images.sh",
