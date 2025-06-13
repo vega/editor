@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useCallback, useEffect, useMemo} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../actions/editor.js';
@@ -15,98 +16,88 @@ import Split from 'react-split';
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-class InputPanel extends React.PureComponent<Props> {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-  public handleChange(sizes: number[]) {
-    const size = sizes[1] * window.innerHeight;
-    this.props.setCompiledVegaPaneSize(size);
-    if (
-      (size > LAYOUT.MinPaneSize && !this.props.compiledVegaSpec) ||
-      (size === LAYOUT.MinPaneSize && this.props.compiledVegaSpec)
-    ) {
-      this.props.toggleCompiledVegaSpec();
-    }
-  }
+const InputPanel: React.FC<Props> = (props) => {
+  const handleChange = useCallback(
+    (sizes: number[]) => {
+      const size = sizes[1] * window.innerHeight;
+      props.setCompiledVegaPaneSize(size);
+      if (
+        (size > LAYOUT.MinPaneSize && !props.compiledVegaSpec) ||
+        (size === LAYOUT.MinPaneSize && props.compiledVegaSpec)
+      ) {
+        props.toggleCompiledVegaSpec();
+      }
+    },
+    [props.setCompiledVegaPaneSize, props.compiledVegaSpec, props.toggleCompiledVegaSpec],
+  );
 
-  public componentDidUpdate(prevProps, prevState) {
-    if (this.props.mode === Mode.VegaLite) {
-      if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-        this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
+  useEffect(() => {
+    if (props.mode === Mode.VegaLite) {
+      if (props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
+        props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
       }
     }
-  }
+  }, [props.mode, props.compiledVegaPaneSize, props.setCompiledVegaPaneSize]);
 
-  public getInnerPanes() {
+  const getInnerPanes = useCallback(() => {
     return [
       <div key="editor" className="full-height-wrapper">
         <SpecEditorHeader key="specEditorHeader" />
         <div
           style={{
-            height: 'calc(100% - 30px)', // - header
-            display: this.props.sidePaneItem === SIDEPANE.Editor ? '' : 'none',
+            height: 'calc(100% - 30px)',
+            display: props.sidePaneItem === SIDEPANE.Editor ? '' : 'none',
           }}
         >
           <SpecEditor key="editor" />
         </div>
         <div
           style={{
-            height: 'calc(100% - 30px)', // - header
-            display: this.props.sidePaneItem === SIDEPANE.Config ? '' : 'none',
+            height: 'calc(100% - 30px)',
+            display: props.sidePaneItem === SIDEPANE.Config ? '' : 'none',
           }}
         >
           <ConfigEditor key="configEditor" />
         </div>
       </div>,
-      this.props.compiledVegaSpec ? (
-        <CompiledSpecDisplay key="compiled" />
-      ) : (
-        <CompiledSpecHeader key="compiledSpecHeader" />
-      ),
+      props.compiledVegaSpec ? <CompiledSpecDisplay key="compiled" /> : <CompiledSpecHeader key="compiledSpecHeader" />,
     ];
-  }
-  public render() {
-    const innerPanes = this.getInnerPanes();
+  }, [props.sidePaneItem, props.compiledVegaSpec]);
 
-    // Calculate the initial sizes based on compiledVegaSpec
-    const initialSizes = this.props.compiledVegaSpec
-      ? [70, 30] // If we have a compiled spec, show it with 30% of space
-      : [100, 0]; // Otherwise, give full space to the editor
+  const innerPanes = useMemo(() => getInnerPanes(), [getInnerPanes]);
 
-    return (
-      // ! Never make this conditional based on modes
-      // ! we will loose support for undo across modes
-      // ! because the editor will be unmounted
-      <div role="group" aria-label="spec editors" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-        <Split
-          sizes={initialSizes}
-          minSize={LAYOUT.MinPaneSize}
-          expandToMin={false}
-          gutterSize={10}
-          gutterAlign="center"
-          snapOffset={30}
-          dragInterval={1}
-          direction="vertical"
-          cursor="row-resize"
-          className="editor-splitPane"
-          onDrag={this.handleChange}
-          onDragEnd={() => {
-            if (this.props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-              this.props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.5);
-              // Popping up the the compiled vega pane for the first time will set its
-              // height to 50% of the split pane. This can change depending on the UI.
-            }
-          }}
-        >
-          {innerPanes[0]}
-          {innerPanes[1]}
-        </Split>
-      </div>
-    );
-  }
-}
+  const initialSizes = useMemo(() => {
+    return props.compiledVegaSpec ? [70, 30] : [100, 0];
+  }, [props.compiledVegaSpec]);
+
+  const handleDragEnd = useCallback(() => {
+    if (props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
+      props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.5);
+    }
+  }, [props.compiledVegaPaneSize, props.setCompiledVegaPaneSize]);
+
+  return (
+    <div role="group" aria-label="spec editors" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+      <Split
+        sizes={initialSizes}
+        minSize={LAYOUT.MinPaneSize}
+        expandToMin={false}
+        gutterSize={10}
+        gutterAlign="center"
+        snapOffset={30}
+        dragInterval={1}
+        direction="vertical"
+        cursor="row-resize"
+        className="editor-splitPane"
+        onDrag={handleChange}
+        onDragEnd={handleDragEnd}
+      >
+        {innerPanes[0]}
+        {innerPanes[1]}
+      </Split>
+    </div>
+  );
+};
 
 function mapStateToProps(state: State) {
   return {
