@@ -1,34 +1,45 @@
 import * as React from 'react';
 import {Maximize} from 'react-feather';
 import {Portal} from 'react-portal';
-import {useNavigate, useLocation, useParams} from 'react-router';
-import {useDispatch, useSelector} from 'react-redux';
+import {useNavigate, useLocation} from 'react-router';
 import * as vega from 'vega';
-import {Config as VgConfig} from 'vega';
 import vegaTooltip from 'vega-tooltip';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
-import {State} from '../../constants/default-state.js';
 import {KEYCODES, Mode} from '../../constants/index.js';
 import addProjections from '../../utils/addProjections.js';
 import {dispatchingLogger} from '../../utils/logger.js';
 import {Popup} from '../popup/index.js';
 import './index.css';
 import {expressionInterpreter as vegaInterpreter} from 'vega-interpreter';
-import {useCallback, useEffect, useRef} from 'react';
-import {useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 // Add additional projections
 addProjections(vega.projection);
 
 const defaultSize = {fullscreen: false, width: 500, height: 300};
 
-export default function Editor() {
+export interface RendererProps {
+  baseURL: string;
+  config: any;
+  editorString: string;
+  hoverEnable: boolean | 'auto';
+  logLevel: number;
+  mode: Mode;
+  renderer: string;
+  tooltipEnable: boolean;
+  vegaLiteSpec: any;
+  normalizedVegaLiteSpec: any;
+  vegaSpec: any;
+  view: any;
+  backgroundColor: string;
+  expressionInterpreter: boolean;
+  setView: (view: any) => void;
+  setRuntime: (runtime: any) => void;
+  recordPulse: (clock: number, values: any) => void;
+}
+
+export default function Renderer(props: RendererProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const params = useParams();
-  const dispatch = useDispatch();
-  const props = useSelector((state: State) => ({...mapStateToProps(state)}));
-  const boundActions = mapDispatchToProps(dispatch);
 
   const {
     vegaSpec,
@@ -46,11 +57,7 @@ export default function Editor() {
     tooltipEnable,
     backgroundColor,
     recordPulse,
-    logLevel,
-  } = {
-    ...props,
-    ...boundActions,
-  };
+  } = props;
 
   const [size, setSize] = useState(defaultSize);
   const chartRef = useRef(null);
@@ -111,7 +118,7 @@ export default function Editor() {
 
   const initView = useCallback(() => {
     const parseOptions = expressionInterpreter ? {ast: true} : {};
-    const runtime = vega.parse(vegaSpec, mode === Mode.VegaLite ? {} : (config as VgConfig), parseOptions);
+    const runtime = vega.parse(vegaSpec, mode === Mode.VegaLite ? {} : config, parseOptions);
     const loader = vega.loader();
     const origLoad = loader.load.bind(loader);
     loader.load = async (url, options) => {
@@ -132,6 +139,7 @@ export default function Editor() {
     setRuntime(runtime);
     setView(newView);
   }, [vegaSpec, config, mode, expressionInterpreter, hoverEnable, baseURL, runAfter, setRuntime, setView, view]);
+
   const renderVega = useCallback(async () => {
     const chart = size.fullscreen ? portalChartRef.current : chartRef.current;
     const {responsiveWidth, responsiveHeight} = isResponsive();
@@ -139,8 +147,6 @@ export default function Editor() {
       chart.style.width = chart.getBoundingClientRect().width + 'px';
       chart.style.width = 'auto';
     }
-    // Update path
-    const path = location.pathname;
 
     if (!view) return;
     view.renderer(renderer).initialize(chart);

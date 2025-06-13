@@ -1,13 +1,29 @@
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
+import * as React from 'react';
 import * as EditorActions from '../../actions/editor.js';
-import {State} from '../../constants/default-state.js';
+import {useAppSelector, useAppDispatch} from '../../hooks.js';
 import {recordPulse} from '../../features/dataflow/pulsesSlice.js';
 import {setRuntime} from '../../features/dataflow/runtimeSlice.js';
-import Renderer from './renderer.js';
+import Renderer, {RendererProps} from './renderer.js';
 
-export function mapStateToProps(state: State) {
-  return {
+const RendererContainer: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const {
+    baseURL,
+    config,
+    editorString,
+    hoverEnable,
+    logLevel,
+    mode,
+    renderer,
+    tooltipEnable,
+    vegaLiteSpec,
+    normalizedVegaLiteSpec,
+    vegaSpec,
+    view,
+    backgroundColor,
+    expressionInterpreter,
+  } = useAppSelector((state) => ({
     baseURL: state.baseURL,
     config: state.config,
     editorString: state.editorString,
@@ -22,18 +38,29 @@ export function mapStateToProps(state: State) {
     view: state.view,
     backgroundColor: state.backgroundColor,
     expressionInterpreter: state.expressionInterpreter,
+  }));
+
+  const rendererProps: RendererProps = {
+    baseURL,
+    config,
+    editorString,
+    hoverEnable,
+    logLevel,
+    mode,
+    renderer,
+    tooltipEnable,
+    vegaLiteSpec,
+    normalizedVegaLiteSpec,
+    vegaSpec,
+    view,
+    backgroundColor,
+    expressionInterpreter,
+    setView: (newView) => dispatch(EditorActions.setView(newView)),
+    setRuntime: (runtime) => dispatch(setRuntime(runtime)),
+    recordPulse: (clock, values) => dispatch(recordPulse(clock, values)),
   };
-}
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      setView: EditorActions.setView,
-      setRuntime: setRuntime,
-      recordPulse: recordPulse,
-    },
-    dispatch,
-  );
-}
+  return <Renderer {...rendererProps} />;
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);
+export default RendererContainer;

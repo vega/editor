@@ -1,10 +1,8 @@
 import * as React from 'react';
 import {useCallback, useEffect, useMemo} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../actions/editor.js';
 import {LAYOUT, Mode, SIDEPANE} from '../../constants/index.js';
-import {State} from '../../constants/default-state.js';
+import {useAppSelector, useAppDispatch} from '../../hooks.js';
+import * as EditorActions from '../../actions/editor.js';
 import ConfigEditor from '../config-editor/index.js';
 import CompiledSpecDisplay from './compiled-spec-display/index.js';
 import CompiledSpecHeader from './compiled-spec-header/index.js';
@@ -14,30 +12,34 @@ import SpecEditor from './spec-editor/index.js';
 import SpecEditorHeader from './spec-editor-header/index.js';
 import Split from 'react-split';
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+const InputPanel: React.FC = () => {
+  const dispatch = useAppDispatch();
 
-const InputPanel: React.FC<Props> = (props) => {
+  const {compiledVegaPaneSize, compiledVegaSpec, mode, sidePaneItem} = useAppSelector((state) => ({
+    compiledVegaPaneSize: state.compiledVegaPaneSize,
+    compiledVegaSpec: state.compiledVegaSpec,
+    mode: state.mode,
+    sidePaneItem: state.sidePaneItem,
+  }));
+
   const handleChange = useCallback(
     (sizes: number[]) => {
       const size = sizes[1] * window.innerHeight;
-      props.setCompiledVegaPaneSize(size);
-      if (
-        (size > LAYOUT.MinPaneSize && !props.compiledVegaSpec) ||
-        (size === LAYOUT.MinPaneSize && props.compiledVegaSpec)
-      ) {
-        props.toggleCompiledVegaSpec();
+      dispatch(EditorActions.setCompiledVegaPaneSize(size));
+      if ((size > LAYOUT.MinPaneSize && !compiledVegaSpec) || (size === LAYOUT.MinPaneSize && compiledVegaSpec)) {
+        dispatch(EditorActions.toggleCompiledVegaSpec());
       }
     },
-    [props.setCompiledVegaPaneSize, props.compiledVegaSpec, props.toggleCompiledVegaSpec],
+    [dispatch, compiledVegaSpec],
   );
 
   useEffect(() => {
-    if (props.mode === Mode.VegaLite) {
-      if (props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-        props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3);
+    if (mode === Mode.VegaLite) {
+      if (compiledVegaPaneSize === LAYOUT.MinPaneSize) {
+        dispatch(EditorActions.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3));
       }
     }
-  }, [props.mode, props.compiledVegaPaneSize, props.setCompiledVegaPaneSize]);
+  }, [mode, compiledVegaPaneSize, dispatch]);
 
   const getInnerPanes = useCallback(() => {
     return [
@@ -46,7 +48,7 @@ const InputPanel: React.FC<Props> = (props) => {
         <div
           style={{
             height: 'calc(100% - 30px)',
-            display: props.sidePaneItem === SIDEPANE.Editor ? '' : 'none',
+            display: sidePaneItem === SIDEPANE.Editor ? '' : 'none',
           }}
         >
           <SpecEditor key="editor" />
@@ -54,27 +56,27 @@ const InputPanel: React.FC<Props> = (props) => {
         <div
           style={{
             height: 'calc(100% - 30px)',
-            display: props.sidePaneItem === SIDEPANE.Config ? '' : 'none',
+            display: sidePaneItem === SIDEPANE.Config ? '' : 'none',
           }}
         >
           <ConfigEditor key="configEditor" />
         </div>
       </div>,
-      props.compiledVegaSpec ? <CompiledSpecDisplay key="compiled" /> : <CompiledSpecHeader key="compiledSpecHeader" />,
+      compiledVegaSpec ? <CompiledSpecDisplay key="compiled" /> : <CompiledSpecHeader key="compiledSpecHeader" />,
     ];
-  }, [props.sidePaneItem, props.compiledVegaSpec]);
+  }, [sidePaneItem, compiledVegaSpec]);
 
   const innerPanes = useMemo(() => getInnerPanes(), [getInnerPanes]);
 
   const initialSizes = useMemo(() => {
-    return props.compiledVegaSpec ? [70, 30] : [100, 0];
-  }, [props.compiledVegaSpec]);
+    return compiledVegaSpec ? [70, 30] : [100, 0];
+  }, [compiledVegaSpec]);
 
   const handleDragEnd = useCallback(() => {
-    if (props.compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-      props.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.5);
+    if (compiledVegaPaneSize === LAYOUT.MinPaneSize) {
+      dispatch(EditorActions.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.5));
     }
-  }, [props.compiledVegaPaneSize, props.setCompiledVegaPaneSize]);
+  }, [compiledVegaPaneSize, dispatch]);
 
   return (
     <div role="group" aria-label="spec editors" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
@@ -99,23 +101,4 @@ const InputPanel: React.FC<Props> = (props) => {
   );
 };
 
-function mapStateToProps(state: State) {
-  return {
-    compiledVegaPaneSize: state.compiledVegaPaneSize,
-    compiledVegaSpec: state.compiledVegaSpec,
-    mode: state.mode,
-    sidePaneItem: state.sidePaneItem,
-  };
-}
-
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      setCompiledVegaPaneSize: EditorActions.setCompiledVegaPaneSize,
-      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
-    },
-    dispatch,
-  );
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(InputPanel);
+export default InputPanel;
