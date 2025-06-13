@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useCallback} from 'react';
 import * as EditorActions from '../../actions/editor.js';
 import {useAppSelector, useAppDispatch} from '../../hooks.js';
 import Renderer from './renderer.js';
@@ -34,13 +35,18 @@ const VizPaneContainer: React.FC = () => {
     view: state.view,
   }));
 
-  const actions = {
-    setDebugPaneSize: (size: number) => dispatch(EditorActions.setDebugPaneSize(size)),
-    setDecorations: (newDecorations: any[]) => dispatch(EditorActions.setDecorations(newDecorations)),
-    showLogs: (show: boolean) => dispatch(EditorActions.showLogs(show)),
-    toggleDebugPane: () => dispatch(EditorActions.toggleDebugPane()),
-    toggleNavbar: (item: string) => dispatch(EditorActions.toggleNavbar(item)),
-  };
+  const setDebugPaneSize = useCallback((size: number) => dispatch(EditorActions.setDebugPaneSize(size)), [dispatch]);
+
+  const setDecorations = useCallback(
+    (newDecorations: any[]) => dispatch(EditorActions.setDecorations(newDecorations)),
+    [dispatch],
+  );
+
+  const showLogs = useCallback((show: boolean) => dispatch(EditorActions.showLogs(show)), [dispatch]);
+
+  const toggleDebugPane = useCallback(() => dispatch(EditorActions.toggleDebugPane()), [dispatch]);
+
+  const toggleNavbar = useCallback((item: string) => dispatch(EditorActions.toggleNavbar(item)), [dispatch]);
 
   return (
     <Renderer
@@ -56,7 +62,11 @@ const VizPaneContainer: React.FC = () => {
       navItem={navItem}
       settings={settings}
       view={view}
-      {...actions}
+      setDebugPaneSize={setDebugPaneSize}
+      setDecorations={setDecorations}
+      showLogs={showLogs}
+      toggleDebugPane={toggleDebugPane}
+      toggleNavbar={toggleNavbar}
     />
   );
 };

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useCallback, useEffect} from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 import {ChevronDown, ChevronUp} from 'react-feather';
 import * as EditorActions from '../../../actions/editor.js';
 import {NAVBAR} from '../../../constants/consts.js';
@@ -7,6 +7,7 @@ import {useAppSelector, useAppDispatch} from '../../../hooks.js';
 
 const DebugPaneHeader: React.FC = () => {
   const dispatch = useAppDispatch();
+  const effectRan = useRef(false);
 
   const {debugPane, error, errors, logs, navItem, warns} = useAppSelector((state) => ({
     debugPane: state.debugPane,
@@ -24,7 +25,8 @@ const DebugPaneHeader: React.FC = () => {
   const toggleNavbar = useCallback((item: string) => dispatch(EditorActions.toggleNavbar(item)), [dispatch]);
 
   useEffect(() => {
-    if (logs || navItem === NAVBAR.Logs) {
+    if (!effectRan.current && (logs || navItem === NAVBAR.Logs)) {
+      effectRan.current = true;
       showLogs(true);
     }
   }, [logs, navItem, showLogs]);

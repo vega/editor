@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState, useRef} from 'react';
 import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants/index.js';
 import DataViewer from '../data-viewer/index.js';
 import ErrorBoundary from '../error-boundary/index.js';
@@ -38,20 +38,26 @@ interface VizPaneProps {
 const VizPane: React.FC<VizPaneProps> = (props) => {
   const [header] = useState('');
 
+  const initialSetupDone = useRef(false);
+
   useEffect(() => {
-    if (props.logs) {
+    if (props.logs && !initialSetupDone.current) {
+      initialSetupDone.current = true;
       props.showLogs(true);
     }
   }, [props.logs, props.showLogs]);
 
   useEffect(() => {
-    if (props.debugPaneSize === LAYOUT.MinPaneSize) {
+    if (props.debugPaneSize === LAYOUT.MinPaneSize && !initialSetupDone.current) {
+      initialSetupDone.current = true;
       props.setDebugPaneSize(LAYOUT.DebugPaneSize);
     }
-    if (props.error || props.errors.length) {
+
+    // Show logs when there's an error, but without causing loops
+    if ((props.error || props.errors.length > 0) && !props.logs) {
       props.showLogs(true);
     }
-  }, [props.debugPaneSize, props.error, props.errors.length, props.setDebugPaneSize, props.showLogs]);
+  }, [props.debugPaneSize, props.error, props.errors.length, props.logs, props.setDebugPaneSize, props.showLogs]);
 
   const onClickHandler = useCallback(
     (itemHeader: string) => {
