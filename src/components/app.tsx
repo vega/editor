@@ -2,7 +2,7 @@ import stringify from 'json-stringify-pretty-compact';
 import {parse as parseJSONC} from 'jsonc-parser';
 import * as React from 'react';
 import {useCallback, useEffect} from 'react';
-import {useParams} from 'react-router';
+import {useParams, useNavigate, useLocation} from 'react-router';
 import {MessageData} from 'vega-embed';
 import {hash} from 'vega-lite';
 import * as EditorActions from '../actions/editor.js';
@@ -32,6 +32,8 @@ const App: React.FC<Props> = (props) => {
   }));
 
   const params = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const setExample = useCallback(
     async (parameter: {example_name: string; mode: string}) => {
@@ -202,9 +204,17 @@ const App: React.FC<Props> = (props) => {
     setSpecInUrl(params);
   }, [params && hash(params), setSpecInUrl]);
 
+  // Create router props to pass to Header
+  const routerProps = {
+    match: {params},
+    history: {push: navigate},
+    location,
+    staticContext: undefined,
+  };
+
   return (
     <div className="app-container">
-      <Header showExample={props.showExample} />
+      <Header showExample={props.showExample} {...routerProps} />
       <div
         style={{
           height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,

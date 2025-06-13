@@ -1,11 +1,11 @@
-import {configureStore, combineReducers} from '@reduxjs/toolkit';
+import {configureStore, combineReducers, Reducer} from '@reduxjs/toolkit';
 import {editorSlice} from '../slices/editorSlice.js';
 import {uiSlice} from '../slices/uiSlice.js';
 import {authSlice} from '../slices/authSlice.js';
 import {configSlice} from '../slices/configSlice.js';
-// dataflowInitialState is used by the persistenceMiddleware to exclude certain fields
 import {dataflowReducer, dataflowInitialState} from '../features/dataflow/index.js';
 import {persistenceMiddleware} from './middleware/persistence.js';
+import {State} from '../constants/default-state.js';
 
 const regularReducers = combineReducers({
   editor: editorSlice.reducer,
@@ -14,10 +14,12 @@ const regularReducers = combineReducers({
   config: configSlice.reducer,
 });
 
-const rootReducer = (state: any, action: any) => {
+type RegularState = ReturnType<typeof regularReducers>;
+
+const rootReducer: Reducer<State> = (state: any, action: any): State => {
   const regularState = regularReducers(state, action);
 
-  return dataflowReducer(regularState, action);
+  return dataflowReducer(regularState as any, action);
 };
 
 const loadPersistedState = (): any => {
@@ -45,7 +47,7 @@ const loadPersistedState = (): any => {
 };
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: rootReducer as any,
   preloadedState: loadPersistedState(),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
