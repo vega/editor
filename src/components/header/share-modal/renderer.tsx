@@ -2,9 +2,11 @@ import stringify from 'json-stringify-pretty-compact';
 import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
 import * as React from 'react';
+import {useState, useEffect} from 'react';
 import Clipboard from 'react-clipboard.js';
 import {Copy, Link, Save} from 'react-feather';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
+import {useAppDispatch, useAppSelector} from '../../../hooks.js';
+import * as EditorActions from '../../../actions/editor.js';
 import {NAMES} from '../../../constants/consts.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
 import LoginConditional from '../../login-conditional/index.js';
@@ -13,137 +15,90 @@ import {getGithubToken} from '../../../utils/github.js';
 
 const EDITOR_BASE = window.location.origin + window.location.pathname;
 
-function getCookie(name: string): string {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift() || '';
-  return '';
-}
+export default function ShareModal() {
+  const dispatch = useAppDispatch();
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+  const {editorString, isAuthenticated, mode, handle} = useAppSelector((state) => ({
+    editorString: state.editorString,
+    isAuthenticated: state.isAuthenticated,
+    mode: state.mode,
+    handle: state.handle,
+  }));
 
-interface State {
-  copied: boolean;
-  creating: boolean;
-  createError: boolean;
-  updateError: boolean;
-  fullScreen: boolean;
-  whitespace: boolean;
-  generatedURL: string;
-  gistFileName: string;
-  gistFileNameSelected: string;
-  gistPrivate: boolean;
-  gistTitle: string;
-  gistId: string;
-  updating: boolean;
-  gistEditorURL: string;
-}
+  const date = new Date().toDateString();
 
-class ShareModal extends React.PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    const date = new Date().toDateString();
-    this.state = {
-      copied: false,
-      creating: undefined,
-      createError: false,
-      updateError: false,
-      fullScreen: false,
-      whitespace: false,
-      generatedURL: '',
-      gistFileName: 'spec.json',
-      gistFileNameSelected: '',
-      gistPrivate: false,
-      gistTitle: `${NAMES[this.props.mode]} spec from ${date}`,
-      gistId: '',
-      updating: undefined,
-      gistEditorURL: '',
-    };
-  }
+  const [copied, setCopied] = useState(false);
+  const [creating, setCreating] = useState(undefined);
+  const [createError, setCreateError] = useState(false);
+  const [updateError, setUpdateError] = useState(false);
+  const [fullScreen, setFullScreen] = useState(false);
+  const [whitespace, setWhitespace] = useState(false);
+  const [generatedURL, setGeneratedURL] = useState('');
+  const [gistFileName, setGistFileName] = useState('spec.json');
+  const [gistFileNameSelected, setGistFileNameSelected] = useState('');
+  const [gistPrivate, setGistPrivate] = useState(false);
+  const [gistTitle, setGistTitle] = useState(`${NAMES[mode]} spec from ${date}`);
+  const [gistId, setGistId] = useState('');
+  const [updating, setUpdating] = useState(undefined);
+  const [gistEditorURL, setGistEditorURL] = useState('');
 
-  public exportURL() {
-    const specString = this.state.whitespace
-      ? this.props.editorString
-      : JSON.stringify(parseJSONC(this.props.editorString));
+  const exportURL = () => {
+    const specString = whitespace ? editorString : JSON.stringify(parseJSONC(editorString));
 
-    const serializedSpec = LZString.compressToEncodedURIComponent(specString) + (this.state.fullScreen ? '/view' : '');
+    const serializedSpec = LZString.compressToEncodedURIComponent(specString) + (fullScreen ? '/view' : '');
 
     if (serializedSpec) {
-      const url = `${document.location.href.split('#')[0]}#/url/${this.props.mode}/${serializedSpec}`;
-      this.setState({generatedURL: url});
+      const url = `${document.location.href.split('#')[0]}#/url/${mode}/${serializedSpec}`;
+      setGeneratedURL(url);
     }
-  }
+  };
 
-  public previewURL() {
-    const win = window.open(this.state.generatedURL, '_blank');
+  const previewURL = () => {
+    const win = window.open(generatedURL, '_blank');
     win.focus();
-  }
+  };
 
-  public onCopy() {
-    if (!this.state.copied) {
-      this.setState(
-        {
-          copied: true,
-        },
-        () => {
-          setTimeout(() => {
-            this.setState({copied: false});
-          }, 2500);
-        },
-      );
+  const onCopy = () => {
+    if (!copied) {
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 2500);
     }
-  }
+  };
 
-  public handleFulscreenCheck(event) {
-    this.setState({fullScreen: event.target.checked}, () => {
-      this.exportURL();
-    });
-  }
+  const handleFullScreenCheck = (event) => {
+    setFullScreen(event.target.checked);
+  };
 
-  public handleWhitespaceCheck(event) {
-    this.setState({whitespace: event.target.checked}, () => {
-      this.exportURL();
-    });
-  }
+  const handleWhitespaceCheck = (event) => {
+    setWhitespace(event.target.checked);
+  };
 
-  public componentDidMount() {
-    this.exportURL();
-  }
+  useEffect(() => {
+    exportURL();
+  }, [fullScreen, whitespace, editorString, mode]);
 
-  public updatePrivacy(event) {
-    this.setState({
-      gistPrivate: event.target.checked,
-    });
-  }
+  const updatePrivacy = (event) => {
+    setGistPrivate(event.target.checked);
+  };
 
-  public fileNameChange(event) {
-    this.setState({
-      gistFileName: event.target.value,
-    });
-  }
+  const fileNameChange = (event) => {
+    setGistFileName(event.target.value);
+  };
 
-  public gistFileNameSelectedChange(event) {
-    this.setState({
-      gistFileNameSelected: event.target.value,
-    });
-  }
+  const titleChange = (event) => {
+    setGistTitle(event.target.value);
+  };
 
-  public titleChange(event) {
-    this.setState({
-      gistTitle: event.target.value,
-    });
-  }
-
-  public async createGist() {
-    this.setState({
-      creating: true,
-    });
+  const createGist = async () => {
+    setCreating(true);
 
     const body = {
-      content: this.state.whitespace ? this.props.editorString : stringify(parseJSONC(this.props.editorString)),
-      name: this.state.gistFileName || 'spec',
-      title: this.state.gistTitle,
-      privacy: this.state.gistPrivate,
+      content: whitespace ? editorString : stringify(parseJSONC(editorString)),
+      name: gistFileName || 'spec',
+      title: gistTitle,
+      privacy: gistPrivate,
     };
 
     try {
@@ -153,11 +108,9 @@ class ShareModal extends React.PureComponent<Props, State> {
         githubToken = await getGithubToken();
       } catch (error) {
         console.error('Failed to get GitHub token:', error);
-        this.setState({
-          creating: false,
-          createError: true,
-        });
-        this.props.receiveCurrentUser(false);
+        setCreating(false);
+        setCreateError(true);
+        dispatch(EditorActions.receiveCurrentUser(false));
         return;
       }
 
@@ -187,85 +140,65 @@ class ShareModal extends React.PureComponent<Props, State> {
 
       const data = await res.json();
 
-      this.setState(
-        {
-          creating: false,
-          updating: undefined,
-        },
-        () => {
-          if (!data.id) {
-            this.setState(
-              {
-                createError: true,
-              },
-              () => {
-                if (res.status === 401) {
-                  this.props.receiveCurrentUser(false);
-                }
-              },
-            );
-          } else {
-            const fileName = Object.keys(data.files)[0];
-            this.setState({
-              createError: false,
-              gistEditorURL: `${EDITOR_BASE}#/gist/${data.id}/${fileName}`,
-            });
-          }
-        },
-      );
+      setCreating(false);
+      setUpdating(undefined);
+
+      if (!data.id) {
+        setCreateError(true);
+        if (res.status === 401) {
+          dispatch(EditorActions.receiveCurrentUser(false));
+        }
+      } else {
+        const fileName = Object.keys(data.files)[0];
+        setCreateError(false);
+        setGistEditorURL(`${EDITOR_BASE}#/gist/${data.id}/${fileName}`);
+      }
     } catch (error) {
       console.error('Error creating gist:', error);
-      this.setState({
-        creating: false,
-        createError: true,
-      });
+      setCreating(false);
+      setCreateError(true);
     }
-  }
+  };
 
-  public selectGist(id, fileName) {
-    this.setState({
-      gistFileNameSelected: fileName,
-      gistId: id,
-    });
-  }
+  const selectGist = (id, fileName) => {
+    setGistFileNameSelected(fileName);
+    setGistId(id);
+  };
 
-  public async updateGist() {
-    this.setState({
-      updating: true,
-    });
+  const updateGist = async () => {
+    setUpdating(true);
 
-    const fileName = this.state.gistFileNameSelected;
+    const fileName = gistFileNameSelected;
 
     try {
-      if (this.state.gistId) {
+      if (gistId) {
         // Get GitHub access token just-in-time
         let githubToken;
         try {
           githubToken = await getGithubToken();
         } catch (error) {
           console.error('Failed to get GitHub token:', error);
-          this.setState({
-            updating: false,
-            updateError: true,
-          });
-          this.props.receiveCurrentUser(false);
+          setUpdating(false);
+          setUpdateError(true);
           return;
         }
 
-        const gistBody = {
+        const updateBody = {
           files: {
             [fileName]: {
-              content: this.props.editorString,
+              content: whitespace ? editorString : stringify(parseJSONC(editorString)),
             },
           },
         };
-        const res = await fetch(`https://api.github.com/gists/${this.state.gistId}`, {
+
+        // Direct API call to GitHub
+        const res = await fetch(`https://api.github.com/gists/${gistId}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `token ${githubToken}`,
           },
-          body: JSON.stringify(gistBody),
+          body: JSON.stringify(updateBody),
         });
 
         if (!res.ok) {
@@ -274,220 +207,153 @@ class ShareModal extends React.PureComponent<Props, State> {
 
         const data = await res.json();
 
-        if (data.id) {
-          this.setState({
-            gistEditorURL: `${EDITOR_BASE}#/gist/${data.id}/${fileName}`,
-            creating: undefined,
-            updating: false,
-            updateError: false,
-          });
+        setUpdating(false);
+        setCreating(undefined);
+
+        if (!data.id) {
+          setUpdateError(true);
+          if (res.status === 401) {
+            dispatch(EditorActions.receiveCurrentUser(false));
+          }
         } else {
-          this.setState({
-            creating: undefined,
-            updating: false,
-            updateError: true,
-          });
+          setUpdateError(false);
+          setGistEditorURL(`${EDITOR_BASE}#/gist/${data.id}/${fileName}`);
         }
       }
     } catch (error) {
       console.error('Error updating gist:', error);
-      this.setState({
-        creating: undefined,
-        updating: false,
-        updateError: true,
-      });
+      setUpdating(false);
+      setUpdateError(true);
     }
-  }
+  };
 
-  public render() {
-    return (
+  return (
+    <>
+      <h1>Share</h1>
       <div className="share-modal">
-        <h1>Share</h1>
-        <h2>Via URL</h2>
-        <p>
-          We pack the {NAMES[this.props.mode]} specification as an encoded string in the URL. We use a LZ-based
-          compression algorithm. When whitespaces are not preserved, the editor will automatically format the
-          specification when it is loaded.
-        </p>
-        <div>
-          <label className="user-pref">
-            <input
-              type="checkbox"
-              defaultChecked={this.state.fullScreen}
-              name="fullscreen"
-              onChange={this.handleFulscreenCheck.bind(this)}
-            />
-            Open visualization in fullscreen
-          </label>
-          <label className="user-pref">
-            <input
-              type="checkbox"
-              defaultChecked={this.state.whitespace}
-              name="whitespace"
-              onChange={this.handleWhitespaceCheck.bind(this)}
-            />
-            Preserve whitespace, comments, and trailing commas
-          </label>
-        </div>
-        <div className="sharing-buttons">
-          <button onClick={() => this.previewURL()}>
+        <div className="share-container url">
+          <div className="header-text">
             <Link />
-            <span>Open Link</span>
-          </button>
-          <Clipboard
-            className="copy-icon"
-            data-clipboard-text={this.state.generatedURL}
-            onSuccess={this.onCopy.bind(this)}
-          >
-            <Copy />
-            <span>Copy Link to Clipboard</span>
-          </Clipboard>
-          <Clipboard
-            className="copy-icon"
-            data-clipboard-text={`[Open the Chart in the Vega Editor](${this.state.generatedURL})`}
-            onSuccess={this.onCopy.bind(this)}
-          >
-            <Copy />
-            <span>Copy Markdown Link to Clipboard</span>
-          </Clipboard>
-          <div className={`copied + ${this.state.copied ? ' visible' : ''}`}>Copied!</div>
-        </div>
-        Number of characters in the URL: {this.state.generatedURL.length}{' '}
-        <span className="url-warning">
-          {this.state.generatedURL.length > 2083 && (
-            <>
-              Warning:{' '}
-              <a
-                href="https://support.microsoft.com/en-us/help/208427/maximum-url-length-is-2-083-characters-in-internet-explorer"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                URLs over 2083 characters may not be supported in Internet Explorer.
-              </a>
-            </>
-          )}
-        </span>
-        <div className="spacer"></div>
-        <h2>
-          Via{' '}
-          <a href="https://gist.github.com/" target="_blank" rel="noopener noreferrer">
-            GitHub Gist
-          </a>
-        </h2>
-        <LoginConditional>
+            <span>URL</span>
+          </div>
           <p>
-            Here, you can save your {NAMES[this.props.mode]} specification as a new Gist or update an existing Gist. You
-            can view all of your Gists on <a href={`https://gist.github.com/${this.props.handle}`}>GitHub</a>.
+            <em>Share a URL that opens the editor with your chart</em>
           </p>
-          <div className="share-gist-split">
-            <div className="update-gist">
-              <h3>Update an existing Gist</h3>
-              <p>To update an existing Gist, select it in the list and then click the button below to confirm.</p>
-              <GistSelectWidget selectGist={this.selectGist.bind(this)} />
-              {this.props.isAuthenticated && (
-                <React.Fragment>
-                  <div className="share-input-container">
-                    <label>
-                      File name:
-                      <input
-                        value={this.state.gistFileNameSelected}
-                        onChange={this.gistFileNameSelectedChange.bind(this)}
-                        type="text"
-                      />
-                      <small>Change the filename to create a new file in the selected Gist</small>
-                    </label>
-                  </div>
-                </React.Fragment>
-              )}
-              <div className="sharing-buttons">
-                <button
-                  onClick={this.updateGist.bind(this)}
-                  disabled={!this.state.gistFileNameSelected || this.state.updating}
-                >
-                  <Save />
-                  {this.state.updating ? 'Updating...' : 'Update'}
-                </button>
-                {this.state.gistEditorURL && this.state.updating !== undefined && (
-                  <Clipboard className="copy-icon" data-clipboard-text={this.state.gistEditorURL}>
-                    <Copy />
-                    <span>Copy Link to Clipboard</span>
-                  </Clipboard>
-                )}
-              </div>
-              {this.state.updateError && <div className="error-message share-error">Gist could not be updated.</div>}
+          <div className="input-container">
+            <label>
+              <input type="checkbox" checked={fullScreen} onChange={handleFullScreenCheck} />
+              Fullscreen
+            </label>
+
+            <label>
+              <input type="checkbox" checked={whitespace} onChange={handleWhitespaceCheck} />
+              Preserve whitespace
+            </label>
+          </div>
+          <div className="share">
+            <input className="share-url" type="text" value={generatedURL} readOnly />
+            <Clipboard className="copy" data-clipboard-text={generatedURL} onSuccess={onCopy}>
+              <Copy></Copy>
+              <span>{copied ? 'Copied!' : 'Copy'}</span>
+            </Clipboard>
+          </div>
+          <button className="preview" onClick={previewURL}>
+            Preview URL
+          </button>
+        </div>
+        <LoginConditional>
+          <div className="share-container gists">
+            <div className="header-text">
+              <Save />
+              <span>GitHub Gist</span>
             </div>
-            <div>
-              <h3>Create a new Gist</h3>
-              <p>
-                Save the current {NAMES[this.props.mode]} specification as a Gist. When you save it, you will get a link
-                that you can share. You can also load the specification via the Gist loading functionality in the
-                editor.
-              </p>
-              <div>
-                <label className="user-pref">
-                  <input
-                    type="checkbox"
-                    defaultChecked={this.state.whitespace}
-                    name="whitespace"
-                    onChange={this.handleWhitespaceCheck.bind(this)}
-                  />
-                  Preserve whitespace, comments, and trailing commas
-                </label>
+            <p>
+              <em>Create or update a GitHub gist with your chart</em>
+            </p>
+
+            <div className="new-gist">
+              <h3>Create New Gist</h3>
+              <div className="gist-input">
+                <label htmlFor="fileName">File Name</label>
+                <input
+                  type="text"
+                  id="fileName"
+                  value={gistFileName}
+                  onChange={fileNameChange}
+                  placeholder="spec.json"
+                />
               </div>
-              <div className="share-input-container">
+              <div className="gist-input">
+                <label htmlFor="gistTitle">Gist Title</label>
+                <input
+                  type="text"
+                  id="gistTitle"
+                  value={gistTitle}
+                  onChange={titleChange}
+                  placeholder={`${NAMES[mode]} spec from ${date}`}
+                />
+              </div>
+
+              <div className="gist-input privacy">
                 <label>
-                  Title:
-                  <input
-                    value={this.state.gistTitle}
-                    onChange={this.titleChange.bind(this)}
-                    type="text"
-                    placeholder="Enter title of gist"
-                  />
+                  <input type="checkbox" checked={gistPrivate} onChange={updatePrivacy} />
+                  Private
                 </label>
               </div>
-              <div className="share-input-container">
-                <label>
-                  File name:
-                  <input
-                    value={this.state.gistFileName}
-                    onChange={this.fileNameChange.bind(this)}
-                    type="text"
-                    placeholder="Enter file name"
-                  />
-                </label>
-              </div>
-              <div className="share-input-container">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="private-gist"
-                    id="private-gist"
-                    value="private-select"
-                    checked={this.state.gistPrivate}
-                    onChange={this.updatePrivacy.bind(this)}
-                  />
-                  Create a Private Gist
-                </label>
-              </div>
-              <div className="sharing-buttons">
-                <button onClick={this.createGist.bind(this)} disabled={this.state.creating}>
-                  <Save />
-                  {this.state.creating ? 'Creating...' : 'Create'}
-                </button>
-                {this.state.gistEditorURL && this.state.creating !== undefined && (
-                  <Clipboard className="copy-icon" data-clipboard-text={this.state.gistEditorURL}>
-                    <Copy />
-                    <span>Copy Link to Clipboard</span>
-                  </Clipboard>
+              <div className="gist-submit">
+                {creating === true && <p className="info">Creating gist...</p>}
+                {creating === false && createError === false && (
+                  <div className="gist-url-container">
+                    <p className="info success">
+                      <a href={gistEditorURL} target="_blank" rel="noopener noreferrer">
+                        {gistEditorURL}
+                      </a>
+                    </p>
+                  </div>
                 )}
-                {this.state.createError && <div className="error-message share-error">Gist could not be created</div>}
+
+                {createError === true && <p className="info error">Failed to create gist!</p>}
+
+                <button disabled={creating || !isAuthenticated} onClick={createGist}>
+                  Create Gist
+                </button>
+              </div>
+            </div>
+            <div className="update-gist">
+              <h3>Update Existing Gist</h3>
+              <p>
+                <em>
+                  Select a gist from below to update it with the current specification. Only gists created by{' '}
+                  <strong>@{handle}</strong> with a{' '}
+                  <span style={{color: '#42b3f4'}}>.json or .vg.json or .vl.json</span> file are shown. This only
+                  updates the selected file - other files in the gist will be preserved.
+                </em>
+              </p>
+              <div className="gist-select-container">
+                <GistSelectWidget selectGist={selectGist} />
+              </div>
+              <div className="gist-submit gist-update">
+                <button disabled={!gistId || updating} onClick={updateGist}>
+                  Update Gist
+                </button>
+                <div>
+                  {updating === true && <p className="info update-status">Updating gist...</p>}
+                  {updating === false && updateError === false && (
+                    <div className="gist-url-container">
+                      <p className="info update-status success">
+                        <a href={gistEditorURL} target="_blank" rel="noopener noreferrer">
+                          {gistEditorURL}
+                        </a>
+                      </p>
+                    </div>
+                  )}
+                  {updateError === true && <p className="info update-status error">Failed to update gist!</p>}
+                </div>
               </div>
             </div>
           </div>
         </LoginConditional>
       </div>
-    );
-  }
+    </>
+  );
 }
-
-export default ShareModal;

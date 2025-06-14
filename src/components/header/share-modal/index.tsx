@@ -1,3 +1,9 @@
+import Renderer from './renderer.js';
+
+export default Renderer;
+
+// Keeping these for reference during migration
+/*
 import {connect} from 'react-redux';
 import {State} from '../../../constants/default-state.js';
 import {bindActionCreators, Dispatch} from 'redux';
@@ -23,3 +29,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Renderer);
+*/
