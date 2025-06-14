@@ -6,23 +6,53 @@ import {useCallback, useEffect, useRef} from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import ResizeObserver from 'rc-resize-observer';
 import {useNavigate, useParams} from 'react-router';
-import {connect} from 'react-redux';
 import {debounce} from 'vega';
 import parser from 'vega-schema-url-parser';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {EDITOR_FOCUS, KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants/index.js';
 import './index.css';
 import {parse as parseJSONC} from 'jsonc-parser';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & {
-    navigate: (path: string) => void;
-    params: {compressed?: string};
-  };
+type Props = {
+  compiledEditorRef: any;
+  compiledVegaPaneSize: any;
+  compiledVegaSpec: any;
+  configEditorString: string;
+  decorations: any[];
+  editorFocus: any;
+  editorRef: any;
+  editorString: string;
+  gist: any;
+  manualParse: boolean;
+  mode: Mode;
+  parse: boolean;
+  selectedExample: any;
+  sidePaneItem: any;
+  themeName: string;
+  value: string;
+  view: any;
+
+  clearConfig: () => void;
+  extractConfigSpec: () => void;
+  logError: (error: Error) => void;
+  mergeConfigSpec: () => void;
+  parseSpec: (force: boolean) => void;
+  setConfig: (config: string) => void;
+  setDecorations: (decorations: any[]) => void;
+  setEditorFocus: (focus: any) => void;
+  setEditorReference: (reference: any) => void;
+  updateEditorString: (editorString: string) => void;
+  updateVegaLiteSpec: (spec: string, config?: string) => void;
+  updateVegaSpec: (spec: string, config?: string) => void;
+
+  navigate: (path: string) => void;
+  params: {compressed?: string};
+};
 
 const Editor: React.FC<Props> = (props) => {
   const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
   const parseButtonRef = useRef<HTMLButtonElement>(null);
+
+  const prevEditorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
 
   const handleKeydown = useCallback(
     (e: KeyboardEvent) => {
@@ -131,7 +161,7 @@ const Editor: React.FC<Props> = (props) => {
   );
 
   const editorDidMount = useCallback(
-    (editor: Monaco.editor.IStandaloneCodeEditor, monaco: typeof Monaco) => {
+    (editor: Monaco.editor.IStandaloneCodeEditor, _monaco: typeof Monaco) => {
       editor.onDidFocusEditorText(() => {
         props.compiledEditorRef && props.compiledEditorRef.deltaDecorations(props.decorations, []);
         editor.createDecorationsCollection(props.decorations);
@@ -181,7 +211,6 @@ const Editor: React.FC<Props> = (props) => {
       editor.getModel().getOptions();
 
       editorRef.current = editor;
-      props.setEditorReference(editor);
 
       if (props.sidePaneItem === SIDEPANE.Editor) {
         editor.focus();
@@ -193,7 +222,6 @@ const Editor: React.FC<Props> = (props) => {
       props.compiledEditorRef,
       props.decorations,
       props.setEditorFocus,
-      props.setEditorReference,
       props.sidePaneItem,
       addVegaSchemaURL,
       addVegaLiteSchemaURL,
@@ -205,14 +233,18 @@ const Editor: React.FC<Props> = (props) => {
 
   const handleEditorChange = useCallback(
     (spec: string) => {
-      props.manualParse ? props.updateEditorString(spec) : updateSpec(spec);
+      if (props.manualParse) {
+        props.updateEditorString(spec);
+      } else if (spec !== props.editorString) {
+        updateSpec(spec);
+      }
       props.navigate('/edited');
     },
-    [props.manualParse, props.updateEditorString, props.navigate, updateSpec],
+    [props.manualParse, props.updateEditorString, props.navigate, updateSpec, props.editorString],
   );
 
   const editorWillMount = useCallback(
-    (monaco: typeof Monaco) => {
+    (_monaco: typeof Monaco) => {
       const compressed = props.params.compressed;
       if (compressed) {
         let spec: string = LZString.decompressFromEncodedURIComponent(compressed);
@@ -235,14 +267,18 @@ const Editor: React.FC<Props> = (props) => {
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeydown);
-    if (props.sidePaneItem === SIDEPANE.Editor) {
-      props.setEditorReference(editorRef.current);
-    }
 
     return () => {
       document.removeEventListener('keydown', handleKeydown);
     };
-  }, [handleKeydown, props.sidePaneItem, props.setEditorReference]);
+  }, [handleKeydown]);
+
+  useEffect(() => {
+    if (editorRef.current && editorRef.current !== props.editorRef && props.sidePaneItem === SIDEPANE.Editor) {
+      prevEditorRef.current = editorRef.current;
+      props.setEditorReference(editorRef.current);
+    }
+  }, [editorRef.current, props.editorRef, props.sidePaneItem, props.setEditorReference]);
 
   useEffect(() => {
     if (props.sidePaneItem === SIDEPANE.Editor && editorRef.current) {
@@ -306,4 +342,4 @@ const EditorWithNavigation = (props: Omit<Props, 'navigate' | 'params'>) => {
   return <Editor {...props} navigate={navigate} params={params} />;
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditorWithNavigation);
+export default EditorWithNavigation;

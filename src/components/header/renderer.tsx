@@ -1,6 +1,5 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import ReactDOM from 'react-dom';
 import {ExternalLink, GitHub, Grid, HelpCircle, Play, Settings, Share2, Terminal, X} from 'react-feather';
 import {PortalWithState} from 'react-portal';
 import {RouteComponentProps} from 'react-router-dom';
@@ -40,6 +39,7 @@ const formatExampleName = (name: string) =>
 
 class Header extends React.PureComponent<PropsType, State> {
   private examplePortal = React.createRef<HTMLDivElement>();
+  private splitButtonRef = React.createRef<HTMLSpanElement>();
   private listenerAttached = false;
 
   constructor(props) {
@@ -274,8 +274,8 @@ class Header extends React.PureComponent<PropsType, State> {
   public handleHelpModalToggle(Toggleevent, openPortal, closePortal, isOpen) {
     window.addEventListener('keydown', (event) => {
       if (
-        (event.keyCode === KEYCODES.SINGLE_QUOTE && event.metaKey && !event.shiftKey) || // Handle key press in Mac
-        (event.keyCode === KEYCODES.SLASH && event.ctrlKey && event.shiftKey) // Handle Key press in PC
+        (event.keyCode === KEYCODES.SINGLE_QUOTE && event.metaKey && !event.shiftKey) ||
+        (event.keyCode === KEYCODES.SLASH && event.ctrlKey && event.shiftKey)
       ) {
         if (!isOpen) {
           openPortal();
@@ -297,7 +297,6 @@ class Header extends React.PureComponent<PropsType, State> {
 
   private async verifyTokenLocally(token: string): Promise<any> {
     try {
-      // TODO: verify the token signature
       const decoded = atob(token);
       const tokenData = JSON.parse(decoded);
 
@@ -337,7 +336,6 @@ class Header extends React.PureComponent<PropsType, State> {
 
     const token = localStorage.getItem('vega_editor_auth_token');
     if (token) {
-      // Creating hidden iframe (to handle CORS issues)
       const iframe = document.createElement('iframe');
       iframe.style.display = 'none';
       iframe.src = `${BACKEND_URL}auth/github/logout?token=${encodeURIComponent(token)}`;
@@ -360,11 +358,9 @@ class Header extends React.PureComponent<PropsType, State> {
     if (popup) {
       popup.focus();
     } else {
-      // If popup is blocked or fails, redirect directly
       window.location.href = `${BACKEND_URL}auth/github/logout`;
     }
 
-    // Also clear local state
     this.props.receiveCurrentUser(false, '', '', '');
   }
 
@@ -584,7 +580,7 @@ class Header extends React.PureComponent<PropsType, State> {
       <div className="app-header" role="banner">
         <section className="left-section">
           {modeSwitcher}
-          <span ref="splitButton" className={splitClass}>
+          <span ref={this.splitButtonRef} className={splitClass}>
             {runButton}
             {autoRunToggle}
           </span>
@@ -654,13 +650,15 @@ class Header extends React.PureComponent<PropsType, State> {
             closeOnEsc
             defaultOpen={this.props.showExample}
             onOpen={() => {
-              const node = ReactDOM.findDOMNode(this.examplePortal.current) as Element;
-              node.scrollTop = this.props.lastPosition;
-              node.addEventListener('scroll', () => {
-                this.setState({
-                  scrollPosition: node.scrollTop,
+              if (this.examplePortal.current) {
+                const node = this.examplePortal.current;
+                node.scrollTop = this.props.lastPosition;
+                node.addEventListener('scroll', () => {
+                  this.setState({
+                    scrollPosition: node.scrollTop,
+                  });
                 });
-              });
+              }
             }}
             onClose={() => {
               this.props.setScrollPosition(this.state.scrollPosition);
@@ -679,8 +677,9 @@ class Header extends React.PureComponent<PropsType, State> {
                           className={this.state.showVega ? 'selected' : ''}
                           onClick={() => {
                             this.setState({showVega: true});
-                            const node = ReactDOM.findDOMNode(this.examplePortal.current) as Element;
-                            node.scrollTop = 0;
+                            if (this.examplePortal.current) {
+                              this.examplePortal.current.scrollTop = 0;
+                            }
                           }}
                         >
                           Vega
@@ -689,8 +688,9 @@ class Header extends React.PureComponent<PropsType, State> {
                           className={this.state.showVega ? '' : 'selected'}
                           onClick={() => {
                             this.setState({showVega: false});
-                            const node = ReactDOM.findDOMNode(this.examplePortal.current) as Element;
-                            node.scrollTop = 0;
+                            if (this.examplePortal.current) {
+                              this.examplePortal.current.scrollTop = 0;
+                            }
                           }}
                         >
                           Vega-Lite

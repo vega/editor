@@ -1,41 +1,40 @@
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
+import * as React from 'react';
 import * as EditorActions from '../../actions/editor.js';
-import {State} from '../../constants/default-state.js';
+import {useAppDispatch, useAppSelector} from '../../hooks.js';
 import './config-editor.css';
 import Renderer from './renderer.js';
 
-export function mapStateToProps(state: State) {
-  return {
-    compiledVegaPaneSize: state.compiledVegaPaneSize,
-    compiledVegaSpec: state.compiledVegaSpec,
-    config: state.config,
-    configEditorString: state.configEditorString,
-    decorations: state.decorations,
-    editorString: state.editorString,
-    gist: state.gist,
-    manualParse: state.manualParse,
-    mode: state.mode,
-    parse: state.parse,
-    selectedExample: state.selectedExample,
-    sidePaneItem: state.sidePaneItem,
-    themeName: state.themeName,
-    value: state.editorString,
+const ConfigEditor = () => {
+  const dispatch = useAppDispatch();
+
+  const stateProps = useAppSelector((appState) => ({
+    compiledVegaPaneSize: appState.compiledVegaPaneSize,
+    compiledVegaSpec: appState.compiledVegaSpec,
+    config: appState.config,
+    configEditorString: appState.configEditorString,
+    decorations: appState.decorations,
+    editorRef: appState.editorRef,
+    editorString: appState.editorString,
+    gist: appState.gist,
+    manualParse: appState.manualParse,
+    mode: appState.mode,
+    parse: appState.parse,
+    selectedExample: appState.selectedExample,
+    sidePaneItem: appState.sidePaneItem,
+    themeName: appState.themeName,
+    value: appState.editorString,
+  }));
+
+  const actions = {
+    extractConfig: () => dispatch(EditorActions.extractConfigSpec()),
+    mergeConfigSpec: () => dispatch(EditorActions.mergeConfigSpec()),
+    setConfig: (config: string) => dispatch(EditorActions.setConfig(config)),
+    setConfigEditorString: (configString: string) => dispatch(EditorActions.setConfigEditorString(configString)),
+    setEditorReference: (reference: any) => dispatch(EditorActions.setEditorReference(reference)),
+    setThemeName: (theme: string) => dispatch(EditorActions.setThemeName(theme)),
   };
-}
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      extractConfig: EditorActions.extractConfigSpec,
-      mergeConfigSpec: EditorActions.mergeConfigSpec,
-      setConfig: EditorActions.setConfig,
-      setConfigEditorString: EditorActions.setConfigEditorString,
-      setEditorReference: EditorActions.setEditorReference,
-      setThemeName: EditorActions.setThemeName,
-    },
-    dispatch,
-  );
-}
+  return <Renderer {...stateProps} {...actions} />;
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);
+export default ConfigEditor;
