@@ -1,33 +1,24 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react';
 import * as vega from 'vega';
-import {useDispatch, useSelector} from 'react-redux';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
 import './index.css';
 import SignalRow from './signalRow.js';
 import TimelineRow from './TimelineRow.js';
-import {State} from '../../constants/default-state.js';
+import {SignalViewerProps} from './index.js';
 
-type StoreProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
-
-interface OwnComponentProps {
-  onClickHandler: (header: string) => void;
+interface StoreProps {
+  signals: Record<string, any[]>;
+  view: vega.View;
+  addSignal: (value: any) => void;
+  setSignals: (signals: Record<string, any[]>) => void;
+  setView: (view: vega.View) => void;
 }
 
-type Props = StoreProps & OwnComponentProps;
+type Props = StoreProps & SignalViewerProps;
 
-const UI_UPDATE_THROTTLE_MS = 150; // Interval for UI updates of timeline scale (currentMaxXCount)
-const SIGNALS_REDUX_DEBOUNCE_MS = 100; // Debounce for updating signals in Redux store
+const UI_UPDATE_THROTTLE_MS = 150;
+const SIGNALS_REDUX_DEBOUNCE_MS = 100;
 
-const SignalViewer = ({onClickHandler}: Props) => {
-  const dispatch = useDispatch();
-  // It's generally better to select only the needed parts of the state directly with useSelector
-  // to avoid re-renders if other parts of mapStateToProps change but signals/view don't.
-  // However, given the existing structure, we'll proceed.
-  const reduxState = useSelector((state: State) => mapStateToProps(state));
-  const {view, signals} = reduxState;
-  const boundActions = mapDispatchToProps(dispatch);
-  const {setSignals: setReduxSignals} = boundActions;
-
+const SignalViewer = ({onClickHandler, signals, view, setSignals}: Props) => {
   const [keys, setKeys] = useState<string[]>([]);
   const [hoverValue, setHoverValue] = useState<Record<string, any>>({});
   const [countSignal, setCountSignal] = useState<Record<string, any>>({});
@@ -64,63 +55,69 @@ const SignalViewer = ({onClickHandler}: Props) => {
     (changedSignal: string | null = null) => {
       if (!timeline || !view) return;
 
-      if (changedSignal) {
-        const currentVal = view.signal(changedSignal);
-        const xForThisDataPoint = xTimelineEventCounterRef.current;
+      try {
+        if (changedSignal) {
+          try {
+            const currentVal = view.signal(changedSignal);
+            const xForThisDataPoint = xTimelineEventCounterRef.current;
 
-        const record = {
-          value: currentVal,
-          xCount: xForThisDataPoint,
-        };
+            const record = {
+              value: currentVal,
+              xCount: xForThisDataPoint,
+            };
 
-        // Accumulate updates
-        const existingHistory = pendingSignalUpdatesRef.current[changedSignal] || signals[changedSignal] || [];
-        pendingSignalUpdatesRef.current[changedSignal] = existingHistory.concat(record);
+            const existingHistory = pendingSignalUpdatesRef.current[changedSignal] || signals[changedSignal] || [];
+            pendingSignalUpdatesRef.current[changedSignal] = existingHistory.concat(record);
 
-        // Clear existing debounce timeout
-        if (signalUpdateDebounceTimeoutRef.current) {
-          clearTimeout(signalUpdateDebounceTimeoutRef.current);
-        }
+            if (signalUpdateDebounceTimeoutRef.current) {
+              clearTimeout(signalUpdateDebounceTimeoutRef.current);
+            }
 
-        // Set new debounce timeout to dispatch accumulated signals to Redux
-        signalUpdateDebounceTimeoutRef.current = window.setTimeout(() => {
-          // Merge with current Redux signals to ensure no lost updates if new signals were added by other means
-          // though ideally, all updates to 'signals' would go through this debounced path during recording.
-          const newReduxSignalState = {...signals, ...pendingSignalUpdatesRef.current};
-          setReduxSignals(newReduxSignalState);
-          pendingSignalUpdatesRef.current = {}; // Clear pending updates after dispatch
-          signalUpdateDebounceTimeoutRef.current = null;
-        }, SIGNALS_REDUX_DEBOUNCE_MS);
+            signalUpdateDebounceTimeoutRef.current = window.setTimeout(() => {
+              const newReduxSignalState = {...signals, ...pendingSignalUpdatesRef.current};
+              setSignals(newReduxSignalState);
+              pendingSignalUpdatesRef.current = {};
+              signalUpdateDebounceTimeoutRef.current = null;
+            }, SIGNALS_REDUX_DEBOUNCE_MS);
 
-        // Increment event counter and schedule UI update for timeline scale (throttled)
-        xTimelineEventCounterRef.current += 1;
-        if (maxXCountUpdateTimeoutRef.current) {
-          clearTimeout(maxXCountUpdateTimeoutRef.current);
-        }
-        maxXCountUpdateTimeoutRef.current = window.setTimeout(() => {
+            xTimelineEventCounterRef.current += 1;
+            if (maxXCountUpdateTimeoutRef.current) {
+              clearTimeout(maxXCountUpdateTimeoutRef.current);
+            }
+            maxXCountUpdateTimeoutRef.current = window.setTimeout(() => {
+              setCurrentMaxXCount(xTimelineEventCounterRef.current);
+              maxXCountUpdateTimeoutRef.current = null;
+            }, UI_UPDATE_THROTTLE_MS);
+          } catch (error) {
+            console.warn(`Error handling signal ${changedSignal}:`, error);
+          }
+        } else {
+          const initialPopulationObj: Record<string, any[]> = {};
+          const xForInitialSnapshot = xTimelineEventCounterRef.current;
+          const currentKeys = getKeys(view);
+
+          currentKeys.forEach((key) => {
+            try {
+              const value = view.signal(key);
+              initialPopulationObj[key] = [{value, xCount: xForInitialSnapshot}];
+            } catch (error) {
+              console.warn(`Error reading signal ${key}:`, error);
+            }
+          });
+
+          setSignals(initialPopulationObj);
+          pendingSignalUpdatesRef.current = {};
+
+          xTimelineEventCounterRef.current += 1;
           setCurrentMaxXCount(xTimelineEventCounterRef.current);
-          maxXCountUpdateTimeoutRef.current = null;
-        }, UI_UPDATE_THROTTLE_MS);
-      } else {
-        // Initial population (isStartingRecording effect)
-        const initialPopulationObj: Record<string, any[]> = {};
-        const xForInitialSnapshot = xTimelineEventCounterRef.current;
-        const currentKeys = getKeys(view); // Get fresh keys here
-
-        currentKeys.forEach((key) => {
-          initialPopulationObj[key] = [{value: view.signal(key), xCount: xForInitialSnapshot}];
-        });
-        setReduxSignals(initialPopulationObj); // Direct update for initial population
-        pendingSignalUpdatesRef.current = {}; // Clear any pending updates
-
-        xTimelineEventCounterRef.current += 1;
-        setCurrentMaxXCount(xTimelineEventCounterRef.current); // Update UI immediately for initial
+        }
+      } catch (error) {
+        console.warn('Error in getSignals:', error);
       }
     },
-    [timeline, view, signals, setReduxSignals, setCurrentMaxXCount, getKeys],
-  ); // Added getKeys
+    [timeline, view, signals, setSignals, setCurrentMaxXCount, getKeys],
+  );
 
-  // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
       if (maxXCountUpdateTimeoutRef.current) {
@@ -135,53 +132,54 @@ const SignalViewer = ({onClickHandler}: Props) => {
   const onHoverInit = useCallback(
     (signalKey: string, hValue: any, shouldPersist = false) => {
       if (!signals || Object.keys(signals).length === 0 || !view) return;
-      const hoverObj: Record<string, any> = {
-        [signalKey]: hValue.value,
-      };
-      const countObj: Record<string, any> = {
-        [signalKey]: hValue.xCount,
-      };
+      try {
+        const hoverObj: Record<string, any> = {
+          [signalKey]: hValue.value,
+        };
+        const countObj: Record<string, any> = {
+          [signalKey]: hValue.xCount,
+        };
 
-      // Use fresh keys for iteration to ensure consistency with current view state
-      const currentSignalKeys = Object.keys(signals);
+        const currentSignalKeys = Object.keys(signals);
 
-      for (const key of currentSignalKeys) {
-        if (key === signalKey) continue; // Already handled
-        if (signals[key] && signals[key].length > 0) {
-          let i = 0;
-          // Find the record whose xCount is closest to or less than hValue.xCount
-          while (signals[key][i] && signals[key][i].xCount <= hValue.xCount) {
-            i++;
-          }
-          if (i > 0) --i;
-          if (signals[key][i]) {
-            hoverObj[key] = signals[key][i].value;
-            countObj[key] = signals[key][i].xCount;
-          } else if (signals[key].length > 0) {
-            // Fallback to last known if search goes out of bounds
-            const lastItem = signals[key][signals[key].length - 1];
-            hoverObj[key] = lastItem.value;
-            countObj[key] = lastItem.xCount;
-          }
-        }
-      }
-
-      if (!shouldPersist) {
-        setHoverValue(hoverObj);
-        setIsHovered(true);
-      } else {
-        setCountSignal(countObj);
-        setHoverValue({});
-        setIsTimelineSelected(true);
-        setIsHovered(false);
-        setSignalSnapshot(hoverObj);
-        if (Object.keys(hoverObj).length > 0) {
-          try {
-            view.setState({signals: hoverObj});
-          } catch (error) {
-            console.warn('Error setting view state for hover:', error);
+        for (const key of currentSignalKeys) {
+          if (key === signalKey) continue;
+          if (signals[key] && signals[key].length > 0) {
+            let i = 0;
+            while (signals[key][i] && signals[key][i].xCount <= hValue.xCount) {
+              i++;
+            }
+            if (i > 0) --i;
+            if (signals[key][i]) {
+              hoverObj[key] = signals[key][i].value;
+              countObj[key] = signals[key][i].xCount;
+            } else if (signals[key].length > 0) {
+              const lastItem = signals[key][signals[key].length - 1];
+              hoverObj[key] = lastItem.value;
+              countObj[key] = lastItem.xCount;
+            }
           }
         }
+
+        if (!shouldPersist) {
+          setHoverValue(hoverObj);
+          setIsHovered(true);
+        } else {
+          setCountSignal(countObj);
+          setHoverValue({});
+          setIsTimelineSelected(true);
+          setIsHovered(false);
+          setSignalSnapshot(hoverObj);
+          if (Object.keys(hoverObj).length > 0) {
+            try {
+              view.setState({signals: hoverObj});
+            } catch (error) {
+              console.warn('Error setting view state for hover:', error);
+            }
+          }
+        }
+      } catch (error) {
+        console.warn('Error in onHoverInit:', error);
       }
     },
     [signals, view, setHoverValue, setIsHovered, setCountSignal, setIsTimelineSelected, setSignalSnapshot],
@@ -198,40 +196,47 @@ const SignalViewer = ({onClickHandler}: Props) => {
   );
 
   const resetTimeline = useCallback(() => {
-    const overlay: HTMLElement | null = document.querySelector('.chart-overlay');
-    if (overlay) overlay.style.display = 'none';
+    try {
+      const overlay: HTMLElement | null = document.querySelector('.chart-overlay');
+      if (overlay) overlay.style.display = 'none';
 
-    const currentValueObj: Record<string, any> = {};
-    if (view && keys.length > 0 && signals) {
-      const currentKeys = getKeys(view); // Use fresh keys
-      currentKeys.forEach((signal) => {
-        if (signals[signal] && signals[signal].length > 0) {
-          currentValueObj[signal] = signals[signal][signals[signal].length - 1].value;
-        } else {
+      const currentValueObj: Record<string, any> = {};
+
+      if (view && keys.length > 0 && signals) {
+        const currentKeys = getKeys(view);
+
+        currentKeys.forEach((signal) => {
           try {
-            const currentSignalValue = view.signal(signal);
-            if (currentSignalValue !== undefined) {
-              currentValueObj[signal] = currentSignalValue;
+            if (signals[signal] && signals[signal].length > 0) {
+              currentValueObj[signal] = signals[signal][signals[signal].length - 1].value;
+            } else {
+              const currentSignalValue = view.signal(signal);
+              if (currentSignalValue !== undefined) {
+                currentValueObj[signal] = currentSignalValue;
+              }
             }
           } catch (e) {
-            console.warn(`Could not get signal ${signal} from view on resetTimeline`);
+            console.warn(`Could not get signal ${signal} from view on resetTimeline`, e);
+          }
+        });
+
+        if (Object.keys(currentValueObj).length > 0) {
+          try {
+            view.setState({signals: currentValueObj});
+          } catch (error) {
+            console.warn('Error setting view state on resetTimeline:', error);
           }
         }
-      });
-      if (Object.keys(currentValueObj).length > 0) {
-        try {
-          view.setState({signals: currentValueObj});
-        } catch (error) {
-          console.warn('Error setting view state on resetTimeline:', error);
-        }
       }
-    }
 
-    setIsTimelineSelected(false);
-    setSignalSnapshot({});
-    setHoverValue({});
-    setIsHovered(false);
-    setMaskListener(false);
+      setIsTimelineSelected(false);
+      setSignalSnapshot({});
+      setHoverValue({});
+      setIsHovered(false);
+      setMaskListener(false);
+    } catch (error) {
+      console.warn('Error in resetTimeline:', error);
+    }
   }, [
     keys,
     signals,
@@ -242,15 +247,46 @@ const SignalViewer = ({onClickHandler}: Props) => {
     setIsHovered,
     setMaskListener,
     getKeys,
-    setReduxSignals,
-    setCurrentMaxXCount,
   ]);
+
+  useEffect(() => {
+    if (view) {
+      try {
+        const newKeys = getKeys(view);
+        setKeys(newKeys);
+
+        if (timeline && !maskListener) {
+          if (signalUpdateDebounceTimeoutRef.current) {
+            clearTimeout(signalUpdateDebounceTimeoutRef.current);
+            signalUpdateDebounceTimeoutRef.current = null;
+          }
+
+          if (maxXCountUpdateTimeoutRef.current) {
+            clearTimeout(maxXCountUpdateTimeoutRef.current);
+            maxXCountUpdateTimeoutRef.current = null;
+          }
+
+          xTimelineEventCounterRef.current = 0;
+          setCurrentMaxXCount(0);
+          pendingSignalUpdatesRef.current = {};
+
+          setTimeout(() => {
+            setIsStartingRecording(true);
+          }, 0);
+        }
+      } catch (error) {
+        console.warn('Error initializing signal viewer with new view:', error);
+      }
+    } else {
+      setKeys([]);
+    }
+  }, [view, getKeys, timeline, maskListener]);
 
   useEffect(() => {
     if (view) {
       setKeys(getKeys(view));
     }
-  }, [getKeys, view, signals]); // Added signals, as keys might change if signals are added/removed externally
+  }, [getKeys, view, signals]);
 
   const getSignalsRef = useRef(getSignals);
   useEffect(() => {
@@ -259,19 +295,23 @@ const SignalViewer = ({onClickHandler}: Props) => {
 
   useEffect(() => {
     if (timeline && !maskListener && isStartingRecording) {
-      getSignalsRef.current(); // Initial population
+      getSignalsRef.current();
       setIsStartingRecording(false);
     }
-  }, [timeline, maskListener, isStartingRecording]); // Removed getSignalsRef as it's stable from its own useEffect
+  }, [timeline, maskListener, isStartingRecording]);
 
   const valueChange = useCallback(
-    (key: string, _value: any) => {
+    (key: string) => {
       if (timeline && !maskListener) {
-        getSignalsRef.current(key); // This will now use the debounced mechanism
+        try {
+          getSignalsRef.current(key);
+        } catch (error) {
+          console.warn(`Error handling value change for signal ${key}:`, error);
+        }
       }
     },
     [timeline, maskListener],
-  ); // Removed getSignalsRef
+  );
 
   return (
     <>
@@ -285,8 +325,6 @@ const SignalViewer = ({onClickHandler}: Props) => {
             const newTimelineState = !timeline;
             setTimeline(newTimelineState);
             if (newTimelineState) {
-              // Starting recording
-              // Reset counters, clear pending Redux updates, and set flag for initial population
               xTimelineEventCounterRef.current = 0;
               setCurrentMaxXCount(0);
               pendingSignalUpdatesRef.current = {};
@@ -298,10 +336,9 @@ const SignalViewer = ({onClickHandler}: Props) => {
                 clearTimeout(maxXCountUpdateTimeoutRef.current);
                 maxXCountUpdateTimeoutRef.current = null;
               }
-              setReduxSignals({}); // Clear Redux store for signals immediately
-              setIsStartingRecording(true); // This will trigger the 'else' branch of getSignals for initial population
+              setSignals({});
+              setIsStartingRecording(true);
             } else {
-              // Stopping recording
               resetTimeline();
               setIsStartingRecording(false);
             }
@@ -323,7 +360,7 @@ const SignalViewer = ({onClickHandler}: Props) => {
                 clearTimeout(maxXCountUpdateTimeoutRef.current);
                 maxXCountUpdateTimeoutRef.current = null;
               }
-              setReduxSignals({}); // Clear Redux store for signals immediately
+              setSignals({});
               setIsStartingRecording(true);
             }}
           >
@@ -349,7 +386,7 @@ const SignalViewer = ({onClickHandler}: Props) => {
                 clickedSignal={signalSnapshot[signal]}
                 hoverValue={hoverValue[signal]}
                 maskListener={maskListener}
-                onValueChange={valueChange} // valueChange is stable due to its dependencies
+                onValueChange={valueChange}
                 key={signal}
                 signal={signal}
                 view={view}
@@ -366,9 +403,9 @@ const SignalViewer = ({onClickHandler}: Props) => {
                     }}
                     isTimelineSelected={isTimelineSelected}
                     clickedValue={countSignal[signal]}
-                    data={signals[signal]} // Receives debounced Redux signals
+                    data={signals[signal]}
                     width={typeof window !== 'undefined' ? window.innerWidth * 0.3 : 300}
-                    xCount={currentMaxXCount} // Receives throttled UI count for scale
+                    xCount={currentMaxXCount}
                   />
                 )}
               </SignalRow>

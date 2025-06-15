@@ -2,7 +2,6 @@ import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
 import {useCallback, useEffect, useRef} from 'react';
 import MonacoEditor from '@monaco-editor/react';
-import ResizeObserver from 'rc-resize-observer';
 import {useNavigate, useParams} from 'react-router';
 import {debounce} from 'vega';
 import {SIDEPANE} from '../../constants/index.js';
@@ -120,12 +119,27 @@ const ConfigEditor: React.FC<Props> = (props) => {
 
   const debouncedHandleEditorChange = useCallback(debounce(700, handleEditorChange), [handleEditorChange]);
 
-  return (
-    <ResizeObserver
-      onResize={({width, height}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const {width, height} = entry.contentRect;
         editorRef.current?.layout({width, height});
-      }}
-    >
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} style={{width: '100%', height: '100%'}}>
       <MonacoEditor
         defaultLanguage="json"
         options={{
@@ -144,7 +158,7 @@ const ConfigEditor: React.FC<Props> = (props) => {
         defaultValue={props.configEditorString}
         onMount={handleEditorMount}
       />
-    </ResizeObserver>
+    </div>
   );
 };
 

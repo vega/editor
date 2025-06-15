@@ -1,7 +1,6 @@
 import React from 'react';
 import {File, Lock} from 'react-feather';
 import ReactPaginate from 'react-paginate';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {GistPrivacy} from '../../constants/index.js';
 import LoginConditional from '../login-conditional/index.js';
 import './index.css';
@@ -30,10 +29,13 @@ interface State {
   };
 }
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & {
-    selectGist: (id?: string, file?: string, image?: string) => void;
-  };
+interface Props {
+  isAuthenticated: boolean;
+  private: GistPrivacy;
+  receiveCurrentUser: (isAuthenticated: boolean, handle?: string, name?: string, profilePicUrl?: string) => void;
+  toggleGistPrivacy: () => void;
+  selectGist: (id?: string, file?: string, image?: string) => void;
+}
 
 class GistSelectWidget extends React.PureComponent<Props, State> {
   constructor(props) {

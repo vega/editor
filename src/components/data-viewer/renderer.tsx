@@ -4,15 +4,14 @@ import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
 import {debounce} from 'vega';
-import {mapStateToProps} from './index.js';
 import ErrorBoundary from '../error-boundary/index.js';
 import Table from '../table/index.js';
 import './index.css';
+import {OwnComponentProps} from './index.js';
 
-type StoreProps = ReturnType<typeof mapStateToProps>;
-
-interface OwnComponentProps {
-  onClickHandler: (header: string) => void;
+interface StoreProps {
+  editorRef: any;
+  view: any;
 }
 
 type Props = StoreProps & OwnComponentProps;
@@ -52,20 +51,16 @@ const DataViewer: React.FC<Props> = (props) => {
     setCurrentPage(option.selected);
   }, []);
 
-  // Create debounced function ref
   useEffect(() => {
     debouncedDataChangedRef.current = debounce(100, () => {
-      // Force re-render by updating a dummy state or using forceUpdate equivalent
       setCurrentPage((prev) => prev);
     });
   }, []);
 
-  // Effect for component mount
   useEffect(() => {
     setDefaultDataset();
   }, [setDefaultDataset]);
 
-  // Effect for cleanup
   useEffect(() => {
     return () => {
       if (selectedData && debouncedDataChangedRef.current) {
@@ -74,21 +69,16 @@ const DataViewer: React.FC<Props> = (props) => {
     };
   }, [selectedData, props.view]);
 
-  // Effect for view changes and dataset updates
   useEffect(() => {
     const datasets = getDatasets();
 
     if (datasets.indexOf(selectedData) === -1) {
-      // the new view has different dataset so let's reset everything
       setCurrentPage(0);
       setSelectedData('');
     } else if (selectedData && debouncedDataChangedRef.current) {
-      // the new view has the same dataset so let's add a new listener
       props.view.addDataListener(selectedData, debouncedDataChangedRef.current);
     }
   }, [props.view, getDatasets, selectedData]);
-
-  // Effect for selectedData changes
   useEffect(() => {
     if (selectedData === '') {
       setDefaultDataset();
@@ -108,7 +98,7 @@ const DataViewer: React.FC<Props> = (props) => {
     if (datasetList.length === 0) {
       return [];
     }
-    datasetList.push(datasetList.shift()); // Move root to the end
+    datasetList.push(datasetList.shift());
     return datasetList;
   }, [getDatasets]);
 

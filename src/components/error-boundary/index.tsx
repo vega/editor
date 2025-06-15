@@ -1,23 +1,16 @@
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
+import * as React from 'react';
+import {useAppDispatch, useAppSelector} from '../../hooks.js';
 import * as EditorActions from '../../actions/editor.js';
-import {State} from '../../constants/default-state.js';
 import Renderer from './renderer.js';
 
-export function mapStateToProps(state: State) {
-  return {
-    error: state.error,
+export default function ErrorBoundary(props) {
+  const error = useAppSelector((state) => state.error);
+  const dispatch = useAppDispatch();
+
+  const boundActions = {
+    logError: (err) => dispatch(EditorActions.logError(err)),
+    toggleDebugPane: () => dispatch(EditorActions.toggleDebugPane()),
   };
-}
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      logError: EditorActions.logError,
-      toggleDebugPane: EditorActions.toggleDebugPane,
-    },
-    dispatch,
-  );
+  return <Renderer error={error} {...boundActions} {...props} />;
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);

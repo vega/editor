@@ -1,25 +1,24 @@
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
+import * as React from 'react';
+import {useAppDispatch, useAppSelector} from '../../hooks.js';
 import * as EditorActions from '../../actions/editor.js';
-import {State} from '../../constants/default-state.js';
 import Renderer from './renderer.js';
 
-export function mapStateToProps(state: State) {
-  return {
-    signals: state.signals,
-    view: state.view,
+export interface SignalViewerProps {
+  onClickHandler: (header: string) => void;
+}
+
+export default function SignalViewer(props: SignalViewerProps) {
+  const dispatch = useAppDispatch();
+  const stateProps = useAppSelector((appState) => ({
+    signals: appState.signals,
+    view: appState.view,
+  }));
+
+  const actions = {
+    addSignal: (value: any) => dispatch(EditorActions.addSignal(value)),
+    setSignals: (signals: any) => dispatch(EditorActions.setSignals(signals)),
+    setView: (view: any) => dispatch(EditorActions.setView(view)),
   };
-}
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      addSignal: EditorActions.addSignal,
-      setSignals: EditorActions.setSignals,
-      setView: EditorActions.setView,
-    },
-    dispatch,
-  );
+  return <Renderer {...stateProps} {...actions} {...props} />;
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);

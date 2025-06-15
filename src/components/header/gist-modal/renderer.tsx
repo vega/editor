@@ -1,10 +1,8 @@
 import * as React from 'react';
 import {AlertCircle} from 'react-feather';
 import {useNavigate} from 'react-router';
-import {useSelector} from 'react-redux';
-import {mapStateToProps} from './index.js';
+import {useAppSelector} from '../../../hooks.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
-import {State} from '../../../constants/default-state.js';
 import './index.css';
 import {parse as parseJSONC} from 'jsonc-parser';
 import {useRef, useState} from 'react';
@@ -14,7 +12,13 @@ export type Props = {
 };
 
 export default function GistModal({closePortal}: Props) {
-  const props = useSelector((state: State) => mapStateToProps(state));
+  const {handle, mode} = useAppSelector((state) => ({
+    handle: state.handle,
+    isAuthenticated: state.isAuthenticated,
+    mode: state.mode,
+    private: state.private,
+  }));
+
   const refGistForm = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
 
@@ -25,7 +29,7 @@ export default function GistModal({closePortal}: Props) {
       bottom: 0,
     },
     revision: '',
-    type: props.mode,
+    type: mode,
     url: '',
   });
 
@@ -254,7 +258,7 @@ export default function GistModal({closePortal}: Props) {
           <h3>Your gists</h3>
           <p>
             To load a gist, select it in the list below or specify its details on the right. View all your Gists on{' '}
-            <a href={`https://gist.github.com/${props.handle}`}>GitHub</a>.
+            <a href={`https://gist.github.com/${handle}`}>GitHub</a>.
           </p>
           <GistSelectWidget selectGist={preview} />
         </div>

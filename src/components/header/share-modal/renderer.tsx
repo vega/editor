@@ -2,8 +2,7 @@ import stringify from 'json-stringify-pretty-compact';
 import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
 import * as React from 'react';
-import {useState, useEffect} from 'react';
-import Clipboard from 'react-clipboard.js';
+import {useState, useEffect, useCallback} from 'react';
 import {Copy, Link, Save} from 'react-feather';
 import {useAppDispatch, useAppSelector} from '../../../hooks.js';
 import * as EditorActions from '../../../actions/editor.js';
@@ -58,14 +57,16 @@ export default function ShareModal() {
     win.focus();
   };
 
-  const onCopy = () => {
-    if (!copied) {
-      setCopied(true);
-      setTimeout(() => {
-        setCopied(false);
-      }, 2500);
+  const copyToClipboard = useCallback(() => {
+    if (navigator.clipboard && generatedURL) {
+      navigator.clipboard.writeText(generatedURL).then(() => {
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        }, 2500);
+      });
     }
-  };
+  }, [generatedURL]);
 
   const handleFullScreenCheck = (event) => {
     setFullScreen(event.target.checked);
@@ -252,10 +253,10 @@ export default function ShareModal() {
           </div>
           <div className="share">
             <input className="share-url" type="text" value={generatedURL} readOnly />
-            <Clipboard className="copy" data-clipboard-text={generatedURL} onSuccess={onCopy}>
-              <Copy></Copy>
+            <button className="copy" onClick={copyToClipboard}>
+              <Copy />
               <span>{copied ? 'Copied!' : 'Copy'}</span>
-            </Clipboard>
+            </button>
           </div>
           <button className="preview" onClick={previewURL}>
             Preview URL

@@ -1,12 +1,16 @@
-import {connect} from 'react-redux';
-import {State} from '../../constants/default-state.js';
+import * as React from 'react';
+import {useAppSelector} from '../../hooks.js';
 import Renderer from './renderer.js';
 
-export function mapStateToProps(state: State) {
-  return {
-    editorRef: state.editorRef,
-    view: state.view,
-  };
+export interface OwnComponentProps {
+  onClickHandler: (header: string) => void;
 }
 
-export default connect(mapStateToProps)(Renderer);
+export default function DataViewer(props: OwnComponentProps) {
+  const stateProps = useAppSelector((appState) => ({
+    editorRef: appState.editorRef,
+    view: appState.view,
+  }));
+
+  return <Renderer {...stateProps} {...props} />;
+}

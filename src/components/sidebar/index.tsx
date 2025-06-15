@@ -1,32 +1,28 @@
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
+import * as React from 'react';
+import {useAppDispatch, useAppSelector} from '../../hooks.js';
 import * as EditorActions from '../../actions/editor.js';
 import Renderer from './renderer.js';
-import {State} from '../../constants/default-state.js';
 
-export function mapStateToProps(state: State) {
-  return {
+export default function Sidebar() {
+  const dispatch = useAppDispatch();
+  const stateProps = useAppSelector((state) => ({
     hoverEnable: state.hoverEnable,
     logLevel: state.logLevel,
     renderer: state.renderer,
     tooltipEnable: state.tooltipEnable,
     backgroundColor: state.backgroundColor,
     expressionInterpreter: state.expressionInterpreter,
-  };
-}
+  }));
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      setHover: EditorActions.setHover,
-      setLogLevel: EditorActions.setLogLevel,
-      setRenderer: EditorActions.setRenderer,
-      setSettingsState: EditorActions.setSettingsState,
-      setTooltip: EditorActions.setTooltip,
-      setBackgroundColor: EditorActions.setBackgroundColor,
-      setExpressionInterpreter: EditorActions.setExpressionInterpreter,
-    },
-    dispatch,
-  );
+  const actions = {
+    setHover: (hover) => dispatch(EditorActions.setHover(hover)),
+    setLogLevel: (level) => dispatch(EditorActions.setLogLevel(level)),
+    setRenderer: (renderer) => dispatch(EditorActions.setRenderer(renderer)),
+    setSettingsState: (stateParam) => dispatch(EditorActions.setSettingsState(stateParam)),
+    setTooltip: (enabled) => dispatch(EditorActions.setTooltip(enabled)),
+    setBackgroundColor: (color) => dispatch(EditorActions.setBackgroundColor(color)),
+    setExpressionInterpreter: (enabled) => dispatch(EditorActions.setExpressionInterpreter(enabled)),
+  };
+
+  return <Renderer {...stateProps} {...actions} />;
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);

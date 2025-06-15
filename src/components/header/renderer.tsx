@@ -2,7 +2,6 @@ import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {useEffect, useRef, useState, useCallback} from 'react';
 import {ExternalLink, GitHub, Grid, HelpCircle, Play, Settings, Share2, Terminal, X} from 'react-feather';
-import {PortalWithState} from 'react-portal';
 import {useNavigate} from 'react-router';
 import Select from 'react-select';
 import {useAppDispatch, useAppSelector} from '../../hooks.js';
@@ -16,6 +15,7 @@ import GistModal from './gist-modal/index.js';
 import HelpModal from './help-modal/index.js';
 import './index.css';
 import ShareModal from './share-modal/index.js';
+import {PortalWithState} from '../../components/portal/index.js';
 
 export interface Props {
   showExample: boolean;
@@ -50,6 +50,13 @@ const Header: React.FC<Props> = ({showExample}) => {
   const [scrollPosition, setScrollPos] = useState(0);
   const [showVega, setShowVega] = useState(mode === Mode.Vega);
   const [listenerAttached, setListenerAttached] = useState(false);
+  const [helpModalOpen, setHelpModalOpen] = useState(false);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [gistModalOpen, setGistModalOpen] = useState(false);
+  const [examplesModalOpen, setExamplesModalOpen] = useState(showExample);
+
+  const scrollHandlers = useRef(new WeakMap());
 
   useEffect(() => {
     setShowVega(mode === Mode.Vega);
@@ -284,6 +291,23 @@ const Header: React.FC<Props> = ({showExample}) => {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    const keyDownHandler = (e) => {
+      if (
+        (e.keyCode === KEYCODES.SINGLE_QUOTE && e.metaKey && !e.shiftKey) ||
+        (e.keyCode === KEYCODES.SLASH && e.ctrlKey && e.shiftKey)
+      ) {
+        setHelpModalOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', keyDownHandler);
+
+    return () => {
+      window.removeEventListener('keydown', keyDownHandler);
+    };
+  }, []);
+
   const onSelectVega = useCallback(
     (specName) => {
       navigate(`/examples/vega/${specName}`);
@@ -319,31 +343,7 @@ const Header: React.FC<Props> = ({showExample}) => {
     [dispatch, vegaSpec, onSelectNewVega, onSelectNewVegaLite],
   );
 
-  const handleHelpModalToggle = useCallback(
-    (event, openPortal, closePortal, isOpen) => {
-      if (!listenerAttached) {
-        const keyDownHandler = (e) => {
-          if (
-            (e.keyCode === KEYCODES.SINGLE_QUOTE && e.metaKey && !e.shiftKey) ||
-            (e.keyCode === KEYCODES.SLASH && e.ctrlKey && e.shiftKey)
-          ) {
-            if (!isOpen) {
-              openPortal();
-            } else {
-              closePortal();
-            }
-          }
-        };
-
-        window.addEventListener('keydown', keyDownHandler);
-        setListenerAttached(true);
-
-        // No need to return cleanup as this effect is only run once
-        // and the component cleanup will handle removing all listeners
-      }
-    },
-    [listenerAttached],
-  );
+  const handleHelpModalToggle = useCallback(() => setHelpModalOpen(!helpModalOpen), [helpModalOpen]);
 
   const handleSettingsClick = useCallback(() => {
     dispatch(EditorActions.setSettingsState(!settings));
@@ -420,7 +420,6 @@ const Header: React.FC<Props> = ({showExample}) => {
     dispatch(EditorActions.receiveCurrentUser(false, '', '', ''));
   };
 
-  // Render functions
   const modeOptions =
     mode === Mode.Vega
       ? [{value: Mode.VegaLite, label: NAMES[Mode.VegaLite]}]
@@ -559,13 +558,13 @@ const Header: React.FC<Props> = ({showExample}) => {
   const splitClass = 'split-button' + (manualParse ? '' : ' auto-run');
 
   const renderVega = (closePortal) => (
-    <div className="vega">
+    <div className="vega-specs">
       {Object.keys(VEGA_SPECS).map((specType, i) => {
         const specs = VEGA_SPECS[specType];
         return (
           <div className="item-group" key={i}>
             <h4 className="spec-type">{specType}</h4>
-            <div className="items" onClick={closePortal}>
+            <div className="items">
               {specs.map((spec, j) => (
                 <div
                   key={j}
@@ -581,7 +580,7 @@ const Header: React.FC<Props> = ({showExample}) => {
                     }}
                     className="img"
                   />
-                  <div className="name">{formatExampleName(spec.name)}</div>
+                  <div className="name">{spec.title}</div>
                 </div>
               ))}
             </div>
@@ -592,10 +591,9 @@ const Header: React.FC<Props> = ({showExample}) => {
   );
 
   const renderVegaLite = (closePortal) => (
-    <div className="vega-Lite">
+    <div className="vega-specs">
       {Object.keys(VEGA_LITE_SPECS).map((specGroup, i) => (
         <div key={i}>
-          <h3>{specGroup}</h3>
           {Object.keys(VEGA_LITE_SPECS[specGroup]).map((specType, j) => {
             const specs = VEGA_LITE_SPECS[specGroup][specType];
             return (
@@ -629,9 +627,82 @@ const Header: React.FC<Props> = ({showExample}) => {
     </div>
   );
 
-  const renderGist = (closePortal) => <GistModal closePortal={() => closePortal()} />;
+  const renderGist = (closePortal) => <GistModal closePortal={closePortal} />;
   const exportContent = <ExportModal />;
   const shareContent = <ShareModal />;
+
+  const handleExamplesModalOpen = useCallback(() => {
+    setExamplesModalOpen(true);
+
+    setTimeout(() => {
+      if (examplePortal.current) {
+        const node = examplePortal.current;
+        node.scrollTop = lastPosition;
+
+        const handleScroll = () => setScrollPos(node.scrollTop);
+
+        const existingHandler = scrollHandlers.current.get(node);
+        if (existingHandler) {
+          node.removeEventListener('scroll', existingHandler);
+        }
+
+        node.addEventListener('scroll', handleScroll);
+        scrollHandlers.current.set(node, handleScroll);
+      }
+    }, 0);
+  }, [lastPosition]);
+
+  const handleExamplesModalClose = useCallback(() => {
+    setExamplesModalOpen(false);
+
+    if (examplePortal.current) {
+      const handler = scrollHandlers.current.get(examplePortal.current);
+      if (handler) {
+        examplePortal.current.removeEventListener('scroll', handler);
+        scrollHandlers.current.delete(examplePortal.current);
+      }
+    }
+
+    dispatch(EditorActions.setScrollPosition(scrollPosition));
+  }, [dispatch, scrollPosition]);
+
+  const handleVegaToggle = useCallback(
+    (isVega) => {
+      setShowVega(isVega);
+      dispatch(EditorActions.setMode(isVega ? Mode.Vega : Mode.VegaLite));
+    },
+    [dispatch],
+  );
+
+  const handleExportModalOpen = () => setExportModalOpen(true);
+  const handleExportModalClose = () => setExportModalOpen(false);
+
+  const handleShareModalOpen = () => setShareModalOpen(true);
+  const handleShareModalClose = () => setShareModalOpen(false);
+
+  const handleGistModalOpen = () => setGistModalOpen(true);
+  const handleGistModalClose = () => setGistModalOpen(false);
+
+  const handleHelpModalOpen = () => setHelpModalOpen(true);
+  const handleHelpModalClose = () => setHelpModalOpen(false);
+
+  useEffect(() => {
+    if (showExample !== examplesModalOpen) {
+      setExamplesModalOpen(showExample);
+    }
+  }, [showExample]);
+
+  useEffect(() => {
+    return () => {
+      if (examplePortal.current) {
+        const handler = scrollHandlers.current.get(examplePortal.current);
+        if (handler) {
+          examplePortal.current.removeEventListener('scroll', handler);
+          scrollHandlers.current.delete(examplePortal.current);
+        }
+      }
+    };
+  }, []);
 
   return (
     <div className="app-header" role="banner">
@@ -643,16 +714,21 @@ const Header: React.FC<Props> = ({showExample}) => {
         </span>
         {optionsButton}
 
-        <PortalWithState closeOnEsc>
-          {({openPortal, closePortal, portal}) => [
-            <span key="0" onClick={openPortal}>
+        <PortalWithState
+          closeOnEsc
+          isOpen={exportModalOpen}
+          onOpen={handleExportModalOpen}
+          onClose={handleExportModalClose}
+        >
+          {({portal}) => [
+            <span key="0" onClick={handleExportModalOpen}>
               {exportButton}
             </span>,
             portal(
-              <div className="modal-background" onClick={closePortal}>
+              <div className="modal-background" onClick={handleExportModalClose}>
                 <div className="modal" onClick={(e) => e.stopPropagation()}>
                   <div>
-                    <button className="close-button" onClick={closePortal}>
+                    <button className="close-button" onClick={handleExportModalClose}>
                       <X />
                     </button>
                   </div>
@@ -663,16 +739,21 @@ const Header: React.FC<Props> = ({showExample}) => {
           ]}
         </PortalWithState>
 
-        <PortalWithState closeOnEsc>
-          {({openPortal, closePortal, portal}) => [
-            <span key="0" onClick={openPortal}>
+        <PortalWithState
+          closeOnEsc
+          isOpen={shareModalOpen}
+          onOpen={handleShareModalOpen}
+          onClose={handleShareModalClose}
+        >
+          {({portal}) => [
+            <span key="0" onClick={handleShareModalOpen}>
               {shareButton}
             </span>,
             portal(
-              <div className="modal-background" onClick={closePortal}>
+              <div className="modal-background" onClick={handleShareModalClose}>
                 <div className="modal" onClick={(e) => e.stopPropagation()}>
                   <div>
-                    <button className="close-button" onClick={closePortal}>
+                    <button className="close-button" onClick={handleShareModalClose}>
                       <X />
                     </button>
                   </div>
@@ -683,20 +764,20 @@ const Header: React.FC<Props> = ({showExample}) => {
           ]}
         </PortalWithState>
 
-        <PortalWithState closeOnEsc>
-          {({openPortal, closePortal, portal}) => [
-            <span key="0" onClick={openPortal}>
+        <PortalWithState closeOnEsc isOpen={gistModalOpen} onOpen={handleGistModalOpen} onClose={handleGistModalClose}>
+          {({portal}) => [
+            <span key="0" onClick={handleGistModalOpen}>
               {gistButton}
             </span>,
             portal(
-              <div className="modal-background" onClick={closePortal}>
+              <div className="modal-background" onClick={handleGistModalClose}>
                 <div className="modal" onClick={(e) => e.stopPropagation()}>
                   <div>
-                    <button className="close-button" onClick={closePortal}>
+                    <button className="close-button" onClick={handleGistModalClose}>
                       <X />
                     </button>
                   </div>
-                  <div className="modal-body">{renderGist(closePortal)}</div>
+                  <div className="modal-body">{renderGist(handleGistModalClose)}</div>
                 </div>
               </div>,
             ),
@@ -705,58 +786,44 @@ const Header: React.FC<Props> = ({showExample}) => {
 
         <PortalWithState
           closeOnEsc
-          defaultOpen={showExample}
-          onOpen={() => {
-            if (examplePortal.current) {
-              const node = examplePortal.current;
-              node.scrollTop = lastPosition;
-              node.addEventListener('scroll', () => {
-                setScrollPos(node.scrollTop);
-              });
-            }
-          }}
-          onClose={() => {
-            dispatch(EditorActions.setScrollPosition(scrollPosition));
-          }}
+          isOpen={examplesModalOpen}
+          onOpen={handleExamplesModalOpen}
+          onClose={handleExamplesModalClose}
         >
-          {({openPortal, closePortal, portal}) => [
-            <span key="0" onClick={openPortal}>
+          {({portal}) => [
+            <span key="0" onClick={handleExamplesModalOpen}>
               {examplesButton}
             </span>,
             portal(
-              <div className="modal-background" onClick={closePortal}>
+              <div className="modal-background" onClick={handleExamplesModalClose}>
                 <div className="modal" onClick={(e) => e.stopPropagation()}>
                   <div>
                     <div className="button-groups">
                       <button
                         className={showVega ? 'selected' : ''}
-                        onClick={() => {
-                          setShowVega(true);
-                          if (examplePortal.current) {
-                            examplePortal.current.scrollTop = 0;
-                          }
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleVegaToggle(true);
                         }}
                       >
                         Vega
                       </button>
                       <button
                         className={showVega ? '' : 'selected'}
-                        onClick={() => {
-                          setShowVega(false);
-                          if (examplePortal.current) {
-                            examplePortal.current.scrollTop = 0;
-                          }
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleVegaToggle(false);
                         }}
                       >
                         Vega-Lite
                       </button>
                     </div>
-                    <button className="close-button" onClick={closePortal}>
+                    <button className="close-button" onClick={handleExamplesModalClose}>
                       <X />
                     </button>
                   </div>
                   <div className="modal-body" ref={examplePortal}>
-                    {showVega ? renderVega(closePortal) : renderVegaLite(closePortal)}
+                    {showVega ? renderVega(handleExamplesModalClose) : renderVegaLite(handleExamplesModalClose)}
                   </div>
                 </div>
               </div>,
@@ -766,29 +833,26 @@ const Header: React.FC<Props> = ({showExample}) => {
       </section>
 
       <section className="right-section">
-        <PortalWithState closeOnEsc>
-          {({openPortal, closePortal, isOpen, portal}) => {
-            handleHelpModalToggle(null, openPortal, closePortal, isOpen);
-            return [
-              <span key="0" onClick={openPortal}>
-                {HelpButton}
-              </span>,
-              portal(
-                <div className="modal-background" onClick={closePortal}>
-                  <div className="modal" onClick={(e) => e.stopPropagation()}>
-                    <div>
-                      <button className="close-button" onClick={closePortal}>
-                        <X />
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      <HelpModal />
-                    </div>
+        <PortalWithState closeOnEsc isOpen={helpModalOpen} onOpen={handleHelpModalOpen} onClose={handleHelpModalClose}>
+          {({portal}) => [
+            <span key="0" onClick={handleHelpModalOpen}>
+              {HelpButton}
+            </span>,
+            portal(
+              <div className="modal-background" onClick={handleHelpModalClose}>
+                <div className="modal" onClick={(e) => e.stopPropagation()}>
+                  <div>
+                    <button className="close-button" onClick={handleHelpModalClose}>
+                      <X />
+                    </button>
                   </div>
-                </div>,
-              ),
-            ];
-          }}
+                  <div className="modal-body">
+                    <HelpModal />
+                  </div>
+                </div>
+              </div>,
+            ),
+          ]}
         </PortalWithState>
         {settingsButton}
         {authButton}

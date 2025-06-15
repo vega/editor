@@ -4,7 +4,6 @@ import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
 import {useCallback, useEffect, useRef} from 'react';
 import MonacoEditor from '@monaco-editor/react';
-import ResizeObserver from 'rc-resize-observer';
 import {useNavigate, useParams} from 'react-router';
 import {debounce} from 'vega';
 import parser from 'vega-schema-url-parser';
@@ -161,7 +160,7 @@ const Editor: React.FC<Props> = (props) => {
   );
 
   const editorDidMount = useCallback(
-    (editor: Monaco.editor.IStandaloneCodeEditor, _monaco: typeof Monaco) => {
+    (editor: Monaco.editor.IStandaloneCodeEditor) => {
       editor.onDidFocusEditorText(() => {
         props.compiledEditorRef && props.compiledEditorRef.deltaDecorations(props.decorations, []);
         editor.createDecorationsCollection(props.decorations);
@@ -243,27 +242,24 @@ const Editor: React.FC<Props> = (props) => {
     [props.manualParse, props.updateEditorString, props.navigate, updateSpec, props.editorString],
   );
 
-  const editorWillMount = useCallback(
-    (_monaco: typeof Monaco) => {
-      const compressed = props.params.compressed;
-      if (compressed) {
-        let spec: string = LZString.decompressFromEncodedURIComponent(compressed);
+  const editorWillMount = useCallback(() => {
+    const compressed = props.params.compressed;
+    if (compressed) {
+      let spec: string = LZString.decompressFromEncodedURIComponent(compressed);
 
-        if (spec) {
-          const newlines = (spec.match(/\n/g) || '').length + 1;
-          if (newlines <= 1) {
-            console.log('Formatting spec string from URL that did not contain newlines.');
-            spec = stringify(parseJSONC(spec));
-          }
-
-          updateSpec(spec);
-        } else {
-          props.logError(new Error(`Failed to decompress URL. Expected a specification, but received ${spec}`));
+      if (spec) {
+        const newlines = (spec.match(/\n/g) || '').length + 1;
+        if (newlines <= 1) {
+          console.log('Formatting spec string from URL that did not contain newlines.');
+          spec = stringify(parseJSONC(spec));
         }
+
+        updateSpec(spec);
+      } else {
+        props.logError(new Error(`Failed to decompress URL. Expected a specification, but received ${spec}`));
       }
-    },
-    [props.params.compressed, props.logError, updateSpec],
-  );
+    }
+  }, [props.params.compressed, props.logError, updateSpec]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeydown);
@@ -307,12 +303,27 @@ const Editor: React.FC<Props> = (props) => {
 
   const debouncedHandleEditorChange = useCallback(debounce(700, handleEditorChange), [handleEditorChange]);
 
-  return (
-    <ResizeObserver
-      onResize={({width, height}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const {width, height} = entry.contentRect;
         editorRef.current?.layout({width, height});
-      }}
-    >
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} style={{width: '100%', height: '100%'}}>
       <MonacoEditor
         defaultLanguage="json"
         options={{
@@ -332,7 +343,7 @@ const Editor: React.FC<Props> = (props) => {
         onMount={editorDidMount}
         beforeMount={editorWillMount}
       />
-    </ResizeObserver>
+    </div>
   );
 };
 

@@ -1,15 +1,19 @@
 import * as React from 'react';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & {children?: React.ReactNode};
+interface ErrorBoundaryProps {
+  error?: Error;
+  logError: (error: Error) => void;
+  toggleDebugPane: () => void;
+  children?: React.ReactNode;
+}
 
 interface ErrorBoundaryState {
   hasError: boolean;
 }
 
-export default class ErrorBoundary extends React.Component<Props, ErrorBoundaryState> {
-  constructor(props: Props) {
+export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {hasError: false};
   }
@@ -28,7 +32,7 @@ export default class ErrorBoundary extends React.Component<Props, ErrorBoundaryS
   }
 }
 
-interface ErrorBoundaryContentProps extends Props {
+interface ErrorBoundaryContentProps extends ErrorBoundaryProps {
   hasError: boolean;
 }
 
