@@ -23,7 +23,7 @@ const keyBoardShortcuts = shortcuts.map((shortcut, i) => (
   </li>
 ));
 
-export const COMMIT_HASH: string = process.env.PARCEL_BUILD_COMMIT_HASH;
+export const COMMIT_HASH: string = process.env.VITE_COMMIT_HASH;
 
 const HelpModal = () => (
   <div className="help-modal">

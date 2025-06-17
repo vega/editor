@@ -18,6 +18,17 @@ function linkedDependencyHMR() {
         });
         return [];
       }
+
+      if (file.includes('node_modules/vega/build/')) {
+        const module = server.moduleGraph.getModuleById('vega');
+        if (module) {
+          server.reloadModule(module);
+        }
+        server.ws.send({
+          type: 'full-reload',
+        });
+        return [];
+      }
     },
   };
 }
@@ -30,7 +41,7 @@ export default defineConfig({
     linkedDependencyHMR(),
   ],
   define: {
-    'process.env.PARCEL_BUILD_COMMIT_HASH': JSON.stringify(commitHash),
+    'process.env.VITE_COMMIT_HASH': JSON.stringify(commitHash),
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   },
   base: process.env.NODE_ENV === 'production' ? '/editor/' : '/',
@@ -41,6 +52,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'vega-lite/vega-lite-schema.json': resolve(__dirname, 'node_modules/vega-lite/build/vega-lite-schema.json'),
+      'vega/vega-schema.json': resolve(__dirname, 'node_modules/vega/build/vega-schema.json'),
     },
     preserveSymlinks: false,
   },
@@ -48,14 +60,19 @@ export default defineConfig({
     port: 1234,
     open: true,
     watch: {
-      ignored: ['!**/node_modules/vega-lite/src/**', '!**/node_modules/vega-lite/build/**'],
+      ignored: [
+        '!**/node_modules/vega-lite/src/**',
+        '!**/node_modules/vega-lite/build/**',
+        '!**/node_modules/vega/src/**',
+        '!**/node_modules/vega/build/**',
+      ],
     },
     fs: {
       allow: ['..'],
     },
   },
   optimizeDeps: {
-    exclude: ['vega-lite'],
+    exclude: ['vega-lite', 'vega'],
     entries: [],
   },
   publicDir: 'public',
