@@ -19,15 +19,21 @@ function linkedDependencyHMR() {
         return [];
       }
 
-      if (file.includes('node_modules/vega/build/')) {
-        const module = server.moduleGraph.getModuleById('vega');
-        if (module) {
-          server.reloadModule(module);
+      if (file.includes('node_modules/vega')) {
+        const regex = /node_modules\/(@?\w*vega[^/]*)/;
+        const match = file.match(regex);
+
+        if (match && match[1]) {
+          const moduleName = match[1];
+          const module = server.moduleGraph.getModuleById(moduleName);
+          if (module) {
+            server.reloadModule(module);
+          }
+          server.ws.send({
+            type: 'full-reload',
+          });
+          return [];
         }
-        server.ws.send({
-          type: 'full-reload',
-        });
-        return [];
       }
     },
   };
