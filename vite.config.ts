@@ -1,6 +1,5 @@
 import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
-import legacy from '@vitejs/plugin-legacy';
 import {resolve} from 'path';
 
 const commitHash = process.env.VITE_COMMIT_HASH;
@@ -20,7 +19,7 @@ function linkedDependencyHMR() {
       }
 
       if (file.includes('node_modules/vega')) {
-        const regex = /node_modules\/(@?\w*vega[^/]*)/;
+        const regex = /node_modules\/(vega[^/]*)/;
         const match = file.match(regex);
 
         if (match && match[1]) {
