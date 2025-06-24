@@ -10,6 +10,13 @@
     "importHelpers": true,
     "jsx": "react",
     "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "vega-lite": ["../../vega-lite/src"],
+      "vega-lite/*": ["../../vega-lite/src/*"],
+      "vega-lite/vega-lite-schema.json": ["node_modules/vega-lite/build/vega-lite-schema.json"],
+      "vega/vega-schema.json": ["node_modules/vega/build/vega-schema.json"]
+    },
     "lib": [
       "esnext",
       "dom"
