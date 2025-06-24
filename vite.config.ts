@@ -1,49 +1,67 @@
 import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import {resolve} from 'path';
+import {watch as fsWatch} from 'fs';
 
 const commitHash = process.env.VITE_COMMIT_HASH;
-function linkedDependencyHMR() {
-  return {
-    name: 'linked-dependency-hmr',
-    handleHotUpdate({file, server}) {
-      if (file.includes('node_modules/vega-lite/src/') || file.includes('node_modules/vega-lite/build/')) {
-        const module = server.moduleGraph.getModuleById('vega-lite');
-        if (module) {
-          server.reloadModule(module);
-        }
-        server.ws.send({
-          type: 'full-reload',
-        });
-        return [];
-      }
-
-      if (file.includes('node_modules/vega')) {
-        const regex = /node_modules\/(vega[^/]*)/;
-        const match = file.match(regex);
-
-        if (match && match[1]) {
-          const moduleName = match[1];
-          const module = server.moduleGraph.getModuleById(moduleName);
-          if (module) {
-            server.reloadModule(module);
-          }
-          server.ws.send({
-            type: 'full-reload',
-          });
-          return [];
-        }
-      }
-    },
-  };
-}
 
 export default defineConfig({
   plugins: [
     react({
       include: '**/*.{jsx,tsx,ts,js}',
     }),
-    linkedDependencyHMR(),
+    {
+      name: 'hmr',
+      enforce: 'pre',
+      configureServer(server) {
+        const vegaLitePath = resolve(__dirname, 'node_modules/vega-lite/src');
+        const watcher = fsWatch(vegaLitePath, {recursive: true}, async (_eventType, filename) => {
+          if (filename && (filename.endsWith('.ts') || filename.endsWith('.js'))) {
+            const moduleGraph = server.moduleGraph;
+
+            const modules = Array.from(moduleGraph.urlToModuleMap.values());
+            const vegaLiteModules: any[] = [];
+            const dependentModules = new Set<any>();
+
+            modules.forEach((module) => {
+              if (module.id && (module.id.includes('vega-lite') || module.url?.includes('vega-lite'))) {
+                vegaLiteModules.push(module);
+                moduleGraph.invalidateModule(module);
+              }
+
+              if (module.importedModules) {
+                for (const importedModule of module.importedModules) {
+                  if (importedModule.id?.includes('vega-lite')) {
+                    dependentModules.add(module);
+                    break;
+                  }
+                }
+              }
+            });
+
+            dependentModules.forEach((module) => {
+              moduleGraph.invalidateModule(module);
+            });
+
+            if (vegaLiteModules.length > 0) {
+              server.ws.send({
+                type: 'update',
+                updates: vegaLiteModules.map((module) => ({
+                  type: 'js-update' as const,
+                  path: module.url,
+                  acceptedPath: module.url,
+                  timestamp: Date.now(),
+                })),
+              });
+            }
+          }
+        });
+
+        server.httpServer?.on('close', () => {
+          watcher.close();
+        });
+      },
+    },
   ],
   define: {
     'process.env.VITE_COMMIT_HASH': JSON.stringify(commitHash),
@@ -58,6 +76,7 @@ export default defineConfig({
     alias: {
       'vega-lite/vega-lite-schema.json': resolve(__dirname, 'node_modules/vega-lite/build/vega-lite-schema.json'),
       'vega/vega-schema.json': resolve(__dirname, 'node_modules/vega/build/vega-schema.json'),
+      'vega-lite': resolve(__dirname, '../../vega-lite/src/'),
     },
     preserveSymlinks: false,
   },
@@ -65,20 +84,16 @@ export default defineConfig({
     port: 1234,
     open: true,
     watch: {
-      ignored: [
-        '!**/node_modules/vega-lite/src/**',
-        '!**/node_modules/vega-lite/build/**',
-        '!**/node_modules/vega/src/**',
-        '!**/node_modules/vega/build/**',
-      ],
+      ignored: ['!**/node_modules/vega-lite/**'],
+      followSymlinks: true,
     },
     fs: {
-      allow: ['..'],
+      allow: ['..', resolve(__dirname, '../../vega-lite')],
     },
   },
   optimizeDeps: {
+    include: [],
     exclude: ['vega-lite', 'vega'],
-    entries: [],
   },
   publicDir: 'public',
 });
