@@ -98,7 +98,7 @@
     ]
   },
   "scripts": {
-    "start": "vite --port 1234",
+    "start": "vite",
     "build": "npm run clean && npm run vendor && npm run build:only",
     "build:only": "vite build",
     "preview": "vite preview",
