@@ -2,8 +2,9 @@ import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import {resolve} from 'path';
 import {watch as fsWatch, readdirSync, lstatSync, existsSync} from 'fs';
+import {execSync} from 'child_process';
 
-const commitHash = process.env.VITE_COMMIT_HASH;
+const commitHash = execSync('git rev-parse HEAD', {encoding: 'utf8'}).trim();
 
 const vegaUtils = {
   isVegaPackage: (packageName: string): boolean => packageName === 'vega' || packageName.startsWith('vega-'),

@@ -16,6 +16,7 @@
     "assert": "^2.1.0",
     "autoprefixer": "^10.4.21",
     "browserify-zlib": "^0.2.0",
+    "del-cli": "^6.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -97,11 +98,11 @@
     ]
   },
   "scripts": {
-    "start": "VITE_COMMIT_HASH=$(git rev-parse HEAD) vite --port 1234",
+    "start": "vite --port 1234",
     "build": "npm run clean && npm run vendor && npm run build:only",
-    "build:only": "VITE_COMMIT_HASH=$(git rev-parse HEAD) vite build",
+    "build:only": "vite build",
     "preview": "vite preview",
-    "clean": "rm -rf dist public/spec public/data",
+    "clean": "del-cli dist public/spec public/data",
     "postbuild": "rsync --ignore-existing -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
     "vendor": "scripts/vendor.sh",
