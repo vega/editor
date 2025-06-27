@@ -339,7 +339,7 @@ const Editor: React.FC<Props> = (props) => {
           },
         }}
         onChange={debouncedHandleEditorChange}
-        defaultValue={props.editorString}
+        value={props.editorString}
         onMount={editorDidMount}
         beforeMount={editorWillMount}
       />

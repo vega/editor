@@ -7,10 +7,8 @@ export interface OwnComponentProps {
 }
 
 export default function DataViewer(props: OwnComponentProps) {
-  const stateProps = useAppSelector((appState) => ({
-    editorRef: appState.editorRef,
-    view: appState.view,
-  }));
+  const editorRef = useAppSelector((state) => state.editorRef);
+  const view = useAppSelector((state) => state.view);
 
-  return <Renderer {...stateProps} {...props} />;
+  return <Renderer editorRef={editorRef} view={view} {...props} />;
 }

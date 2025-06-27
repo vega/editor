@@ -38,7 +38,6 @@ const App: React.FC<Props> = (props) => {
   const setExample = useCallback(
     async (parameter: {example_name: string; mode: string}) => {
       const name = parameter.example_name;
-      dispatch(EditorActions.setConfig(configEditorString));
       dispatch(EditorActions.setSidePaneItem(SIDEPANE.Editor));
       editorRef?.focus();
       switch (parameter.mode) {
@@ -57,7 +56,7 @@ const App: React.FC<Props> = (props) => {
           break;
       }
     },
-    [dispatch, configEditorString, editorRef],
+    [dispatch, editorRef],
   );
 
   const setEmptySpec = useCallback(
@@ -186,23 +185,18 @@ const App: React.FC<Props> = (props) => {
 
     window.addEventListener('message', handleMessage, false);
 
-    const parameter = params;
-    if (parameter?.mode) {
-      const mode = parameter.mode.toLowerCase();
+    if (params?.mode) {
+      const mode = params.mode.toLowerCase();
       if (mode === 'vega' || mode === 'vega-lite') {
         dispatch(EditorActions.setModeOnly(mode as Mode));
       }
     }
-    setSpecInUrl(parameter);
+    setSpecInUrl(params);
 
     return () => {
       window.removeEventListener('message', handleMessage, false);
     };
   }, [params, dispatch, setSpecInUrl]);
-
-  useEffect(() => {
-    setSpecInUrl(params);
-  }, [params && hash(params), setSpecInUrl]);
 
   // router prop to pass to header
   const routerProps = {

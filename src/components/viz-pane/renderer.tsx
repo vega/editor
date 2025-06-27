@@ -147,18 +147,15 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
     }
   }, [props.debugPane, props.view, props.navItem, onClickHandler]);
 
-  const container = useMemo(
-    () => (
-      <div className="chart-container">
-        <ErrorBoundary>
-          <Renderer />
-        </ErrorBoundary>
-        <div className="versions">
-          Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {COMMIT_HASH.slice(0, 7)}
-        </div>
+  const container = (
+    <div className="chart-container">
+      <ErrorBoundary>
+        <Renderer />
+      </ErrorBoundary>
+      <div className="versions">
+        Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {COMMIT_HASH.slice(0, 7)}
       </div>
-    ),
-    [],
+    </div>
   );
 
   const sizes = useMemo(() => {

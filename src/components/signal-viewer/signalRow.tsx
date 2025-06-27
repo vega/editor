@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Search} from 'react-feather';
 import {isDate} from 'vega';
 import {View} from '../../constants/index.js';
@@ -9,7 +9,7 @@ import {formatValueLong} from '../table/renderer.js';
 interface Props {
   view: View;
   signal: string;
-  onValueChange: (key: string, value: any) => void;
+  onValueChange: (key, value) => void;
   maskListener: boolean;
   isHovered: boolean;
   isTimelineSelected: boolean;
@@ -20,113 +20,74 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const SignalRowComponent = (props: Props) => {
-  const {view, signal, onValueChange, maskListener, timeline, onClickHandler, children} = props;
-
-  const getCurrent = useCallback(() => {
+const SignalRow: React.FC<Props> = ({
+  view,
+  signal,
+  onValueChange,
+  maskListener,
+  isHovered,
+  isTimelineSelected,
+  clickedSignal,
+  hoverValue,
+  timeline,
+  onClickHandler,
+  children,
+}) => {
+  const [signalValue, setSignalValue] = useState(() => {
     try {
-      return view?.signal?.(signal);
-    } catch (e) {
-      console.log(`Signal ${signal} not found in current view`);
-      return undefined;
-    }
-  }, [view, signal]);
-
-  const [signalValue, setSignalValue] = useState<any>(() => {
-    try {
-      return getCurrent();
-    } catch (e) {
-      return undefined;
+      return view.signal(signal);
+    } catch (error) {
+      console.error(`Error getting initial signal value for "${signal}":`, error);
+      return null;
     }
   });
 
-  const listenerAttachedRef = useRef(false);
-
-  const onValueChangeRef = useRef(onValueChange);
   useEffect(() => {
-    onValueChangeRef.current = onValueChange;
-  }, [onValueChange]);
+    try {
+      setSignalValue(view.signal(signal));
+    } catch (error) {
+      console.error(`Error getting updated signal value for "${signal}":`, error);
+      setSignalValue(null);
+    }
+  }, [view, signal]);
 
   const signalHandler = useCallback(
-    (_signalName: string, currentValue: any) => {
-      setSignalValue(currentValue);
-      if (onValueChangeRef.current) {
-        onValueChangeRef.current(signal, currentValue);
-      }
+    (name: string, value: any) => {
+      setSignalValue(value);
+      onValueChange(name, value);
     },
-    [signal],
+    [onValueChange],
   );
 
   useEffect(() => {
-    if (!view || !signal) return;
-
-    let isListenerAttached = false;
-
     if (!maskListener) {
-      try {
-        view.signal(signal);
-        view.addSignalListener(signal, signalHandler);
-        isListenerAttached = true;
-        listenerAttachedRef.current = true;
-      } catch (e) {
-        console.log(`Could not attach listener to signal ${signal}:`, e);
-      }
-
-      return () => {
-        if (isListenerAttached) {
-          try {
-            view.removeSignalListener(signal, signalHandler);
-            listenerAttachedRef.current = false;
-          } catch (e) {
-            console.log(`Error removing listener from signal ${signal}:`, e);
-          }
-        }
-      };
-    } else {
-      if (listenerAttachedRef.current) {
-        try {
-          view.removeSignalListener(signal, signalHandler);
-          listenerAttachedRef.current = false;
-        } catch (e) {
-          console.log(`Error removing listener from signal ${signal}:`, e);
-        }
-      }
-      return undefined;
+      view.addSignalListener(signal, signalHandler);
     }
-  }, [view, signal, maskListener, signalHandler, timeline]);
-
-  useEffect(() => {
-    try {
-      const newSignalValue = getCurrent();
-      setSignalValue(newSignalValue);
-      if (onValueChangeRef.current && newSignalValue !== undefined) {
-        onValueChangeRef.current(signal, newSignalValue);
-      }
-    } catch (e) {
-      console.log(`Error updating signal ${signal}:`, e);
-    }
-  }, [view, signal, getCurrent]);
+    return () => {
+      view.removeSignalListener(signal, signalHandler);
+    };
+  }, [view, signal, signalHandler, maskListener]);
 
   const renderSignal = () => {
-    if (props.isTimelineSelected && props.isHovered) {
-      return props.hoverValue;
+    if (isTimelineSelected && isHovered) {
+      return hoverValue;
     }
-    if (props.isTimelineSelected) {
-      return props.clickedSignal;
-    } else if (props.isHovered) {
-      return props.hoverValue;
+    if (isTimelineSelected) {
+      return clickedSignal;
+    } else if (isHovered) {
+      return hoverValue;
     } else {
       return null;
     }
   };
 
   const getBackgroundColor = () => {
-    if (props.isTimelineSelected && props.isHovered) {
+    if (isTimelineSelected && isHovered) {
       return '#fce57e';
     }
-    if (props.isTimelineSelected && props.clickedSignal !== undefined) {
+    if (isTimelineSelected && clickedSignal !== undefined) {
       return '#A4F9C8';
-    } else if (props.isHovered && props.hoverValue !== undefined) {
+    } else if (isHovered && hoverValue !== undefined) {
       return '#fce57e';
     } else {
       return '';
@@ -136,9 +97,10 @@ const SignalRowComponent = (props: Props) => {
   let tooLong = false;
   let formatted = '';
   const value = renderSignal();
+  const displayValue = value !== null && value !== undefined ? value : signalValue;
 
-  if (!isDate(signalValue)) {
-    const formatValue = formatValueLong(value ? value : signalValue);
+  if (!isDate(displayValue)) {
+    const formatValue = formatValueLong(displayValue);
     if (formatValue !== undefined) {
       tooLong = formatValue.tooLong;
       formatted = formatValue.formatted;
@@ -148,9 +110,8 @@ const SignalRowComponent = (props: Props) => {
     }
   } else {
     tooLong = false;
-    formatted = new Date(value ? value : signalValue).toUTCString();
+    formatted = new Date(displayValue).toUTCString();
   }
-
   if (tooLong) {
     return (
       <tr>
@@ -190,4 +151,4 @@ const SignalRowComponent = (props: Props) => {
   }
 };
 
-export default React.memo(SignalRowComponent);
+export default SignalRow;

@@ -2,7 +2,7 @@ import {range} from 'd3-array';
 import {scaleBand} from 'd3-scale';
 import React from 'react';
 
-type Props = {
+interface TimelineRowProps {
   data: any[];
   width: number;
   xCount: number;
@@ -11,20 +11,25 @@ type Props = {
   onClickInit: (hoverValue: any) => void;
   isTimelineSelected: boolean;
   clickedValue: any;
-};
+}
 
-function TimelineRowComponent(props: Props) {
-  const {data, width, xCount, clickedValue} = props;
-  const scaleNew = scaleBand as any;
-  const scale = scaleNew(range(0, xCount), [0, width]);
-  console.log('data', data);
+const TimelineRow: React.FC<TimelineRowProps> = ({
+  data,
+  width,
+  xCount,
+  onHoverInit,
+  onHoverEnd,
+  onClickInit,
+  clickedValue,
+}) => {
+  const scale = scaleBand<number>().domain(range(0, xCount)).range([0, width]).padding(0);
 
   const row = data?.map((d) => (
     <rect
       key={d.xCount}
-      onMouseOver={() => props.onHoverInit(d)}
-      onClick={() => props.onClickInit(d)}
-      onMouseLeave={() => props.onHoverEnd()}
+      onMouseOver={() => onHoverInit(d)}
+      onClick={() => onClickInit(d)}
+      onMouseLeave={() => onHoverEnd()}
       className="svg-rect"
       height={31}
       style={{
@@ -32,7 +37,7 @@ function TimelineRowComponent(props: Props) {
         fill: clickedValue === d.xCount ? '#A4F9C8' : '#b7b7b7',
         pointerEvents: 'all',
         stroke: 'white',
-        strokeWidth: '0.5px',
+        strokeWidth: '1px',
       }}
       width={scale.bandwidth()}
       x={scale(d.xCount)}
@@ -44,6 +49,6 @@ function TimelineRowComponent(props: Props) {
       {row}
     </svg>
   );
-}
+};
 
-export default React.memo(TimelineRowComponent);
+export default TimelineRow;
