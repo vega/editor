@@ -14,7 +14,7 @@ const MAX_PULSES = 100;
 export const recordPulse = createAction('recordPulse', (clock: number, values: Record<string, unknown>) => ({
   payload: {
     clock,
-    values: Object.fromEntries(Object.entries(values).map(([k, v]) => [k, sanitizeValue(v)])),
+    values: Object.fromEntries(Object.entries(values || {}).map(([k, v]) => [k, sanitizeValue(v)])),
   },
 }));
 

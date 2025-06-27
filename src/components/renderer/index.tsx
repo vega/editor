@@ -30,7 +30,7 @@ const RendererContainer: React.FC = () => {
       {...props}
       setView={(newView) => dispatch(EditorActions.setView(newView))}
       setRuntime={(runtime) => dispatch(setRuntime(runtime))}
-      recordPulse={(clock, values) => dispatch(recordPulse({clock, values}))}
+      recordPulse={(clock, values) => dispatch(recordPulse(clock, values))}
     />
   );
 };

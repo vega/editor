@@ -33,7 +33,7 @@ export interface RendererProps {
   expressionInterpreter: boolean;
   setView: (view: any) => void;
   setRuntime: (runtime: any) => void;
-  recordPulse: (pulse: {clock: number; values: any}) => void;
+  recordPulse: (clock: number, values: any) => void;
 }
 
 export default function Renderer(props: RendererProps) {

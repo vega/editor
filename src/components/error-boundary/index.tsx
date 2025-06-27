@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useAppDispatch, useAppSelector} from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks.js';
 import * as EditorActions from '../../actions/editor.js';
 import Renderer from './renderer.js';
 

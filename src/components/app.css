@@ -168,6 +168,21 @@ button:disabled {
   flex-direction: row;
 }
 
+.content-with-sidebar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.right-sidebar {
+  flex-shrink: 0;
+  width: 290px;
+  background: var(--white-color);
+  border-left: solid 1px var(--box-shadow-color);
+  overflow-y: auto;
+}
+
 p {
   line-height: 1.3;
 }

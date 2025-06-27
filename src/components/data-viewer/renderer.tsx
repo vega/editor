@@ -5,7 +5,7 @@ import Select from 'react-select';
 import * as vega from 'vega';
 import {debounce} from 'vega';
 
-import {useAppSelector} from '../../hooks';
+import {useAppSelector} from '../../hooks.js';
 import ErrorBoundary from '../error-boundary/index.js';
 import Table from './table.js';
 import './index.css';

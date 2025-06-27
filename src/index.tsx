@@ -39,8 +39,13 @@ try {
   if (!container) {
     throw new Error('Root element not found');
   }
-  const root = createRoot(container);
-  root.render(
+
+  if (!(container as any)._reactRootContainer) {
+    const root = createRoot(container);
+    (container as any)._reactRootContainer = root;
+  }
+
+  (container as any)._reactRootContainer.render(
     <React.StrictMode>
       <Provider store={store}>
         <Router basename="/">

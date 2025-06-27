@@ -22,8 +22,8 @@ const LOG_OPTIONS = Object.entries(LEVEL_NAMES).map(([value, label]) => ({
 
 const HOVER_OPTIONS = [
   {label: 'Auto', value: 'auto'},
-  {label: 'On', value: true},
-  {label: 'Off', value: false},
+  {label: 'On', value: 'on'},
+  {label: 'Off', value: 'off'},
 ];
 
 interface SidebarProps {
@@ -113,6 +113,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
   } = props;
 
   const hover = typeof props.hoverEnable !== 'boolean' ? 'Auto' : props.hoverEnable ? 'On' : 'Off';
+  const hoverValue = typeof props.hoverEnable !== 'boolean' ? 'auto' : props.hoverEnable ? 'on' : 'off';
 
   const renderers = [
     {value: 'svg', label: 'SVG'},
@@ -173,9 +174,18 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
           <Select
             className="hover-enable-dropdown-wrapper"
             classNamePrefix="hover-enable-dropdown"
-            value={{label: hover, value: hover}}
+            value={{label: hover, value: hoverValue}}
             options={HOVER_OPTIONS}
-            onChange={setHover}
+            onChange={(option: any) => {
+              const value = option.value;
+              if (value === 'auto') {
+                props.setHover('auto');
+              } else if (value === 'on') {
+                props.setHover(true);
+              } else {
+                props.setHover(false);
+              }
+            }}
             isClearable={false}
             isSearchable={false}
           />
