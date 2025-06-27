@@ -1,11 +1,12 @@
-import {parse as parseJSONC} from 'jsonc-parser';
+import stringify from 'json-stringify-pretty-compact';
 import LZString from 'lz-string';
-import React, {useState, useEffect, useCallback} from 'react';
+import {parse as parseJSONC} from 'jsonc-parser';
+import * as React from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import {Copy, Link, Save} from 'react-feather';
-
+import {useAppDispatch, useAppSelector} from '../../../hooks.js';
 import * as EditorActions from '../../../actions/editor.js';
 import {NAMES} from '../../../constants/consts.js';
-import {useAppDispatch, useAppSelector} from '../../../hooks.js';
 import {getGithubToken} from '../../../utils/github.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
 import LoginConditional from './LoginConditional.js';

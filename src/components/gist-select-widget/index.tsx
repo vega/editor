@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import * as EditorActions from '../../actions/editor';
+import {useAppDispatch, useAppSelector} from '../../hooks.js';
+import * as EditorActions from '../../actions/editor.js';
 import Renderer from './renderer.js';
 
 export interface GistSelectWidgetProps {

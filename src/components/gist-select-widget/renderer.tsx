@@ -2,8 +2,8 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {File, Lock} from 'react-feather';
 import ReactPaginate from 'react-paginate';
 
-import {GistPrivacy} from '../../constants/index';
-import {getGithubToken} from '../../utils/github';
+import {GistPrivacy} from '../../constants/index.js';
+import {getGithubToken} from '../../utils/github.js';
 import LoginConditional from './LoginConditional.js';
 import './index.css';
 

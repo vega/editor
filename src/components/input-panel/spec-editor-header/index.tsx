@@ -13,7 +13,7 @@ function SpecEditorHeader() {
   }));
   const dispatch = useDispatch();
 
-  const setSidePaneItem = (item: SIDEPANE) => {
+  const setSidePaneItem = (item) => {
     dispatch(EditorActions.setSidePaneItem(item));
   };
 
