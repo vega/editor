@@ -1,16 +1,15 @@
-import stringify from 'json-stringify-pretty-compact';
 import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
-import * as React from 'react';
-import {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {Copy, Link, Save} from 'react-feather';
-import {useAppDispatch, useAppSelector} from '../../../hooks.js';
+
 import * as EditorActions from '../../../actions/editor.js';
 import {NAMES} from '../../../constants/consts.js';
-import GistSelectWidget from '../../gist-select-widget/index.js';
-import LoginConditional from '../../login-conditional/index.js';
-import './index.css';
+import {useAppDispatch, useAppSelector} from '../../../hooks.js';
 import {getGithubToken} from '../../../utils/github.js';
+import GistSelectWidget from '../../gist-select-widget/index.js';
+import LoginConditional from './LoginConditional.js';
+import './index.css';
 
 const EDITOR_BASE = window.location.origin + window.location.pathname;
 
@@ -27,21 +26,29 @@ export default function ShareModal() {
   const date = new Date().toDateString();
 
   const [copied, setCopied] = useState(false);
-  const [creating, setCreating] = useState(undefined);
-  const [createError, setCreateError] = useState(false);
-  const [updateError, setUpdateError] = useState(false);
-  const [fullScreen, setFullScreen] = useState(false);
-  const [whitespace, setWhitespace] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [generatedURL, setGeneratedURL] = useState('');
   const [gistFileName, setGistFileName] = useState('spec.json');
   const [gistFileNameSelected, setGistFileNameSelected] = useState('');
   const [gistPrivate, setGistPrivate] = useState(false);
   const [gistTitle, setGistTitle] = useState(`${NAMES[mode]} spec from ${date}`);
   const [gistId, setGistId] = useState('');
-  const [updating, setUpdating] = useState(undefined);
+  const [updating, setUpdating] = useState(false);
   const [gistEditorURL, setGistEditorURL] = useState('');
+  const [whitespace, setWhitespace] = useState(false);
+  const [fullScreen, setFullScreen] = useState(false);
+  const [createError, setCreateError] = useState<boolean | undefined>(undefined);
+  const [updateError, setUpdateError] = useState<boolean | undefined>(undefined);
 
-  const exportURL = () => {
+  const handleFullScreenCheck = () => {
+    setFullScreen(!fullScreen);
+  };
+
+  const handleWhitespaceCheck = () => {
+    setWhitespace(!whitespace);
+  };
+
+  const exportURL = useCallback(() => {
     const specString = whitespace ? editorString : JSON.stringify(parseJSONC(editorString));
 
     const serializedSpec = LZString.compressToEncodedURIComponent(specString) + (fullScreen ? '/view' : '');
@@ -50,7 +57,7 @@ export default function ShareModal() {
       const url = `${document.location.href.split('#')[0]}#/url/${mode}/${serializedSpec}`;
       setGeneratedURL(url);
     }
-  };
+  }, [editorString, fullScreen, mode, whitespace]);
 
   const previewURL = () => {
     const win = window.open(generatedURL, '_blank');
@@ -68,17 +75,9 @@ export default function ShareModal() {
     }
   }, [generatedURL]);
 
-  const handleFullScreenCheck = (event) => {
-    setFullScreen(event.target.checked);
-  };
-
-  const handleWhitespaceCheck = (event) => {
-    setWhitespace(event.target.checked);
-  };
-
   useEffect(() => {
     exportURL();
-  }, [fullScreen, whitespace, editorString, mode]);
+  }, [exportURL]);
 
   const updatePrivacy = (event) => {
     setGistPrivate(event.target.checked);

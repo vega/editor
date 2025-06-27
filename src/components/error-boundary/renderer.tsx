@@ -1,48 +1,43 @@
-import * as React from 'react';
+import React from 'react';
 import './index.css';
 
 interface ErrorBoundaryProps {
-  error?: Error;
-  logError: (error: Error) => void;
+  logError: (error: Error, info: React.ErrorInfo) => void;
   toggleDebugPane: () => void;
   children?: React.ReactNode;
 }
 
 interface ErrorBoundaryState {
   hasError: boolean;
+  error?: Error;
 }
 
-export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props) {
     super(props);
     this.state = {hasError: false};
   }
 
-  static getDerivedStateFromError(): ErrorBoundaryState {
-    return {hasError: true};
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return {hasError: true, error};
   }
 
-  public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    this.props.logError(error);
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    this.props.logError(error, info);
+    console.error('ErrorBoundary caught an error:', error, info);
   }
 
-  public render() {
-    return <ErrorBoundaryContent {...this.props} hasError={this.state.hasError} />;
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div id="error-indicator" onClick={this.props.toggleDebugPane}>
+          {this.state.error?.message || 'An unexpected error occurred'}
+        </div>
+      );
+    }
+
+    return this.props.children;
   }
 }
 
-interface ErrorBoundaryContentProps extends ErrorBoundaryProps {
-  hasError: boolean;
-}
-
-function ErrorBoundaryContent(props: ErrorBoundaryContentProps) {
-  if (props.error || props.hasError) {
-    return (
-      <div id="error-indicator" onClick={props.toggleDebugPane}>
-        {props.error?.message || 'An unexpected error occurred'}
-      </div>
-    );
-  }
-  return <>{props.children}</>;
-}
+export default ErrorBoundary;

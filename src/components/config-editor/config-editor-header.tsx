@@ -1,19 +1,19 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import {useCallback, useMemo} from 'react';
+import {useCallback} from 'react';
 import {omit} from 'vega-lite';
 import * as themes from 'vega-themes';
 import * as EditorActions from '../../actions/editor.js';
 import {useAppDispatch, useAppSelector} from '../../hooks.js';
 import './config-editor.css';
 
+const vegaThemes = omit(themes, ['version']);
+
 const ConfigEditorHeader: React.FC = () => {
   const dispatch = useAppDispatch();
   const {themeName} = useAppSelector((state) => ({
     themeName: state.themeName,
   }));
-
-  const vegaThemes = useMemo(() => omit(themes, ['version']), []);
 
   const setConfig = useCallback((config: string) => dispatch(EditorActions.setConfig(config)), [dispatch]);
 
@@ -40,7 +40,7 @@ const ConfigEditorHeader: React.FC = () => {
       }
       setThemeName(e.target.value);
     },
-    [setConfig, setConfigEditorString, setThemeName, vegaThemes],
+    [setConfig, setConfigEditorString, setThemeName],
   );
 
   const handleClick = useCallback((e: React.MouseEvent<HTMLSelectElement>) => {

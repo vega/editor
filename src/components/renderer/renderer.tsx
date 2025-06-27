@@ -33,7 +33,7 @@ export interface RendererProps {
   expressionInterpreter: boolean;
   setView: (view: any) => void;
   setRuntime: (runtime: any) => void;
-  recordPulse: (clock: number, values: any) => void;
+  recordPulse: (pulse: {clock: number; values: any}) => void;
 }
 
 export default function Renderer(props: RendererProps) {
@@ -58,27 +58,17 @@ export default function Renderer(props: RendererProps) {
   const portalChartRef = useRef(null);
 
   const isResponsive = useCallback(() => {
-    let responsiveWidth = false;
-    let responsiveHeight = false;
-    if (vegaSpec.signals) {
-      vegaSpec.signals.forEach((signal) => {
-        if (
-          signal.name === 'width' &&
-          typeof (signal as any).init === 'string' &&
-          (signal as any).init.includes('containerSize')
-        ) {
-          responsiveWidth = true;
-        }
-        if (
-          signal.name === 'height' &&
-          typeof (signal as any).init === 'string' &&
-          (signal as any).init.includes('containerSize')
-        ) {
-          responsiveHeight = true;
-        }
-      });
+    if (!vegaSpec.signals) {
+      return {responsiveWidth: false, responsiveHeight: false};
     }
-    return {responsiveWidth, responsiveHeight};
+    const widthSignal = vegaSpec.signals.find((s) => s.name === 'width');
+    const heightSignal = vegaSpec.signals.find((s) => s.name === 'height');
+    return {
+      responsiveWidth:
+        widthSignal && typeof widthSignal.init === 'string' && widthSignal.init.includes('containerSize'),
+      responsiveHeight:
+        heightSignal && typeof heightSignal.init === 'string' && heightSignal.init.includes('containerSize'),
+    };
   }, [vegaSpec]);
 
   const triggerResize = () => {

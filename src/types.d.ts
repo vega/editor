@@ -9,7 +9,6 @@ declare module 'react-router-dom' {
   // and https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react-router-dom/index.d.ts
 
   import * as H from 'history';
-  import {NavigateFunction, Location, Params} from 'react-router';
 
   export interface RouteChildrenProps<Params extends {[K in keyof Params]?: string} = {}> {
     history: H.History;

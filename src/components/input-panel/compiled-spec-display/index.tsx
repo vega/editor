@@ -4,40 +4,25 @@ import MonacoEditor from '@monaco-editor/react';
 import * as EditorActions from '../../../actions/editor.js';
 import {EDITOR_FOCUS, LAYOUT, COMPILEDPANE} from '../../../constants/index.js';
 import CompiledSpecDisplayHeader from '../compiled-spec-header/index.js';
-import {useEffect, useRef, useCallback} from 'react';
+import {useEffect, useRef} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../hooks.js';
 
 function CompiledSpecDisplay() {
   const dispatch = useAppDispatch();
 
-  const compiledEditorRef = useAppSelector((state) => state.compiledEditorRef);
-  const compiledVegaPaneSize = useAppSelector((state) => state.compiledVegaPaneSize);
-  const decorations = useAppSelector((state) => state.decorations);
-  const editorRef = useAppSelector((state) => state.editorRef);
-  const value = useAppSelector((state) =>
-    state.compiledPaneItem === COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
-  );
-
-  const setCompiledEditorReference = useCallback(
-    (ref) => {
-      dispatch(EditorActions.setCompiledEditorRef(ref));
-    },
-    [dispatch],
-  );
-
-  const setEditorFocus = useCallback(
-    (focus) => {
-      dispatch(EditorActions.setEditorFocus(focus));
-    },
-    [dispatch],
-  );
+  const {compiledEditorRef, compiledVegaPaneSize, decorations, editorRef, value} = useAppSelector((state) => ({
+    compiledEditorRef: state.compiledEditorRef,
+    compiledVegaPaneSize: state.compiledVegaPaneSize,
+    decorations: state.decorations,
+    editorRef: state.editorRef,
+    value: state.compiledPaneItem === COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
+  }));
 
   const monacoEditorRef = useRef(null);
 
-  //store editor reference in redux store
   useEffect(() => {
-    setCompiledEditorReference(monacoEditorRef.current);
-  }, [monacoEditorRef, setCompiledEditorReference]);
+    dispatch(EditorActions.setCompiledEditorRef(monacoEditorRef.current));
+  }, [monacoEditorRef, dispatch]);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -78,9 +63,9 @@ function CompiledSpecDisplay() {
           value={stringify(value)}
           onMount={(monacoEditor) => {
             monacoEditor.onDidFocusEditorText(() => {
-              compiledEditorRef && compiledEditorRef.deltaDecorations(decorations, []);
-              editorRef && editorRef.deltaDecorations(decorations, []);
-              setEditorFocus(EDITOR_FOCUS.CompiledEditor);
+              compiledEditorRef?.deltaDecorations(decorations, []);
+              editorRef?.deltaDecorations(decorations, []);
+              dispatch(EditorActions.setEditorFocus(EDITOR_FOCUS.CompiledEditor));
             });
             monacoEditorRef.current = monacoEditor;
           }}

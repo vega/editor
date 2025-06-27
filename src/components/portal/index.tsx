@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import ReactDOM from 'react-dom';
 
 interface PortalWithStateProps {
@@ -23,10 +23,24 @@ const PortalWithState: React.FC<PortalWithStateProps> = ({
   onOpen,
   onClose,
 }) => {
-  const isControlled = controlledIsOpen !== undefined;
-  const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(defaultOpen);
-  const isOpen = isControlled ? controlledIsOpen : uncontrolledIsOpen;
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const portalNode = useRef<HTMLDivElement | null>(null);
+
+  const openPortal = useCallback(() => {
+    setIsOpen(true);
+    onOpen?.();
+  }, [onOpen]);
+
+  const closePortal = useCallback(() => {
+    setIsOpen(false);
+    onClose?.();
+  }, [onClose]);
+
+  useEffect(() => {
+    if (controlledIsOpen !== undefined) {
+      setIsOpen(controlledIsOpen);
+    }
+  }, [controlledIsOpen]);
 
   useEffect(() => {
     const div = document.createElement('div');
@@ -35,7 +49,7 @@ const PortalWithState: React.FC<PortalWithStateProps> = ({
     portalNode.current = div;
 
     return () => {
-      if (portalNode.current && document.body.contains(portalNode.current)) {
+      if (portalNode.current) {
         document.body.removeChild(portalNode.current);
       }
     };
@@ -54,25 +68,7 @@ const PortalWithState: React.FC<PortalWithStateProps> = ({
         document.removeEventListener('keydown', handleKeyDown);
       };
     }
-  }, [closeOnEsc, isOpen]);
-
-  const openPortal = () => {
-    if (!isControlled) {
-      setUncontrolledIsOpen(true);
-      if (onOpen) onOpen();
-    } else if (onOpen && !isOpen) {
-      onOpen();
-    }
-  };
-
-  const closePortal = () => {
-    if (!isControlled) {
-      setUncontrolledIsOpen(false);
-      if (onClose) onClose();
-    } else if (onClose && isOpen) {
-      onClose();
-    }
-  };
+  }, [closeOnEsc, isOpen, closePortal]);
 
   const portal = (childrenToPortal: React.ReactNode) => {
     if (!isOpen || !portalNode.current) {

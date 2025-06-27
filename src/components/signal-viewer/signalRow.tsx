@@ -1,15 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Search} from 'react-feather';
-import {isDate} from 'vega';
 import {View} from '../../constants/index.js';
 import {formatValueLong} from '../table/renderer.js';
-
-/* eslint-disable react/prop-types */
 
 interface Props {
   view: View;
   signal: string;
-  onValueChange: (key, value) => void;
+  onValueChange: (key: string, value: any) => void;
   maskListener: boolean;
   isHovered: boolean;
   isTimelineSelected: boolean;
@@ -42,15 +39,6 @@ const SignalRow: React.FC<Props> = ({
     }
   });
 
-  useEffect(() => {
-    try {
-      setSignalValue(view.signal(signal));
-    } catch (error) {
-      console.error(`Error getting updated signal value for "${signal}":`, error);
-      setSignalValue(null);
-    }
-  }, [view, signal]);
-
   const signalHandler = useCallback(
     (name: string, value: any) => {
       setSignalValue(value);
@@ -68,60 +56,23 @@ const SignalRow: React.FC<Props> = ({
     };
   }, [view, signal, signalHandler, maskListener]);
 
-  const renderSignal = () => {
-    if (isTimelineSelected && isHovered) {
-      return hoverValue;
-    }
-    if (isTimelineSelected) {
-      return clickedSignal;
-    } else if (isHovered) {
-      return hoverValue;
-    } else {
-      return null;
-    }
-  };
+  const displayValue = isTimelineSelected ? clickedSignal : isHovered ? hoverValue : signalValue;
 
-  const getBackgroundColor = () => {
-    if (isTimelineSelected && isHovered) {
-      return '#fce57e';
-    }
-    if (isTimelineSelected && clickedSignal !== undefined) {
-      return '#A4F9C8';
-    } else if (isHovered && hoverValue !== undefined) {
-      return '#fce57e';
-    } else {
-      return '';
-    }
-  };
+  const backgroundColor =
+    isTimelineSelected && isHovered ? '#fce57e' : isTimelineSelected ? '#A4F9C8' : isHovered ? '#fce57e' : '';
 
-  let tooLong = false;
-  let formatted = '';
-  const value = renderSignal();
-  const displayValue = value !== null && value !== undefined ? value : signalValue;
+  const {tooLong, formatted} = formatValueLong(displayValue);
 
-  if (!isDate(displayValue)) {
-    const formatValue = formatValueLong(displayValue);
-    if (formatValue !== undefined) {
-      tooLong = formatValue.tooLong;
-      formatted = formatValue.formatted;
-    } else {
-      tooLong = false;
-      formatted = 'undefined';
-    }
-  } else {
-    tooLong = false;
-    formatted = new Date(displayValue).toUTCString();
-  }
   if (tooLong) {
     return (
       <tr>
-        <td className="pointer" onClick={() => onClickHandler && onClickHandler(signal)}>
+        <td className="pointer" onClick={() => onClickHandler?.(signal)}>
           {signal}
           <Search />
         </td>
         {timeline && <td style={{padding: 0}}>{children}</td>}
         <td
-          style={{backgroundColor: getBackgroundColor()}}
+          style={{backgroundColor}}
           key={signal}
           title="The field is too large to be displayed. Please use the view API (see JS console)."
         >
@@ -129,26 +80,26 @@ const SignalRow: React.FC<Props> = ({
         </td>
       </tr>
     );
-  } else {
-    return (
-      <tr>
-        <td style={{whiteSpace: 'nowrap'}} className="pointer" onClick={() => onClickHandler && onClickHandler(signal)}>
-          {signal}
-          <Search />
-        </td>
-        {timeline && <td style={{padding: 0}}>{children}</td>}
-        <td
-          style={{
-            whiteSpace: 'nowrap',
-            backgroundColor: getBackgroundColor(),
-          }}
-          key={signal}
-        >
-          {formatted}
-        </td>
-      </tr>
-    );
   }
+
+  return (
+    <tr>
+      <td style={{whiteSpace: 'nowrap'}} className="pointer" onClick={() => onClickHandler?.(signal)}>
+        {signal}
+        <Search />
+      </td>
+      {timeline && <td style={{padding: 0}}>{children}</td>}
+      <td
+        style={{
+          whiteSpace: 'nowrap',
+          backgroundColor,
+        }}
+        key={signal}
+      >
+        {formatted}
+      </td>
+    </tr>
+  );
 };
 
 export default SignalRow;

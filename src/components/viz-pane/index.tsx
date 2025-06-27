@@ -7,20 +7,7 @@ import Renderer from './renderer.js';
 const VizPaneContainer: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const {
-    compiledEditorRef,
-    debugPane,
-    debugPaneSize,
-    decorations,
-    editorFocus,
-    editorRef,
-    error,
-    errors,
-    logs,
-    navItem,
-    settings,
-    view,
-  } = useAppSelector((state) => ({
+  const props = useAppSelector((state) => ({
     compiledEditorRef: state.compiledEditorRef,
     debugPane: state.debugPane,
     debugPaneSize: state.debugPaneSize,
@@ -50,18 +37,7 @@ const VizPaneContainer: React.FC = () => {
 
   return (
     <Renderer
-      compiledEditorRef={compiledEditorRef}
-      debugPane={debugPane}
-      debugPaneSize={debugPaneSize}
-      decorations={decorations}
-      editorFocus={editorFocus}
-      editorRef={editorRef}
-      error={error}
-      errors={errors}
-      logs={logs}
-      navItem={navItem}
-      settings={settings}
-      view={view}
+      {...props}
       setDebugPaneSize={setDebugPaneSize}
       setDecorations={setDecorations}
       showLogs={showLogs}

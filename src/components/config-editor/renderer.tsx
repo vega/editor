@@ -2,56 +2,52 @@ import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
 import {useCallback, useEffect, useRef} from 'react';
 import MonacoEditor from '@monaco-editor/react';
-import {useNavigate, useParams} from 'react-router';
+import {useNavigate} from 'react-router';
 import {debounce} from 'vega';
-import {SIDEPANE} from '../../constants/index.js';
+import {LAYOUT, Mode, SIDEPANE} from '../../constants/index.js';
+import {useAppSelector} from '../../hooks.js';
 import './config-editor.css';
 
 type Props = {
-  compiledVegaPaneSize: any;
-  compiledVegaSpec: any;
-  config: any;
-  configEditorString: string;
-  decorations: any[];
-  editorRef: any;
-  editorString: string;
-  gist: any;
-  manualParse: boolean;
-  mode: any;
-  parse: boolean;
-  selectedExample: any;
-  sidePaneItem: any;
-  themeName: string;
-  value: string;
-
   extractConfig: () => void;
   mergeConfigSpec: () => void;
   setConfig: (config: string) => void;
   setConfigEditorString: (configString: string) => void;
   setEditorReference: (reference: any) => void;
   setThemeName: (theme: string) => void;
-
-  navigate?: (path: string) => void;
-  params?: {compressed?: string};
 };
 
 const ConfigEditor: React.FC<Props> = (props) => {
   const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
-  const prevEditorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
+  const navigate = useNavigate();
+
+  const {
+    configEditorString,
+    manualParse,
+    decorations,
+    sidePaneItem,
+    editorRef: reduxEditorRef,
+  } = useAppSelector((state) => ({
+    configEditorString: state.configEditorString,
+    manualParse: state.manualParse,
+    decorations: state.decorations,
+    sidePaneItem: state.sidePaneItem,
+    editorRef: state.editorRef,
+  }));
 
   const handleEditorChange = useCallback(
     (spec: string) => {
       const newSpec = spec === '' ? '{}' : spec;
-      if (newSpec !== props.configEditorString) {
+      if (newSpec !== configEditorString) {
         props.setConfigEditorString(newSpec);
         props.setThemeName('custom');
 
-        if (!props.manualParse) {
+        if (!manualParse) {
           props.setConfig(newSpec);
         }
       }
     },
-    [props.setConfigEditorString, props.setThemeName, props.manualParse, props.setConfig, props.configEditorString],
+    [props.setConfigEditorString, props.setThemeName, manualParse, props.setConfig, configEditorString],
   );
 
   const handleMergeConfig = useCallback(() => {
@@ -59,9 +55,9 @@ const ConfigEditor: React.FC<Props> = (props) => {
     if (!confirmation) {
       return;
     }
-    props.navigate('/edited');
+    navigate('/edited');
     props.mergeConfigSpec();
-  }, [props.navigate, props.mergeConfigSpec]);
+  }, [navigate, props.mergeConfigSpec]);
 
   const handleExtractConfig = useCallback(() => {
     const confirmation = confirm('The spec and config will be formatted.');
@@ -74,7 +70,7 @@ const ConfigEditor: React.FC<Props> = (props) => {
   const handleEditorMount = useCallback(
     (editor: Monaco.editor.IStandaloneCodeEditor) => {
       editor.onDidFocusEditorText(() => {
-        editor.deltaDecorations(props.decorations, []);
+        editor.deltaDecorations(decorations, []);
       });
 
       editor.addAction({
@@ -95,27 +91,26 @@ const ConfigEditor: React.FC<Props> = (props) => {
 
       editorRef.current = editor;
 
-      if (props.sidePaneItem === SIDEPANE.Config) {
+      if (sidePaneItem === SIDEPANE.Config) {
         editor.focus();
         editor.layout();
       }
     },
-    [props.decorations, props.sidePaneItem, handleMergeConfig, handleExtractConfig],
+    [decorations, sidePaneItem, handleMergeConfig, handleExtractConfig],
   );
 
   useEffect(() => {
-    if (editorRef.current && editorRef.current !== props.editorRef && props.sidePaneItem === SIDEPANE.Config) {
-      prevEditorRef.current = editorRef.current;
+    if (editorRef.current && editorRef.current !== reduxEditorRef && sidePaneItem === SIDEPANE.Config) {
       props.setEditorReference(editorRef.current);
     }
-  }, [editorRef.current, props.editorRef, props.sidePaneItem, props.setEditorReference]);
+  }, [editorRef.current, reduxEditorRef, sidePaneItem, props.setEditorReference]);
 
   useEffect(() => {
-    if (props.sidePaneItem === SIDEPANE.Config && editorRef.current) {
+    if (sidePaneItem === SIDEPANE.Config && editorRef.current) {
       editorRef.current.focus();
       editorRef.current.layout();
     }
-  }, [props.sidePaneItem]);
+  }, [sidePaneItem]);
 
   const debouncedHandleEditorChange = useCallback(debounce(700, handleEditorChange), [handleEditorChange]);
 
@@ -155,17 +150,11 @@ const ConfigEditor: React.FC<Props> = (props) => {
           },
         }}
         onChange={debouncedHandleEditorChange}
-        defaultValue={props.configEditorString}
+        defaultValue={configEditorString}
         onMount={handleEditorMount}
       />
     </div>
   );
 };
 
-const ConfigEditorWithNavigation = (props: Omit<Props, 'navigate' | 'params'>) => {
-  const navigate = useNavigate();
-  const params = useParams();
-  return <ConfigEditor {...props} navigate={navigate} params={params} />;
-};
-
-export default ConfigEditorWithNavigation;
+export default ConfigEditor;

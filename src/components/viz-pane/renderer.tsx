@@ -1,19 +1,19 @@
-import * as React from 'react';
-import {useCallback, useEffect, useMemo, useState, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import Split from 'react-split';
+import {version as VG_VERSION} from 'vega';
+import {version as VL_VERSION} from 'vega-lite';
+import {version as TOOLTIP_VERSION} from 'vega-tooltip';
+
 import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants/index.js';
+import {DataflowViewer} from '../../features/dataflow/DataflowViewer.js';
 import DataViewer from '../data-viewer/index.js';
 import ErrorBoundary from '../error-boundary/index.js';
 import ErrorPane from '../error-pane/index.js';
+import {COMMIT_HASH} from '../header/help-modal/index.js';
 import Renderer from '../renderer/index.js';
 import SignalViewer from '../signal-viewer/index.js';
 import DebugPaneHeader from './debug-pane-header/index.js';
 import './index.css';
-import {version as VG_VERSION} from 'vega';
-import {version as VL_VERSION} from 'vega-lite';
-import {version as TOOLTIP_VERSION} from 'vega-tooltip';
-import {COMMIT_HASH} from '../header/help-modal/index.js';
-import {DataflowViewer} from '../../features/dataflow/DataflowViewer.js';
-import Split from 'react-split';
 
 interface VizPaneProps {
   compiledEditorRef: any;
@@ -36,8 +36,6 @@ interface VizPaneProps {
 }
 
 const VizPane: React.FC<VizPaneProps> = (props) => {
-  const [header] = useState('');
-
   const initialSetupDone = useRef(false);
 
   useEffect(() => {

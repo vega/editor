@@ -1,1 +1,3 @@
-export {default} from './renderer.js';
+import Renderer from './renderer.js';
+
+export default Renderer;

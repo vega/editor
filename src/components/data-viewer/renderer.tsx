@@ -4,34 +4,36 @@ import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
 import {debounce} from 'vega';
+
+import {useAppSelector} from '../../hooks';
 import ErrorBoundary from '../error-boundary/index.js';
-import Table from '../table/index.js';
+import Table from './table.js';
 import './index.css';
-import {OwnComponentProps} from './index.js';
 
-interface StoreProps {
-  editorRef: any;
-  view: any;
+export interface OwnComponentProps {
+  onClickHandler: (header: string) => void;
 }
-
-type Props = StoreProps & OwnComponentProps;
 
 const ROWS_PER_PAGE = 50;
 
-const DataViewer: React.FC<Props> = (props) => {
+const DataViewer: React.FC<OwnComponentProps> = (props) => {
+  const view = useAppSelector((state) => state.view);
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedData, setSelectedData] = useState('');
   const debouncedDataChangedRef = useRef<(() => void) | null>(null);
 
   const getDatasets = useCallback(() => {
+    if (!view) {
+      return [];
+    }
     return Object.keys(
-      props.view.getState({
+      view.getState({
         data: vega.truthy,
         signals: vega.falsy,
         recurse: true,
       }).data,
     );
-  }, [props.view]);
+  }, [view]);
 
   const setDefaultDataset = useCallback(() => {
     const datasets = getDatasets();
@@ -62,36 +64,24 @@ const DataViewer: React.FC<Props> = (props) => {
   }, [setDefaultDataset]);
 
   useEffect(() => {
-    return () => {
-      if (selectedData && debouncedDataChangedRef.current) {
-        props.view.removeDataListener(selectedData, debouncedDataChangedRef.current);
-      }
-    };
-  }, [selectedData, props.view]);
-
-  useEffect(() => {
+    if (!view) {
+      return;
+    }
     const datasets = getDatasets();
 
     if (datasets.indexOf(selectedData) === -1) {
       setCurrentPage(0);
       setSelectedData('');
     } else if (selectedData && debouncedDataChangedRef.current) {
-      props.view.addDataListener(selectedData, debouncedDataChangedRef.current);
+      view.addDataListener(selectedData, debouncedDataChangedRef.current);
     }
-  }, [props.view, getDatasets, selectedData]);
-  useEffect(() => {
-    if (selectedData === '') {
-      setDefaultDataset();
-    } else if (selectedData && debouncedDataChangedRef.current) {
-      props.view.addDataListener(selectedData, debouncedDataChangedRef.current);
 
-      return () => {
-        if (debouncedDataChangedRef.current) {
-          props.view.removeDataListener(selectedData, debouncedDataChangedRef.current);
-        }
-      };
-    }
-  }, [selectedData, props.view, setDefaultDataset]);
+    return () => {
+      if (selectedData && debouncedDataChangedRef.current) {
+        view.removeDataListener(selectedData, debouncedDataChangedRef.current);
+      }
+    };
+  }, [view, getDatasets, selectedData]);
 
   const datasets = useMemo(() => {
     const datasetList = getDatasets();
@@ -109,9 +99,7 @@ const DataViewer: React.FC<Props> = (props) => {
     return selectedData;
   }, [datasets, selectedData]);
 
-  const data = useMemo(() => {
-    return props.view.data(selected) || [];
-  }, [props.view, selected]);
+  const data = view.data(selected) || [];
 
   const pageCount = useMemo(() => {
     return Math.ceil(data.length / ROWS_PER_PAGE);

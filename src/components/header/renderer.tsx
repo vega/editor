@@ -11,7 +11,7 @@ import {NAMES} from '../../constants/consts.js';
 import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs.js';
 import {getAuthFromLocalStorage, saveAuthToLocalStorage, clearAuthFromLocalStorage} from '../../utils/browser.js';
 import ExportModal from './export-modal/index.js';
-import GistModal from './gist-modal/index.js';
+import GistModal from './gist-modal/renderer.js';
 import HelpModal from './help-modal/index.js';
 import './index.css';
 import ShareModal from './share-modal/index.js';
@@ -20,12 +20,6 @@ import {PortalWithState} from '../../components/portal/index.js';
 export interface Props {
   showExample: boolean;
 }
-
-const formatExampleName = (nameStr: string) =>
-  nameStr
-    .split(/[_-]/)
-    .map((i) => i[0].toUpperCase() + i.substring(1))
-    .join(' ');
 
 const Header: React.FC<Props> = ({showExample}) => {
   const dispatch = useAppDispatch();
@@ -49,7 +43,6 @@ const Header: React.FC<Props> = ({showExample}) => {
   const [open, setOpen] = useState(false);
   const [scrollPosition, setScrollPos] = useState(0);
   const [showVega, setShowVega] = useState(mode === Mode.Vega);
-  const [listenerAttached, setListenerAttached] = useState(false);
   const [helpModalOpen, setHelpModalOpen] = useState(false);
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -63,11 +56,9 @@ const Header: React.FC<Props> = ({showExample}) => {
   }, [mode]);
 
   useEffect(() => {
-    const className = ['profile-img', 'arrow-down', 'profile-container'];
     const handleClick = (e) => {
-      const key = 'className';
-      if (className.includes(e.target[key])) {
-        setOpen(!open);
+      if (e.target.closest('.profile-container')) {
+        setOpen((prev) => !prev);
       } else {
         setOpen(false);
       }
@@ -78,7 +69,7 @@ const Header: React.FC<Props> = ({showExample}) => {
     return () => {
       window.removeEventListener('click', handleClick);
     };
-  }, [open]);
+  }, []);
 
   useEffect(() => {
     const checkAuthFromHash = async () => {
@@ -342,8 +333,6 @@ const Header: React.FC<Props> = ({showExample}) => {
     },
     [dispatch, vegaSpec, onSelectNewVega, onSelectNewVegaLite],
   );
-
-  const handleHelpModalToggle = useCallback(() => setHelpModalOpen(!helpModalOpen), [helpModalOpen]);
 
   const handleSettingsClick = useCallback(() => {
     dispatch(EditorActions.setSettingsState(!settings));

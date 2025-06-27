@@ -5,18 +5,16 @@ import {useAppSelector} from '../../../hooks.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
 import './index.css';
 import {parse as parseJSONC} from 'jsonc-parser';
-import {useRef, useState} from 'react';
+import {useRef, useState, useCallback} from 'react';
 
 export type Props = {
   closePortal: () => void;
 };
 
 export default function GistModal({closePortal}: Props) {
-  const {handle, mode} = useAppSelector((state) => ({
+  const {handle} = useAppSelector((state) => ({
     handle: state.handle,
-    isAuthenticated: state.isAuthenticated,
     mode: state.mode,
-    private: state.private,
   }));
 
   const refGistForm = useRef<HTMLFormElement>(null);
@@ -29,7 +27,6 @@ export default function GistModal({closePortal}: Props) {
       bottom: 0,
     },
     revision: '',
-    type: mode,
     url: '',
   });
 
@@ -37,39 +34,14 @@ export default function GistModal({closePortal}: Props) {
   const [invalidFilename, setInvalidFilename] = useState(false);
   const [invalidRevision, setInvalidRevision] = useState(false);
   const [invalidUrl, setInvalidUrl] = useState(false);
-  const [latestRevision, setLatestRevision] = useState(false);
   const [syntaxError, setSyntaxError] = useState(false);
 
-  const updateGist = (newGist) => {
-    setGist({
-      ...gist,
-      ...newGist,
-    });
-  };
-
-  const updateGistUrl = (event) => {
-    updateGist({url: event.currentTarget.value});
-    setInvalidUrl(false);
-  };
-
-  const updateGistRevision = (event) => {
-    updateGist({revision: event.currentTarget.value});
-    setInvalidRevision(false);
-  };
-
-  const updateGistFile = (event) => {
-    updateGist({filename: event.currentTarget.value});
-    setInvalidFilename(false);
-  };
+  const updateGist = useCallback((newGist) => {
+    setGist((g) => ({...g, ...newGist}));
+  }, []);
 
   const onSelectGist = async () => {
     const url = gist.url.trim().toLowerCase();
-
-    setGist({
-      ...gist,
-      filename: gist.filename.trim(),
-      revision: gist.revision.trim().toLowerCase(),
-    });
 
     if (url.length === 0) {
       refGistForm.current?.reportValidity();
@@ -79,19 +51,18 @@ export default function GistModal({closePortal}: Props) {
 
     let gistUrl: URL;
 
-    if (url.match(/gist\.githubusercontent\.com/)) {
-      gistUrl = new URL(url, 'https://gist.githubusercontent.com');
-      const [revision, filename] = gistUrl.pathname.split('/').slice(4);
-      setGist({
-        ...gist,
-        filename,
-        revision,
-      });
-    } else if (url.match(/gist\.github\.com/)) {
-      gistUrl = new URL(url, 'https://gist.github.com');
+    try {
+      gistUrl = new URL(url);
+    } catch (e) {
+      setInvalidUrl(true);
+      setGistLoadClicked(false);
+      return;
     }
 
-    const gistId = gistUrl.pathname.split('/')[2];
+    const pathParts = gistUrl.pathname.split('/');
+    const gistId = pathParts[2];
+    const revision = gist.revision.trim().toLowerCase() || undefined;
+    let filename = gist.filename.trim();
 
     try {
       const headers: HeadersInit = {
@@ -103,101 +74,48 @@ export default function GistModal({closePortal}: Props) {
         headers['Authorization'] = `token ${githubToken}`;
       }
 
-      const gistCommitsResponse = await fetch(`https://api.github.com/gists/${gistId}/commits`, {
-        headers,
-      });
-
-      setInvalidUrl(!gistCommitsResponse.ok);
-
-      if (!gistCommitsResponse.ok) {
-        setGistLoadClicked(false);
-        throw new Error(`Failed to fetch gist commits: ${gistCommitsResponse.status}`);
-      }
-
-      const gistCommits = await gistCommitsResponse.json();
-
-      if (!gist.revision && !invalidUrl) {
-        setGist({
-          ...gist,
-          revision: gistCommits[0].version,
-        });
-      } else if (invalidUrl) {
-        setGistLoadClicked(false);
-        throw new Error('Invalid Gist URL');
-      }
-
-      if (gistCommits[0].version === gist.revision) {
-        setLatestRevision(true);
-      }
-
-      const gistSummaryResponse = await fetch(`https://api.github.com/gists/${gistId}/${gist.revision}`, {
-        headers,
-      });
-
-      setInvalidRevision(!gistSummaryResponse.ok);
+      const gistSummaryResponse = await fetch(
+        `https://api.github.com/gists/${gistId}${revision ? `/${revision}` : ''}`,
+        {
+          headers,
+        },
+      );
 
       if (!gistSummaryResponse.ok) {
+        setInvalidUrl(true);
         setGistLoadClicked(false);
-        throw new Error(`Failed to fetch gist summary: ${gistSummaryResponse.status}`);
+        return;
       }
 
       const gistSummary = await gistSummaryResponse.json();
 
-      if (invalidRevision) {
-        setGistLoadClicked(false);
-        throw new Error('Invalid Revision');
-      } else if (!invalidRevision && gist.filename === '') {
-        const jsonFiles = Object.keys(gistSummary.files).filter((file) => {
-          if (file.split('.').slice(-1)[0] === 'json') {
-            return true;
-          }
-        });
+      if (!filename) {
+        const jsonFiles = Object.keys(gistSummary.files).filter((file) => file.endsWith('.json'));
         if (jsonFiles.length === 0) {
-          setGistLoadClicked(false);
           setInvalidUrl(true);
-          throw new Error('No JSON file exists in the gist');
-        } else {
-          setGist({
-            ...gist,
-            filename: jsonFiles[0],
-          });
-          const {revision, filename} = gist;
-          parseJSONC(gistSummary.files[jsonFiles[0]].content);
-          if (latestRevision) {
-            navigate(`/gist/${gistId}/${filename}`);
-          } else {
-            navigate(`/gist/${gistId}/${revision}/${filename}`);
-          }
-          closePortal();
-        }
-      } else {
-        if (gistSummary.files[gist.filename] === undefined) {
           setGistLoadClicked(false);
-          setInvalidFilename(true);
-          throw new Error('Invalid file name');
+          return;
         }
-
-        try {
-          const content = await fetchGistContent(gistSummary, gist.filename);
-
-          const errors = [];
-          parseJSONC(content, errors);
-          if (errors.length > 0) throw SyntaxError; // check if the loaded file is a JSON
-
-          const {revision, filename} = gist;
-          if (latestRevision) {
-            navigate(`/gist/${gistId}/${filename}`);
-          } else {
-            navigate(`/gist/${gistId}/${revision}/${filename}`);
-          }
-          closePortal();
-        } catch (error) {
-          if (error instanceof SyntaxError) {
-            setGistLoadClicked(false);
-            setSyntaxError(true);
-          }
-        }
+        filename = jsonFiles[0];
       }
+
+      if (!gistSummary.files[filename]) {
+        setInvalidFilename(true);
+        setGistLoadClicked(false);
+        return;
+      }
+
+      const content = await fetchGistContent(gistSummary, filename);
+      const errors = [];
+      parseJSONC(content, errors);
+      if (errors.length > 0) {
+        setSyntaxError(true);
+        setGistLoadClicked(false);
+        return;
+      }
+
+      navigate(`/gist/${gistId}${revision ? `/${revision}` : ''}/${filename}`);
+      closePortal();
     } catch (error) {
       console.error('Error loading gist:', error);
       setGistLoadClicked(false);
@@ -215,8 +133,7 @@ export default function GistModal({closePortal}: Props) {
 
   const preview = (id, file, image) => {
     if (id) {
-      setGist({
-        ...gist,
+      updateGist({
         url: `https://gist.github.com/${id}`,
         filename: file || '',
         image: image || '',
@@ -228,23 +145,13 @@ export default function GistModal({closePortal}: Props) {
   };
 
   const slideImage = (event) => {
-    const imageStyle = gist.imageStyle;
-    imageStyle.bottom = imageStyle.bottom + event.deltaY;
-    setGist({
-      ...gist,
-      imageStyle,
-    });
+    updateGist({imageStyle: {bottom: gist.imageStyle.bottom + event.deltaY}});
   };
 
   const slideImageBack = () => {
-    setGist({
-      ...gist,
-      image: '',
-      imageStyle: {
-        bottom: 0,
-      },
-    });
+    updateGist({image: '', imageStyle: {bottom: 0}});
   };
+
   return (
     <div>
       <h1>
@@ -274,8 +181,7 @@ export default function GistModal({closePortal}: Props) {
                     <span
                       className="gist-url"
                       onClick={() =>
-                        setGist({
-                          ...gist,
+                        updateGist({
                           filename: '',
                           image: '',
                           revision: '',
@@ -293,7 +199,7 @@ export default function GistModal({closePortal}: Props) {
                   type="text"
                   placeholder="Enter URL"
                   value={gist.url}
-                  onChange={updateGistUrl}
+                  onChange={(e) => updateGist({url: e.target.value, invalidUrl: false})}
                 />
               </label>
               <div className="error-message">{invalidUrl && <span>Please enter a valid URL.</span>}</div>
@@ -307,7 +213,7 @@ export default function GistModal({closePortal}: Props) {
                     type="text"
                     placeholder="Enter revision"
                     value={gist.revision}
-                    onChange={updateGistRevision}
+                    onChange={(e) => updateGist({revision: e.target.value, invalidRevision: false})}
                   />
                 </label>
                 <div className="error-message">{invalidRevision && <span>Please enter a valid revision.</span>}</div>
@@ -320,7 +226,7 @@ export default function GistModal({closePortal}: Props) {
                     type="text"
                     placeholder="Enter filename"
                     value={gist.filename}
-                    onChange={updateGistFile}
+                    onChange={(e) => updateGist({filename: e.target.value, invalidFilename: false})}
                   />
                 </label>
                 <div className="error-message">
@@ -363,7 +269,7 @@ export default function GistModal({closePortal}: Props) {
             ) : (
               <></>
             )}
-            <button type="button" onClick={() => onSelectGist()}>
+            <button type="button" onClick={onSelectGist}>
               {gistLoadClicked ? 'Loading..' : 'Load'}
             </button>
           </form>

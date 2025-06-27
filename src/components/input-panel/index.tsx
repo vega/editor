@@ -34,24 +34,22 @@ const InputPanel: React.FC = () => {
   );
 
   useEffect(() => {
-    if (mode === Mode.VegaLite) {
-      if (compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-        dispatch(EditorActions.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3));
-      }
+    if (mode === Mode.VegaLite && compiledVegaPaneSize === LAYOUT.MinPaneSize) {
+      dispatch(EditorActions.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.3));
     }
   }, [mode, compiledVegaPaneSize, dispatch]);
 
-  const getInnerPanes = useCallback(() => {
-    const editorPane = (
-      <div key="editor" className="full-height-wrapper">
-        <SpecEditorHeader key="specEditorHeader" />
+  const editorPane = useMemo(
+    () => (
+      <div className="full-height-wrapper">
+        <SpecEditorHeader />
         <div
           style={{
             height: 'calc(100% - 30px)',
             display: sidePaneItem === SIDEPANE.Editor ? '' : 'none',
           }}
         >
-          <SpecEditor key="editor" />
+          <SpecEditor />
         </div>
         <div
           style={{
@@ -59,21 +57,21 @@ const InputPanel: React.FC = () => {
             display: sidePaneItem === SIDEPANE.Config ? '' : 'none',
           }}
         >
-          <ConfigEditor key="configEditor" />
+          <ConfigEditor />
         </div>
       </div>
-    );
+    ),
+    [sidePaneItem],
+  );
 
-    const compiledPane = (
+  const compiledPane = useMemo(
+    () => (
       <div style={{position: 'relative', zIndex: 0}}>
-        {compiledVegaSpec ? <CompiledSpecDisplay key="compiled" /> : <CompiledSpecHeader key="compiledSpecHeader" />}
+        {compiledVegaSpec ? <CompiledSpecDisplay /> : <CompiledSpecHeader />}
       </div>
-    );
-
-    return [editorPane, compiledPane];
-  }, [sidePaneItem, compiledVegaSpec]);
-
-  const innerPanes = useMemo(() => getInnerPanes(), [getInnerPanes]);
+    ),
+    [compiledVegaSpec],
+  );
 
   const initialSizes = useMemo(() => {
     return compiledVegaSpec ? [70, 30] : [100, 0];
@@ -88,7 +86,7 @@ const InputPanel: React.FC = () => {
   if (mode === Mode.Vega) {
     return (
       <div role="group" aria-label="spec editors" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-        {innerPanes[0]}
+        {editorPane}
       </div>
     );
   }
@@ -109,8 +107,8 @@ const InputPanel: React.FC = () => {
         onDrag={handleChange}
         onDragEnd={handleDragEnd}
       >
-        {innerPanes[0]}
-        {innerPanes[1]}
+        {editorPane}
+        {compiledPane}
       </Split>
     </div>
   );

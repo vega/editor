@@ -3,7 +3,7 @@ import {editorSlice} from '../slices/editorSlice.js';
 import {uiSlice} from '../slices/uiSlice.js';
 import {authSlice} from '../slices/authSlice.js';
 import {configSlice} from '../slices/configSlice.js';
-import {dataflowReducer, dataflowInitialState} from '../features/dataflow/index.js';
+import {dataflowReducer} from '../features/dataflow/index.js';
 import {persistenceMiddleware} from './middleware/persistence.js';
 import {State} from '../constants/default-state.js';
 
@@ -13,8 +13,6 @@ const regularReducers = combineReducers({
   auth: authSlice.reducer,
   config: configSlice.reducer,
 });
-
-type RegularState = ReturnType<typeof regularReducers>;
 
 const rootReducer: Reducer<State> = (state: any, action: any): State => {
   const regularState = regularReducers(state, action);
@@ -30,14 +28,6 @@ const loadPersistedState = (): any => {
     }
 
     const state = JSON.parse(serializedState);
-
-    const excludedFields = [
-      'editor.editorRef',
-      'editor.compiledEditorRef',
-      'editor.signals',
-      'editor.view',
-      ...Object.keys(dataflowInitialState).map((key) => `dataflow.${key}`),
-    ];
 
     return state;
   } catch (err) {

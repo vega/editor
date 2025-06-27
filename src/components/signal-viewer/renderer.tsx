@@ -40,29 +40,28 @@ const SignalViewer: React.FC<OwnProps> = ({onClickHandler}) => {
   }, [view]);
 
   const getSignals = useCallback(
-    (changedSignal = null) => {
+    (changedSignal: string | null = null) => {
       if (!timeline) {
         return;
       }
+
+      const newSignals = {...signals};
+      const newXCount = xCount + 1;
+
       if (changedSignal) {
         const obj = {
           value: view.signal(changedSignal),
-          xCount: xCount,
+          xCount: newXCount,
         };
-        const newSignalHistory = signals[changedSignal] ? [...signals[changedSignal], obj] : [obj];
-        setSignals({
-          ...signals,
-          [changedSignal]: newSignalHistory,
-        });
-        setXCount((prev) => prev + 1);
+        newSignals[changedSignal] = newSignals[changedSignal] ? [...newSignals[changedSignal], obj] : [obj];
       } else {
-        const obj = {};
         keys.forEach((key) => {
-          obj[key] = [{value: view.signal(key), xCount: xCount}];
+          newSignals[key] = [{value: view.signal(key), xCount: newXCount}];
         });
-        setSignals(obj);
-        setXCount((prev) => prev + 1);
       }
+
+      setSignals(newSignals);
+      setXCount(newXCount);
     },
     [timeline, view, xCount, signals, keys, setSignals],
   );

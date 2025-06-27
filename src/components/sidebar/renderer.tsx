@@ -15,18 +15,15 @@ const LEVEL_NAMES = {
   4: 'Debug',
 };
 
-const LOG_OPTIONS = [
-  {label: LEVEL_NAMES[0], value: 0},
-  {label: LEVEL_NAMES[1], value: 1},
-  {label: LEVEL_NAMES[2], value: 2},
-  {label: LEVEL_NAMES[3], value: 3},
-  {label: LEVEL_NAMES[4], value: 4},
-];
+const LOG_OPTIONS = Object.entries(LEVEL_NAMES).map(([value, label]) => ({
+  label,
+  value: parseInt(value, 10),
+}));
 
 const HOVER_OPTIONS = [
-  {label: 'Auto', value: 'Auto'},
-  {label: 'On', value: 'On'},
-  {label: 'Off', value: 'Off'},
+  {label: 'Auto', value: 'auto'},
+  {label: 'On', value: true},
+  {label: 'Off', value: false},
 ];
 
 interface SidebarProps {
@@ -59,66 +56,48 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
 
   const handleOutsideClick = useCallback(
     (event: Event) => {
-      if (!listenerAttachedRef.current && window.innerWidth <= SIZE_THRESHOLD) {
-        const target: any = event.target;
-        if (
-          target.closest('.settings') ||
-          target.closest('.settings-button') ||
-          target.classList.contains('log-level-dropdown__option') ||
-          target.classList.contains('renderer-dropdown__option')
-        ) {
-          return;
-        }
-        props.setSettingsState(false);
-        listenerAttachedRef.current = true;
+      if (listenerAttachedRef.current || window.innerWidth > SIZE_THRESHOLD) {
+        return;
       }
+      const target: any = event.target;
+      if (
+        target.closest('.settings') ||
+        target.closest('.settings-button') ||
+        target.classList.contains('log-level-dropdown__option') ||
+        target.classList.contains('renderer-dropdown__option')
+      ) {
+        return;
+      }
+      props.setSettingsState(false);
     },
     [props.setSettingsState],
   );
 
   const handleResize = useCallback(() => {
-    if (listenerAttachedRef.current && window.innerWidth > SIZE_THRESHOLD) {
+    if (window.innerWidth <= SIZE_THRESHOLD) {
+      if (!listenerAttachedRef.current) {
+        document.body.addEventListener('click', handleOutsideClick, true);
+        listenerAttachedRef.current = true;
+      }
+    } else if (listenerAttachedRef.current) {
       document.body.removeEventListener('click', handleOutsideClick, true);
       listenerAttachedRef.current = false;
     }
-    if (!listenerAttachedRef.current && window.innerWidth <= SIZE_THRESHOLD) {
-      document.body.addEventListener('click', handleOutsideClick, true);
-      listenerAttachedRef.current = true;
-    }
   }, [handleOutsideClick]);
 
-  const setHover = useCallback(
-    (e: {label: string; value: string}) => {
-      let newHover: boolean | 'auto' = 'auto';
-      switch (e.label) {
-        case 'On':
-          newHover = true;
-          break;
-        case 'Off':
-          newHover = false;
-          break;
-        case 'Auto':
-          newHover = 'auto';
-          break;
-      }
-      props.setHover(newHover);
-    },
-    [props.setHover],
-  );
-
   useEffect(() => {
-    document.body.addEventListener('click', handleOutsideClick, true);
-
+    handleResize();
     window.addEventListener('keydown', handleEscClick, true);
-
     window.addEventListener('resize', handleResize);
 
     return () => {
-      document.body.removeEventListener('click', handleOutsideClick, true);
+      if (listenerAttachedRef.current) {
+        document.body.removeEventListener('click', handleOutsideClick, true);
+      }
       window.removeEventListener('keydown', handleEscClick, true);
       window.removeEventListener('resize', handleResize);
     };
-  }, [handleOutsideClick, handleEscClick, handleResize]);
+  }, [handleEscClick, handleResize, handleOutsideClick]);
 
   const {
     logLevel,

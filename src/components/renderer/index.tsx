@@ -3,27 +3,12 @@ import * as EditorActions from '../../actions/editor.js';
 import {useAppSelector, useAppDispatch} from '../../hooks.js';
 import {recordPulse} from '../../features/dataflow/pulsesSlice.js';
 import {setRuntime} from '../../features/dataflow/runtimeSlice.js';
-import Renderer, {RendererProps} from './renderer.js';
+import Renderer from './renderer.js';
 
 const RendererContainer: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const {
-    baseURL,
-    config,
-    editorString,
-    hoverEnable,
-    logLevel,
-    mode,
-    renderer,
-    tooltipEnable,
-    vegaLiteSpec,
-    normalizedVegaLiteSpec,
-    vegaSpec,
-    view,
-    backgroundColor,
-    expressionInterpreter,
-  } = useAppSelector((state) => ({
+  const props = useAppSelector((state) => ({
     baseURL: state.baseURL,
     config: state.config,
     editorString: state.editorString,
@@ -40,27 +25,14 @@ const RendererContainer: React.FC = () => {
     expressionInterpreter: state.expressionInterpreter,
   }));
 
-  const rendererProps: RendererProps = {
-    baseURL,
-    config,
-    editorString,
-    hoverEnable,
-    logLevel,
-    mode,
-    renderer,
-    tooltipEnable,
-    vegaLiteSpec,
-    normalizedVegaLiteSpec,
-    vegaSpec,
-    view,
-    backgroundColor,
-    expressionInterpreter,
-    setView: (newView) => dispatch(EditorActions.setView(newView)),
-    setRuntime: (runtime) => dispatch(setRuntime(runtime)),
-    recordPulse: (clock, values) => dispatch(recordPulse(clock, values)),
-  };
-
-  return <Renderer {...rendererProps} />;
+  return (
+    <Renderer
+      {...props}
+      setView={(newView) => dispatch(EditorActions.setView(newView))}
+      setRuntime={(runtime) => dispatch(setRuntime(runtime))}
+      recordPulse={(clock, values) => dispatch(recordPulse({clock, values}))}
+    />
+  );
 };
 
 export default RendererContainer;

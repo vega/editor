@@ -72,18 +72,7 @@ export default function ExportModal() {
     link.dispatchEvent(new MouseEvent('click'));
   };
 
-  const updateIncludeConfig = (e) => {
-    setIncludeConfig(e.target.checked);
-  };
-
-  const downloadJSON = (event) => {
-    if (
-      event.target?.matches(`input`) ||
-      event.target?.matches(`label`) ||
-      event.target?.matches(`div.type-input-container`)
-    ) {
-      return;
-    }
+  const downloadJSON = () => {
     let content;
     let filename: string;
     if (mode === Mode.Vega) {
@@ -109,9 +98,6 @@ export default function ExportModal() {
     link.setAttribute(`target`, `_blank`);
     link.setAttribute(`download`, filename);
     link.dispatchEvent(new MouseEvent(`click`));
-  };
-  const updateDownloadJSONType = (event) => {
-    setDownloadVegaJSON(event.currentTarget.value === 'vega');
   };
 
   const downloadHTML = () => {
@@ -169,10 +155,9 @@ export default function ExportModal() {
                 <input
                   type="radio"
                   name="json-type"
-                  id="json-type[vega]"
                   value="vega"
                   checked={downloadVegaJSON}
-                  onChange={updateDownloadJSONType}
+                  onChange={() => setDownloadVegaJSON(true)}
                 />{' '}
                 Compiled Vega
               </label>
@@ -180,10 +165,9 @@ export default function ExportModal() {
                 <input
                   type="radio"
                   name="json-type"
-                  id="json-type[vega-lite]"
                   value="vega-lite"
                   checked={!downloadVegaJSON}
-                  onChange={updateDownloadJSONType}
+                  onChange={() => setDownloadVegaJSON(false)}
                 />
                 Vega-Lite
               </label>
@@ -198,10 +182,8 @@ export default function ExportModal() {
                   <input
                     type="checkbox"
                     name="config-include"
-                    id="config-include"
-                    value="config-select"
                     checked={includeConfig}
-                    onChange={updateIncludeConfig}
+                    onChange={() => setIncludeConfig(!includeConfig)}
                   />
                   Include config
                 </label>
@@ -209,7 +191,7 @@ export default function ExportModal() {
               </div>
             )}
           </div>
-          <button onClick={(e) => downloadJSON(e)}>Download</button>
+          <button onClick={downloadJSON}>Download</button>
         </div>
         <div className="export-container">
           <div className="header-text">

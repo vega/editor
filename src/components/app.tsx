@@ -2,38 +2,33 @@ import stringify from 'json-stringify-pretty-compact';
 import {parse as parseJSONC} from 'jsonc-parser';
 import * as React from 'react';
 import {useCallback, useEffect} from 'react';
-import {useParams, useNavigate, useLocation} from 'react-router';
+import {useParams} from 'react-router';
 import {MessageData} from 'vega-embed';
-import {hash} from 'vega-lite';
-import * as EditorActions from '../actions/editor.js';
-import {LAYOUT, Mode} from '../constants/index.js';
-import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts.js';
-import {useAppSelector, useAppDispatch} from '../hooks.js';
+import * as EditorActions from '../actions/editor';
+import {LAYOUT, Mode} from '../constants/index';
+import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
+import {useAppSelector, useAppDispatch} from '../hooks';
 import './app.css';
 import './split.css';
-import Header from './header/index.js';
-import InputPanel from './input-panel/index.js';
+import Header from './header';
+import InputPanel from './input-panel';
 import Sidebar from './sidebar/index.js';
 import VizPane from './viz-pane/index.js';
 import Split from 'react-split';
 
 type Props = {
   showExample: boolean;
-  params?: Record<string, string>;
 };
 
 const App: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
-  const {configEditorString, editorRef, settings} = useAppSelector((state) => ({
-    configEditorString: state.configEditorString,
+  const {editorRef, settings} = useAppSelector((state) => ({
     editorRef: state.editorRef,
     settings: state.settings,
     view: state.view,
   }));
 
   const params = useParams();
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const setExample = useCallback(
     async (parameter: {example_name: string; mode: string}) => {
@@ -198,17 +193,9 @@ const App: React.FC<Props> = (props) => {
     };
   }, [params, dispatch, setSpecInUrl]);
 
-  // router prop to pass to header
-  const routerProps = {
-    match: {params},
-    history: {push: navigate},
-    location,
-    staticContext: undefined,
-  };
-
   return (
     <div className="app-container">
-      <Header showExample={props.showExample} {...routerProps} />
+      <Header showExample={props.showExample} />
       <div
         style={{
           height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,

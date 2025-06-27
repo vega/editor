@@ -6,7 +6,7 @@ import Reset from './reset.js';
 
 export default function AppShell() {
   return (
-    <div>
+    <>
       <Routes>
         <Route path="/" element={<App showExample={false} />} />
         <Route path="/reset" element={<Reset />} />
@@ -20,6 +20,6 @@ export default function AppShell() {
         <Route path="/custom/:mode" element={<App showExample={false} />} />
         <Route path="/url/:mode/:compressed" element={<App showExample={false} />} />
       </Routes>
-    </div>
+    </>
   );
 }
