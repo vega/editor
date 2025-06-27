@@ -1,25 +1,43 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import MonacoEditor from '@monaco-editor/react';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
 import * as EditorActions from '../../../actions/editor.js';
 import {EDITOR_FOCUS, LAYOUT, COMPILEDPANE} from '../../../constants/index.js';
-import {State} from '../../../constants/default-state.js';
 import CompiledSpecDisplayHeader from '../compiled-spec-header/index.js';
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useCallback} from 'react';
+import {useAppDispatch, useAppSelector} from '../../../hooks.js';
 
 function CompiledSpecDisplay() {
-  const props = useSelector((state: State) => mapStateToProps(state));
-  const dispatch = useDispatch();
-  const dispatchProps = mapDispatchToProps(dispatch);
+  const dispatch = useAppDispatch();
 
-  const editorRef = useRef(null);
+  const compiledEditorRef = useAppSelector((state) => state.compiledEditorRef);
+  const compiledVegaPaneSize = useAppSelector((state) => state.compiledVegaPaneSize);
+  const decorations = useAppSelector((state) => state.decorations);
+  const editorRef = useAppSelector((state) => state.editorRef);
+  const value = useAppSelector((state) =>
+    state.compiledPaneItem === COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
+  );
+
+  const setCompiledEditorReference = useCallback(
+    (ref) => {
+      dispatch(EditorActions.setCompiledEditorRef(ref));
+    },
+    [dispatch],
+  );
+
+  const setEditorFocus = useCallback(
+    (focus) => {
+      dispatch(EditorActions.setEditorFocus(focus));
+    },
+    [dispatch],
+  );
+
+  const monacoEditorRef = useRef(null);
 
   //store editor reference in redux store
   useEffect(() => {
-    dispatchProps.setCompiledEditorReference(editorRef.current);
-  }, [editorRef.current]);
+    setCompiledEditorReference(monacoEditorRef.current);
+  }, [monacoEditorRef, setCompiledEditorReference]);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +47,7 @@ function CompiledSpecDisplay() {
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const {width, height} = entry.contentRect;
-        editorRef.current?.layout({width, height});
+        monacoEditorRef.current?.layout({width, height});
       }
     });
 
@@ -45,7 +63,7 @@ function CompiledSpecDisplay() {
       <CompiledSpecDisplayHeader />
       <div ref={containerRef} style={{width: '100%', height: '100%'}}>
         <MonacoEditor
-          height={props.compiledVegaPaneSize - LAYOUT.MinPaneSize}
+          height={compiledVegaPaneSize - LAYOUT.MinPaneSize}
           options={{
             folding: true,
             minimap: {enabled: false},
@@ -57,14 +75,14 @@ function CompiledSpecDisplay() {
             },
           }}
           language="json"
-          value={stringify(props.value)}
+          value={stringify(value)}
           onMount={(monacoEditor) => {
             monacoEditor.onDidFocusEditorText(() => {
-              props.compiledEditorRef && props.compiledEditorRef.deltaDecorations(props.decorations, []);
-              props.editorRef && props.editorRef.deltaDecorations(props.decorations, []);
-              dispatchProps.setEditorFocus(EDITOR_FOCUS.CompiledEditor);
+              compiledEditorRef && compiledEditorRef.deltaDecorations(decorations, []);
+              editorRef && editorRef.deltaDecorations(decorations, []);
+              setEditorFocus(EDITOR_FOCUS.CompiledEditor);
             });
-            editorRef.current = monacoEditor;
+            monacoEditorRef.current = monacoEditor;
           }}
         />
       </div>
@@ -72,26 +90,4 @@ function CompiledSpecDisplay() {
   );
 }
 
-function mapStateToProps(state: State) {
-  return {
-    compiledEditorRef: state.compiledEditorRef,
-    compiledVegaPaneSize: state.compiledVegaPaneSize,
-    decorations: state.decorations,
-    editorRef: state.editorRef,
-    mode: state.mode,
-    sidePaneItem: state.sidePaneItem,
-    value: state.compiledPaneItem == COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
-  };
-}
-
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      setCompiledEditorReference: EditorActions.setCompiledEditorRef,
-      setEditorFocus: EditorActions.setEditorFocus,
-    },
-    dispatch,
-  );
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplay);
+export default CompiledSpecDisplay;

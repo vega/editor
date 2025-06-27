@@ -42,7 +42,7 @@ const InputPanel: React.FC = () => {
   }, [mode, compiledVegaPaneSize, dispatch]);
 
   const getInnerPanes = useCallback(() => {
-    return [
+    const editorPane = (
       <div key="editor" className="full-height-wrapper">
         <SpecEditorHeader key="specEditorHeader" />
         <div
@@ -61,9 +61,16 @@ const InputPanel: React.FC = () => {
         >
           <ConfigEditor key="configEditor" />
         </div>
-      </div>,
-      compiledVegaSpec ? <CompiledSpecDisplay key="compiled" /> : <CompiledSpecHeader key="compiledSpecHeader" />,
-    ];
+      </div>
+    );
+
+    const compiledPane = (
+      <div style={{position: 'relative', zIndex: 0}}>
+        {compiledVegaSpec ? <CompiledSpecDisplay key="compiled" /> : <CompiledSpecHeader key="compiledSpecHeader" />}
+      </div>
+    );
+
+    return [editorPane, compiledPane];
   }, [sidePaneItem, compiledVegaSpec]);
 
   const innerPanes = useMemo(() => getInnerPanes(), [getInnerPanes]);
@@ -77,6 +84,14 @@ const InputPanel: React.FC = () => {
       dispatch(EditorActions.setCompiledVegaPaneSize((window.innerHeight - LAYOUT.HeaderHeight) * 0.5));
     }
   }, [compiledVegaPaneSize, dispatch]);
+
+  if (mode === Mode.Vega) {
+    return (
+      <div role="group" aria-label="spec editors" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+        {innerPanes[0]}
+      </div>
+    );
+  }
 
   return (
     <div role="group" aria-label="spec editors" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>

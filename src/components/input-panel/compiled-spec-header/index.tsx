@@ -14,11 +14,11 @@ function CompiledSpecDisplayHeader() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const {compiledVegaSpec, value, compiledPaneItem} = useAppSelector((state) => ({
-    compiledVegaSpec: state.compiledVegaSpec,
-    value: state.compiledPaneItem == COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
-    compiledPaneItem: state.compiledPaneItem,
-  }));
+  const compiledVegaSpec = useAppSelector((state) => state.compiledVegaSpec);
+  const compiledPaneItem = useAppSelector((state) => state.compiledPaneItem);
+  const value = useAppSelector((state) =>
+    state.compiledPaneItem === COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
+  );
 
   const editVegaSpec = () => {
     if (window.location.pathname.indexOf('/edited') === -1) {
@@ -106,40 +106,3 @@ function CompiledSpecDisplayHeader() {
 }
 
 export default CompiledSpecDisplayHeader;
-
-// Keeping these for reference during migration
-/*
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
-import {State} from '../../../constants/default-state.js';
-
-function CompiledSpecDisplayHeader() {
-  const props = useSelector((state: State) => mapStateToProps(state));
-  const dispatch = useDispatch();
-  const dispatchProps = mapDispatchToProps(dispatch);
-  // ... rest of old implementation
-}
-
-function mapStateToProps(state: State) {
-  return {
-    compiledVegaSpec: state.compiledVegaSpec,
-    value: state.compiledPaneItem == COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
-    compiledPaneItem: state.compiledPaneItem,
-  };
-}
-
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      clearConfig: EditorActions.clearConfig,
-      toggleCompiledVegaSpec: EditorActions.toggleCompiledVegaSpec,
-      updateVegaSpec: EditorActions.updateVegaSpec,
-      updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
-      setCompiledPaneItem: EditorActions.setCompiledPaneItem,
-    },
-    dispatch,
-  );
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplayHeader);
-*/

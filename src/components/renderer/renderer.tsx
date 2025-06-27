@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Maximize} from 'react-feather';
 import {Portal} from 'react-portal';
-import {useNavigate, useLocation} from 'react-router';
 import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
 import {KEYCODES, Mode} from '../../constants/index.js';
@@ -38,13 +37,8 @@ export interface RendererProps {
 }
 
 export default function Renderer(props: RendererProps) {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const {
     vegaSpec,
-    vegaLiteSpec,
-    normalizedVegaLiteSpec,
     config,
     baseURL,
     mode,
@@ -99,7 +93,6 @@ export default function Renderer(props: RendererProps) {
       const processed = new Set();
       while (toProcess.size) {
         const ctx = toProcess.values().next().value;
-        // ctx: undefined
         if (!ctx || !ctx.nodes) continue;
         toProcess.delete(ctx);
         processed.add(ctx);
@@ -152,7 +145,7 @@ export default function Renderer(props: RendererProps) {
     view.renderer(renderer).initialize(chart);
     await view.runAsync();
     if (tooltipEnable) vegaTooltip(view);
-  }, [size.fullscreen, isResponsive, portalChartRef, chartRef, location.pathname, view, renderer, tooltipEnable]);
+  }, [size.fullscreen, isResponsive, portalChartRef, chartRef, view, renderer, tooltipEnable]);
 
   useEffect(() => {
     initView();
@@ -162,23 +155,20 @@ export default function Renderer(props: RendererProps) {
     if (view) {
       renderVega();
     }
-  }, [view, renderer, tooltipEnable, size.fullscreen, location.pathname]);
+  }, [view, renderer, tooltipEnable, size.fullscreen]);
 
   useEffect(() => {
     const onKey = (e) => {
       if (e.keyCode === KEYCODES.ESCAPE && size.fullscreen) {
         setSize((s) => ({...s, fullscreen: false}));
-        const newPath = location.pathname.replace(/\/view$/, '');
-        navigate(newPath);
       }
-      // ctrl+f11 toggle
       if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
         setSize((s) => ({...s, fullscreen: !s.fullscreen}));
       }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [size.fullscreen, navigate, location.pathname]);
+  }, [size.fullscreen]);
 
   const handleResizeMouseDown = (eDown) => {
     const {responsiveWidth, responsiveHeight} = isResponsive();
@@ -213,17 +203,11 @@ export default function Renderer(props: RendererProps) {
         }
       : {};
 
-  // Portal path handlers
   const openPortal = () => {
-    if (!location.pathname.endsWith('/view')) {
-      navigate(`${location.pathname}/view`);
-    }
     setSize((s) => ({...s, fullscreen: true}));
   };
 
   const closePortal = () => {
-    const newPath = location.pathname.replace(/\/view$/, '');
-    navigate(newPath);
     setSize((s) => ({...s, fullscreen: false}));
   };
 
