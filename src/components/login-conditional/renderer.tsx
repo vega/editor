@@ -1,12 +1,10 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { State } from '../../constants/default-state.js';
-import { BACKEND_URL } from '../../constants/index.js';
+import {useSelector} from 'react-redux';
+import {State} from '../../constants/default-state.js';
+import {BACKEND_URL} from '../../constants/index.js';
 
-// type Props = ReturnType<typeof mapStateToProps> & { children?: React.ReactNode };
 type Props = {
   children?: React.ReactNode;
-  isAuthenticated: boolean;
 };
 
 const handleLogin = (e: React.MouseEvent<HTMLAnchorElement>) => {

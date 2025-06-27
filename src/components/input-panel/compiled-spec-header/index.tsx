@@ -1,44 +1,54 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {ChevronDown, ChevronUp} from 'react-feather';
-import {connect, useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router';
-import {bindActionCreators, Dispatch} from 'redux';
+import {useAppDispatch, useAppSelector} from '../../../hooks.js';
 import * as EditorActions from '../../../actions/editor.js';
 import {COMPILEDPANE} from '../../../constants/index.js';
-import {State} from '../../../constants/default-state.js';
 
 const toggleStyle = {
   cursor: 'pointer',
 } as const;
 
 function CompiledSpecDisplayHeader() {
-  const props = useSelector((state: State) => mapStateToProps(state));
-  const dispatch = useDispatch();
-  const dispatchProps = mapDispatchToProps(dispatch);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const {compiledVegaSpec, value, compiledPaneItem} = useAppSelector((state) => ({
+    compiledVegaSpec: state.compiledVegaSpec,
+    value: state.compiledPaneItem == COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
+    compiledPaneItem: state.compiledPaneItem,
+  }));
 
   const editVegaSpec = () => {
     if (window.location.pathname.indexOf('/edited') === -1) {
       navigate('/edited');
     }
-    dispatchProps.clearConfig();
-    if (props.compiledPaneItem == COMPILEDPANE.Vega) {
-      dispatchProps.updateVegaSpec(stringify(props.value));
+    dispatch(EditorActions.clearConfig());
+    if (compiledPaneItem == COMPILEDPANE.Vega) {
+      dispatch(EditorActions.updateVegaSpec(stringify(value)));
     } else {
-      dispatchProps.updateVegaLiteSpec(stringify(props.value));
+      dispatch(EditorActions.updateVegaLiteSpec(stringify(value)));
     }
   };
 
-  if (props.compiledVegaSpec) {
+  const toggleCompiledVegaSpec = () => {
+    dispatch(EditorActions.toggleCompiledVegaSpec());
+  };
+
+  const setCompiledPaneItem = (item: (typeof COMPILEDPANE)[keyof typeof COMPILEDPANE]) => {
+    dispatch(EditorActions.setCompiledPaneItem(item));
+  };
+
+  if (compiledVegaSpec) {
     const toggleStyleUp = {...toggleStyle, position: 'static'} as const;
     return (
-      <div className="editor-header" style={toggleStyleUp} onClick={dispatchProps.toggleCompiledVegaSpec}>
+      <div className="editor-header" style={toggleStyleUp} onClick={toggleCompiledVegaSpec}>
         <ul className="tabs-nav">
           <li
-            className={props.compiledPaneItem == COMPILEDPANE.Vega ? 'active-tab' : undefined}
+            className={compiledPaneItem == COMPILEDPANE.Vega ? 'active-tab' : undefined}
             onClick={(e) => {
-              dispatchProps.setCompiledPaneItem(COMPILEDPANE.Vega);
+              setCompiledPaneItem(COMPILEDPANE.Vega);
               e.stopPropagation();
             }}
           >
@@ -46,21 +56,21 @@ function CompiledSpecDisplayHeader() {
           </li>
 
           <li
-            className={props.compiledPaneItem == COMPILEDPANE.NormalizedVegaLite ? 'active-tab' : undefined}
+            className={compiledPaneItem == COMPILEDPANE.NormalizedVegaLite ? 'active-tab' : undefined}
             onClick={(e) => {
-              dispatchProps.setCompiledPaneItem(COMPILEDPANE.NormalizedVegaLite);
+              setCompiledPaneItem(COMPILEDPANE.NormalizedVegaLite);
               e.stopPropagation();
             }}
           >
             Extended Vega-Lite Spec
           </li>
         </ul>
-        {props.compiledPaneItem === COMPILEDPANE.Vega ? (
+        {compiledPaneItem === COMPILEDPANE.Vega ? (
           <button onClick={editVegaSpec} style={{cursor: 'pointer'}}>
             Edit Vega Spec
           </button>
         ) : null}
-        {props.compiledPaneItem === COMPILEDPANE.NormalizedVegaLite ? (
+        {compiledPaneItem === COMPILEDPANE.NormalizedVegaLite ? (
           <button onClick={editVegaSpec} style={{cursor: 'pointer'}}>
             Edit Extended Vega-Lite Spec
           </button>
@@ -70,20 +80,20 @@ function CompiledSpecDisplayHeader() {
     );
   } else {
     return (
-      <div onClick={dispatchProps.toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
+      <div onClick={toggleCompiledVegaSpec} className="editor-header" style={toggleStyle}>
         <ul className="tabs-nav">
           <li
-            className={props.compiledPaneItem == COMPILEDPANE.Vega ? 'active-tab' : undefined}
+            className={compiledPaneItem == COMPILEDPANE.Vega ? 'active-tab' : undefined}
             onClick={() => {
-              dispatchProps.setCompiledPaneItem(COMPILEDPANE.Vega);
+              setCompiledPaneItem(COMPILEDPANE.Vega);
             }}
           >
             Compiled Vega
           </li>
           <li
-            className={props.compiledPaneItem == COMPILEDPANE.NormalizedVegaLite ? 'active-tab' : undefined}
+            className={compiledPaneItem == COMPILEDPANE.NormalizedVegaLite ? 'active-tab' : undefined}
             onClick={() => {
-              dispatchProps.setCompiledPaneItem(COMPILEDPANE.NormalizedVegaLite);
+              setCompiledPaneItem(COMPILEDPANE.NormalizedVegaLite);
             }}
           >
             Extended Vega-Lite Spec
@@ -93,6 +103,21 @@ function CompiledSpecDisplayHeader() {
       </div>
     );
   }
+}
+
+export default CompiledSpecDisplayHeader;
+
+// Keeping these for reference during migration
+/*
+import {connect, useDispatch, useSelector} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
+import {State} from '../../../constants/default-state.js';
+
+function CompiledSpecDisplayHeader() {
+  const props = useSelector((state: State) => mapStateToProps(state));
+  const dispatch = useDispatch();
+  const dispatchProps = mapDispatchToProps(dispatch);
+  // ... rest of old implementation
 }
 
 function mapStateToProps(state: State) {
@@ -117,3 +142,4 @@ export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplayHeader);
+*/

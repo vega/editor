@@ -104,7 +104,7 @@
     "build": "npm run clean && npm run vendor && npm run build:only",
     "build:only": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel build --public-url ./ --no-scope-hoist index.html",
     "clean": "rimraf dist public/spec public/data",
-    "postbuild": "cp -n -r public/* dist || true",
+    "postbuild": "cp -n -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
     "vendor": "scripts/vendor.sh",
     "prepare": "npm run vendor",

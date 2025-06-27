@@ -204,7 +204,7 @@ const App: React.FC<Props> = (props) => {
     setSpecInUrl(params);
   }, [params && hash(params), setSpecInUrl]);
 
-  // Create router props to pass to Header
+  // router prop to pass to header
   const routerProps = {
     match: {params},
     history: {push: navigate},
@@ -242,8 +242,4 @@ const App: React.FC<Props> = (props) => {
   );
 };
 
-const AppWithRouter: React.FC<{showExample: boolean}> = (props) => {
-  return <App {...props} />;
-};
-
-export default AppWithRouter;
+export default App;

@@ -180,7 +180,7 @@ h2 {
   margin: 26px 0 14px 0;
 }
 
-/* Fix for Split components */
+/* Additional styles for Split components */
 .app-container,
 .main-panel {
   height: 100%;
@@ -189,14 +189,12 @@ h2 {
   overflow: hidden;
 }
 
-/* Ensure all nested components use proper height */
 .main-pane {
   flex: 1;
   display: flex;
   overflow: hidden;
 }
 
-/* Override Split styles to ensure proper dragging */
 .split {
   position: relative;
   overflow: hidden;
@@ -207,22 +205,18 @@ h2 {
   z-index: 10;
 }
 
-/* Ensure consistent spacing in all panes */
 .split > * {
   overflow: hidden;
 }
 
-/* Ensure horizontal split at top level */
 .horizontal-split {
   flex-direction: row !important;
 }
 
-/* Ensure vertical splits in nested components */
 .vertical-split {
   flex-direction: column !important;
 }
 
-/* Fix for debug pane */
 .debug-pane {
   height: 100%;
   width: 100%;
