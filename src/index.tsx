@@ -1,13 +1,15 @@
 import * as React from 'react';
 import {createRoot} from 'react-dom/client';
 import {Provider} from 'react-redux';
-import {HashRouter as Router} from 'react-router-dom';
+import {HashRouter, HashRouter as Router} from 'react-router-dom';
 import * as vega from 'vega';
 import * as vegaLite from 'vega-lite';
-import setupMonaco from './utils/monaco.js';
+import ReactDOM from 'react-dom';
+import setupMonaco from './utils/monaco';
+import {dispatchingLogger} from './utils/logger';
 
-import AppShell from './components/app-shell.js';
-import configureStore from './store/configure-store.js';
+import AppShell from './components/app-shell';
+import configureStore from './store/configure-store';
 
 console.log('Vega Editor initializing...');
 
@@ -33,31 +35,18 @@ try {
 export const store = configureStore();
 console.log('Store configuration complete');
 
-try {
-  console.log('Rendering React application...');
-  const container = document.getElementById('root');
-  if (!container) {
-    throw new Error('Root element not found');
-  }
+dispatchingLogger.initializeStore(store);
 
-  if (!(container as any)._reactRootContainer) {
-    const root = createRoot(container);
-    (container as any)._reactRootContainer = root;
-  }
-
-  (container as any)._reactRootContainer.render(
-    <React.StrictMode>
-      <Provider store={store}>
-        <Router basename="/">
-          <AppShell />
-        </Router>
-      </Provider>
-    </React.StrictMode>,
-  );
-  console.log('React application rendered');
-} catch (error) {
-  console.error('Error during React rendering:', error);
-}
+// Now that redux and react-router have been configured, we can render the
+// React application to the DOM!
+ReactDOM.render(
+  <Provider store={store}>
+    <HashRouter>
+      <AppShell />
+    </HashRouter>
+  </Provider>,
+  document.getElementById('root'),
+);
 
 /* tslint:disable */
 console.log('%cWelcome to the Vega-Editor!', 'font-size: 16px; font-weight: bold;');

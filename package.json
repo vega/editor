@@ -9,15 +9,14 @@
   "license": "BSD-3-Clause",
   "type": "module",
   "devDependencies": {
-    "@parcel/resolver-glob": "^2.15.2",
-    "@parcel/transformer-inline-string": "2.15.2",
-    "@parcel/transformer-react-refresh-wrap": "^2.15.2",
-    "@types/node": "^22.15.24",
+    "@types/node": "^22.13.14",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
+    "@vitejs/plugin-react": "^4.5.2",
     "assert": "^2.1.0",
     "autoprefixer": "^10.4.21",
     "browserify-zlib": "^0.2.0",
+    "del-cli": "^6.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -27,8 +26,6 @@
     "https-browserify": "^1.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
-    "parcel": "^2.15.2",
-    "parcel-reporter-static-files-copy": "^1.5.3",
     "patch-package": "^8.0.0",
     "path-browserify": "^1.0.1",
     "postinstall-postinstall": "^2.1.0",
@@ -37,7 +34,8 @@
     "stream-http": "^3.2.0",
     "typescript": "^5.8.2",
     "url": "^0.11.4",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "vite": "^5.2.6"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
@@ -100,11 +98,12 @@
     ]
   },
   "scripts": {
-    "start": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel --watch-dir .. index.html",
+    "start": "vite",
     "build": "npm run clean && npm run vendor && npm run build:only",
-    "build:only": "PARCEL_BUILD_COMMIT_HASH=$(git rev-parse HEAD) parcel build --public-url ./ --no-scope-hoist index.html",
-    "clean": "rimraf dist public/spec public/data",
-    "postbuild": "cp -n -r public/* dist",
+    "build:only": "vite build",
+    "preview": "vite preview",
+    "clean": "del-cli dist public/spec public/data",
+    "postbuild": "rsync --ignore-existing -r public/* dist",
     "generate-example-images": "scripts/generate-example-images.sh",
     "vendor": "scripts/vendor.sh",
     "prepare": "npm run vendor",
@@ -114,11 +113,5 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "postinstall": "husky && npx patch-package"
-  },
-  "@parcel/resolver-default": {
-    "packageExports": true
-  },
-  "staticFiles": {
-    "staticPath": "public"
   }
 }
