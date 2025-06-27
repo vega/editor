@@ -1,20 +1,20 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import * as React from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import * as vega from 'vega';
-import * as EditorActions from '../../actions/editor';
-import {State} from '../../constants/default-state';
+import {useAppDispatch, useAppSelector} from '../../hooks.js';
+import * as EditorActions from '../../actions/editor.js';
 import './index.css';
-import SignalRow from './signalRow';
-import TimelineRow from './TimelineRow';
+import SignalRow from './signalRow.js';
+import TimelineRow from './TimelineRow.js';
 
 interface OwnProps {
   onClickHandler: (header: string) => void;
 }
 
 const SignalViewer: React.FC<OwnProps> = ({onClickHandler}) => {
-  const signals = useSelector((state: State) => state.signals);
-  const view = useSelector((state: State) => state.view);
-  const dispatch = useDispatch();
+  const signals = useAppSelector((state) => state.signals);
+  const view = useAppSelector((state) => state.view);
+  const dispatch = useAppDispatch();
 
   const setSignals = useCallback((payload) => dispatch(EditorActions.setSignals(payload)), [dispatch]);
 

@@ -1,1 +1,1 @@
-export {default} from './renderer';
+export {default} from './renderer.js';
