@@ -5,19 +5,13 @@ import {Book, BookOpen, Code, Image, Map} from 'react-feather';
 import {mergeConfig, version as VG_VERSION} from 'vega';
 import {version as VE_VERSION} from 'vega-embed';
 import {version as VL_VERSION} from 'vega-lite';
-import {useAppSelector} from '../../../hooks.js';
+import {useAppContext} from '../../../context/app-context.js';
 import {Mode} from '../../../constants/consts.js';
 import './index.css';
 
 export default function ExportModal() {
-  const {baseURL, config, mode, vegaLiteSpec, vegaSpec, view} = useAppSelector((state) => ({
-    baseURL: state.baseURL,
-    config: state.config,
-    mode: state.mode,
-    vegaLiteSpec: state.vegaLiteSpec,
-    vegaSpec: state.vegaSpec,
-    view: state.view,
-  }));
+  const {state} = useAppContext();
+  const {baseURL, config, mode, vegaLiteSpec, vegaSpec, view} = state;
 
   const [loadingPDF, setLoadingPDF] = useState(false);
   const [errorLoadingPdf, setErrorLoadingPdf] = useState(null);

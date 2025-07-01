@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import * as vega from 'vega';
-import {useAppDispatch, useAppSelector} from '../../hooks.js';
-import * as EditorActions from '../../actions/editor.js';
+import {useAppContext} from '../../context/app-context.js';
 import './index.css';
 import SignalRow from './signalRow.js';
 import TimelineRow from './TimelineRow.js';
@@ -12,11 +11,10 @@ interface OwnProps {
 }
 
 const SignalViewer: React.FC<OwnProps> = ({onClickHandler}) => {
-  const signals = useAppSelector((state) => state.signals);
-  const view = useAppSelector((state) => state.view);
-  const dispatch = useAppDispatch();
+  const {state, setState} = useAppContext();
+  const {signals, view} = state;
 
-  const setSignals = useCallback((payload) => dispatch(EditorActions.setSignals(payload)), [dispatch]);
+  const setSignals = useCallback((payload) => setState((s) => ({...s, signals: payload})), [setState]);
 
   const [countSignal, setCountSignal] = useState({});
   const [hoverValue, setHoverValue] = useState({});

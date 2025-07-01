@@ -1,15 +1,7 @@
 import * as React from 'react';
-import {useDispatch} from 'react-redux';
-import {useAppSelector} from '../../hooks.js';
-import {resetPulses, sortedPulsesSelector, pulsesEmptySelector} from './pulsesSlice.js';
+import {useAppContext} from '../../context/app-context.js';
+import {usePulsesState, usePulsesDispatch} from './PulsesProvider.js';
 import './Sidebar.css';
-import {
-  setSelectedElements,
-  selectedPulseSelector,
-  selectedTypesSelector,
-  setSelectedPulse,
-  setSelectedType,
-} from './selectionSlice.js';
 import {GraphType, types} from './utils/graph.js';
 
 export function Sidebar() {
@@ -23,7 +15,8 @@ export function Sidebar() {
 }
 
 function Types() {
-  const selectedTypes = useAppSelector(selectedTypesSelector);
+  const {state} = useAppContext();
+  const selectedTypes = state.types;
 
   return (
     <fieldset className="type-filter">
@@ -36,13 +29,13 @@ function Types() {
 }
 
 function Type({type, label, selected}: {type: GraphType; label: string; selected: boolean}) {
-  const dispatch = useDispatch();
+  const {state, setState} = useAppContext();
   return (
     <div>
       <input
         type="checkbox"
         checked={selected}
-        onChange={(event) => dispatch(setSelectedType({type, enabled: event.target.checked}))}
+        onChange={(event) => setState((s) => ({...s, types: {...s.types, [type]: event.target.checked}}))}
       />
       <label>{label}</label>
     </div>
@@ -51,7 +44,7 @@ function Type({type, label, selected}: {type: GraphType; label: string; selected
 
 function Id() {
   const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
-  const dispatch = useDispatch();
+  const {state, setState} = useAppContext();
   return (
     <fieldset className="id-filter">
       <legend>Filter by ID</legend>
@@ -62,7 +55,7 @@ function Id() {
             if (!searchTerm) {
               return;
             }
-            dispatch(setSelectedElements({nodes: [searchTerm], edges: []}));
+            setState((s) => ({...s, elementsSelected: {nodes: [searchTerm], edges: []}}));
             setSearchTerm(null);
           }}
         >
@@ -96,15 +89,17 @@ function Pulses() {
 }
 
 function PulsesButtons() {
-  const dispatch = useDispatch();
-  const selectedPulse = useAppSelector(selectedPulseSelector);
-  const pulsesEmpty = useAppSelector(pulsesEmptySelector);
+  const {state, setState} = useAppContext();
+  const selectedPulse = state.pulse;
+  const pulses = usePulsesState();
+  const pulsesDispatch = usePulsesDispatch();
+  const pulsesEmpty = pulses.length === 0;
   return (
     <div className="buttons">
-      <button onClick={() => dispatch(setSelectedPulse(null))} disabled={selectedPulse === null}>
+      <button onClick={() => setState((s) => ({...s, pulse: null}))} disabled={selectedPulse === null}>
         Unselect pulse
       </button>
-      <button onClick={() => dispatch(resetPulses())} disabled={pulsesEmpty}>
+      <button onClick={() => pulsesDispatch({type: 'RESET_PULSES'})} disabled={pulsesEmpty}>
         Clear recorded pulses
       </button>
     </div>
@@ -112,8 +107,9 @@ function PulsesButtons() {
 }
 
 function PulsesRows() {
-  const pulses = useAppSelector(sortedPulsesSelector);
-  const selectedPulse = useAppSelector(selectedPulseSelector);
+  const pulses = usePulsesState().slice(0).reverse();
+  const {state} = useAppContext();
+  const selectedPulse = state.pulse;
   return (
     <tbody>
       {pulses.map(({clock, nValues}) => (
@@ -126,10 +122,10 @@ function PulsesRows() {
 const MemoPulse = React.memo(Pulse);
 
 function Pulse({clock, isSelected, nValues}: {isSelected: boolean; clock: number; nValues: number}) {
-  const dispatch = useDispatch();
+  const {state, setState} = useAppContext();
 
   return (
-    <tr className={isSelected ? 'active-pulse' : ''} onClick={() => dispatch(setSelectedPulse(clock))}>
+    <tr className={isSelected ? 'active-pulse' : ''} onClick={() => setState((s) => ({...s, pulse: clock}))}>
       <td>{clock}</td>
       <td>{nValues}</td>
     </tr>

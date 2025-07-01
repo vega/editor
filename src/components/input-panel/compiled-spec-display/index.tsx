@@ -1,28 +1,27 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import MonacoEditor from '@monaco-editor/react';
-import * as EditorActions from '../../../actions/editor.js';
 import {EDITOR_FOCUS, LAYOUT, COMPILEDPANE} from '../../../constants/index.js';
 import CompiledSpecDisplayHeader from '../compiled-spec-header/index.js';
 import {useEffect, useRef} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../hooks.js';
+import {useAppContext} from '../../../context/app-context.js';
 
 function CompiledSpecDisplay() {
-  const dispatch = useAppDispatch();
+  const {state, setState} = useAppContext();
 
-  const {compiledEditorRef, compiledVegaPaneSize, decorations, editorRef, value} = useAppSelector((state) => ({
+  const {compiledEditorRef, compiledVegaPaneSize, decorations, editorRef, value} = {
     compiledEditorRef: state.compiledEditorRef,
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     decorations: state.decorations,
     editorRef: state.editorRef,
     value: state.compiledPaneItem === COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
-  }));
+  };
 
   const monacoEditorRef = useRef(null);
 
   useEffect(() => {
-    dispatch(EditorActions.setCompiledEditorRef(monacoEditorRef.current));
-  }, [monacoEditorRef, dispatch]);
+    setState((s) => ({...s, compiledEditorRef: monacoEditorRef.current}));
+  }, [monacoEditorRef, setState]);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -32,7 +31,11 @@ function CompiledSpecDisplay() {
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const {width, height} = entry.contentRect;
-        monacoEditorRef.current?.layout({width, height});
+        try {
+          monacoEditorRef.current?.layout({width, height});
+        } catch (error) {
+          console.warn('Failed to layout editor:', error);
+        }
       }
     });
 
@@ -42,6 +45,22 @@ function CompiledSpecDisplay() {
       resizeObserver.disconnect();
     };
   }, []);
+
+  const handleEditorMount = React.useCallback(
+    (monacoEditor) => {
+      monacoEditor.onDidFocusEditorText(() => {
+        try {
+          compiledEditorRef?.deltaDecorations(decorations, []);
+          editorRef?.deltaDecorations(decorations, []);
+          setState((s) => ({...s, editorFocus: EDITOR_FOCUS.CompiledEditor}));
+        } catch (error) {
+          console.warn('Failed to handle:', error);
+        }
+      });
+      monacoEditorRef.current = monacoEditor;
+    },
+    [compiledEditorRef, decorations, editorRef, setState],
+  );
 
   return (
     <div className={'full-height-wrapper'}>
@@ -61,14 +80,7 @@ function CompiledSpecDisplay() {
           }}
           language="json"
           value={stringify(value)}
-          onMount={(monacoEditor) => {
-            monacoEditor.onDidFocusEditorText(() => {
-              compiledEditorRef?.deltaDecorations(decorations, []);
-              editorRef?.deltaDecorations(decorations, []);
-              dispatch(EditorActions.setEditorFocus(EDITOR_FOCUS.CompiledEditor));
-            });
-            monacoEditorRef.current = monacoEditor;
-          }}
+          onMount={handleEditorMount}
         />
       </div>
     </div>

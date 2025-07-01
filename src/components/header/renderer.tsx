@@ -4,8 +4,7 @@ import {useEffect, useRef, useState, useCallback} from 'react';
 import {ExternalLink, GitHub, Grid, HelpCircle, Play, Settings, Share2, Terminal, X} from 'react-feather';
 import {useNavigate} from 'react-router';
 import Select from 'react-select';
-import {useAppDispatch, useAppSelector} from '../../hooks.js';
-import * as EditorActions from '../../actions/editor.js';
+import {useAppContext} from '../../context/app-context.js';
 import {BACKEND_URL, KEYCODES, Mode} from '../../constants/index.js';
 import {NAMES} from '../../constants/consts.js';
 import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs.js';
@@ -22,21 +21,10 @@ export interface Props {
 }
 
 const Header: React.FC<Props> = ({showExample}) => {
-  const dispatch = useAppDispatch();
+  const {state, setState} = useAppContext();
   const navigate = useNavigate();
 
-  const {editorRef, isAuthenticated, lastPosition, manualParse, mode, name, profilePicUrl, settings, vegaSpec} =
-    useAppSelector((state) => ({
-      editorRef: state.editorRef,
-      isAuthenticated: state.isAuthenticated,
-      lastPosition: state.lastPosition,
-      manualParse: state.manualParse,
-      mode: state.mode,
-      name: state.name,
-      profilePicUrl: state.profilePicUrl,
-      settings: state.settings,
-      vegaSpec: state.vegaSpec,
-    }));
+  const {editorRef, isAuthenticated, lastPosition, manualParse, mode, name, profilePicUrl, settings, vegaSpec} = state;
 
   const examplePortal = useRef<HTMLDivElement>(null);
   const splitButtonRef = useRef<HTMLSpanElement>(null);
@@ -88,7 +76,7 @@ const Header: React.FC<Props> = ({showExample}) => {
         if (logoutFlag === 'true') {
           clearAuthFromLocalStorage();
           localStorage.removeItem('vega_editor_auth_token');
-          dispatch(EditorActions.receiveCurrentUser(false, '', '', ''));
+          setState((s) => ({...s, isAuthenticated: false, name: '', profilePicUrl: ''}));
           return;
         }
 
@@ -104,14 +92,13 @@ const Header: React.FC<Props> = ({showExample}) => {
               profilePicUrl: tokenData.profilePicUrl,
               authToken: tokenData.authToken,
             });
-            dispatch(
-              EditorActions.receiveCurrentUser(
-                tokenData.isAuthenticated,
-                tokenData.handle,
-                tokenData.name,
-                tokenData.profilePicUrl,
-              ),
-            );
+            setState((s) => ({
+              ...s,
+              isAuthenticated: tokenData.isAuthenticated,
+              handle: tokenData.handle,
+              name: tokenData.name,
+              profilePicUrl: tokenData.profilePicUrl,
+            }));
             return;
           }
         }
@@ -126,14 +113,13 @@ const Header: React.FC<Props> = ({showExample}) => {
         try {
           const isValid = await verifyTokenLocally(localAuthData.authToken);
           if (isValid) {
-            dispatch(
-              EditorActions.receiveCurrentUser(
-                localAuthData.isAuthenticated,
-                localAuthData.handle,
-                localAuthData.name,
-                localAuthData.profilePicUrl,
-              ),
-            );
+            setState((s) => ({
+              ...s,
+              isAuthenticated: localAuthData.isAuthenticated,
+              handle: localAuthData.handle,
+              name: localAuthData.name,
+              profilePicUrl: localAuthData.profilePicUrl,
+            }));
             return;
           }
         } catch (error) {
@@ -173,14 +159,13 @@ const Header: React.FC<Props> = ({showExample}) => {
               profilePicUrl: userData.userProfilePic,
               authToken: userData.authToken,
             });
-            dispatch(
-              EditorActions.receiveCurrentUser(
-                userData.isAuthenticated,
-                userData.handle,
-                userData.userName,
-                userData.userProfilePic,
-              ),
-            );
+            setState((s) => ({
+              ...s,
+              isAuthenticated: userData.isAuthenticated,
+              handle: userData.handle,
+              name: userData.userName,
+              profilePicUrl: userData.userProfilePic,
+            }));
             return;
           }
         } catch (error) {
@@ -190,7 +175,7 @@ const Header: React.FC<Props> = ({showExample}) => {
 
       clearAuthFromLocalStorage();
       localStorage.removeItem('vega_editor_auth_token');
-      dispatch(EditorActions.receiveCurrentUser(false, '', '', ''));
+      setState((s) => ({...s, isAuthenticated: false, name: '', profilePicUrl: ''}));
     };
 
     checkAuthFromHash();
@@ -211,14 +196,13 @@ const Header: React.FC<Props> = ({showExample}) => {
                 profilePicUrl: tokenData.profilePicUrl,
                 authToken: tokenData.authToken,
               });
-              dispatch(
-                EditorActions.receiveCurrentUser(
-                  tokenData.isAuthenticated,
-                  tokenData.handle,
-                  tokenData.name,
-                  tokenData.profilePicUrl,
-                ),
-              );
+              setState((s) => ({
+                ...s,
+                isAuthenticated: tokenData.isAuthenticated,
+                handle: tokenData.handle,
+                name: tokenData.name,
+                profilePicUrl: tokenData.profilePicUrl,
+              }));
               return;
             }
           } catch (error) {
@@ -261,17 +245,16 @@ const Header: React.FC<Props> = ({showExample}) => {
             });
           }
 
-          dispatch(
-            EditorActions.receiveCurrentUser(
-              userData.isAuthenticated,
-              userData.handle,
-              userData.userName,
-              userData.userProfilePic,
-            ),
-          );
+          setState((s) => ({
+            ...s,
+            isAuthenticated: userData.isAuthenticated,
+            handle: userData.handle,
+            name: userData.userName,
+            profilePicUrl: userData.userProfilePic,
+          }));
         } catch (error) {
           console.error('Authentication check failed:', error);
-          dispatch(EditorActions.receiveCurrentUser(false, '', '', ''));
+          setState((s) => ({...s, isAuthenticated: false, name: '', profilePicUrl: ''}));
         }
       }
     };
@@ -280,7 +263,7 @@ const Header: React.FC<Props> = ({showExample}) => {
     return () => {
       window.removeEventListener('message', handleAuthMessage);
     };
-  }, [dispatch]);
+  }, [setState]);
 
   useEffect(() => {
     const keyDownHandler = (e) => {
@@ -324,19 +307,40 @@ const Header: React.FC<Props> = ({showExample}) => {
   const onSwitchMode = useCallback(
     (option) => {
       if (option.value === Mode.Vega) {
-        dispatch(EditorActions.updateVegaSpec(stringify(vegaSpec)));
+        const newEditorString =
+          vegaSpec && Object.keys(vegaSpec).length > 0
+            ? stringify(vegaSpec)
+            : `{
+  "$schema": "https://vega.github.io/schema/vega/v5.json"
+}`;
+        setState((s) => ({
+          ...s,
+          editorString: newEditorString,
+          mode: Mode.Vega,
+          config: {},
+          parse: true,
+        }));
         onSelectNewVega();
       } else {
+        const newEditorString = `{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json"
+}`;
+        setState((s) => ({
+          ...s,
+          editorString: newEditorString,
+          mode: Mode.VegaLite,
+          config: {},
+          parse: true,
+        }));
         onSelectNewVegaLite();
       }
-      dispatch(EditorActions.clearConfig());
     },
-    [dispatch, vegaSpec, onSelectNewVega, onSelectNewVegaLite],
+    [setState, vegaSpec, onSelectNewVega, onSelectNewVegaLite],
   );
 
   const handleSettingsClick = useCallback(() => {
-    dispatch(EditorActions.setSettingsState(!settings));
-  }, [dispatch, settings]);
+    setState((s) => ({...s, settings: !settings}));
+  }, [setState, settings]);
 
   const openCommandPalette = useCallback(() => {
     if (editorRef) {
@@ -406,7 +410,7 @@ const Header: React.FC<Props> = ({showExample}) => {
       window.location.href = `${BACKEND_URL}auth/github/logout`;
     }
 
-    dispatch(EditorActions.receiveCurrentUser(false, '', '', ''));
+    setState((s) => ({...s, isAuthenticated: false, name: '', profilePicUrl: ''}));
   };
 
   const modeOptions =
@@ -524,7 +528,7 @@ const Header: React.FC<Props> = ({showExample}) => {
       options={runOptions}
       isClearable={false}
       isSearchable={false}
-      onChange={() => dispatch(EditorActions.toggleAutoParse())}
+      onChange={() => setState((s) => ({...s, manualParse: !manualParse}))}
     />
   );
 
@@ -533,7 +537,7 @@ const Header: React.FC<Props> = ({showExample}) => {
       className="header-button"
       id="run-button"
       onClick={() => {
-        dispatch(EditorActions.parseSpec(true));
+        setState((s) => ({...s, parse: true}));
       }}
     >
       <Play className="header-icon" />
@@ -652,16 +656,12 @@ const Header: React.FC<Props> = ({showExample}) => {
       }
     }
 
-    dispatch(EditorActions.setScrollPosition(scrollPosition));
-  }, [dispatch, scrollPosition]);
+    setState((s) => ({...s, lastPosition: scrollPosition}));
+  }, [setState, scrollPosition]);
 
-  const handleVegaToggle = useCallback(
-    (isVega) => {
-      setShowVega(isVega);
-      dispatch(EditorActions.setMode(isVega ? Mode.Vega : Mode.VegaLite));
-    },
-    [dispatch],
-  );
+  const handleVegaToggle = useCallback((isVega) => {
+    setShowVega(isVega);
+  }, []);
 
   const handleExportModalOpen = () => setExportModalOpen(true);
   const handleExportModalClose = () => setExportModalOpen(false);

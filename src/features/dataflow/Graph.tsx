@@ -1,15 +1,10 @@
 import * as React from 'react';
-import {useAppSelector} from '../../hooks.js';
-import {currentLayoutSelector, useRecomputeLayout} from './layoutSlice.js';
 import {Cytoscape} from './Cytoscape.js';
 import {Popup} from './Popup.js';
 import './Graph.css';
-import {useDispatch} from 'react-redux';
-import {elementsSelectedSelector, setSelectedElements} from './selectionSlice.js';
+import {useAppContext} from '../../context/app-context.js';
 
 export function Graph() {
-  // Trigger starting the async layout computation, when this node is rendered
-  useRecomputeLayout();
   const cytoscape = React.useMemo(() => <Cytoscape />, []);
   return (
     <div className="graph">
@@ -22,12 +17,12 @@ export function Graph() {
 }
 
 function UnselectElements() {
-  const dispatch = useDispatch();
-  const elementsSelected = useAppSelector(elementsSelectedSelector);
+  const {state, setState} = useAppContext();
+  const elementsSelected = state.elementsSelected;
   return (
     <button
       className="unselect-elements"
-      onClick={() => dispatch(setSelectedElements(null))}
+      onClick={() => setState((s) => ({...s, elementsSelected: null}))}
       disabled={!elementsSelected}
     >
       Unselect elements
@@ -36,7 +31,8 @@ function UnselectElements() {
 }
 
 function Overlay() {
-  const layout = useAppSelector(currentLayoutSelector);
+  const {state} = useAppContext();
+  const layout = state.layout;
 
   if (layout === null) {
     return <div className="overlay center-text">No active dataflow runtime</div>;

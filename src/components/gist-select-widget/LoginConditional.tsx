@@ -1,10 +1,11 @@
 import React from 'react';
-import {useAppSelector} from '../../hooks.js';
+import {useAppContext} from '../../context/app-context.js';
 
 const LoginConditional: React.FC<{
   children: React.ReactNode;
 }> = ({children}) => {
-  const isAuthenticated = useAppSelector((state) => state.isAuthenticated);
+  const {state} = useAppContext();
+  const {isAuthenticated} = state;
 
   if (isAuthenticated) {
     return <>{children}</>;

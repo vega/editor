@@ -1,27 +1,30 @@
 import * as React from 'react';
-import {useDispatch} from 'react-redux';
-import {useAppSelector} from '../../hooks.js';
-import {currentPositionsSelector} from './layoutSlice.js';
-import {selectedElementsSelector, setSelectedElements} from './selectionSlice.js';
-import {setPopup} from './popupSlice.js';
+import {useAppContext} from '../../context/app-context.js';
+import {useCurrentPositions} from './LayoutProvider.js';
+import {usePopupDispatch} from './PopupProvider.js';
 import {CytoscapeControlled} from './CytoscapeControlled.js';
-import {cytoscapeElementsSelector} from './runtimeSlice.js';
+import {toCytoscape} from './utils/toCytoscape.js';
+import {runtimeToGraph} from './utils/runtimeToGraph.js';
 
 export function Cytoscape() {
-  const dispatch = useDispatch();
+  const {state, setState} = useAppContext();
+  const {runtime, elementsSelected} = state;
 
-  const elements = useAppSelector(cytoscapeElementsSelector);
-  const positions = useAppSelector(currentPositionsSelector);
-  const selected = useAppSelector(selectedElementsSelector);
+  const graph = React.useMemo(() => (runtime ? runtimeToGraph(runtime) : null), [runtime]);
+  const elements = React.useMemo(() => (graph ? toCytoscape(graph) : null), [graph]);
 
-  const onSelect = React.useCallback((el) => dispatch(setSelectedElements(el)), [dispatch]);
-  const onHover = React.useCallback((target) => dispatch(setPopup(target)), [dispatch]);
+  const positions = useCurrentPositions();
+
+  const onSelect = React.useCallback((el) => setState((s) => ({...s, elementsSelected: el})), [setState]);
+  const popupDispatch = usePopupDispatch();
+
+  const onHover = React.useCallback((target) => popupDispatch({type: 'SET_POPUP', payload: target}), [popupDispatch]);
 
   return (
     <CytoscapeControlled
       elements={elements}
       positions={positions}
-      selected={selected}
+      selected={elementsSelected}
       onSelect={onSelect}
       onHover={onHover}
     />

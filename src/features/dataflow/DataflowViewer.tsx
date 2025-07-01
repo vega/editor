@@ -2,6 +2,10 @@ import * as React from 'react';
 import {Sidebar} from './Sidebar.js';
 import './DataflowViewer.css';
 import {Graph} from './Graph.js';
+import {LayoutProvider} from './LayoutProvider.js';
+import {PopupProvider} from './PopupProvider.js';
+import {PulsesProvider} from './PulsesProvider.js';
+import {SelectionProvider} from './SelectionProvider.js';
 
 /**
  * Wrap the component so we can catch the errors. We don't use the previously defined
@@ -27,8 +31,16 @@ export class DataflowViewer extends React.Component<
     }
     return (
       <div className="dataflow-pane">
-        <Graph />
-        <Sidebar />
+        <LayoutProvider>
+          <PopupProvider>
+            <PulsesProvider>
+              <SelectionProvider>
+                <Graph />
+                <Sidebar />
+              </SelectionProvider>
+            </PulsesProvider>
+          </PopupProvider>
+        </LayoutProvider>
       </div>
     );
   }

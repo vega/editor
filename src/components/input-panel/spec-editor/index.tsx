@@ -1,25 +1,28 @@
 import * as React from 'react';
-import * as EditorActions from '../../../actions/editor.js';
-import {useAppDispatch} from '../../../hooks.js';
+import {useAppContext} from '../../../context/app-context.js';
 import EditorWithNavigation from './renderer.js';
 
 const SpecEditor = () => {
-  const dispatch = useAppDispatch();
+  const {setState} = useAppContext();
 
   return (
     <EditorWithNavigation
-      clearConfig={() => dispatch(EditorActions.clearConfig())}
-      extractConfigSpec={() => dispatch(EditorActions.extractConfigSpec())}
-      logError={(error: Error) => dispatch(EditorActions.logError(error))}
-      mergeConfigSpec={() => dispatch(EditorActions.mergeConfigSpec())}
-      parseSpec={(force: boolean) => dispatch(EditorActions.parseSpec(force))}
-      setConfig={(config: string) => dispatch(EditorActions.setConfig(config))}
-      setDecorations={(decorations: any[]) => dispatch(EditorActions.setDecorations(decorations))}
-      setEditorFocus={(focus: any) => dispatch(EditorActions.setEditorFocus(focus))}
-      setEditorReference={(reference: any) => dispatch(EditorActions.setEditorReference(reference))}
-      updateEditorString={(editorString: string) => dispatch(EditorActions.updateEditorString(editorString))}
-      updateVegaLiteSpec={(spec: string, config?: string) => dispatch(EditorActions.updateVegaLiteSpec(spec, config))}
-      updateVegaSpec={(spec: string, config?: string) => dispatch(EditorActions.updateVegaSpec(spec, config))}
+      clearConfig={() => setState((s) => ({...s, config: {}}))}
+      extractConfigSpec={() => setState((s) => ({...s, extractConfigSpec: true}))}
+      logError={(error: Error) => setState((s) => ({...s, error}))}
+      mergeConfigSpec={() => setState((s) => ({...s, mergeConfigSpec: true}))}
+      parseSpec={(force: boolean) => setState((s) => ({...s, parse: force}))}
+      setConfig={(config: string) => setState((s) => ({...s, configEditorString: config}))}
+      setDecorations={(decorations: any[]) => setState((s) => ({...s, decorations}))}
+      setEditorFocus={(focus: any) => setState((s) => ({...s, editorFocus: focus}))}
+      setEditorReference={(reference: any) => setState((s) => ({...s, editorRef: reference}))}
+      updateEditorString={(editorString: string) => setState((s) => ({...s, editorString}))}
+      updateVegaLiteSpec={(spec: string, config?: string) =>
+        setState((s) => ({...s, editorString: spec, ...(config && {configEditorString: config})}))
+      }
+      updateVegaSpec={(spec: string, config?: string) =>
+        setState((s) => ({...s, editorString: spec, ...(config && {configEditorString: config})}))
+      }
     />
   );
 };

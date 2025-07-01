@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {AlertCircle} from 'react-feather';
 import {useNavigate} from 'react-router';
-import {useAppSelector} from '../../../hooks.js';
+import {useAppContext} from '../../../context/app-context.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
 import './index.css';
 import {parse as parseJSONC} from 'jsonc-parser';
@@ -12,10 +12,8 @@ export type Props = {
 };
 
 export default function GistModal({closePortal}: Props) {
-  const {handle} = useAppSelector((state) => ({
-    handle: state.handle,
-    mode: state.mode,
-  }));
+  const {state} = useAppContext();
+  const {handle} = state;
 
   const refGistForm = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
@@ -32,8 +30,8 @@ export default function GistModal({closePortal}: Props) {
 
   const [gistLoadClicked, setGistLoadClicked] = useState(false);
   const [invalidFilename, setInvalidFilename] = useState(false);
-  const [invalidRevision, setInvalidRevision] = useState(false);
   const [invalidUrl, setInvalidUrl] = useState(false);
+  const [invalidRevision, setInvalidRevision] = useState(false);
   const [syntaxError, setSyntaxError] = useState(false);
 
   const updateGist = useCallback((newGist) => {

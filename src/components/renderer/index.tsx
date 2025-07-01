@@ -1,14 +1,12 @@
 import * as React from 'react';
-import * as EditorActions from '../../actions/editor.js';
-import {useAppSelector, useAppDispatch} from '../../hooks.js';
-import {recordPulse} from '../../features/dataflow/pulsesSlice.js';
-import {setRuntime} from '../../features/dataflow/runtimeSlice.js';
-import Renderer from './renderer.js';
+import {useAppContext} from '../../context/app-context';
+import {PulsesProvider, useRecordPulse} from '../../features/dataflow/PulsesProvider';
+import Renderer from './renderer';
 
 const RendererContainer: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const {state, setState} = useAppContext();
 
-  const props = useAppSelector((state) => ({
+  const props = {
     baseURL: state.baseURL,
     config: state.config,
     editorString: state.editorString,
@@ -23,15 +21,19 @@ const RendererContainer: React.FC = () => {
     view: state.view,
     backgroundColor: state.backgroundColor,
     expressionInterpreter: state.expressionInterpreter,
-  }));
+  };
+
+  const recordPulse = useRecordPulse();
 
   return (
-    <Renderer
-      {...props}
-      setView={(newView) => dispatch(EditorActions.setView(newView))}
-      setRuntime={(runtime) => dispatch(setRuntime(runtime))}
-      recordPulse={(clock, values) => dispatch(recordPulse(clock, values))}
-    />
+    <PulsesProvider>
+      <Renderer
+        {...props}
+        setView={(newView) => setState((s) => ({...s, view: newView}))}
+        setRuntime={(runtime) => setState((s) => ({...s, runtime}))}
+        recordPulse={recordPulse}
+      />
+    </PulsesProvider>
   );
 };
 

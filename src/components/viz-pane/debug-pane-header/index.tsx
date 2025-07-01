@@ -1,28 +1,20 @@
 import * as React from 'react';
 import {useCallback, useEffect, useRef} from 'react';
 import {ChevronDown, ChevronUp} from 'react-feather';
-import * as EditorActions from '../../../actions/editor.js';
+import {useAppContext} from '../../../context/app-context.js';
 import {NAVBAR} from '../../../constants/consts.js';
-import {useAppSelector, useAppDispatch} from '../../../hooks.js';
 
 const DebugPaneHeader: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const {state, setState} = useAppContext();
   const effectRan = useRef(false);
 
-  const {debugPane, error, errors, logs, navItem, warns} = useAppSelector((state) => ({
-    debugPane: state.debugPane,
-    error: state.error,
-    errors: state.errors,
-    logs: state.logs,
-    navItem: state.navItem,
-    warns: state.warns,
-  }));
+  const {debugPane, error, errors, logs, navItem, warns} = state;
 
-  const showLogs = useCallback((show: boolean) => dispatch(EditorActions.showLogs(show)), [dispatch]);
+  const showLogs = useCallback((show: boolean) => setState((s) => ({...s, logs: show})), [setState]);
 
-  const toggleDebugPane = useCallback(() => dispatch(EditorActions.toggleDebugPane()), [dispatch]);
+  const toggleDebugPane = useCallback(() => setState((s) => ({...s, debugPane: !s.debugPane})), [setState]);
 
-  const toggleNavbar = useCallback((item: string) => dispatch(EditorActions.toggleNavbar(item)), [dispatch]);
+  const toggleNavbar = useCallback((item: string) => setState((s) => ({...s, navItem: item})), [setState]);
 
   useEffect(() => {
     if (!effectRan.current && (logs || navItem === NAVBAR.Logs)) {

@@ -5,7 +5,7 @@ import * as vega from 'vega';
 import vegaTooltip from 'vega-tooltip';
 import {KEYCODES, Mode} from '../../constants/index.js';
 import addProjections from '../../utils/addProjections.js';
-import {dispatchingLogger} from '../../utils/logger.js';
+import {dispatchingLogger} from '../../utils/logger';
 import {Popup} from '../popup/index.js';
 import './index.css';
 import {expressionInterpreter as vegaInterpreter} from 'vega-interpreter';
@@ -118,7 +118,7 @@ export default function Renderer(props: RendererProps) {
     const hover = typeof hoverEnable === 'boolean' ? hoverEnable : mode === Mode.Vega;
     const newView = new vega.View(runtime, {hover, loader, expr: expressionInterpreter ? vegaInterpreter : undefined});
     newView.runAfter(runAfter, true);
-    newView.logger(dispatchingLogger);
+    // newView.logger(dispatchingLogger); // TODO: Fix logger interface
     setRuntime(runtime);
     setView(newView);
   }, [vegaSpec, config, mode, expressionInterpreter, hoverEnable, baseURL, runAfter, setRuntime, setView, view]);

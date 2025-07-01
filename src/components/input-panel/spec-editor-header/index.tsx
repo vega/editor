@@ -1,20 +1,15 @@
 import * as React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import * as EditorActions from '../../../actions/editor.js';
+import {useAppContext} from '../../../context/app-context.js';
 import {SIDEPANE} from '../../../constants/consts.js';
-import {State} from '../../../constants/default-state.js';
 import ConfigEditorHeader from '../../config-editor/config-editor-header.js';
 import './index.css';
 
 function SpecEditorHeader() {
-  const {sidePaneItem, mode} = useSelector((state: State) => ({
-    sidePaneItem: state.sidePaneItem,
-    mode: state.mode,
-  }));
-  const dispatch = useDispatch();
+  const {state, setState} = useAppContext();
+  const {sidePaneItem, mode} = state;
 
   const setSidePaneItem = (item) => {
-    dispatch(EditorActions.setSidePaneItem(item));
+    setState((s) => ({...s, sidePaneItem: item}));
   };
 
   return (

@@ -2,40 +2,39 @@ import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {ChevronDown, ChevronUp} from 'react-feather';
 import {useNavigate} from 'react-router';
-import {useAppDispatch, useAppSelector} from '../../../hooks.js';
-import * as EditorActions from '../../../actions/editor.js';
-import {COMPILEDPANE} from '../../../constants/index.js';
+import {useAppContext} from '../../../context/app-context.js';
+import {COMPILEDPANE, Mode} from '../../../constants/index.js';
 
 const toggleStyle = {
   cursor: 'pointer',
 } as const;
 
 function CompiledSpecDisplayHeader() {
-  const dispatch = useAppDispatch();
+  const {state, setState} = useAppContext();
   const navigate = useNavigate();
 
-  const {compiledVegaSpec, compiledPaneItem, value} = useAppSelector((state) => ({
+  const {compiledVegaSpec, compiledPaneItem, value} = {
     compiledVegaSpec: state.compiledVegaSpec,
     compiledPaneItem: state.compiledPaneItem,
     value: state.compiledPaneItem === COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
-  }));
+  };
 
   const editSpec = () => {
     navigate('/edited');
-    dispatch(EditorActions.clearConfig());
+    setState((s) => ({...s, config: {}}));
     if (compiledPaneItem === COMPILEDPANE.Vega) {
-      dispatch(EditorActions.updateVegaSpec(stringify(value)));
+      setState((s) => ({...s, editorString: stringify(value), mode: Mode.Vega, parse: true}));
     } else {
-      dispatch(EditorActions.updateVegaLiteSpec(stringify(value)));
+      setState((s) => ({...s, editorString: stringify(value), parse: true}));
     }
   };
 
   const toggleCompiledVegaSpec = () => {
-    dispatch(EditorActions.toggleCompiledVegaSpec());
+    setState((s) => ({...s, compiledVegaSpec: !s.compiledVegaSpec}));
   };
 
   const setCompiledPaneItem = (item: (typeof COMPILEDPANE)[keyof typeof COMPILEDPANE]) => {
-    dispatch(EditorActions.setCompiledPaneItem(item));
+    setState((s) => ({...s, compiledPaneItem: item}));
   };
 
   return (

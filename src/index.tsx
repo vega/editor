@@ -1,15 +1,12 @@
 import * as React from 'react';
 import {createRoot} from 'react-dom/client';
-import {Provider} from 'react-redux';
-import {HashRouter, HashRouter as Router} from 'react-router-dom';
+import {HashRouter} from 'react-router-dom';
 import * as vega from 'vega';
 import * as vegaLite from 'vega-lite';
-import ReactDOM from 'react-dom';
-import setupMonaco from './utils/monaco';
-import {dispatchingLogger} from './utils/logger';
 
 import AppShell from './components/app-shell';
-import configureStore from './store/configure-store';
+import {AppContextProvider} from './context/app-context';
+import setupMonaco from './utils/monaco';
 
 console.log('Vega Editor initializing...');
 
@@ -32,21 +29,18 @@ try {
   console.error('Error during setup of Monaco editor:', error);
 }
 
-export const store = configureStore();
-console.log('Store configuration complete');
+const container = document.getElementById('root');
 
-dispatchingLogger.initializeStore(store);
-
-// Now that redux and react-router have been configured, we can render the
-// React application to the DOM!
-ReactDOM.render(
-  <Provider store={store}>
+if (container) {
+  const root = createRoot(container);
+  root.render(
     <HashRouter>
-      <AppShell />
-    </HashRouter>
-  </Provider>,
-  document.getElementById('root'),
-);
+      <AppContextProvider>
+        <AppShell />
+      </AppContextProvider>
+    </HashRouter>,
+  );
+}
 
 /* tslint:disable */
 console.log('%cWelcome to the Vega-Editor!', 'font-size: 16px; font-weight: bold;');

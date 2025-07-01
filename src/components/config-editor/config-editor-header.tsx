@@ -3,28 +3,25 @@ import * as React from 'react';
 import {useCallback} from 'react';
 import {omit} from 'vega-lite';
 import * as themes from 'vega-themes';
-import * as EditorActions from '../../actions/editor.js';
-import {useAppDispatch, useAppSelector} from '../../hooks.js';
+import {useAppContext} from '../../context/app-context.js';
 import './config-editor.css';
 
 const vegaThemes = omit(themes, ['version']);
 
 const ConfigEditorHeader: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const {themeName} = useAppSelector((state) => ({
-    themeName: state.themeName,
-  }));
+  const {state, setState} = useAppContext();
+  const {themeName} = state;
 
-  const setConfig = useCallback((config: string) => dispatch(EditorActions.setConfig(config)), [dispatch]);
+  const setConfig = useCallback((config: string) => setState((s) => ({...s, configEditorString: config})), [setState]);
 
   const setConfigEditorString = useCallback(
-    (config: string) => dispatch(EditorActions.setConfigEditorString(config)),
-    [dispatch],
+    (configEditorString: string) => setState((s) => ({...s, configEditorString})),
+    [setState],
   );
 
   const setThemeName = useCallback(
-    (themeNameValue: string) => dispatch(EditorActions.setThemeName(themeNameValue)),
-    [dispatch],
+    (newThemeName: string) => setState((s) => ({...s, themeName: newThemeName})),
+    [setState],
   );
 
   const handleThemeChange = useCallback(

@@ -4,8 +4,7 @@ import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
 import Clipboard from 'react-clipboard.js';
 import {Copy, Link, Save} from 'react-feather';
-import {useAppSelector, useAppDispatch} from '../../../hooks.js';
-import {receiveCurrentUser} from '../../../slices/authSlice.js';
+import {useAppContext} from '../../../context/app-context.js';
 import {NAMES} from '../../../constants/consts.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
 import LoginConditional from '../../login-conditional/index.js';
@@ -32,13 +31,8 @@ interface ShareModalState {
 }
 
 const ShareModal: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const {editorString, mode, isAuthenticated, handle} = useAppSelector((state) => ({
-    editorString: state.editorString,
-    mode: state.mode,
-    isAuthenticated: state.isAuthenticated,
-    handle: state.handle,
-  }));
+  const {state: appState, setState: setAppState} = useAppContext();
+  const {editorString, mode, isAuthenticated, handle} = appState;
 
   const date = new Date().toDateString();
   const [state, setState] = useState<ShareModalState>({
@@ -136,7 +130,7 @@ const ShareModal: React.FC = () => {
           creating: false,
           createError: true,
         }));
-        dispatch(receiveCurrentUser({isAuthenticated: false}));
+        setAppState((s) => ({...s, isAuthenticated: false}));
         return;
       }
 
@@ -174,7 +168,7 @@ const ShareModal: React.FC = () => {
       if (!data.id) {
         setState((prev) => ({...prev, createError: true}));
         if (res.status === 401) {
-          dispatch(receiveCurrentUser({isAuthenticated: false}));
+          setAppState((s) => ({...s, isAuthenticated: false}));
         }
       } else {
         const fileName = Object.keys(data.files)[0];
@@ -192,7 +186,7 @@ const ShareModal: React.FC = () => {
         createError: true,
       }));
     }
-  }, [editorString, state.whitespace, state.gistFileName, state.gistTitle, state.gistPrivate, dispatch]);
+  }, [editorString, state.whitespace, state.gistFileName, state.gistTitle, state.gistPrivate, setAppState]);
 
   const updateGist = useCallback(async () => {
     setState((prev) => ({...prev, updating: true}));
@@ -212,7 +206,7 @@ const ShareModal: React.FC = () => {
             updating: false,
             updateError: true,
           }));
-          dispatch(receiveCurrentUser({isAuthenticated: false}));
+          setAppState((s) => ({...s, isAuthenticated: false}));
           return;
         }
 
@@ -264,7 +258,7 @@ const ShareModal: React.FC = () => {
         updateError: true,
       }));
     }
-  }, [editorString, state.gistId, state.gistFileNameSelected, dispatch]);
+  }, [editorString, state.gistId, state.gistFileNameSelected, setAppState]);
 
   useEffect(() => {
     exportURL();

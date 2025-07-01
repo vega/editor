@@ -1,10 +1,8 @@
-import Editor, {OnMount} from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 import * as React from 'react';
-import {useAppSelector} from '../../../hooks.js';
+import {useAppContext} from '../../../context/app-context.js';
 import './index.css';
 
-// Renaming the component to EditorWithNavigation to match the import in index.tsx
-// and accepting the props passed from SpecEditor
 const EditorWithNavigation: React.FC<{
   clearConfig: () => void;
   extractConfigSpec: () => void;
@@ -19,39 +17,37 @@ const EditorWithNavigation: React.FC<{
   updateVegaLiteSpec: (spec: string, config?: string) => void;
   updateVegaSpec: (spec: string, config?: string) => void;
 }> = (props) => {
-  const {mode, editorString, decorations, manualParse} = useAppSelector((state) => ({
-    mode: state.mode,
-    editorString: state.editorString,
-    decorations: state.decorations,
-    manualParse: state.manualParse,
-  }));
+  const {state} = useAppContext();
+  const {mode, editorString, decorations, manualParse} = state;
 
   const editorRef = React.useRef(null);
 
-  const handleEditorDidMount = (editor) => {
-    editorRef.current = editor;
-    props.setEditorReference(editor);
+  const handleEditorDidMount = React.useCallback(
+    (editor) => {
+      editorRef.current = editor;
+      props.setEditorReference(editor);
 
-    editor.onDidChangeModelContent(() => {
-      const value = editor.getValue();
-      props.updateEditorString(value);
-      if (!manualParse) {
-        props.parseSpec(true);
-      }
-    });
+      editor.onDidChangeModelContent(() => {
+        const value = editor.getValue();
+        props.updateEditorString(value);
+        if (!manualParse) {
+          props.parseSpec(true);
+        }
+      });
 
-    editor.onDidFocusEditorText(() => {
-      props.setEditorFocus(true);
-    });
+      editor.onDidFocusEditorText(() => {
+        props.setEditorFocus(true);
+      });
 
-    editor.onDidBlurEditorText(() => {
-      props.setEditorFocus(false);
-    });
-  };
+      editor.onDidBlurEditorText(() => {
+        props.setEditorFocus(false);
+      });
+    },
+    [props, manualParse],
+  );
 
   React.useEffect(() => {
     if (editorRef.current && decorations) {
-      // The decorations are managed by the editor, so we just apply them
       editorRef.current.deltaDecorations([], decorations);
     }
   }, [decorations]);

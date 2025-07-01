@@ -1,20 +1,19 @@
 import * as React from 'react';
-import * as EditorActions from '../../actions/editor.js';
-import {useAppDispatch, useAppSelector} from '../../hooks.js';
+import {useAppContext} from '../../context/app-context.js';
 import './config-editor.css';
 import Renderer from './renderer.js';
 
 const ConfigEditor = () => {
-  const dispatch = useAppDispatch();
+  const {setState} = useAppContext();
 
   return (
     <Renderer
-      extractConfig={() => dispatch(EditorActions.extractConfigSpec())}
-      mergeConfigSpec={() => dispatch(EditorActions.mergeConfigSpec())}
-      setConfig={(config: string) => dispatch(EditorActions.setConfig(config))}
-      setConfigEditorString={(configString: string) => dispatch(EditorActions.setConfigEditorString(configString))}
-      setEditorReference={(reference: any) => dispatch(EditorActions.setEditorReference(reference))}
-      setThemeName={(theme: string) => dispatch(EditorActions.setThemeName(theme))}
+      extractConfig={() => setState((s) => ({...s, extractConfig: true}))}
+      mergeConfigSpec={() => setState((s) => ({...s, mergeConfigSpec: true}))}
+      setConfig={(config: string) => setState((s) => ({...s, configEditorString: config}))}
+      setConfigEditorString={(configString: string) => setState((s) => ({...s, configEditorString: configString}))}
+      setEditorReference={(reference: any) => setState((s) => ({...s, editorRef: reference}))}
+      setThemeName={(theme: string) => setState((s) => ({...s, themeName: theme}))}
     />
   );
 };

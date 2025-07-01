@@ -1,17 +1,16 @@
 import * as React from 'react';
-import {useAppDispatch, useAppSelector} from '../../hooks.js';
-import * as EditorActions from '../../actions/editor.js';
+import {useAppContext} from '../../context/app-context.js';
 import Renderer from './renderer.js';
 
 export default function ErrorBoundary(props) {
-  const error = useAppSelector((state) => state.error);
-  const dispatch = useAppDispatch();
+  const {state, setState} = useAppContext();
+  const {error} = state;
 
   return (
     <Renderer
       error={error}
-      logError={(err) => dispatch(EditorActions.logError(err))}
-      toggleDebugPane={() => dispatch(EditorActions.toggleDebugPane())}
+      logError={(err) => setState((s) => ({...s, error: err}))}
+      toggleDebugPane={() => setState((s) => ({...s, debugPane: !s.debugPane}))}
       {...props}
     />
   );

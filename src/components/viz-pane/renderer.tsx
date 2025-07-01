@@ -6,6 +6,10 @@ import {version as TOOLTIP_VERSION} from 'vega-tooltip';
 
 import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants/index.js';
 import {DataflowViewer} from '../../features/dataflow/DataflowViewer.js';
+import {LayoutProvider} from '../../features/dataflow/LayoutProvider.js';
+import {PopupProvider} from '../../features/dataflow/PopupProvider.js';
+import {PulsesProvider} from '../../features/dataflow/PulsesProvider.js';
+import {SelectionProvider} from '../../features/dataflow/SelectionProvider.js';
 import DataViewer from '../data-viewer/index.js';
 import ErrorBoundary from '../error-boundary/index.js';
 import ErrorPane from '../error-pane/index.js';
@@ -64,29 +68,39 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
 
       const editor = props.editorFocus === EDITOR_FOCUS.SpecEditor ? mainEditor : compiledEditor;
 
-      const model = editor.getModel();
+      if (!editor) return;
 
-      const rangeValue = model.findMatches(itemHeader, true, true, true, WORD_SEPARATORS, true);
+      try {
+        const model = editor.getModel();
+        if (!model) return;
 
-      editor && editor.deltaDecorations(props.decorations, []);
+        const rangeValue = model.findMatches(itemHeader, true, true, true, WORD_SEPARATORS, true);
 
-      const decorations = editor.deltaDecorations(
-        [],
-        rangeValue.map((match) => ({
-          options: {inlineClassName: 'myInlineDecoration'},
-          range: match.range,
-        })),
-      );
+        editor.deltaDecorations(props.decorations, []);
 
-      props.setDecorations(decorations);
+        const decorations = editor.deltaDecorations(
+          [],
+          rangeValue.map((match) => ({
+            options: {inlineClassName: 'myInlineDecoration'},
+            range: match.range,
+          })),
+        );
 
-      if (rangeValue[0]) {
-        editor.revealRangeInCenter(rangeValue[0].range);
-        editor.focus();
-        editor.layout();
-        Promise.resolve().then(() => {
-          (document.activeElement as HTMLElement).blur();
-        });
+        props.setDecorations(decorations);
+
+        if (rangeValue[0]) {
+          editor.revealRangeInCenter(rangeValue[0].range);
+          editor.focus();
+          editor.layout();
+          Promise.resolve().then(() => {
+            (document.activeElement as HTMLElement).blur();
+          });
+        }
+      } catch (error) {
+        // Ignore errors if editor is disposed
+        if (!error.message?.includes('Canceled')) {
+          console.warn('Failed to handle click:', error);
+        }
       }
     },
     [props.editorRef, props.compiledEditorRef, props.editorFocus, props.decorations, props.setDecorations],
@@ -136,7 +150,17 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
         case NAVBAR.SignalViewer:
           return <SignalViewer onClickHandler={onClickHandler} />;
         case NAVBAR.DataflowViewer:
-          return <DataflowViewer />;
+          return (
+            <SelectionProvider>
+              <PulsesProvider>
+                <PopupProvider>
+                  <LayoutProvider>
+                    <DataflowViewer />
+                  </LayoutProvider>
+                </PopupProvider>
+              </PulsesProvider>
+            </SelectionProvider>
+          );
         default:
           return null;
       }

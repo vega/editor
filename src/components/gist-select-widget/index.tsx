@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {useAppDispatch, useAppSelector} from '../../hooks.js';
-import * as EditorActions from '../../actions/editor.js';
+import {useAppContext} from '../../context/app-context.js';
+import {GistPrivacy} from '../../constants/consts.js';
 import Renderer from './renderer.js';
 
 export interface GistSelectWidgetProps {
@@ -8,21 +8,20 @@ export interface GistSelectWidgetProps {
 }
 
 export default function GistSelectWidget(props: GistSelectWidgetProps) {
-  const dispatch = useAppDispatch();
+  const {state, setState} = useAppContext();
 
-  const {isAuthenticated, private: isPrivate} = useAppSelector((appState) => ({
-    isAuthenticated: appState.isAuthenticated,
-    private: appState.private,
-  }));
+  const {isAuthenticated, private: isPrivate} = state;
 
   return (
     <Renderer
       isAuthenticated={isAuthenticated}
       private={isPrivate}
       receiveCurrentUser={(isAuth: boolean, handle?: string, name?: string, profilePicUrl?: string) =>
-        dispatch(EditorActions.receiveCurrentUser(isAuth, handle, name, profilePicUrl))
+        setState((s) => ({...s, isAuthenticated: isAuth, handle, name, profilePicUrl}))
       }
-      toggleGistPrivacy={() => dispatch(EditorActions.toggleGistPrivacy())}
+      toggleGistPrivacy={() =>
+        setState((s) => ({...s, private: s.private === GistPrivacy.PUBLIC ? GistPrivacy.ALL : GistPrivacy.PUBLIC}))
+      }
       selectGist={props.selectGist}
     />
   );

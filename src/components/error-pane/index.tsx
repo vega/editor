@@ -1,23 +1,10 @@
 import * as React from 'react';
-import {useAppSelector} from '../../hooks.js';
+import {useAppContext} from '../../context/app-context.js';
 import Renderer from './renderer.js';
 
 export default function ErrorPane() {
-  const errorState = useAppSelector((state) => ({
-    error: state.error,
-    errors: state.errors,
-    warns: state.warns,
-    debugs: state.debugs,
-    infos: state.infos,
-  }));
+  const {state} = useAppContext();
+  const {error, errors, warns, debugs, infos} = state;
 
-  return (
-    <Renderer
-      error={errorState.error}
-      errors={errorState.errors}
-      warns={errorState.warns}
-      debugs={errorState.debugs}
-      infos={errorState.infos}
-    />
-  );
+  return <Renderer error={error} errors={errors} warns={warns} debugs={debugs} infos={infos} />;
 }

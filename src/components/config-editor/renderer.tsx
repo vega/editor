@@ -4,8 +4,8 @@ import {useCallback, useEffect, useRef} from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import {useNavigate} from 'react-router';
 import {debounce} from 'vega';
-import {LAYOUT, Mode, SIDEPANE} from '../../constants/index.js';
-import {useAppSelector} from '../../hooks.js';
+import {SIDEPANE} from '../../constants/index.js';
+import {useAppContext} from '../../context/app-context.js';
 import './config-editor.css';
 
 type Props = {
@@ -21,19 +21,9 @@ const ConfigEditor: React.FC<Props> = (props) => {
   const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
   const navigate = useNavigate();
 
-  const {
-    configEditorString,
-    manualParse,
-    decorations,
-    sidePaneItem,
-    editorRef: reduxEditorRef,
-  } = useAppSelector((state) => ({
-    configEditorString: state.configEditorString,
-    manualParse: state.manualParse,
-    decorations: state.decorations,
-    sidePaneItem: state.sidePaneItem,
-    editorRef: state.editorRef,
-  }));
+  const {state} = useAppContext();
+
+  const {configEditorString, manualParse, decorations, sidePaneItem, editorRef: contextEditorRef} = state;
 
   const handleEditorChange = useCallback(
     (spec: string) => {
@@ -70,7 +60,11 @@ const ConfigEditor: React.FC<Props> = (props) => {
   const handleEditorMount = useCallback(
     (editor: Monaco.editor.IStandaloneCodeEditor) => {
       editor.onDidFocusEditorText(() => {
-        editor.deltaDecorations(decorations, []);
+        try {
+          editor.deltaDecorations(decorations, []);
+        } catch (error) {
+          console.warn('Failed to handle:', error);
+        }
       });
 
       editor.addAction({
@@ -92,23 +86,31 @@ const ConfigEditor: React.FC<Props> = (props) => {
       editorRef.current = editor;
 
       if (sidePaneItem === SIDEPANE.Config) {
-        editor.focus();
-        editor.layout();
+        try {
+          editor.focus();
+          editor.layout();
+        } catch (error) {
+          console.warn('Failed to handle:', error);
+        }
       }
     },
     [decorations, sidePaneItem, handleMergeConfig, handleExtractConfig],
   );
 
   useEffect(() => {
-    if (editorRef.current && editorRef.current !== reduxEditorRef && sidePaneItem === SIDEPANE.Config) {
+    if (editorRef.current && editorRef.current !== contextEditorRef && sidePaneItem === SIDEPANE.Config) {
       props.setEditorReference(editorRef.current);
     }
-  }, [editorRef.current, reduxEditorRef, sidePaneItem, props.setEditorReference]);
+  }, [editorRef.current, contextEditorRef, sidePaneItem, props.setEditorReference]);
 
   useEffect(() => {
     if (sidePaneItem === SIDEPANE.Config && editorRef.current) {
-      editorRef.current.focus();
-      editorRef.current.layout();
+      try {
+        editorRef.current.focus();
+        editorRef.current.layout();
+      } catch (error) {
+        console.warn('Failed to handle:', error);
+      }
     }
   }, [sidePaneItem]);
 
@@ -122,7 +124,11 @@ const ConfigEditor: React.FC<Props> = (props) => {
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const {width, height} = entry.contentRect;
-        editorRef.current?.layout({width, height});
+        try {
+          editorRef.current?.layout({width, height});
+        } catch (error) {
+          console.warn('Failed to handle:', error);
+        }
       }
     });
 
