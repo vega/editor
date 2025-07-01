@@ -19,7 +19,7 @@
     "del-cli": "^6.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-prettier": "^5.5.1",
     "eslint-plugin-react": "^7.37.4",
     "events": "^3.3.0",
     "gh-pages": "^6.3.0",
@@ -35,7 +35,7 @@
     "typescript": "^5.8.2",
     "url": "^0.11.4",
     "util": "^0.12.5",
-    "vite": "^5.2.6"
+    "vite": "^7.0.0"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
