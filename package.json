@@ -35,7 +35,7 @@
     "typescript": "^5.8.2",
     "url": "^0.11.4",
     "util": "^0.12.5",
-    "vite": "^5.2.6"
+    "vite": "^7.0.0"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
