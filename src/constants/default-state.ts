@@ -63,7 +63,6 @@ export type State = {
   backgroundColor: string;
   /** https://vega.github.io/vega/usage/interpreter/ */
   expressionInterpreter: boolean;
-  // Dataflow-related properties
   runtime: any;
   elementsSelected: any;
   layout: any;
@@ -120,7 +119,6 @@ export const DEFAULT_STATE: State = {
   infos: [],
   backgroundColor: '#ffffff',
   expressionInterpreter: false,
-  // Dataflow-related defaults
   runtime: null,
   elementsSelected: null,
   layout: null,

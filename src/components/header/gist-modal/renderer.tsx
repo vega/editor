@@ -40,7 +40,6 @@ export default function GistModal({closePortal}: Props) {
 
   const onSelectGist = async () => {
     const url = gist.url.trim().toLowerCase();
-
     if (url.length === 0) {
       refGistForm.current?.reportValidity();
       return;
@@ -132,7 +131,7 @@ export default function GistModal({closePortal}: Props) {
   const preview = (id, file, image) => {
     if (id) {
       updateGist({
-        url: `https://gist.github.com/${id}`,
+        url: `https://gist.github.com/${handle}/${id}`,
         filename: file || '',
         image: image || '',
         imageStyle: {

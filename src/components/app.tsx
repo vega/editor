@@ -23,9 +23,6 @@ type Props = {
 
 const App: React.FC<Props> = (props) => {
   const appContext = useAppContext();
-  if (!appContext) {
-    return null;
-  }
   const {state, setState} = appContext;
   const {editorRef, settings} = state;
 
@@ -65,9 +62,6 @@ const App: React.FC<Props> = (props) => {
             }));
             break;
           }
-          default:
-            console.warn(`Unknown mode ${parameter.mode}`);
-            break;
         }
       } catch (error) {
         console.error('Error loading example:', error);
@@ -153,16 +147,22 @@ const App: React.FC<Props> = (props) => {
 
         const contentObj = parseJSONC(content);
 
-        if (!('$schema' in contentObj)) {
-          setState((s) => ({...s, gistVegaLiteSpec: {spec: content}}));
-        } else {
-          const mode = contentObj.$schema.split('/').slice(-2)[0];
-          if (mode === Mode.Vega) {
-            setState((s) => ({...s, gistVegaSpec: {spec: content}}));
-          } else if (mode === Mode.VegaLite) {
-            setState((s) => ({...s, gistVegaLiteSpec: {spec: content}}));
+        let detectedMode = Mode.VegaLite;
+        if ('$schema' in contentObj && typeof contentObj.$schema === 'string') {
+          const schemaPath = contentObj.$schema.split('/');
+          const mode = schemaPath[schemaPath.length - 2];
+          if (mode === 'vega') {
+            detectedMode = Mode.Vega;
           }
         }
+
+        setState((s) => ({
+          ...s,
+          editorString: content,
+          mode: detectedMode,
+          parse: true,
+          error: null,
+        }));
       } catch (error) {
         console.error('Error loading gist:', error);
       }

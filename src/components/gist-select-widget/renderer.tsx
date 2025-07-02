@@ -164,7 +164,7 @@ const GistSelectWidget: React.FC<Props> = ({
                                 selected.file === spec.name && selected.gist === gist.name && 'file-active'
                               }`}
                               onClick={() => {
-                                selectGist(gist.name, spec.name, spec.previewUrl);
+                                selectGist(gist.name, spec.name);
                                 setSelected({
                                   gist: gist.name,
                                   file: spec.name,
