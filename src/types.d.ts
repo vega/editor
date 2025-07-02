@@ -56,7 +56,6 @@ declare module '@tippyjs/react' {
 
   export interface TippyProps {
     content: React.ReactNode;
-    children: React.ReactElement;
     animation?: string;
     arrow?: boolean;
     delay?: number | [number, number];

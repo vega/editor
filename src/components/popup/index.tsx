@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light-border.css';
-import Tippy from '@tippyjs/react';
+import Tippy, {TippyProps} from '@tippyjs/react';
 
-export function Popup(props) {
+export function Popup(props: TippyProps) {
   return <Tippy theme="light-border" {...props} />;
 }
