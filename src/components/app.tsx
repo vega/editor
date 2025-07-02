@@ -11,7 +11,7 @@ import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../
 import {useAppContext} from '../context/app-context';
 import './app.css';
 import './split.css';
-import Header from './header';
+import Header from './header/renderer.js';
 import InputPanel from './input-panel';
 import Sidebar from './sidebar';
 import VizPane from './viz-pane';

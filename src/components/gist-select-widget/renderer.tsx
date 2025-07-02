@@ -4,7 +4,7 @@ import ReactPaginate from 'react-paginate';
 
 import {GistPrivacy} from '../../constants/index.js';
 import {getGithubToken} from '../../utils/github.js';
-import LoginConditional from './LoginConditional.js';
+import LoginConditional from '../login-conditional/index.js';
 import './index.css';
 
 interface Props {

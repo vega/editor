@@ -21,13 +21,24 @@ const LoginConditional: React.FC<Props> = ({children}) => {
     return false;
   };
 
-  const githubLink = (
-    <a href={`${BACKEND_URL}auth/github`} onClick={handleLogin}>
-      Login with GitHub
-    </a>
-  );
+  if (isAuthenticated) {
+    return <>{children}</>;
+  }
 
-  return <>{isAuthenticated ? children : <span>{githubLink} to use the Gist feature.</span>}</>;
+  return (
+    <div className="login-prompt">
+      <p>
+        <a
+          href={`${BACKEND_URL}auth/github`}
+          onClick={handleLogin}
+          style={{cursor: 'pointer', textDecoration: 'underline'}}
+        >
+          Login with GitHub
+        </a>{' '}
+        to use the Gist feature.
+      </p>
+    </div>
+  );
 };
 
 export default LoginConditional;

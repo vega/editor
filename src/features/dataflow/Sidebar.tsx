@@ -3,6 +3,7 @@ import {useAppContext} from '../../context/app-context.js';
 import {usePulsesState, usePulsesDispatch} from './PulsesProvider.js';
 import './Sidebar.css';
 import {GraphType, types} from './utils/graph.js';
+import {memo, useState} from 'react';
 
 export function Sidebar() {
   return (
@@ -43,7 +44,7 @@ function Type({type, label, selected}: {type: GraphType; label: string; selected
 }
 
 function Id() {
-  const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const {state, setState} = useAppContext();
   return (
     <fieldset className="id-filter">
@@ -119,7 +120,7 @@ function PulsesRows() {
   );
 }
 
-const MemoPulse = React.memo(Pulse);
+const MemoPulse = memo(Pulse);
 
 function Pulse({clock, isSelected, nValues}: {isSelected: boolean; clock: number; nValues: number}) {
   const {state, setState} = useAppContext();

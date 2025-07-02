@@ -138,11 +138,11 @@ button:disabled {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--gray-color);
+  background: var(--primary-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--dark-gray-color);
+  background: var(--primary-color);
   border-radius: 8px;
 }
 

@@ -118,7 +118,7 @@ export default function Renderer(props: RendererProps) {
     const hover = typeof hoverEnable === 'boolean' ? hoverEnable : mode === Mode.Vega;
     const newView = new vega.View(runtime, {hover, loader, expr: expressionInterpreter ? vegaInterpreter : undefined});
     newView.runAfter(runAfter, true);
-    // newView.logger(dispatchingLogger); // TODO: Fix logger interface
+    // newView.logger(dispatchingLogger); // TODO: Still need to fix logger interface
     setRuntime(runtime);
     setView(newView);
   }, [vegaSpec, config, mode, expressionInterpreter, hoverEnable, baseURL, runAfter, setRuntime, setView, view]);

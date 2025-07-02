@@ -1,5 +1,6 @@
 import Editor from '@monaco-editor/react';
 import * as React from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 import {useAppContext} from '../../../context/app-context.js';
 import './index.css';
 
@@ -20,9 +21,9 @@ const EditorWithNavigation: React.FC<{
   const {state} = useAppContext();
   const {mode, editorString, decorations, manualParse} = state;
 
-  const editorRef = React.useRef(null);
+  const editorRef = useRef(null);
 
-  const handleEditorDidMount = React.useCallback(
+  const handleEditorDidMount = useCallback(
     (editor) => {
       editorRef.current = editor;
       props.setEditorReference(editor);
@@ -46,7 +47,7 @@ const EditorWithNavigation: React.FC<{
     [props, manualParse],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (editorRef.current && decorations) {
       editorRef.current.deltaDecorations([], decorations);
     }

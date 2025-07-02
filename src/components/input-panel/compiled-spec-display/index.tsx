@@ -3,7 +3,7 @@ import * as React from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import {EDITOR_FOCUS, LAYOUT, COMPILEDPANE} from '../../../constants/index.js';
 import CompiledSpecDisplayHeader from '../compiled-spec-header/index.js';
-import {useEffect, useRef} from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 import {useAppContext} from '../../../context/app-context.js';
 
 function CompiledSpecDisplay() {
@@ -46,7 +46,7 @@ function CompiledSpecDisplay() {
     };
   }, []);
 
-  const handleEditorMount = React.useCallback(
+  const handleEditorMount = useCallback(
     (monacoEditor) => {
       monacoEditor.onDidFocusEditorText(() => {
         try {

@@ -10,12 +10,12 @@ import {LayoutProvider} from '../../features/dataflow/LayoutProvider.js';
 import {PopupProvider} from '../../features/dataflow/PopupProvider.js';
 import {PulsesProvider} from '../../features/dataflow/PulsesProvider.js';
 import {SelectionProvider} from '../../features/dataflow/SelectionProvider.js';
-import DataViewer from '../data-viewer/index.js';
+import DataViewer from '../data-viewer/renderer.js';
 import ErrorBoundary from '../error-boundary/index.js';
 import ErrorPane from '../error-pane/index.js';
 import {COMMIT_HASH} from '../header/help-modal/index.js';
 import Renderer from '../renderer/index.js';
-import SignalViewer from '../signal-viewer/index.js';
+import SignalViewer from '../signal-viewer/renderer.js';
 import DebugPaneHeader from './debug-pane-header/index.js';
 import './index.css';
 

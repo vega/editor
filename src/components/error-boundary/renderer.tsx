@@ -31,7 +31,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     if (this.state.hasError) {
       return (
         <div id="error-indicator" onClick={this.props.toggleDebugPane}>
-          {this.state.error?.message || 'An unexpected error occurred'}
+          {this.state.error?.message ?? 'An unexpected error occurred'}
         </div>
       );
     }

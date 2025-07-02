@@ -6,15 +6,16 @@ import {Placement} from 'tippy.js';
 import './Popup.css';
 import {prettifyExpression} from './utils/prettify.js';
 import {runtimeToGraph} from './utils/runtimeToGraph.js';
+import {useCallback, useMemo} from 'react';
 
 // TODO: Use one tippy and have max height for each pre
 export function Popup() {
   const popup = usePopupState();
   const {state} = useAppContext();
   const {runtime, pulses} = state;
-  const graph = React.useMemo(() => (runtime ? runtimeToGraph(runtime) : null), [runtime]);
+  const graph = useMemo(() => (runtime ? runtimeToGraph(runtime) : null), [runtime]);
 
-  const getReferenceClientRect = React.useCallback(() => popup.referenceClientRect, [popup?.referenceClientRect]);
+  const getReferenceClientRect = useCallback(() => popup.referenceClientRect, [popup?.referenceClientRect]);
   if (popup === null) {
     return <></>;
   }

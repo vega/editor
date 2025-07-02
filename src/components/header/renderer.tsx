@@ -9,7 +9,7 @@ import {BACKEND_URL, KEYCODES, Mode} from '../../constants/index.js';
 import {NAMES} from '../../constants/consts.js';
 import {VEGA_LITE_SPECS, VEGA_SPECS} from '../../constants/specs.js';
 import {getAuthFromLocalStorage, saveAuthToLocalStorage, clearAuthFromLocalStorage} from '../../utils/browser.js';
-import ExportModal from './export-modal/index.js';
+import ExportModal from './export-modal/renderer.js';
 import GistModal from './gist-modal/renderer.js';
 import HelpModal from './help-modal/index.js';
 import './index.css';

@@ -3,9 +3,10 @@ import {Cytoscape} from './Cytoscape.js';
 import {Popup} from './Popup.js';
 import './Graph.css';
 import {useAppContext} from '../../context/app-context.js';
+import {useMemo} from 'react';
 
 export function Graph() {
-  const cytoscape = React.useMemo(() => <Cytoscape />, []);
+  const cytoscape = useMemo(() => <Cytoscape />, []);
   return (
     <div className="graph">
       <UnselectElements />
