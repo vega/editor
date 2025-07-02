@@ -88,7 +88,8 @@ const InputPanel: React.FC = () => {
   return (
     <div role="group" aria-label="spec editors" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
       <Split
-        sizes={initialSizes}
+        key={compiledVegaSpec ? 'split-mode' : 'single-mode'}
+        sizes={compiledVegaSpec ? [70, 30] : [100, 0]}
         minSize={LAYOUT.MinPaneSize}
         expandToMin={false}
         gutterSize={10}

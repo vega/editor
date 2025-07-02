@@ -9,6 +9,7 @@ import {useAppContext} from '../../context/app-context.js';
 import ErrorBoundary from '../error-boundary/index.js';
 import Table from './table.js';
 import './index.css';
+import '../table/index.css';
 
 export interface OwnComponentProps {
   onClickHandler: (header: string) => void;

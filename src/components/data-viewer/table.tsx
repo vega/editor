@@ -8,11 +8,11 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({header, data, onClickHandler}) => {
   return (
-    <table>
+    <table className="editor-table">
       <thead>
         <tr>
           {header.map((h, i) => (
-            <th key={i} onClick={() => onClickHandler(h)}>
+            <th key={i} className="pointer" onClick={() => onClickHandler(h)}>
               {h}
             </th>
           ))}

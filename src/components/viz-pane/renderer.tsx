@@ -180,7 +180,7 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
     </div>
   );
 
-  const sizes = useMemo(() => {
+  const getInitialSizes = useCallback(() => {
     const debugPaneSize = props.debugPane
       ? Math.max(props.debugPaneSize || LAYOUT.DebugPaneSize, LAYOUT.DebugPaneSize)
       : LAYOUT.MinPaneSize;
@@ -210,7 +210,8 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
   return (
     <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
       <Split
-        sizes={sizes}
+        key={props.debugPane ? 'debug-open' : 'debug-closed'}
+        sizes={getInitialSizes()}
         minSize={LAYOUT.MinPaneSize}
         expandToMin={false}
         gutterSize={10}
