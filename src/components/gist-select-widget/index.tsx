@@ -1,24 +1,28 @@
-import {connect} from 'react-redux';
-import {State} from '../../constants/default-state.js';
-import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../actions/editor.js';
+import * as React from 'react';
+import {useAppContext} from '../../context/app-context.js';
+import {GistPrivacy} from '../../constants/consts.js';
 import Renderer from './renderer.js';
 
-export function mapStateToProps(state: State) {
-  return {
-    isAuthenticated: state.isAuthenticated,
-    private: state.private,
-  };
+export interface GistSelectWidgetProps {
+  selectGist: (id?: string, file?: string, image?: string) => void;
 }
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      receiveCurrentUser: EditorActions.receiveCurrentUser,
-      toggleGistPrivacy: EditorActions.toggleGistPrivacy,
-    },
-    dispatch,
+export default function GistSelectWidget(props: GistSelectWidgetProps) {
+  const {state, setState} = useAppContext();
+
+  const {isAuthenticated, private: isPrivate} = state;
+
+  return (
+    <Renderer
+      isAuthenticated={isAuthenticated}
+      private={isPrivate}
+      receiveCurrentUser={(isAuth: boolean, handle?: string, name?: string, profilePicUrl?: string) =>
+        setState((s) => ({...s, isAuthenticated: isAuth, handle, name, profilePicUrl}))
+      }
+      toggleGistPrivacy={() =>
+        setState((s) => ({...s, private: s.private === GistPrivacy.PUBLIC ? GistPrivacy.ALL : GistPrivacy.PUBLIC}))
+      }
+      selectGist={props.selectGist}
+    />
   );
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);

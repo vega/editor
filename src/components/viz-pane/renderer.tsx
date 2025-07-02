@@ -1,161 +1,239 @@
-import * as React from 'react';
-import SplitPane from 'react-split-pane-r17';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
-import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants/index.js';
-import DataViewer from '../data-viewer/index.js';
-import ErrorBoundary from '../error-boundary/index.js';
-import ErrorPane from '../error-pane/index.js';
-import Renderer from '../renderer/index.js';
-import SignalViewer from '../signal-viewer/index.js';
-import DebugPaneHeader from './debug-pane-header/index.js';
-import './index.css';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import Split from 'react-split';
 import {version as VG_VERSION} from 'vega';
 import {version as VL_VERSION} from 'vega-lite';
 import {version as TOOLTIP_VERSION} from 'vega-tooltip';
-import {COMMIT_HASH} from '../header/help-modal/index.js';
+
+import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants/index.js';
 import {DataflowViewer} from '../../features/dataflow/DataflowViewer.js';
+import {LayoutProvider} from '../../features/dataflow/LayoutProvider.js';
+import {PopupProvider} from '../../features/dataflow/PopupProvider.js';
+import {PulsesProvider} from '../../features/dataflow/PulsesProvider.js';
+import {SelectionProvider} from '../../features/dataflow/SelectionProvider.js';
+import DataViewer from '../data-viewer/renderer.js';
+import ErrorBoundary from '../error-boundary/index.js';
+import ErrorPane from '../error-pane/index.js';
+import {COMMIT_HASH} from '../header/help-modal/index.js';
+import Renderer from '../renderer/index.js';
+import SignalViewer from '../signal-viewer/renderer.js';
+import DebugPaneHeader from './debug-pane-header/index.js';
+import './index.css';
 
-const defaultState = {
-  header: '',
-  maxRange: 0,
-  range: 0,
-};
+interface VizPaneProps {
+  compiledEditorRef: any;
+  debugPane: boolean;
+  debugPaneSize: number;
+  decorations: any[];
+  editorFocus: string;
+  editorRef: any;
+  error: {message: string} | null;
+  errors: any[];
+  logs: boolean;
+  navItem: string;
+  settings: boolean;
+  view: any;
+  setDebugPaneSize: (size: number) => void;
+  setDecorations: (decorations: any[]) => void;
+  showLogs: (show: boolean) => void;
+  toggleDebugPane: () => void;
+  toggleNavbar: (item: string) => void;
+}
 
-type State = Readonly<typeof defaultState>;
+const VizPane: React.FC<VizPaneProps> = (props) => {
+  const initialSetupDone = useRef(false);
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
-
-export default class VizPane extends React.PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = defaultState;
-    this.handleChange = this.handleChange.bind(this);
-    this.getContextViewer = this.getContextViewer.bind(this);
-  }
-  public componentDidMount() {
-    if (this.props.logs) {
-      this.props.showLogs(true);
+  useEffect(() => {
+    if (props.logs && !initialSetupDone.current) {
+      initialSetupDone.current = true;
+      props.showLogs(true);
     }
-  }
+  }, [props.logs, props.showLogs]);
 
-  public onClickHandler(header: string) {
-    const mainEditor = this.props.editorRef;
-    const compiledEditor = this.props.compiledEditorRef;
-
-    const editor = this.props.editorFocus === EDITOR_FOCUS.SpecEditor ? mainEditor : compiledEditor;
-
-    const model = editor.getModel();
-
-    const rangeValue = model.findMatches(header, true, true, true, WORD_SEPARATORS, true);
-
-    editor && editor.deltaDecorations(this.props.decorations, []);
-
-    const decorations = editor.deltaDecorations(
-      [],
-      rangeValue.map((match) => ({
-        options: {inlineClassName: 'myInlineDecoration'},
-        range: match.range,
-      })),
-    );
-
-    this.props.setDecorations(decorations);
-
-    if (rangeValue[0]) {
-      editor.revealRangeInCenter(rangeValue[0].range);
-      editor.focus();
-      editor.layout();
-      Promise.resolve().then(() => {
-        (document.activeElement as HTMLElement).blur();
-      });
+  useEffect(() => {
+    if (props.debugPaneSize === LAYOUT.MinPaneSize && !initialSetupDone.current) {
+      initialSetupDone.current = true;
+      props.setDebugPaneSize(LAYOUT.DebugPaneSize);
     }
-  }
-  public handleChange(size: number) {
-    this.props.setDebugPaneSize(size);
-    if ((size > LAYOUT.MinPaneSize && !this.props.debugPane) || (size === LAYOUT.MinPaneSize && this.props.debugPane)) {
-      this.props.toggleDebugPane();
+
+    // Show logs when there's an error, but without causing loops
+    if ((props.error || props.errors.length > 0) && !props.logs) {
+      props.showLogs(true);
     }
-  }
-  public componentDidUpdate() {
-    if (this.props.debugPaneSize === LAYOUT.MinPaneSize) {
-      this.props.setDebugPaneSize(LAYOUT.DebugPaneSize);
+  }, [props.debugPaneSize, props.error, props.errors.length, props.logs, props.setDebugPaneSize, props.showLogs]);
+
+  const onClickHandler = useCallback(
+    (itemHeader: string) => {
+      const mainEditor = props.editorRef;
+      const compiledEditor = props.compiledEditorRef;
+
+      const editor = props.editorFocus === EDITOR_FOCUS.SpecEditor ? mainEditor : compiledEditor;
+
+      if (!editor) return;
+
+      try {
+        const model = editor.getModel();
+        if (!model) return;
+
+        const rangeValue = model.findMatches(itemHeader, true, true, true, WORD_SEPARATORS, true);
+
+        editor.deltaDecorations(props.decorations, []);
+
+        const decorations = editor.deltaDecorations(
+          [],
+          rangeValue.map((match) => ({
+            options: {inlineClassName: 'myInlineDecoration'},
+            range: match.range,
+          })),
+        );
+
+        props.setDecorations(decorations);
+
+        if (rangeValue[0]) {
+          editor.revealRangeInCenter(rangeValue[0].range);
+          editor.focus();
+          editor.layout();
+          Promise.resolve().then(() => {
+            (document.activeElement as HTMLElement).blur();
+          });
+        }
+      } catch (error) {
+        // Ignore errors if editor is disposed
+        if (!error.message?.includes('Canceled')) {
+          console.warn('Failed to handle click:', error);
+        }
+      }
+    },
+    [props.editorRef, props.compiledEditorRef, props.editorFocus, props.decorations, props.setDecorations],
+  );
+
+  const handleChange = useCallback(
+    (sizes: number[]) => {
+      const size = (sizes[1] / 100) * window.innerHeight;
+      props.setDebugPaneSize(size);
+
+      const tolerance = 5;
+      if (
+        (size > LAYOUT.MinPaneSize + tolerance && !props.debugPane) ||
+        (size <= LAYOUT.MinPaneSize + tolerance && props.debugPane)
+      ) {
+        props.toggleDebugPane();
+      }
+    },
+    [props.setDebugPaneSize, props.debugPane, props.toggleDebugPane],
+  );
+
+  const handleDragStart = useCallback(() => {
+    if (props.navItem === NAVBAR.Logs) {
+      props.showLogs(true);
     }
-    if (this.props.error || this.props.errors.length) {
-      this.props.showLogs(true);
+  }, [props.navItem, props.showLogs]);
+
+  const handleDragEnd = useCallback(() => {
+    if (props.debugPaneSize === LAYOUT.MinPaneSize) {
+      props.setDebugPaneSize(LAYOUT.DebugPaneSize);
+      // Popping up the debug panel for the first time will set its
+      // height to LAYOUT.DebugPaneSize. This can change depending on the UI.
     }
-  }
+  }, [props.debugPaneSize, props.setDebugPaneSize]);
 
   /**
    *  Get the Component to be rendered in the Context Viewer.
    */
-  public getContextViewer() {
-    if (!this.props.debugPane) {
+  const getContextViewer = useCallback(() => {
+    if (!props.debugPane) {
       return null;
     }
-    if (this.props.view) {
-      switch (this.props.navItem) {
+    if (props.view) {
+      switch (props.navItem) {
         case NAVBAR.DataViewer:
-          return <DataViewer onClickHandler={(header) => this.onClickHandler(header)} />;
+          return <DataViewer onClickHandler={onClickHandler} />;
         case NAVBAR.SignalViewer:
-          return <SignalViewer onClickHandler={(header) => this.onClickHandler(header)} />;
+          return <SignalViewer onClickHandler={onClickHandler} />;
         case NAVBAR.DataflowViewer:
-          return <DataflowViewer />;
+          return (
+            <SelectionProvider>
+              <PulsesProvider>
+                <PopupProvider>
+                  <LayoutProvider>
+                    <DataflowViewer />
+                  </LayoutProvider>
+                </PopupProvider>
+              </PulsesProvider>
+            </SelectionProvider>
+          );
         default:
           return null;
       }
     } else {
       return null;
     }
-  }
+  }, [props.debugPane, props.view, props.navItem, onClickHandler]);
 
-  public render() {
-    const container = (
-      <div className="chart-container">
-        <ErrorBoundary>
-          <Renderer />
-        </ErrorBoundary>
-        <div className="versions">
-          Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {COMMIT_HASH.slice(0, 7)}
-        </div>
+  const container = (
+    <div className="chart-container">
+      <ErrorBoundary>
+        <Renderer />
+      </ErrorBoundary>
+      <div className="versions">
+        Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {COMMIT_HASH.slice(0, 7)}
       </div>
-    );
-    return (
-      <SplitPane
-        split="horizontal"
-        primary="second"
+    </div>
+  );
+
+  const getInitialSizes = useCallback(() => {
+    const debugPaneSize = props.debugPane
+      ? Math.max(props.debugPaneSize || LAYOUT.DebugPaneSize, LAYOUT.DebugPaneSize)
+      : LAYOUT.MinPaneSize;
+
+    const totalHeight = window.innerHeight;
+    const debugPanePercentage = (debugPaneSize / totalHeight) * 100;
+
+    const minPercentage = (LAYOUT.MinPaneSize / totalHeight) * 100;
+    const finalDebugPercentage = Math.max(debugPanePercentage, minPercentage);
+    const finalChartPercentage = 100 - finalDebugPercentage;
+
+    return [finalChartPercentage, finalDebugPercentage];
+  }, [props.debugPane, props.debugPaneSize]);
+
+  const debugPaneContent = useMemo(() => {
+    if (!props.debugPane) {
+      return null;
+    }
+
+    if (props.error || (props.logs && props.navItem === NAVBAR.Logs)) {
+      return <ErrorPane />;
+    }
+
+    return getContextViewer();
+  }, [props.debugPane, props.error, props.logs, props.navItem, getContextViewer]);
+
+  return (
+    <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+      <Split
+        key={props.debugPane ? 'debug-open' : 'debug-closed'}
+        sizes={getInitialSizes()}
         minSize={LAYOUT.MinPaneSize}
-        defaultSize={this.props.debugPane ? this.props.debugPaneSize : LAYOUT.MinPaneSize}
-        onChange={this.handleChange}
-        pane1Style={{minHeight: `${LAYOUT.MinPaneSize}px`}}
-        pane2Style={{
-          height: this.props.debugPane
-            ? (this.props.debugPaneSize || window.innerHeight * 0.4) + 'px'
-            : LAYOUT.MinPaneSize + 'px',
-        }}
-        paneStyle={{display: 'flex'}}
-        onDragStarted={() => {
-          if (this.props.navItem === NAVBAR.Logs) {
-            this.props.showLogs(true);
-          }
-        }}
-        onDragFinished={() => {
-          if (this.props.debugPaneSize === LAYOUT.MinPaneSize) {
-            this.props.setDebugPaneSize(LAYOUT.DebugPaneSize);
-            // Popping up the the debug panel for the first time will set its
-            // height to LAYOUT.DebugPaneSize. This can change depending on the UI.
-          }
-        }}
+        expandToMin={false}
+        gutterSize={10}
+        gutterAlign="center"
+        snapOffset={30}
+        dragInterval={1}
+        direction="vertical"
+        cursor="row-resize"
+        className="editor-splitPane"
+        onDrag={handleChange}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
       >
         {container}
 
         <div className="debug-pane">
           <DebugPaneHeader />
-          {this.props.error || (this.props.logs && this.props.navItem === NAVBAR.Logs) ? (
-            <ErrorPane />
-          ) : (
-            this.getContextViewer()
-          )}
+          {debugPaneContent}
         </div>
-      </SplitPane>
-    );
-  }
-}
+      </Split>
+    </div>
+  );
+};
+
+export default VizPane;

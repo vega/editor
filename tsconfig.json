@@ -8,13 +8,19 @@
     "strict": false,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "resolveJsonModule": true,
     "lib": [
       "esnext",
-      "dom"
+      "dom",
+      "dom.iterable"
     ],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": [
+      "react",
+      "react-dom",
+      "node"
+    ]
   },
   "include": [
     "src/**/*.ts*",

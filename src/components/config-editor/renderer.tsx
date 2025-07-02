@@ -1,121 +1,166 @@
 import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 import MonacoEditor from '@monaco-editor/react';
-import ResizeObserver from 'rc-resize-observer';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {useNavigate} from 'react-router';
 import {debounce} from 'vega';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
 import {SIDEPANE} from '../../constants/index.js';
+import {useAppContext} from '../../context/app-context.js';
 import './config-editor.css';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> &
-  RouteComponentProps<{compressed: string}>;
+type Props = {
+  extractConfig: () => void;
+  mergeConfigSpec: () => void;
+  setConfig: (config: string) => void;
+  setConfigEditorString: (configString: string) => void;
+  setEditorReference: (reference: any) => void;
+  setThemeName: (theme: string) => void;
+};
 
-class ConfigEditor extends React.PureComponent<Props> {
-  public editor: Monaco.editor.IStandaloneCodeEditor;
-  public handleEditorChange = (spec: string) => {
-    const newSpec = spec === '' ? '{}' : spec;
-    this.props.setConfigEditorString(newSpec);
-    this.props.setThemeName('custom');
-    if (this.props.manualParse) {
-      return;
-    }
-    this.props.setConfig(this.props.configEditorString);
-  };
+const ConfigEditor: React.FC<Props> = (props) => {
+  const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
+  const navigate = useNavigate();
 
-  public handleMergeConfig() {
+  const {state} = useAppContext();
+
+  const {configEditorString, manualParse, decorations, sidePaneItem, editorRef: contextEditorRef} = state;
+
+  const handleEditorChange = useCallback(
+    (spec: string) => {
+      const newSpec = spec === '' ? '{}' : spec;
+      if (newSpec !== configEditorString) {
+        props.setConfigEditorString(newSpec);
+        props.setThemeName('custom');
+
+        if (!manualParse) {
+          props.setConfig(newSpec);
+        }
+      }
+    },
+    [props.setConfigEditorString, props.setThemeName, manualParse, props.setConfig, configEditorString],
+  );
+
+  const handleMergeConfig = useCallback(() => {
     const confirmation = confirm('The spec will be formatted on merge.');
     if (!confirmation) {
       return;
     }
-    if (this.props.history.location.pathname !== '/edited') {
-      this.props.history.push('/edited');
-    }
-    this.props.mergeConfigSpec();
-  }
+    navigate('/edited');
+    props.mergeConfigSpec();
+  }, [navigate, props.mergeConfigSpec]);
 
-  public handleExtractConfig() {
+  const handleExtractConfig = useCallback(() => {
     const confirmation = confirm('The spec and config will be formatted.');
     if (!confirmation) {
       return;
     }
+    props.extractConfig();
+  }, [props.extractConfig]);
 
-    this.props.extractConfig();
-  }
+  const handleEditorMount = useCallback(
+    (editor: Monaco.editor.IStandaloneCodeEditor) => {
+      editor.onDidFocusEditorText(() => {
+        try {
+          editor.deltaDecorations(decorations, []);
+        } catch (error) {
+          console.warn('Failed to handle:', error);
+        }
+      });
 
-  public handleEditorMount(editor: Monaco.editor.IStandaloneCodeEditor) {
-    editor.onDidFocusEditorText(() => {
-      editor.deltaDecorations(this.props.decorations, []);
-      this.props.setEditorReference(editor);
+      editor.addAction({
+        contextMenuGroupId: 'vega',
+        contextMenuOrder: 0,
+        id: 'MERGE_CONFIG',
+        label: 'Merge Config Into Spec',
+        run: handleMergeConfig,
+      });
+
+      editor.addAction({
+        contextMenuGroupId: 'vega',
+        contextMenuOrder: 1,
+        id: 'EXTRACT_CONFIG',
+        label: 'Extract Config From Spec',
+        run: handleExtractConfig,
+      });
+
+      editorRef.current = editor;
+
+      if (sidePaneItem === SIDEPANE.Config) {
+        try {
+          editor.focus();
+          editor.layout();
+        } catch (error) {
+          console.warn('Failed to handle:', error);
+        }
+      }
+    },
+    [decorations, sidePaneItem, handleMergeConfig, handleExtractConfig],
+  );
+
+  useEffect(() => {
+    if (editorRef.current && editorRef.current !== contextEditorRef && sidePaneItem === SIDEPANE.Config) {
+      props.setEditorReference(editorRef.current);
+    }
+  }, [editorRef.current, contextEditorRef, sidePaneItem, props.setEditorReference]);
+
+  useEffect(() => {
+    if (sidePaneItem === SIDEPANE.Config && editorRef.current) {
+      try {
+        editorRef.current.focus();
+        editorRef.current.layout();
+      } catch (error) {
+        console.warn('Failed to handle:', error);
+      }
+    }
+  }, [sidePaneItem]);
+
+  const debouncedHandleEditorChange = useCallback(debounce(700, handleEditorChange), [handleEditorChange]);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const {width, height} = entry.contentRect;
+        try {
+          editorRef.current?.layout({width, height});
+        } catch (error) {
+          console.warn('Failed to handle:', error);
+        }
+      }
     });
 
-    editor.addAction({
-      contextMenuGroupId: 'vega',
-      contextMenuOrder: 0,
-      id: 'MERGE_CONFIG',
-      label: 'Merge Config Into Spec',
-      run: this.handleMergeConfig.bind(this),
-    });
+    resizeObserver.observe(containerRef.current);
 
-    editor.addAction({
-      contextMenuGroupId: 'vega',
-      contextMenuOrder: 1,
-      id: 'EXTRACT_CONFIG',
-      label: 'Extract Config From Spec',
-      run: this.handleExtractConfig.bind(this),
-    });
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
-    this.editor = editor;
-
-    if (this.props.sidePaneItem === SIDEPANE.Config) {
-      this.editor.focus();
-      this.editor.layout();
-    }
-  }
-
-  public componentDidMount() {
-    if (this.props.sidePaneItem === SIDEPANE.Config) {
-      this.props.setEditorReference(this.editor);
-    }
-  }
-
-  public componentDidUpdate() {
-    if (this.props.sidePaneItem === SIDEPANE.Config) {
-      this.editor.focus();
-      this.editor.layout();
-      this.props.setEditorReference(this.editor);
-    }
-  }
-
-  public render() {
-    return (
-      <ResizeObserver
-        onResize={({width, height}) => {
-          this.editor?.layout({width, height});
+  return (
+    <div ref={containerRef} style={{width: '100%', height: '100%'}}>
+      <MonacoEditor
+        defaultLanguage="json"
+        options={{
+          cursorBlinking: 'smooth',
+          folding: true,
+          lineNumbersMinChars: 4,
+          minimap: {enabled: false},
+          scrollBeyondLastLine: false,
+          wordWrap: 'on',
+          quickSuggestions: true,
+          stickyScroll: {
+            enabled: false,
+          },
         }}
-      >
-        <MonacoEditor
-          defaultLanguage="json"
-          options={{
-            cursorBlinking: 'smooth',
-            folding: true,
-            lineNumbersMinChars: 4,
-            minimap: {enabled: false},
-            scrollBeyondLastLine: false,
-            wordWrap: 'on',
-            quickSuggestions: true,
-            stickyScroll: {
-              enabled: false,
-            },
-          }}
-          onChange={debounce(700, this.handleEditorChange)}
-          defaultValue={this.props.configEditorString}
-          onMount={(e) => this.handleEditorMount(e)}
-        />
-      </ResizeObserver>
-    );
-  }
-}
+        onChange={debouncedHandleEditorChange}
+        defaultValue={configEditorString}
+        onMount={handleEditorMount}
+      />
+    </div>
+  );
+};
 
-export default withRouter(ConfigEditor);
+export default ConfigEditor;

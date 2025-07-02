@@ -132,7 +132,7 @@ function createVegaHMRPlugin() {
     },
 
     async transform(code: string, id: string) {
-      if (id.includes('/vega') && id.includes('/src/')) {
+      if (id.includes('/vega') && id.includes('/src/') && /\.(js|ts|jsx|tsx)$/.test(id)) {
         return {
           code: `
 if (import.meta.hot) {

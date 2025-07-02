@@ -2,7 +2,6 @@ import type * as Monaco from 'monaco-editor';
 import {Renderers, Spec} from 'vega';
 import {Config, vega} from 'vega-embed';
 import {TopLevelSpec as VlSpec} from 'vega-lite';
-import {dataflowInitialState} from '../features/dataflow/index.js';
 
 import {
   COMPILEDPANE,
@@ -64,7 +63,14 @@ export type State = {
   backgroundColor: string;
   /** https://vega.github.io/vega/usage/interpreter/ */
   expressionInterpreter: boolean;
-} & typeof dataflowInitialState;
+  runtime: any;
+  elementsSelected: any;
+  layout: any;
+  types: any;
+  pulse: any;
+  elements: any;
+  pulses: any[];
+};
 
 export const DEFAULT_STATE: State = {
   baseURL: null,
@@ -113,5 +119,11 @@ export const DEFAULT_STATE: State = {
   infos: [],
   backgroundColor: '#ffffff',
   expressionInterpreter: false,
-  ...dataflowInitialState,
+  runtime: null,
+  elementsSelected: null,
+  layout: null,
+  types: {},
+  pulse: null,
+  elements: null,
+  pulses: [],
 };

@@ -1,8 +1,9 @@
 .settings {
-  border-left: solid 1px var(--box-shadow-color);
-  width: 290px;
+  width: 100%;
   font-size: 14px;
   padding: 25px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -10,10 +11,12 @@
     position: absolute;
     height: 100%;
     right: 0px;
-    top: -2px;
+    top: 0px;
+    width: 290px;
     background: var(--white-color);
     box-shadow: -2px 4px 10px 3px var(--box-shadow-color);
     border-radius: 4px 0 0 4px;
+    z-index: 1000;
   }
 }
 

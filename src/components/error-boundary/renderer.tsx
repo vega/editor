@@ -1,22 +1,43 @@
-import * as React from 'react';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
+import React from 'react';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & {children?: React.ReactNode};
+interface ErrorBoundaryProps {
+  logError: (error: Error, info: React.ErrorInfo) => void;
+  toggleDebugPane: () => void;
+  children?: React.ReactNode;
+}
 
-export default class ErrorBoundary extends React.PureComponent<Props> {
-  public componentDidCatch(error: Error) {
-    this.props.logError(error);
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props) {
+    super(props);
+    this.state = {hasError: false};
   }
 
-  public render() {
-    if (this.props.error) {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return {hasError: true, error};
+  }
+
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    this.props.logError(error, info);
+    console.error('ErrorBoundary caught an error:', error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
       return (
         <div id="error-indicator" onClick={this.props.toggleDebugPane}>
-          {this.props.error.message}
+          {this.state.error?.message ?? 'An unexpected error occurred'}
         </div>
       );
     }
+
     return this.props.children;
   }
 }
+
+export default ErrorBoundary;

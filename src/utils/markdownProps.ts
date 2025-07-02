@@ -8,7 +8,7 @@ export default function addMarkdownProps(value) {
     }
 
     for (const key in value) {
-      if (value.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(value, key)) {
         value[key] = addMarkdownProps(value[key]);
       }
     }

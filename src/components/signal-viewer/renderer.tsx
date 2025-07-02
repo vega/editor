@@ -1,316 +1,279 @@
-import React from 'react';
+import * as React from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import * as vega from 'vega';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
+import {useAppContext} from '../../context/app-context.js';
 import './index.css';
 import SignalRow from './signalRow.js';
 import TimelineRow from './TimelineRow.js';
 
-type StoreProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
-
-interface OwnComponentProps {
+interface OwnProps {
   onClickHandler: (header: string) => void;
 }
 
-type Props = StoreProps & OwnComponentProps;
+const SignalViewer: React.FC<OwnProps> = ({onClickHandler}) => {
+  const {state, setState} = useAppContext();
+  const {signals, view} = state;
 
-export default class SignalViewer extends React.PureComponent<Props, any> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      countSignal: {},
-      hoverValue: {},
-      isTimelineSelected: false,
-      isHovered: false,
-      keys: [],
-      maskListener: false,
-      maxLength: 0,
-      signal: {},
-      xCount: 0,
-      timeline: false,
-    };
-  }
+  const setSignals = useCallback((payload) => setState((s) => ({...s, signals: payload})), [setState]);
 
-  public getKeys(ref = this.props) {
+  const [countSignal, setCountSignal] = useState({});
+  const [hoverValue, setHoverValue] = useState({});
+  const [isTimelineSelected, setIsTimelineSelected] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [maskListener, setMaskListener] = useState(false);
+  const [signal, setSignal] = useState({});
+  const [xCount, setXCount] = useState(0);
+  const [timeline, setTimeline] = useState(false);
+  const throttleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const keys = useMemo(() => {
+    if (!view) return [];
     return Object.keys(
-      ref.view.getState({
+      view.getState({
         data: vega.falsy,
         signals: vega.truthy,
         recurse: true,
       }).signals,
     );
-  }
+  }, [view]);
 
-  public getSignals(changedSignal = null) {
-    if (!this.state.timeline) {
-      return;
+  const getSignals = useCallback(
+    (changedSignal: string | null = null) => {
+      if (!timeline) {
+        return;
+      }
+
+      const newSignals = {...signals};
+      const newXCount = xCount + 1;
+
+      if (changedSignal) {
+        const obj = {
+          value: view.signal(changedSignal),
+          xCount: newXCount,
+        };
+        newSignals[changedSignal] = newSignals[changedSignal] ? [...newSignals[changedSignal], obj] : [obj];
+      } else {
+        keys.forEach((key) => {
+          newSignals[key] = [{value: view.signal(key), xCount: newXCount}];
+        });
+      }
+
+      setSignals(newSignals);
+      setXCount(newXCount);
+    },
+    [timeline, view, xCount, signals, keys, setSignals],
+  );
+
+  useEffect(() => {
+    if (view) {
+      setSignal({});
+      setXCount(0);
+      setTimeline(false);
+      setIsHovered(false);
+      setIsTimelineSelected(false);
+      setHoverValue({});
+      setCountSignal({});
+      setMaskListener(false);
+
+      const overlay: HTMLElement = document.querySelector('.chart-overlay');
+      if (overlay) {
+        overlay.style.display = 'none';
+      }
     }
-    if (changedSignal) {
-      const obj = {
-        value: this.props.view.signal(changedSignal),
-      };
-      const lastObj = this.props.signals[changedSignal];
-      const prevObj = {...lastObj[lastObj && lastObj.length - 1]};
-      delete prevObj.xCount;
-      (obj as any).xCount = this.state.xCount;
-      const newSignals = this.props.signals[changedSignal].concat(obj);
-      this.props.setSignals({
-        ...this.props.signals,
-        [changedSignal]: newSignals,
-      });
-      this.setState((current) => ({
-        ...current,
-        xCount: current.xCount + 1,
-      }));
-    } else {
-      const obj = {};
-      this.state.keys.map((key) => {
-        if (obj[key]) {
-          obj[key].push({
-            value: this.props.view.signal(key),
-            xCount: this.state.xCount,
-          });
-        } else {
-          obj[key] = [{value: this.props.view.signal(key), xCount: this.state.xCount}];
+  }, [view]);
+
+  const resetTimeline = useCallback(() => {
+    const overlay: HTMLElement = document.querySelector('.chart-overlay');
+    if (overlay) {
+      overlay.style.display = 'none';
+    }
+    const currentValueObj = {};
+    if (signals) {
+      keys.forEach((sig) => {
+        if (signals[sig] && signals[sig].length > 0) {
+          currentValueObj[sig] = signals[sig][signals[sig].length - 1].value;
         }
       });
-      this.props.setSignals(obj);
-      this.setState({
-        xCount: this.state.xCount + 1,
-      });
     }
-  }
+    if (view) {
+      view.setState({signals: currentValueObj});
+    }
 
-  public onClickInit(key, hoverValue) {
-    this.setState({maskListener: true});
-    const overlay: HTMLElement = document.querySelector('.chart-overlay');
-    overlay.style.display = 'block';
-    this.onHoverInit(key, hoverValue, true); // hover calculation with persist
-  }
+    setIsTimelineSelected(false);
+    setSignal({});
+    setCountSignal({});
+    setHoverValue({});
+    setIsHovered(false);
 
-  public componentWillReceiveProps(nextProps) {
-    if (this.props.view !== nextProps.view) {
-      const keys = this.getKeys(nextProps);
-      this.setState(
-        {
-          keys,
-          signal: {},
-          xCount: 0,
-          timeline: false,
-          isHovered: false,
-          isTimelineSelected: false,
-          hoverValue: {},
-          countSignal: {},
-          maskListener: false,
-        },
-        () => {
-          const overlay: HTMLElement = document.querySelector('.chart-overlay');
-          // remove the overlay
-          overlay.style.display = 'none';
-          if (this.state.timeline) {
-            const obj = {};
-            this.state.keys.map((key) => {
-              if (obj[key]) {
-                obj[key].push({
-                  value: this.props.view.signal(key),
-                  xCount: this.state.xCount,
-                });
-              } else {
-                obj[key] = [
-                  {
-                    value: this.props.view.signal(key),
-                    xCount: this.state.xCount,
-                  },
-                ];
-              }
-            });
+    setMaskListener(false);
+  }, [keys, signals, view]);
 
-            this.props.setSignals(obj);
-            this.setState({
-              xCount: 1,
-            });
+  const onHoverInit = useCallback(
+    (signalKey, hValue, shouldPersist = false) => {
+      const hoverObj = {
+        [signalKey]: hValue.value,
+      };
+      const countObj = {
+        [signalKey]: hValue.xCount,
+      };
+
+      for (const key in signals) {
+        if (Object.prototype.hasOwnProperty.call(signals, key)) {
+          let i = 0;
+          while (signals[key][i] && signals[key][i].xCount <= hValue.xCount) {
+            i++;
           }
-        },
-      );
-    }
-  }
-
-  public resetTimeline() {
-    // get the chart
-    const overlay: HTMLElement = document.querySelector('.chart-overlay');
-    // remove the overlay
-    overlay.style.display = 'none';
-    // setState to current value
-    const currentValueObj = {};
-    this.state.keys.map((signal) => {
-      currentValueObj[signal] = this.props.signals[signal][this.props.signals[signal].length - 1].value;
-    });
-    this.props.view.setState({signals: currentValueObj});
-    // remove isTimelineSelected, isHovered, hoverValue, signal and CountValue
-    this.setState(
-      {
-        isTimelineSelected: false,
-        signal: {},
-        countSignal: {},
-        hoverValue: {},
-        isHovered: false,
-      },
-      () => {
-        Promise.resolve().then(() =>
-          this.setState({
-            // remove the maskListener
-            maskListener: false,
-          }),
-        );
-      },
-    );
-  }
-
-  public onHoverInit(signalKey, hoverValue, shouldPersist = false) {
-    const hoverObj = {
-      [signalKey]: hoverValue.value,
-    };
-    const countObj = {
-      [signalKey]: hoverValue.xCount,
-    };
-
-    for (const key in this.props.signals) {
-      let i = 0;
-      while (this.props.signals[key][i] && this.props.signals[key][i].xCount <= hoverValue.xCount) {
-        i++;
+          --i;
+          if (i >= 0) {
+            hoverObj[key] = signals[key][i].value;
+            countObj[key] = signals[key][i].xCount;
+          }
+        }
       }
-      --i;
-      hoverObj[key] = this.props.signals[key][i].value;
-      countObj[key] = this.props.signals[key][i].xCount;
-    }
-    if (!shouldPersist) {
-      this.setState({
-        hoverValue: hoverObj,
-        isHovered: true,
-      });
-    } else {
-      this.setState(
-        {
-          countSignal: countObj,
-          hoverValue: {},
-          isTimelineSelected: true,
-          isHovered: false,
-          signal: hoverObj,
-        },
-        () => {
-          this.props.view.setState({signals: hoverObj});
-        },
-      );
-    }
-  }
+      if (!shouldPersist) {
+        setHoverValue(hoverObj);
+        setIsHovered(true);
+      } else {
+        setCountSignal(countObj);
+        setHoverValue({});
+        setIsTimelineSelected(true);
+        setIsHovered(false);
+        setSignal(hoverObj);
+        view.setState({signals: hoverObj});
+      }
+    },
+    [signals, view],
+  );
 
-  public componentDidMount() {
-    const keys = this.getKeys();
-    this.setState({
-      keys,
-    });
-  }
+  const onClickInit = useCallback(
+    (key, hValue) => {
+      setMaskListener(true);
+      const overlay: HTMLElement = document.querySelector('.chart-overlay');
+      if (overlay) {
+        overlay.style.display = 'block';
+      }
+      onHoverInit(key, hValue, true);
+    },
+    [onHoverInit],
+  );
 
-  public valueChange = (key: string, value: any) => {
-    if (this.state.timeline && !this.state.maskListener) {
-      this.getSignals(key);
-    }
-  };
+  const valueChange = useCallback(
+    (key: string) => {
+      if (throttleTimeoutRef.current) {
+        return;
+      }
+      if (timeline && !maskListener) {
+        getSignals(key);
+        throttleTimeoutRef.current = setTimeout(() => {
+          if (throttleTimeoutRef.current) {
+            throttleTimeoutRef.current = null;
+          }
+        }, 50);
+      }
+    },
+    [timeline, maskListener, getSignals],
+  );
 
-  public render() {
-    return (
-      <>
-        <div className="timeline-control-buttons">
+  useEffect(() => {
+    return () => {
+      if (throttleTimeoutRef.current) {
+        clearTimeout(throttleTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <>
+      <div className="timeline-control-buttons">
+        <button
+          style={{
+            backgroundColor: timeline ? 'red' : '',
+            color: timeline ? 'white' : 'black',
+          }}
+          onClick={() => {
+            const newTimeline = !timeline;
+            setTimeline(newTimeline);
+            if (newTimeline) {
+              setXCount(0);
+              setSignals({});
+              const obj = {};
+              keys.forEach((key) => {
+                obj[key] = [{value: view.signal(key), xCount: 0}];
+              });
+              setSignals(obj);
+              setXCount(1);
+            } else {
+              resetTimeline();
+            }
+          }}
+        >
+          {timeline ? 'Stop Recording & Reset' : 'Record signal changes'}
+        </button>
+        {timeline && !maskListener && xCount > 1 && (
           <button
-            style={{
-              backgroundColor: this.state.timeline ? 'red' : '',
-              color: this.state.timeline ? 'white' : 'black',
-            }}
             onClick={() => {
-              this.setState(
-                {
-                  timeline: !this.state.timeline,
-                  xCount: 0,
-                },
-                () => {
-                  this.props.setSignals({});
-                  this.getSignals();
-                  if (!this.state.timeline) {
-                    this.resetTimeline();
-                  }
-                },
-              );
+              setXCount(0);
+              setSignals({});
+              const obj = {};
+              keys.forEach((key) => {
+                obj[key] = [{value: view.signal(key), xCount: 0}];
+              });
+              setSignals(obj);
+              setXCount(1);
             }}
           >
-            {this.state.timeline ? 'Stop Recording & Reset' : 'Record signal changes'}
+            Clear Timeline
           </button>
-          {this.state.timeline && !this.state.maskListener && this.state.xCount > 1 && (
-            <button
-              onClick={() => {
-                this.setState(
-                  {
-                    xCount: 0,
-                  },
-                  () => {
-                    this.props.setSignals({});
-                    this.getSignals();
-                  },
-                );
-              }}
-            >
-              Clear Timeline
-            </button>
-          )}
-          {this.state.maskListener && this.state.timeline && (
-            <button onClick={() => this.resetTimeline()}>Continue Recording</button>
-          )}
-        </div>
-        <div className="signal-viewer">
-          <table className="editor-table">
-            <thead>
-              <tr>
-                <th>Signal</th>
-                {this.state.timeline && <th>Timeline</th>}
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.keys.map((signal) => (
+        )}
+        {maskListener && timeline && <button onClick={resetTimeline}>Continue Recording</button>}
+      </div>
+      <div className="signal-viewer">
+        <table className="editor-table">
+          <thead>
+            <tr>
+              <th>Signal</th>
+              {timeline && <th>Timeline</th>}
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {view &&
+              keys.map((s) => (
                 <SignalRow
-                  isHovered={this.state.isHovered}
-                  isTimelineSelected={this.state.isTimelineSelected}
-                  clickedSignal={this.state.signal[signal]}
-                  hoverValue={this.state.hoverValue[signal]}
-                  maskListener={this.state.maskListener}
-                  onValueChange={(key, value) => this.valueChange(key, value)}
-                  key={signal}
-                  signal={signal}
-                  view={this.props.view}
-                  timeline={this.state.timeline}
-                  onClickHandler={this.props.onClickHandler}
+                  isHovered={isHovered}
+                  isTimelineSelected={isTimelineSelected}
+                  clickedSignal={signal[s]}
+                  hoverValue={hoverValue[s]}
+                  maskListener={maskListener}
+                  onValueChange={valueChange}
+                  key={s}
+                  signal={s}
+                  view={view}
+                  timeline={timeline}
+                  onClickHandler={onClickHandler}
                 >
-                  {this.state.timeline && (
+                  {timeline && (
                     <TimelineRow
-                      onHoverInit={(hoverValue) => this.onHoverInit(signal, hoverValue)}
-                      onClickInit={(hoverValue) => this.onClickInit(signal, hoverValue)}
+                      onHoverInit={(hValue) => onHoverInit(s, hValue)}
+                      onClickInit={(hValue) => onClickInit(s, hValue)}
                       onHoverEnd={() => {
-                        this.setState({
-                          hoverValue: {},
-                          isHovered: false,
-                        });
+                        setHoverValue({});
+                        setIsHovered(false);
                       }}
-                      isTimelineSelected={this.state.isTimelineSelected}
-                      clickedValue={this.state.countSignal[signal]}
-                      data={this.props.signals[signal]}
+                      isTimelineSelected={isTimelineSelected}
+                      clickedValue={countSignal[s]}
+                      data={signals[s]}
                       width={window.innerWidth * 0.3}
-                      xCount={this.state.xCount}
+                      xCount={xCount}
                     />
                   )}
                 </SignalRow>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </>
-    );
-  }
-}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+};
+
+export default SignalViewer;
