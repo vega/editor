@@ -48,6 +48,7 @@ function CompiledSpecDisplay() {
 
   const handleEditorMount = useCallback(
     (monacoEditor) => {
+      monacoEditorRef.current = monacoEditor;
       monacoEditor.onDidFocusEditorText(() => {
         try {
           compiledEditorRef?.deltaDecorations(decorations, []);
@@ -57,7 +58,6 @@ function CompiledSpecDisplay() {
           console.warn('Failed to handle:', error);
         }
       });
-      monacoEditorRef.current = monacoEditor;
     },
     [compiledEditorRef, decorations, editorRef, setState],
   );
@@ -65,7 +65,7 @@ function CompiledSpecDisplay() {
   return (
     <div className={'full-height-wrapper'}>
       <CompiledSpecDisplayHeader />
-      <div ref={containerRef} style={{width: '100%', height: '100%'}}>
+      <div ref={containerRef} style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column'}}>
         <MonacoEditor
           height={compiledVegaPaneSize - LAYOUT.MinPaneSize}
           options={{

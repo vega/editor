@@ -35,6 +35,9 @@ function CompiledSpecDisplayHeader() {
 
   const setCompiledPaneItem = (item: (typeof COMPILEDPANE)[keyof typeof COMPILEDPANE]) => {
     setState((s) => ({...s, compiledPaneItem: item}));
+    if (!state.compiledVegaSpec) {
+      setState((s) => ({...s, compiledVegaSpec: true}));
+    }
   };
 
   return (
