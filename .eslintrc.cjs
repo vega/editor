@@ -17,6 +17,15 @@ module.exports = {
         "*.ts",
         "*.tsx"
       ]
+    },
+    {
+      "files": ["vite.config.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "env": {
+        "node": true
+      }
     }
   ],
   "settings": {

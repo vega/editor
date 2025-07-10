@@ -4,10 +4,12 @@ import {Provider} from 'react-redux';
 import {HashRouter} from 'react-router-dom';
 import * as vega from 'vega';
 import * as vegaLite from 'vega-lite';
-import setupMonaco from './utils/monaco.js';
 
-import AppShell from './components/app-shell.js';
-import configureStore from './store/configure-store.js';
+import setupMonaco from './utils/monaco';
+import {dispatchingLogger} from './utils/logger';
+
+import AppShell from './components/app-shell';
+import configureStore from './store/configure-store';
 
 if (typeof window !== 'undefined') {
   const w = window as any;
@@ -23,10 +25,16 @@ setupMonaco();
 
 export const store = configureStore();
 
+dispatchingLogger.initializeStore(store);
+
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!
 ReactDOM.render(
-  <Provider store={store}>{React.createElement(HashRouter, {}, <AppShell />)}</Provider>,
+  <Provider store={store}>
+    <HashRouter>
+      <AppShell />
+    </HashRouter>
+  </Provider>,
   document.getElementById('root'),
 );
 
