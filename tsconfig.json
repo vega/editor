@@ -14,11 +14,16 @@
       "esnext",
       "dom"
     ],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": [
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ]
   },
   "include": [
     "src/**/*.ts*",
-    "test/**/*.ts*",
-    "vite.config.ts"
+    "tests/**/*.ts*",
+    "vite.config.ts",
+    "playwright.config.ts"
   ]
 }

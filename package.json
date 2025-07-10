@@ -9,10 +9,14 @@
   "license": "BSD-3-Clause",
   "type": "module",
   "devDependencies": {
+    "@playwright/test": "^1.53.2",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^12.1.5",
     "@types/node": "^22.13.14",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "@vitejs/plugin-react": "^4.5.2",
+    "@vitest/ui": "^3.2.4",
     "assert": "^2.1.0",
     "autoprefixer": "^10.4.21",
     "browserify-zlib": "^0.2.0",
@@ -25,9 +29,11 @@
     "gh-pages": "^6.3.0",
     "https-browserify": "^1.0.0",
     "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
     "lint-staged": "^15.5.0",
     "patch-package": "^8.0.0",
     "path-browserify": "^1.0.1",
+    "playwright": "^1.53.2",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.5.3",
     "stream-browserify": "^3.0.0",
@@ -35,7 +41,8 @@
     "typescript": "^5.8.2",
     "url": "^0.11.4",
     "util": "^0.12.5",
-    "vite": "^7.0.0"
+    "vite": "^7.0.0",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
@@ -112,6 +119,9 @@
     "lint": "eslint . && npm run prettierbase -- --check",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "postinstall": "husky && npx patch-package"
+    "postinstall": "husky && npx patch-package",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test"
   }
 }
