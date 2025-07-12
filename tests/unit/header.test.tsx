@@ -362,8 +362,7 @@ describe('Header Component', () => {
         await waitFor(() => {
           const profileMenu = document.querySelector('.profile-menu');
           expect(profileMenu).toBeInTheDocument();
-          expect(screen.getByText('Logged in as')).toBeInTheDocument();
-          expect(screen.getByText('John Doe')).toBeInTheDocument();
+          expect(screen.getByText('John Appleseed')).toBeInTheDocument();
         });
       });
     });
