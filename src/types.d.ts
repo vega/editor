@@ -130,6 +130,10 @@ declare module 'redux-thunk' {
   export default thunk;
 }
 
+interface ImportMeta {
+  hot?: ImportMetaHot;
+}
+
 declare module 'react-split-pane-r17';
 declare module '@monaco-editor/react';
 declare module 'react-paginate';

@@ -10,6 +10,8 @@ import {dispatchingLogger} from './utils/logger';
 
 import AppShell from './components/app-shell';
 import configureStore from './store/configure-store';
+import {updateVegaSpec, updateVegaLiteSpec} from './actions/editor';
+import {Mode} from './constants';
 
 if (typeof window !== 'undefined') {
   const w = window as any;
@@ -26,6 +28,40 @@ setupMonaco();
 export const store = configureStore();
 
 dispatchingLogger.initializeStore(store);
+
+if (import.meta.hot) {
+  let updatePending = false;
+
+  import.meta.hot.on('vega-package-updating', (data) => {
+    updatePending = true;
+  });
+
+  import.meta.hot.on('vite:afterUpdate', () => {
+    if (updatePending) {
+      updatePending = false;
+      setTimeout(() => {
+        const state = store.getState();
+        const {mode, editorString, configEditorString} = state;
+
+        if (mode === Mode.VegaLite) {
+          store.dispatch(
+            updateVegaLiteSpec(editorString, configEditorString !== '{}' ? configEditorString : undefined),
+          );
+        } else if (mode === Mode.Vega) {
+          store.dispatch(updateVegaSpec(editorString, configEditorString !== '{}' ? configEditorString : undefined));
+        }
+      }, 100);
+    }
+  });
+
+  // Fallback
+  import.meta.hot.on('vite:error', (error) => {
+    if (updatePending) {
+      console.error('Reloading, HMR failed:', error);
+      window.location.reload();
+    }
+  });
+}
 
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!
