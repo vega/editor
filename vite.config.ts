@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import {resolve} from 'path';
@@ -192,4 +193,12 @@ export default defineConfig({
   },
 
   publicDir: 'public',
+
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './tests/setup.ts',
+    include: ['tests/unit/**/*.{test,spec}.{js,ts,tsx}'],
+    exclude: ['tests/e2e/**/*'],
+  },
 });
