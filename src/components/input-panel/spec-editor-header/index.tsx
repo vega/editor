@@ -17,14 +17,25 @@ function SpecEditorHeader() {
       <ul className="tabs-nav">
         <li
           className={sidePaneItem === SIDEPANE.Editor ? 'active-tab' : undefined}
-          onClick={() => setSidePaneItem(SIDEPANE.Editor)}
+          onClick={(e) => {
+            if (sidePaneItem === SIDEPANE.Editor) {
+              e.stopPropagation();
+            }
+            e.stopPropagation();
+            setSidePaneItem(SIDEPANE.Editor);
+          }}
         >
           {mode}
         </li>
 
         <li
           className={sidePaneItem === SIDEPANE.Config ? 'active-tab' : undefined}
-          onClick={() => setSidePaneItem(SIDEPANE.Config)}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (sidePaneItem !== SIDEPANE.Config) {
+              setSidePaneItem(SIDEPANE.Config);
+            }
+          }}
         >
           Config
         </li>

@@ -7,6 +7,7 @@ import {debounce} from 'vega';
 import {SIDEPANE} from '../../constants/index.js';
 import {useAppContext} from '../../context/app-context.js';
 import './config-editor.css';
+import ResizeObserver from 'rc-resize-observer';
 
 type Props = {
   extractConfig: () => void;
@@ -20,51 +21,44 @@ type Props = {
 const ConfigEditor: React.FC<Props> = (props) => {
   const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
   const navigate = useNavigate();
-
   const {state} = useAppContext();
 
-  const {configEditorString, manualParse, decorations, sidePaneItem, editorRef: contextEditorRef} = state;
+  const {configEditorString, manualParse, decorations, sidePaneItem} = state;
 
   const handleEditorChange = useCallback(
-    (spec: string) => {
-      const newSpec = spec === '' ? '{}' : spec;
-      if (newSpec !== configEditorString) {
-        props.setConfigEditorString(newSpec);
-        props.setThemeName('custom');
-
-        if (!manualParse) {
-          props.setConfig(newSpec);
-        }
+    (value: string | undefined) => {
+      const spec = value === undefined ? '{}' : value;
+      props.setConfigEditorString(spec);
+      props.setThemeName('custom');
+      if (!manualParse) {
+        props.setConfig(spec);
       }
     },
-    [props.setConfigEditorString, props.setThemeName, manualParse, props.setConfig, configEditorString],
+    [manualParse, props],
   );
 
+  const debouncedHandleEditorChange = useCallback(debounce(700, handleEditorChange), [handleEditorChange]);
+
   const handleMergeConfig = useCallback(() => {
-    const confirmation = confirm('The spec will be formatted on merge.');
-    if (!confirmation) {
-      return;
+    if (confirm('The spec will be formatted on merge.')) {
+      navigate('/edited');
+      props.mergeConfigSpec();
     }
-    navigate('/edited');
-    props.mergeConfigSpec();
-  }, [navigate, props.mergeConfigSpec]);
+  }, [navigate, props]);
 
   const handleExtractConfig = useCallback(() => {
-    const confirmation = confirm('The spec and config will be formatted.');
-    if (!confirmation) {
-      return;
+    if (confirm('The spec and config will be formatted.')) {
+      props.extractConfig();
     }
-    props.extractConfig();
-  }, [props.extractConfig]);
+  }, [props]);
 
   const handleEditorMount = useCallback(
     (editor: Monaco.editor.IStandaloneCodeEditor) => {
+      editorRef.current = editor;
+      props.setEditorReference(editor);
+
       editor.onDidFocusEditorText(() => {
-        try {
-          editor.deltaDecorations(decorations, []);
-        } catch (error) {
-          console.warn('Failed to handle:', error);
-        }
+        props.setEditorReference(editor);
       });
 
       editor.addAction({
@@ -82,67 +76,31 @@ const ConfigEditor: React.FC<Props> = (props) => {
         label: 'Extract Config From Spec',
         run: handleExtractConfig,
       });
-
-      editorRef.current = editor;
-
-      if (sidePaneItem === SIDEPANE.Config) {
-        try {
-          editor.focus();
-          editor.layout();
-        } catch (error) {
-          console.warn('Failed to handle:', error);
-        }
-      }
     },
-    [decorations, sidePaneItem, handleMergeConfig, handleExtractConfig],
+    [handleExtractConfig, handleMergeConfig, props],
   );
 
   useEffect(() => {
-    if (editorRef.current && editorRef.current !== contextEditorRef && sidePaneItem === SIDEPANE.Config) {
-      props.setEditorReference(editorRef.current);
-    }
-  }, [editorRef.current, contextEditorRef, sidePaneItem, props.setEditorReference]);
-
-  useEffect(() => {
     if (sidePaneItem === SIDEPANE.Config && editorRef.current) {
-      try {
-        editorRef.current.focus();
-        editorRef.current.layout();
-      } catch (error) {
-        console.warn('Failed to handle:', error);
-      }
+      editorRef.current.focus();
+      editorRef.current.layout();
     }
   }, [sidePaneItem]);
 
-  const debouncedHandleEditorChange = useCallback(debounce(700, handleEditorChange), [handleEditorChange]);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const {width, height} = entry.contentRect;
-        try {
-          editorRef.current?.layout({width, height});
-        } catch (error) {
-          console.warn('Failed to handle:', error);
-        }
-      }
-    });
-
-    resizeObserver.observe(containerRef.current);
-
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, []);
+    if (editorRef.current) {
+      editorRef.current.deltaDecorations([], decorations);
+    }
+  }, [decorations]);
 
   return (
-    <div ref={containerRef} style={{width: '100%', height: '100%'}}>
+    <ResizeObserver
+      onResize={({width, height}) => {
+        editorRef.current?.layout({width, height});
+      }}
+    >
       <MonacoEditor
-        defaultLanguage="json"
+        language="json"
         options={{
           cursorBlinking: 'smooth',
           folding: true,
@@ -155,11 +113,11 @@ const ConfigEditor: React.FC<Props> = (props) => {
             enabled: false,
           },
         }}
+        value={configEditorString}
         onChange={debouncedHandleEditorChange}
-        defaultValue={configEditorString}
         onMount={handleEditorMount}
       />
-    </div>
+    </ResizeObserver>
   );
 };
 
