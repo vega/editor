@@ -1,13 +1,14 @@
 import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
 import {useCallback, useEffect, useRef} from 'react';
-import MonacoEditor from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 import {useNavigate} from 'react-router';
 import {debounce} from 'vega';
 import {SIDEPANE} from '../../constants/index.js';
 import {useAppContext} from '../../context/app-context.js';
 import './config-editor.css';
 import ResizeObserver from 'rc-resize-observer';
+import {parse as parseJSONC} from 'jsonc-parser';
 
 type Props = {
   extractConfig: () => void;
@@ -25,14 +26,26 @@ const ConfigEditor: React.FC<Props> = (props) => {
 
   const {configEditorString, manualParse, decorations, sidePaneItem} = state;
 
+  // Add effect to update state.config when configEditorString changes
+  const {setState} = useAppContext();
+  React.useEffect(() => {
+    try {
+      const parsed = configEditorString ? parseJSONC(configEditorString) : {};
+      setState((s) => ({...s, config: parsed || {}}));
+    } catch {
+      setState((s) => ({...s, config: {}}));
+    }
+  }, [configEditorString, setState]);
+
   const handleEditorChange = useCallback(
     (value: string | undefined) => {
       const spec = value === undefined ? '{}' : value;
       props.setConfigEditorString(spec);
       props.setThemeName('custom');
-      if (!manualParse) {
-        props.setConfig(spec);
+      if (manualParse) {
+        return;
       }
+      props.setConfig(configEditorString);
     },
     [manualParse, props],
   );
@@ -99,7 +112,7 @@ const ConfigEditor: React.FC<Props> = (props) => {
         editorRef.current?.layout({width, height});
       }}
     >
-      <MonacoEditor
+      <Editor
         language="json"
         options={{
           cursorBlinking: 'smooth',

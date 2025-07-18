@@ -248,7 +248,8 @@ const App: React.FC<Props> = (props) => {
         }
 
         const normalizedSpec = normalize(parsedSpec);
-        const compiledSpec = compile(parsedSpec);
+        // Pass config as an option object to compile, cast to any to resolve type error
+        const compiledSpec = compile(parsedSpec, {config: state.config as any});
 
         setState((s) => ({
           ...s,
@@ -286,7 +287,7 @@ const App: React.FC<Props> = (props) => {
         parse: false,
       }));
     }
-  }, [state.editorString, state.mode, state.parse, setState]);
+  }, [state.editorString, state.mode, state.parse, state.config, setState]);
 
   return (
     <div className="app-container">
