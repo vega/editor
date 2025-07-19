@@ -26,7 +26,6 @@ const ConfigEditor: React.FC<Props> = (props) => {
 
   const {configEditorString, manualParse, decorations, sidePaneItem} = state;
 
-  // Add effect to update state.config when configEditorString changes
   const {setState} = useAppContext();
   React.useEffect(() => {
     try {
@@ -45,7 +44,7 @@ const ConfigEditor: React.FC<Props> = (props) => {
       if (manualParse) {
         return;
       }
-      props.setConfig(configEditorString);
+      props.setConfig(spec);
     },
     [manualParse, props],
   );
