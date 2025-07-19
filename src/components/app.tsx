@@ -1,5 +1,4 @@
 import stringify from 'json-stringify-pretty-compact';
-import {parse as parseJSONC} from 'jsonc-parser';
 import * as React from 'react';
 import {useCallback, useEffect} from 'react';
 import {useParams} from 'react-router';
@@ -10,6 +9,9 @@ import {compile, normalize} from 'vega-lite';
 import {LAYOUT, Mode} from '../constants';
 import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
 import {useAppContext} from '../context/app-context';
+import {LocalLogger} from '../utils/logger';
+import {parseJSONCOrThrow, parseJSONC} from '../utils/jsonc-parser';
+import {validateVega, validateVegaLite, validateSchema} from '../utils/validate';
 import './app.css';
 import './split.css';
 import Header from './header/renderer.js';
@@ -232,8 +234,11 @@ const App: React.FC<Props> = (props) => {
       return;
     }
 
+    const currLogger = new LocalLogger();
+    currLogger.level(state.logLevel);
+
     try {
-      const parsedSpec = parseJSONC(state.editorString);
+      const parsedSpec = parseJSONCOrThrow(state.editorString);
 
       const hasSchema = parsedSpec && typeof parsedSpec === 'object' && '$schema' in parsedSpec;
 
@@ -248,9 +253,15 @@ const App: React.FC<Props> = (props) => {
           }
         }
 
+        // Validate schema and version
+        validateSchema(parsedSpec, 'vega-lite', currLogger);
+        validateVegaLite(parsedSpec, currLogger);
+
         const normalizedSpec = normalize(parsedSpec);
-        // Pass config as an option object to compile, cast to any to resolve type error
-        const compiledSpec = compile(parsedSpec, {config: state.config as any});
+        const compiledSpec = compile(parsedSpec, {
+          config: state.config as any,
+          logger: currLogger,
+        });
 
         setState((s) => ({
           ...s,
@@ -259,6 +270,10 @@ const App: React.FC<Props> = (props) => {
           vegaSpec: compiledSpec.spec,
           parse: false,
           error: null,
+          errors: currLogger.errors,
+          warns: currLogger.warns,
+          infos: currLogger.infos,
+          debugs: currLogger.debugs,
         }));
       } else {
         if (hasSchema && typeof parsedSpec.$schema === 'string') {
@@ -271,6 +286,10 @@ const App: React.FC<Props> = (props) => {
           }
         }
 
+        // Validate schema and version
+        validateSchema(parsedSpec, 'vega', currLogger);
+        validateVega(parsedSpec, currLogger);
+
         setState((s) => ({
           ...s,
           vegaSpec: parsedSpec,
@@ -278,6 +297,10 @@ const App: React.FC<Props> = (props) => {
           normalizedVegaLiteSpec: null,
           parse: false,
           error: null,
+          errors: currLogger.errors,
+          warns: currLogger.warns,
+          infos: currLogger.infos,
+          debugs: currLogger.debugs,
         }));
       }
     } catch (error) {
@@ -286,9 +309,13 @@ const App: React.FC<Props> = (props) => {
         ...s,
         error: {message: error.message},
         parse: false,
+        errors: currLogger.errors,
+        warns: currLogger.warns,
+        infos: currLogger.infos,
+        debugs: currLogger.debugs,
       }));
     }
-  }, [state.editorString, state.mode, state.parse, state.config, setState]);
+  }, [state.editorString, state.mode, state.parse, state.config, state.logLevel, setState]);
 
   useEffect(() => {
     if (state.mergeConfigSpec) {
@@ -375,6 +402,14 @@ const App: React.FC<Props> = (props) => {
       }
     }
   }, [state.extractConfig, state.editorString, setState]);
+
+  // Handle scroll position updates
+  useEffect(() => {
+    if (state.lastPosition !== undefined && state.lastPosition > 0) {
+      // This will be handled by the header component when examples modal is opened
+      // The scroll position is stored in state.lastPosition and restored when needed
+    }
+  }, [state.lastPosition]);
 
   return (
     <div className="app-container">

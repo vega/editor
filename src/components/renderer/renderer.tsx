@@ -181,7 +181,8 @@ export default function Renderer(props: RendererProps) {
       expr: expressionInterpreter ? vegaInterpreter : undefined,
     });
     newView.runAfter(runAfter, true);
-    // newView.logger(dispatchingLogger); // TODO: Still need to fix logger interface
+    // Set up logging integration - using the global logger
+    newView.logger(dispatchingLogger);
 
     const debug = (window as any).VEGA_DEBUG;
     debug.view = view;

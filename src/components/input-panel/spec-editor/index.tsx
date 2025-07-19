@@ -7,7 +7,14 @@ const SpecEditor = () => {
 
   return (
     <EditorWithNavigation
-      clearConfig={() => setState((s) => ({...s, config: {}}))}
+      clearConfig={() =>
+        setState((s) => ({
+          ...s,
+          config: {},
+          configEditorString: '{}',
+          themeName: 'custom',
+        }))
+      }
       extractConfigSpec={() => setState((s) => ({...s, extractConfigSpec: true}))}
       logError={(error: Error) => setState((s) => ({...s, error}))}
       mergeConfigSpec={() => setState((s) => ({...s, mergeConfigSpec: true}))}
