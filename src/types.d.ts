@@ -114,6 +114,7 @@ declare module 'redux-thunk' {
   export default thunk;
 }
 
+
 declare module 'react-split';
 declare module '@monaco-editor/react';
 declare module 'react-paginate';
