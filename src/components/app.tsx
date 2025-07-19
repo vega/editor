@@ -4,6 +4,7 @@ import * as React from 'react';
 import {useCallback, useEffect} from 'react';
 import {useParams} from 'react-router';
 import {MessageData} from 'vega-embed';
+import {mergeConfig} from 'vega';
 import {compile, normalize} from 'vega-lite';
 
 import {LAYOUT, Mode} from '../constants';
@@ -288,6 +289,92 @@ const App: React.FC<Props> = (props) => {
       }));
     }
   }, [state.editorString, state.mode, state.parse, state.config, setState]);
+
+  useEffect(() => {
+    if (state.mergeConfigSpec) {
+      try {
+        const parsedSpec = parseJSONC(state.editorString);
+        const parsedConfig = parseJSONC(state.configEditorString);
+
+        const mergedSpec = {
+          ...parsedSpec,
+          config: mergeConfig({}, parsedConfig, parsedSpec.config || {}),
+        };
+
+        setState((s) => ({
+          ...s,
+          editorString: stringify(mergedSpec),
+          configEditorString: '{}',
+          mergeConfigSpec: false,
+          parse: true,
+          error: null,
+        }));
+      } catch (error) {
+        console.error('Merge config error:', error);
+        setState((s) => ({
+          ...s,
+          mergeConfigSpec: false,
+          error: {message: error.message},
+        }));
+      }
+    }
+  }, [state.mergeConfigSpec, state.editorString, state.configEditorString, setState]);
+
+  useEffect(() => {
+    if (state.extractConfigSpec) {
+      try {
+        const parsedSpec = parseJSONC(state.editorString);
+
+        const extractedConfig = parsedSpec.config || {};
+        const specWithoutConfig = {...parsedSpec};
+        delete specWithoutConfig.config;
+
+        setState((s) => ({
+          ...s,
+          editorString: stringify(specWithoutConfig),
+          configEditorString: stringify(extractedConfig),
+          extractConfigSpec: false,
+          parse: true,
+          error: null,
+        }));
+      } catch (error) {
+        console.error('Extract config error:', error);
+        setState((s) => ({
+          ...s,
+          extractConfigSpec: false,
+          error: {message: error.message},
+        }));
+      }
+    }
+  }, [state.extractConfigSpec, state.editorString, setState]);
+
+  useEffect(() => {
+    if (state.extractConfig) {
+      try {
+        const parsedSpec = parseJSONC(state.editorString);
+
+        const extractedConfig = parsedSpec.config || {};
+        const specWithoutConfig = {...parsedSpec};
+        delete specWithoutConfig.config;
+
+        setState((s) => ({
+          ...s,
+          editorString: stringify(specWithoutConfig),
+          configEditorString: stringify(extractedConfig),
+          extractConfig: false,
+          parse: true,
+          error: null,
+        }));
+      } catch (error) {
+        console.error('Extract config error:', error);
+        setState((s) => ({
+          ...s,
+          extractConfig: false,
+          error: {message: error.message},
+        }));
+      }
+    }
+  }, [state.extractConfig, state.editorString, setState]);
 
   return (
     <div className="app-container">

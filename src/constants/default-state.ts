@@ -31,6 +31,8 @@ export type State = {
   editorString: string;
   error: {message: string}; // don't put Error here since we can't serialize it
   export: boolean;
+  extractConfig: boolean;
+  extractConfigSpec: boolean;
   gist: string;
   handle: string;
   hoverEnable: boolean | 'auto';
@@ -38,6 +40,7 @@ export type State = {
   lastPosition: number;
   logs: boolean;
   manualParse: boolean;
+  mergeConfigSpec: boolean;
   mode: Mode;
   name: string;
   navItem: string;
@@ -87,6 +90,8 @@ export const DEFAULT_STATE: State = {
   editorString: VEGA_LITE_START_SPEC,
   error: null,
   export: false,
+  extractConfig: false,
+  extractConfigSpec: false,
   gist: null,
   handle: '',
   hoverEnable: 'auto',
@@ -95,6 +100,7 @@ export const DEFAULT_STATE: State = {
   logLevel: vega.Warn,
   logs: false,
   manualParse: false,
+  mergeConfigSpec: false,
   mode: Mode.VegaLite,
   name: '',
   navItem: NAVBAR.Logs,
