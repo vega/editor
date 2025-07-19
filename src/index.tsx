@@ -7,14 +7,7 @@ import * as vegaLite from 'vega-lite';
 import AppShell from './components/app-shell';
 import {AppContextProvider} from './context/app-context';
 import setupMonaco from './utils/monaco';
-
-
 console.log('Vega Editor initializing...');
-import AppShell from './components/app-shell';
-import configureStore from './store/configure-store';
-import {updateVegaSpec, updateVegaLiteSpec} from './actions/editor';
-import {Mode} from './constants';
-
 
 if (typeof window !== 'undefined') {
   const w = window as any;
