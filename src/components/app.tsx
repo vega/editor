@@ -425,7 +425,7 @@ const App: React.FC<Props> = (props) => {
             sizes={[40, 60]}
             minSize={300}
             expandToMin={false}
-            gutterSize={10}
+            gutterSize={3}
             gutterAlign="center"
             snapOffset={30}
             dragInterval={1}

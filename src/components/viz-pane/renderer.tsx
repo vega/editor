@@ -214,7 +214,7 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
         sizes={getInitialSizes()}
         minSize={LAYOUT.MinPaneSize}
         expandToMin={false}
-        gutterSize={10}
+        gutterSize={3}
         gutterAlign="center"
         snapOffset={30}
         dragInterval={1}

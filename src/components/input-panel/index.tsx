@@ -92,7 +92,7 @@ const InputPanel: React.FC = () => {
         sizes={compiledVegaSpec ? [70, 30] : [100, 0]}
         minSize={LAYOUT.MinPaneSize}
         expandToMin={false}
-        gutterSize={10}
+        gutterSize={3}
         gutterAlign="center"
         snapOffset={30}
         dragInterval={1}

@@ -1,4 +1,4 @@
-/* Styles for Split components */
+Styles for Split components
 
 /* Common split styles */
 .split {
@@ -20,24 +20,29 @@
 
 /* Gutter common styles */
 .gutter {
-  background-color: #eee;
-  background-repeat: no-repeat;
-  background-position: 50%;
-  z-index: 10;
+  background-color: #ebe6e6;
+}
+
+/* hover over 3 seconds, then change background color */
+.gutter:hover {
+  background-color: rgb(7, 118, 202);
+  transition: all 0.5s ease;
+}
+
+.gutter:active {
+  background-color: rgb(7, 118, 202);
 }
 
 /* Horizontal gutter (for vertical splits) */
 .gutter.gutter-horizontal {
   cursor: col-resize;
   width: 10px;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
 }
 
 /* Vertical gutter (for horizontal splits) */
 .gutter.gutter-vertical {
   cursor: row-resize;
   height: 10px;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=");
 }
 
 /* Ensure split panels take full height/width */
@@ -63,9 +68,6 @@
 }
 
 /* Fix to ensure all children of Split take up proper space */
-.split > * {
-  overflow: hidden;
-}
 
 /* Ensure compiled spec display takes proper height */
 .compiled-spec-display {
