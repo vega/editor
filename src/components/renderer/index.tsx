@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {useAppContext} from '../../context/app-context';
-import {useDataflow} from '../../features/dataflow/DataflowContext';
+import {useDataflowActions} from '../../features/dataflow/DataflowContext';
 import Renderer from './renderer';
 
 const RendererContainer: React.FC = () => {
   const {state, setState} = useAppContext();
-  const {setRuntime, recordPulse} = useDataflow();
+  const {setRuntime, recordPulse} = useDataflowActions();
 
   const props = {
     baseURL: state.baseURL,

@@ -213,10 +213,7 @@ function dataflowReducer(state: DataflowState, action: DataflowAction): Dataflow
 }
 
 // Context
-interface DataflowContextType {
-  state: DataflowState;
-  dispatch: React.Dispatch<DataflowAction>;
-  // Computed selectors
+interface DataflowComputed {
   graph: any | null;
   cytoscapeElements: any | null;
   sortedPulses: Pulse[];
@@ -235,7 +232,9 @@ interface DataflowContextType {
   currentLayout: LayoutValue | null;
   currentPositions: Positions | null;
   popupValue: any | null;
-  // Actions
+}
+
+interface DataflowActions {
   setRuntime: (runtime: Runtime) => void;
   recordPulse: (clock: number, values: Record<string, unknown>) => void;
   resetPulses: () => void;
@@ -246,7 +245,16 @@ interface DataflowContextType {
   computeLayout: () => Promise<void>;
 }
 
-const DataflowContext = createContext<DataflowContextType | null>(null);
+interface DataflowContextType extends DataflowComputed, DataflowActions {
+  state: DataflowState;
+  dispatch: React.Dispatch<DataflowAction>;
+}
+
+const DataflowStateContext = createContext<{state: DataflowState; dispatch: React.Dispatch<DataflowAction>} | null>(
+  null,
+);
+const DataflowComputedContext = createContext<DataflowComputed | null>(null);
+const DataflowActionsContext = createContext<DataflowActions | null>(null);
 
 // Provider component
 interface DataflowProviderProps {
@@ -408,13 +416,10 @@ export function DataflowProvider({children}: DataflowProviderProps) {
     }
   }, [visibleElements, graph, currentLayoutKey, elk]);
 
-  // Not optimum solution.
-  // Should be split into multiple contexts.
+  const stateContextValue = useMemo(() => ({state, dispatch}), [state]);
 
-  const contextValue = useMemo(
+  const computedContextValue = useMemo<DataflowComputed>(
     () => ({
-      state,
-      dispatch,
       graph,
       cytoscapeElements,
       sortedPulses,
@@ -433,6 +438,31 @@ export function DataflowProvider({children}: DataflowProviderProps) {
       currentLayout,
       currentPositions,
       popupValue,
+    }),
+    [
+      graph,
+      cytoscapeElements,
+      sortedPulses,
+      pulsesEmpty,
+      selectedPulse,
+      selectedElements,
+      selectedTypes,
+      elementsSelected,
+      selectedValues,
+      visibleNodesFromPulse,
+      visibleNodesFromElements,
+      visibleNodesFromTypes,
+      visibleNodes,
+      filteredEdges,
+      visibleElements,
+      currentLayout,
+      currentPositions,
+      popupValue,
+    ],
+  );
+
+  const actionsContextValue = useMemo<DataflowActions>(
+    () => ({
       setRuntime,
       recordPulse,
       resetPulses,
@@ -443,25 +473,6 @@ export function DataflowProvider({children}: DataflowProviderProps) {
       computeLayout,
     }),
     [
-      state,
-      graph,
-      cytoscapeElements,
-      sortedPulses,
-      pulsesEmpty,
-      selectedPulse,
-      selectedElements,
-      selectedTypes,
-      elementsSelected,
-      selectedValues,
-      visibleNodesFromPulse,
-      visibleNodesFromElements,
-      visibleNodesFromTypes,
-      visibleNodes,
-      filteredEdges,
-      visibleElements,
-      currentLayout,
-      currentPositions,
-      popupValue,
       setRuntime,
       recordPulse,
       resetPulses,
@@ -473,14 +484,51 @@ export function DataflowProvider({children}: DataflowProviderProps) {
     ],
   );
 
-  return <DataflowContext.Provider value={contextValue}>{children}</DataflowContext.Provider>;
+  return (
+    <DataflowStateContext.Provider value={stateContextValue}>
+      <DataflowComputedContext.Provider value={computedContextValue}>
+        <DataflowActionsContext.Provider value={actionsContextValue}>{children}</DataflowActionsContext.Provider>
+      </DataflowComputedContext.Provider>
+    </DataflowStateContext.Provider>
+  );
 }
 
 // Hook to use the dataflow context
-export function useDataflow() {
-  const context = useContext(DataflowContext);
+export function useDataflowState() {
+  const context = useContext(DataflowStateContext);
   if (!context) {
-    throw new Error('useDataflow must be used within a DataflowProvider');
+    throw new Error('useDataflowState must be used within a DataflowProvider');
   }
   return context;
+}
+
+export function useDataflowComputed() {
+  const context = useContext(DataflowComputedContext);
+  if (!context) {
+    throw new Error('useDataflowComputed must be used within a DataflowProvider');
+  }
+  return context;
+}
+
+export function useDataflowActions() {
+  const context = useContext(DataflowActionsContext);
+  if (!context) {
+    throw new Error('useDataflowActions must be used within a DataflowProvider');
+  }
+  return context;
+}
+
+export function useDataflow(): DataflowContextType {
+  const {state, dispatch} = useDataflowState();
+  const computed = useDataflowComputed();
+  const actions = useDataflowActions();
+  return useMemo(
+    () => ({
+      state,
+      dispatch,
+      ...computed,
+      ...actions,
+    }),
+    [state, dispatch, computed, actions],
+  );
 }

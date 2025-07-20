@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {useDataflow} from './DataflowContext.js';
+import {useDataflowActions, useDataflowComputed} from './DataflowContext.js';
 import {Cytoscape} from './Cytoscape.js';
 import {Popup} from './Popup.js';
 import './Graph.css';
 
 export function Graph() {
-  const {currentLayout, elementsSelected, setSelectedElements, computeLayout} = useDataflow();
+  const {currentLayout, elementsSelected} = useDataflowComputed();
+  const {setSelectedElements, computeLayout} = useDataflowActions();
 
   // Trigger starting the async layout computation, when this node is rendered
   React.useEffect(() => {
@@ -24,7 +25,8 @@ export function Graph() {
 }
 
 function UnselectElements() {
-  const {elementsSelected, setSelectedElements} = useDataflow();
+  const {elementsSelected} = useDataflowComputed();
+  const {setSelectedElements} = useDataflowActions();
   return (
     <button className="unselect-elements" onClick={() => setSelectedElements(null)} disabled={!elementsSelected}>
       Unselect elements
@@ -33,7 +35,7 @@ function UnselectElements() {
 }
 
 function Overlay() {
-  const {currentLayout} = useDataflow();
+  const {currentLayout} = useDataflowComputed();
 
   if (currentLayout === null) {
     return <div className="overlay center-text">No active dataflow runtime</div>;

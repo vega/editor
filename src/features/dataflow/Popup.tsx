@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useDataflow} from './DataflowContext.js';
+import {useDataflowComputed} from './DataflowContext.js';
 import {Popup as AppPopup} from '../../components/popup/index.js';
 import {Placement} from 'tippy.js';
 import './Popup.css';
@@ -7,7 +7,7 @@ import {prettifyExpression} from './utils/prettify.js';
 
 // TODO: Use one tippy and have max height for each pre
 export function Popup() {
-  const {popupValue: popup} = useDataflow();
+  const {popupValue: popup} = useDataflowComputed();
   const getReferenceClientRect = React.useCallback(() => popup?.referenceClientRect, [popup?.referenceClientRect]);
   if (popup === null) {
     return <></>;

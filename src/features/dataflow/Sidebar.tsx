@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useDataflow} from './DataflowContext.js';
+import {useDataflowActions, useDataflowComputed} from './DataflowContext.js';
 import './Sidebar.css';
 import {GraphType, types} from './utils/graph.js';
 
@@ -14,7 +14,7 @@ export function Sidebar() {
 }
 
 function Types() {
-  const {selectedTypes} = useDataflow();
+  const {selectedTypes} = useDataflowComputed();
 
   return (
     <fieldset className="type-filter">
@@ -27,7 +27,7 @@ function Types() {
 }
 
 function Type({type, label, selected}: {type: GraphType; label: string; selected: boolean}) {
-  const {setSelectedType} = useDataflow();
+  const {setSelectedType} = useDataflowActions();
   return (
     <div>
       <input type="checkbox" checked={selected} onChange={(event) => setSelectedType(type, event.target.checked)} />
@@ -38,7 +38,7 @@ function Type({type, label, selected}: {type: GraphType; label: string; selected
 
 function Id() {
   const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
-  const {setSelectedElements} = useDataflow();
+  const {setSelectedElements} = useDataflowActions();
   return (
     <fieldset className="id-filter">
       <legend>Filter by ID</legend>
@@ -83,7 +83,8 @@ function Pulses() {
 }
 
 function PulsesButtons() {
-  const {selectedPulse, pulsesEmpty, setSelectedPulse, resetPulses} = useDataflow();
+  const {selectedPulse, pulsesEmpty} = useDataflowComputed();
+  const {setSelectedPulse, resetPulses} = useDataflowActions();
   return (
     <div className="buttons">
       <button onClick={() => setSelectedPulse(null)} disabled={selectedPulse === null}>
@@ -97,7 +98,7 @@ function PulsesButtons() {
 }
 
 function PulsesRows() {
-  const {sortedPulses, selectedPulse} = useDataflow();
+  const {sortedPulses, selectedPulse} = useDataflowComputed();
   return (
     <tbody>
       {sortedPulses.map(({clock, nValues}) => (
@@ -110,7 +111,7 @@ function PulsesRows() {
 const MemoPulse = React.memo(Pulse);
 
 function Pulse({clock, isSelected, nValues}: {isSelected: boolean; clock: number; nValues: number}) {
-  const {setSelectedPulse} = useDataflow();
+  const {setSelectedPulse} = useDataflowActions();
 
   return (
     <tr className={isSelected ? 'active-pulse' : ''} onClick={() => setSelectedPulse(clock)}>
