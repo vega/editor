@@ -231,8 +231,14 @@ const App: React.FC<Props> = (props) => {
 
   // Parse Logic
   useEffect(() => {
-    if (!state.editorString || state.editorString.trim() === '') {
-      return;
+    if (state.manualParse) {
+      if (!state.parse) {
+        return;
+      }
+    } else {
+      if (!state.editorString || state.editorString.trim() === '') {
+        return;
+      }
     }
 
     const currLogger = new LocalLogger();
