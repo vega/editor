@@ -6,10 +6,6 @@ import {version as TOOLTIP_VERSION} from 'vega-tooltip';
 
 import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants/index.js';
 import {DataflowViewer} from '../../features/dataflow/DataflowViewer.js';
-import {LayoutProvider} from '../../features/dataflow/LayoutProvider.js';
-import {PopupProvider} from '../../features/dataflow/PopupProvider.js';
-import {PulsesProvider} from '../../features/dataflow/PulsesProvider.js';
-import {SelectionProvider} from '../../features/dataflow/SelectionProvider.js';
 import DataViewer from '../data-viewer/renderer.js';
 import ErrorBoundary from '../error-boundary/index.js';
 import ErrorPane from '../error-pane/index.js';
@@ -150,17 +146,7 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
         case NAVBAR.SignalViewer:
           return <SignalViewer onClickHandler={onClickHandler} />;
         case NAVBAR.DataflowViewer:
-          return (
-            <SelectionProvider>
-              <PulsesProvider>
-                <PopupProvider>
-                  <LayoutProvider>
-                    <DataflowViewer />
-                  </LayoutProvider>
-                </PopupProvider>
-              </PulsesProvider>
-            </SelectionProvider>
-          );
+          return <DataflowViewer />;
         default:
           return null;
       }

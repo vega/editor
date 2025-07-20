@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {useAppContext} from '../../context/app-context';
-import {PulsesProvider, useRecordPulse} from '../../features/dataflow/PulsesProvider';
+import {useDataflow} from '../../features/dataflow/DataflowContext';
 import Renderer from './renderer';
 
 const RendererContainer: React.FC = () => {
   const {state, setState} = useAppContext();
+  const {setRuntime, recordPulse} = useDataflow();
 
   const props = {
     baseURL: state.baseURL,
@@ -23,17 +24,16 @@ const RendererContainer: React.FC = () => {
     expressionInterpreter: state.expressionInterpreter,
   };
 
-  const recordPulse = useRecordPulse();
-
   return (
-    <PulsesProvider>
-      <Renderer
-        {...props}
-        setView={(newView) => setState((s) => ({...s, view: newView}))}
-        setRuntime={(runtime) => setState((s) => ({...s, runtime}))}
-        recordPulse={recordPulse}
-      />
-    </PulsesProvider>
+    <Renderer
+      {...props}
+      setView={(newView) => setState((s) => ({...s, view: newView}))}
+      setRuntime={(runtime) => {
+        setState((s) => ({...s, runtime}));
+        setRuntime(runtime);
+      }}
+      recordPulse={recordPulse}
+    />
   );
 };
 

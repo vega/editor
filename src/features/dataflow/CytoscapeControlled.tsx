@@ -7,8 +7,6 @@ import {Positions} from './utils/ELKToPositions.js';
 import './CytoscapeControlled.css';
 import {setsEqual} from './utils/setsEqual.js';
 import {computePosition, flip, shift, limitShift} from '@floating-ui/dom';
-import {useEffect} from 'react';
-import {useRef} from 'react';
 
 function popperFactory(ref, content, opts) {
   // see https://floating-ui.com/docs/computePosition#options
@@ -59,16 +57,16 @@ export function CytoscapeControlled({
   onSelect: (elements: Elements | null) => void;
   onHover: (target: null | {type: 'node' | 'edge'; id: string; referenceClientRect: DOMRect}) => void;
 }) {
-  const divRef = useRef<HTMLDivElement | null>(null);
-  const cyRef = useRef<cytoscape.Core | null>(null);
-  const layoutRef = useRef<cytoscape.Layouts | null>(null);
+  const divRef = React.useRef<HTMLDivElement | null>(null);
+  const cyRef = React.useRef<cytoscape.Core | null>(null);
+  const layoutRef = React.useRef<cytoscape.Layouts | null>(null);
   // The elements that have been removed, from a selection
-  const removedRef = useRef<cytoscape.CollectionReturnValue | null>(null);
+  const removedRef = React.useRef<cytoscape.CollectionReturnValue | null>(null);
 
   const getRemovedNodeIDs = () => new Set(removedRef.current?.map((n) => n.id()) ?? []);
 
   // Set cytoscape ref in first effect and set up callbacks
-  useEffect(() => {
+  React.useEffect(() => {
     const cy = (cyRef.current = cytoscape({container: divRef.current, ...OPTIONS}));
     layoutRef.current = cy.makeLayout({name: 'preset'});
     removedRef.current = null;
@@ -114,7 +112,7 @@ export function CytoscapeControlled({
   }, [divRef.current, onHover, onSelect]);
 
   // Update the elements
-  useEffect(() => {
+  React.useEffect(() => {
     const cy = cyRef.current;
 
     // Toggle off hovering when changing elements
@@ -136,7 +134,7 @@ export function CytoscapeControlled({
   }, [cyRef.current, elements]);
 
   // Update the positions
-  useEffect(() => {
+  React.useEffect(() => {
     const layout = layoutRef.current;
     layout.stop();
     if (positions === null) {
@@ -192,7 +190,7 @@ export function CytoscapeControlled({
   }, [cyRef.current, positions, onHover]);
 
   // Update the selected elements
-  useEffect(() => {
+  React.useEffect(() => {
     const cy = cyRef.current;
     cy.batch(() => {
       const selectedElements = cy.collection(

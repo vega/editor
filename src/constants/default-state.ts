@@ -67,12 +67,6 @@ export type State = {
   /** https://vega.github.io/vega/usage/interpreter/ */
   expressionInterpreter: boolean;
   runtime: any;
-  elementsSelected: any;
-  layout: any;
-  types: any;
-  pulse: any;
-  elements: any;
-  pulses: any[];
 };
 
 export const DEFAULT_STATE: State = {
@@ -126,10 +120,4 @@ export const DEFAULT_STATE: State = {
   backgroundColor: '#ffffff',
   expressionInterpreter: false,
   runtime: null,
-  elementsSelected: null,
-  layout: null,
-  types: {},
-  pulse: null,
-  elements: null,
-  pulses: [],
 };

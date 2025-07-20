@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {useCallback} from 'react';
 import {useAppContext} from '../../context/app-context.js';
-import {PulsesProvider} from '../../features/dataflow/PulsesProvider';
-import {NAVBAR} from '../../constants/index.js';
 import VizPane from './renderer';
 
 const VizPaneContainer: React.FC = () => {
@@ -41,27 +39,25 @@ const VizPaneContainer: React.FC = () => {
   );
 
   return (
-    <PulsesProvider>
-      <VizPane
-        compiledEditorRef={state.compiledEditorRef}
-        debugPane={state.debugPane}
-        debugPaneSize={state.debugPaneSize}
-        decorations={state.decorations}
-        editorFocus={state.editorFocus}
-        editorRef={state.editorRef}
-        error={state.error}
-        errors={state.errors}
-        logs={state.logs}
-        navItem={state.navItem}
-        settings={state.settings}
-        view={state.view}
-        setDebugPaneSize={setDebugPaneSize}
-        setDecorations={setDecorations}
-        showLogs={showLogs}
-        toggleDebugPane={toggleDebugPane}
-        toggleNavbar={toggleNavbar}
-      />
-    </PulsesProvider>
+    <VizPane
+      compiledEditorRef={state.compiledEditorRef}
+      debugPane={state.debugPane}
+      debugPaneSize={state.debugPaneSize}
+      decorations={state.decorations}
+      editorFocus={state.editorFocus}
+      editorRef={state.editorRef}
+      error={state.error}
+      errors={state.errors}
+      logs={state.logs}
+      navItem={state.navItem}
+      settings={state.settings}
+      view={state.view}
+      setDebugPaneSize={setDebugPaneSize}
+      setDecorations={setDecorations}
+      showLogs={showLogs}
+      toggleDebugPane={toggleDebugPane}
+      toggleNavbar={toggleNavbar}
+    />
   );
 };
 

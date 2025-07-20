@@ -19,6 +19,7 @@ import InputPanel from './input-panel';
 import Sidebar from './sidebar';
 import VizPane from './viz-pane';
 import Split from 'react-split';
+import {DataflowProvider} from '../features/dataflow/DataflowContext';
 
 type Props = {
   showExample: boolean;
@@ -434,7 +435,9 @@ const App: React.FC<Props> = (props) => {
             className="main-pane"
           >
             <InputPanel />
-            <VizPane />
+            <DataflowProvider>
+              <VizPane />
+            </DataflowProvider>
           </Split>
           {settings && (
             <div className="right-sidebar">

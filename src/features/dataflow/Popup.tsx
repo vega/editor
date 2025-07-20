@@ -1,21 +1,14 @@
 import * as React from 'react';
-import {useAppContext} from '../../context/app-context.js';
-import {usePopupState} from './PopupProvider.js';
+import {useDataflow} from './DataflowContext.js';
 import {Popup as AppPopup} from '../../components/popup/index.js';
 import {Placement} from 'tippy.js';
 import './Popup.css';
 import {prettifyExpression} from './utils/prettify.js';
-import {runtimeToGraph} from './utils/runtimeToGraph.js';
-import {useCallback, useMemo} from 'react';
 
 // TODO: Use one tippy and have max height for each pre
 export function Popup() {
-  const popup = usePopupState();
-  const {state} = useAppContext();
-  const {runtime, pulses} = state;
-  const graph = useMemo(() => (runtime ? runtimeToGraph(runtime) : null), [runtime]);
-
-  const getReferenceClientRect = useCallback(() => popup.referenceClientRect, [popup?.referenceClientRect]);
+  const {popupValue: popup} = useDataflow();
+  const getReferenceClientRect = React.useCallback(() => popup?.referenceClientRect, [popup?.referenceClientRect]);
   if (popup === null) {
     return <></>;
   }
@@ -42,18 +35,16 @@ export function Popup() {
       arrow={true}
       maxWidth="550px"
       appendTo={document.body}
-    ></AppPopup>
+    >
+      <div />
+    </AppPopup>
   );
   if (popup.type === 'edge') {
     // If we want to enable popups on edges again, we can add functionality back
     // here
     return <></>;
   }
-
-  const node = graph.nodes[popup.id];
-  const pulse = pulses.find((p) => p.clock === state.pulse);
-  const value = pulse?.values[popup.id];
-
+  const {node, value} = popup;
   if (Object.keys(node.params).length === 0) {
     return <></>;
   }

@@ -1,12 +1,18 @@
 import * as React from 'react';
+import {useDataflow} from './DataflowContext.js';
 import {Cytoscape} from './Cytoscape.js';
 import {Popup} from './Popup.js';
 import './Graph.css';
-import {useAppContext} from '../../context/app-context.js';
-import {useMemo} from 'react';
 
 export function Graph() {
-  const cytoscape = useMemo(() => <Cytoscape />, []);
+  const {currentLayout, elementsSelected, setSelectedElements, computeLayout} = useDataflow();
+
+  // Trigger starting the async layout computation, when this node is rendered
+  React.useEffect(() => {
+    computeLayout();
+  }, [computeLayout]);
+
+  const cytoscape = React.useMemo(() => <Cytoscape />, []);
   return (
     <div className="graph">
       <UnselectElements />
@@ -18,27 +24,21 @@ export function Graph() {
 }
 
 function UnselectElements() {
-  const {state, setState} = useAppContext();
-  const elementsSelected = state.elementsSelected;
+  const {elementsSelected, setSelectedElements} = useDataflow();
   return (
-    <button
-      className="unselect-elements"
-      onClick={() => setState((s) => ({...s, elementsSelected: null}))}
-      disabled={!elementsSelected}
-    >
+    <button className="unselect-elements" onClick={() => setSelectedElements(null)} disabled={!elementsSelected}>
       Unselect elements
     </button>
   );
 }
 
 function Overlay() {
-  const {state} = useAppContext();
-  const layout = state.layout;
+  const {currentLayout} = useDataflow();
 
-  if (layout === null) {
+  if (currentLayout === null) {
     return <div className="overlay center-text">No active dataflow runtime</div>;
   }
-  switch (layout.type) {
+  switch (currentLayout.type) {
     case 'loading':
       return <div className="overlay center-text">Laying out graph...</div>;
     case 'done':
@@ -47,7 +47,7 @@ function Overlay() {
       return (
         <div className="overlay">
           <h2>Encountered an error running ELK layout:</h2>
-          <pre>{layout.error.stack}</pre>
+          <pre>{currentLayout.error.stack}</pre>
         </div>
       );
   }

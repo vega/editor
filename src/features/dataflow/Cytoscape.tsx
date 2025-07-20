@@ -1,31 +1,18 @@
-import {useCallback, useMemo} from 'react';
-import {useAppContext} from '../../context/app-context.js';
-import {useCurrentPositions} from './LayoutProvider.js';
-import {usePopupDispatch} from './PopupProvider.js';
-import {CytoscapeControlled} from './CytoscapeControlled.js';
-import {toCytoscape} from './utils/toCytoscape.js';
-import {runtimeToGraph} from './utils/runtimeToGraph.js';
 import * as React from 'react';
+import {useDataflow} from './DataflowContext.js';
+import {CytoscapeControlled} from './CytoscapeControlled.js';
 
 export function Cytoscape() {
-  const {state, setState} = useAppContext();
-  const {runtime, elementsSelected} = state;
+  const {cytoscapeElements, currentPositions, selectedElements, setSelectedElements, setPopup} = useDataflow();
 
-  const graph = useMemo(() => (runtime ? runtimeToGraph(runtime) : null), [runtime]);
-  const elements = useMemo(() => (graph ? toCytoscape(graph) : null), [graph]);
-
-  const positions = useCurrentPositions();
-
-  const onSelect = useCallback((el) => setState((s) => ({...s, elementsSelected: el})), [setState]);
-  const popupDispatch = usePopupDispatch();
-
-  const onHover = useCallback((target) => popupDispatch({type: 'SET_POPUP', payload: target}), [popupDispatch]);
+  const onSelect = React.useCallback((el) => setSelectedElements(el), [setSelectedElements]);
+  const onHover = React.useCallback((target) => setPopup(target), [setPopup]);
 
   return (
     <CytoscapeControlled
-      elements={elements}
-      positions={positions}
-      selected={elementsSelected}
+      elements={cytoscapeElements}
+      positions={currentPositions}
+      selected={selectedElements}
       onSelect={onSelect}
       onHover={onHover}
     />
