@@ -10,7 +10,6 @@
   "type": "module",
   "devDependencies": {
     "@types/node": "^22.13.14",
-    "@types/react-copy-to-clipboard": "^5.0.7",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "@vitejs/plugin-react": "^4.5.2",
@@ -63,7 +62,6 @@
     "prop-types": "^15.8.1",
     "rc-resize-observer": "^1.4.3",
     "react": "^19.0.0",
-    "react-clipboard.js": "^2.0.16",
     "react-dom": "^19.0.0",
     "react-feather": "^2.0.10",
     "react-paginate": "^8.3.0",

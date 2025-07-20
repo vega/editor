@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import stringify from 'json-stringify-pretty-compact';
 import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import {useCopyToClipboard} from '../../../utils/useCopyToClipboard';
 import {Copy, Link, Save} from 'react-feather';
 import {useAppContext} from '../../../context/app-context.js';
 import {NAMES} from '../../../constants/consts.js';
@@ -52,6 +52,8 @@ const ShareModal: React.FC = () => {
     gistEditorURL: '',
   });
 
+  const [copy, {copied}] = useCopyToClipboard();
+
   const exportURL = useCallback(() => {
     const specString = state.whitespace ? editorString : JSON.stringify(parseJSONC(editorString));
 
@@ -68,14 +70,12 @@ const ShareModal: React.FC = () => {
     if (win) win.focus();
   }, [state.generatedURL]);
 
-  const onCopy = useCallback(() => {
-    if (!state.copied) {
-      setState((prev) => ({...prev, copied: true}));
-      setTimeout(() => {
-        setState((prev) => ({...prev, copied: false}));
-      }, 2500);
-    }
-  }, [state.copied]);
+  const onCopy = useCallback(
+    (text: string) => {
+      copy(text);
+    },
+    [copy],
+  );
 
   const handleFullscreenCheck = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setState((prev) => ({...prev, fullScreen: event.target.checked}));
@@ -294,23 +294,19 @@ const ShareModal: React.FC = () => {
             Open Link
           </span>
         </button>
-        <CopyToClipboard text={state.generatedURL} onCopy={onCopy}>
-          <button type="button">
-            <span className="copy-icon">
-              <Copy />
-              Copy Link to Clipboard
-            </span>
-          </button>
-        </CopyToClipboard>
-        <CopyToClipboard text={`[Open the Chart in the Vega Editor](${state.generatedURL})`} onCopy={onCopy}>
-          <button type="button">
-            <span className="copy-icon">
-              <Copy />
-              Copy Markdown Link to Clipboard
-            </span>
-          </button>
-        </CopyToClipboard>
-        <div className={`copied + ${state.copied ? ' visible' : ''}`}>Copied!</div>
+        <button type="button" onClick={() => onCopy(state.generatedURL)}>
+          <span className="copy-icon">
+            <Copy />
+            Copy Link to Clipboard
+          </span>
+        </button>
+        <button type="button" onClick={() => onCopy(`[Open the Chart in the Vega Editor](${state.generatedURL})`)}>
+          <span className="copy-icon">
+            <Copy />
+            Copy Markdown Link to Clipboard
+          </span>
+        </button>
+        <div className={`copied${copied ? ' visible' : ''}`}>Copied!</div>
       </div>
       Number of characters in the URL: {state.generatedURL.length}{' '}
       <span className="url-warning">
@@ -361,9 +357,9 @@ const ShareModal: React.FC = () => {
                 {state.updating ? 'Updating...' : 'Update'}
               </button>
               {state.gistEditorURL && state.updating !== undefined && (
-                <CopyToClipboard text={state.gistEditorURL} onCopy={onCopy}>
+                <button type="button" onClick={() => onCopy(state.gistEditorURL)}>
                   <span className="copy-icon">Copy Link to Clipboard</span>
-                </CopyToClipboard>
+                </button>
               )}
             </div>
             {state.updateError && <div className="error-message share-error">Gist could not be updated.</div>}
@@ -411,9 +407,9 @@ const ShareModal: React.FC = () => {
                 {state.creating ? 'Creating...' : 'Create'}
               </button>
               {state.gistEditorURL && state.creating !== undefined && (
-                <CopyToClipboard text={state.gistEditorURL} onCopy={onCopy}>
+                <button type="button" onClick={() => onCopy(state.gistEditorURL)}>
                   <span className="copy-icon">Copy Link to Clipboard</span>
-                </CopyToClipboard>
+                </button>
               )}
               {state.createError && <div className="error-message share-error">Gist could not be created</div>}
             </div>

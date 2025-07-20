@@ -122,13 +122,8 @@ export default function Renderer(props: RendererProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Derive fullscreen from URL
   const isFullscreen = location.pathname.endsWith('/view');
 
-  // Helper to check if current path ends with /view
-  // (no longer needed, replaced by isFullscreen)
-
-  // Open fullscreen: add /view to URL if not present
   const openPortal = useCallback(() => {
     const pathname = location.pathname;
     if (pathname !== '/' && pathname !== '/edited' && !pathname.endsWith('/view')) {
@@ -136,7 +131,6 @@ export default function Renderer(props: RendererProps) {
     }
   }, [location.pathname, navigate]);
 
-  // Close fullscreen: remove /view from URL if present
   const closePortal = useCallback(() => {
     const pathname = location.pathname
       .split('/')
@@ -147,9 +141,6 @@ export default function Renderer(props: RendererProps) {
     }
   }, [location.pathname, navigate]);
 
-  // Remove effect that sets fullscreen state on mount
-
-  // Listen for ESC or Cmd/Ctrl+F11 to exit/enter fullscreen
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.keyCode === KEYCODES.ESCAPE && isFullscreen) {
