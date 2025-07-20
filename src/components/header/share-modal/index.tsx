@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import stringify from 'json-stringify-pretty-compact';
 import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
-import Clipboard from 'react-clipboard.js';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {Copy, Link, Save} from 'react-feather';
 import {useAppContext} from '../../../context/app-context.js';
 import {NAMES} from '../../../constants/consts.js';
@@ -288,22 +288,28 @@ const ShareModal: React.FC = () => {
         </label>
       </div>
       <div className="sharing-buttons">
-        <button onClick={previewURL}>
-          <Link />
-          <span>Open Link</span>
+        <button onClick={previewURL} type="button">
+          <span className="copy-icon">
+            <Link />
+            Open Link
+          </span>
         </button>
-        <Clipboard className="copy-icon" data-clipboard-text={state.generatedURL} onSuccess={onCopy}>
-          <Copy />
-          <span>Copy Link to Clipboard</span>
-        </Clipboard>
-        <Clipboard
-          className="copy-icon"
-          data-clipboard-text={`[Open the Chart in the Vega Editor](${state.generatedURL})`}
-          onSuccess={onCopy}
-        >
-          <Copy />
-          <span>Copy Markdown Link to Clipboard</span>
-        </Clipboard>
+        <CopyToClipboard text={state.generatedURL} onCopy={onCopy}>
+          <button type="button">
+            <span className="copy-icon">
+              <Copy />
+              Copy Link to Clipboard
+            </span>
+          </button>
+        </CopyToClipboard>
+        <CopyToClipboard text={`[Open the Chart in the Vega Editor](${state.generatedURL})`} onCopy={onCopy}>
+          <button type="button">
+            <span className="copy-icon">
+              <Copy />
+              Copy Markdown Link to Clipboard
+            </span>
+          </button>
+        </CopyToClipboard>
         <div className={`copied + ${state.copied ? ' visible' : ''}`}>Copied!</div>
       </div>
       Number of characters in the URL: {state.generatedURL.length}{' '}
@@ -355,10 +361,9 @@ const ShareModal: React.FC = () => {
                 {state.updating ? 'Updating...' : 'Update'}
               </button>
               {state.gistEditorURL && state.updating !== undefined && (
-                <Clipboard className="copy-icon" data-clipboard-text={state.gistEditorURL}>
-                  <Copy />
-                  <span>Copy Link to Clipboard</span>
-                </Clipboard>
+                <CopyToClipboard text={state.gistEditorURL} onCopy={onCopy}>
+                  <span className="copy-icon">Copy Link to Clipboard</span>
+                </CopyToClipboard>
               )}
             </div>
             {state.updateError && <div className="error-message share-error">Gist could not be updated.</div>}
@@ -406,10 +411,9 @@ const ShareModal: React.FC = () => {
                 {state.creating ? 'Creating...' : 'Create'}
               </button>
               {state.gistEditorURL && state.creating !== undefined && (
-                <Clipboard className="copy-icon" data-clipboard-text={state.gistEditorURL}>
-                  <Copy />
-                  <span>Copy Link to Clipboard</span>
-                </Clipboard>
+                <CopyToClipboard text={state.gistEditorURL} onCopy={onCopy}>
+                  <span className="copy-icon">Copy Link to Clipboard</span>
+                </CopyToClipboard>
               )}
               {state.createError && <div className="error-message share-error">Gist could not be created</div>}
             </div>

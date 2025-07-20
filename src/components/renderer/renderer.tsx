@@ -11,11 +11,12 @@ import {Popup} from '../popup/index.js';
 import './index.css';
 import {expressionInterpreter as vegaInterpreter} from 'vega-interpreter';
 import {useCallback, useEffect, useRef, useState} from 'react';
+import {useNavigate, useLocation} from 'react-router';
 
 // Add additional projections
 addProjections(vega.projection);
 
-const defaultSize = {fullscreen: false, width: 500, height: 300};
+const defaultSize = {width: 500, height: 300};
 
 export interface RendererProps {
   baseURL: string;
@@ -98,9 +99,9 @@ export default function Renderer(props: RendererProps) {
   const handleResizeMouseDown = (eDown: React.MouseEvent) => {
     const x0 = eDown.pageX;
     const y0 = eDown.pageY;
-    const {width: w0, height: h0, fullscreen} = size;
+    const {width: w0, height: h0} = size;
     const onMove = (e: MouseEvent) => {
-      const factor = fullscreen ? 2 : 1;
+      const factor = 1; // No fullscreen factor
       const dx = e.pageX - x0;
       const dy = e.pageY - y0;
       setSize((s) => ({
@@ -118,21 +119,53 @@ export default function Renderer(props: RendererProps) {
     window.addEventListener('mouseup', onUp);
   };
 
-  const openPortal = () => setSize((s) => ({...s, fullscreen: true}));
-  const closePortal = () => setSize((s) => ({...s, fullscreen: false}));
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  // Derive fullscreen from URL
+  const isFullscreen = location.pathname.endsWith('/view');
+
+  // Helper to check if current path ends with /view
+  // (no longer needed, replaced by isFullscreen)
+
+  // Open fullscreen: add /view to URL if not present
+  const openPortal = useCallback(() => {
+    const pathname = location.pathname;
+    if (pathname !== '/' && pathname !== '/edited' && !pathname.endsWith('/view')) {
+      navigate(pathname + '/view', {replace: false});
+    }
+  }, [location.pathname, navigate]);
+
+  // Close fullscreen: remove /view from URL if present
+  const closePortal = useCallback(() => {
+    const pathname = location.pathname
+      .split('/')
+      .filter((e) => e !== 'view')
+      .join('/');
+    if (pathname !== '/' && pathname !== '/edited') {
+      navigate(pathname, {replace: false});
+    }
+  }, [location.pathname, navigate]);
+
+  // Remove effect that sets fullscreen state on mount
+
+  // Listen for ESC or Cmd/Ctrl+F11 to exit/enter fullscreen
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.keyCode === KEYCODES.ESCAPE && size.fullscreen) {
-        setSize((s) => ({...s, fullscreen: false}));
+      if (e.keyCode === KEYCODES.ESCAPE && isFullscreen) {
+        closePortal();
       }
       if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
-        setSize((s) => ({...s, fullscreen: !s.fullscreen}));
+        if (isFullscreen) {
+          closePortal();
+        } else {
+          openPortal();
+        }
       }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [size.fullscreen]);
+  }, [isFullscreen, openPortal, closePortal]);
 
   const runAfter = useCallback(
     (df: any) => {
@@ -202,7 +235,7 @@ export default function Renderer(props: RendererProps) {
 
   // Render Vega chart
   const renderVega = useCallback(async () => {
-    const chart = size.fullscreen ? portalChartRef.current : chartRef.current;
+    const chart = isFullscreen ? portalChartRef.current : chartRef.current;
 
     if (!responsiveWidth && !responsiveHeight) {
       chart.style.width = chart.getBoundingClientRect().width + 'px';
@@ -213,7 +246,7 @@ export default function Renderer(props: RendererProps) {
     view.renderer(renderer).initialize(chart);
     await view.runAsync();
     if (tooltipEnable) vegaTooltip(view);
-  }, [size.fullscreen, responsiveWidth, responsiveHeight, portalChartRef, chartRef, view, renderer, tooltipEnable]);
+  }, [isFullscreen, responsiveWidth, responsiveHeight, portalChartRef, chartRef, view, renderer, tooltipEnable]);
 
   // Deep comparison effect for prop changes
   useEffect(() => {
@@ -266,7 +299,7 @@ export default function Renderer(props: RendererProps) {
     if (view) {
       renderVega();
     }
-  }, [view, renderer, tooltipEnable, size.fullscreen, renderVega]);
+  }, [view, renderer, tooltipEnable, isFullscreen, renderVega]);
 
   // Main render
   return (
@@ -289,25 +322,6 @@ export default function Renderer(props: RendererProps) {
           <Maximize onClick={openPortal} />
         </Popup>
       </div>
-      {size.fullscreen && (
-        <Portal>
-          <div className="fullscreen-chart">
-            <div className="chart">
-              <div ref={portalChartRef} style={chartStyle} />
-              {(responsiveWidth || responsiveHeight) && (
-                <div className="chart-resize-handle" onMouseDown={handleResizeMouseDown}>
-                  <svg width="10" height="10">
-                    <path d="M-2,13L13,-2 M-2,16L16,-2 M-2,19L19,-2" />
-                  </svg>
-                </div>
-              )}
-            </div>
-            <button className="fullscreen-close" onClick={closePortal}>
-              <span>Edit Visualization</span>
-            </button>
-          </div>
-        </Portal>
-      )}
     </>
   );
 }
