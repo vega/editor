@@ -50,7 +50,7 @@ const EditorWithNavigation: React.FC<{
           }
         }
       } catch (e) {
-        // spec is not a valid JSON, ignore schema parsing
+        // spec is not a valid JSON
       }
 
       if (parsedMode === Mode.Vega) {
@@ -75,16 +75,17 @@ const EditorWithNavigation: React.FC<{
           if (newlines <= 1) {
             spec = stringify(parseJSONC(spec));
           }
-          updateSpec(spec);
+          if (spec !== editorString) {
+            updateSpec(spec);
+          }
         } catch (e) {
           props.logError(e as Error);
         }
       } else {
         props.logError(new Error(`Failed to decompress URL. Expected a specification, but received ${spec}`));
       }
-      navigate('/edited', {replace: true});
     }
-  }, [compressed, navigate, props.logError, updateSpec]);
+  }, [compressed, editorString, props.logError, updateSpec]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

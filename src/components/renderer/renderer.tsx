@@ -16,8 +16,6 @@ import {useNavigate, useLocation} from 'react-router';
 // Add additional projections
 addProjections(vega.projection);
 
-const defaultSize = {width: 500, height: 300};
-
 export interface RendererProps {
   baseURL: string;
   config: any;
@@ -57,7 +55,9 @@ export default function Renderer(props: RendererProps) {
     normalizedVegaLiteSpec,
   } = props;
 
+  const defaultSize = {width: 500, height: 300, fullscreen: false};
   const [size, setSize] = useState(defaultSize);
+
   const chartRef = useRef<HTMLDivElement>(null);
   const portalChartRef = useRef<HTMLDivElement>(null);
 
@@ -101,7 +101,7 @@ export default function Renderer(props: RendererProps) {
     const y0 = eDown.pageY;
     const {width: w0, height: h0} = size;
     const onMove = (e: MouseEvent) => {
-      const factor = 1; // No fullscreen factor
+      const factor = size.fullscreen ? 2 : 1;
       const dx = e.pageX - x0;
       const dy = e.pageY - y0;
       setSize((s) => ({
@@ -122,8 +122,6 @@ export default function Renderer(props: RendererProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isFullscreen = location.pathname.endsWith('/view');
-
   const openPortal = useCallback(() => {
     const pathname = location.pathname;
     if (pathname !== '/' && pathname !== '/edited' && !pathname.endsWith('/view')) {
@@ -143,20 +141,32 @@ export default function Renderer(props: RendererProps) {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.keyCode === KEYCODES.ESCAPE && isFullscreen) {
+      if (e.keyCode === KEYCODES.ESCAPE && size.fullscreen) {
+        setSize((s) => ({...s, fullscreen: false}));
         closePortal();
       }
       if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
-        if (isFullscreen) {
+        if (size.fullscreen) {
+          setSize((s) => ({...s, fullscreen: false}));
           closePortal();
         } else {
+          setSize((s) => ({...s, fullscreen: true}));
           openPortal();
         }
       }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [isFullscreen, openPortal, closePortal]);
+  }, [size.fullscreen, openPortal, closePortal]);
+
+  useEffect(() => {
+    const params = location.pathname.split('/');
+    if (params[params.length - 1] === 'view') {
+      setSize((s) => ({...s, fullscreen: true}));
+    } else {
+      setSize((s) => ({...s, fullscreen: false}));
+    }
+  }, [location.pathname]);
 
   const runAfter = useCallback(
     (df: any) => {
@@ -205,41 +215,46 @@ export default function Renderer(props: RendererProps) {
       expr: expressionInterpreter ? vegaInterpreter : undefined,
     });
     newView.runAfter(runAfter, true);
-    // Set up logging integration - using the global logger
     newView.logger(dispatchingLogger);
-
     const debug = (window as any).VEGA_DEBUG;
     debug.view = view;
     debug.vegaSpec = vegaSpec;
     debug.config = config;
-
     if (mode === Mode.VegaLite) {
       debug.vegaLiteSpec = vegaLiteSpec;
       debug.normalizedVegaLiteSpec = normalizedVegaLiteSpec;
     } else {
       debug.vegaLiteSpec = debug.normalizedVegaLiteSpec = undefined;
     }
-
     setRuntime(runtime);
     setView(newView);
-  }, [vegaSpec, config, mode, expressionInterpreter, hoverEnable, baseURL, runAfter, setRuntime, setView, view]);
+  }, [
+    vegaSpec,
+    config,
+    mode,
+    expressionInterpreter,
+    hoverEnable,
+    baseURL,
+    runAfter,
+    setRuntime,
+    setView,
+    view,
+    vegaLiteSpec,
+    normalizedVegaLiteSpec,
+  ]);
 
-  // Render Vega chart
   const renderVega = useCallback(async () => {
-    const chart = isFullscreen ? portalChartRef.current : chartRef.current;
-
+    const chart = size.fullscreen ? portalChartRef.current : chartRef.current;
     if (!responsiveWidth && !responsiveHeight) {
       chart.style.width = chart.getBoundingClientRect().width + 'px';
       chart.style.width = 'auto';
     }
-
     if (!view) return;
     view.renderer(renderer).initialize(chart);
     await view.runAsync();
     if (tooltipEnable) vegaTooltip(view);
-  }, [isFullscreen, responsiveWidth, responsiveHeight, portalChartRef, chartRef, view, renderer, tooltipEnable]);
+  }, [size.fullscreen, responsiveWidth, responsiveHeight, portalChartRef, chartRef, view, renderer, tooltipEnable]);
 
-  // Deep comparison effect for prop changes
   useEffect(() => {
     const prevProps = prevPropsRef.current;
     const currentProps = {
@@ -253,8 +268,6 @@ export default function Renderer(props: RendererProps) {
       tooltipEnable,
       expressionInterpreter,
     };
-
-    // Check if any props have actually changed using deepEqual
     const hasChanged =
       !deepEqual(prevProps.vegaSpec, currentProps.vegaSpec) ||
       !deepEqual(prevProps.vegaLiteSpec, currentProps.vegaLiteSpec) ||
@@ -265,12 +278,9 @@ export default function Renderer(props: RendererProps) {
       !deepEqual(prevProps.hoverEnable, currentProps.hoverEnable) ||
       !deepEqual(prevProps.tooltipEnable, currentProps.tooltipEnable) ||
       prevProps.expressionInterpreter !== currentProps.expressionInterpreter;
-
     if (hasChanged) {
       initView();
     }
-
-    // Update previous props for next comparison
     prevPropsRef.current = currentProps;
   }, [
     vegaSpec,
@@ -285,17 +295,15 @@ export default function Renderer(props: RendererProps) {
     initView,
   ]);
 
-  // Re-render chart when view or renderer changes
   useEffect(() => {
     if (view) {
       renderVega();
     }
-  }, [view, renderer, tooltipEnable, isFullscreen, renderVega]);
+  }, [view, renderer, tooltipEnable, size.fullscreen, renderVega]);
 
-  // Main render
   return (
     <>
-      <div className="chart">
+      <div className="chart" style={{backgroundColor}}>
         <Popup content={`Click on "Continue Recording" to make the chart interactive`} placement="right" maxWidth={200}>
           <div className="chart-overlay" />
         </Popup>
@@ -310,9 +318,39 @@ export default function Renderer(props: RendererProps) {
       </div>
       <div className="fullscreen-open">
         <Popup content="Fullscreen" placement="left">
-          <Maximize onClick={openPortal} />
+          <Maximize
+            onClick={() => {
+              setSize((s) => ({...s, fullscreen: true}));
+              openPortal();
+            }}
+          />
         </Popup>
       </div>
+      {size.fullscreen && (
+        <Portal>
+          <div className="fullscreen-chart">
+            <div className="chart" style={{backgroundColor}}>
+              <div ref={portalChartRef} style={chartStyle} />
+              {(responsiveWidth || responsiveHeight) && (
+                <div className="chart-resize-handle" onMouseDown={handleResizeMouseDown}>
+                  <svg width="10" height="10">
+                    <path d="M-2,13L13,-2 M-2,16L16,-2 M-2,19L19,-2" />
+                  </svg>
+                </div>
+              )}
+            </div>
+            <button
+              className="fullscreen-close"
+              onClick={() => {
+                setSize((s) => ({...s, fullscreen: false}));
+                closePortal();
+              }}
+            >
+              <span>Edit Visualization</span>
+            </button>
+          </div>
+        </Portal>
+      )}
     </>
   );
 }
