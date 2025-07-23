@@ -20,11 +20,8 @@ const InputPanel: React.FC = () => {
     (sizes: number[]) => {
       const size = sizes[1] * window.innerHeight;
       setState((s) => ({...s, compiledVegaPaneSize: size}));
-      if ((size > LAYOUT.MinPaneSize && !compiledVegaSpec) || (size === LAYOUT.MinPaneSize && compiledVegaSpec)) {
-        setState((s) => ({...s, compiledVegaSpec: !s.compiledVegaSpec}));
-      }
     },
-    [setState, compiledVegaSpec],
+    [setState],
   );
 
   useEffect(() => {
@@ -67,15 +64,22 @@ const InputPanel: React.FC = () => {
     [compiledVegaSpec],
   );
 
-  const initialSizes = useMemo(() => {
-    return compiledVegaSpec ? [70, 30] : [100, 0];
-  }, [compiledVegaSpec]);
-
-  const handleDragEnd = useCallback(() => {
-    if (compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-      setState((s) => ({...s, compiledVegaPaneSize: (window.innerHeight - LAYOUT.HeaderHeight) * 0.5}));
-    }
-  }, [compiledVegaPaneSize, setState]);
+  const handleDragEnd = useCallback(
+    (sizes?: number[]) => {
+      // Use the sizes from the drag end event if available, otherwise fallback to state
+      const size = sizes ? sizes[1] * window.innerHeight : compiledVegaPaneSize;
+      const tolerance = 5;
+      const shouldBeOpen = size > LAYOUT.MinPaneSize + tolerance;
+      if (shouldBeOpen !== !!compiledVegaSpec) {
+        setState((s) => ({...s, compiledVegaSpec: !s.compiledVegaSpec}));
+      }
+      // Optionally, reset pane size if closed
+      if (size === LAYOUT.MinPaneSize && compiledVegaPaneSize === LAYOUT.MinPaneSize) {
+        setState((s) => ({...s, compiledVegaPaneSize: (window.innerHeight - LAYOUT.HeaderHeight) * 0.5}));
+      }
+    },
+    [compiledVegaPaneSize, compiledVegaSpec, setState],
+  );
 
   if (mode === Mode.Vega) {
     return (

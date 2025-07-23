@@ -107,14 +107,6 @@ declare module 'ajv-formats' {
   export default addFormats;
 }
 
-declare module 'redux-thunk' {
-  import {Middleware} from 'redux';
-
-  const thunk: Middleware;
-  export default thunk;
-}
-
-
 declare module 'react-split';
 declare module '@monaco-editor/react';
 declare module 'react-paginate';

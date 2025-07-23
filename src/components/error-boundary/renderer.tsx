@@ -2,36 +2,22 @@ import React from 'react';
 import './index.css';
 
 interface ErrorBoundaryProps {
+  error: {message: string};
   logError: (error: Error, info: React.ErrorInfo) => void;
   toggleDebugPane: () => void;
   children?: React.ReactNode;
 }
 
-interface ErrorBoundaryState {
-  hasError: boolean;
-  error?: Error;
-}
-
-class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props) {
-    super(props);
-    this.state = {hasError: false};
-  }
-
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return {hasError: true, error};
-  }
-
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
+export default class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
+  public componentDidCatch(error: Error, info: React.ErrorInfo) {
     this.props.logError(error, info);
-    console.error('ErrorBoundary caught an error:', error, info);
   }
 
-  render() {
-    if (this.state.hasError) {
+  public render() {
+    if (this.props.error) {
       return (
         <div id="error-indicator" onClick={this.props.toggleDebugPane}>
-          {this.state.error?.message ?? 'An unexpected error occurred'}
+          {this.props.error.message}
         </div>
       );
     }
@@ -39,5 +25,3 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     return this.props.children;
   }
 }
-
-export default ErrorBoundary;

@@ -106,16 +106,8 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
     (sizes: number[]) => {
       const size = (sizes[1] / 100) * window.innerHeight;
       props.setDebugPaneSize(size);
-
-      const tolerance = 5;
-      if (
-        (size > LAYOUT.MinPaneSize + tolerance && !props.debugPane) ||
-        (size <= LAYOUT.MinPaneSize + tolerance && props.debugPane)
-      ) {
-        props.toggleDebugPane();
-      }
     },
-    [props.setDebugPaneSize, props.debugPane, props.toggleDebugPane],
+    [props.setDebugPaneSize],
   );
 
   const handleDragStart = useCallback(() => {
@@ -124,14 +116,23 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
     }
   }, [props.navItem, props.showLogs]);
 
-  const handleDragEnd = useCallback(() => {
-    if (props.debugPaneSize === LAYOUT.MinPaneSize) {
-      props.setDebugPaneSize(LAYOUT.DebugPaneSize);
+  const handleDragEnd = useCallback(
+    (sizes?: number[]) => {
+      const size = (sizes[1] / 100) * window.innerHeight;
+      console.log('size', size);
+      const tolerance = 5;
+      const shouldBeOpen = size > LAYOUT.MinPaneSize + tolerance;
+      if (shouldBeOpen !== props.debugPane) {
+        props.toggleDebugPane();
+      }
       // Popping up the debug panel for the first time will set its
       // height to LAYOUT.DebugPaneSize. This can change depending on the UI.
-    }
-  }, [props.debugPaneSize, props.setDebugPaneSize]);
-
+      if (size === LAYOUT.MinPaneSize && props.debugPaneSize === LAYOUT.MinPaneSize) {
+        props.setDebugPaneSize(LAYOUT.DebugPaneSize);
+      }
+    },
+    [props.debugPane, props.debugPaneSize, props.toggleDebugPane, props.setDebugPaneSize],
+  );
   /**
    *  Get the Component to be rendered in the Context Viewer.
    */
