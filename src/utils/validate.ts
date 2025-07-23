@@ -4,14 +4,12 @@ import * as vegaLite from 'vega-lite';
 import schemaParser from 'vega-schema-url-parser';
 
 export function validateVega(spec: any, logger: any) {
-  // Basic validation - can be extended with more specific Vega validation
   if (!spec || typeof spec !== 'object') {
     throw new Error('Invalid Vega specification');
   }
 }
 
 export function validateVegaLite(spec: any, logger: any) {
-  // Basic validation - can be extended with more specific Vega-Lite validation
   if (!spec || typeof spec !== 'object') {
     throw new Error('Invalid Vega-Lite specification');
   }

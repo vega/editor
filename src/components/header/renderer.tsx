@@ -14,7 +14,7 @@ import GistModal from './gist-modal/renderer.js';
 import HelpModal from './help-modal/index.js';
 import './index.css';
 import ShareModal from './share-modal/index.js';
-import {PortalWithState} from '../../components/portal/index.js';
+import {PortalWithState} from 'react-portal';
 
 export interface Props {
   showExample: boolean;
@@ -108,8 +108,6 @@ const Header: React.FC<Props> = ({showExample}) => {
       const auth_token = localStorage.getItem('vega_editor_auth_token');
 
       if (localAuthData && localAuthData.isAuthenticated && localAuthData.authToken) {
-        console.log('Using localStorage auth data:', localAuthData.handle);
-
         try {
           const isValid = await verifyTokenLocally(localAuthData.authToken);
           if (isValid) {
@@ -151,7 +149,6 @@ const Header: React.FC<Props> = ({showExample}) => {
           };
 
           if (userData.isAuthenticated && userData.authToken) {
-            console.log('Saving new auth token to localStorage');
             saveAuthToLocalStorage({
               isAuthenticated: userData.isAuthenticated,
               handle: userData.handle,
@@ -183,7 +180,6 @@ const Header: React.FC<Props> = ({showExample}) => {
     const handleAuthMessage = async (e) => {
       if (e.data && e.data.type === 'auth') {
         if (e.data.token) {
-          console.log('Received auth token from popup:', e.data.token.substring(0, 10) + '...');
           localStorage.setItem('vega_editor_auth_token', e.data.token);
 
           try {
@@ -703,145 +699,130 @@ const Header: React.FC<Props> = ({showExample}) => {
         </span>
         {optionsButton}
 
-        <PortalWithState
-          closeOnEsc
-          isOpen={exportModalOpen}
-          onOpen={handleExportModalOpen}
-          onClose={handleExportModalClose}
-        >
-          {({portal}) => [
-            <span key="0" onClick={handleExportModalOpen}>
-              {exportButton}
-            </span>,
-            portal(
-              <div className="modal-background" onClick={handleExportModalClose}>
-                <div className="modal" onClick={(e) => e.stopPropagation()}>
-                  <div>
-                    <button className="close-button" onClick={handleExportModalClose}>
-                      <X />
-                    </button>
-                  </div>
-                  <div className="modal-body">{exportContent}</div>
-                </div>
-              </div>,
-            ),
-          ]}
-        </PortalWithState>
-
-        <PortalWithState
-          closeOnEsc
-          isOpen={shareModalOpen}
-          onOpen={handleShareModalOpen}
-          onClose={handleShareModalClose}
-        >
-          {({portal}) => [
-            <span key="0" onClick={handleShareModalOpen}>
-              {shareButton}
-            </span>,
-            portal(
-              <div className="modal-background" onClick={handleShareModalClose}>
-                <div className="modal" onClick={(e) => e.stopPropagation()}>
-                  <div>
-                    <button className="close-button" onClick={handleShareModalClose}>
-                      <X />
-                    </button>
-                  </div>
-                  <div className="modal-body">{shareContent}</div>
-                </div>
-              </div>,
-            ),
-          ]}
-        </PortalWithState>
-
-        <PortalWithState closeOnEsc isOpen={gistModalOpen} onOpen={handleGistModalOpen} onClose={handleGistModalClose}>
-          {({portal}) => [
-            <span key="0" onClick={handleGistModalOpen}>
-              {gistButton}
-            </span>,
-            portal(
-              <div className="modal-background" onClick={handleGistModalClose}>
-                <div className="modal" onClick={(e) => e.stopPropagation()}>
-                  <div>
-                    <button className="close-button" onClick={handleGistModalClose}>
-                      <X />
-                    </button>
-                  </div>
-                  <div className="modal-body">{renderGist(handleGistModalClose)}</div>
-                </div>
-              </div>,
-            ),
-          ]}
-        </PortalWithState>
-
-        <PortalWithState
-          closeOnEsc
-          isOpen={examplesModalOpen}
-          onOpen={handleExamplesModalOpen}
-          onClose={handleExamplesModalClose}
-        >
-          {({portal}) => [
-            <span key="0" onClick={handleExamplesModalOpen}>
-              {examplesButton}
-            </span>,
-            portal(
-              <div className="modal-background" onClick={handleExamplesModalClose}>
-                <div className="modal" onClick={(e) => e.stopPropagation()}>
-                  <div>
-                    <div className="button-groups">
-                      <button
-                        className={showVega ? 'selected' : ''}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleVegaToggle(true);
-                        }}
-                      >
-                        Vega
-                      </button>
-                      <button
-                        className={showVega ? '' : 'selected'}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleVegaToggle(false);
-                        }}
-                      >
-                        Vega-Lite
+        <PortalWithState closeOnEsc>
+          {({openPortal, closePortal, isOpen, portal}) => (
+            <>
+              <span onClick={openPortal}>{exportButton}</span>
+              {portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal" onClick={(e) => e.stopPropagation()}>
+                    <div>
+                      <button className="close-button" onClick={closePortal}>
+                        <X />
                       </button>
                     </div>
-                    <button className="close-button" onClick={handleExamplesModalClose}>
-                      <X />
-                    </button>
+                    <div className="modal-body">{exportContent}</div>
                   </div>
-                  <div className="modal-body" ref={examplePortal}>
-                    {showVega ? renderVega(handleExamplesModalClose) : renderVegaLite(handleExamplesModalClose)}
+                </div>,
+              )}
+            </>
+          )}
+        </PortalWithState>
+
+        <PortalWithState closeOnEsc>
+          {({openPortal, closePortal, isOpen, portal}) => (
+            <>
+              <span onClick={openPortal}>{shareButton}</span>
+              {portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal" onClick={(e) => e.stopPropagation()}>
+                    <div>
+                      <button className="close-button" onClick={closePortal}>
+                        <X />
+                      </button>
+                    </div>
+                    <div className="modal-body">{shareContent}</div>
                   </div>
-                </div>
-              </div>,
-            ),
-          ]}
+                </div>,
+              )}
+            </>
+          )}
+        </PortalWithState>
+
+        <PortalWithState closeOnEsc>
+          {({openPortal, closePortal, isOpen, portal}) => (
+            <>
+              <span onClick={openPortal}>{gistButton}</span>
+              {portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal" onClick={(e) => e.stopPropagation()}>
+                    <div>
+                      <button className="close-button" onClick={closePortal}>
+                        <X />
+                      </button>
+                    </div>
+                    <div className="modal-body">{renderGist(closePortal)}</div>
+                  </div>
+                </div>,
+              )}
+            </>
+          )}
+        </PortalWithState>
+
+        <PortalWithState closeOnEsc>
+          {({openPortal, closePortal, isOpen, portal}) => (
+            <>
+              <span onClick={openPortal}>{examplesButton}</span>
+              {portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal" onClick={(e) => e.stopPropagation()}>
+                    <div>
+                      <div className="button-groups">
+                        <button
+                          className={showVega ? 'selected' : ''}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleVegaToggle(true);
+                          }}
+                        >
+                          Vega
+                        </button>
+                        <button
+                          className={showVega ? '' : 'selected'}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleVegaToggle(false);
+                          }}
+                        >
+                          Vega-Lite
+                        </button>
+                      </div>
+                      <button className="close-button" onClick={closePortal}>
+                        <X />
+                      </button>
+                    </div>
+                    <div className="modal-body" ref={examplePortal}>
+                      {showVega ? renderVega(closePortal) : renderVegaLite(closePortal)}
+                    </div>
+                  </div>
+                </div>,
+              )}
+            </>
+          )}
         </PortalWithState>
       </section>
 
       <section className="right-section">
-        <PortalWithState closeOnEsc isOpen={helpModalOpen} onOpen={handleHelpModalOpen} onClose={handleHelpModalClose}>
-          {({portal}) => [
-            <span key="0" onClick={handleHelpModalOpen}>
-              {HelpButton}
-            </span>,
-            portal(
-              <div className="modal-background" onClick={handleHelpModalClose}>
-                <div className="modal" onClick={(e) => e.stopPropagation()}>
-                  <div>
-                    <button className="close-button" onClick={handleHelpModalClose}>
-                      <X />
-                    </button>
+        <PortalWithState closeOnEsc>
+          {({openPortal, closePortal, isOpen, portal}) => (
+            <>
+              <span onClick={openPortal}>{HelpButton}</span>
+              {portal(
+                <div className="modal-background" onClick={closePortal}>
+                  <div className="modal" onClick={(e) => e.stopPropagation()}>
+                    <div>
+                      <button className="close-button" onClick={closePortal}>
+                        <X />
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      <HelpModal />
+                    </div>
                   </div>
-                  <div className="modal-body">
-                    <HelpModal />
-                  </div>
-                </div>
-              </div>,
-            ),
-          ]}
+                </div>,
+              )}
+            </>
+          )}
         </PortalWithState>
         {settingsButton}
         {authButton}

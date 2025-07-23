@@ -311,7 +311,6 @@ const App: React.FC<Props> = (props) => {
         }));
       }
     } catch (error) {
-      console.error('Parse error:', error);
       setState((s) => ({
         ...s,
         error: {message: error.message},

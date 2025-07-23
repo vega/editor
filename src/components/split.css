@@ -1,8 +1,6 @@
-Styles for Split components
-
-/* Common split styles */
 .split {
   display: flex;
+  position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -21,6 +19,8 @@ Styles for Split components
 /* Gutter common styles */
 .gutter {
   background-color: #ebe6e6;
+  position: relative;
+  z-index: 10;
 }
 
 /* hover over 3 seconds, then change background color */
@@ -66,8 +66,6 @@ Styles for Split components
   display: flex;
   flex-direction: column !important;
 }
-
-/* Fix to ensure all children of Split take up proper space */
 
 /* Ensure compiled spec display takes proper height */
 .compiled-spec-display {

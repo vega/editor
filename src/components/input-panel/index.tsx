@@ -66,14 +66,12 @@ const InputPanel: React.FC = () => {
 
   const handleDragEnd = useCallback(
     (sizes?: number[]) => {
-      // Use the sizes from the drag end event if available, otherwise fallback to state
       const size = sizes ? sizes[1] * window.innerHeight : compiledVegaPaneSize;
       const tolerance = 5;
       const shouldBeOpen = size > LAYOUT.MinPaneSize + tolerance;
       if (shouldBeOpen !== !!compiledVegaSpec) {
         setState((s) => ({...s, compiledVegaSpec: !s.compiledVegaSpec}));
       }
-      // Optionally, reset pane size if closed
       if (size === LAYOUT.MinPaneSize && compiledVegaPaneSize === LAYOUT.MinPaneSize) {
         setState((s) => ({...s, compiledVegaPaneSize: (window.innerHeight - LAYOUT.HeaderHeight) * 0.5}));
       }
