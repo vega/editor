@@ -119,7 +119,6 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
   const handleDragEnd = useCallback(
     (sizes?: number[]) => {
       const size = (sizes[1] / 100) * window.innerHeight;
-      console.log('size', size);
       const tolerance = 5;
       const shouldBeOpen = size > LAYOUT.MinPaneSize + tolerance;
       if (shouldBeOpen !== props.debugPane) {

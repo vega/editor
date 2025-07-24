@@ -24,8 +24,8 @@ const EditorWithNavigation: React.FC<{
   setEditorFocus: (focus: any) => void;
   setEditorReference: (reference: any) => void;
   updateEditorString: (editorString: string) => void;
-  updateVegaLiteSpec: (spec: string, config?: string) => void;
-  updateVegaSpec: (spec: string, config?: string) => void;
+  updateVegaLiteSpec: (spec: string, mode: Mode, config?: string) => void;
+  updateVegaSpec: (spec: string, mode: Mode, config?: string) => void;
 }> = (props) => {
   const {state} = useAppContext();
   const {mode, editorString, decorations, manualParse, parse, sidePaneItem, configEditorString} = state;
@@ -54,9 +54,9 @@ const EditorWithNavigation: React.FC<{
       }
 
       if (parsedMode === Mode.Vega) {
-        props.updateVegaSpec(spec, config);
+        props.updateVegaSpec(spec, parsedMode, config);
       } else if (parsedMode === Mode.VegaLite) {
-        props.updateVegaLiteSpec(spec, config);
+        props.updateVegaLiteSpec(spec, parsedMode, config);
       } else {
         props.updateEditorString(spec);
       }
@@ -132,7 +132,7 @@ const EditorWithNavigation: React.FC<{
               ...spec,
             };
             if (confirm('Adding schema URL will format the specification too.')) {
-              props.updateVegaSpec(stringify(spec));
+              props.updateVegaSpec(stringify(spec), Mode.Vega);
             }
           }
         } catch (e) {
@@ -149,7 +149,7 @@ const EditorWithNavigation: React.FC<{
               ...spec,
             };
             if (confirm('Adding schema URL will format the specification too.')) {
-              props.updateVegaLiteSpec(stringify(spec));
+              props.updateVegaLiteSpec(stringify(spec), Mode.VegaLite);
             }
           }
         } catch (e) {

@@ -192,7 +192,7 @@ export default function Renderer(props: RendererProps) {
     [recordPulse],
   );
 
-  const initView = useCallback(() => {
+  const initView = useCallback(async () => {
     const parseOptions = expressionInterpreter ? {ast: true} : {};
     const runtime = vega.parse(vegaSpec, mode === Mode.VegaLite ? {} : config, parseOptions);
     const loader = vega.loader();
@@ -226,6 +226,8 @@ export default function Renderer(props: RendererProps) {
     } else {
       debug.vegaLiteSpec = debug.normalizedVegaLiteSpec = undefined;
     }
+
+    await newView.runAsync();
     setRuntime(runtime);
     setView(newView);
   }, [

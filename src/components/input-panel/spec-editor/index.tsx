@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {useAppContext} from '../../../context/app-context.js';
 import EditorWithNavigation from './renderer.js';
+import {Mode} from '../../../constants/index.js';
 
 const SpecEditor = () => {
   const {setState} = useAppContext();
@@ -25,10 +26,10 @@ const SpecEditor = () => {
       setEditorReference={(reference: any) => setState((s) => ({...s, editorRef: reference}))}
       updateEditorString={(editorString: string) => setState((s) => ({...s, editorString}))}
       updateVegaLiteSpec={(spec: string, config?: string) =>
-        setState((s) => ({...s, editorString: spec, ...(config && {configEditorString: config})}))
+        setState((s) => ({...s, editorString: spec, mode: Mode.VegaLite, ...(config && {configEditorString: config})}))
       }
       updateVegaSpec={(spec: string, config?: string) =>
-        setState((s) => ({...s, editorString: spec, ...(config && {configEditorString: config})}))
+        setState((s) => ({...s, editorString: spec, mode: Mode.Vega, ...(config && {configEditorString: config})}))
       }
     />
   );
