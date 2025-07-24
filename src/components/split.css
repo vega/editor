@@ -21,16 +21,39 @@
   background-color: #ebe6e6;
   position: relative;
   z-index: 10;
+  /* Ensure pointer events for pseudo-element */
+  pointer-events: auto;
+}
+
+.gutter.gutter-horizontal::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: auto;
+}
+.gutter.gutter-vertical::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: auto;
 }
 
 /* hover over 3 seconds, then change background color */
 .gutter:hover {
-  background-color: rgb(7, 118, 202);
+  background-color: var(--brand-color);
   transition: all 0.5s ease;
 }
 
 .gutter:active {
-  background-color: rgb(7, 118, 202);
+  background-color: var(--brand-color);
 }
 
 /* Horizontal gutter (for vertical splits) */
