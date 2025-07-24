@@ -11,7 +11,7 @@ import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../
 import {useAppContext} from '../context/app-context';
 import {LocalLogger} from '../utils/logger';
 import {parseJSONCOrThrow, parseJSONC} from '../utils/jsonc-parser';
-import {validateVega, validateVegaLite, validateSchema} from '../utils/validate';
+import {validateVega, validateVegaLite} from '../utils/validate';
 import './app.css';
 import './split.css';
 import Header from './header/renderer.js';
@@ -261,7 +261,6 @@ const App: React.FC<Props> = (props) => {
         }
 
         // Validate schema and version
-        validateSchema(parsedSpec, 'vega-lite', currLogger);
         validateVegaLite(parsedSpec, currLogger);
 
         const normalizedSpec = normalize(parsedSpec);
@@ -294,7 +293,6 @@ const App: React.FC<Props> = (props) => {
         }
 
         // Validate schema and version
-        validateSchema(parsedSpec, 'vega', currLogger);
         validateVega(parsedSpec, currLogger);
 
         setState((s) => ({
