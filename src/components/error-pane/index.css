@@ -10,10 +10,6 @@
   color: var(--info-color);
 }
 
-.error-pane .debug {
-  color: var(--debug-color);
-}
-
 .error-pane {
   overflow: auto;
   width: 100%;

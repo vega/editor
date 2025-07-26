@@ -99,7 +99,7 @@ export const DEFAULT_STATE: State = {
   name: '',
   navItem: NAVBAR.Logs,
   parse: false,
-  private: GistPrivacy.ALL,
+  private: GistPrivacy.PUBLIC,
   profilePicUrl: '',
   renderer: 'svg',
   selectedExample: null,

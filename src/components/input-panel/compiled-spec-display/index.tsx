@@ -49,7 +49,6 @@ function CompiledSpecDisplay() {
   const handleEditorMount = useCallback(
     (monacoEditor) => {
       monacoEditorRef.current = monacoEditor;
-      // Set the compiled editor reference in state
       setState((s) => ({...s, compiledEditorRef: monacoEditor}));
 
       monacoEditor.onDidFocusEditorText(() => {

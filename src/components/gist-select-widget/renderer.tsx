@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {File, Lock} from 'react-feather';
 import ReactPaginate from 'react-paginate';
 
-import {GistPrivacy} from '../../constants/index.js';
+import {GistPrivacy} from '../../constants/consts.js';
 import {getGithubToken} from '../../utils/github.js';
 import LoginConditional from '../login-conditional/index.js';
 import './index.css';
@@ -72,7 +72,11 @@ const GistSelectWidget: React.FC<Props> = ({
           }
 
           const filteredGists = gists.filter((gist) => {
-            return Object.keys(gist.files || {}).some((filename) => filename.endsWith('.json'));
+            const hasJsonFiles = Object.keys(gist.files || {}).some((filename) => filename.endsWith('.json'));
+            const isPublicGist = gist.public;
+            const shouldShowPrivate = isPrivate === GistPrivacy.ALL;
+
+            return hasJsonFiles && (isPublicGist || shouldShowPrivate);
           });
 
           const formattedGists = filteredGists.map((gist) => {
@@ -96,7 +100,7 @@ const GistSelectWidget: React.FC<Props> = ({
 
           setCurrentPage(page.selected);
           setLoaded(true);
-          setPages(pages);
+          setPages(pageMap);
           setLoading(true);
           setPersonalGist(formattedGists);
         } catch (error) {

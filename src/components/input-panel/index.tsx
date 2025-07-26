@@ -18,8 +18,19 @@ const InputPanel: React.FC = () => {
 
   const handleChange = useCallback(
     (sizes: number[]) => {
-      const size = sizes[1] * window.innerHeight;
-      setState((s) => ({...s, compiledVegaPaneSize: size}));
+      const size = (sizes[1] / 100) * window.innerHeight;
+      const tolerance = 5;
+      const shouldBeOpen = size > LAYOUT.MinPaneSize + tolerance;
+
+      setState((s) => {
+        const newState = {...s, compiledVegaPaneSize: size};
+
+        if (shouldBeOpen !== !!s.compiledVegaSpec) {
+          newState.compiledVegaSpec = !s.compiledVegaSpec;
+        }
+
+        return newState;
+      });
     },
     [setState],
   );
@@ -64,20 +75,20 @@ const InputPanel: React.FC = () => {
     [compiledVegaSpec],
   );
 
-  const handleDragEnd = useCallback(
-    (sizes?: number[]) => {
-      const size = sizes ? sizes[1] * window.innerHeight : compiledVegaPaneSize;
-      const tolerance = 5;
-      const shouldBeOpen = size > LAYOUT.MinPaneSize + tolerance;
-      if (shouldBeOpen !== !!compiledVegaSpec) {
-        setState((s) => ({...s, compiledVegaSpec: !s.compiledVegaSpec}));
-      }
-      if (size === LAYOUT.MinPaneSize && compiledVegaPaneSize === LAYOUT.MinPaneSize) {
-        setState((s) => ({...s, compiledVegaPaneSize: (window.innerHeight - LAYOUT.HeaderHeight) * 0.5}));
-      }
-    },
-    [compiledVegaPaneSize, compiledVegaSpec, setState],
-  );
+  const getInitialSizes = useCallback(() => {
+    const compiledPaneSize = compiledVegaSpec
+      ? Math.max(compiledVegaPaneSize || (window.innerHeight - LAYOUT.HeaderHeight) * 0.3, LAYOUT.MinPaneSize)
+      : LAYOUT.MinPaneSize;
+
+    const totalHeight = window.innerHeight;
+    const compiledPanePercentage = (compiledPaneSize / totalHeight) * 100;
+
+    const minPercentage = (LAYOUT.MinPaneSize / totalHeight) * 100;
+    const finalCompiledPercentage = Math.max(compiledPanePercentage, minPercentage);
+    const finalEditorPercentage = 100 - finalCompiledPercentage;
+
+    return [finalEditorPercentage, finalCompiledPercentage];
+  }, [compiledVegaSpec, compiledVegaPaneSize]);
 
   if (mode === Mode.Vega) {
     return (
@@ -90,8 +101,7 @@ const InputPanel: React.FC = () => {
   return (
     <div role="group" aria-label="spec editors" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
       <Split
-        key={compiledVegaSpec ? 'split-mode' : 'single-mode'}
-        sizes={compiledVegaSpec ? [70, 30] : [100, 0]}
+        sizes={getInitialSizes()}
         minSize={LAYOUT.MinPaneSize}
         expandToMin={false}
         gutterSize={3}
@@ -102,7 +112,6 @@ const InputPanel: React.FC = () => {
         cursor="row-resize"
         className="editor-splitPane"
         onDrag={handleChange}
-        onDragEnd={handleDragEnd}
       >
         {editorPane}
         {compiledPane}
