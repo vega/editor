@@ -35,7 +35,6 @@ const App: React.FC<Props> = (props) => {
   const setExample = useCallback(
     async (parameter: {example_name: string; mode: string}) => {
       const name = parameter.example_name;
-      setState((s) => ({...s, sidePaneItem: SIDEPANE.Editor}));
       editorRef?.focus();
 
       try {

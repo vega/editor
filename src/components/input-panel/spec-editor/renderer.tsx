@@ -186,6 +186,7 @@ const EditorWithNavigation: React.FC<{
 
       editor.onDidFocusEditorText(() => {
         props.setEditorFocus(true);
+        props.setEditorReference(editor);
       });
 
       editor.onDidBlurEditorText(() => {
