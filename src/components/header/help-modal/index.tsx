@@ -1,5 +1,5 @@
 import React from 'react';
-import {AlertCircle, Slack, Twitter} from 'react-feather';
+import {AlertCircle, GitHub, Slack, Twitter} from 'react-feather';
 import {version as VG_VERSION} from 'vega';
 import {version as VL_VERSION} from 'vega-lite';
 import {version as TOOLTIP_VERSION} from 'vega-tooltip';
@@ -45,24 +45,19 @@ const HelpModal = () => (
       Access editor actions by clicking the Commands button or pressing <kbd>f1</kbd>.<br />
       Here you can clear the spec, extract or merge the config, or format the specification.
     </p>
-    <a
-      href={`https://github.com/vega/editor/issues/new?body=**Vega-Editor ${COMMIT_HASH}**`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="report-button button"
-    >
-      <AlertCircle className="header-icon" />
-      <span>Report a Bug</span>
-    </a>
     <h2>Send us your feedback</h2>
     <a href="https://bit.ly/join-vega-slack-2022" target="_blank" rel="noopener noreferrer" className="doc-link">
       <Slack className="doc-image" />
       Join our Slack channel
     </a>
     <br />
-    <a href="https://twitter.com/vega_vis" target="_blank" rel="noopener noreferrer" className="doc-link">
-      <Twitter className="doc-image" />
-      Follow us on Twitter
+    <a
+      href={`https://github.com/vega/editor/issues/new?body=**Vega-Editor ${COMMIT_HASH}**`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <GitHub className="doc-image" />
+      Report a Bug
     </a>
     <h2>Tip</h2>
     <p>
