@@ -1,5 +1,5 @@
 import React from 'react';
-import {AlertCircle, GitHub, Slack, Twitter} from 'react-feather';
+import {GitHub, Slack} from 'react-feather';
 import {version as VG_VERSION} from 'vega';
 import {version as VL_VERSION} from 'vega-lite';
 import {version as TOOLTIP_VERSION} from 'vega-tooltip';
