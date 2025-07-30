@@ -2,10 +2,10 @@ import stringify from 'json-stringify-pretty-compact';
 import Editor from '@monaco-editor/react';
 import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
-import {useCallback, useEffect, useRef} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {useAppContext} from '../../../context/app-context.js';
 import './index.css';
-import {KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants/index.js';
+import {EDITOR_FOCUS, KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants/index.js';
 import {useLocation, useNavigate, useParams} from 'react-router';
 import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
@@ -21,7 +21,7 @@ const EditorWithNavigation: React.FC<{
   parseSpec: (force: boolean) => void;
   setConfig: (config: string) => void;
   setDecorations: (decorations: any[]) => void;
-  setEditorFocus: (focus: any) => void;
+  setEditorFocus: (focus: string) => void;
   setEditorReference: (reference: any) => void;
   updateEditorString: (editorString: string) => void;
   updateVegaLiteSpec: (spec: string, config?: string) => void;
@@ -31,6 +31,7 @@ const EditorWithNavigation: React.FC<{
   const {mode, editorString, decorations, manualParse, parse, sidePaneItem, configEditorString} = state;
 
   const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
+  const [currentDecorationIds, setCurrentDecorationIds] = useState<string[]>([]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -185,12 +186,8 @@ const EditorWithNavigation: React.FC<{
       });
 
       editor.onDidFocusEditorText(() => {
-        props.setEditorFocus(true);
+        props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
         props.setEditorReference(editor);
-      });
-
-      editor.onDidBlurEditorText(() => {
-        props.setEditorFocus(false);
       });
 
       editor.addAction({
@@ -239,8 +236,9 @@ const EditorWithNavigation: React.FC<{
   );
 
   useEffect(() => {
-    if (editorRef.current && decorations) {
-      editorRef.current.deltaDecorations([], decorations);
+    if (editorRef.current && decorations && Array.isArray(decorations)) {
+      const newDecorationIds = editorRef.current.deltaDecorations(currentDecorationIds, decorations);
+      setCurrentDecorationIds(newDecorationIds);
     }
   }, [decorations]);
 

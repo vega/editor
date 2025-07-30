@@ -1,6 +1,6 @@
 import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
-import {useCallback, useEffect, useRef} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import Editor from '@monaco-editor/react';
 import {useNavigate} from 'react-router';
 import {debounce} from 'vega';
@@ -21,6 +21,7 @@ type Props = {
 
 const ConfigEditor: React.FC<Props> = (props) => {
   const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
+  const [currentDecorationIds, setCurrentDecorationIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const {state} = useAppContext();
 
@@ -101,7 +102,8 @@ const ConfigEditor: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (editorRef.current) {
-      editorRef.current.deltaDecorations([], decorations);
+      const newDecorationIds = editorRef.current.deltaDecorations(currentDecorationIds, decorations);
+      setCurrentDecorationIds(newDecorationIds);
     }
   }, [decorations]);
 

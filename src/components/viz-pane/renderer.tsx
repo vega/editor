@@ -14,6 +14,7 @@ import Renderer from '../renderer/index.js';
 import SignalViewer from '../signal-viewer/renderer.js';
 import DebugPaneHeader from './debug-pane-header/index.js';
 import './index.css';
+import type * as Monaco from 'monaco-editor';
 
 interface VizPaneProps {
   compiledEditorRef: any;
@@ -21,7 +22,7 @@ interface VizPaneProps {
   debugPaneSize: number;
   decorations: any[];
   editorFocus: string;
-  editorRef: any;
+  editorRef: Monaco.editor.IStandaloneCodeEditor;
   error: {message: string} | null;
   errors: any[];
   logs: boolean;
@@ -64,39 +65,28 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
 
       const editor = props.editorFocus === EDITOR_FOCUS.SpecEditor ? mainEditor : compiledEditor;
 
-      if (!editor) return;
+      const model = editor.getModel();
 
-      try {
-        const model = editor.getModel();
-        if (!model) return;
+      const rangeValue = model.findMatches(itemHeader, true, true, true, WORD_SEPARATORS, true);
 
-        const rangeValue = model.findMatches(itemHeader, true, true, true, WORD_SEPARATORS, true);
+      const decorationObjects = rangeValue.map((match) => ({
+        options: {inlineClassName: 'myInlineDecoration'},
+        range: match.range,
+      }));
 
-        editor.deltaDecorations(props.decorations, []);
+      props.setDecorations(decorationObjects);
 
-        const decorations = editor.deltaDecorations(
-          [],
-          rangeValue.map((match) => ({
-            options: {inlineClassName: 'myInlineDecoration'},
-            range: match.range,
-          })),
-        );
+      if (editor && decorationObjects.length > 0) {
+        editor.deltaDecorations([], decorationObjects);
+      }
 
-        props.setDecorations(decorations);
-
-        if (rangeValue[0]) {
-          editor.revealRangeInCenter(rangeValue[0].range);
-          editor.focus();
-          editor.layout();
-          Promise.resolve().then(() => {
-            (document.activeElement as HTMLElement).blur();
-          });
-        }
-      } catch (error) {
-        // Ignore errors if editor is disposed
-        if (!error.message?.includes('Canceled')) {
-          console.warn('Failed to handle click:', error);
-        }
+      if (rangeValue[0]) {
+        editor.revealRangeInCenter(rangeValue[0].range);
+        editor.focus();
+        editor.layout();
+        Promise.resolve().then(() => {
+          (document.activeElement as HTMLElement).blur();
+        });
       }
     },
     [props.editorRef, props.compiledEditorRef, props.editorFocus, props.decorations, props.setDecorations],

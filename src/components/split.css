@@ -28,8 +28,8 @@
 .gutter.gutter-horizontal::before {
   content: "";
   position: absolute;
-  left: -6px;
-  right: -6px;
+  left: -4px;
+  right: -4px;
   top: 0;
   bottom: 0;
   z-index: 1;
@@ -38,8 +38,8 @@
 .gutter.gutter-vertical::before {
   content: "";
   position: absolute;
-  top: -6px;
-  bottom: -6px;
+  top: -4px;
+  bottom: -4px;
   left: 0;
   right: 0;
   z-index: 1;

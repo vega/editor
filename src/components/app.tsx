@@ -1,13 +1,16 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
+import * as vega from 'vega';
+import * as vegaLite from 'vega-lite';
 import {useCallback, useEffect} from 'react';
 import {useParams} from 'react-router';
 import {MessageData} from 'vega-embed';
 import {mergeConfig} from 'vega';
-import {compile, normalize} from 'vega-lite';
-
+import {Config} from 'vega-lite';
+import {satisfies} from 'semver';
+import schemaParser from 'vega-schema-url-parser';
 import {LAYOUT, Mode} from '../constants';
-import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
+import {NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
 import {useAppContext} from '../context/app-context';
 import {LocalLogger} from '../utils/logger';
 import {parseJSONCOrThrow, parseJSONC} from '../utils/jsonc-parser';
@@ -37,41 +40,33 @@ const App: React.FC<Props> = (props) => {
       const name = parameter.example_name;
       editorRef?.focus();
 
-      try {
-        switch (parameter.mode) {
-          case 'vega': {
-            const r = await fetch(`./spec/vega/${name}.vg.json`);
-            const specText = await r.text();
-            setState((s) => ({
-              ...s,
-              editorString: specText,
-              mode: Mode.Vega,
-              selectedExample: name,
-              parse: true,
-              error: null,
-            }));
-            break;
-          }
-          case 'vega-lite': {
-            const r = await fetch(`./spec/vega-lite/${name}.vl.json`);
-            const specText = await r.text();
-            setState((s) => ({
-              ...s,
-              editorString: specText,
-              mode: Mode.VegaLite,
-              selectedExample: name,
-              parse: true,
-              error: null,
-            }));
-            break;
-          }
+      switch (parameter.mode) {
+        case 'vega': {
+          const r = await fetch(`./spec/vega/${name}.vg.json`);
+          const specText = await r.text();
+          setState((s) => ({
+            ...s,
+            editorString: specText,
+            mode: Mode.Vega,
+            selectedExample: name,
+            parse: true,
+            error: null,
+          }));
+          break;
         }
-      } catch (error) {
-        console.error('Error loading example:', error);
-        setState((s) => ({
-          ...s,
-          error: {message: `Failed to load example: ${error.message}`},
-        }));
+        case 'vega-lite': {
+          const r = await fetch(`./spec/vega-lite/${name}.vl.json`);
+          const specText = await r.text();
+          setState((s) => ({
+            ...s,
+            editorString: specText,
+            mode: Mode.VegaLite,
+            selectedExample: name,
+            parse: true,
+            error: null,
+          }));
+          break;
+        }
       }
     },
     [setState, editorRef],
@@ -244,35 +239,38 @@ const App: React.FC<Props> = (props) => {
     currLogger.level(state.logLevel);
 
     try {
-      const parsedSpec = parseJSONCOrThrow(state.editorString);
-
-      const hasSchema = parsedSpec && typeof parsedSpec === 'object' && '$schema' in parsedSpec;
-
       if (state.mode === Mode.VegaLite) {
-        if (hasSchema && typeof parsedSpec.$schema === 'string') {
-          const isVegaSchema = parsedSpec.$schema.includes('/vega/');
-          const isVegaLiteSchema = parsedSpec.$schema.includes('/vega-lite/');
+        const vegaLiteSpec: vegaLite.TopLevelSpec = parseJSONCOrThrow(state.editorString);
+        const config: Config = parseJSONCOrThrow(state.configEditorString);
 
-          if (isVegaSchema && !isVegaLiteSchema) {
-            console.warn('Vega schema detected in Vega-Lite mode, skipping parse');
-            return;
+        const options = {
+          config,
+          logger: currLogger,
+        };
+        if (vegaLiteSpec.$schema) {
+          try {
+            const parsed = schemaParser(vegaLiteSpec.$schema);
+            if (!satisfies(vega.version, `^${parsed.version.slice(1)}`)) {
+              currLogger.warn(
+                `The specification expects Vega-Lite ${parsed.version} but the editor uses v${vega.version}.`,
+              );
+            }
+          } catch (e) {
+            throw new Error('Could not parse $schema url.');
           }
         }
 
-        // Validate schema and version
-        validateVegaLite(parsedSpec, currLogger);
+        validateVegaLite(vegaLiteSpec, currLogger);
 
-        const normalizedSpec = normalize(parsedSpec);
-        const compiledSpec = compile(parsedSpec, {
-          config: state.config as any,
-          logger: currLogger,
-        });
+        const compileResult =
+          state.editorString !== '{}' ? vegaLite.compile(vegaLiteSpec, options) : {spec: {}, normalized: {}};
+        const normalizedSpec = compileResult.normalized;
 
         setState((s) => ({
           ...s,
-          vegaLiteSpec: parsedSpec,
+          vegaLiteSpec: vegaLiteSpec,
           normalizedVegaLiteSpec: normalizedSpec,
-          vegaSpec: compiledSpec.spec,
+          vegaSpec: compileResult.spec,
           parse: false,
           error: null,
           errors: currLogger.errors,
@@ -281,22 +279,22 @@ const App: React.FC<Props> = (props) => {
           debugs: currLogger.debugs,
         }));
       } else {
-        if (hasSchema && typeof parsedSpec.$schema === 'string') {
-          const isVegaLiteSchema = parsedSpec.$schema.includes('/vega-lite/');
-          const isVegaSchema = parsedSpec.$schema.includes('/vega/');
-
-          if (isVegaLiteSchema && !isVegaSchema) {
-            console.warn('Vega-Lite schema detected in Vega mode, skipping parse');
-            return;
+        const spec = parseJSONCOrThrow(state.editorString);
+        if (spec.$schema) {
+          try {
+            const parsed = schemaParser(spec.$schema);
+            if (!satisfies(vega.version, `^${parsed.version.slice(1)}`)) {
+              currLogger.warn(`The specification expects Vega ${parsed.version} but the editor uses v${vega.version}.`);
+            }
+          } catch (e) {
+            throw new Error('Could not parse $schema url.');
           }
         }
-
-        // Validate schema and version
-        validateVega(parsedSpec, currLogger);
+        validateVega(spec, currLogger);
 
         setState((s) => ({
           ...s,
-          vegaSpec: parsedSpec,
+          vegaSpec: spec,
           vegaLiteSpec: null,
           normalizedVegaLiteSpec: null,
           parse: false,
@@ -338,6 +336,7 @@ const App: React.FC<Props> = (props) => {
           mergeConfigSpec: false,
           parse: true,
           error: null,
+          themeName: 'custom',
         }));
       } catch (error) {
         console.error('Merge config error:', error);
@@ -376,7 +375,7 @@ const App: React.FC<Props> = (props) => {
         }));
       }
     }
-  }, [state.extractConfigSpec, state.editorString, setState]);
+  }, [state.extractConfigSpec, state.editorString, state.configEditorString, setState]);
 
   useEffect(() => {
     if (state.extractConfig) {
@@ -404,7 +403,7 @@ const App: React.FC<Props> = (props) => {
         }));
       }
     }
-  }, [state.extractConfig, state.editorString, setState]);
+  }, [state.extractConfig, state.editorString, state.configEditorString, setState]);
 
   // Handle scroll position updates
   useEffect(() => {

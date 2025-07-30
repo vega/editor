@@ -21,7 +21,7 @@ const SpecEditor = () => {
       mergeConfigSpec={() => setState((s) => ({...s, mergeConfigSpec: true}))}
       parseSpec={(force: boolean) => setState((s) => ({...s, parse: force}))}
       setConfig={(config: string) => setState((s) => ({...s, configEditorString: config}))}
-      setDecorations={(decorations: any[]) => setState((s) => ({...s, decorations}))}
+      setDecorations={(decoration: any[]) => setState((s) => ({...s, decorations: decoration}))}
       setEditorFocus={(focus: any) => setState((s) => ({...s, editorFocus: focus}))}
       setEditorReference={(reference: any) => setState((s) => ({...s, editorRef: reference}))}
       updateEditorString={(editorString: string) => setState((s) => ({...s, editorString}))}
