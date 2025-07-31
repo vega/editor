@@ -1,6 +1,7 @@
 .chart-container {
   width: 100%;
   height: 100%;
+  position: relative;
   background: var(--light-gray-color);
   padding: 10px;
   overflow: auto;
@@ -11,10 +12,14 @@
 }
 
 .debug-pane {
+  height: 100%;
   width: 100%;
   background: var(--white-color);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  min-height: 30px; /* LAYOUT.MinPaneSize */
+  max-height: 100%;
 
   .tabs-nav {
     height: inherit;
@@ -32,6 +37,9 @@
   color: var(--extra-dark-gray-color);
   user-select: none;
   cursor: pointer;
+  flex-shrink: 0; /* Prevent header from shrinking */
+  height: 30px; /* Fixed header height */
+  min-height: 30px;
 }
 
 .pane-header .logs-text {
@@ -79,7 +87,7 @@
   background-color: #f8c9aa !important;
 }
 
-.chart-container .versions {
+.versions {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -87,4 +95,5 @@
   font-size: 0.8em;
   color: var(--dark-gray-color);
   background-color: var(--light-gray-color);
+  z-index: 10;
 }

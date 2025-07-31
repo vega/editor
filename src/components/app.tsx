@@ -1,251 +1,454 @@
 import stringify from 'json-stringify-pretty-compact';
-import {parse as parseJSONC} from 'jsonc-parser';
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
-import SplitPane from 'react-split-pane-r17';
-import {bindActionCreators, Dispatch} from 'redux';
+import * as vega from 'vega';
+import * as vegaLite from 'vega-lite';
+import {useCallback, useEffect} from 'react';
+import {useParams} from 'react-router';
 import {MessageData} from 'vega-embed';
-import {hash} from 'vega-lite';
-import * as EditorActions from '../actions/editor.js';
-import {LAYOUT, Mode} from '../constants/index.js';
-import {NAME_TO_MODE, SIDEPANE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts.js';
-import {State} from '../constants/default-state.js';
+import {mergeConfig} from 'vega';
+import {Config} from 'vega-lite';
+import {satisfies} from 'semver';
+import schemaParser from 'vega-schema-url-parser';
+import {LAYOUT, Mode} from '../constants';
+import {NAME_TO_MODE, VEGA_LITE_START_SPEC, VEGA_START_SPEC} from '../constants/consts';
+import {useAppContext} from '../context/app-context';
+import {LocalLogger} from '../utils/logger';
+import {parseJSONCOrThrow, parseJSONC} from '../utils/jsonc-parser';
+import {validateVega, validateVegaLite} from '../utils/validate';
 import './app.css';
-import Header from './header/index.js';
-import InputPanel from './input-panel/index.js';
-import Sidebar from './sidebar/index.js';
-import VizPane from './viz-pane/index.js';
-import {getGithubToken} from '../utils/github.js';
+import './split.css';
+import Header from './header/renderer.js';
+import InputPanel from './input-panel';
+import Sidebar from './sidebar';
+import VizPane from './viz-pane';
+import Split from 'react-split';
+import {DataflowProvider} from '../features/dataflow/DataflowContext';
 
-type Props = {showExample?: boolean};
+type Props = {
+  showExample: boolean;
+};
 
-type PropsType = ReturnType<typeof mapDispatchToProps> &
-  ReturnType<typeof mapStateToProps> &
-  Props &
-  RouteComponentProps;
+const App: React.FC<Props> = (props) => {
+  const appContext = useAppContext();
+  const {state, setState} = appContext;
+  const {editorRef, settings} = state;
 
-class App extends React.PureComponent<PropsType> {
-  public w = window.innerWidth;
+  const params = useParams();
 
-  public componentDidMount() {
-    window.addEventListener(
-      'message',
-      (evt) => {
-        const data = evt.data as MessageData;
-        if (!data.spec) {
-          return;
+  const setExample = useCallback(
+    async (parameter: {example_name: string; mode: string}) => {
+      const name = parameter.example_name;
+      editorRef?.focus();
+
+      switch (parameter.mode) {
+        case 'vega': {
+          const r = await fetch(`./spec/vega/${name}.vg.json`);
+          const specText = await r.text();
+          setState((s) => ({
+            ...s,
+            editorString: specText,
+            mode: Mode.Vega,
+            selectedExample: name,
+            parse: true,
+            error: null,
+          }));
+          break;
         }
-        // setting baseURL as event's origin
-        this.props.setBaseUrl(evt.origin);
-        console.info('[Vega-Editor] Received Message', evt.origin, data);
-
-        if (data.config) {
-          this.props.setConfig(stringify(data.config));
+        case 'vega-lite': {
+          const r = await fetch(`./spec/vega-lite/${name}.vl.json`);
+          const specText = await r.text();
+          setState((s) => ({
+            ...s,
+            editorString: specText,
+            mode: Mode.VegaLite,
+            selectedExample: name,
+            parse: true,
+            error: null,
+          }));
+          break;
         }
-
-        if (data.spec || data.file) {
-          // FIXME: remove any
-          (evt as any).source.postMessage(true, '*');
-        }
-        if (data.spec) {
-          if (data.mode.toUpperCase() === 'VEGA') {
-            this.props.updateVegaSpec(data.spec);
-          } else if (data.mode.toUpperCase() === 'VEGA-LITE') {
-            this.props.updateVegaLiteSpec(data.spec);
-          }
-        }
-        if (data.renderer) {
-          this.props.setRenderer(data.renderer);
-        }
-      },
-      false,
-    );
-
-    const parameter = this.props.match.params;
-    if (parameter.mode) {
-      if (parameter.mode === 'vega' || parameter.mode === 'vega-lite') {
-        this.props.setModeOnly(parameter.mode);
       }
-    }
-    this.setSpecInUrl(parameter);
-  }
+    },
+    [setState, editorRef],
+  );
 
-  public componentDidUpdate(prevProps) {
-    if (hash(this.props.match.params) !== hash(prevProps.match.params)) {
-      this.setSpecInUrl(this.props.match.params);
-    }
-  }
-
-  public setSpecInUrl(parameter) {
-    if (parameter) {
-      if (parameter.example_name) {
-        this.setExample(parameter);
-      } else if (parameter.mode && !parameter.compressed) {
-        this.setEmptySpec(NAME_TO_MODE[parameter.mode]);
-      } else if (parameter.id) {
-        this.setGist(parameter);
+  const setEmptySpec = useCallback(
+    (mode: Mode) => {
+      if (mode === Mode.Vega) {
+        setState((s) => ({
+          ...s,
+          editorString: VEGA_START_SPEC,
+          mode: Mode.Vega,
+          parse: true,
+        }));
+      } else if (mode === Mode.VegaLite) {
+        setState((s) => ({
+          ...s,
+          editorString: VEGA_LITE_START_SPEC,
+          mode: Mode.VegaLite,
+          parse: true,
+        }));
       }
-    }
-  }
+    },
+    [setState],
+  );
 
-  public async setExample(parameter: {example_name: string; mode: string}) {
-    const name = parameter.example_name;
-    this.props.setConfig(this.props.configEditorString);
-    this.props.setSidePaneItem(SIDEPANE.Editor);
-    this.props.editorRef?.focus();
-    switch (parameter.mode) {
-      case 'vega': {
-        const r = await fetch(`./spec/vega/${name}.vg.json`);
-        this.props.setVegaExample(name, await r.text());
-        break;
-      }
-      case 'vega-lite': {
-        const r = await fetch(`./spec/vega-lite/${name}.vl.json`);
-        this.props.setVegaLiteExample(name, await r.text());
-        break;
-      }
-      default:
-        console.warn(`Unknown mode ${parameter.mode}`);
-        break;
-    }
-  }
-
-  public setEmptySpec(mode: Mode) {
-    if (mode === Mode.Vega) {
-      this.props.updateVegaSpec(VEGA_START_SPEC);
-    } else if (mode === Mode.VegaLite) {
-      this.props.updateVegaLiteSpec(VEGA_LITE_START_SPEC);
-    }
-  }
-
-  public async setGist(parameter: {id: string; filename: string; revision?: string}) {
-    try {
-      const gistApiUrl = `https://api.github.com/gists/${parameter.id}${
-        parameter.revision !== undefined ? `/${parameter.revision}` : ''
-      }`;
-
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json',
-      };
-
-      let githubToken;
+  const setGist = useCallback(
+    async (parameter: {id: string; filename: string; revision?: string}) => {
       try {
-        githubToken = await getGithubToken();
+        const gistApiUrl = `https://api.github.com/gists/${parameter.id}${
+          parameter.revision !== undefined ? `/${parameter.revision}` : ''
+        }`;
+
+        const headers: HeadersInit = {
+          'Content-Type': 'application/json',
+        };
+
+        const githubToken = localStorage.getItem('vega_editor_github_token');
         if (githubToken) {
           headers['Authorization'] = `token ${githubToken}`;
         }
-      } catch (error) {
-        console.error('Failed to get GitHub token:', error);
-      }
 
-      const gistResponse = await fetch(gistApiUrl, {
-        headers,
-      });
-
-      if (!gistResponse.ok) {
-        throw new Error(`Failed to fetch gist: ${gistResponse.status}`);
-      }
-
-      const gistData = await gistResponse.json();
-
-      if (!gistData.files[parameter.filename]) {
-        throw new Error(`File ${parameter.filename} not found in gist`);
-      }
-
-      let content;
-
-      if (gistData.files[parameter.filename].content) {
-        content = gistData.files[parameter.filename].content;
-      } else if (gistData.files[parameter.filename].truncated) {
-        console.warn('File content truncated - using proxy approach');
-
-        const contentResponse = await fetch(gistData.files[parameter.filename].raw_url, {
+        const gistResponse = await fetch(gistApiUrl, {
           headers,
         });
 
-        if (!contentResponse.ok) {
-          throw new Error(`Failed to fetch content: ${contentResponse.status}`);
+        if (!gistResponse.ok) {
+          throw new Error(`Failed to fetch gist: ${gistResponse.status}`);
         }
 
-        content = await contentResponse.text();
-      } else {
-        throw new Error('Could not retrieve file content');
+        const gistData = await gistResponse.json();
+
+        if (!gistData.files[parameter.filename]) {
+          throw new Error(`File ${parameter.filename} not found in gist`);
+        }
+
+        let content;
+
+        if (gistData.files[parameter.filename].content) {
+          content = gistData.files[parameter.filename].content;
+        } else if (gistData.files[parameter.filename].truncated) {
+          console.warn('File content truncated - using proxy approach');
+
+          const contentResponse = await fetch(gistData.files[parameter.filename].raw_url, {
+            headers,
+          });
+
+          if (!contentResponse.ok) {
+            throw new Error(`Failed to fetch content: ${contentResponse.status}`);
+          }
+
+          content = await contentResponse.text();
+        } else {
+          throw new Error('Could not retrieve file content');
+        }
+
+        const contentObj = parseJSONC(content);
+
+        let detectedMode = Mode.VegaLite;
+        if ('$schema' in contentObj && typeof contentObj.$schema === 'string') {
+          const schemaPath = contentObj.$schema.split('/');
+          const mode = schemaPath[schemaPath.length - 2];
+          if (mode === 'vega') {
+            detectedMode = Mode.Vega;
+          }
+        }
+
+        setState((s) => ({
+          ...s,
+          editorString: content,
+          mode: detectedMode,
+          parse: true,
+          error: null,
+        }));
+      } catch (error) {
+        console.error('Error loading gist:', error);
+      }
+    },
+    [setState],
+  );
+
+  const setSpecInUrl = useCallback(
+    (parameter: any) => {
+      if (parameter) {
+        if (parameter.example_name) {
+          setExample(parameter);
+        } else if (parameter.mode && !parameter.compressed) {
+          setEmptySpec(NAME_TO_MODE[parameter.mode]);
+        } else if (parameter.id) {
+          setGist(parameter);
+        }
+      }
+    },
+    [setExample, setEmptySpec, setGist],
+  );
+
+  useEffect(() => {
+    const handleMessage = (evt: MessageEvent) => {
+      const data = evt.data as MessageData;
+      if (!data.spec) {
+        return;
+      }
+      setState((s) => ({...s, baseUrl: evt.origin}));
+      console.info('[Vega-Editor] Received Message', evt.origin, data);
+
+      if (data.config) {
+        setState((s) => ({...s, configEditorString: stringify(data.config)}));
       }
 
-      const contentObj = parseJSONC(content);
+      if (data.spec || data.file) {
+        // FIXME: remove any
+        (evt as any).source.postMessage(true, '*');
+      }
+      if (data.spec) {
+        setState((s) => ({...s, editorString: data.spec}));
+      }
+      if (data.renderer) {
+        setState((s) => ({...s, renderer: data.renderer}));
+      }
+    };
 
-      if (!('$schema' in contentObj)) {
-        this.props.setGistVegaLiteSpec('', content);
-      } else {
-        const mode = contentObj.$schema.split('/').slice(-2)[0];
-        if (mode === Mode.Vega) {
-          this.props.setGistVegaSpec('', content);
-        } else if (mode === Mode.VegaLite) {
-          this.props.setGistVegaLiteSpec('', content);
+    window.addEventListener('message', handleMessage, false);
+
+    if (params?.mode) {
+      const mode = params.mode.toLowerCase();
+      if (mode === 'vega' || mode === 'vega-lite') {
+        setState((s) => ({...s, mode: mode as Mode}));
+      }
+    }
+    setSpecInUrl(params);
+
+    return () => {
+      window.removeEventListener('message', handleMessage, false);
+    };
+  }, [params, setState, setSpecInUrl]);
+
+  // Parse Logic
+  useEffect(() => {
+    if (state.manualParse) {
+      if (!state.parse) {
+        return;
+      }
+    } else {
+      if (!state.editorString || state.editorString.trim() === '') {
+        return;
+      }
+    }
+
+    const currLogger = new LocalLogger();
+    currLogger.level(state.logLevel);
+
+    try {
+      if (state.mode === Mode.VegaLite) {
+        const vegaLiteSpec: vegaLite.TopLevelSpec = parseJSONCOrThrow(state.editorString);
+        const config: Config = parseJSONCOrThrow(state.configEditorString);
+
+        const options = {
+          config,
+          logger: currLogger,
+        };
+        if (vegaLiteSpec.$schema) {
+          try {
+            const parsed = schemaParser(vegaLiteSpec.$schema);
+            if (!satisfies(vega.version, `^${parsed.version.slice(1)}`)) {
+              currLogger.warn(
+                `The specification expects Vega-Lite ${parsed.version} but the editor uses v${vega.version}.`,
+              );
+            }
+          } catch (e) {
+            throw new Error('Could not parse $schema url.');
+          }
         }
+
+        validateVegaLite(vegaLiteSpec, currLogger);
+
+        const compileResult =
+          state.editorString !== '{}' ? vegaLite.compile(vegaLiteSpec, options) : {spec: {}, normalized: {}};
+        const normalizedSpec = compileResult.normalized;
+
+        setState((s) => ({
+          ...s,
+          vegaLiteSpec: vegaLiteSpec,
+          normalizedVegaLiteSpec: normalizedSpec,
+          vegaSpec: compileResult.spec,
+          parse: false,
+          error: null,
+          errors: currLogger.errors,
+          warns: currLogger.warns,
+          infos: currLogger.infos,
+          debugs: currLogger.debugs,
+        }));
+      } else {
+        const spec = parseJSONCOrThrow(state.editorString);
+        if (spec.$schema) {
+          try {
+            const parsed = schemaParser(spec.$schema);
+            if (!satisfies(vega.version, `^${parsed.version.slice(1)}`)) {
+              currLogger.warn(`The specification expects Vega ${parsed.version} but the editor uses v${vega.version}.`);
+            }
+          } catch (e) {
+            throw new Error('Could not parse $schema url.');
+          }
+        }
+        validateVega(spec, currLogger);
+
+        setState((s) => ({
+          ...s,
+          vegaSpec: spec,
+          vegaLiteSpec: null,
+          normalizedVegaLiteSpec: null,
+          parse: false,
+          error: null,
+          errors: currLogger.errors,
+          warns: currLogger.warns,
+          infos: currLogger.infos,
+          debugs: currLogger.debugs,
+        }));
       }
     } catch (error) {
-      console.error('Error loading gist:', error);
+      setState((s) => ({
+        ...s,
+        error: {message: error.message},
+        parse: false,
+        errors: currLogger.errors,
+        warns: currLogger.warns,
+        infos: currLogger.infos,
+        debugs: currLogger.debugs,
+      }));
     }
-  }
+  }, [state.editorString, state.mode, state.parse, state.config, state.logLevel, setState]);
 
-  public render() {
-    return (
-      <div className="app-container">
-        <Header showExample={this.props.showExample} />
-        <div
-          style={{
-            height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,
-          }}
-          className="main-panel"
-        >
-          <SplitPane
-            split="vertical"
+  useEffect(() => {
+    if (state.mergeConfigSpec) {
+      try {
+        const parsedSpec = parseJSONC(state.editorString);
+        const parsedConfig = parseJSONC(state.configEditorString);
+
+        const mergedSpec = {
+          ...parsedSpec,
+          config: mergeConfig({}, parsedConfig, parsedSpec.config || {}),
+        };
+
+        setState((s) => ({
+          ...s,
+          editorString: stringify(mergedSpec),
+          configEditorString: '{}',
+          mergeConfigSpec: false,
+          parse: true,
+          error: null,
+          themeName: 'custom',
+        }));
+      } catch (error) {
+        console.error('Merge config error:', error);
+        setState((s) => ({
+          ...s,
+          mergeConfigSpec: false,
+          error: {message: error.message},
+        }));
+      }
+    }
+  }, [state.mergeConfigSpec, state.editorString, state.configEditorString, setState]);
+
+  useEffect(() => {
+    if (state.extractConfigSpec) {
+      try {
+        const parsedSpec = parseJSONC(state.editorString);
+
+        const extractedConfig = parsedSpec.config || {};
+        const specWithoutConfig = {...parsedSpec};
+        delete specWithoutConfig.config;
+
+        setState((s) => ({
+          ...s,
+          editorString: stringify(specWithoutConfig),
+          configEditorString: stringify(extractedConfig),
+          extractConfigSpec: false,
+          parse: true,
+          error: null,
+        }));
+      } catch (error) {
+        console.error('Extract config error:', error);
+        setState((s) => ({
+          ...s,
+          extractConfigSpec: false,
+          error: {message: error.message},
+        }));
+      }
+    }
+  }, [state.extractConfigSpec, state.editorString, state.configEditorString, setState]);
+
+  useEffect(() => {
+    if (state.extractConfig) {
+      try {
+        const parsedSpec = parseJSONC(state.editorString);
+
+        const extractedConfig = parsedSpec.config || {};
+        const specWithoutConfig = {...parsedSpec};
+        delete specWithoutConfig.config;
+
+        setState((s) => ({
+          ...s,
+          editorString: stringify(specWithoutConfig),
+          configEditorString: stringify(extractedConfig),
+          extractConfig: false,
+          parse: true,
+          error: null,
+        }));
+      } catch (error) {
+        console.error('Extract config error:', error);
+        setState((s) => ({
+          ...s,
+          extractConfig: false,
+          error: {message: error.message},
+        }));
+      }
+    }
+  }, [state.extractConfig, state.editorString, state.configEditorString, setState]);
+
+  // Handle scroll position updates
+  useEffect(() => {
+    if (state.lastPosition !== undefined && state.lastPosition > 0) {
+      // This will be handled by the header component when examples modal is opened
+      // The scroll position is stored in state.lastPosition and restored when needed
+    }
+  }, [state.lastPosition]);
+
+  return (
+    <div className="app-container">
+      <Header showExample={props.showExample} />
+      <div
+        style={{
+          height: `calc(100vh - ${LAYOUT.HeaderHeight}px)`,
+        }}
+        className="main-panel"
+      >
+        <div className="content-with-sidebar">
+          <Split
+            sizes={[40, 60]}
             minSize={300}
-            defaultSize={Math.min(this.w * 0.4, 800)}
-            pane1Style={{display: 'flex'}}
+            expandToMin={false}
+            gutterSize={3}
+            gutterAlign="center"
+            snapOffset={30}
+            dragInterval={1}
+            direction="horizontal"
+            cursor="col-resize"
             className="main-pane"
-            pane2Style={{overflow: 'scroll'}}
-            style={{position: 'relative'}}
           >
             <InputPanel />
-            <VizPane />
-          </SplitPane>
-          {this.props.settings && <Sidebar />}
+            <DataflowProvider>
+              <VizPane />
+            </DataflowProvider>
+          </Split>
+          {settings && (
+            <div className="right-sidebar">
+              <Sidebar />
+            </div>
+          )}
         </div>
       </div>
-    );
-  }
-}
-
-function mapStateToProps(state: State) {
-  return {
-    configEditorString: state.configEditorString,
-    editorRef: state.editorRef,
-    settings: state.settings,
-    view: state.view,
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      setBaseUrl: EditorActions.setBaseUrl,
-      setConfig: EditorActions.setConfig,
-      setGistVegaLiteSpec: EditorActions.setGistVegaLiteSpec,
-      setGistVegaSpec: EditorActions.setGistVegaSpec,
-      setModeOnly: EditorActions.setModeOnly,
-      setRenderer: EditorActions.setRenderer,
-      setSettingsState: EditorActions.setSettingsState,
-      setSidePaneItem: EditorActions.setSidePaneItem,
-      setVegaExample: EditorActions.setVegaExample,
-      setVegaLiteExample: EditorActions.setVegaLiteExample,
-      updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
-      updateVegaSpec: EditorActions.updateVegaSpec,
-    },
-    dispatch,
+    </div>
   );
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App)) as React.ComponentType<Props>;
+export default App;

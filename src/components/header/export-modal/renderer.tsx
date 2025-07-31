@@ -1,74 +1,62 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
+import {useState} from 'react';
 import {Book, BookOpen, Code, Image, Map} from 'react-feather';
-import {withRouter} from 'react-router-dom';
 import {mergeConfig, version as VG_VERSION} from 'vega';
 import {version as VE_VERSION} from 'vega-embed';
 import {version as VL_VERSION} from 'vega-lite';
-import {mapStateToProps} from './index.js';
+import {useAppContext} from '../../../context/app-context.js';
 import {Mode} from '../../../constants/consts.js';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps>;
+export default function ExportModal() {
+  const {state} = useAppContext();
+  const {baseURL, config, mode, vegaLiteSpec, vegaSpec, view} = state;
 
-interface State {
-  downloadVegaJSON: boolean;
-  includeConfig: boolean;
-  loadingPDF: boolean;
-  errorLoadingPdf: string;
-}
+  const [loadingPDF, setLoadingPDF] = useState(false);
+  const [errorLoadingPdf, setErrorLoadingPdf] = useState(null);
+  const [includeConfig, setIncludeConfig] = useState(true);
+  const [downloadVegaJSON, setDownloadVegaJSON] = useState(false);
 
-class ExportModal extends React.PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      downloadVegaJSON: false,
-      includeConfig: true,
-      loadingPDF: false,
-      errorLoadingPdf: null,
-    };
-  }
-
-  public async downloadViz(ext: string) {
-    const url = await this.props.view.toImageURL(ext, 2);
+  const downloadViz = async (ext: string) => {
+    const url = await view.toImageURL(ext, 2);
     const link = document.createElement('a');
     link.setAttribute('href', url);
     link.setAttribute('target', '_blank');
     link.setAttribute('download', `visualization.${ext}`);
     link.dispatchEvent(new MouseEvent('click'));
-  }
+  };
 
-  public async openViz(ext: string) {
-    const url = await this.props.view.toImageURL(ext);
+  const openViz = async (ext: string) => {
+    const url = await view.toImageURL(ext);
     const tab = window.open('about:blank', '_blank');
     tab.document.write(`<title>Chart</title><img src="${url}" />`);
     tab.document.close();
-  }
+  };
 
-  public async downloadPDF() {
-    this.setState({loadingPDF: true});
+  const downloadPDF = async () => {
+    setLoadingPDF(true);
 
-    const isVega = this.props.mode === Mode.Vega;
-    const spec = isVega ? this.props.vegaSpec : this.props.vegaLiteSpec;
+    const isVega = mode === Mode.Vega;
+    const spec = isVega ? vegaSpec : vegaLiteSpec;
 
-    const pdf = await fetch(
-      `https://vl-convert.vercel.app/api/${isVega ? 'vg' : 'vl'}2pdf/?baseURL=${this.props.baseURL}`,
-      {
-        body: JSON.stringify(spec),
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/pdf',
-        },
-        method: 'post',
-        mode: 'cors',
+    const pdf = await fetch(`https://vl-convert.vercel.app/api/${isVega ? 'vg' : 'vl'}2pdf/?baseURL=${baseURL}`, {
+      body: JSON.stringify(spec),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/pdf',
       },
-    );
+      method: 'post',
+      mode: 'cors',
+    });
     if (!pdf.ok) {
       console.error('Error loading PDF', pdf);
-      this.setState({loadingPDF: false, errorLoadingPdf: pdf.statusText || `Unknown error (code ${pdf.status})`});
+      setLoadingPDF(false);
+      setErrorLoadingPdf(pdf.statusText || `Unknown error (code ${pdf.status})`);
       return;
     }
-    this.setState({loadingPDF: false, errorLoadingPdf: null});
+    setLoadingPDF(false);
+    setErrorLoadingPdf(null);
     const blob = await pdf.blob();
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -76,35 +64,22 @@ class ExportModal extends React.PureComponent<Props, State> {
     link.setAttribute('target', '_blank');
     link.setAttribute('download', `visualization.pdf`);
     link.dispatchEvent(new MouseEvent('click'));
-  }
+  };
 
-  public updateIncludeConfig(e) {
-    this.setState({
-      includeConfig: e.target.checked,
-    });
-  }
-
-  public downloadJSON(event) {
-    if (
-      event.target?.matches(`input`) ||
-      event.target?.matches(`label`) ||
-      event.target?.matches(`div.type-input-container`)
-    ) {
-      return;
-    }
+  const downloadJSON = () => {
     let content;
     let filename: string;
-    if (this.props.mode === Mode.Vega) {
-      content = this.props.vegaSpec;
+    if (mode === Mode.Vega) {
+      content = vegaSpec;
       filename = `visualization.vg.json`;
     } else {
-      content = this.state.downloadVegaJSON ? this.props.vegaSpec : this.props.vegaLiteSpec;
-      filename = this.state.downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
+      content = downloadVegaJSON ? vegaSpec : vegaLiteSpec;
+      filename = downloadVegaJSON ? `visualization.vg.json` : `visualization.vl.json`;
     }
 
-    if (this.state.includeConfig && this.props.config) {
+    if (includeConfig && config) {
       content = {...content};
-      content.config = mergeConfig({}, this.props.config, content.config);
+      content.config = mergeConfig({}, config, content.config);
     }
 
     const blob = new Blob([stringify(content)], {
@@ -117,14 +92,9 @@ class ExportModal extends React.PureComponent<Props, State> {
     link.setAttribute(`target`, `_blank`);
     link.setAttribute(`download`, filename);
     link.dispatchEvent(new MouseEvent(`click`));
-  }
+  };
 
-  public updateDownloadJSONType(event) {
-    this.setState({downloadVegaJSON: event.currentTarget.value === 'vega'});
-  }
-
-  public downloadHTML() {
-    const {mode, vegaSpec, vegaLiteSpec, config} = this.props;
+  const downloadHTML = () => {
     let content = mode === Mode.Vega ? vegaSpec : vegaLiteSpec;
     if (config) {
       content = {...content};
@@ -152,131 +122,113 @@ class ExportModal extends React.PureComponent<Props, State> {
     link.setAttribute(`target`, `_blank`);
     link.setAttribute(`download`, 'visualization.html');
     link.dispatchEvent(new MouseEvent(`click`));
-  }
+  };
 
-  public render() {
-    return (
-      <>
-        <h1>Export</h1>
-        <div className="exports">
-          <div className="export-container">
-            <div className="header-text">
-              <Image />
-              <span>PNG</span>
-            </div>
-            <p>PNG is a bitmap image format which is made up of a fixed number of pixels.</p>
-            <button onClick={() => this.downloadViz('png')}>Download </button>
+  return (
+    <>
+      <h1>Export</h1>
+      <div className="exports">
+        <div className="export-container">
+          <div className="header-text">
+            <Image />
+            <span>PNG</span>
           </div>
+          <p>PNG is a bitmap image format which is made up of a fixed number of pixels.</p>
+          <button onClick={() => downloadViz('png')}>Download </button>
+        </div>
 
-          <div className="export-container">
-            <div className="header-text">
-              <Code />
-              <span>JSON</span>
+        <div className="export-container">
+          <div className="header-text">
+            <Code />
+            <span>JSON</span>
+          </div>
+          <p>JSON is a lightweight data-interchange format.</p>
+          {mode === Mode.VegaLite && (
+            <div className="input-container">
+              <label>
+                <input
+                  type="radio"
+                  name="json-type"
+                  value="vega"
+                  checked={downloadVegaJSON}
+                  onChange={() => setDownloadVegaJSON(true)}
+                />{' '}
+                Compiled Vega
+              </label>
+              <label htmlFor="json-type[vega-lite]" className="vl-label">
+                <input
+                  type="radio"
+                  name="json-type"
+                  value="vega-lite"
+                  checked={!downloadVegaJSON}
+                  onChange={() => setDownloadVegaJSON(false)}
+                />
+                Vega-Lite
+              </label>
             </div>
-            <p>JSON is a lightweight data-interchange format.</p>
-            {this.props.mode === Mode.VegaLite && (
-              <div className="input-container">
+          )}
+          <div className="input-container">
+            {downloadVegaJSON ? (
+              <p>The compiled Vega includes the config and is formatted.</p>
+            ) : (
+              <div>
                 <label>
                   <input
-                    type="radio"
-                    name="json-type"
-                    id="json-type[vega]"
-                    value="vega"
-                    checked={this.state.downloadVegaJSON}
-                    onChange={this.updateDownloadJSONType.bind(this)}
-                  />{' '}
-                  Compiled Vega
-                </label>
-                <label htmlFor="json-type[vega-lite]" className="vl-label">
-                  <input
-                    type="radio"
-                    name="json-type"
-                    id="json-type[vega-lite]"
-                    value="vega-lite"
-                    checked={!this.state.downloadVegaJSON}
-                    onChange={this.updateDownloadJSONType.bind(this)}
+                    type="checkbox"
+                    name="config-include"
+                    checked={includeConfig}
+                    onChange={() => setIncludeConfig(!includeConfig)}
                   />
-                  Vega-Lite
+                  Include config
                 </label>
+                {includeConfig && <p>The downloaded spec will be formatted. </p>}
               </div>
             )}
-            <div className="input-container">
-              {this.state.downloadVegaJSON ? (
-                <p>The compiled Vega includes the config and is formatted.</p>
-              ) : (
-                <div>
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="config-include"
-                      id="config-include"
-                      value="config-select"
-                      checked={this.state.includeConfig}
-                      onChange={this.updateIncludeConfig.bind(this)}
-                    />
-                    Include config
-                  </label>
-                  {this.state.includeConfig && <p>The downloaded spec will be formatted. </p>}
-                </div>
-              )}
-            </div>
-            <button onClick={(e) => this.downloadJSON(e)}>Download</button>
           </div>
-          <div className="export-container">
-            <div className="header-text">
-              <Map />
-              <span>SVG</span>
-            </div>
-            <p>
-              SVG is a vector image format which uses geometric forms to represent different parts as discrete objects
-              and are infinitely scalable.
-            </p>
-            <button onClick={() => this.openViz('svg')}>Open</button>
-            <button onClick={() => this.downloadViz('svg')} className="export-button download">
-              Download
-            </button>
-          </div>
-          <div className="export-container">
-            <div className="header-text">
-              <Book />
-              <span>PDF</span>
-            </div>
-            <p>
-              <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be
-              patient. Use absolute URLs to data or <a href="https://github.com/vega/vega-datasets">Vega datasets</a> at{' '}
-              <code>/data/...</code>. Your chart is sent to{' '}
-              <a href="https://github.com/vega/vl-convert" target="_blank" rel="noopener noreferrer">
-                vl-convert.vercel.app
-              </a>{' '}
-              for rendering.
-            </p>
-            <button onClick={() => this.downloadPDF()} disabled={this.state.loadingPDF}>
-              {this.state.loadingPDF ? 'Downloading...' : 'Download'}
-            </button>
-            {this.state.errorLoadingPdf && (
-              <p style={{color: 'red'}}>Render service failed with error: {this.state.errorLoadingPdf}.</p>
-            )}
-          </div>
-          <div className="export-container">
-            <div className="header-text">
-              <BookOpen />
-              <span>HTML</span>
-            </div>
-            <p>
-              <br /> HTML is a document format to be displayed in a browser. Your chart is embedded in the downloaded
-              html file. Use absolute URLs to ensure that the data is loaded correctly.
-            </p>
-            <button onClick={() => this.downloadHTML()}>Download</button>
-          </div>
+          <button onClick={downloadJSON}>Download</button>
         </div>
-        <div className="user-notes">
+        <div className="export-container">
+          <div className="header-text">
+            <Map />
+            <span>SVG</span>
+          </div>
           <p>
-            <strong>Note:</strong> To get a PDF, open the SVG which you can print as a PDF from your browser.
+            SVG is a vector image format which uses geometric forms to represent different parts as discrete objects and
+            are infinitely scalable.
           </p>
+          <button onClick={() => openViz('svg')}>Open</button>
+          <button onClick={() => downloadViz('svg')} className="export-button download">
+            Download
+          </button>
         </div>
-      </>
-    );
-  }
+        <div className="export-container">
+          <div className="header-text">
+            <Book />
+            <span>PDF</span>
+          </div>
+          <p>
+            <br /> PDF is a vector format usually used for documents. This might take a few seconds. Please be patient.
+            Use absolute URLs to data or <a href="https://github.com/vega/vega-datasets">Vega datasets</a> at{' '}
+            <code>/data/...</code>. Your chart is sent to{' '}
+            <a href="https://github.com/vega/vl-convert" target="_blank" rel="noopener noreferrer">
+              vl-convert.vercel.app
+            </a>{' '}
+            to be converted.
+          </p>
+          <button onClick={() => downloadPDF()} disabled={loadingPDF}>
+            {loadingPDF ? 'Loading...' : 'Download'}
+          </button>
+          {errorLoadingPdf && <p className="error-message">Error loading PDF: {errorLoadingPdf}</p>}
+        </div>
+        <div className="export-container">
+          <div className="header-text">
+            <BookOpen />
+            <span>HTML</span>
+          </div>
+          <p>HTML is a markup language for creating web pages.</p>
+          <button onClick={() => downloadHTML()}>Download</button>
+        </div>
+      </div>
+    </>
+  );
 }
-
-export default withRouter(ExportModal);

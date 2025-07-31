@@ -1,17 +1,13 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
+import {createRoot} from 'react-dom/client';
 import {HashRouter} from 'react-router-dom';
 import * as vega from 'vega';
 import * as vegaLite from 'vega-lite';
 
-import setupMonaco from './utils/monaco';
-import {dispatchingLogger} from './utils/logger';
-
 import AppShell from './components/app-shell';
-import configureStore from './store/configure-store';
-import {updateVegaSpec, updateVegaLiteSpec} from './actions/editor';
-import {Mode} from './constants';
+import {AppContextProvider} from './context/app-context';
+import setupMonaco from './utils/monaco';
+console.log('Vega Editor initializing...');
 
 if (typeof window !== 'undefined') {
   const w = window as any;
@@ -21,58 +17,29 @@ if (typeof window !== 'undefined') {
   w.VEGA_DEBUG.vegaLite = vegaLite;
   w.VEGA_DEBUG.VEGA_VERSION = vega.version;
   w.VEGA_DEBUG.VEGA_LITE_VERSION = vegaLite.version;
+  console.log('Vega versions set on window.VEGA_DEBUG');
 }
 
-setupMonaco();
-
-export const store = configureStore();
-
-dispatchingLogger.initializeStore(store);
-
-if (import.meta.hot) {
-  let updatePending = false;
-
-  import.meta.hot.on('vega-package-updating', (data) => {
-    updatePending = true;
-  });
-
-  import.meta.hot.on('vite:afterUpdate', () => {
-    if (updatePending) {
-      updatePending = false;
-      setTimeout(() => {
-        const state = store.getState();
-        const {mode, editorString, configEditorString} = state;
-
-        if (mode === Mode.VegaLite) {
-          store.dispatch(
-            updateVegaLiteSpec(editorString, configEditorString !== '{}' ? configEditorString : undefined),
-          );
-        } else if (mode === Mode.Vega) {
-          store.dispatch(updateVegaSpec(editorString, configEditorString !== '{}' ? configEditorString : undefined));
-        }
-      }, 100);
-    }
-  });
-
-  // Fallback
-  import.meta.hot.on('vite:error', (error) => {
-    if (updatePending) {
-      console.error('Reloading, HMR failed:', error);
-      window.location.reload();
-    }
-  });
+try {
+  console.log('Setting up Monaco editor...');
+  setupMonaco();
+  console.log('Monaco editor setup complete');
+} catch (error) {
+  console.error('Error during setup of Monaco editor:', error);
 }
 
-// Now that redux and react-router have been configured, we can render the
-// React application to the DOM!
-ReactDOM.render(
-  <Provider store={store}>
+const container = document.getElementById('root');
+
+if (container) {
+  const root = createRoot(container);
+  root.render(
     <HashRouter>
-      <AppShell />
-    </HashRouter>
-  </Provider>,
-  document.getElementById('root'),
-);
+      <AppContextProvider>
+        <AppShell />
+      </AppContextProvider>
+    </HashRouter>,
+  );
+}
 
 /* tslint:disable */
 console.log('%cWelcome to the Vega-Editor!', 'font-size: 16px; font-weight: bold;');

@@ -1,0 +1,115 @@
+.split {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Horizontal split (vertical gutter) */
+.split.horizontal {
+  flex-direction: row;
+}
+
+/* Vertical split (horizontal gutter) */
+.split.vertical {
+  flex-direction: column;
+}
+
+/* Gutter common styles */
+.gutter {
+  background-color: #ebe6e6;
+  position: relative;
+  z-index: 10;
+  /* Ensure pointer events for pseudo-element */
+  pointer-events: auto;
+}
+
+.gutter.gutter-horizontal::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: auto;
+}
+.gutter.gutter-vertical::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* hover over 3 seconds, then change background color */
+.gutter:hover {
+  background-color: var(--brand-color);
+  transition: all 0.5s ease;
+}
+
+.gutter:active {
+  background-color: var(--brand-color);
+}
+
+/* Horizontal gutter (for vertical splits) */
+.gutter.gutter-horizontal {
+  cursor: col-resize;
+  width: 10px;
+}
+
+/* Vertical gutter (for horizontal splits) */
+.gutter.gutter-vertical {
+  cursor: row-resize;
+  height: 10px;
+}
+
+/* Ensure split panels take full height/width */
+.split-panel {
+  height: 100%;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* Fix for main-pane */
+.main-pane {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+/* Fix for editor-splitPane */
+.editor-splitPane {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column !important;
+}
+
+/* Ensure compiled spec display takes proper height */
+.compiled-spec-display {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Fix for pane container heights */
+.full-height-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fix for split-wrapper additional classes */
+.horizontal-split {
+  flex-direction: row !important;
+}
+
+.vertical-split {
+  flex-direction: column !important;
+}

@@ -1,381 +1,358 @@
 import * as React from 'react';
 import {Maximize} from 'react-feather';
 import {Portal} from 'react-portal';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
 import * as vega from 'vega';
-import {Config as VgConfig} from 'vega';
-import {deepEqual} from 'vega-lite';
 import vegaTooltip from 'vega-tooltip';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
+import {deepEqual} from 'vega-lite';
 import {KEYCODES, Mode} from '../../constants/index.js';
 import addProjections from '../../utils/addProjections.js';
-import {dispatchingLogger} from '../../utils/logger.js';
+import {dispatchingLogger} from '../../utils/logger';
 import {Popup} from '../popup/index.js';
 import './index.css';
 import {expressionInterpreter as vegaInterpreter} from 'vega-interpreter';
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {useNavigate, useLocation} from 'react-router';
 
 // Add additional projections
 addProjections(vega.projection);
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
+export interface RendererProps {
+  baseURL: string;
+  config: any;
+  editorString: string;
+  hoverEnable: boolean | 'auto';
+  logLevel: number;
+  mode: Mode;
+  renderer: string;
+  tooltipEnable: boolean;
+  vegaLiteSpec: any;
+  normalizedVegaLiteSpec: any;
+  vegaSpec: any;
+  view: any;
+  backgroundColor: string;
+  expressionInterpreter: boolean;
+  setView: (view: any) => void;
+  setRuntime: (runtime: any) => void;
+  recordPulse: (clock: number, values: any) => void;
+}
 
-const defaultState = {fullscreen: false, width: 500, height: 300};
+export default function Renderer(props: RendererProps) {
+  const {
+    vegaSpec,
+    config,
+    baseURL,
+    mode,
+    setView,
+    setRuntime,
+    hoverEnable,
+    expressionInterpreter,
+    view,
+    renderer,
+    tooltipEnable,
+    backgroundColor,
+    recordPulse,
+    vegaLiteSpec,
+    normalizedVegaLiteSpec,
+  } = props;
 
-type State = Readonly<typeof defaultState>;
+  const defaultSize = {width: 500, height: 300, fullscreen: false};
+  const [size, setSize] = useState(defaultSize);
 
-class Editor extends React.PureComponent<Props, State> {
-  public static pathname: string;
-  constructor(props) {
-    super(props);
-    this.state = defaultState;
-    this.handleKeydown = this.handleKeydown.bind(this);
-    this.onOpenPortal = this.onOpenPortal.bind(this);
-    this.onClosePortal = this.onClosePortal.bind(this);
-    this.runAfter = this.runAfter.bind(this);
-  }
+  const chartRef = useRef<HTMLDivElement>(null);
+  const portalChartRef = useRef<HTMLDivElement>(null);
 
-  public onOpenPortal() {
-    const {pathname} = Editor;
-    if (pathname !== '/' && pathname !== '/edited' && !pathname.endsWith('/view')) {
-      this.props.history.push(pathname + '/view');
+  const prevPropsRef = useRef({
+    vegaSpec: null,
+    vegaLiteSpec: null,
+    baseURL: null,
+    config: null,
+    logLevel: null,
+    mode: null,
+    hoverEnable: null,
+    tooltipEnable: null,
+    expressionInterpreter: null,
+  });
+
+  const isResponsive = useCallback(() => {
+    if (!vegaSpec.signals) {
+      return {responsiveWidth: false, responsiveHeight: false};
     }
-  }
+    const widthSignal = vegaSpec.signals.find((s: any) => s.name === 'width');
+    const heightSignal = vegaSpec.signals.find((s: any) => s.name === 'height');
+    return {
+      responsiveWidth:
+        widthSignal && typeof widthSignal.init === 'string' && widthSignal.init.includes('containerSize'),
+      responsiveHeight:
+        heightSignal && typeof heightSignal.init === 'string' && heightSignal.init.includes('containerSize'),
+    };
+  }, [vegaSpec]);
 
-  public onClosePortal() {
-    let pathname = Editor.pathname;
-    pathname = pathname
-      .split('/')
-      .filter((e) => e !== 'view')
-      .join('/');
-    if (pathname !== '/' && pathname !== '/edited') {
-      this.props.history.push(pathname);
-    }
-  }
-
-  public handleKeydown(e) {
-    // Close portal on pressing escape key
-    if (e.keyCode === KEYCODES.ESCAPE && this.state.fullscreen) {
-      this.setState({fullscreen: false}, this.onClosePortal);
-    }
-  }
-
-  // Determine if the Vega spec has responsive width/height.
-  // Current criteria:
-  // - Width(height) is defined as a signal
-  // - The init property of the signal uses "containerSize".
-  public isResponsive(): {
-    responsiveWidth: boolean;
-    responsiveHeight: boolean;
-  } {
-    const spec = this.props.vegaSpec;
-    let responsiveWidth = false;
-    let responsiveHeight = false;
-
-    if (spec.signals) {
-      for (const signal of spec.signals) {
-        if (
-          signal.name == 'width' &&
-          (signal as vega.InitSignal).init &&
-          (signal as vega.InitSignal).init.indexOf('containerSize') >= 0
-        ) {
-          responsiveWidth = true;
+  const {responsiveWidth, responsiveHeight} = isResponsive();
+  const chartStyle =
+    responsiveWidth || responsiveHeight
+      ? {
+          width: responsiveWidth ? size.width + 'px' : undefined,
+          height: responsiveHeight ? size.height + 'px' : undefined,
         }
-        if (
-          signal.name == 'height' &&
-          (signal as vega.InitSignal).init &&
-          (signal as vega.InitSignal).init.indexOf('containerSize') >= 0
-        ) {
-          responsiveHeight = true;
-        }
-      }
-    }
-    return {responsiveWidth, responsiveHeight};
-  }
+      : {};
 
-  public handleResizeMouseDown(eDown: React.MouseEvent) {
-    const {responsiveWidth, responsiveHeight} = this.isResponsive();
-
-    // Record initial mouse position and view size
+  const handleResizeMouseDown = (eDown: React.MouseEvent) => {
     const x0 = eDown.pageX;
     const y0 = eDown.pageY;
-    const width0 = this.state.width;
-    const height0 = this.state.height;
-
-    // Update size on window.mousemove
-    const onMove = (eMove: MouseEvent) => {
-      const x1 = eMove.pageX;
-      const y1 = eMove.pageY;
-      const factor = this.state.fullscreen ? 2 : 1;
-      this.setState(
-        {
-          width: responsiveWidth ? Math.max(10, width0 + (x1 - x0) * factor) : this.state.width,
-          height: responsiveHeight ? Math.max(10, height0 + (y1 - y0) * factor) : this.state.height,
-        },
-        () => {
-          // Dispatch window.resize, that currently the only way to inform Vega about container size change.
-          this.triggerResize();
-        },
-      );
+    const {width: w0, height: h0} = size;
+    const onMove = (e: MouseEvent) => {
+      const factor = size.fullscreen ? 2 : 1;
+      const dx = e.pageX - x0;
+      const dy = e.pageY - y0;
+      setSize((s) => ({
+        ...s,
+        width: responsiveWidth ? Math.max(10, w0 + dx * factor) : s.width,
+        height: responsiveHeight ? Math.max(10, h0 + dy * factor) : s.height,
+      }));
+      window.dispatchEvent(new Event('resize'));
     };
-
     const onUp = () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
     };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
-  }
+  };
 
-  public initView() {
-    const {
-      vegaSpec,
-      vegaLiteSpec,
-      normalizedVegaLiteSpec,
-      config,
-      baseURL,
-      mode,
-      setView,
-      setRuntime,
-      hoverEnable,
-      expressionInterpreter,
-    } = this.props;
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const parseOptions = expressionInterpreter ? {ast: true} : {};
+  const openPortal = useCallback(() => {
+    const pathname = location.pathname;
+    if (pathname !== '/' && pathname !== '/edited' && !pathname.endsWith('/view')) {
+      navigate(pathname + '/view', {replace: false});
+    }
+  }, [location.pathname, navigate]);
 
-    // In vl mode, we compile Vega-Lite spec along with config to Vega spec
-    const runtime = vega.parse(vegaSpec, mode === Mode.VegaLite ? {} : (config as VgConfig), parseOptions);
+  const closePortal = useCallback(() => {
+    const pathname = location.pathname
+      .split('/')
+      .filter((e) => e !== 'view')
+      .join('/');
+    if (pathname !== '/' && pathname !== '/edited') {
+      navigate(pathname, {replace: false});
+    }
+  }, [location.pathname, navigate]);
 
-    const loader = vega.loader();
-    const originalLoad = loader.load.bind(loader);
-
-    // Custom Loader
-    loader.load = async (url, options) => {
-      try {
-        if (options) {
-          return await originalLoad(url, {
-            ...options,
-            ...{baseURL: baseURL},
-          });
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.keyCode === KEYCODES.ESCAPE && size.fullscreen) {
+        setSize((s) => ({...s, fullscreen: false}));
+        closePortal();
+      }
+      if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
+        if (size.fullscreen) {
+          setSize((s) => ({...s, fullscreen: false}));
+          closePortal();
+        } else {
+          setSize((s) => ({...s, fullscreen: true}));
+          openPortal();
         }
-        return await originalLoad(url, {baseURL: baseURL});
-      } catch {
-        return await originalLoad(url, options);
       }
     };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [size.fullscreen, openPortal, closePortal]);
 
-    // Finalize previous view so that memory can be freed
-    if (this.props.view) {
-      // Remove run after callback for the previous view
-      // to disable logging from an evaluate that will run after we finalize it
-      (this.props.view as any)._postrun = [];
+  useEffect(() => {
+    const params = location.pathname.split('/');
+    if (params[params.length - 1] === 'view') {
+      setSize((s) => ({...s, fullscreen: true}));
+    } else {
+      setSize((s) => ({...s, fullscreen: false}));
+    }
+  }, [location.pathname]);
 
-      this.props.view.finalize();
+  const runAfter = useCallback(
+    (df: any) => {
+      const clock = df._clock;
+      const values: Record<string, unknown> = {};
+      const toProcess = new Set([df._runtime]);
+      const processed = new Set();
+      while (toProcess.size) {
+        const ctx = toProcess.values().next().value;
+        if (!ctx || !ctx.nodes) continue;
+        toProcess.delete(ctx);
+        processed.add(ctx);
+        Object.entries(ctx.nodes).forEach(([id, op]) => {
+          if ((op as any).stamp === clock) values[id] = (op as any).value;
+        });
+        ctx.subcontext?.forEach((sub: any) => {
+          if (!processed.has(sub)) toProcess.add(sub);
+        });
+      }
+      recordPulse(clock, values);
+      df.runAfter(runAfter, true, 10);
+    },
+    [recordPulse],
+  );
+
+  const initView = useCallback(async () => {
+    const parseOptions = expressionInterpreter ? {ast: true} : {};
+    const runtime = vega.parse(vegaSpec, mode === Mode.VegaLite ? {} : config, parseOptions);
+    const loader = vega.loader();
+    const origLoad = loader.load.bind(loader);
+    loader.load = async (url, options) => {
+      try {
+        return options ? await origLoad(url, {...options, baseURL}) : await origLoad(url, {baseURL});
+      } catch {
+        return origLoad(url, options);
+      }
+    };
+    if (view) {
+      (view as any)._postrun = [];
+      view.finalize();
     }
     const hover = typeof hoverEnable === 'boolean' ? hoverEnable : mode === Mode.Vega;
-    const view = new vega.View(runtime, {
+    const newView = new vega.View(runtime, {
       hover,
       loader,
       expr: expressionInterpreter ? vegaInterpreter : undefined,
     });
-
-    view.runAfter(this.runAfter, true);
-    view.logger(dispatchingLogger);
-
+    newView.runAfter(runAfter, true);
+    newView.logger(dispatchingLogger);
     const debug = (window as any).VEGA_DEBUG;
     debug.view = view;
     debug.vegaSpec = vegaSpec;
     debug.config = config;
-
     if (mode === Mode.VegaLite) {
       debug.vegaLiteSpec = vegaLiteSpec;
       debug.normalizedVegaLiteSpec = normalizedVegaLiteSpec;
     } else {
       debug.vegaLiteSpec = debug.normalizedVegaLiteSpec = undefined;
     }
+
+    await newView.runAsync();
     setRuntime(runtime);
-    setView(view);
-  }
+    setView(newView);
+  }, [
+    vegaSpec,
+    config,
+    mode,
+    expressionInterpreter,
+    hoverEnable,
+    baseURL,
+    runAfter,
+    setRuntime,
+    setView,
+    view,
+    vegaLiteSpec,
+    normalizedVegaLiteSpec,
+  ]);
 
-  private runAfter(df: any) {
-    const clock = df._clock;
-
-    // Mapping from ID to value
-    const values: Record<string, unknown> = {};
-    const toProcessContexts = new Set<any>([df._runtime]);
-    const processedContexts = new Set<any>();
-    while (toProcessContexts.size > 0) {
-      const context = toProcessContexts.values().next().value;
-      toProcessContexts.delete(context);
-      processedContexts.add(context);
-      for (const [id, operator] of Object.entries(context.nodes as Record<string, any>)) {
-        if (operator.stamp === clock) {
-          values[id] = operator.value;
-        }
-      }
-      for (const subContext of (context.subcontext as undefined | any[]) ?? []) {
-        if (!processedContexts.has(subContext)) {
-          toProcessContexts.add(subContext);
-        }
-      }
-    }
-    this.props.recordPulse(clock, values);
-
-    // Set it up to run again
-    df.runAfter(this.runAfter, true, 10);
-  }
-
-  public async renderVega() {
-    // Selecting chart for rendering vega
-    const chart = this.state.fullscreen ? (this.refs.fchart as any) : (this.refs.chart as any);
-    if (!(this.isResponsive().responsiveWidth || this.isResponsive().responsiveHeight)) {
+  const renderVega = useCallback(async () => {
+    const chart = size.fullscreen ? portalChartRef.current : chartRef.current;
+    if (!responsiveWidth && !responsiveHeight) {
       chart.style.width = chart.getBoundingClientRect().width + 'px';
       chart.style.width = 'auto';
     }
-
-    // Parsing pathname from URL
-    Editor.pathname = window.location.hash.split('#')[1];
-
-    const {view, renderer, tooltipEnable} = this.props;
-
-    if (!view) {
-      return;
-    }
-
+    if (!view) return;
     view.renderer(renderer).initialize(chart);
-
     await view.runAsync();
+    if (tooltipEnable) vegaTooltip(view);
+  }, [size.fullscreen, responsiveWidth, responsiveHeight, portalChartRef, chartRef, view, renderer, tooltipEnable]);
 
-    if (tooltipEnable) {
-      // Tooltip needs to be added after initializing the view with `chart`
-      vegaTooltip(view);
+  useEffect(() => {
+    const prevProps = prevPropsRef.current;
+    const currentProps = {
+      vegaSpec,
+      vegaLiteSpec,
+      baseURL,
+      config,
+      logLevel: props.logLevel,
+      mode,
+      hoverEnable,
+      tooltipEnable,
+      expressionInterpreter,
+    };
+    const hasChanged =
+      !deepEqual(prevProps.vegaSpec, currentProps.vegaSpec) ||
+      !deepEqual(prevProps.vegaLiteSpec, currentProps.vegaLiteSpec) ||
+      prevProps.baseURL !== currentProps.baseURL ||
+      !deepEqual(prevProps.config, currentProps.config) ||
+      !deepEqual(prevProps.logLevel, currentProps.logLevel) ||
+      !deepEqual(prevProps.mode, currentProps.mode) ||
+      !deepEqual(prevProps.hoverEnable, currentProps.hoverEnable) ||
+      !deepEqual(prevProps.tooltipEnable, currentProps.tooltipEnable) ||
+      prevProps.expressionInterpreter !== currentProps.expressionInterpreter;
+    if (hasChanged) {
+      initView();
     }
-  }
+    prevPropsRef.current = currentProps;
+  }, [
+    vegaSpec,
+    vegaLiteSpec,
+    baseURL,
+    config,
+    props.logLevel,
+    mode,
+    hoverEnable,
+    tooltipEnable,
+    expressionInterpreter,
+    initView,
+  ]);
 
-  public triggerResize() {
-    try {
-      window.dispatchEvent(new Event('resize'));
-    } catch (e) {
-      console.error(e);
+  useEffect(() => {
+    if (view) {
+      renderVega();
     }
-  }
+  }, [view, renderer, tooltipEnable, size.fullscreen, renderVega]);
 
-  public componentDidMount() {
-    this.initView();
-    this.renderVega();
-
-    // Add Event Listener to ctrl+f11 key
-    document.addEventListener('keydown', (e) => {
-      // Keycode of f11 is 122
-      if (e.keyCode === 122 && (e.ctrlKey || e.metaKey)) {
-        this.setState((current) => ({
-          ...current,
-          fullscreen: !current.fullscreen,
-        }));
-      }
-    });
-
-    document.addEventListener('keydown', this.handleKeydown);
-
-    // Enter fullscreen mode if url ends with /view
-    const params = Editor.pathname.split('/');
-    if (params[params.length - 1] === 'view') {
-      this.setState({fullscreen: true});
-    }
-  }
-
-  public componentDidUpdate(prevProps) {
-    if (
-      !deepEqual(prevProps.vegaSpec, this.props.vegaSpec) ||
-      !deepEqual(prevProps.vegaLiteSpec, this.props.vegaLiteSpec) ||
-      prevProps.baseURL !== this.props.baseURL ||
-      !deepEqual(prevProps.config, this.props.config) ||
-      !deepEqual(prevProps.logLevel, this.props.logLevel) ||
-      !deepEqual(prevProps.mode, this.props.mode) ||
-      !deepEqual(prevProps.hoverEnable, this.props.hoverEnable) ||
-      !deepEqual(prevProps.tooltipEnable, this.props.tooltipEnable) ||
-      prevProps.expressionInterpreter !== this.props.expressionInterpreter
-    ) {
-      this.initView();
-    }
-    this.renderVega();
-  }
-
-  public componentWillUnmount() {
-    // Remove listener to event keydown
-    document.removeEventListener('keydown', this.handleKeydown);
-  }
-
-  // Render resize handle for responsive charts
-  public renderResizeHandle() {
-    const {responsiveWidth, responsiveHeight} = this.isResponsive();
-    if (responsiveWidth || responsiveHeight) {
-      // The handle is defined as a inline SVG
-      return (
-        <div className="chart-resize-handle" onMouseDown={this.handleResizeMouseDown.bind(this)}>
-          <svg width="10" height="10">
-            <path d="M-2,13L13,-2 M-2,16L16,-2 M-2,19L19,-2" />
-          </svg>
-        </div>
-      );
-    }
-  }
-
-  public render() {
-    const {responsiveWidth, responsiveHeight} = this.isResponsive();
-
-    // Determine chart element style based on responsiveness
-    const chartStyle =
-      responsiveWidth || responsiveHeight
-        ? {
-            width: responsiveWidth ? this.state.width + 'px' : null,
-            height: responsiveHeight ? this.state.height + 'px' : null,
-          }
-        : {};
-
-    return (
-      <div>
-        <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
-          <Popup
-            content={`Click on "Continue Recording" to make the chart interactive`}
-            placement="right"
-            // Make skinnier so it fits on the right side of the chart
-            maxWidth={200}
-          >
-            <div className="chart-overlay"></div>
-          </Popup>
-          <div aria-label="visualization" ref="chart" style={chartStyle} />
-          {this.renderResizeHandle()}
-        </div>
-        <div className="fullscreen-open">
-          <Popup content="Fullscreen" placement="left">
-            <Maximize
-              onClick={() => {
-                this.setState({fullscreen: true}, this.onOpenPortal);
-              }}
-            />
-          </Popup>
-        </div>
-        {this.state.fullscreen && (
-          <Portal>
-            <div className="fullscreen-chart">
-              <div className="chart" style={{backgroundColor: this.props.backgroundColor}}>
-                <div ref="fchart" style={chartStyle} />
-                {this.renderResizeHandle()}
-              </div>
-              <button
-                className="fullscreen-close"
-                onClick={() => {
-                  this.setState({fullscreen: false}, this.onClosePortal);
-                }}
-              >
-                <span>Edit Visualization</span>
-              </button>
-            </div>
-          </Portal>
+  return (
+    <>
+      <div className="chart" style={{backgroundColor}}>
+        <Popup content={`Click on "Continue Recording" to make the chart interactive`} placement="right" maxWidth={200}>
+          <div className="chart-overlay" />
+        </Popup>
+        <div aria-label="visualization" ref={chartRef} style={chartStyle} />
+        {(responsiveWidth || responsiveHeight) && (
+          <div className="chart-resize-handle" onMouseDown={handleResizeMouseDown}>
+            <svg width="10" height="10">
+              <path d="M-2,13L13,-2 M-2,16L16,-2 M-2,19L19,-2" />
+            </svg>
+          </div>
         )}
       </div>
-    );
-  }
+      <div className="fullscreen-open">
+        <Popup content="Fullscreen" placement="left">
+          <Maximize
+            onClick={() => {
+              setSize((s) => ({...s, fullscreen: true}));
+              openPortal();
+            }}
+          />
+        </Popup>
+      </div>
+      {size.fullscreen && (
+        <Portal>
+          <div className="fullscreen-chart">
+            <div className="chart" style={{backgroundColor}}>
+              <div ref={portalChartRef} style={chartStyle} />
+              {(responsiveWidth || responsiveHeight) && (
+                <div className="chart-resize-handle" onMouseDown={handleResizeMouseDown}>
+                  <svg width="10" height="10">
+                    <path d="M-2,13L13,-2 M-2,16L16,-2 M-2,19L19,-2" />
+                  </svg>
+                </div>
+              )}
+            </div>
+            <button
+              className="fullscreen-close"
+              onClick={() => {
+                setSize((s) => ({...s, fullscreen: false}));
+                closePortal();
+              }}
+            >
+              <span>Edit Visualization</span>
+            </button>
+          </div>
+        </Portal>
+      )}
+    </>
+  );
 }
-
-export default withRouter(Editor);

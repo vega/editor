@@ -1,82 +1,71 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
+import * as Monaco from 'monaco-editor';
 import MonacoEditor from '@monaco-editor/react';
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../../actions/editor.js';
 import {EDITOR_FOCUS, LAYOUT, COMPILEDPANE} from '../../../constants/index.js';
-import {State} from '../../../constants/default-state.js';
 import CompiledSpecDisplayHeader from '../compiled-spec-header/index.js';
+import {useCallback, useEffect, useRef} from 'react';
+import {useAppContext} from '../../../context/app-context.js';
 import ResizeObserver from 'rc-resize-observer';
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+function CompiledSpecDisplay() {
+  const {state, setState} = useAppContext();
 
-class CompiledSpecDisplay extends React.PureComponent<Props> {
-  public editor;
-
-  public componentDidMount() {
-    this.props.setCompiledEditorReference(this.editor);
-  }
-
-  public render() {
-    return (
-      <div className={'full-height-wrapper'}>
-        <CompiledSpecDisplayHeader />
-        <ResizeObserver
-          onResize={({width, height}) => {
-            this.editor?.layout({width, height});
-          }}
-        >
-          <MonacoEditor
-            height={this.props.compiledVegaPaneSize - LAYOUT.MinPaneSize}
-            options={{
-              folding: true,
-              minimap: {enabled: false},
-              readOnly: true,
-              scrollBeyondLastLine: false,
-              wordWrap: 'on',
-              stickyScroll: {
-                enabled: false,
-              },
-            }}
-            language="json"
-            value={stringify(this.props.value)}
-            onMount={(editor) => {
-              editor.onDidFocusEditorText(() => {
-                this.props.compiledEditorRef &&
-                  this.props.compiledEditorRef.deltaDecorations(this.props.decorations, []);
-                this.props.editorRef && this.props.editorRef.deltaDecorations(this.props.decorations, []);
-                this.props.setEditorFocus(EDITOR_FOCUS.CompiledEditor);
-              });
-              this.editor = editor;
-            }}
-          />
-        </ResizeObserver>
-      </div>
-    );
-  }
-}
-
-function mapStateToProps(state: State) {
-  return {
+  const {compiledEditorRef, compiledVegaPaneSize, decorations, editorRef, value} = {
     compiledEditorRef: state.compiledEditorRef,
     compiledVegaPaneSize: state.compiledVegaPaneSize,
     decorations: state.decorations,
     editorRef: state.editorRef,
-    mode: state.mode,
-    sidePaneItem: state.sidePaneItem,
-    value: state.compiledPaneItem == COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
+    value: state.compiledPaneItem === COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
   };
-}
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      setCompiledEditorReference: EditorActions.setCompiledEditorRef,
-      setEditorFocus: EditorActions.setEditorFocus,
+  const monacoEditorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
+
+  useEffect(() => {
+    setState((s) => ({...s, compiledEditorRef: monacoEditorRef.current}));
+  }, [monacoEditorRef, setState]);
+
+  const handleEditorMount = useCallback(
+    (monacoEditor: Monaco.editor.IStandaloneCodeEditor) => {
+      monacoEditorRef.current = monacoEditor;
+      setState((s) => ({...s, compiledEditorRef: monacoEditor}));
+
+      monacoEditor.onDidFocusEditorText(() => {
+        compiledEditorRef?.deltaDecorations(decorations, []);
+        editorRef?.deltaDecorations(decorations, []);
+        setState((s) => ({...s, editorFocus: EDITOR_FOCUS.CompiledEditor}));
+      });
     },
-    dispatch,
+    [compiledEditorRef, decorations, editorRef, setState],
+  );
+
+  return (
+    <div className={'full-height-wrapper'}>
+      <CompiledSpecDisplayHeader />
+      <ResizeObserver
+        onResize={({width, height}) => {
+          monacoEditorRef.current?.layout({width, height});
+        }}
+      >
+        <MonacoEditor
+          height={compiledVegaPaneSize - LAYOUT.MinPaneSize}
+          options={{
+            folding: true,
+            minimap: {enabled: false},
+            readOnly: true,
+            scrollBeyondLastLine: false,
+            wordWrap: 'on',
+            stickyScroll: {
+              enabled: false,
+            },
+          }}
+          language="json"
+          value={stringify(value)}
+          onMount={handleEditorMount}
+        />
+      </ResizeObserver>
+    </div>
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CompiledSpecDisplay);
+export default CompiledSpecDisplay;

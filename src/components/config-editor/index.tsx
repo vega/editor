@@ -1,41 +1,21 @@
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../actions/editor.js';
-import {State} from '../../constants/default-state.js';
+import * as React from 'react';
+import {useAppContext} from '../../context/app-context.js';
 import './config-editor.css';
 import Renderer from './renderer.js';
 
-export function mapStateToProps(state: State) {
-  return {
-    compiledVegaPaneSize: state.compiledVegaPaneSize,
-    compiledVegaSpec: state.compiledVegaSpec,
-    config: state.config,
-    configEditorString: state.configEditorString,
-    decorations: state.decorations,
-    editorString: state.editorString,
-    gist: state.gist,
-    manualParse: state.manualParse,
-    mode: state.mode,
-    parse: state.parse,
-    selectedExample: state.selectedExample,
-    sidePaneItem: state.sidePaneItem,
-    themeName: state.themeName,
-    value: state.editorString,
-  };
-}
+const ConfigEditor = () => {
+  const {setState} = useAppContext();
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      extractConfig: EditorActions.extractConfigSpec,
-      mergeConfigSpec: EditorActions.mergeConfigSpec,
-      setConfig: EditorActions.setConfig,
-      setConfigEditorString: EditorActions.setConfigEditorString,
-      setEditorReference: EditorActions.setEditorReference,
-      setThemeName: EditorActions.setThemeName,
-    },
-    dispatch,
+  return (
+    <Renderer
+      extractConfig={() => setState((s) => ({...s, extractConfig: true}))}
+      mergeConfigSpec={() => setState((s) => ({...s, mergeConfigSpec: true}))}
+      setConfig={(config: string) => setState((s) => ({...s, configEditorString: config}))}
+      setConfigEditorString={(configString: string) => setState((s) => ({...s, configEditorString: configString}))}
+      setEditorReference={(reference: any) => setState((s) => ({...s, editorRef: reference}))}
+      setThemeName={(theme: string) => setState((s) => ({...s, themeName: theme}))}
+    />
   );
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);
+export default ConfigEditor;
