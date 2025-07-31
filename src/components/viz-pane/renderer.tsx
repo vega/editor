@@ -47,6 +47,20 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
   }, [props.logs, props.showLogs]);
 
   useEffect(() => {
+    const handleResize = () => {
+      if (props.debugPane && props.debugPaneSize > LAYOUT.MinPaneSize) {
+        const totalHeight = window.innerHeight;
+        const currentPercentage = (props.debugPaneSize / totalHeight) * 100;
+        const newDebugPaneSize = totalHeight * (currentPercentage / 100);
+        props.setDebugPaneSize(newDebugPaneSize);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [props.debugPane, props.debugPaneSize, props.setDebugPaneSize]);
+
+  useEffect(() => {
     if (props.debugPaneSize === LAYOUT.MinPaneSize && !initialSetupDone.current) {
       initialSetupDone.current = true;
       props.setDebugPaneSize(LAYOUT.DebugPaneSize);

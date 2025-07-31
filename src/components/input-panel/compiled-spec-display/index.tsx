@@ -47,24 +47,22 @@ function CompiledSpecDisplay() {
           monacoEditorRef.current?.layout({width, height});
         }}
       >
-        <div style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column'}}>
-          <MonacoEditor
-            height={compiledVegaPaneSize - LAYOUT.MinPaneSize}
-            options={{
-              folding: true,
-              minimap: {enabled: false},
-              readOnly: true,
-              scrollBeyondLastLine: false,
-              wordWrap: 'on',
-              stickyScroll: {
-                enabled: false,
-              },
-            }}
-            language="json"
-            value={stringify(value)}
-            onMount={handleEditorMount}
-          />
-        </div>
+        <MonacoEditor
+          height={compiledVegaPaneSize - LAYOUT.MinPaneSize}
+          options={{
+            folding: true,
+            minimap: {enabled: false},
+            readOnly: true,
+            scrollBeyondLastLine: false,
+            wordWrap: 'on',
+            stickyScroll: {
+              enabled: false,
+            },
+          }}
+          language="json"
+          value={stringify(value)}
+          onMount={handleEditorMount}
+        />
       </ResizeObserver>
     </div>
   );
