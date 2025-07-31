@@ -339,9 +339,10 @@ export function DataflowProvider({children}: DataflowProviderProps) {
 
   const currentLayoutStatus = useMemo(
     () =>
-      Object.values(state.layout).find(
-        ({key}) => graph === key.graph && currentLayoutKey.visibleNodesString === key.visibleNodesString,
-      ) ?? null,
+      Object.values(state.layout).find((layoutStatus) => {
+        const key = layoutStatus?.key;
+        return key && graph === key.graph && currentLayoutKey.visibleNodesString === key.visibleNodesString;
+      }) ?? null,
     [state.layout, currentLayoutKey, graph],
   );
 

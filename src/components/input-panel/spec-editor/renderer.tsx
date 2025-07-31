@@ -173,18 +173,6 @@ const EditorWithNavigation: React.FC<{
         }
       };
 
-      editor.onDidChangeModelContent(() => {
-        const value = editor.getValue();
-        if (manualParse) {
-          props.updateEditorString(value);
-        } else {
-          debouncedUpdateSpec(value);
-        }
-        if (location.pathname.indexOf('/edited') === -1) {
-          navigate('/edited');
-        }
-      });
-
       editor.onDidFocusEditorText(() => {
         props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
         props.setEditorReference(editor);
@@ -235,6 +223,20 @@ const EditorWithNavigation: React.FC<{
     [props, manualParse, debouncedUpdateSpec, location.pathname, navigate, mode],
   );
 
+  const handleEditorChange = useCallback(
+    (value: string) => {
+      if (manualParse) {
+        props.updateEditorString(value);
+      } else {
+        debouncedUpdateSpec(value);
+      }
+      if (location.pathname.indexOf('/edited') === -1) {
+        navigate('/edited');
+      }
+    },
+    [manualParse, props.updateEditorString, debouncedUpdateSpec, location.pathname, navigate],
+  );
+
   useEffect(() => {
     if (editorRef.current && decorations && Array.isArray(decorations)) {
       const newDecorationIds = editorRef.current.deltaDecorations(currentDecorationIds, decorations);
@@ -255,6 +257,7 @@ const EditorWithNavigation: React.FC<{
             language="json"
             value={editorString}
             onMount={handleEditorDidMount}
+            onChange={handleEditorChange}
             options={{
               cursorBlinking: 'smooth',
               folding: true,
