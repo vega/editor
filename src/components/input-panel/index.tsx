@@ -67,11 +67,7 @@ const InputPanel: React.FC = () => {
   );
 
   const compiledPane = useMemo(
-    () => (
-      <div style={{position: 'relative', zIndex: 0}}>
-        {compiledVegaSpec ? <CompiledSpecDisplay /> : <CompiledSpecHeader />}
-      </div>
-    ),
+    () => <div className="compiled-pane">{compiledVegaSpec ? <CompiledSpecDisplay /> : <CompiledSpecHeader />}</div>,
     [compiledVegaSpec],
   );
 
