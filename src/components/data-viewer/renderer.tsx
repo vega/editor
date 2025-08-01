@@ -1,130 +1,120 @@
 import * as React from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
 import {debounce} from 'vega';
-import {mapStateToProps} from './index.js';
+
+import {useAppContext} from '../../context/app-context.js';
 import ErrorBoundary from '../error-boundary/index.js';
-import Table from '../table/index.js';
+import Table from '../table/renderer.js';
 import './index.css';
 
-type StoreProps = ReturnType<typeof mapStateToProps>;
-
-interface OwnComponentProps {
+export interface OwnComponentProps {
   onClickHandler: (header: string) => void;
 }
 
-type Props = StoreProps & OwnComponentProps;
-
-const initialState = {
-  currentPage: 0,
-  selectedData: '',
-};
-
-type State = Readonly<typeof initialState>;
-
 const ROWS_PER_PAGE = 50;
 
-export default class DataViewer extends React.PureComponent<Props, State> {
-  public readonly state: State = initialState;
+const DataViewer: React.FC<OwnComponentProps> = (props) => {
+  const {state} = useAppContext();
+  const {view} = state;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [selectedData, setSelectedData] = useState('');
+  const debouncedDataChangedRef = useRef<(() => void) | null>(null);
 
-  private debouncedDataChanged: () => void;
-
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handlePageChange = this.handlePageChange.bind(this);
-    this.debouncedDataChanged = debounce(100, () => {
-      this.forceUpdate();
-    });
-  }
-
-  public handleChange(option) {
-    this.setState({selectedData: option.value, currentPage: 0});
-  }
-
-  public handlePageChange(option) {
-    const selected = option.selected;
-    this.setState({currentPage: selected});
-  }
-
-  public getDatasets() {
+  const getDatasets = useCallback(() => {
+    if (!view) {
+      return [];
+    }
     return Object.keys(
-      this.props.view.getState({
+      view.getState({
         data: vega.truthy,
         signals: vega.falsy,
         recurse: true,
       }).data,
     );
-  }
+  }, [view]);
 
-  public setDefaultDataset() {
-    const datasets = this.getDatasets();
+  const setDefaultDataset = useCallback(() => {
+    const datasets = getDatasets();
 
     if (datasets.length) {
-      this.setState({
-        currentPage: 0,
-        selectedData: datasets[datasets.length > 1 ? 1 : 0],
-      });
+      setCurrentPage(0);
+      setSelectedData(datasets[datasets.length > 1 ? 1 : 0]);
     }
-  }
+  }, [getDatasets]);
 
-  public componentDidMount() {
-    this.setDefaultDataset();
-  }
+  const handleChange = useCallback((option: {value: string; label: string}) => {
+    setSelectedData(option.value);
+    setCurrentPage(0);
+  }, []);
 
-  public componentWillUnmount() {
-    if (this.state.selectedData) {
-      this.props.view.removeDataListener(this.state.selectedData, this.debouncedDataChanged);
-    }
-  }
+  const handlePageChange = useCallback((option: {selected: number}) => {
+    setCurrentPage(option.selected);
+  }, []);
 
-  public componentDidUpdate(prevProps: Props, prevState: State) {
-    if (this.props.view !== prevProps.view) {
-      const datasets = this.getDatasets();
+  useEffect(() => {
+    debouncedDataChangedRef.current = debounce(100, () => {
+      setCurrentPage((prev) => prev);
+    });
+  }, []);
 
-      if (datasets.indexOf(this.state.selectedData) === -1) {
-        // the new view has different dataset so let's reset everything
-        this.setState(initialState);
-      } else {
-        // the new view has the same dataset so let's not change the state but add a new listener
-        this.props.view.addDataListener(this.state.selectedData, this.debouncedDataChanged);
-      }
+  useEffect(() => {
+    setDefaultDataset();
+  }, [setDefaultDataset]);
+
+  useEffect(() => {
+    if (!view) {
       return;
     }
+    const datasets = getDatasets();
 
-    if (this.state.selectedData === '') {
-      this.setDefaultDataset();
-    } else if (this.state.selectedData !== prevState.selectedData) {
-      if (prevState.selectedData) {
-        this.props.view.removeDataListener(prevState.selectedData, this.debouncedDataChanged);
+    if (datasets.indexOf(selectedData) === -1) {
+      setCurrentPage(0);
+      setSelectedData('');
+    } else if (selectedData && debouncedDataChangedRef.current) {
+      view.addDataListener(selectedData, debouncedDataChangedRef.current);
+    }
+
+    return () => {
+      if (selectedData && debouncedDataChangedRef.current) {
+        view.removeDataListener(selectedData, debouncedDataChangedRef.current);
       }
+    };
+  }, [view, getDatasets, selectedData]);
 
-      this.props.view.addDataListener(this.state.selectedData, this.debouncedDataChanged);
+  const datasets = useMemo(() => {
+    const datasetList = getDatasets();
+    if (datasetList.length === 0) {
+      return [];
     }
-  }
+    datasetList.push(datasetList.shift());
+    return datasetList;
+  }, [getDatasets]);
 
-  public render() {
-    const datasets = this.getDatasets();
-    if (datasets.length === 0) {
-      return <div className="data-viewer">Spec has no data</div>;
+  const selected = useMemo(() => {
+    if (datasets.indexOf(selectedData) < 0) {
+      return datasets[0] || '';
     }
+    return selectedData;
+  }, [datasets, selectedData]);
 
-    datasets.push(datasets.shift()); // Move root to the end
+  const data = view.data(selected) || [];
 
-    let selected = this.state.selectedData;
-    if (datasets.indexOf(selected) < 0) {
-      selected = datasets[0];
-    }
+  const pageCount = useMemo(() => {
+    return Math.ceil(data.length / ROWS_PER_PAGE);
+  }, [data.length]);
 
-    let pagination: React.ReactElement;
+  const visibleData = useMemo(() => {
+    const start = ROWS_PER_PAGE * currentPage;
+    const end = start + ROWS_PER_PAGE;
+    return data.slice(start, end);
+  }, [data, currentPage]);
 
-    const data = this.props.view.data(selected) || [];
-
-    const pageCount = Math.ceil(data.length / ROWS_PER_PAGE);
-
+  const pagination = useMemo(() => {
     if (pageCount > 1) {
-      pagination = (
+      return (
         <ReactPaginate
           previousLabel={'<'}
           nextLabel={'>'}
@@ -132,48 +122,53 @@ export default class DataViewer extends React.PureComponent<Props, State> {
           pageCount={pageCount}
           marginPagesDisplayed={1}
           pageRangeDisplayed={3}
-          onPageChange={this.handlePageChange}
+          onPageChange={handlePageChange}
           containerClassName={'pagination'}
           activeClassName={'active'}
         />
       );
     }
+    return null;
+  }, [pageCount, handlePageChange]);
 
-    const start = ROWS_PER_PAGE * this.state.currentPage;
-    const end = start + ROWS_PER_PAGE;
+  const table = useMemo(() => {
+    if (data.length) {
+      return (
+        <Table
+          onClickHandler={(header) => props.onClickHandler(header)}
+          header={Object.keys(data[0])}
+          data={visibleData}
+        />
+      );
+    }
+    return <span className="error">The table is empty.</span>;
+  }, [data, visibleData, props.onClickHandler]);
 
-    const visibleData = data.slice(start, end);
-
-    const table = data.length ? (
-      <Table
-        onClickHandler={(header) => this.props.onClickHandler(header)}
-        header={Object.keys(data[0])}
-        data={visibleData}
-      />
-    ) : (
-      <span className="error">The table is empty.</span>
-    );
-
-    return (
-      <>
-        <div className="data-viewer-header">
-          <Select
-            className="data-dropdown"
-            value={{label: selected, value: selected}}
-            onChange={this.handleChange}
-            options={datasets.map((d) => ({
-              label: d,
-              value: d,
-            }))}
-            isClearable={false}
-            isSearchable={true}
-          />
-          <div className="pagination-wrapper">{pagination}</div>
-        </div>
-        <div className="data-table">
-          <ErrorBoundary>{table}</ErrorBoundary>
-        </div>
-      </>
-    );
+  if (datasets.length === 0) {
+    return <div className="data-viewer">Spec has no data</div>;
   }
-}
+
+  return (
+    <>
+      <div className="data-viewer-header">
+        <Select
+          className="data-dropdown"
+          value={{label: selected, value: selected}}
+          onChange={handleChange}
+          options={datasets.map((d) => ({
+            label: d,
+            value: d,
+          }))}
+          isClearable={false}
+          isSearchable={true}
+        />
+        <div className="pagination-wrapper">{pagination}</div>
+      </div>
+      <div className="data-table">
+        <ErrorBoundary>{table}</ErrorBoundary>
+      </div>
+    </>
+  );
+};
+
+export default DataViewer;

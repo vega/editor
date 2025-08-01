@@ -18,8 +18,8 @@ declare module 'react-router-dom' {
 
   export interface RouteProps {
     location?: H.Location;
-    component?: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
-    render?: (props: RouteComponentProps<any>) => React.ReactNode;
+    component?: React.ComponentType<any>;
+    render?: (props: any) => React.ReactNode;
     children?: ((props: RouteChildrenProps<any>) => React.ReactNode) | React.ReactNode;
     path?: string | string[];
     exact?: boolean;
@@ -40,23 +40,8 @@ declare module 'react-router-dom' {
     basename?: string;
     getUserConfirmation?: (message: string, callback: (ok: boolean) => void) => void;
     hashType?: 'slash' | 'noslash' | 'hashbang';
+    children?: React.ReactNode;
   }
-
-  export type WithRouterProps<C extends React.ComponentType<any>> = C extends React.ComponentClass
-    ? {wrappedComponentRef?: React.Ref<InstanceType<C>>}
-    : {};
-
-  export interface WithRouterStatics<C extends React.ComponentType<any>> {
-    WrappedComponent: C;
-  }
-
-  // There is a known issue in TypeScript, which doesn't allow decorators to change the signature of the classes
-  // they are decorating. Due to this, if you are using @withRouter decorator in your code,
-  // you will see a bunch of errors from TypeScript. The current workaround is to use withRouter() as a function call
-  // on a separate line instead of as a decorator.
-  export function withRouter<P extends RouteComponentProps<any>, C extends React.ComponentType<P>>(
-    component: C & React.ComponentType<P>,
-  ): React.ComponentClass<Omit<P, keyof RouteComponentProps<any>> & WithRouterProps<C>> & WithRouterStatics<C>;
 
   export type RouteComponentProps<T = {}> = {
     history: any;
@@ -71,7 +56,6 @@ declare module '@tippyjs/react' {
 
   export interface TippyProps {
     content: React.ReactNode;
-    children: React.ReactElement;
     animation?: string;
     arrow?: boolean;
     delay?: number | [number, number];
@@ -123,14 +107,7 @@ declare module 'ajv-formats' {
   export default addFormats;
 }
 
-declare module 'redux-thunk' {
-  import {Middleware} from 'redux';
-
-  const thunk: Middleware;
-  export default thunk;
-}
-
-declare module 'react-split-pane-r17';
+declare module 'react-split';
 declare module '@monaco-editor/react';
 declare module 'react-paginate';
 declare module 'react-clipboard.js';

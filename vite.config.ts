@@ -46,37 +46,37 @@ const vegaUtils = {
   handleVegaFileChange: (server: any) => {
     const moduleGraph = server.moduleGraph;
     const modules = Array.from(moduleGraph.urlToModuleMap.values());
-
-    const vegaModules: any[] = [];
-    const dependentModules = new Set<any>();
+    const modulesToUpdate: any[] = [];
 
     modules.forEach((module: any) => {
-      if (vegaUtils.isVegaModule(module.url)) {
-        vegaModules.push(module);
-        moduleGraph.invalidateModule(module);
-      }
-
-      if (module.importedModules) {
-        const hasVegaDependency = Array.from(module.importedModules).some((importedModule: any) =>
-          vegaUtils.isVegaModule(importedModule.id),
+      const isVegaModule = vegaUtils.isVegaModule(module.url);
+      const importsVega =
+        module.importedModules &&
+        Array.from(module.importedModules).some((importedModule: any) =>
+          vegaUtils.isVegaModule(importedModule.id || importedModule.url),
         );
-        if (hasVegaDependency) {
-          dependentModules.add(module);
-        }
+
+      if (isVegaModule || importsVega) {
+        modulesToUpdate.push(module);
+        moduleGraph.invalidateModule(module);
       }
     });
 
-    dependentModules.forEach((module) => moduleGraph.invalidateModule(module));
-
-    if (vegaModules.length > 0) {
+    if (modulesToUpdate.length > 0) {
       server.ws.send({
         type: 'update',
-        updates: vegaModules.map((module) => ({
+        updates: modulesToUpdate.map((module) => ({
           type: 'js-update' as const,
           path: module.url,
           acceptedPath: module.url,
           timestamp: Date.now(),
         })),
+      });
+
+      server.ws.send({
+        type: 'custom',
+        event: 'vega-package-updating',
+        data: {timestamp: Date.now()},
       });
     }
   },
@@ -110,7 +110,7 @@ function createVegaHMRPlugin() {
       server.vegaPackageAliases = vegaPackageAliases;
 
       const watchers = vegaPackagePaths.map((srcPath) =>
-        fsWatch(srcPath, {recursive: true}, (_eventType, filename) => {
+        fsWatch(srcPath, {recursive: true}, (_, filename) => {
           if (filename?.match(/\.(ts|js)$/)) {
             vegaUtils.handleVegaFileChange(server);
           }

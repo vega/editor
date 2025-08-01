@@ -1,73 +1,49 @@
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../../actions/editor.js';
-import {SIDEPANE} from '../../../constants/index.js';
-import {State} from '../../../constants/default-state.js';
+import {useAppContext} from '../../../context/app-context.js';
+import {SIDEPANE} from '../../../constants/consts.js';
 import ConfigEditorHeader from '../../config-editor/config-editor-header.js';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
+function SpecEditorHeader() {
+  const {state, setState} = useAppContext();
+  const {sidePaneItem, mode} = state;
 
-class SpecEditorHeader extends React.PureComponent<Props> {
-  public render() {
-    return (
-      <div className="editor-header spec-editor-header">
-        <ul className="tabs-nav">
-          <li
-            className={this.props.sidePaneItem === SIDEPANE.Editor ? 'active-tab' : undefined}
-            onClick={(e) => {
-              if (this.props.sidePaneItem === SIDEPANE.Editor) {
-                e.stopPropagation();
-              }
-              e.stopPropagation();
-              this.props.setSidePaneItem(SIDEPANE.Editor);
-            }}
-          >
-            {this.props.mode}
-          </li>
-
-          <li
-            className={this.props.sidePaneItem === SIDEPANE.Config ? 'active-tab' : undefined}
-            onClick={(e) => {
-              if (this.props.sidePaneItem === SIDEPANE.Config) {
-                e.stopPropagation();
-              }
-              e.stopPropagation();
-              this.props.setSidePaneItem(SIDEPANE.Config);
-            }}
-          >
-            Config
-          </li>
-        </ul>
-
-        {this.props.sidePaneItem === SIDEPANE.Config && <ConfigEditorHeader />}
-      </div>
-    );
-  }
-}
-
-function mapStateToProps(state: State) {
-  return {
-    compiledVegaSpec: state.compiledVegaSpec,
-    configEditorString: state.configEditorString,
-    editorString: state.editorString,
-    manualParse: state.manualParse,
-    mode: state.mode,
-    sidePaneItem: state.sidePaneItem,
-    themeName: state.themeName,
-    value: state.vegaSpec,
+  const setSidePaneItem = (item) => {
+    setState((s) => ({...s, sidePaneItem: item}));
   };
-}
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      setSidePaneItem: EditorActions.setSidePaneItem,
-    },
-    dispatch,
+  return (
+    <div className="editor-header spec-editor-header">
+      <ul className="tabs-nav">
+        <li
+          className={sidePaneItem === SIDEPANE.Editor ? 'active-tab' : undefined}
+          onClick={(e) => {
+            if (sidePaneItem === SIDEPANE.Editor) {
+              e.stopPropagation();
+            }
+            e.stopPropagation();
+            setSidePaneItem(SIDEPANE.Editor);
+          }}
+        >
+          {mode}
+        </li>
+
+        <li
+          className={sidePaneItem === SIDEPANE.Config ? 'active-tab' : undefined}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (sidePaneItem !== SIDEPANE.Config) {
+              setSidePaneItem(SIDEPANE.Config);
+            }
+          }}
+        >
+          Config
+        </li>
+      </ul>
+
+      {sidePaneItem === SIDEPANE.Config && <ConfigEditorHeader />}
+    </div>
   );
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SpecEditorHeader));
+export default SpecEditorHeader;

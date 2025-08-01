@@ -1,280 +1,280 @@
 import stringify from 'json-stringify-pretty-compact';
-import LZString from 'lz-string';
+import Editor from '@monaco-editor/react';
 import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
-import MonacoEditor from '@monaco-editor/react';
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {useAppContext} from '../../../context/app-context.js';
+import './index.css';
+import {EDITOR_FOCUS, KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants/index.js';
+import {useLocation, useNavigate, useParams} from 'react-router';
+import {parse as parseJSONC} from 'jsonc-parser';
+import LZString from 'lz-string';
 import ResizeObserver from 'rc-resize-observer';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {debounce} from 'vega';
 import parser from 'vega-schema-url-parser';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
-import {EDITOR_FOCUS, KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants/index.js';
-import './index.css';
-import {parse as parseJSONC} from 'jsonc-parser';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> &
-  RouteComponentProps<{compressed: string}>;
+const EditorWithNavigation: React.FC<{
+  clearConfig: () => void;
+  extractConfigSpec: () => void;
+  logError: (error: Error) => void;
+  mergeConfigSpec: () => void;
+  parseSpec: (force: boolean) => void;
+  setConfig: (config: string) => void;
+  setDecorations: (decorations: any[]) => void;
+  setEditorFocus: (focus: string) => void;
+  setEditorReference: (reference: any) => void;
+  updateEditorString: (editorString: string) => void;
+  updateVegaLiteSpec: (spec: string, config?: string) => void;
+  updateVegaSpec: (spec: string, config?: string) => void;
+}> = (props) => {
+  const {state} = useAppContext();
+  const {mode, editorString, decorations, manualParse, parse, sidePaneItem, configEditorString} = state;
 
-class Editor extends React.PureComponent<Props> {
-  public editor: Monaco.editor.IStandaloneCodeEditor;
-  constructor(props: Props) {
-    super(props);
-    this.handleKeydown = this.handleKeydown.bind(this);
-    this.handleEditorChange = this.handleEditorChange.bind(this);
-    this.editorWillMount = this.editorWillMount.bind(this);
-    this.editorDidMount = this.editorDidMount.bind(this);
-    this.onSelectNewVegaLite = this.onSelectNewVegaLite.bind(this);
-  }
+  const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
+  const [currentDecorationIds, setCurrentDecorationIds] = useState<string[]>([]);
 
-  public handleKeydown(e) {
-    if (this.props.manualParse) {
-      if ((e.keyCode === KEYCODES.B || e.keyCode === KEYCODES.S) && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault();
-        this.props.parseSpec(true);
-        const parseButton = this.refs.parse as any;
-        parseButton.classList.add('pressed');
-        setTimeout(() => {
-          parseButton.classList.remove('pressed');
-        }, 250);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const {compressed} = useParams<{compressed?: string}>();
+
+  const updateSpec = useCallback(
+    (spec: string, config: string = undefined) => {
+      let parsedMode = mode;
+      try {
+        const schema = parseJSONC(spec).$schema;
+        if (schema) {
+          const parsedSchema = parser(schema);
+          if (parsedSchema.library === 'vega-lite') {
+            parsedMode = Mode.VegaLite;
+          } else if (parsedSchema.library === 'vega') {
+            parsedMode = Mode.Vega;
+          }
+        }
+      } catch (e) {
+        // spec is not a valid JSON
       }
-    }
-  }
 
-  public handleMergeConfig() {
-    const confirmation = confirm('The spec will be formatted on merge.');
-    if (!confirmation) {
-      return;
-    }
-    if (this.props.history.location.pathname !== '/edited') {
-      this.props.history.push('/edited');
-    }
-    this.props.mergeConfigSpec();
-  }
-
-  public handleExtractConfig() {
-    const confirmation = confirm('The spec and config will be formatted.');
-    if (!confirmation) {
-      return;
-    }
-
-    this.props.extractConfigSpec();
-  }
-
-  public onSelectNewVega() {
-    this.props.history.push('/custom/vega');
-  }
-
-  public onSelectNewVegaLite() {
-    this.props.history.push('/custom/vega-lite');
-  }
-
-  public onClear() {
-    this.props.mode === Mode.Vega ? this.onSelectNewVega() : this.onSelectNewVegaLite();
-  }
-
-  public addVegaSchemaURL() {
-    let spec = parseJSONC(this.props.editorString);
-    if (spec.$schema === undefined) {
-      spec = {
-        $schema: SCHEMA[Mode.Vega],
-        ...spec,
-      };
-      if (confirm('Adding schema URL will format the specification too.')) {
-        this.props.updateVegaSpec(stringify(spec));
+      if (parsedMode === Mode.Vega) {
+        props.updateVegaSpec(spec, config);
+      } else if (parsedMode === Mode.VegaLite) {
+        props.updateVegaLiteSpec(spec, config);
+      } else {
+        props.updateEditorString(spec);
       }
-    }
-  }
+    },
+    [mode, props.updateVegaSpec, props.updateVegaLiteSpec, props.updateEditorString],
+  );
 
-  public addVegaLiteSchemaURL() {
-    let spec = parseJSONC(this.props.editorString);
-    if (spec.$schema === undefined) {
-      spec = {
-        $schema: SCHEMA[Mode.VegaLite],
-        ...spec,
-      };
-      if (confirm('Adding schema URL will format the specification too.')) {
-        this.props.updateVegaLiteSpec(stringify(spec));
-      }
-    }
-  }
+  const debouncedUpdateSpec = useCallback(debounce(700, updateSpec), [updateSpec]);
 
-  public editorDidMount(editor: Monaco.editor.IStandaloneCodeEditor) {
-    editor.onDidFocusEditorText(() => {
-      this.props.compiledEditorRef && this.props.compiledEditorRef.deltaDecorations(this.props.decorations, []);
-      editor.createDecorationsCollection(this.props.decorations);
-      this.props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
-    });
-
-    editor.addAction({
-      contextMenuGroupId: 'vega',
-      contextMenuOrder: 0,
-      id: 'ADD_VEGA_SCHEMA',
-      label: 'Add Vega schema URL',
-      run: this.addVegaSchemaURL.bind(this),
-    });
-
-    editor.addAction({
-      contextMenuGroupId: 'vega',
-      contextMenuOrder: 1,
-      id: 'ADD_VEGA_LITE_SCHEMA',
-      label: 'Add Vega-Lite schema URL',
-      run: this.addVegaLiteSchemaURL.bind(this),
-    });
-
-    editor.addAction({
-      contextMenuGroupId: 'vega',
-      contextMenuOrder: 2,
-      id: 'CLEAR_EDITOR',
-      label: 'Clear Spec',
-      run: this.onClear.bind(this),
-    });
-
-    editor.addAction({
-      contextMenuGroupId: 'vega',
-      contextMenuOrder: 3,
-      id: 'MERGE_CONFIG',
-      label: 'Merge Config Into Spec',
-      run: this.handleMergeConfig.bind(this),
-    });
-
-    editor.addAction({
-      contextMenuGroupId: 'vega',
-      contextMenuOrder: 4,
-      id: 'EXTRACT_CONFIG',
-      label: 'Extract Config From Spec',
-      run: this.handleExtractConfig.bind(this),
-    });
-
-    editor.getModel().getOptions();
-
-    this.editor = editor;
-    this.props.setEditorReference(editor);
-
-    if (this.props.sidePaneItem === SIDEPANE.Editor) {
-      editor.focus();
-      editor.layout();
-      this.props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
-    }
-  }
-
-  public handleEditorChange(spec: string) {
-    this.props.manualParse ? this.props.updateEditorString(spec) : this.updateSpec(spec);
-
-    if (this.props.history.location.pathname.indexOf('/edited') === -1) {
-      this.props.history.push('/edited');
-    }
-  }
-
-  public editorWillMount() {
-    const compressed = this.props.match.params.compressed;
+  useEffect(() => {
     if (compressed) {
       let spec: string = LZString.decompressFromEncodedURIComponent(compressed);
-
       if (spec) {
-        const newlines = (spec.match(/\n/g) || '').length + 1;
-        if (newlines <= 1) {
-          console.log('Formatting spec string from URL that did not contain newlines.');
-          spec = stringify(parseJSONC(spec));
+        try {
+          const newlines = (spec.match(/\n/g) || '').length + 1;
+          if (newlines <= 1) {
+            spec = stringify(parseJSONC(spec));
+          }
+          if (spec !== editorString) {
+            updateSpec(spec);
+          }
+        } catch (e) {
+          props.logError(e as Error);
         }
-
-        this.updateSpec(spec);
       } else {
-        this.props.logError(new Error(`Failed to decompress URL. Expected a specification, but received ${spec}`));
+        props.logError(new Error(`Failed to decompress URL. Expected a specification, but received ${spec}`));
       }
     }
-  }
+  }, [compressed, editorString, props.logError, updateSpec]);
 
-  public componentDidUpdate(prevProps) {
-    if (this.props.sidePaneItem === SIDEPANE.Editor) {
-      if (prevProps.sidePaneItem !== this.props.sidePaneItem) {
-        this.editor.focus();
-        this.editor.layout();
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (manualParse) {
+        if ((e.keyCode === KEYCODES.B || e.keyCode === KEYCODES.S) && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          props.parseSpec(true);
+        }
       }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [manualParse, props.parseSpec]);
+
+  useEffect(() => {
+    if (editorRef.current && parse) {
+      editorRef.current.focus();
+      editorRef.current.layout();
+      updateSpec(editorString, configEditorString);
+      props.parseSpec(false);
     }
+  }, [parse, editorString, configEditorString, updateSpec, props]);
 
-    if (prevProps.view !== this.props.view) {
-      prevProps.compiledEditorRef && prevProps.compiledEditorRef.deltaDecorations(prevProps.decorations, []);
-      prevProps.editorRef && prevProps.editorRef.deltaDecorations(prevProps.decorations, []);
+  useEffect(() => {
+    if (sidePaneItem === SIDEPANE.Editor && editorRef.current) {
+      editorRef.current.focus();
+      editorRef.current.layout();
     }
+  }, [sidePaneItem]);
 
-    if (this.editor && this.props.parse) {
-      this.editor.focus();
-      this.editor.layout();
-      this.updateSpec(this.props.value, this.props.configEditorString);
-      prevProps.parseSpec(false);
-    }
-  }
+  const handleEditorDidMount = useCallback(
+    (editor: Monaco.editor.IStandaloneCodeEditor) => {
+      editorRef.current = editor;
+      props.setEditorReference(editor);
 
-  public componentDidMount() {
-    document.addEventListener('keydown', this.handleKeydown);
-    if (this.props.sidePaneItem === SIDEPANE.Editor) {
-      this.props.setEditorReference(this.editor);
-    }
-  }
+      const addVegaSchemaURL = () => {
+        try {
+          let spec = parseJSONC(editor.getValue());
+          if (spec.$schema === undefined) {
+            spec = {
+              $schema: SCHEMA[Mode.Vega],
+              ...spec,
+            };
+            if (confirm('Adding schema URL will format the specification too.')) {
+              props.updateVegaSpec(stringify(spec));
+            }
+          }
+        } catch (e) {
+          props.logError(e as Error);
+        }
+      };
 
-  public componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeydown);
-  }
+      const addVegaLiteSchemaURL = () => {
+        try {
+          let spec = parseJSONC(editor.getValue());
+          if (spec.$schema === undefined) {
+            spec = {
+              $schema: SCHEMA[Mode.VegaLite],
+              ...spec,
+            };
+            if (confirm('Adding schema URL will format the specification too.')) {
+              props.updateVegaLiteSpec(stringify(spec));
+            }
+          }
+        } catch (e) {
+          props.logError(e as Error);
+        }
+      };
 
-  public updateSpec(spec: string, config: string = undefined) {
-    let parsedMode = this.props.mode;
+      const handleMergeConfig = () => {
+        if (confirm('The spec will be formatted on merge.')) {
+          if (location.pathname !== '/edited') {
+            navigate('/edited');
+          }
+          props.mergeConfigSpec();
+        }
+      };
 
-    const schema = parseJSONC(spec).$schema;
+      const handleExtractConfig = () => {
+        if (confirm('The spec and config will be formatted.')) {
+          props.extractConfigSpec();
+        }
+      };
 
-    if (schema) {
-      switch (parser(schema).library) {
-        case 'vega-lite':
-          parsedMode = Mode.VegaLite;
-          break;
-        case 'vega':
-          parsedMode = Mode.Vega;
-          break;
+      editor.onDidFocusEditorText(() => {
+        props.setEditorFocus(EDITOR_FOCUS.SpecEditor);
+        props.setEditorReference(editor);
+      });
+
+      editor.addAction({
+        contextMenuGroupId: 'vega',
+        contextMenuOrder: 0,
+        id: 'ADD_VEGA_SCHEMA',
+        label: 'Add Vega schema URL',
+        run: addVegaSchemaURL,
+      });
+
+      editor.addAction({
+        contextMenuGroupId: 'vega',
+        contextMenuOrder: 1,
+        id: 'ADD_VEGA_LITE_SCHEMA',
+        label: 'Add Vega-Lite schema URL',
+        run: addVegaLiteSchemaURL,
+      });
+
+      editor.addAction({
+        contextMenuGroupId: 'vega',
+        contextMenuOrder: 2,
+        id: 'CLEAR_EDITOR',
+        label: 'Clear Spec',
+        run: () => {
+          mode === Mode.Vega ? navigate('/custom/vega') : navigate('/custom/vega-lite');
+        },
+      });
+
+      editor.addAction({
+        contextMenuGroupId: 'vega',
+        contextMenuOrder: 3,
+        id: 'MERGE_CONFIG',
+        label: 'Merge Config Into Spec',
+        run: handleMergeConfig,
+      });
+
+      editor.addAction({
+        contextMenuGroupId: 'vega',
+        contextMenuOrder: 4,
+        id: 'EXTRACT_CONFIG',
+        label: 'Extract Config From Spec',
+        run: handleExtractConfig,
+      });
+    },
+    [props, manualParse, debouncedUpdateSpec, location.pathname, navigate, mode],
+  );
+
+  const handleEditorChange = useCallback(
+    (value: string) => {
+      if (manualParse) {
+        props.updateEditorString(value);
+      } else {
+        debouncedUpdateSpec(value);
       }
+      if (location.pathname.indexOf('/edited') === -1) {
+        navigate('/edited');
+      }
+    },
+    [manualParse, props.updateEditorString, debouncedUpdateSpec, location.pathname, navigate],
+  );
+
+  useEffect(() => {
+    if (editorRef.current && decorations && Array.isArray(decorations)) {
+      const newDecorationIds = editorRef.current.deltaDecorations(currentDecorationIds, decorations);
+      setCurrentDecorationIds(newDecorationIds);
     }
+  }, [decorations]);
 
-    switch (parsedMode) {
-      case Mode.Vega:
-        this.props.updateVegaSpec(spec, config);
-        break;
-      case Mode.VegaLite:
-        this.props.updateVegaLiteSpec(spec, config);
-        break;
-      default:
-        console.error(`Unknown mode:  ${parsedMode}`);
-        break;
-    }
-  }
+  return (
+    <ResizeObserver
+      onResize={({width, height}) => {
+        editorRef.current?.layout({width, height});
+      }}
+    >
+      <div style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column'}}>
+        <div style={{flexGrow: 1, position: 'relative'}}>
+          <Editor
+            height="100%"
+            language="json"
+            value={editorString}
+            onMount={handleEditorDidMount}
+            onChange={handleEditorChange}
+            options={{
+              cursorBlinking: 'smooth',
+              folding: true,
+              lineNumbersMinChars: 4,
+              minimap: {enabled: false},
+              scrollBeyondLastLine: false,
+              wordWrap: 'on',
+              quickSuggestions: true,
+              stickyScroll: {
+                enabled: true,
+              },
+            }}
+          />
+        </div>
+      </div>
+    </ResizeObserver>
+  );
+};
 
-  public render() {
-    return (
-      <ResizeObserver
-        onResize={({width, height}) => {
-          this.editor?.layout({width, height});
-        }}
-      >
-        <MonacoEditor
-          defaultLanguage="json"
-          options={{
-            cursorBlinking: 'smooth',
-            folding: true,
-            lineNumbersMinChars: 4,
-            minimap: {enabled: false},
-            scrollBeyondLastLine: false,
-            wordWrap: 'on',
-            quickSuggestions: true,
-            stickyScroll: {
-              enabled: false,
-            },
-          }}
-          value={this.props.value}
-          onChange={debounce(700, this.handleEditorChange)}
-          beforeMount={this.editorWillMount}
-          onMount={this.editorDidMount}
-        />
-      </ResizeObserver>
-    );
-  }
-}
-
-export default withRouter(Editor);
+export default EditorWithNavigation;

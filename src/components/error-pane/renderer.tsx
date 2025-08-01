@@ -1,67 +1,59 @@
 import * as React from 'react';
-import {mapStateToProps} from './index.js';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps>;
-
-export default class ErrorPane extends React.Component<Props> {
-  public render() {
-    const list = [];
-
-    let i = 1;
-
-    if (this.props.error) {
-      list.push(
-        <li key={0}>
-          <span className="error">[Error] </span>
-          {this.props.error.message}
-        </li>,
-      );
-    }
-
-    this.props.errors.forEach((error) => {
-      list.push(
-        <li key={i++}>
-          <span className="error">[Error] </span>
-          {error}
-        </li>,
-      );
-    });
-    this.props.warns.forEach((warning) => {
-      list.push(
-        <li key={i++}>
-          <span className="warning">[Warning] </span>
-          {warning}
-        </li>,
-      );
-    });
-    this.props.infos.forEach((info) => {
-      list.push(
-        <li key={i++}>
-          <span className="info">[Info] </span>
-          {info}
-        </li>,
-      );
-    });
-    if (this.props.debugs.length > 0) {
-      <li key={i++}>
-        <span className="debug">[Debug] </span>
-        Debug messages are not shown in the editor. Open the browser console to view debug logs.
-      </li>;
-    }
-    if (list.length === 0) {
-      list.push(
-        <li key={'no error'}>
-          <span className="info">[Info] </span>
-          No error, infos, or warnings
-        </li>,
-      );
-    }
-
-    return (
-      <div className="error-pane">
-        <ul>{list}</ul>
-      </div>
-    );
-  }
+interface ErrorPaneProps {
+  error?: {message: string};
+  errors: string[];
+  warns: string[];
+  debugs: string[];
+  infos: string[];
 }
+
+const ErrorPane: React.FC<ErrorPaneProps> = ({error, errors, warns, infos, debugs}) => {
+  const hasMessages = error || errors.length > 0 || warns.length > 0 || infos.length > 0 || debugs.length > 0;
+
+  return (
+    <div className="error-pane">
+      <ul>
+        {error && (
+          <li key="error">
+            <span className="error">[Error] </span>
+            {error.message}
+          </li>
+        )}
+        {errors.map((errorMsg, i) => (
+          <li key={`error-${i}`}>
+            <span className="error">[Error] </span>
+            {errorMsg}
+          </li>
+        ))}
+        {warns.map((warning, i) => (
+          <li key={`warning-${i}`}>
+            <span className="warning">[Warning] </span>
+            {warning}
+          </li>
+        ))}
+        {infos.map((info, i) => (
+          <li key={`info-${i}`}>
+            <span className="info">[Info] </span>
+            {info}
+          </li>
+        ))}
+        {debugs.length > 0 && (
+          <li key="debug">
+            <span className="debug">[Debug] </span>
+            Debug messages are not shown in the editor. Open the browser console to view debug logs.
+          </li>
+        )}
+        {!hasMessages && (
+          <li key="no-messages">
+            <span className="info">[Info] </span>
+            No error, infos, or warnings
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+};
+
+export default ErrorPane;

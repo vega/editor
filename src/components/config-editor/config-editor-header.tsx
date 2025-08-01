@@ -1,64 +1,62 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
+import {useCallback} from 'react';
 import {omit} from 'vega-lite';
 import * as themes from 'vega-themes';
-import * as EditorActions from '../../actions/editor.js';
-import {State} from '../../constants/default-state.js';
+import {useAppContext} from '../../context/app-context.js';
 import './config-editor.css';
 
-class ConfigEditorHeader extends React.PureComponent<any, any> {
-  public render() {
-    const vegaThemes = omit(themes, ['version']);
+const vegaThemes = omit(themes, ['version']);
 
-    return (
-      <label className="config-header">
-        Theme:
-        <select
-          value={this.props.themeName}
-          onClick={(e) => e.stopPropagation()}
-          id="config-select"
-          onChange={(e) => {
-            e.stopPropagation();
-            if (e.target.value === 'custom') {
-              this.props.setConfig('{}');
-              this.props.setConfigEditorString('{}');
-            } else {
-              this.props.setConfig(stringify(vegaThemes[e.target.value]));
-              this.props.setConfigEditorString(stringify(vegaThemes[e.target.value]));
-            }
-            this.props.setThemeName(e.target.value);
-          }}
-        >
-          <option value="custom">Custom</option>
-          {Object.keys(vegaThemes).map((keyName) => (
-            <option key={keyName} value={keyName}>
-              {keyName}
-            </option>
-          ))}
-        </select>
-      </label>
-    );
-  }
-}
+const ConfigEditorHeader: React.FC = () => {
+  const {state, setState} = useAppContext();
+  const {themeName} = state;
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      setConfig: EditorActions.setConfig,
-      setConfigEditorString: EditorActions.setConfigEditorString,
-      setThemeName: EditorActions.setThemeName,
-    },
-    dispatch,
+  const setConfig = useCallback((config: string) => setState((s) => ({...s, configEditorString: config})), [setState]);
+
+  const setConfigEditorString = useCallback(
+    (configEditorString: string) => setState((s) => ({...s, configEditorString})),
+    [setState],
   );
-}
 
-function mapStateToProps(state: State) {
-  return {
-    manualParse: state.manualParse,
-    themeName: state.themeName,
-  };
-}
+  const setThemeName = useCallback(
+    (newThemeName: string) => setState((s) => ({...s, themeName: newThemeName})),
+    [setState],
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConfigEditorHeader);
+  const handleThemeChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      e.stopPropagation();
+      if (e.target.value === 'custom') {
+        setConfig('{}');
+        setConfigEditorString('{}');
+      } else {
+        const themeConfig = stringify(vegaThemes[e.target.value]);
+        setConfig(themeConfig);
+        setConfigEditorString(themeConfig);
+      }
+      setThemeName(e.target.value);
+    },
+    [setConfig, setConfigEditorString, setThemeName],
+  );
+
+  const handleClick = useCallback((e: React.MouseEvent<HTMLSelectElement>) => {
+    e.stopPropagation();
+  }, []);
+
+  return (
+    <label className="config-header">
+      Theme:
+      <select value={themeName} onClick={handleClick} id="config-select" onChange={handleThemeChange}>
+        <option value="custom">Custom</option>
+        {Object.keys(vegaThemes).map((keyName) => (
+          <option key={keyName} value={keyName}>
+            {keyName}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+};
+
+export default ConfigEditorHeader;
