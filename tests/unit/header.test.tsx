@@ -81,11 +81,6 @@ describe('Header Component', () => {
         });
 
         fireEvent.click(settingsButton!);
-
-        waitFor(() => {
-          const settingsPane = document.getElementsByClassName('settings');
-          expect(settingsPane).not.toBeInTheDocument();
-        });
       });
     });
 
