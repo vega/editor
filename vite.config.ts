@@ -159,7 +159,7 @@ export default defineConfig({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   },
 
-  base: '/',
+  base: '/editor/',
 
   build: {
     outDir: 'dist',
