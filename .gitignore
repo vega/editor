@@ -8,5 +8,4 @@ npm-debug.log*
 public/data/
 public/spec/
 stats.json
-.parcel-cache
 .vite/
