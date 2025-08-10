@@ -1,21 +1,19 @@
 import React from 'react';
 import {render, screen, fireEvent, waitFor} from '@testing-library/react';
 import {vi} from 'vitest';
-import {Provider} from 'react-redux';
-import {HashRouter} from 'react-router-dom';
-import configureStore from '../../src/store/configure-store';
-import App from '../../src/components/app';
 
-const store = configureStore();
+import {HashRouter} from 'react-router-dom';
+import {AppContextProvider} from '../../src/context/app-context';
+import AppShell from '../../src/components/app-shell';
 
 describe('Editor Components', () => {
   it('should render the main app structure', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     expect(document.querySelector('.app-container')).toBeInTheDocument();
@@ -25,11 +23,11 @@ describe('Editor Components', () => {
 
   it('should render split panes for editor layout', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     const splitPanes = document.querySelectorAll('.Pane');
@@ -38,11 +36,11 @@ describe('Editor Components', () => {
 
   it('should have resizable panes', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     const resizers = document.querySelectorAll('.Resizer');
@@ -52,11 +50,11 @@ describe('Editor Components', () => {
   // test dragging the resizers
   it('should drag to resize the panes', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     const resizer = document.querySelector('.Resizer');
@@ -87,11 +85,11 @@ describe('Editor Components', () => {
 
   it('should display version information', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     const versionsDiv = document.querySelector('.versions');
@@ -101,11 +99,11 @@ describe('Editor Components', () => {
 
   it('should render debug pane header', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     const debugPane = document.querySelector('.debug-pane');

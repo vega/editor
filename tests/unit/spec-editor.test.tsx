@@ -1,13 +1,12 @@
 import React from 'react';
 import {render, screen, fireEvent, waitFor} from '@testing-library/react';
 import {vi} from 'vitest';
-import {Provider} from 'react-redux';
+
 import {HashRouter} from 'react-router-dom';
-import configureStore from '../../src/store/configure-store';
+import {AppContextProvider} from '../../src/context/app-context';
 import App from '../../src/components/app';
 import {Mode} from '../../src/constants/consts';
-
-const store = configureStore();
+import AppShell from '../../src/components/app-shell';
 
 const mockConsoleLog = vi.fn();
 const mockConsoleError = vi.fn();
@@ -37,11 +36,11 @@ describe('Spec Editor Component', () => {
   describe('Basic UI Elements', () => {
     it('should render the input panel container', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -53,11 +52,11 @@ describe('Spec Editor Component', () => {
 
     it('should render editor with proper structure', async () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const mainPanel = document.querySelector('.main-panel');
@@ -69,11 +68,11 @@ describe('Spec Editor Component', () => {
 
     it('should have proper app structure configured', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const appContainer = document.querySelector('.app-container');
@@ -86,11 +85,11 @@ describe('Spec Editor Component', () => {
   describe('Editor Interaction', () => {
     it('should handle focus events on input panel', async () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -103,11 +102,11 @@ describe('Spec Editor Component', () => {
 
     it('should handle blur events on input panel', async () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -120,11 +119,11 @@ describe('Spec Editor Component', () => {
 
     it('should handle mouse events on input panel', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -141,11 +140,11 @@ describe('Spec Editor Component', () => {
   describe('Keyboard Shortcuts', () => {
     it('should handle keyboard events without errors', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       fireEvent.keyDown(document, {key: 'b', ctrlKey: true});
@@ -160,11 +159,11 @@ describe('Spec Editor Component', () => {
 
     it('should handle regular key presses', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       fireEvent.keyDown(document, {key: 'a'});
@@ -180,11 +179,11 @@ describe('Spec Editor Component', () => {
   describe('Context Menu Actions', () => {
     it('should handle context menu interactions', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -197,11 +196,11 @@ describe('Spec Editor Component', () => {
 
     it('should handle right-click events on input panel', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -217,11 +216,11 @@ describe('Spec Editor Component', () => {
   describe('Editor Content Management', () => {
     it('should handle content updates without crashing', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -236,11 +235,11 @@ describe('Spec Editor Component', () => {
 
     it('should handle user interactions gracefully', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -257,11 +256,11 @@ describe('Spec Editor Component', () => {
   describe('Mode Switching', () => {
     it('should handle mode changes properly', async () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -289,11 +288,11 @@ describe('Spec Editor Component', () => {
   describe('URL Parameter Handling', () => {
     it('should handle URL changes without errors', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -309,11 +308,11 @@ describe('Spec Editor Component', () => {
   describe('Focus Management', () => {
     it('should handle focus changes', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -329,11 +328,11 @@ describe('Spec Editor Component', () => {
 
     it('should handle tab navigation', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -349,11 +348,11 @@ describe('Spec Editor Component', () => {
   describe('Component Lifecycle', () => {
     it('should mount and unmount without errors', () => {
       const {unmount} = render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -367,11 +366,11 @@ describe('Spec Editor Component', () => {
 
     it('should handle component updates', () => {
       const {rerender} = render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -380,11 +379,11 @@ describe('Spec Editor Component', () => {
       // Test re-rendering
       expect(() => {
         rerender(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
       }).not.toThrow();
     });
@@ -393,11 +392,11 @@ describe('Spec Editor Component', () => {
   describe('Integration with App State', () => {
     it('should integrate properly with application state', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');
@@ -410,11 +409,11 @@ describe('Spec Editor Component', () => {
 
     it('should handle store updates', async () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const inputPanel = document.querySelector('[role="group"][aria-label="spec editors"]');

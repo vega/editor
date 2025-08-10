@@ -2,14 +2,13 @@
 // Covers tab rendering, tab switching, and config header rendering
 
 import React from 'react';
-import {Provider} from 'react-redux';
+import {vi} from 'vitest';
+
 import {HashRouter} from 'react-router-dom';
-import App from '../../src/components/app';
-import configureStore from '../../src/store/configure-store';
+import {AppContextProvider} from '../../src/context/app-context';
 import {fireEvent, render, screen} from '@testing-library/react';
 import {SIDEPANE, Mode} from '../../src/constants/consts';
-
-const store = configureStore();
+import AppShell from '../../src/components/app-shell';
 
 vi.mock('@monaco-editor/react', () => {
   return {
@@ -41,11 +40,11 @@ vi.mock('@monaco-editor/react', () => {
 describe('Spec Editor Header Component', () => {
   it('should render the mode and config tabs', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
     // The tabs-nav should be present
     const tabsNav = document.querySelector('.editor-header.spec-editor-header .tabs-nav');
@@ -60,11 +59,11 @@ describe('Spec Editor Header Component', () => {
 
   it('should highlight the correct tab as active', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
     // By default, the editor tab should be active
     const activeTab = document.querySelector('.editor-header.spec-editor-header .active-tab');
@@ -74,11 +73,11 @@ describe('Spec Editor Header Component', () => {
 
   it('should switch to config tab and render ConfigEditorHeader', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
     // Click the Config tab
     const configTab = screen.getByText('Config');
@@ -95,11 +94,11 @@ describe('Spec Editor Header Component', () => {
 
   it('should switch back to editor tab when mode tab is clicked', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
     // Click the Config tab first
     const configTab = screen.getByText('Config');

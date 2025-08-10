@@ -1,13 +1,11 @@
 import React from 'react';
 import {render, screen, fireEvent, waitFor} from '@testing-library/react';
 import {vi} from 'vitest';
-import {Provider} from 'react-redux';
-import {HashRouter} from 'react-router-dom';
-import configureStore from '../../src/store/configure-store';
-import App from '../../src/components/app';
-import {Mode} from '../../src/constants/consts';
 
-const store = configureStore();
+import {HashRouter} from 'react-router-dom';
+import {AppContextProvider} from '../../src/context/app-context';
+import {Mode} from '../../src/constants/consts';
+import AppShell from '../../src/components/app-shell';
 
 const mockWindowOpen = vi.fn();
 Object.defineProperty(window, 'open', {
@@ -24,11 +22,11 @@ describe('Header Component', () => {
   describe('Basic UI Elements', () => {
     it('should render all main header buttons and elements', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       expect(screen.getByText('Vega-Lite')).toBeInTheDocument();
@@ -44,11 +42,11 @@ describe('Header Component', () => {
 
     it('should have proper header structure with sections', () => {
       render(
-        <Provider store={store}>
-          <HashRouter>
-            <App />
-          </HashRouter>
-        </Provider>,
+        <HashRouter>
+          <AppContextProvider>
+            <AppShell />
+          </AppContextProvider>
+        </HashRouter>,
       );
 
       const header = document.querySelector('.app-header');
@@ -64,11 +62,11 @@ describe('Header Component', () => {
     describe('Settings Button Interactions', () => {
       it('should toggle settings state when clicked', () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const settingsButton = document.querySelector('.settings-button');
@@ -87,11 +85,11 @@ describe('Header Component', () => {
     describe('Mode Switcher Interactions', () => {
       it('should show Vega option when clicking Vega-Lite dropdown and allow mode switch', async () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         expect(screen.getByText('Vega-Lite')).toBeInTheDocument();
@@ -124,11 +122,11 @@ describe('Header Component', () => {
         };
 
         render(
-          <Provider store={mockStore}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const runButton = document.querySelector('#run-button');
@@ -144,11 +142,11 @@ describe('Header Component', () => {
 
       it('should show correct parse mode text', () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         expect(screen.getByText('Run')).toBeInTheDocument();
@@ -159,11 +157,11 @@ describe('Header Component', () => {
     describe('Auto Parse Toggle Interactions', () => {
       it('should toggle parse mode when auto-run dropdown is changed', async () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         expect(screen.getByText('Auto')).toBeInTheDocument();
@@ -192,11 +190,11 @@ describe('Header Component', () => {
     describe('Modal Button Interactions', () => {
       it('should open export modal when export button is clicked', async () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const exportButton = screen.getByText('Export');
@@ -216,11 +214,11 @@ describe('Header Component', () => {
 
       it('should close export modal when close button is clicked', async () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const exportButton = screen.getByText('Export');
@@ -242,11 +240,11 @@ describe('Header Component', () => {
 
       it('should open examples modal when examples button is clicked', async () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const examplesButton = screen.getByText('Examples');
@@ -263,11 +261,11 @@ describe('Header Component', () => {
 
       it('should switch between Vega and Vega-Lite tabs in examples modal', async () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const examplesButton = screen.getByText('Examples');
@@ -307,11 +305,11 @@ describe('Header Component', () => {
     describe('Authentication Button Interactions', () => {
       it('should open sign in popup when sign in button is clicked', () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const signInButton = document.querySelector('.sign-in');
@@ -340,11 +338,11 @@ describe('Header Component', () => {
         };
 
         render(
-          <Provider store={authenticatedStore}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const profileImg = document.querySelector('.profile-img');
@@ -365,11 +363,11 @@ describe('Header Component', () => {
     describe('Component State Management', () => {
       it('should maintain proper CSS classes based on interactions', () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const parseMode = document.querySelector('.parse-mode');
@@ -381,11 +379,11 @@ describe('Header Component', () => {
 
       it('should handle button hover states', () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const headerButton = document.querySelector('.header-button');
@@ -399,11 +397,11 @@ describe('Header Component', () => {
     describe('Error Handling', () => {
       it('should handle clicks without throwing errors', () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const buttons = document.querySelectorAll('.header-button');
@@ -417,11 +415,11 @@ describe('Header Component', () => {
 
       it('should handle modal interactions without errors', () => {
         render(
-          <Provider store={store}>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </Provider>,
+          <HashRouter>
+            <AppContextProvider>
+              <AppShell />
+            </AppContextProvider>
+          </HashRouter>,
         );
 
         const modalTriggers = ['Export', 'Share', 'Gist', 'Examples', 'Help'];

@@ -1,21 +1,19 @@
 import React from 'react';
 import {render, screen, fireEvent, waitFor} from '@testing-library/react';
 import {vi} from 'vitest';
-import {Provider} from 'react-redux';
-import {HashRouter} from 'react-router-dom';
-import configureStore from '../../src/store/configure-store';
-import App from '../../src/components/app';
 
-const store = configureStore();
+import {HashRouter} from 'react-router-dom';
+import {AppContextProvider} from '../../src/context/app-context';
+import AppShell from '../../src/components/app-shell';
 
 describe('Share Modal Component', () => {
   it('should render the share modal', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
     // click on share button
     const shareButton = screen.getByText('Share');

@@ -4,53 +4,6 @@
 // Current Issues: For a lot of the components,
 // our usage isn't compatible with the default type definitions.
 
-declare module 'react-router-dom' {
-  // working version of https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react-router/index.d.ts
-  // and https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react-router-dom/index.d.ts
-
-  import * as H from 'history';
-
-  export interface RouteChildrenProps<Params extends {[K in keyof Params]?: string} = {}> {
-    history: H.History;
-    location: H.Location;
-    match: any;
-  }
-
-  export interface RouteProps {
-    location?: H.Location;
-    component?: React.ComponentType<any>;
-    render?: (props: any) => React.ReactNode;
-    children?: ((props: RouteChildrenProps<any>) => React.ReactNode) | React.ReactNode;
-    path?: string | string[];
-    exact?: boolean;
-    sensitive?: boolean;
-    strict?: boolean;
-  }
-  export class Route<T extends RouteProps = RouteProps> extends React.Component<T, any> {}
-
-  export interface SwitchProps {
-    children?: React.ReactNode;
-    location?: H.Location;
-  }
-  export class Switch extends React.Component<SwitchProps, any> {}
-
-  export class HashRouter extends React.Component<HashRouterProps, any> {}
-
-  export interface HashRouterProps {
-    basename?: string;
-    getUserConfirmation?: (message: string, callback: (ok: boolean) => void) => void;
-    hashType?: 'slash' | 'noslash' | 'hashbang';
-    children?: React.ReactNode;
-  }
-
-  export type RouteComponentProps<T = {}> = {
-    history: any;
-    location: any;
-    match: any;
-    staticContext?: any;
-  } & T;
-}
-
 declare module '@tippyjs/react' {
   import React from 'react';
 

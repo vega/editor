@@ -3,22 +3,20 @@
 // Test Edit Vega Spec and Edit Vega-Lite Spec buttons
 
 import React from 'react';
-import {Provider} from 'react-redux';
-import {HashRouter} from 'react-router-dom';
-import App from '../../src/components/app';
-import configureStore from '../../src/store/configure-store';
-import {fireEvent, render, screen} from '@testing-library/react';
 
-const store = configureStore();
+import {HashRouter} from 'react-router-dom';
+import {AppContextProvider} from '../../src/context/app-context';
+import {fireEvent, render, screen} from '@testing-library/react';
+import AppShell from '../../src/components/app-shell';
 
 describe('Compiled Spec Header Component', () => {
   it('should render the compiled vega and extended vega-lite buttons', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
     // Test that a component with the class 'tabs-nav' is present
     const tabsNav = document.querySelector('.tabs-nav');
@@ -33,11 +31,11 @@ describe('Compiled Spec Header Component', () => {
 
   it('should handle tab switching and header click', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     const editorHeader = document.querySelector('.editor-header:not(.spec-editor-header)');

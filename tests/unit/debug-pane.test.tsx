@@ -1,25 +1,23 @@
 import React from 'react';
 import {render, screen, fireEvent, waitFor} from '@testing-library/react';
 import {vi} from 'vitest';
-import {Provider} from 'react-redux';
+
 import {HashRouter} from 'react-router-dom';
-import configureStore from '../../src/store/configure-store';
-import App from '../../src/components/app';
+import {AppContextProvider} from '../../src/context/app-context';
+import AppShell from '../../src/components/app-shell';
 
 // Pane header component with class 'pane-header' should be present
 // It should have 4 li elements that have test LOGS, DATA VIEWER, SIGNAL VIEWER, DATAFLOW VIEWER
 // When you click on the pane header, check if debug-pane element is present
 
-const store = configureStore();
-
 describe('Debug Pane Component', () => {
   it('should render the pane header', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     const paneHeader = document.querySelector('.pane-header');

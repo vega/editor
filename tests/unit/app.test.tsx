@@ -1,20 +1,18 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
-import {Provider} from 'react-redux';
 import {HashRouter} from 'react-router-dom';
-import configureStore from '../../src/store/configure-store';
 import App from '../../src/components/app';
-
-const store = configureStore();
+import {AppContextProvider} from '../../src/context/app-context';
+import AppShell from '../../src/components/app-shell';
 
 describe('App Component', () => {
   it('should render main app element', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     expect(screen.getByText('Vega-Lite')).toBeInTheDocument();
@@ -22,11 +20,11 @@ describe('App Component', () => {
 
   it('should render without crashing', () => {
     const {container} = render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     expect(container.firstChild).toBeInTheDocument();

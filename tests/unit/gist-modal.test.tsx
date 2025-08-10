@@ -1,19 +1,18 @@
 import React from 'react';
 import {render, screen, fireEvent} from '@testing-library/react';
-import {Provider} from 'react-redux';
-import {HashRouter} from 'react-router-dom';
-import configureStore from '../../src/store/configure-store';
-import App from '../../src/components/app';
 
-const store = configureStore();
+import {HashRouter} from 'react-router-dom';
+import {AppContextProvider} from '../../src/context/app-context';
+import AppShell from '../../src/components/app-shell';
+
 describe('Gist Modal Component', () => {
   it('should render the modal with required elements', () => {
     render(
-      <Provider store={store}>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>,
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
     );
 
     const gistButton = screen.getByText('Gist');
