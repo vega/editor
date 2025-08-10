@@ -1,49 +1,38 @@
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../../actions/editor.js';
-import {State} from '../../../constants/default-state.js';
-import Renderer from './renderer.js';
+import * as React from 'react';
+import {useAppContext} from '../../../context/app-context.js';
+import EditorWithNavigation from './renderer.js';
+import {Mode} from '../../../constants/index.js';
 
-export function mapStateToProps(state: State) {
-  return {
-    compiledEditorRef: state.compiledEditorRef,
-    compiledVegaPaneSize: state.compiledVegaPaneSize,
-    compiledVegaSpec: state.compiledVegaSpec,
-    configEditorString: state.configEditorString,
-    decorations: state.decorations,
-    editorFocus: state.editorFocus,
-    editorRef: state.editorRef,
-    editorString: state.editorString,
-    gist: state.gist,
-    manualParse: state.manualParse,
-    mode: state.mode,
-    parse: state.parse,
-    selectedExample: state.selectedExample,
-    sidePaneItem: state.sidePaneItem,
-    themeName: state.themeName,
-    value: state.editorString,
-    view: state.view,
-  };
-}
+const SpecEditor = () => {
+  const {setState} = useAppContext();
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      clearConfig: EditorActions.clearConfig,
-      extractConfigSpec: EditorActions.extractConfigSpec,
-      logError: EditorActions.logError,
-      mergeConfigSpec: EditorActions.mergeConfigSpec,
-      parseSpec: EditorActions.parseSpec,
-      setConfig: EditorActions.setConfig,
-      setDecorations: EditorActions.setDecorations,
-      setEditorFocus: EditorActions.setEditorFocus,
-      setEditorReference: EditorActions.setEditorReference,
-      updateEditorString: EditorActions.updateEditorString,
-      updateVegaLiteSpec: EditorActions.updateVegaLiteSpec,
-      updateVegaSpec: EditorActions.updateVegaSpec,
-    },
-    dispatch,
+  return (
+    <EditorWithNavigation
+      clearConfig={() =>
+        setState((s) => ({
+          ...s,
+          config: {},
+          configEditorString: '{}',
+          themeName: 'custom',
+        }))
+      }
+      extractConfigSpec={() => setState((s) => ({...s, extractConfigSpec: true}))}
+      logError={(error: Error) => setState((s) => ({...s, error}))}
+      mergeConfigSpec={() => setState((s) => ({...s, mergeConfigSpec: true}))}
+      parseSpec={(force: boolean) => setState((s) => ({...s, parse: force}))}
+      setConfig={(config: string) => setState((s) => ({...s, configEditorString: config}))}
+      setDecorations={(decoration: any[]) => setState((s) => ({...s, decorations: decoration}))}
+      setEditorFocus={(focus: any) => setState((s) => ({...s, editorFocus: focus}))}
+      setEditorReference={(reference: any) => setState((s) => ({...s, editorRef: reference}))}
+      updateEditorString={(editorString: string) => setState((s) => ({...s, editorString}))}
+      updateVegaLiteSpec={(spec: string, config?: string) =>
+        setState((s) => ({...s, editorString: spec, mode: Mode.VegaLite, ...(config && {configEditorString: config})}))
+      }
+      updateVegaSpec={(spec: string, config?: string) =>
+        setState((s) => ({...s, editorString: spec, mode: Mode.Vega, ...(config && {configEditorString: config})}))
+      }
+    />
   );
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);
+export default SpecEditor;

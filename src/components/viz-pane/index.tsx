@@ -1,37 +1,64 @@
-import {connect} from 'react-redux';
-import {bindActionCreators, Dispatch} from 'redux';
-import * as EditorActions from '../../actions/editor.js';
-import {State} from '../../constants/default-state.js';
-import Renderer from './renderer.js';
+import * as React from 'react';
+import {useCallback} from 'react';
+import {useAppContext} from '../../context/app-context.js';
+import VizPane from './renderer';
 
-export function mapStateToProps(state: State) {
-  return {
-    compiledEditorRef: state.compiledEditorRef,
-    debugPane: state.debugPane,
-    debugPaneSize: state.debugPaneSize,
-    decorations: state.decorations,
-    editorFocus: state.editorFocus,
-    editorRef: state.editorRef,
-    error: state.error,
-    errors: state.errors,
-    logs: state.logs,
-    navItem: state.navItem,
-    settings: state.settings,
-    view: state.view,
-  };
-}
+const VizPaneContainer: React.FC = () => {
+  const {state, setState} = useAppContext();
 
-export function mapDispatchToProps(dispatch: Dispatch<EditorActions.Action>) {
-  return bindActionCreators(
-    {
-      setDebugPaneSize: EditorActions.setDebugPaneSize,
-      setDecorations: EditorActions.setDecorations,
-      showLogs: EditorActions.showLogs,
-      toggleDebugPane: EditorActions.toggleDebugPane,
-      toggleNavbar: EditorActions.toggleNavbar,
+  const setDebugPaneSize = useCallback(
+    (size: number) => {
+      setState((s) => ({...s, debugPaneSize: size}));
     },
-    dispatch,
+    [setState],
   );
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Renderer);
+  const setDecorations = useCallback(
+    (decorations: any[]) => {
+      setState((s) => ({...s, decorations}));
+    },
+    [setState],
+  );
+
+  const showLogs = useCallback(
+    (show: boolean) => {
+      setState((s) => ({...s, logs: show}));
+    },
+    [setState],
+  );
+
+  const toggleDebugPane = useCallback(() => {
+    setState((s) => ({...s, debugPane: !s.debugPane}));
+  }, [setState]);
+
+  const toggleNavbar = useCallback(
+    (item: string) => {
+      setState((s) => ({...s, navItem: item}));
+    },
+    [setState],
+  );
+
+  return (
+    <VizPane
+      compiledEditorRef={state.compiledEditorRef}
+      debugPane={state.debugPane}
+      debugPaneSize={state.debugPaneSize}
+      decorations={state.decorations}
+      editorFocus={state.editorFocus}
+      editorRef={state.editorRef}
+      error={state.error}
+      errors={state.errors}
+      logs={state.logs}
+      navItem={state.navItem}
+      settings={state.settings}
+      view={state.view}
+      setDebugPaneSize={setDebugPaneSize}
+      setDecorations={setDecorations}
+      showLogs={showLogs}
+      toggleDebugPane={toggleDebugPane}
+      toggleNavbar={toggleNavbar}
+    />
+  );
+};
+
+export default VizPaneContainer;

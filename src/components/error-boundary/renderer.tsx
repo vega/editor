@@ -1,12 +1,16 @@
-import * as React from 'react';
-import {mapDispatchToProps, mapStateToProps} from './index.js';
+import React from 'react';
 import './index.css';
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & {children?: React.ReactNode};
+interface ErrorBoundaryProps {
+  error: {message: string};
+  logError: (error: Error, info: React.ErrorInfo) => void;
+  toggleDebugPane: () => void;
+  children?: React.ReactNode;
+}
 
-export default class ErrorBoundary extends React.PureComponent<Props> {
-  public componentDidCatch(error: Error) {
-    this.props.logError(error);
+export default class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
+  public componentDidCatch(error: Error, info: React.ErrorInfo) {
+    this.props.logError(error, info);
   }
 
   public render() {
@@ -17,6 +21,7 @@ export default class ErrorBoundary extends React.PureComponent<Props> {
         </div>
       );
     }
+
     return this.props.children;
   }
 }

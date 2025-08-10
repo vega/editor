@@ -8,16 +8,18 @@
     "strict": false,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "resolveJsonModule": true,
     "lib": [
       "esnext",
-      "dom"
+      "dom",
+      "dom.iterable"
     ],
     "skipLibCheck": true,
     "types": [
-      "vitest/globals",
-      "@testing-library/jest-dom"
+      "react",
+      "react-dom",
+      "node"
     ]
   },
   "include": [

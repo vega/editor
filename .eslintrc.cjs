@@ -85,7 +85,7 @@ module.exports = {
     "react/no-find-dom-node": "warn",
     "react/no-unescaped-entities": "off",
     "no-prototype-builtins": "warn",
-    "@typescript-eslint/ban-ts-comment": "warn"
+    "@typescript-eslint/ban-ts-comment": "warn",
   },
   "globals": {
     "__COMMIT_HASH__": true

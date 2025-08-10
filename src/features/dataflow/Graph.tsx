@@ -1,15 +1,18 @@
 import * as React from 'react';
-import {useAppSelector} from '../../hooks.js';
-import {currentLayoutSelector, useRecomputeLayout} from './layoutSlice.js';
+import {useDataflowActions, useDataflowComputed} from './DataflowContext.js';
 import {Cytoscape} from './Cytoscape.js';
 import {Popup} from './Popup.js';
 import './Graph.css';
-import {useDispatch} from 'react-redux';
-import {elementsSelectedSelector, setSelectedElements} from './selectionSlice.js';
 
 export function Graph() {
+  const {currentLayout, elementsSelected} = useDataflowComputed();
+  const {setSelectedElements, computeLayout} = useDataflowActions();
+
   // Trigger starting the async layout computation, when this node is rendered
-  useRecomputeLayout();
+  React.useEffect(() => {
+    computeLayout();
+  }, [computeLayout]);
+
   const cytoscape = React.useMemo(() => <Cytoscape />, []);
   return (
     <div className="graph">
@@ -22,26 +25,22 @@ export function Graph() {
 }
 
 function UnselectElements() {
-  const dispatch = useDispatch();
-  const elementsSelected = useAppSelector(elementsSelectedSelector);
+  const {elementsSelected} = useDataflowComputed();
+  const {setSelectedElements} = useDataflowActions();
   return (
-    <button
-      className="unselect-elements"
-      onClick={() => dispatch(setSelectedElements(null))}
-      disabled={!elementsSelected}
-    >
+    <button className="unselect-elements" onClick={() => setSelectedElements(null)} disabled={!elementsSelected}>
       Unselect elements
     </button>
   );
 }
 
 function Overlay() {
-  const layout = useAppSelector(currentLayoutSelector);
+  const {currentLayout} = useDataflowComputed();
 
-  if (layout === null) {
+  if (currentLayout === null) {
     return <div className="overlay center-text">No active dataflow runtime</div>;
   }
-  switch (layout.type) {
+  switch (currentLayout.type) {
     case 'loading':
       return <div className="overlay center-text">Laying out graph...</div>;
     case 'done':
@@ -50,7 +49,7 @@ function Overlay() {
       return (
         <div className="overlay">
           <h2>Encountered an error running ELK layout:</h2>
-          <pre>{layout.error.stack}</pre>
+          <pre>{currentLayout.error.stack}</pre>
         </div>
       );
   }
