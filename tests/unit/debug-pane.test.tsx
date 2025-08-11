@@ -1,46 +1,68 @@
-import React from 'react';
-import {render, screen, fireEvent, waitFor} from '@testing-library/react';
-import {vi} from 'vitest';
+import {fireEvent, waitFor, within} from '@testing-library/react';
 
-import {HashRouter} from 'react-router-dom';
-import {AppContextProvider} from '../../src/context/app-context';
-import AppShell from '../../src/components/app-shell';
-
+import {renderApp, seedValidVegaLiteSpec} from '../setup';
 // Pane header component with class 'pane-header' should be present
-// It should have 4 li elements that have test LOGS, DATA VIEWER, SIGNAL VIEWER, DATAFLOW VIEWER
+// It should have 4 li elements that have text LOGS, DATA VIEWER, SIGNAL VIEWER, DATAFLOW VIEWER
 // When you click on the pane header, check if debug-pane element is present
 
 describe('Debug Pane Component', () => {
-  it('should render the pane header', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+  it('renders the pane header with tabs', async () => {
+    seedValidVegaLiteSpec();
+    renderApp();
 
-    const paneHeader = document.querySelector('.pane-header');
-    expect(paneHeader).toBeInTheDocument();
+    const header = document.querySelector('.debug-pane .pane-header');
+    expect(header).toBeInTheDocument();
 
-    const liElements = paneHeader?.querySelectorAll('li');
-    expect(liElements).toHaveLength(4);
+    await waitFor(() => {
+      const tabs = header!.querySelectorAll('.tabs-nav li');
+      expect(tabs.length).toBe(4);
+    });
 
-    const logsLi = liElements?.[0];
-    expect(logsLi).toHaveTextContent('Logs');
+    expect(within(header as HTMLElement).getByText(/Logs/i)).toBeInTheDocument();
+    await within(header as HTMLElement).findByText(/Data Viewer/i);
+    await within(header as HTMLElement).findByText(/Signal Viewer/i);
+    await within(header as HTMLElement).findByText(/Dataflow Viewer/i);
+  });
 
-    const dataViewerLi = liElements?.[1];
-    expect(dataViewerLi).toHaveTextContent('Data Viewer');
+  it('shows debug pane after clicking the header', async () => {
+    renderApp();
 
-    const signalViewerLi = liElements?.[2];
-    expect(signalViewerLi).toHaveTextContent('Signal Viewer');
+    const header = document.querySelector('.debug-pane .pane-header');
+    expect(header).toBeInTheDocument();
 
-    const dataflowViewerLi = liElements?.[3];
-    expect(dataflowViewerLi).toHaveTextContent('Dataflow Viewer');
+    fireEvent.click(header!);
 
-    const debugPane = document.querySelector('.debug-pane');
+    await waitFor(() => {
+      const debugPane = document.querySelector('.debug-pane');
+      expect(debugPane).toBeInTheDocument();
+    });
+  });
 
-    fireEvent.click(logsLi);
-    expect(debugPane).toBeInTheDocument();
+  it('activates Logs tab by default and switches active tab on click', async () => {
+    seedValidVegaLiteSpec();
+    renderApp();
+
+    let header = document.querySelector('.debug-pane .pane-header') as HTMLElement;
+    fireEvent.click(header);
+    await waitFor(() => {
+      const debugPane = document.querySelector('.debug-pane');
+      expect(debugPane).toBeInTheDocument();
+    });
+
+    header = document.querySelector('.debug-pane .pane-header');
+    const logsTab = within(header).getByText(/Logs/i).closest('li');
+    await waitFor(() => expect(logsTab).toHaveClass('active-tab'));
+
+    const dataViewerTabEl = await within(header).findByText(/Data Viewer/i);
+    fireEvent.click(dataViewerTabEl);
+
+    const dataViewerTab = dataViewerTabEl.closest('li');
+    await waitFor(() => expect(dataViewerTab).toHaveClass('active-tab'));
+    expect(logsTab).not.toHaveClass('active-tab');
+
+    const logsTabEl = within(header).getByText(/Logs/i);
+    fireEvent.click(logsTabEl);
+    await waitFor(() => expect(logsTab).toHaveClass('active-tab'));
+    expect(dataViewerTab).not.toHaveClass('active-tab');
   });
 });

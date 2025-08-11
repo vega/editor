@@ -2,22 +2,12 @@
 // Test clicking on the buttons
 // Test Edit Vega Spec and Edit Vega-Lite Spec buttons
 
-import React from 'react';
-
-import {HashRouter} from 'react-router-dom';
-import {AppContextProvider} from '../../src/context/app-context';
-import {fireEvent, render, screen} from '@testing-library/react';
-import AppShell from '../../src/components/app-shell';
+import {fireEvent, screen} from '@testing-library/react';
+import {renderApp} from '../setup';
 
 describe('Compiled Spec Header Component', () => {
   it('should render the compiled vega and extended vega-lite buttons', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
     // Test that a component with the class 'tabs-nav' is present
     const tabsNav = document.querySelector('.tabs-nav');
     expect(tabsNav).toBeInTheDocument();
@@ -30,38 +20,45 @@ describe('Compiled Spec Header Component', () => {
   });
 
   it('should handle tab switching and header click', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
+    const compiledVegaButton = screen.getByText('Compiled Vega');
+    const extendedVegaLiteButton = screen.getByText('Extended Vega-Lite Spec');
 
     const editorHeader = document.querySelector('.editor-header:not(.spec-editor-header)');
     expect(editorHeader).toBeInTheDocument();
     if (editorHeader) {
-      fireEvent.click(editorHeader);
+      fireEvent.click(compiledVegaButton);
     }
 
-    const compiledVegaTab = screen.getByText('Compiled Vega');
-    expect(compiledVegaTab).toBeInTheDocument();
+    expect(editorHeader).not.toBeInTheDocument();
 
-    // Check that a button with the Text 'Edit Vega Spec' is present
+    // Check that the component with the class ="editor-header spec-editor-header" is present
+    const specEditorHeader = document.querySelector('.editor-header.spec-editor-header');
+    expect(specEditorHeader).toBeInTheDocument();
+    //Check that the specEditorHeader has a ul element with the class 'tabs-nav' and that it has 2 li elements
+    const tabsNav = specEditorHeader?.querySelector('ul.tabs-nav');
+    expect(tabsNav).toBeInTheDocument();
+    const tabsNavItems = tabsNav?.querySelectorAll('li');
+    expect(tabsNavItems).toHaveLength(2);
+
+    //Check that the first li element has the text 'VEGA'
+    expect(tabsNavItems?.[0]).toHaveTextContent(/vega/i);
+    //Check that the second li element has the text 'CONFIG'
+    expect(tabsNavItems?.[1]).toHaveTextContent(/config/i);
+  });
+
+  it('should handle editing vega spec', () => {
+    renderApp();
+    const compiledVegaButton = screen.getByText('Compiled Vega');
+    fireEvent.click(compiledVegaButton);
+
+    const editorHeader = document.querySelector('.editor-header.spec-editor-header');
+    expect(editorHeader).toBeInTheDocument();
+
+    // Check that a button with the text 'Edit Vega Spec' is present
     const editVegaSpecButton = screen.getByText('Edit Vega Spec');
     expect(editVegaSpecButton).toBeInTheDocument();
 
-    const extendedVegaLiteTab = screen.getByText('Extended Vega-Lite Spec');
-    expect(extendedVegaLiteTab).toBeInTheDocument();
-    fireEvent.click(extendedVegaLiteTab);
-
-    const editExtendedVegaLiteSpecButton = screen.getByText('Edit Extended Vega-Lite Spec');
-    expect(editExtendedVegaLiteSpecButton).toBeInTheDocument();
-
-    // Check the element with class 'active-tab' has text 'Extended Vega-Lite Spec'
-    expect(editorHeader).toHaveTextContent('Extended Vega-Lite Spec');
-
-    fireEvent.click(compiledVegaTab);
     fireEvent.click(editVegaSpecButton);
 
     expect(editorHeader).not.toBeInTheDocument();
@@ -78,6 +75,35 @@ describe('Compiled Spec Header Component', () => {
     //Check that the first li element has the text 'VEGA'
     expect(tabsNavItems?.[0]).toHaveTextContent(/vega/i);
     //Check that the second li element has the text 'CONFIG'
+    expect(tabsNavItems?.[1]).toHaveTextContent(/config/i);
+  });
+
+  it('should handle editing extended vega-lite spec', () => {
+    renderApp();
+    const extendedVegaLiteButton = screen.getByText('Extended Vega-Lite Spec');
+    expect(extendedVegaLiteButton).toBeInTheDocument();
+    fireEvent.click(extendedVegaLiteButton);
+
+    const editorHeader = document.querySelector('.editor-header.spec-editor-header');
+    expect(editorHeader).toBeInTheDocument();
+
+    const editExtendedVegaLiteSpecButton = screen.getByText('Edit Extended Vega-Lite Spec');
+    expect(editExtendedVegaLiteSpecButton).toBeInTheDocument();
+
+    fireEvent.click(editExtendedVegaLiteSpecButton);
+
+    expect(editorHeader).toBeInTheDocument();
+
+    const specEditorHeader = document.querySelector('.editor-header.spec-editor-header');
+    expect(specEditorHeader).toBeInTheDocument();
+
+    const tabsNav = specEditorHeader?.querySelector('ul.tabs-nav');
+    expect(tabsNav).toBeInTheDocument();
+    const tabsNavItems = tabsNav?.querySelectorAll('li');
+    expect(tabsNavItems).toHaveLength(2);
+
+    // First tab should reflect Vega-Lite mode; second should be Config
+    expect(tabsNavItems?.[0]).toHaveTextContent(/vega-lite/i);
     expect(tabsNavItems?.[1]).toHaveTextContent(/config/i);
   });
 });
