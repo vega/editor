@@ -173,20 +173,25 @@ export class HomePage extends BasePage {
     // Check if there are any errors in the application state
     const hasError = await this.page.evaluate(() => {
       // Check for error indicators in the debug pane header
-      const errorElements = document.querySelectorAll('.pane-header .error, .error-pane .error');
+      const errorElements = document.querySelectorAll('.pane-header .error, .error-pane .error #error-indicator');
       return errorElements.length > 0;
     });
 
     if (hasError) {
-      // If there are errors, the debug pane should show them
-      // The error pane may not be visible if debug pane is collapsed
-      const debugPaneVisible = await this.page.locator('.debug-pane').isVisible();
-      if (debugPaneVisible) {
-        const errorPaneExists = await this.errorPane.count();
-        expect(errorPaneExists).toBeGreaterThan(0);
+      const isOpen = await this.page.evaluate(() => {
+        const header = document.querySelector('.pane-header') as HTMLElement;
+        return header != null && header.querySelector('.ChevronDown') != null;
+      });
+      if (!isOpen) {
+        await this.page.locator('.pane-header').click();
+        await this.waitForStableUI();
       }
+      await this.page.locator('.tabs-nav .logs-text').click();
+      await this.waitForStableUI();
+
+      const errorPaneExists = await this.errorPane.count();
+      expect(errorPaneExists).toBeGreaterThan(0);
     } else {
-      // If no errors are expected but we're calling this method, something might be wrong
       console.log('expectErrorToBeShown called but no errors found in DOM');
     }
   }
@@ -202,7 +207,6 @@ export class HomePage extends BasePage {
   }
 
   async waitForVisualizationUpdate() {
-    // Wait for any running animations or updates to complete
     await this.page.waitForTimeout(1000);
   }
 }
