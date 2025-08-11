@@ -147,15 +147,13 @@ export class HomePage extends BasePage {
   }
 
   async expectVisualizationToHaveContent() {
-    // Wait a bit for the visualization to render
     await this.page.waitForTimeout(1000);
 
-    // Check for any visual content in the chart container
+    // Checking for any visual content in the chart container
     const hasContent = await this.page.evaluate(() => {
       const container = document.querySelector('.chart-container');
       if (!container) return false;
 
-      // Look for various possible visualization elements
       const selectors = ['#vis svg', '#vis canvas', '.vega-embed svg', '.vega-embed canvas', 'svg', 'canvas'];
 
       for (const selector of selectors) {
@@ -170,7 +168,7 @@ export class HomePage extends BasePage {
   }
 
   async expectErrorToBeShown() {
-    // Check if there are any errors in the application state
+    // checking for errors
     const hasError = await this.page.evaluate(() => {
       // Check for error indicators in the debug pane header
       const errorElements = document.querySelectorAll('.pane-header .error, .error-pane .error #error-indicator');
@@ -197,7 +195,6 @@ export class HomePage extends BasePage {
   }
 
   async expectNoErrors() {
-    // Check that there are no error indicators anywhere
     const hasErrors = await this.page.evaluate(() => {
       const errorElements = document.querySelectorAll('.pane-header .error, .error-pane .error');
       return errorElements.length > 0;

@@ -146,16 +146,13 @@ export const INVALID_SPECS = {
 };
 
 export const TEST_GIST_IDS = {
-  // These are example public gist IDs - replace with actual test gists if needed
   simpleBar: '455e1c7872c4b38a58b90df0c3d7b1b9',
   scatterPlot: 'f48e8cb861509c2a465a33b5fbb3a0a8',
-  // Add more as needed for testing
 };
 
 export const EXAMPLE_SEARCH_TERMS = ['bar', 'scatter', 'line', 'histogram', 'area', 'pie', 'map'];
 
 export const UI_SELECTORS = {
-  // Common selectors that might be useful across tests
   modeSwitcher: '.mode-switcher-wrapper',
   examplesButton: '.header-button:has-text("Examples")',
   settingsButton: '.header-button:has-text("Settings")',
@@ -174,7 +171,6 @@ export const VIEWPORT_SIZES = {
   mobile: {width: 375, height: 667},
 };
 
-// Helper function to convert spec objects to JSON strings
 export function specToString(spec: any): string {
   return JSON.stringify(spec, null, 2);
 }
