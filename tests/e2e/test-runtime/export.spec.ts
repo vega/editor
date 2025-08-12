@@ -11,9 +11,8 @@ test.describe('Export Functionality', () => {
     exportModal = new ExportModal(page);
     await homePage.goto();
 
-    // Load a simple visualization first
     const simpleSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"category": "A", "value": 28},
@@ -34,11 +33,9 @@ test.describe('Export Functionality', () => {
   });
 
   test('should open and close export modal', async () => {
-    // Open export modal
     await homePage.openExportModal();
     await exportModal.expectModalToBeOpen();
 
-    // Close export modal
     await exportModal.close();
     await exportModal.expectModalToBeClosed();
   });
@@ -50,7 +47,6 @@ test.describe('Export Functionality', () => {
     const exportOptions = await exportModal.getExportOptions();
     expect(exportOptions.length).toBeGreaterThan(0);
 
-    // Should have common export formats
     const optionsText = exportOptions.join(' ').toLowerCase();
     expect(optionsText).toMatch(/(png|svg|pdf|json)/);
   });
@@ -59,11 +55,9 @@ test.describe('Export Functionality', () => {
     await homePage.openExportModal();
     await exportModal.expectModalToBeOpen();
 
-    // Select PNG format
     await exportModal.selectFormat('PNG');
     await exportModal.expectPreviewToBeVisible();
 
-    // Test download (this will start the download)
     const download = await exportModal.downloadFile();
     expect(download.suggestedFilename()).toMatch(/\.(png|PNG)$/);
 
@@ -74,11 +68,9 @@ test.describe('Export Functionality', () => {
     await homePage.openExportModal();
     await exportModal.expectModalToBeOpen();
 
-    // Select SVG format
     await exportModal.selectFormat('SVG');
     await exportModal.expectPreviewToBeVisible();
 
-    // Test download
     const download = await exportModal.downloadFile();
     expect(download.suggestedFilename()).toMatch(/\.(svg|SVG)$/);
 
@@ -89,10 +81,8 @@ test.describe('Export Functionality', () => {
     await homePage.openExportModal();
     await exportModal.expectModalToBeOpen();
 
-    // Select JSON format
     await exportModal.selectFormat('JSON');
 
-    // JSON export might not have a preview, but should be downloadable
     const download = await exportModal.downloadFile();
     const filename = download.suggestedFilename();
     expect(filename).toMatch(/\.(json|JSON)$/);
@@ -104,10 +94,8 @@ test.describe('Export Functionality', () => {
     await homePage.openExportModal();
     await exportModal.expectModalToBeOpen();
 
-    // Try copying (this tests the UI interaction, actual clipboard access might be limited in tests)
     await exportModal.copyToClipboard();
 
-    // The copy operation should complete without errors
     await homePage.waitForStableUI();
 
     await exportModal.close();
@@ -119,7 +107,6 @@ test.describe('Export Functionality', () => {
 
     await exportModal.selectFormat('PNG');
 
-    // Test different scale values
     await exportModal.setScale(2);
     await exportModal.expectPreviewToBeVisible();
 
@@ -130,7 +117,6 @@ test.describe('Export Functionality', () => {
   });
 
   test('should export complex visualization', async () => {
-    // Load a more complex spec
     const complexSpec = `{
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
@@ -168,7 +154,6 @@ test.describe('Export Functionality', () => {
   });
 
   test('should handle export errors gracefully', async () => {
-    // Load an invalid spec that might cause export issues
     const problematicSpec = `{
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"values": []},
@@ -182,16 +167,13 @@ test.describe('Export Functionality', () => {
     await homePage.openExportModal();
     await exportModal.expectModalToBeOpen();
 
-    // Try to export despite potential issues
     await exportModal.selectFormat('PNG');
 
-    // The modal should remain functional even if export has issues
     await exportModal.close();
     await homePage.expectPageToBeLoaded();
   });
 
   test('should export from Vega mode', async () => {
-    // Switch to Vega mode
     await homePage.switchMode('Vega');
 
     const vegaSpec = `{

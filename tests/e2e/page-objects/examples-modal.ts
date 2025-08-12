@@ -45,14 +45,12 @@ export class ExamplesModal extends BasePage {
   }
 
   async selectExample(name: string) {
-    // Use first() to handle multiple matches with similar names
     const example = this.page.locator(`.item:has(.name:text("${name}"))`).first();
     await example.click();
     await this.waitForStableUI();
   }
 
   async loadSelectedExample() {
-    // Examples are loaded immediately when clicked, no separate load button
     await this.waitForStableUI();
     await this.expectModalToBeClosed();
   }

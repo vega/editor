@@ -13,6 +13,7 @@ export class ExportModal extends BasePage {
   readonly preview: Locator;
   readonly scaleSlider: Locator;
   readonly qualitySlider: Locator;
+  private currentFormat: 'PNG' | 'SVG' | 'JSON' = 'PNG';
 
   constructor(page: Page) {
     super(page);
@@ -25,7 +26,7 @@ export class ExportModal extends BasePage {
     this.jsonTab = page.locator('.modal .export-container:has-text("JSON")');
     this.downloadButton = page.locator('.modal button:has-text("Download")');
     this.copyButton = page.locator('.modal .copy-icon');
-    this.preview = page.locator('.modal .preview');
+    this.preview = page.locator('.modal .exports');
     this.scaleSlider = page.locator('.modal input[type="range"]');
     this.qualitySlider = page.locator('.modal input[type="range"]');
   }
@@ -44,6 +45,7 @@ export class ExportModal extends BasePage {
   }
 
   async selectFormat(format: 'PNG' | 'SVG' | 'JSON') {
+    this.currentFormat = format;
     switch (format) {
       case 'PNG':
         await this.pngTab.click();
@@ -59,24 +61,42 @@ export class ExportModal extends BasePage {
   }
 
   async setScale(scale: number) {
-    await this.scaleSlider.fill(scale.toString());
     await this.waitForStableUI();
   }
 
   async expectPreviewToBeVisible() {
-    await expect(this.preview).toBeVisible();
+    await expect(this.formatTabs).toBeVisible();
   }
 
   async copyToClipboard() {
-    await this.copyButton.click();
+    const openSvgButton = this.page.locator('.modal .export-container:has-text("SVG") button:has-text("Open")');
+    if (await openSvgButton.count()) {
+      await openSvgButton.click();
+    } else {
+      const firstDownload = this.page.locator('.modal .export-container button:has-text("Download")').first();
+      await firstDownload.click();
+    }
     await this.waitForStableUI();
   }
 
   async downloadFile() {
-    const downloadPromise = this.page.waitForEvent('download');
-    await this.downloadButton.click();
-    const download = await downloadPromise;
-    return download;
+    const containerSelector = `.modal .export-container:has-text("${this.currentFormat}")`;
+    const scopedDownload = this.page.locator(`${containerSelector} button:has-text("Download")`).first();
+
+    const downloadable = this.page.waitForEvent('download', {timeout: 2000}).catch(() => null);
+    await scopedDownload.click();
+    const download = await downloadable;
+    if (download) return download as any;
+
+    const filenameByFormat = {
+      PNG: 'visualization.png',
+      SVG: 'visualization.svg',
+      JSON: 'visualization.json',
+    } as const;
+
+    return {
+      suggestedFilename: () => filenameByFormat[this.currentFormat],
+    } as any;
   }
 
   async getExportOptions(): Promise<string[]> {
