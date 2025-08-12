@@ -161,9 +161,11 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
 
   const container = (
     <div className="chart-container">
-      <ErrorBoundary>
-        <Renderer />
-      </ErrorBoundary>
+      <div className="chart-scroll">
+        <ErrorBoundary>
+          <Renderer />
+        </ErrorBoundary>
+      </div>
       <div className="versions">
         Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {COMMIT_HASH.slice(0, 7)}
       </div>
