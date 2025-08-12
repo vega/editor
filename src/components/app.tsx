@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as vega from 'vega';
 import * as vegaLite from 'vega-lite';
 import {useCallback, useEffect} from 'react';
-import {useParams} from 'react-router';
+import {useParams, useLocation} from 'react-router';
 import {MessageData} from 'vega-embed';
 import {mergeConfig} from 'vega';
 import {Config} from 'vega-lite';
@@ -34,6 +34,7 @@ const App: React.FC<Props> = (props) => {
   const {editorRef, settings} = state;
 
   const params = useParams();
+  const location = useLocation();
 
   const setExample = useCallback(
     async (parameter: {example_name: string; mode: string}) => {
@@ -348,6 +349,22 @@ const App: React.FC<Props> = (props) => {
       }
     }
   }, [state.mergeConfigSpec, state.editorString, state.configEditorString, setState]);
+
+  useEffect(() => {
+    if (location.pathname === '/edited' && location.state) {
+      const navState = location.state as any;
+      if (navState.editorString !== undefined) {
+        setState((s) => ({
+          ...s,
+          editorString: navState.editorString,
+          mode: navState.mode || s.mode,
+          parse: navState.parse !== undefined ? navState.parse : s.parse,
+          config: navState.config !== undefined ? navState.config : s.config,
+        }));
+        window.history.replaceState({}, '', window.location.href);
+      }
+    }
+  }, [location.pathname, location.state, setState]);
 
   useEffect(() => {
     if (state.extractConfigSpec) {

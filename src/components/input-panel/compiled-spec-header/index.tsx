@@ -1,7 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {ChevronDown, ChevronUp} from 'react-feather';
-import {useNavigate} from 'react-router';
+import {useNavigate, useLocation} from 'react-router';
 import {useAppContext} from '../../../context/app-context.js';
 import {COMPILEDPANE, Mode} from '../../../constants/index.js';
 
@@ -12,6 +12,7 @@ const toggleStyle = {
 function CompiledSpecDisplayHeader() {
   const {state, setState} = useAppContext();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {compiledVegaSpec, compiledPaneItem, value} = {
     compiledVegaSpec: state.compiledVegaSpec,
@@ -19,13 +20,24 @@ function CompiledSpecDisplayHeader() {
     value: state.compiledPaneItem === COMPILEDPANE.Vega ? state.vegaSpec : state.normalizedVegaLiteSpec,
   };
 
-  const editSpec = () => {
-    navigate('/edited');
-    setState((s) => ({...s, config: {}}));
-    if (compiledPaneItem === COMPILEDPANE.Vega) {
-      setState((s) => ({...s, editorString: stringify(value), mode: Mode.Vega, parse: true}));
+  const editSpec = async () => {
+    if (location.pathname.indexOf('/edited') === -1) {
+      navigate('/edited', {
+        state: {
+          editorString: stringify(value),
+          mode: compiledPaneItem === COMPILEDPANE.Vega ? Mode.Vega : undefined,
+          parse: true,
+          config: {},
+        },
+      });
     } else {
-      setState((s) => ({...s, editorString: stringify(value), parse: true}));
+      // We're already on /edited, so we can set state directly
+      setState((s) => ({...s, config: {}}));
+      if (compiledPaneItem === COMPILEDPANE.Vega) {
+        setState((s) => ({...s, editorString: stringify(value), mode: Mode.Vega, parse: true}));
+      } else {
+        setState((s) => ({...s, editorString: stringify(value), parse: true}));
+      }
     }
   };
 
