@@ -195,10 +195,28 @@ export default defineConfig({
   publicDir: 'public',
 
   test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './tests/setup.tsx',
-    include: ['tests/unit/**/*.{test,spec}.{js,ts,tsx}'],
-    exclude: ['tests/e2e/**/*'],
+    projects: [
+      {
+        test: {
+          include: ['tests/unit/*.test.ts'],
+          name: 'unit',
+          environment: 'node',
+          globals: true,
+        },
+      },
+      {
+        test: {
+          include: ['tests/e2e/**/*.test.ts'],
+          name: 'runtime',
+          browser: {
+            provider: 'playwright',
+            enabled: true,
+            headless: false,
+            instances: [{browser: 'chromium'}],
+          },
+          globals: true,
+        },
+      },
+    ],
   },
 });

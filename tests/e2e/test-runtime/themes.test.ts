@@ -60,7 +60,6 @@ test.describe('Themes functionality', () => {
     const cfg2 = await readDebugConfig(page);
     expect(cfg2).toMatchObject(excel);
 
-    // Configs for different themes should differ by at least one key/value
     expect(JSON.stringify(cfg1)).not.toEqual(JSON.stringify(cfg2));
 
     await page.selectOption('#config-select', 'custom');

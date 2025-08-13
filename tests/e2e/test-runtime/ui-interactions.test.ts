@@ -27,7 +27,6 @@ test.describe('UI interactions - resizing', () => {
     const container = page.locator('.main-pane');
     await expect(container).toBeVisible();
 
-    // react-split renders: pane1, gutter, pane2
     const leftPane = container.locator('> :not(.gutter)').first();
     const rightPane = container.locator('> :not(.gutter)').last();
     const gutter = container.locator('> .gutter');
@@ -38,7 +37,6 @@ test.describe('UI interactions - resizing', () => {
     const rightBefore = await rightPane.boundingBox();
     expect(leftBefore && rightBefore).toBeTruthy();
 
-    // Drag gutter to the right by 150px
     await dragBy(page, '.main-pane > .gutter', 150, 0);
     await homePage.waitForStableUI();
 
@@ -51,12 +49,10 @@ test.describe('UI interactions - resizing', () => {
 
     expect(Math.abs(leftDelta)).toBeGreaterThan(30);
     expect(Math.abs(rightDelta)).toBeGreaterThan(30);
-    // Deltas should be opposite in sign
     expect(Math.sign(leftDelta)).toBe(-Math.sign(rightDelta));
   });
 
   test('resize editor vs compiled pane via gutter drag', async ({page}) => {
-    // Ensure Vega-Lite mode where the vertical editor split exists
     await homePage.switchMode('Vega-Lite');
     const editorSplit = page.locator('.editor-splitPane');
     await page.waitForSelector('.editor-splitPane', {state: 'attached'});
@@ -69,34 +65,21 @@ test.describe('UI interactions - resizing', () => {
     const topPane = panes.first();
     const bottomPane = panes.last();
 
-    // Ensure gutter is present
-    const gutter = editorSplit.locator('.gutter');
     await page.waitForSelector('.editor-splitPane .gutter', {state: 'visible'});
 
     const topBefore = await topPane.boundingBox();
     const bottomBefore = await bottomPane.boundingBox();
     expect(topBefore && bottomBefore).toBeTruthy();
 
-    // Drag gutter upward by 100px to expand bottom pane
     await dragBy(page, '.editor-splitPane .gutter', 0, -100);
     await homePage.waitForStableUI();
 
-    let topAfter = await topPane.boundingBox();
-    let bottomAfter = await bottomPane.boundingBox();
+    const topAfter = await topPane.boundingBox();
+    const bottomAfter = await bottomPane.boundingBox();
     expect(topAfter && bottomAfter).toBeTruthy();
 
-    let topDelta = (topAfter!.height ?? 0) - (topBefore!.height ?? 0);
-    let bottomDelta = (bottomAfter!.height ?? 0) - (bottomBefore!.height ?? 0);
-
-    if (Math.abs(topDelta) <= 2 && Math.abs(bottomDelta) <= 2) {
-      // Retry with a larger drag if the first attempt didn't register
-      await dragBy(page, '.editor-splitPane .gutter', 0, 200);
-      await homePage.waitForStableUI();
-      topAfter = await topPane.boundingBox();
-      bottomAfter = await bottomPane.boundingBox();
-      topDelta = (topAfter!.height ?? 0) - (topBefore!.height ?? 0);
-      bottomDelta = (bottomAfter!.height ?? 0) - (bottomBefore!.height ?? 0);
-    }
+    const topDelta = (topAfter!.height ?? 0) - (topBefore!.height ?? 0);
+    const bottomDelta = (bottomAfter!.height ?? 0) - (bottomBefore!.height ?? 0);
 
     expect(Math.max(Math.abs(topDelta), Math.abs(bottomDelta))).toBeGreaterThan(20);
     if (topDelta !== 0 && bottomDelta !== 0) {

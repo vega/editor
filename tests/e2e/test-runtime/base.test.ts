@@ -12,11 +12,9 @@ test.describe('Basic Functionality', () => {
   test('should load the application correctly', async () => {
     await homePage.expectPageToBeLoaded();
 
-    // Expect default mode is Vega-Lite
     const currentMode = await homePage.getCurrentMode();
     expect(currentMode).toBe('Vega-Lite');
 
-    // Check that main UI elements are visible
     await expect(homePage.modeSwitcher).toBeVisible();
     await expect(homePage.examplesButton).toBeVisible();
     await expect(homePage.settingsButton).toBeVisible();
@@ -24,16 +22,14 @@ test.describe('Basic Functionality', () => {
   });
 
   test('should switch between Vega and Vega-Lite modes', async () => {
-    // Start with Vega-Lite (default)
+    // Start with Vega-Lite as default
     let currentMode = await homePage.getCurrentMode();
     expect(currentMode).toBe('Vega-Lite');
 
-    // Switch to Vega
     await homePage.switchMode('Vega');
     currentMode = await homePage.getCurrentMode();
     expect(currentMode).toBe('Vega');
 
-    // Switch back to Vega-Lite
     await homePage.switchMode('Vega-Lite');
     currentMode = await homePage.getCurrentMode();
     expect(currentMode).toBe('Vega-Lite');
@@ -57,7 +53,6 @@ test.describe('Basic Functionality', () => {
 
     await homePage.typeInEditor(testSpec);
 
-    // Wait a moment for the editor to process the input
     await homePage.waitForStableUI();
 
     const editorContent = await homePage.getEditorContent();
@@ -84,7 +79,6 @@ test.describe('Basic Functionality', () => {
     await homePage.typeInEditor(validSpec);
     await homePage.waitForVisualizationUpdate();
 
-    // Check that visualization is rendered
     await homePage.expectVisualizationToBeVisible();
     await homePage.expectVisualizationToHaveContent();
     await homePage.expectNoErrors();
@@ -108,29 +102,23 @@ test.describe('Basic Functionality', () => {
     await homePage.typeInEditor(invalidSpec);
     await homePage.waitForVisualizationUpdate();
 
-    // Should show error or handle gracefully
     await homePage.waitForStableUI();
 
-    // Check if there are error indicators
     const hasErrors = await homePage.page.evaluate(() => {
       return document.querySelectorAll('.pane-header .error').length > 0;
     });
 
-    // If there are errors, that's expected for invalid spec
     if (hasErrors) {
       console.log('Error indicators found as expected for invalid spec');
     }
   });
 
   test('should open and close settings panel', async () => {
-    // Settings should be closed initially
     expect(await homePage.isSettingsOpen()).toBe(false);
 
-    // Open settings
     await homePage.toggleSettings();
     expect(await homePage.isSettingsOpen()).toBe(true);
 
-    // Close settings
     await homePage.toggleSettings();
     expect(await homePage.isSettingsOpen()).toBe(false);
   });
@@ -138,24 +126,19 @@ test.describe('Basic Functionality', () => {
   test('should open commands palette', async () => {
     await homePage.openCommands();
 
-    // Check that command palette is visible
     await expect(homePage.page.locator('.quick-input-widget')).toBeVisible();
 
-    // Close with Escape
     await homePage.pressKey('Escape');
     await expect(homePage.page.locator('.quick-input-widget')).not.toBeVisible();
   });
 
   test('should handle keyboard shortcuts', async () => {
-    // Test Ctrl/Cmd + Enter to run spec
     await homePage.typeInEditor('{"$schema": "https://vega.github.io/schema/vega-lite/v5.json"}');
 
-    // Focus editor and press Ctrl/Cmd + Enter
     await homePage.specEditor.click();
     const modifier = process.platform === 'darwin' ? 'Meta' : 'Control';
     await homePage.page.keyboard.press(`${modifier}+Enter`);
 
     await homePage.waitForStableUI();
-    // Should attempt to render (may show error due to incomplete spec)
   });
 });

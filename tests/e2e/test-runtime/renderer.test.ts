@@ -39,24 +39,20 @@ test.describe('Visualization Rendering', () => {
     await homePage.expectVisualizationToBeVisible();
     await homePage.expectVisualizationToHaveContent();
 
-    // Wait for the visualization to render - try multiple approaches
     try {
       await homePage.page.waitForFunction(
         () => {
           const container = document.querySelector('.chart-container');
           if (!container) return false;
 
-          // Check for canvas rendering
           const canvas = container.querySelector('canvas');
           if (canvas && canvas.width > 0 && canvas.height > 0) return true;
 
-          // Check for SVG with content
           const svg = container.querySelector('svg');
           if (svg) {
             const elements = svg.querySelectorAll('rect, path, circle, line, text');
             if (elements.length > 0) return true;
 
-            // Check if SVG has non-empty groups
             const groups = svg.querySelectorAll('g');
             for (const group of Array.from(groups)) {
               if (group.children.length > 0) return true;
@@ -68,25 +64,20 @@ test.describe('Visualization Rendering', () => {
         {timeout: 3000},
       );
     } catch (error) {
-      // If timeout, continue - the visualization might still be functional
       console.log('Visualization content wait timed out, continuing with test');
     }
 
-    // Check for SVG elements (bars) - try multiple possible selectors
     const barSvgContainer = homePage.page.locator('.chart-container svg, .chart-container #vis svg, .vega-embed svg');
     const bars = await barSvgContainer.locator('rect').count();
 
     if (bars === 0) {
-      // Check if there's any meaningful content in the chart container
       const hasVisualization = await homePage.page.evaluate(() => {
         const container = document.querySelector('.chart-container');
         if (!container) return false;
 
-        // Check for canvas rendering
         const canvas = container.querySelector('canvas');
         if (canvas && canvas.width > 0 && canvas.height > 0) return true;
 
-        // Check for any SVG with actual content
         const svg = container.querySelector('svg');
         if (svg) {
           const elements = svg.querySelectorAll('rect, path, circle, line, text');
@@ -101,22 +92,17 @@ test.describe('Visualization Rendering', () => {
       expect(bars).toBeGreaterThan(0);
     }
 
-    // Check for axes - look for any text elements (axis labels)
     const hasAxisElements = await homePage.page.evaluate(() => {
       const container = document.querySelector('.chart-container');
       if (!container) return false;
 
-      // Look for text elements that could be axis labels
       const textElements = container.querySelectorAll('text, .axis, [class*="axis"]');
       return textElements.length > 0;
     });
 
-    // Axes might not always be present or visible, so this is optional
-    // The main thing is that the visualization rendered successfully
     if (hasAxisElements) {
       expect(hasAxisElements).toBe(true);
     } else {
-      // If no axis elements, just log it - not a failure
       console.log('No axis elements found, but visualization may still be valid');
     }
   });
@@ -145,15 +131,12 @@ test.describe('Visualization Rendering', () => {
     await homePage.expectVisualizationToBeVisible();
     await homePage.expectVisualizationToHaveContent();
 
-    // Check for line path - try multiple selectors
     const lineSvgContainer = homePage.page.locator('.chart-container svg, .chart-container #vis svg, .vega-embed svg');
     const paths = await lineSvgContainer.locator('path').count();
 
     if (paths === 0) {
-      // Fallback: check for any path elements in the page
       const allPaths = await homePage.page.locator('svg path').count();
       if (allPaths === 0) {
-        // Might be canvas rendering
         const canvas = await homePage.page.locator('.chart-container canvas').count();
         expect(canvas).toBeGreaterThan(0);
       } else {
@@ -190,17 +173,14 @@ test.describe('Visualization Rendering', () => {
     await homePage.expectVisualizationToBeVisible();
     await homePage.expectVisualizationToHaveContent();
 
-    // Check for circles - try multiple selectors
     const scatterSvgContainer = homePage.page.locator(
       '.chart-container svg, .chart-container #vis svg, .vega-embed svg',
     );
     const circles = await scatterSvgContainer.locator('circle').count();
 
     if (circles === 0) {
-      // Fallback: check for any circle elements in the page
       const allCircles = await homePage.page.locator('svg circle').count();
       if (allCircles === 0) {
-        // Might be canvas rendering or different mark type
         const canvas = await homePage.page.locator('.chart-container canvas').count();
         const anyMarks = await homePage.page.locator('svg path, svg rect').count();
         expect(canvas > 0 || anyMarks > 0).toBe(true);
@@ -237,15 +217,12 @@ test.describe('Visualization Rendering', () => {
     await homePage.expectVisualizationToBeVisible();
     await homePage.expectVisualizationToHaveContent();
 
-    // Check for area path - try multiple selectors
     const areaSvgContainer = homePage.page.locator('.chart-container svg, .chart-container #vis svg, .vega-embed svg');
     const paths = await areaSvgContainer.locator('path').count();
 
     if (paths === 0) {
-      // Fallback: check for any path elements in the page
       const allPaths = await homePage.page.locator('svg path').count();
       if (allPaths === 0) {
-        // Might be canvas rendering
         const canvas = await homePage.page.locator('.chart-container canvas').count();
         expect(canvas).toBeGreaterThan(0);
       } else {
@@ -281,23 +258,19 @@ test.describe('Visualization Rendering', () => {
     await homePage.expectVisualizationToBeVisible();
     await homePage.expectVisualizationToHaveContent();
 
-    // Check that visualization has rendered with some content
     const hasColoredElements = await homePage.page.evaluate(() => {
       const container = document.querySelector('.chart-container');
       if (!container) return false;
 
-      // Look for elements with fill or color attributes
       const coloredElements = container.querySelectorAll(
         '[fill]:not([fill="none"]), [stroke]:not([stroke="none"]), [style*="fill"], [style*="color"]',
       );
 
       if (coloredElements.length === 0) {
-        // Fallback: check for canvas which might have colors
         const canvas = container.querySelector('canvas');
         return canvas && canvas.width > 0 && canvas.height > 0;
       }
 
-      // Count unique colors
       const colors = new Set();
       coloredElements.forEach((el) => {
         const fill = el.getAttribute('fill');
@@ -311,14 +284,13 @@ test.describe('Visualization Rendering', () => {
         }
       });
 
-      return colors.size >= 1; // At least some coloring
+      return colors.size >= 1;
     });
 
     expect(hasColoredElements).toBe(true);
   });
 
   test('should render Vega specification correctly', async () => {
-    // Switch to Vega mode
     await homePage.switchMode('Vega');
 
     const vegaSpec = `{
@@ -380,12 +352,10 @@ test.describe('Visualization Rendering', () => {
     await homePage.expectVisualizationToBeVisible();
     await homePage.expectVisualizationToHaveContent();
 
-    // Check that Vega visualization rendered successfully
     const hasVegaContent = await homePage.page.evaluate(() => {
       const container = document.querySelector('.chart-container');
       if (!container) return false;
 
-      // Look for any visual elements
       const visualElements = container.querySelectorAll('rect, path, circle, line, text, canvas');
       return visualElements.length > 0;
     });
@@ -415,19 +385,16 @@ test.describe('Visualization Rendering', () => {
     await homePage.expectVisualizationToBeVisible();
     await homePage.expectVisualizationToHaveContent();
 
-    // Test that interactive visualization rendered
     const hasInteractiveContent = await homePage.page.evaluate(() => {
       const container = document.querySelector('.chart-container');
       if (!container) return false;
 
-      // Look for any interactive elements
       const elements = container.querySelectorAll('rect, path, circle, canvas');
       return elements.length > 0;
     });
 
     expect(hasInteractiveContent).toBe(true);
 
-    // Try to interact if elements exist
     const interactiveElement = homePage.page
       .locator('.chart-container rect, .chart-container circle, .chart-container path')
       .first();
@@ -442,12 +409,10 @@ test.describe('Visualization Rendering', () => {
       }
     }
 
-    // Main goal is no errors occurred during rendering
     await homePage.expectNoErrors();
   });
 
   test('should update visualization when spec changes', async () => {
-    // Start with a bar chart
     const barSpec = `{
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"values": [{"a": "A", "b": 28}, {"a": "B", "b": 55}]},
@@ -461,20 +426,17 @@ test.describe('Visualization Rendering', () => {
     await homePage.typeInEditor(barSpec);
     await homePage.waitForVisualizationUpdate();
 
-    // Check that initial visualization rendered
     const hasInitialContent = await homePage.page.evaluate(() => {
       const container = document.querySelector('.chart-container');
       return container && container.querySelectorAll('rect, path, circle, canvas').length > 0;
     });
     expect(hasInitialContent).toBe(true);
 
-    // Change to point chart
     const pointSpec = barSpec.replace('"bar"', '"point"');
     await homePage.typeInEditor(pointSpec);
     await homePage.waitForVisualizationUpdate();
-    await homePage.page.waitForTimeout(1000); // Wait for re-render
+    await homePage.page.waitForTimeout(1000);
 
-    // Should have updated visualization
     const hasUpdatedContent = await homePage.page.evaluate(() => {
       const container = document.querySelector('.chart-container');
       return container && container.querySelectorAll('rect, path, circle, canvas').length > 0;

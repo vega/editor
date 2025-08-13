@@ -30,7 +30,6 @@ test.describe('Error Handling', () => {
 
     await homePage.waitForStableUI();
 
-    // Should show error or handle gracefully
     if (await homePage.errorPane.isVisible()) {
       const errorText = await homePage.errorPane.textContent();
       if (errorText && errorText.trim()) {
@@ -58,10 +57,8 @@ test.describe('Error Handling', () => {
     await homePage.typeInEditor(invalidMarkSpec);
     await homePage.waitForVisualizationUpdate();
 
-    // Should show error or handle gracefully
     await homePage.waitForStableUI();
 
-    // Check if error is shown
     if (await homePage.errorPane.isVisible()) {
       const errorText = await homePage.errorPane.textContent();
       if (errorText && errorText.trim()) {
@@ -89,11 +86,8 @@ test.describe('Error Handling', () => {
     await homePage.typeInEditor(missingFieldsSpec);
     await homePage.waitForVisualizationUpdate();
 
-    // Might show error or warning about missing field
-    // The application should handle this gracefully
     await homePage.waitForStableUI();
 
-    // Application should still be responsive
     await homePage.expectPageToBeLoaded();
   });
 
@@ -115,7 +109,6 @@ test.describe('Error Handling', () => {
 
     await homePage.waitForStableUI();
 
-    // Check if error is shown
     if (await homePage.errorPane.isVisible()) {
       const errorText = await homePage.errorPane.textContent();
       if (errorText && errorText.trim()) {
@@ -142,10 +135,8 @@ test.describe('Error Handling', () => {
     await homePage.typeInEditor(invalidSchemaSpec);
     await homePage.waitForVisualizationUpdate();
 
-    // May or may not show error depending on validation behavior
     await homePage.waitForStableUI();
 
-    // Application should remain functional
     await homePage.expectPageToBeLoaded();
   });
 
@@ -153,14 +144,11 @@ test.describe('Error Handling', () => {
     await homePage.typeInEditor('{}');
     await homePage.waitForVisualizationUpdate();
 
-    // Empty spec should show error or warning
     const hasError = await homePage.errorPane.isVisible();
     const hasVisualization = await homePage.visualization.isVisible();
 
-    // Either should show error or no visualization (but no crash)
     expect(hasError || !hasVisualization).toBe(true);
 
-    // Application should still be responsive
     await homePage.expectPageToBeLoaded();
   });
 
@@ -182,13 +170,11 @@ test.describe('Error Handling', () => {
     await homePage.typeInEditor(circularSpec);
     await homePage.waitForVisualizationUpdate();
 
-    // Should handle gracefully without infinite loops
     await homePage.waitForStableUI();
     await homePage.expectPageToBeLoaded();
   });
 
   test('should recover from errors when spec is fixed', async () => {
-    // Start with invalid spec
     const invalidSpec = `{
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
@@ -204,15 +190,12 @@ test.describe('Error Handling', () => {
     await homePage.typeInEditor(invalidSpec);
     await homePage.waitForVisualizationUpdate();
 
-    // Should show error
     await homePage.expectErrorToBeShown();
 
-    // Fix the spec
     const validSpec = invalidSpec.replace('"invalid-mark"', '"bar"');
     await homePage.typeInEditor(validSpec);
     await homePage.waitForVisualizationUpdate();
 
-    // Should improve - either show visualization or reduce errors
     await homePage.waitForStableUI();
     await homePage.expectPageToBeLoaded();
   });
@@ -235,7 +218,6 @@ test.describe('Error Handling', () => {
 
     await homePage.waitForStableUI();
 
-    // Should show error about data loading or handle gracefully
     if (await homePage.errorPane.isVisible()) {
       const errorText = await homePage.errorPane.textContent();
       if (errorText && errorText.trim()) {
@@ -245,7 +227,6 @@ test.describe('Error Handling', () => {
   });
 
   test('should handle mode switching with invalid specs', async () => {
-    // Create invalid Vega-Lite spec
     const invalidVegaLiteSpec = `{
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "mark": "invalid-mark"
@@ -255,18 +236,14 @@ test.describe('Error Handling', () => {
     await homePage.waitForVisualizationUpdate();
     await homePage.expectErrorToBeShown();
 
-    // Switch to Vega mode
     await homePage.switchMode('Vega');
     await homePage.waitForStableUI();
 
-    // Should still be functional
     await homePage.expectPageToBeLoaded();
 
-    // Switch back to Vega-Lite
     await homePage.switchMode('Vega-Lite');
     await homePage.waitForStableUI();
 
-    // Should still be functional
     await homePage.expectPageToBeLoaded();
   });
 
