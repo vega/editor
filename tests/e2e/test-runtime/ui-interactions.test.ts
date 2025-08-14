@@ -52,7 +52,7 @@ test.describe('UI interactions - resizing', () => {
     expect(Math.sign(leftDelta)).toBe(-Math.sign(rightDelta));
   });
 
-  test('resize editor vs compiled pane via gutter drag', async ({page}) => {
+  test('resize vertical split (editor vs compiled pane) via gutter drag', async ({page}) => {
     await homePage.switchMode('Vega-Lite');
     const editorSplit = page.locator('.editor-splitPane');
     await page.waitForSelector('.editor-splitPane', {state: 'attached'});

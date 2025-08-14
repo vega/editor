@@ -125,7 +125,7 @@ export class HomePage extends BasePage {
   }
 
   async typeInEditor(text: string) {
-    // Use Monaco editor API directly for better reliability
+    // Using Monaco editor API directly
     await this.page.evaluate((content) => {
       const editor = (window as any).monaco?.editor?.getModels()?.[0];
       if (editor) {
@@ -147,24 +147,32 @@ export class HomePage extends BasePage {
   }
 
   async expectVisualizationToHaveContent() {
-    await this.page.waitForTimeout(1000);
+    await this.page.waitForFunction(
+      () => {
+        const container = document.querySelector('.chart-container');
+        if (!container) return false;
 
-    // Checking for any visual content in the chart container
-    const hasContent = await this.page.evaluate(() => {
-      const container = document.querySelector('.chart-container');
-      if (!container) return false;
+        const visElement = container.querySelector('[aria-label="visualization"]') as HTMLElement | null;
 
-      const selectors = ['#vis svg', '#vis canvas', '.vega-embed svg', '.vega-embed canvas', 'svg', 'canvas'];
+        const hasCanvasOrSvg = (root: ParentNode | null) => {
+          if (!root) return false;
+          const canvas = root.querySelector('canvas') as HTMLCanvasElement | null;
+          if (canvas && canvas.width > 0 && canvas.height > 0) return true;
+          const svg = root.querySelector('svg');
+          if (svg) return true;
+          return false;
+        };
 
-      for (const selector of selectors) {
-        const elements = container.querySelectorAll(selector);
-        if (elements.length > 0) return true;
-      }
+        if (hasCanvasOrSvg(visElement)) return true;
 
-      return false;
-    });
+        if (hasCanvasOrSvg(container)) return true;
+        const embed = container.querySelector('.vega-embed');
+        if (hasCanvasOrSvg(embed)) return true;
 
-    expect(hasContent).toBe(true);
+        return false;
+      },
+      {timeout: 10000},
+    );
   }
 
   async expectErrorToBeShown() {

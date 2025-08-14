@@ -95,8 +95,6 @@ test.describe('Gist Integration', () => {
   test('should handle gist privacy settings', async () => {
     await homePage.openGistModal();
 
-    // Look for privacy options (public/private)
-    // const privacyOptions = homePage.page.locator('.modal input[type="radio"], .modal select, .modal button');
     const modalText = await homePage.page.locator('.modal').textContent();
 
     if (modalText?.toLowerCase().includes('private') || modalText?.toLowerCase().includes('public')) {
@@ -117,15 +115,13 @@ test.describe('Gist Integration', () => {
         await loadButton.click();
         await homePage.waitForStableUI();
 
-        // Should handle the error gracefully
-        // Error handling may vary, must ensure the app doesn't crash
         await homePage.expectPageToBeLoaded();
       }
     }
   });
 
   test('should maintain gist information in URL', async () => {
-    const gistId = '455e1c7872c4b38a58b90df0c3d7b1b9'; // Example public gist
+    const gistId = '455e1c7872c4b38a58b90df0c3d7b1b9';
     await homePage.page.goto(`/?gist=${gistId}`);
     await homePage.waitForPageLoad();
 
@@ -158,7 +154,6 @@ test.describe('Gist Integration', () => {
 
     expect(initialAuthState).toBeDefined();
 
-    // Close modal
     const closeButton = homePage.page.locator('.modal .close-button, .modal button:has-text("Close")');
     if (await closeButton.isVisible()) {
       await closeButton.click();
