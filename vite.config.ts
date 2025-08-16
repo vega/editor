@@ -198,10 +198,11 @@ export default defineConfig({
     projects: [
       {
         test: {
-          include: ['tests/unit/*.test.ts'],
+          include: ['tests/unit/*.test.{ts,tsx}'],
           name: 'unit',
-          environment: 'node',
+          environment: 'jsdom',
           globals: true,
+          setupFiles: ['tests/setup.tsx'],
         },
       },
       {
