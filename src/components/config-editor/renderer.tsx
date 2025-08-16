@@ -68,7 +68,6 @@ const ConfigEditor: React.FC<Props> = (props) => {
   const handleEditorMount = useCallback(
     (editor: Monaco.editor.IStandaloneCodeEditor) => {
       editorRef.current = editor;
-      props.setEditorReference(editor);
 
       editor.onDidFocusEditorText(() => {
         props.setEditorReference(editor);

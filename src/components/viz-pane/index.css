@@ -4,6 +4,12 @@
   position: relative;
   background: var(--light-gray-color);
   padding: 10px;
+  overflow: hidden; /* scrolling handled by .chart-scroll */
+}
+
+.chart-scroll {
+  width: 100%;
+  height: 100%;
   overflow: auto;
 }
 
