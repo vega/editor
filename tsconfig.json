@@ -19,12 +19,15 @@
     "types": [
       "react",
       "react-dom",
-      "node"
+      "node",
+      "vitest/globals",
+      "@testing-library/jest-dom"
     ]
   },
   "include": [
     "src/**/*.ts*",
-    "test/**/*.ts*",
-    "vite.config.ts"
+    "tests/**/*.ts*",
+    "vite.config.ts",
+    "playwright.config.ts"
   ]
 }
