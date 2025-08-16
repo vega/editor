@@ -130,7 +130,7 @@ button:disabled {
 }
 
 .right-sidebar {
-  flex-shrink: 0;
+  flex: 0 0 290px;
   width: 290px;
   background: var(--white-color);
   border-left: solid 1px var(--box-shadow-color);

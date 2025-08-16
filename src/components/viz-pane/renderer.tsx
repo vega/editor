@@ -15,6 +15,7 @@ import SignalViewer from '../signal-viewer/renderer.js';
 import DebugPaneHeader from './debug-pane-header/index.js';
 import './index.css';
 import type * as Monaco from 'monaco-editor';
+import {useAppContext} from '../../context/app-context.js';
 
 interface VizPaneProps {
   compiledEditorRef: any;
@@ -38,7 +39,7 @@ interface VizPaneProps {
 
 const VizPane: React.FC<VizPaneProps> = (props) => {
   const initialSetupDone = useRef(false);
-
+  const {state, setState} = useAppContext();
   useEffect(() => {
     if (props.logs && !initialSetupDone.current) {
       initialSetupDone.current = true;
@@ -109,32 +110,20 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
   const handleChange = useCallback(
     (sizes: number[]) => {
       const size = (sizes[1] / 100) * window.innerHeight;
-      props.setDebugPaneSize(size);
-    },
-    [props.setDebugPaneSize],
-  );
-
-  const handleDragStart = useCallback(() => {
-    if (props.navItem === NAVBAR.Logs) {
-      props.showLogs(true);
-    }
-  }, [props.navItem, props.showLogs]);
-
-  const handleDragEnd = useCallback(
-    (sizes?: number[]) => {
-      const size = (sizes[1] / 100) * window.innerHeight;
       const tolerance = 5;
       const shouldBeOpen = size > LAYOUT.MinPaneSize + tolerance;
-      if (shouldBeOpen !== props.debugPane) {
-        props.toggleDebugPane();
-      }
-      // Popping up the debug panel for the first time will set its
-      // height to LAYOUT.DebugPaneSize. This can change depending on the UI.
-      if (size === LAYOUT.MinPaneSize && props.debugPaneSize === LAYOUT.MinPaneSize) {
-        props.setDebugPaneSize(LAYOUT.DebugPaneSize);
-      }
+
+      setState((s) => {
+        const newState = {...s, debugPaneSize: size};
+
+        if (shouldBeOpen !== !!s.debugPane) {
+          newState.debugPane = !s.debugPane;
+        }
+
+        return newState;
+      });
     },
-    [props.debugPane, props.debugPaneSize, props.toggleDebugPane, props.setDebugPaneSize],
+    [setState],
   );
   /**
    *  Get the Component to be rendered in the Context Viewer.
@@ -161,9 +150,11 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
 
   const container = (
     <div className="chart-container">
-      <ErrorBoundary>
-        <Renderer />
-      </ErrorBoundary>
+      <div className="chart-scroll">
+        <ErrorBoundary>
+          <Renderer />
+        </ErrorBoundary>
+      </div>
       <div className="versions">
         Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {COMMIT_HASH.slice(0, 7)}
       </div>
@@ -212,8 +203,6 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
         cursor="row-resize"
         className="editor-splitPane"
         onDrag={handleChange}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
       >
         {container}
 
