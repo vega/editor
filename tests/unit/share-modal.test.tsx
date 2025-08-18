@@ -1,11 +1,18 @@
-import {screen, fireEvent} from '@testing-library/react';
-import {vi} from 'vitest';
-
-import {renderApp} from '../setup';
+import React from 'react';
+import {screen, fireEvent, render} from '@testing-library/react';
+import {AppContextProvider} from '../../src/context/app-context';
+import {HashRouter} from 'react-router-dom';
+import AppShell from '../../src/components/app-shell';
 
 describe('Share Modal Component', () => {
   it('should render the share modal', () => {
-    renderApp();
+    render(
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
+    );
     // click on share button
     const shareButton = screen.getByText('Share');
     fireEvent.click(shareButton);

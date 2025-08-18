@@ -1,10 +1,18 @@
-import {screen, fireEvent} from '@testing-library/react';
-
-import {renderApp} from '../setup';
+import React from 'react';
+import {screen, fireEvent, render} from '@testing-library/react';
+import {HashRouter} from 'react-router-dom';
+import {AppContextProvider} from '../../src/context/app-context';
+import AppShell from '../../src/components/app-shell';
 
 describe('Gist Modal Component', () => {
   it('should render the modal with required elements', () => {
-    renderApp();
+    render(
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
+    );
 
     const gistButton = screen.getByText('Gist');
     fireEvent.click(gistButton);

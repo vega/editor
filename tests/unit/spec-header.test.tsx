@@ -2,15 +2,20 @@
 // Covers tab rendering, tab switching, and config header rendering
 
 import React from 'react';
-import {vi} from 'vitest';
-
-import {fireEvent, screen} from '@testing-library/react';
-
-import {renderApp} from '../setup';
+import {fireEvent, render, screen} from '@testing-library/react';
+import {HashRouter} from 'react-router-dom';
+import {AppContextProvider} from '../../src/context/app-context';
+import AppShell from '../../src/components/app-shell';
 
 describe('Spec Editor Header Component', () => {
   it('should render the mode and config tabs', () => {
-    renderApp();
+    render(
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
+    );
     // The tabs-nav should be present
     const tabsNav = document.querySelector('.editor-header.spec-editor-header .tabs-nav');
     expect(tabsNav).toBeInTheDocument();
@@ -23,7 +28,13 @@ describe('Spec Editor Header Component', () => {
   });
 
   it('should highlight the correct tab as active', () => {
-    renderApp();
+    render(
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
+    );
     // By default, the editor tab should be active
     const activeTab = document.querySelector('.editor-header.spec-editor-header .active-tab');
     expect(activeTab).toBeInTheDocument();
@@ -31,7 +42,13 @@ describe('Spec Editor Header Component', () => {
   });
 
   it('should switch to config tab and render ConfigEditorHeader', () => {
-    renderApp();
+    render(
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
+    );
     // Click the Config tab
     const configTab = screen.getByText('Config');
     fireEvent.click(configTab);
@@ -46,7 +63,13 @@ describe('Spec Editor Header Component', () => {
   });
 
   it('should switch back to editor tab when mode tab is clicked', () => {
-    renderApp();
+    render(
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
+    );
     // Click the Config tab first
     const configTab = screen.getByText('Config');
     fireEvent.click(configTab);

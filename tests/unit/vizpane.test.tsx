@@ -1,14 +1,21 @@
-import {fireEvent, waitFor} from '@testing-library/react';
-import {vi} from 'vitest';
-
-import {renderApp, seedValidVegaLiteSpec} from '../setup';
-
+import React from 'react';
+import {fireEvent, render, waitFor} from '@testing-library/react';
+import {HashRouter} from 'react-router-dom';
+import {AppContextProvider} from '../../src/context/app-context';
+import AppShell from '../../src/components/app-shell';
+import {seedValidVegaLiteSpec} from '../setup';
 import {expect} from 'vitest';
 
 describe('Vizpane Component', () => {
   it('should render the vizpane and all its components', async () => {
     seedValidVegaLiteSpec();
-    renderApp();
+    render(
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
+    );
 
     // Make sure to have the vega/vega-lite version text
     const versionClass = document.querySelector('.versions');

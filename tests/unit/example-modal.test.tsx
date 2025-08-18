@@ -1,11 +1,18 @@
-import {screen, fireEvent} from '@testing-library/react';
-import {vi} from 'vitest';
-
-import {renderApp} from '../setup';
+import React from 'react';
+import {screen, fireEvent, render} from '@testing-library/react';
+import {AppContextProvider} from '../../src/context/app-context';
+import {HashRouter} from 'react-router-dom';
+import AppShell from '../../src/components/app-shell';
 
 describe('Example Modal Component', () => {
   it('should render the modal', () => {
-    renderApp();
+    render(
+      <HashRouter>
+        <AppContextProvider>
+          <AppShell />
+        </AppContextProvider>
+      </HashRouter>,
+    );
 
     const examplesButton = screen.getByText('Examples');
     fireEvent.click(examplesButton);

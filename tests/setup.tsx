@@ -1,23 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 
 import {expect, afterEach, vi} from 'vitest';
-import {cleanup, render} from '@testing-library/react';
+import {cleanup} from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
-import {HashRouter} from 'react-router-dom';
-import {AppContextProvider} from '../src/context/app-context';
-import AppShell from '../src/components/app-shell';
 
 expect.extend(matchers);
-
-export const renderApp = () => {
-  return render(
-    <HashRouter>
-      <AppContextProvider>
-        <AppShell />
-      </AppContextProvider>
-    </HashRouter>,
-  );
-};
 
 export const seedValidVegaLiteSpec = () => {
   const validSpec = {
