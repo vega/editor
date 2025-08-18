@@ -6,7 +6,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import {useAppContext} from '../../../context/app-context.js';
 import './index.css';
 import {EDITOR_FOCUS, KEYCODES, Mode, SCHEMA, SIDEPANE} from '../../../constants/index.js';
-import {useLocation, useNavigate, useParams} from 'react-router';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
 import ResizeObserver from 'rc-resize-observer';

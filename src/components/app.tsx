@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as vega from 'vega';
 import * as vegaLite from 'vega-lite';
 import {useCallback, useEffect} from 'react';
-import {useParams, useLocation} from 'react-router';
+import {useParams, useLocation} from 'react-router-dom';
 import {MessageData} from 'vega-embed';
 import {mergeConfig} from 'vega';
 import {Config} from 'vega-lite';

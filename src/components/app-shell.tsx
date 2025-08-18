@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Routes, Route} from 'react-router';
+import {Routes, Route} from 'react-router-dom';
 
 import App from './app.js';
 import Reset from './reset.js';

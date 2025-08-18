@@ -11,7 +11,7 @@ import {Popup} from '../popup/index.js';
 import './index.css';
 import {expressionInterpreter as vegaInterpreter} from 'vega-interpreter';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {useNavigate, useLocation} from 'react-router';
+import {useNavigate, useLocation} from 'react-router-dom';
 
 // Add additional projections
 addProjections(vega.projection);
