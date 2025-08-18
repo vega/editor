@@ -55,20 +55,21 @@ test.describe('URL behavior', () => {
     expect(page.url()).toMatch(/#\/custom\/vega-lite$/);
   });
 
-  test('fullscreen appends /view to the current route and is removed on exit', async ({page}) => {
-    await homePage.typeInEditor(vlSpec);
-    await homePage.waitForVisualizationUpdate();
+  // Need to implement this in the editor first: https://github.com/vega/editor/issues/1508
+  // test('fullscreen appends /view to the current route and is removed on exit', async ({page}) => {
+  //   await homePage.typeInEditor(vlSpec);
+  //   await homePage.waitForVisualizationUpdate();
 
-    await page.locator('.fullscreen-open').click();
-    await homePage.waitForStableUI();
+  //   await page.locator('.fullscreen-open').click();
+  //   await homePage.waitForStableUI();
 
-    const urlAfterOpen = page.url();
-    expect(urlAfterOpen).toMatch(/\/view$/);
+  //   const urlAfterOpen = page.url();
+  //   expect(urlAfterOpen).toMatch(/\/view$/);
 
-    await page.getByRole('button', {name: 'Edit Visualization'}).click();
-    await homePage.waitForStableUI();
+  //   await page.getByRole('button', {name: 'Edit Visualization'}).click();
+  //   await homePage.waitForStableUI();
 
-    const urlAfterClose = page.url();
-    expect(urlAfterClose).not.toMatch(/\/view$/);
-  });
+  //   const urlAfterClose = page.url();
+  //   expect(urlAfterClose).not.toMatch(/\/view$/);
+  // });
 });

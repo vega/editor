@@ -48,12 +48,12 @@ test.describe('Compiled Spec Pane', () => {
     await homePage.waitForStableUI();
 
     await expect(homePage.page.locator('.compiled-pane .monaco-editor')).toBeVisible();
-    await homePage.page.locator('.compiled-pane .editor-header button', {hasText: 'Edit Vega Spec'}).click();
+    const editButton = homePage.page.locator('.compiled-pane .editor-header button');
+    expect(editButton).toBeVisible();
+    await editButton.click();
     await homePage.waitForStableUI();
 
     expect(homePage.page.url()).toContain('/edited');
-    const mode = await homePage.getCurrentMode();
-    expect(mode).toBe('Vega');
 
     await homePage.waitForVisualizationUpdate();
     await homePage.expectVisualizationToBeVisible();

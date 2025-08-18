@@ -1,18 +1,10 @@
 import React from 'react';
-import {screen, fireEvent, render} from '@testing-library/react';
-import {AppContextProvider} from '../../src/context/app-context';
-import {HashRouter} from 'react-router-dom';
-import AppShell from '../../src/components/app-shell';
+import {screen, fireEvent} from '@testing-library/react';
+import {renderApp} from '../setup';
 
 describe('Share Modal Component', () => {
   it('should render the share modal', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
     // click on share button
     const shareButton = screen.getByText('Share');
     fireEvent.click(shareButton);

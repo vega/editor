@@ -1,21 +1,18 @@
 import React from 'react';
-import {screen, fireEvent, render} from '@testing-library/react';
-import {HashRouter} from 'react-router-dom';
-import {AppContextProvider} from '../../src/context/app-context';
-import AppShell from '../../src/components/app-shell';
+import {screen, fireEvent, waitFor} from '@testing-library/react';
+import {renderApp} from '../setup';
 
 describe('Gist Modal Component', () => {
-  it('should render the modal with required elements', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+  it('should render the modal with required elements', async () => {
+    renderApp();
 
     const gistButton = screen.getByText('Gist');
     fireEvent.click(gistButton);
+
+    await waitFor(() => {
+      const modal = document.querySelector('.modal');
+      expect(modal).toBeInTheDocument();
+    });
 
     // Check that the modal is visible
     const modal = document.querySelector('.modal');
@@ -36,5 +33,12 @@ describe('Gist Modal Component', () => {
     // Check for links to GitHub
     const githubLinks = modal?.querySelectorAll('a[href*="github.com"]');
     expect(githubLinks?.length).toBeGreaterThan(0);
+
+    await waitFor(
+      () => {
+        expect(modal).toBeInTheDocument();
+      },
+      {timeout: 1000},
+    );
   });
 });

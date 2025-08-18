@@ -3,20 +3,12 @@
 // Test Edit Vega Spec and Edit Vega-Lite Spec buttons
 
 import React from 'react';
-import {fireEvent, render, screen} from '@testing-library/react';
-import {HashRouter} from 'react-router-dom';
-import {AppContextProvider} from '../../src/context/app-context';
-import AppShell from '../../src/components/app-shell';
+import {fireEvent, screen} from '@testing-library/react';
+import {renderApp} from '../setup';
 
 describe('Compiled Spec Header Component', () => {
   it('should render the compiled vega and extended vega-lite buttons', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
     // Test that a component with the class 'tabs-nav' is present
     const tabsNav = document.querySelector('.tabs-nav');
     expect(tabsNav).toBeInTheDocument();
@@ -29,13 +21,7 @@ describe('Compiled Spec Header Component', () => {
   });
 
   it('should handle tab switching and header click', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
     const compiledVegaButton = screen.getByText('Compiled Vega');
 
     const editorHeader = document.querySelector('.editor-header:not(.spec-editor-header)');
@@ -62,13 +48,7 @@ describe('Compiled Spec Header Component', () => {
   });
 
   it('should handle editing vega spec', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
     const compiledVegaButton = screen.getByText('Compiled Vega');
     fireEvent.click(compiledVegaButton);
 
@@ -99,13 +79,7 @@ describe('Compiled Spec Header Component', () => {
   });
 
   it('should handle editing extended vega-lite spec', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
     const extendedVegaLiteButton = screen.getByText('Extended Vega-Lite Spec');
     expect(extendedVegaLiteButton).toBeInTheDocument();
     fireEvent.click(extendedVegaLiteButton);

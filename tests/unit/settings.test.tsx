@@ -1,18 +1,10 @@
 import React from 'react';
-import {fireEvent, render, screen, waitFor} from '@testing-library/react';
-import {HashRouter} from 'react-router-dom';
-import {AppContextProvider} from '../../src/context/app-context';
-import AppShell from '../../src/components/app-shell';
+import {fireEvent, screen, waitFor} from '@testing-library/react';
+import {renderApp} from '../setup';
 
 describe('Settings Component', () => {
   it('should toggle settings pane when clicked', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
     const settingsButton = screen.getByText('Settings');
     fireEvent.click(settingsButton!);
     const settingsPane = document.querySelector('.settings');
@@ -30,13 +22,7 @@ describe('Settings Component', () => {
   });
 
   it('should handle dropdowns correctly', async () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
     const settingsButton = screen.getByText('Settings');
     fireEvent.click(settingsButton!);
 
@@ -73,13 +59,7 @@ describe('Settings Component', () => {
   });
 
   it('should handle radio buttons correctly', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
     const settingsButton = screen.getByText('Settings');
     fireEvent.click(settingsButton!);
 
@@ -100,13 +80,7 @@ describe('Settings Component', () => {
   });
 
   it('should render background color picker', () => {
-    render(
-      <HashRouter>
-        <AppContextProvider>
-          <AppShell />
-        </AppContextProvider>
-      </HashRouter>,
-    );
+    renderApp();
     const settingsButton = screen.getByText('Settings');
     fireEvent.click(settingsButton!);
     const colorInput = document.querySelector('input[type="color"]') as HTMLInputElement | null;

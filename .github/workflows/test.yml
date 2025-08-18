@@ -44,10 +44,10 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
-      - name: Install Playwright (Chromium only)
+      - name: Install Playwright
         run: npx playwright install --with-deps chromium
 
-      - name: Run E2E tests on Chromium
+      - name: Run E2E tests
         run: npx playwright test --project=chromium --reporter=github
 
       - name: Upload Playwright report
