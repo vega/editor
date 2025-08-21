@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {AlertCircle} from 'react-feather';
-import {useNavigate} from 'react-router';
+import {useNavigate} from 'react-router-dom';
 import {useAppContext} from '../../../context/app-context.js';
 import GistSelectWidget from '../../gist-select-widget/index.js';
 import './index.css';

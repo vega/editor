@@ -2,7 +2,7 @@ import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import Editor from '@monaco-editor/react';
-import {useNavigate} from 'react-router';
+import {useNavigate} from 'react-router-dom';
 import {debounce} from 'vega';
 import {SIDEPANE} from '../../constants/index.js';
 import {useAppContext} from '../../context/app-context.js';

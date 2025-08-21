@@ -2,7 +2,7 @@ import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {useEffect, useRef, useState, useCallback} from 'react';
 import {ExternalLink, GitHub, Grid, HelpCircle, Play, Settings, Share2, Terminal, X} from 'react-feather';
-import {useNavigate} from 'react-router';
+import {useNavigate} from 'react-router-dom';
 import Select from 'react-select';
 import {useAppContext} from '../../context/app-context.js';
 import {BACKEND_URL, KEYCODES, Mode} from '../../constants/index.js';

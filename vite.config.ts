@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import {resolve} from 'path';
@@ -192,4 +193,31 @@ export default defineConfig({
   },
 
   publicDir: 'public',
+
+  test: {
+    projects: [
+      {
+        test: {
+          include: ['tests/unit/*.test.{ts,tsx}'],
+          name: 'unit',
+          environment: 'jsdom',
+          globals: true,
+          setupFiles: ['tests/setup.tsx'],
+        },
+      },
+      {
+        test: {
+          include: ['tests/e2e/**/*.test.ts'],
+          name: 'runtime',
+          browser: {
+            provider: 'playwright',
+            enabled: true,
+            headless: false,
+            instances: [{browser: 'chromium'}],
+          },
+          globals: true,
+        },
+      },
+    ],
+  },
 });

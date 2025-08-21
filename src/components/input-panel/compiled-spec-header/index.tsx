@@ -1,7 +1,7 @@
 import stringify from 'json-stringify-pretty-compact';
 import * as React from 'react';
 import {ChevronDown, ChevronUp} from 'react-feather';
-import {useNavigate, useLocation} from 'react-router';
+import {useNavigate, useLocation} from 'react-router-dom';
 import {useAppContext} from '../../../context/app-context.js';
 import {COMPILEDPANE, Mode} from '../../../constants/index.js';
 
