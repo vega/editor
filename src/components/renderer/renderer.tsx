@@ -34,6 +34,8 @@ export interface RendererProps {
   setView: (view: any) => void;
   setRuntime: (runtime: any) => void;
   recordPulse: (clock: number, values: any) => void;
+  setError: (error: {message: string} | null) => void;
+  resetLogs?: () => void;
 }
 
 export default function Renderer(props: RendererProps) {
@@ -53,6 +55,8 @@ export default function Renderer(props: RendererProps) {
     recordPulse,
     vegaLiteSpec,
     normalizedVegaLiteSpec,
+    setError,
+    resetLogs,
   } = props;
 
   const defaultSize = {width: 500, height: 300, fullscreen: false};
@@ -193,43 +197,84 @@ export default function Renderer(props: RendererProps) {
   );
 
   const initView = useCallback(async () => {
-    const parseOptions = expressionInterpreter ? {ast: true} : {};
-    const runtime = vega.parse(vegaSpec, mode === Mode.VegaLite ? {} : config, parseOptions);
-    const loader = vega.loader();
-    const origLoad = loader.load.bind(loader);
-    loader.load = async (url, options) => {
-      try {
-        return options ? await origLoad(url, {...options, baseURL}) : await origLoad(url, {baseURL});
-      } catch {
-        return origLoad(url, options);
-      }
-    };
-    if (view) {
-      (view as any)._postrun = [];
-      view.finalize();
-    }
-    const hover = typeof hoverEnable === 'boolean' ? hoverEnable : mode === Mode.Vega;
-    const newView = new vega.View(runtime, {
-      hover,
-      loader,
-      expr: expressionInterpreter ? vegaInterpreter : undefined,
-    });
-    newView.runAfter(runAfter, true);
-    newView.logger(dispatchingLogger);
-    const debug = (window as any).VEGA_DEBUG;
-    debug.view = view;
-    debug.vegaSpec = vegaSpec;
-    debug.config = config;
-    if (mode === Mode.VegaLite) {
-      debug.vegaLiteSpec = vegaLiteSpec;
-      debug.normalizedVegaLiteSpec = normalizedVegaLiteSpec;
-    } else {
-      debug.vegaLiteSpec = debug.normalizedVegaLiteSpec = undefined;
-    }
+    resetLogs?.();
+    setError?.(null);
 
-    await newView.runAsync();
-    setRuntime(runtime);
-    setView(newView);
+    const clearChartContainers = () => {
+      const chart = chartRef.current;
+      const portalChart = portalChartRef.current;
+      if (chart) chart.innerHTML = '';
+      if (portalChart) portalChart.innerHTML = '';
+    };
+
+    try {
+      const parseOptions = expressionInterpreter ? {ast: true} : {};
+      const runtime = vega.parse(vegaSpec, mode === Mode.VegaLite ? {} : config, parseOptions);
+      const loader = vega.loader();
+      const origLoad = loader.load.bind(loader);
+      loader.load = async (url, options) => {
+        try {
+          return options ? await origLoad(url, {...options, baseURL}) : await origLoad(url, {baseURL});
+        } catch {
+          return origLoad(url, options);
+        }
+      };
+      if (view) {
+        try {
+          (view as any)._postrun = [];
+          view.finalize();
+        } catch (e) {
+          void e;
+        }
+      }
+      clearChartContainers();
+      const hover = typeof hoverEnable === 'boolean' ? hoverEnable : mode === Mode.Vega;
+      const newView = new vega.View(runtime, {
+        hover,
+        loader,
+        expr: expressionInterpreter ? vegaInterpreter : undefined,
+      });
+      newView.runAfter(runAfter, true);
+      newView.logger(dispatchingLogger);
+      const debug = (window as any).VEGA_DEBUG;
+      debug.view = view;
+      debug.vegaSpec = vegaSpec;
+      debug.config = config;
+      if (mode === Mode.VegaLite) {
+        debug.vegaLiteSpec = vegaLiteSpec;
+        debug.normalizedVegaLiteSpec = normalizedVegaLiteSpec;
+      } else {
+        debug.vegaLiteSpec = debug.normalizedVegaLiteSpec = undefined;
+      }
+
+      try {
+        await newView.runAsync();
+      } catch (err: any) {
+        try {
+          newView.finalize();
+        } catch (e) {
+          void e;
+        }
+        setView(null);
+        setRuntime(null as any);
+        setError?.({message: err?.message ?? String(err)});
+        return;
+      }
+
+      setRuntime(runtime);
+      setView(newView);
+    } catch (err: any) {
+      // Errors thrown during parse/setup
+      try {
+        if (view) view.finalize();
+      } catch (e) {
+        void e;
+      }
+      clearChartContainers();
+      setView(null);
+      setRuntime(null as any);
+      setError?.({message: err?.message ?? String(err)});
+    }
   }, [
     vegaSpec,
     config,
@@ -243,6 +288,8 @@ export default function Renderer(props: RendererProps) {
     view,
     vegaLiteSpec,
     normalizedVegaLiteSpec,
+    setError,
+    resetLogs,
   ]);
 
   const renderVega = useCallback(async () => {
@@ -252,10 +299,34 @@ export default function Renderer(props: RendererProps) {
       chart.style.width = 'auto';
     }
     if (!view) return;
-    view.renderer(renderer).initialize(chart);
-    await view.runAsync();
+    try {
+      view.renderer(renderer).initialize(chart);
+      await view.runAsync();
+    } catch (err: any) {
+      try {
+        view.finalize();
+      } catch (e) {
+        void e;
+      }
+      setView(null);
+      setRuntime(null as any);
+      setError?.({message: err?.message ?? String(err)});
+      return;
+    }
     if (tooltipEnable) vegaTooltip(view);
-  }, [size.fullscreen, responsiveWidth, responsiveHeight, portalChartRef, chartRef, view, renderer, tooltipEnable]);
+  }, [
+    size.fullscreen,
+    responsiveWidth,
+    responsiveHeight,
+    portalChartRef,
+    chartRef,
+    view,
+    renderer,
+    tooltipEnable,
+    setError,
+    setRuntime,
+    setView,
+  ]);
 
   useEffect(() => {
     const prevProps = prevPropsRef.current;
