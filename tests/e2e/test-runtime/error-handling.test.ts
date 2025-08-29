@@ -38,6 +38,39 @@ test.describe('Error Handling', () => {
     }
   });
 
+  test('should show expression parse error for invalid Vega-Lite expression', async () => {
+    const invalidSpec = `{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "data": {
+    "values": [
+      {"a": "A", "b": 28}, {"a": "B", "b": 55}, {"a": "C", "b": 43},
+      {"a": "D", "b": 91}, {"a": "E", "b": 81}, {"a": "F", "b": 53},
+      {"a": "G", "b": 19}, {"a": "H", "b": 87}, {"a": "I", "b": 52}
+    ]
+  },
+  "mark": "bar",
+  "encoding": {
+    "x":{
+      "field": "monthly(DATE_TRUNC('day',date)",
+      "type": "temporal",
+      "timeUnit": "binnedutcyearmonthdate"
+    },
+    "y": {"field": "value", "type": "quantitative"}
+  },
+  "config": {"bar": {"timeUnitBandPosition": 0}}
+}`;
+
+    await homePage.typeInEditor(invalidSpec);
+    await homePage.waitForVisualizationUpdate();
+
+    await homePage.page.waitForSelector('#error-indicator', {state: 'visible'});
+
+    await homePage.expectErrorToBeShown();
+    const errorText = (await homePage.errorPane.textContent()) || '';
+
+    expect(errorText).toContain('[Error] Access path');
+  });
+
   test('should handle invalid mark type', async () => {
     const invalidMarkSpec = `{
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",

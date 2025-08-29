@@ -23,6 +23,14 @@ const RendererContainer: React.FC = () => {
     backgroundColor: state.backgroundColor,
     expressionInterpreter: state.expressionInterpreter,
     setError: (error: {message: string} | null) => setState((s) => ({...s, error})),
+    resetLogs: () =>
+      setState((s) => ({
+        ...s,
+        errors: [],
+        warns: [],
+        infos: [],
+        debugs: [],
+      })),
   };
 
   return (

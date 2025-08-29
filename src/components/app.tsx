@@ -277,6 +277,7 @@ const App: React.FC<Props> = (props) => {
           warns: currLogger.warns,
           infos: currLogger.infos,
           debugs: currLogger.debugs,
+          error: null,
         }));
       } else {
         const spec = parseJSONCOrThrow(state.editorString);
@@ -302,6 +303,7 @@ const App: React.FC<Props> = (props) => {
           warns: currLogger.warns,
           infos: currLogger.infos,
           debugs: currLogger.debugs,
+          error: null,
         }));
       }
     } catch (error) {
