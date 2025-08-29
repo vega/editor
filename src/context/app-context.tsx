@@ -28,20 +28,7 @@ const LOCAL_STORAGE_KEY = 'state';
 
 // Only including serializable fields
 function filterPersistedState(state: State): Partial<State> {
-  const {
-    editorRef,
-    compiledEditorRef,
-    view,
-    error,
-    errors,
-    warns,
-    infos,
-    debugs,
-    runtime,
-    signals,
-    decorations,
-    ...persisted
-  } = state;
+  const {editorRef, compiledEditorRef, view, runtime, signals, decorations, ...persisted} = state;
   return persisted;
 }
 

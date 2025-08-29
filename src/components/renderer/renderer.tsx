@@ -198,7 +198,6 @@ export default function Renderer(props: RendererProps) {
 
   const initView = useCallback(async () => {
     resetLogs?.();
-    setError?.(null);
 
     const clearChartContainers = () => {
       const chart = chartRef.current;
@@ -263,6 +262,8 @@ export default function Renderer(props: RendererProps) {
 
       setRuntime(runtime);
       setView(newView);
+      // Successful init+first run; clear any previous error now.
+      setError?.(null);
     } catch (err: any) {
       // Errors thrown during parse/setup
       try {
