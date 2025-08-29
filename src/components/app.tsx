@@ -273,11 +273,11 @@ const App: React.FC<Props> = (props) => {
           normalizedVegaLiteSpec: normalizedSpec,
           vegaSpec: compileResult.spec,
           parse: false,
-          error: null,
           errors: currLogger.errors,
           warns: currLogger.warns,
           infos: currLogger.infos,
           debugs: currLogger.debugs,
+          error: null,
         }));
       } else {
         const spec = parseJSONCOrThrow(state.editorString);
@@ -299,11 +299,11 @@ const App: React.FC<Props> = (props) => {
           vegaLiteSpec: null,
           normalizedVegaLiteSpec: null,
           parse: false,
-          error: null,
           errors: currLogger.errors,
           warns: currLogger.warns,
           infos: currLogger.infos,
           debugs: currLogger.debugs,
+          error: null,
         }));
       }
     } catch (error) {
