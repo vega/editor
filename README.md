@@ -8,6 +8,8 @@ We integrated a back-end service at https://vega-editor-backend.vercel.app/ whic
 
 You can reset the Vega Editor by going to https://vega.github.io/editor/#/reset and clicking the reset button. This will reset the saved editor state.
 
+To avoid losing the specification you have written up until that point, open the console (F12) and type **VEGA_DEBUG.vegaLiteSpec** or **VEGA_DEBUG.vegaSpec**. See [Debugging Guide](https://vega.github.io/vega/docs/api/debugging/) for futher info.
+
 ## Usage Instructions
 
 ### Run Vega-Editor With Docker
