@@ -267,7 +267,7 @@ const EditorWithNavigation: React.FC<{
               wordWrap: 'on',
               quickSuggestions: true,
               stickyScroll: {
-                enabled: true,
+                enabled: false,
               },
             }}
           />
