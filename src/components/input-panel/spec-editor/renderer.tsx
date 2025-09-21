@@ -67,6 +67,8 @@ const EditorWithNavigation: React.FC<{
 
   const debouncedUpdateSpec = useCallback(debounce(700, updateSpec), [updateSpec]);
 
+  // Decompressing URl
+
   useEffect(() => {
     if (compressed) {
       let spec: string = LZString.decompressFromEncodedURIComponent(compressed);

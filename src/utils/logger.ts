@@ -98,10 +98,18 @@ export class DispatchingLogger implements vega.LoggerInterface {
     if (this.level() >= vega.Warn) {
       console.warn(...args);
 
-      this.setState((state) => ({
-        ...state,
-        warns: [...state.warns, args.join(' ')],
-      }));
+      const message = args.join(' ');
+      this.setState((state) => {
+        // Prevent duplicate consecutive warnings
+        const lastWarn = state.warns[state.warns.length - 1];
+        if (lastWarn === message) {
+          return state;
+        }
+        return {
+          ...state,
+          warns: [...state.warns, message],
+        };
+      });
     }
 
     return this;
@@ -118,10 +126,18 @@ export class DispatchingLogger implements vega.LoggerInterface {
     if (this.level() >= vega.Info) {
       console.info(...args);
 
-      this.setState((state) => ({
-        ...state,
-        infos: [...state.infos, args.join(' ')],
-      }));
+      const message = args.join(' ');
+      this.setState((state) => {
+        // Prevent duplicate consecutive info messages
+        const lastInfo = state.infos[state.infos.length - 1];
+        if (lastInfo === message) {
+          return state;
+        }
+        return {
+          ...state,
+          infos: [...state.infos, message],
+        };
+      });
     }
 
     return this;
@@ -138,10 +154,18 @@ export class DispatchingLogger implements vega.LoggerInterface {
     if (this.level() >= vega.Debug) {
       console.debug(...args);
 
-      this.setState((state) => ({
-        ...state,
-        debugs: [...state.debugs, args.join(' ')],
-      }));
+      const message = args.join(' ');
+      this.setState((state) => {
+        // Prevent duplicate consecutive debug messages
+        const lastDebug = state.debugs[state.debugs.length - 1];
+        if (lastDebug === message) {
+          return state;
+        }
+        return {
+          ...state,
+          debugs: [...state.debugs, message],
+        };
+      });
     }
 
     return this;
@@ -157,10 +181,18 @@ export class DispatchingLogger implements vega.LoggerInterface {
     // Always log errors regardless of level
     console.error(...args);
 
-    this.setState((state) => ({
-      ...state,
-      errors: [...state.errors, args.join(' ')],
-    }));
+    const message = args.join(' ');
+    this.setState((state) => {
+      // Prevent duplicate consecutive errors to avoid infinite loops
+      const lastError = state.errors[state.errors.length - 1];
+      if (lastError === message) {
+        return state;
+      }
+      return {
+        ...state,
+        errors: [...state.errors, message],
+      };
+    });
 
     return this;
   };

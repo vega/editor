@@ -143,6 +143,7 @@ export default function Renderer(props: RendererProps) {
     }
   }, [location.pathname, navigate]);
 
+  // fullscreen keyboard shortcuts
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.keyCode === KEYCODES.ESCAPE && size.fullscreen) {
@@ -163,6 +164,7 @@ export default function Renderer(props: RendererProps) {
     return () => document.removeEventListener('keydown', onKey);
   }, [size.fullscreen, openPortal, closePortal]);
 
+  // FIX
   useEffect(() => {
     const params = location.pathname.split('/');
     if (params[params.length - 1] === 'view') {
