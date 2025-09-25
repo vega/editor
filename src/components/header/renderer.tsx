@@ -533,7 +533,7 @@ const Header: React.FC<Props> = ({showExample}) => {
       className="header-button"
       id="run-button"
       onClick={() => {
-        setState((s) => ({...s, parse: true}));
+        if (manualParse) setState((s) => ({...s, parse: true}));
       }}
     >
       <Play className="header-icon" />
