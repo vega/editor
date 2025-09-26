@@ -143,6 +143,7 @@ export default function Renderer(props: RendererProps) {
     }
   }, [location.pathname, navigate]);
 
+  // fullscreen keyboard shortcuts
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.keyCode === KEYCODES.ESCAPE && size.fullscreen) {

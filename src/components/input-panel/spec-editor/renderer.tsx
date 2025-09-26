@@ -56,16 +56,14 @@ const EditorWithNavigation: React.FC<{
 
       if (parsedMode === Mode.Vega) {
         props.updateVegaSpec(spec, config);
-      } else if (parsedMode === Mode.VegaLite) {
-        props.updateVegaLiteSpec(spec, config);
       } else {
-        props.updateEditorString(spec);
+        props.updateVegaLiteSpec(spec, config);
       }
     },
-    [mode, props.updateVegaSpec, props.updateVegaLiteSpec, props.updateEditorString],
+    [mode, props.updateVegaSpec, props.updateVegaLiteSpec],
   );
 
-  const debouncedUpdateSpec = useCallback(debounce(700, updateSpec), [updateSpec]);
+  const debouncedUpdateSpec = useCallback(debounce(1200, updateSpec), [updateSpec]);
 
   useEffect(() => {
     if (compressed) {

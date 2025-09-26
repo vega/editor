@@ -184,6 +184,112 @@ const App: React.FC<Props> = (props) => {
     [setExample, setEmptySpec, setGist],
   );
 
+  // Modular parsers
+  const parseVegaLiteSpec = useCallback(
+    (editorString: string, configEditorString: string, logLevel: number) => {
+      const currLogger = new LocalLogger();
+      currLogger.level(logLevel);
+
+      try {
+        const vegaLiteSpec: vegaLite.TopLevelSpec = parseJSONCOrThrow(editorString);
+        const config: Config = parseJSONCOrThrow(configEditorString);
+
+        const options = {
+          config,
+          logger: currLogger,
+        };
+        if (vegaLiteSpec.$schema) {
+          try {
+            const parsed = schemaParser(vegaLiteSpec.$schema);
+            if (!satisfies(vega.version, `^${parsed.version.slice(1)}`)) {
+              currLogger.warn(
+                `The specification expects Vega-Lite ${parsed.version} but the editor uses v${vega.version}.`,
+              );
+            }
+          } catch (e) {
+            throw new Error('Could not parse $schema url.');
+          }
+        }
+
+        validateVegaLite(vegaLiteSpec, currLogger);
+
+        const compileResult =
+          editorString !== '{}' ? vegaLite.compile(vegaLiteSpec, options) : {spec: {}, normalized: {}};
+        const normalizedSpec = compileResult.normalized;
+
+        setState((s) => ({
+          ...s,
+          vegaLiteSpec: vegaLiteSpec,
+          normalizedVegaLiteSpec: normalizedSpec,
+          vegaSpec: compileResult.spec,
+          parse: false,
+          errors: currLogger.errors,
+          warns: currLogger.warns,
+          infos: currLogger.infos,
+          debugs: currLogger.debugs,
+          error: null,
+        }));
+      } catch (error: any) {
+        setState((s) => ({
+          ...s,
+          error: {message: error.message},
+          parse: false,
+          errors: currLogger.errors,
+          warns: currLogger.warns,
+          infos: currLogger.infos,
+          debugs: currLogger.debugs,
+        }));
+      }
+    },
+    [setState],
+  );
+
+  const parseVegaSpec = useCallback(
+    (editorString: string, logLevel: number) => {
+      const currLogger = new LocalLogger();
+      currLogger.level(logLevel);
+
+      try {
+        const spec = parseJSONCOrThrow(editorString);
+        if (spec.$schema) {
+          try {
+            const parsed = schemaParser(spec.$schema);
+            if (!satisfies(vega.version, `^${parsed.version.slice(1)}`)) {
+              currLogger.warn(`The specification expects Vega ${parsed.version} but the editor uses v${vega.version}.`);
+            }
+          } catch (e) {
+            throw new Error('Could not parse $schema url.');
+          }
+        }
+        validateVega(spec, currLogger);
+
+        setState((s) => ({
+          ...s,
+          vegaSpec: spec,
+          vegaLiteSpec: null,
+          normalizedVegaLiteSpec: null,
+          parse: false,
+          errors: currLogger.errors,
+          warns: currLogger.warns,
+          infos: currLogger.infos,
+          debugs: currLogger.debugs,
+          error: null,
+        }));
+      } catch (error: any) {
+        setState((s) => ({
+          ...s,
+          error: {message: error.message},
+          parse: false,
+          errors: currLogger.errors,
+          warns: currLogger.warns,
+          infos: currLogger.infos,
+          debugs: currLogger.debugs,
+        }));
+      }
+    },
+    [setState],
+  );
+
   useEffect(() => {
     const handleMessage = (evt: MessageEvent) => {
       const data = evt.data as MessageData;
@@ -236,88 +342,23 @@ const App: React.FC<Props> = (props) => {
       }
     }
 
-    const currLogger = new LocalLogger();
-    currLogger.level(state.logLevel);
-
-    try {
-      if (state.mode === Mode.VegaLite) {
-        const vegaLiteSpec: vegaLite.TopLevelSpec = parseJSONCOrThrow(state.editorString);
-        const config: Config = parseJSONCOrThrow(state.configEditorString);
-
-        const options = {
-          config,
-          logger: currLogger,
-        };
-        if (vegaLiteSpec.$schema) {
-          try {
-            const parsed = schemaParser(vegaLiteSpec.$schema);
-            if (!satisfies(vega.version, `^${parsed.version.slice(1)}`)) {
-              currLogger.warn(
-                `The specification expects Vega-Lite ${parsed.version} but the editor uses v${vega.version}.`,
-              );
-            }
-          } catch (e) {
-            throw new Error('Could not parse $schema url.');
-          }
-        }
-
-        validateVegaLite(vegaLiteSpec, currLogger);
-
-        const compileResult =
-          state.editorString !== '{}' ? vegaLite.compile(vegaLiteSpec, options) : {spec: {}, normalized: {}};
-        const normalizedSpec = compileResult.normalized;
-
-        setState((s) => ({
-          ...s,
-          vegaLiteSpec: vegaLiteSpec,
-          normalizedVegaLiteSpec: normalizedSpec,
-          vegaSpec: compileResult.spec,
-          parse: false,
-          errors: currLogger.errors,
-          warns: currLogger.warns,
-          infos: currLogger.infos,
-          debugs: currLogger.debugs,
-          error: null,
-        }));
-      } else {
-        const spec = parseJSONCOrThrow(state.editorString);
-        if (spec.$schema) {
-          try {
-            const parsed = schemaParser(spec.$schema);
-            if (!satisfies(vega.version, `^${parsed.version.slice(1)}`)) {
-              currLogger.warn(`The specification expects Vega ${parsed.version} but the editor uses v${vega.version}.`);
-            }
-          } catch (e) {
-            throw new Error('Could not parse $schema url.');
-          }
-        }
-        validateVega(spec, currLogger);
-
-        setState((s) => ({
-          ...s,
-          vegaSpec: spec,
-          vegaLiteSpec: null,
-          normalizedVegaLiteSpec: null,
-          parse: false,
-          errors: currLogger.errors,
-          warns: currLogger.warns,
-          infos: currLogger.infos,
-          debugs: currLogger.debugs,
-          error: null,
-        }));
-      }
-    } catch (error) {
-      setState((s) => ({
-        ...s,
-        error: {message: error.message},
-        parse: false,
-        errors: currLogger.errors,
-        warns: currLogger.warns,
-        infos: currLogger.infos,
-        debugs: currLogger.debugs,
-      }));
+    if (state.mode === Mode.VegaLite) {
+      parseVegaLiteSpec(state.editorString, state.configEditorString, state.logLevel);
+    } else {
+      parseVegaSpec(state.editorString, state.logLevel);
     }
-  }, [state.editorString, state.mode, state.parse, state.config, state.logLevel, setState]);
+  }, [
+    state.editorString,
+    state.mode,
+    state.parse,
+    state.config,
+    state.logLevel,
+    state.manualParse,
+    state.configEditorString,
+    setState,
+    parseVegaLiteSpec,
+    parseVegaSpec,
+  ]);
 
   useEffect(() => {
     if (state.mergeConfigSpec) {

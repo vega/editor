@@ -63,6 +63,17 @@ export class DispatchingLogger implements vega.LoggerInterface {
     this.setState = setState;
   }
 
+  private updateMessageArray(state: any, messageArrayKey: string, message: string): any {
+    const lastMessage = state[messageArrayKey][state[messageArrayKey].length - 1];
+    if (lastMessage === message) {
+      return state;
+    }
+    return {
+      ...state,
+      [messageArrayKey]: [...state[messageArrayKey], message],
+    };
+  }
+
   public updateCurrentState(state: any) {
     this.currentState = state;
   }
@@ -98,10 +109,8 @@ export class DispatchingLogger implements vega.LoggerInterface {
     if (this.level() >= vega.Warn) {
       console.warn(...args);
 
-      this.setState((state) => ({
-        ...state,
-        warns: [...state.warns, args.join(' ')],
-      }));
+      const message = args.join(' ');
+      this.setState((state) => this.updateMessageArray(state, 'warns', message));
     }
 
     return this;
@@ -118,10 +127,8 @@ export class DispatchingLogger implements vega.LoggerInterface {
     if (this.level() >= vega.Info) {
       console.info(...args);
 
-      this.setState((state) => ({
-        ...state,
-        infos: [...state.infos, args.join(' ')],
-      }));
+      const message = args.join(' ');
+      this.setState((state) => this.updateMessageArray(state, 'infos', message));
     }
 
     return this;
@@ -138,10 +145,8 @@ export class DispatchingLogger implements vega.LoggerInterface {
     if (this.level() >= vega.Debug) {
       console.debug(...args);
 
-      this.setState((state) => ({
-        ...state,
-        debugs: [...state.debugs, args.join(' ')],
-      }));
+      const message = args.join(' ');
+      this.setState((state) => this.updateMessageArray(state, 'debugs', message));
     }
 
     return this;
@@ -157,10 +162,8 @@ export class DispatchingLogger implements vega.LoggerInterface {
     // Always log errors regardless of level
     console.error(...args);
 
-    this.setState((state) => ({
-      ...state,
-      errors: [...state.errors, args.join(' ')],
-    }));
+    const message = args.join(' ');
+    this.setState((state) => this.updateMessageArray(state, 'errors', message));
 
     return this;
   };
