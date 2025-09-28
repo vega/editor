@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Search} from 'react-feather';
 import {View} from '../../constants/index.js';
 import {formatValueLong} from '../table/renderer.js';
@@ -39,22 +39,33 @@ const SignalRow: React.FC<Props> = ({
     }
   });
 
-  const signalHandler = useCallback(
-    (name: string, value: any) => {
-      setSignalValue(value);
-      onValueChange(name, value);
-    },
-    [onValueChange],
-  );
+  const onValueChangeRef = useRef(onValueChange);
+
+  useEffect(() => {
+    onValueChangeRef.current = onValueChange;
+  }, [onValueChange]);
+
+  const stableSignalHandler = useCallback((name: string, value: any) => {
+    setSignalValue(value);
+    onValueChangeRef.current?.(name, value);
+  }, []);
 
   useEffect(() => {
     if (!maskListener) {
-      view.addSignalListener(signal, signalHandler);
+      view.addSignalListener(signal, stableSignalHandler);
     }
     return () => {
-      view.removeSignalListener(signal, signalHandler);
+      view.removeSignalListener(signal, stableSignalHandler);
     };
-  }, [view, signal, signalHandler, maskListener]);
+  }, [view, signal, stableSignalHandler, maskListener]);
+
+  useEffect(() => {
+    try {
+      setSignalValue(view.signal(signal));
+    } catch (error) {
+      console.error(`Error refreshing signal value for "${signal}":`, error);
+    }
+  }, [view, signal]);
 
   const displayValue = isTimelineSelected ? clickedSignal : isHovered ? hoverValue : signalValue;
 
