@@ -55,7 +55,7 @@
 }
 
 .fullscreen-close {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
   font-size: 1.1em;
