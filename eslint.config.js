@@ -1,81 +1,63 @@
 import js from '@eslint/js';
-import tseslint from '@typescript-eslint/eslint-plugin';
-import tsparser from '@typescript-eslint/parser';
 import prettier from 'eslint-plugin-prettier';
 import react from 'eslint-plugin-react';
 import prettierConfig from 'eslint-config-prettier';
+import globals from 'globals';
+import vitest from '@vitest/eslint-plugin';
+import tseslint from 'typescript-eslint';
 
 export default [
-  // Ignore patterns
   {
-    ignores: ['dist/**', 'build/**', 'node_modules/**', 'public/**', '*.config.js', '*.config.ts'],
+    ignores: ['dist/**', 'build/**', 'node_modules/**', 'public/**', '*.config.js', '*.config.ts', '*.config.cjs'],
   },
 
-  // Base configuration for all files
   js.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  vitest.configs.recommended,
 
-  // TypeScript and React files
   {
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
-      parser: tsparser,
       parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: 'module',
-        project: './tsconfig.json',
-        ecmaFeatures: {
-          jsx: true,
-        },
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
       globals: {
         __COMMIT_HASH__: 'readonly',
-        // Browser globals
-        window: 'readonly',
-        document: 'readonly',
-        navigator: 'readonly',
-        console: 'readonly',
-        fetch: 'readonly',
-        localStorage: 'readonly',
-        sessionStorage: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        URL: 'readonly',
-        URLSearchParams: 'readonly',
-        Blob: 'readonly',
-        FormData: 'readonly',
-        Headers: 'readonly',
-        Request: 'readonly',
-        Response: 'readonly',
-        AbortController: 'readonly',
-        Event: 'readonly',
-        CustomEvent: 'readonly',
-        EventTarget: 'readonly',
-        MessageEvent: 'readonly',
-        Worker: 'readonly',
+        ...globals.browser,
       },
     },
     plugins: {
-      '@typescript-eslint': tseslint,
-      prettier: prettier,
-      react: react,
+      prettier,
+      react,
+      vitest,
     },
     settings: {
+      vitest: {
+        typeCheck: true,
+      },
       react: {
         version: 'detect',
       },
     },
     rules: {
-      ...tseslint.configs.recommended.rules,
-      ...prettierConfig.rules,
-
-      // Prettier
       'prettier/prettier': 'warn',
 
-      // TypeScript
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+
+      // Some of these rules can be removed as we increase type safety
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
+      '@typescript-eslint/require-await': 'off',
+      '@typescript-eslint/await-thenable': 'warn',
+      '@typescript-eslint/no-redundant-type-constituents': 'warn',
+      '@typescript-eslint/no-unnecessary-type-assertion': 'warn',
       '@typescript-eslint/no-use-before-define': 'off',
       '@typescript-eslint/prefer-for-of': 'error',
       '@typescript-eslint/no-for-in-array': 'error',
@@ -87,7 +69,6 @@ export default [
       '@typescript-eslint/no-namespace': 'error',
       '@typescript-eslint/ban-ts-comment': 'warn',
 
-      // General JavaScript/TypeScript
       'no-unused-vars': 'off',
       'no-shadow': 'off',
       'linebreak-style': ['error', 'unix'],
@@ -102,36 +83,19 @@ export default [
       'no-unreachable': 'off',
       'no-prototype-builtins': 'warn',
 
-      // React
-      'react/react-in-jsx-scope': 'off', // Not needed in React 17+
+      'react/react-in-jsx-scope': 'off',
       'react/no-deprecated': 'warn',
       'react/no-string-refs': 'warn',
       'react/no-find-dom-node': 'warn',
       'react/no-unescaped-entities': 'off',
-      'react/prop-types': 'off', // Using TypeScript for prop validation
+      'react/prop-types': 'off',
+
+      'vitest/no-commented-out-tests': 'off',
     },
   },
-
-  // Special configuration for config files (vite.config.ts, etc.)
+  prettierConfig,
   {
-    files: ['*.config.ts', '*.config.js', 'vite.config.ts'],
-    languageOptions: {
-      parser: tsparser,
-      parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: 'module',
-        project: './tsconfig.json',
-      },
-      globals: {
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        process: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly',
-        Buffer: 'readonly',
-        global: 'readonly',
-      },
-    },
+    files: ['**/*.js'],
+    ...tseslint.configs.disableTypeChecked,
   },
 ];
