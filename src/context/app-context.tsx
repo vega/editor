@@ -32,7 +32,7 @@ function filterPersistedState(state: State): Partial<State> {
   return persisted;
 }
 
-export const AppContextProvider: FC<PropsWithChildren<{}>> = ({children}) => {
+export const AppContextProvider: FC<PropsWithChildren> = ({children}) => {
   const [state, setState] = useState<State>(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem(LOCAL_STORAGE_KEY);

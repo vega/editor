@@ -152,7 +152,11 @@ export function CytoscapeControlled({
     }
     // Remove all nodes that don't have positions
     removedRef.current = cy
-      .collection(Object.keys(positions).map((id) => cy.$id(id)))
+      .collection(
+        Object.keys(positions)
+          .map((id) => `#${id}`)
+          .join(', '),
+      )
       .absoluteComplement()
       .nodes()
       .remove();
@@ -193,9 +197,9 @@ export function CytoscapeControlled({
   React.useEffect(() => {
     const cy = cyRef.current;
     cy.batch(() => {
-      const selectedElements = cy.collection(
-        selected ? [...selected.edges, ...selected.nodes].map((id) => cy.$id(id)) : [],
-      );
+      const selectedElements = selected
+        ? cy.collection([...selected.edges, ...selected.nodes].map((id) => `#${id}`).join(', '))
+        : cy.collection();
       selectedElements.select();
       selectedElements.absoluteComplement().unselect();
     });
