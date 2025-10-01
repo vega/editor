@@ -30,7 +30,7 @@
     "prettier": "^3.5.3",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "vite": "^7.1.7"
   },
   "dependencies": {
