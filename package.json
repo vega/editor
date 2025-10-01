@@ -38,7 +38,7 @@
     "@tippyjs/react": "^4.2.6",
     "@types/cytoscape": "^3.21.9",
     "@types/d3": "^7.4.3",
-    "@types/react": "^19.1.15",
+    "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@types/semver": "^7.7.1",
     "ajv": "^8.17.1",
