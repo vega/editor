@@ -246,6 +246,18 @@ const EditorWithNavigation: React.FC<{
     }
   }, [decorations]);
 
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    const model = editor.getModel();
+    if (!model) return;
+    const currentValue = model.getValue();
+    if (currentValue === editorString) return;
+    const selection = editor.getSelection();
+    editor.executeEdits('external-update', [{range: model.getFullModelRange(), text: editorString}]);
+    if (selection) editor.setSelection(selection);
+  }, [editorString]);
+
   return (
     <ResizeObserver
       onResize={({width, height}) => {
@@ -257,7 +269,7 @@ const EditorWithNavigation: React.FC<{
           <Editor
             height="100%"
             language="json"
-            value={editorString}
+            defaultValue={editorString}
             onMount={handleEditorDidMount}
             onChange={handleEditorChange}
             options={{

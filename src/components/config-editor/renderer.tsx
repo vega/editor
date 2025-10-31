@@ -106,6 +106,18 @@ const ConfigEditor: React.FC<Props> = (props) => {
     }
   }, [decorations]);
 
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    const model = editor.getModel();
+    if (!model) return;
+    const currentValue = model.getValue();
+    if (currentValue === configEditorString) return;
+    const selection = editor.getSelection();
+    editor.executeEdits('external-update', [{range: model.getFullModelRange(), text: configEditorString || '{}'}]);
+    if (selection) editor.setSelection(selection);
+  }, [configEditorString]);
+
   return (
     <ResizeObserver
       onResize={({width, height}) => {
@@ -126,7 +138,7 @@ const ConfigEditor: React.FC<Props> = (props) => {
             enabled: false,
           },
         }}
-        value={configEditorString}
+        defaultValue={configEditorString}
         onChange={debouncedHandleEditorChange}
         onMount={handleEditorMount}
       />
