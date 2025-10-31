@@ -1,9 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
-
-// TODO: Use default types from packages
-// Current Issues: For a lot of the components,
-// our usage isn't compatible with the default type definitions.
-
 declare module '@tippyjs/react' {
   import React from 'react';
 

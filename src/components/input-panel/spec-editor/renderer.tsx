@@ -198,7 +198,11 @@ const EditorWithNavigation: React.FC<{
         id: 'CLEAR_EDITOR',
         label: 'Clear Spec',
         run: () => {
-          mode === Mode.Vega ? navigate('/custom/vega') : navigate('/custom/vega-lite');
+          if (mode === Mode.Vega) {
+            navigate('/custom/vega');
+          } else {
+            navigate('/custom/vega-lite');
+          }
         },
       });
 
