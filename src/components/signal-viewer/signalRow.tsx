@@ -45,19 +45,19 @@ const SignalRow: React.FC<Props> = ({
     onValueChangeRef.current = onValueChange;
   }, [onValueChange]);
 
-  const stableSignalHandler = useCallback((name: string, value: any) => {
+  const signalHandler = useCallback((name: string, value: any) => {
     setSignalValue(value);
     onValueChangeRef.current?.(name, value);
   }, []);
 
   useEffect(() => {
     if (!maskListener) {
-      view.addSignalListener(signal, stableSignalHandler);
+      view.addSignalListener(signal, signalHandler);
     }
     return () => {
-      view.removeSignalListener(signal, stableSignalHandler);
+      view.removeSignalListener(signal, signalHandler);
     };
-  }, [view, signal, stableSignalHandler, maskListener]);
+  }, [view, signal, signalHandler, maskListener]);
 
   useEffect(() => {
     try {

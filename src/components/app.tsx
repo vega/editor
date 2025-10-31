@@ -393,7 +393,7 @@ const App: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (location.pathname === '/edited' && location.state) {
-      const navState = location.state as any;
+      const navState = location.state;
       if (navState.editorString !== undefined) {
         setState((s) => ({
           ...s,
