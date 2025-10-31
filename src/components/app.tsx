@@ -189,6 +189,7 @@ const App: React.FC<Props> = (props) => {
     (editorString: string, configEditorString: string, logLevel: number) => {
       const currLogger = new LocalLogger();
       currLogger.level(logLevel);
+      console.log('logLevel received', logLevel);
 
       try {
         const vegaLiteSpec: vegaLite.TopLevelSpec = parseJSONCOrThrow(editorString);
@@ -393,7 +394,7 @@ const App: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (location.pathname === '/edited' && location.state) {
-      const navState = location.state as any;
+      const navState = location.state;
       if (navState.editorString !== undefined) {
         setState((s) => ({
           ...s,
