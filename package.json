@@ -61,7 +61,7 @@
     "react-feather": "^2.0.10",
     "react-paginate": "^8.3.0",
     "react-portal": "^4.3.0",
-    "react-router": "^7.9.3",
+    "react-router": "^7.9.5",
     "react-router-dom": "^7.9.3",
     "react-select": "^5.10.2",
     "react-split": "^2.0.14",
