@@ -191,7 +191,6 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
   return (
     <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
       <Split
-        key={props.debugPane ? 'debug-open' : 'debug-closed'}
         sizes={getInitialSizes()}
         minSize={LAYOUT.MinPaneSize}
         expandToMin={false}

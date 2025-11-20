@@ -64,6 +64,9 @@ export function formatValueLong(value: any) {
   if (value === undefined) {
     return {formatted: 'undefined', tooLong: false};
   }
+  if (value === null) {
+    return {formatted: 'null', tooLong: false};
+  }
   if (typeof value === 'number') {
     const formatted = formatNumberValue(value);
     return {formatted, tooLong: formatted.length > MAX_LENGTH};

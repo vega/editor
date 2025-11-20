@@ -35,7 +35,6 @@ export interface RendererProps {
   setRuntime: (runtime: any) => void;
   recordPulse: (clock: number, values: any) => void;
   setError: (error: {message: string} | null) => void;
-  resetLogs?: () => void;
 }
 
 export default function Renderer(props: RendererProps) {
@@ -56,7 +55,6 @@ export default function Renderer(props: RendererProps) {
     vegaLiteSpec,
     normalizedVegaLiteSpec,
     setError,
-    resetLogs,
   } = props;
 
   const defaultSize = {width: 500, height: 300, fullscreen: false};
@@ -198,8 +196,6 @@ export default function Renderer(props: RendererProps) {
   );
 
   const initView = useCallback(async () => {
-    resetLogs?.();
-
     const clearChartContainers = () => {
       const chart = chartRef.current;
       const portalChart = portalChartRef.current;
@@ -221,7 +217,7 @@ export default function Renderer(props: RendererProps) {
       };
       if (view) {
         try {
-          (view as any)._postrun = [];
+          view._postrun = [];
           view.finalize();
         } catch (e) {
           void e;
@@ -289,7 +285,6 @@ export default function Renderer(props: RendererProps) {
     vegaLiteSpec,
     normalizedVegaLiteSpec,
     setError,
-    resetLogs,
   ]);
 
   const renderVega = useCallback(async () => {

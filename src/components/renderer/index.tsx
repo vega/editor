@@ -7,18 +7,6 @@ const RendererContainer: React.FC = () => {
   const {state, setState} = useAppContext();
   const {setRuntime, recordPulse} = useDataflowActions();
 
-  const resetLogs = React.useCallback(
-    () =>
-      setState((s) => ({
-        ...s,
-        errors: [],
-        warns: [],
-        infos: [],
-        debugs: [],
-      })),
-    [setState],
-  );
-
   const props = {
     baseURL: state.baseURL,
     config: state.config,
@@ -35,7 +23,6 @@ const RendererContainer: React.FC = () => {
     backgroundColor: state.backgroundColor,
     expressionInterpreter: state.expressionInterpreter,
     setError: (error: {message: string} | null) => setState((s) => ({...s, error})),
-    resetLogs,
   };
 
   return (
