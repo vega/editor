@@ -20,10 +20,10 @@ describe('Debug Pane Component', () => {
       expect(tabs.length).toBe(4);
     });
 
-    expect(within(header as HTMLElement).getByText(/Logs/i)).toBeInTheDocument();
-    await within(header as HTMLElement).findByText(/Data Viewer/i);
-    await within(header as HTMLElement).findByText(/Signal Viewer/i);
-    await within(header as HTMLElement).findByText(/Dataflow Viewer/i);
+    expect(within(header).getByText(/Logs/i)).toBeInTheDocument();
+    await within(header).findByText(/Data Viewer/i);
+    await within(header).findByText(/Signal Viewer/i);
+    await within(header).findByText(/Dataflow Viewer/i);
   });
 
   it('shows debug pane after clicking the header', async () => {
