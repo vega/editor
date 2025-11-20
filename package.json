@@ -69,6 +69,7 @@
     "tslib": "^2.8.1",
     "typescript-eslint": "^8.45.0",
     "vega-cli": "6.2.0",
+    "vega-selections": "^6.1.1",
     "vega-datasets": "^3.2.1",
     "vega-embed": "^7.0.2",
     "vega-interpreter": "^2.2.1",
