@@ -7,7 +7,7 @@ test.describe('URL behavior', () => {
   let examplesModal: ExamplesModal;
 
   const vlSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {"values": [{"a":"A","b":10},{"a":"B","b":20}]},
   "mark": "bar",
   "encoding": {"x":{"field":"a","type":"nominal"},"y":{"field":"b","type":"quantitative"}}

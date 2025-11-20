@@ -118,7 +118,7 @@ test.describe('Export Functionality', () => {
 
   test('should export complex visualization', async () => {
     const complexSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"x": 1, "y": 28, "category": "A"},
@@ -155,7 +155,7 @@ test.describe('Export Functionality', () => {
 
   test('should handle export errors gracefully', async () => {
     const problematicSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {"values": []},
   "mark": "bar",
   "encoding": {}
@@ -177,7 +177,7 @@ test.describe('Export Functionality', () => {
     await homePage.switchMode('Vega');
 
     const vegaSpec = `{
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "width": 300,
   "height": 200,
   "data": [{"name": "table", "values": [{"x": 1, "y": 28}]}],

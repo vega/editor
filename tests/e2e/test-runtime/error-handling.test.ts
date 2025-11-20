@@ -11,7 +11,7 @@ test.describe('Error Handling', () => {
 
   test('should handle JSON syntax errors', async () => {
     const invalidJson = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"a": "A", "b": 28},
@@ -73,7 +73,7 @@ test.describe('Error Handling', () => {
 
   test('should handle invalid mark type', async () => {
     const invalidMarkSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"a": "A", "b": 28},
@@ -102,7 +102,7 @@ test.describe('Error Handling', () => {
 
   test('should handle missing required fields', async () => {
     const missingFieldsSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"a": "A", "b": 28},
@@ -126,7 +126,7 @@ test.describe('Error Handling', () => {
 
   test('should handle invalid data format', async () => {
     const invalidDataSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": "this should be an array"
   },
@@ -187,7 +187,7 @@ test.describe('Error Handling', () => {
 
   test('should handle circular references in data', async () => {
     const circularSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"a": "A", "b": 28, "self": null}
@@ -209,7 +209,7 @@ test.describe('Error Handling', () => {
 
   test('should recover from errors when spec is fixed', async () => {
     const invalidSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [{"a": "A", "b": 28}]
   },
@@ -235,7 +235,7 @@ test.describe('Error Handling', () => {
 
   test('should handle network errors for external data', async () => {
     const externalDataSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "url": "https://nonexistent-url.com/data.json"
   },
@@ -261,7 +261,7 @@ test.describe('Error Handling', () => {
 
   test('should handle mode switching with invalid specs', async () => {
     const invalidVegaLiteSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "mark": "invalid-mark"
 }`;
 
@@ -283,11 +283,11 @@ test.describe('Error Handling', () => {
   test('should display helpful error messages', async () => {
     const commonErrors = [
       {
-        spec: `{"$schema": "https://vega.github.io/schema/vega-lite/v5.json", "mark": "bar"}`,
+        spec: `{"$schema": "https://vega.github.io/schema/vega-lite/v6.json", "mark": "bar"}`,
         expectedError: /(data|required)/i,
       },
       {
-        spec: `{"$schema": "https://vega.github.io/schema/vega-lite/v5.json", "data": {"values": []}}`,
+        spec: `{"$schema": "https://vega.github.io/schema/vega-lite/v6.json", "data": {"values": []}}`,
         expectedError: /(mark|required)/i,
       },
     ];

@@ -5,7 +5,7 @@ test.describe('Debug Viewers (Logs/Data/Signals/Dataflow)', () => {
   let homePage: HomePage;
 
   const vlSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {"values": [
     {"x": 1, "y": 28}, {"x": 2, "y": 55}, {"x": 3, "y": 43}
   ]},

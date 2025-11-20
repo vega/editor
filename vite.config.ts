@@ -202,11 +202,6 @@ export default defineConfig({
           include: ['tests/unit/*.test.{ts,tsx}'],
           name: 'unit',
           environment: 'jsdom',
-          environmentOptions: {
-            jsdom: {
-              resources: 'usable',
-            },
-          },
           globals: true,
           setupFiles: ['tests/setup.tsx'],
         },

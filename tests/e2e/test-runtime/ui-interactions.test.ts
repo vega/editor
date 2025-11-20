@@ -44,8 +44,8 @@ test.describe('UI interactions - resizing', () => {
     const rightAfter = await rightPane.boundingBox();
     expect(leftAfter && rightAfter).toBeTruthy();
 
-    const leftDelta = (leftAfter!.width ?? 0) - (leftBefore!.width ?? 0);
-    const rightDelta = (rightAfter!.width ?? 0) - (rightBefore!.width ?? 0);
+    const leftDelta = (leftAfter.width ?? 0) - (leftBefore.width ?? 0);
+    const rightDelta = (rightAfter.width ?? 0) - (rightBefore.width ?? 0);
 
     expect(Math.abs(leftDelta)).toBeGreaterThan(30);
     expect(Math.abs(rightDelta)).toBeGreaterThan(30);
@@ -78,8 +78,8 @@ test.describe('UI interactions - resizing', () => {
     const bottomAfter = await bottomPane.boundingBox();
     expect(topAfter && bottomAfter).toBeTruthy();
 
-    const topDelta = (topAfter!.height ?? 0) - (topBefore!.height ?? 0);
-    const bottomDelta = (bottomAfter!.height ?? 0) - (bottomBefore!.height ?? 0);
+    const topDelta = (topAfter.height ?? 0) - (topBefore.height ?? 0);
+    const bottomDelta = (bottomAfter.height ?? 0) - (bottomBefore.height ?? 0);
 
     expect(Math.max(Math.abs(topDelta), Math.abs(bottomDelta))).toBeGreaterThan(20);
     if (topDelta !== 0 && bottomDelta !== 0) {

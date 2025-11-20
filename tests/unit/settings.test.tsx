@@ -6,7 +6,7 @@ describe('Settings Component', () => {
   it('should toggle settings pane when clicked', () => {
     renderApp();
     const settingsButton = screen.getByText('Settings');
-    fireEvent.click(settingsButton!);
+    fireEvent.click(settingsButton);
     const settingsPane = document.querySelector('.settings');
     expect(settingsPane).toBeInTheDocument();
 
@@ -24,12 +24,12 @@ describe('Settings Component', () => {
   it('should handle dropdowns correctly', async () => {
     renderApp();
     const settingsButton = screen.getByText('Settings');
-    fireEvent.click(settingsButton!);
+    fireEvent.click(settingsButton);
 
     const logDropdown = document.querySelector('.log-level-dropdown__control');
     expect(logDropdown).toBeInTheDocument();
     // react-select opens on mouseDown
-    fireEvent.mouseDown(logDropdown! as Element);
+    fireEvent.mouseDown(logDropdown);
 
     await waitFor(() => {
       expect(document.querySelector('.log-level-dropdown__menu-list')).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe('Settings Component', () => {
 
     const hoverDropdown = document.querySelector('.hover-enable-dropdown__control');
     expect(hoverDropdown).toBeInTheDocument();
-    fireEvent.mouseDown(hoverDropdown! as Element);
+    fireEvent.mouseDown(hoverDropdown);
 
     await waitFor(() => {
       expect(document.querySelector('.hover-enable-dropdown__menu-list')).toBeInTheDocument();
@@ -61,10 +61,10 @@ describe('Settings Component', () => {
   it('should handle radio buttons correctly', () => {
     renderApp();
     const settingsButton = screen.getByText('Settings');
-    fireEvent.click(settingsButton!);
+    fireEvent.click(settingsButton);
 
-    const svgRadio = screen.getByLabelText('SVG') as HTMLInputElement;
-    const canvasRadio = screen.getByLabelText('Canvas') as HTMLInputElement;
+    const svgRadio = screen.getByLabelText('SVG');
+    const canvasRadio = screen.getByLabelText('Canvas');
 
     expect(svgRadio).toBeInTheDocument();
     expect(canvasRadio).toBeInTheDocument();
@@ -82,9 +82,9 @@ describe('Settings Component', () => {
   it('should render background color picker', () => {
     renderApp();
     const settingsButton = screen.getByText('Settings');
-    fireEvent.click(settingsButton!);
-    const colorInput = document.querySelector('input[type="color"]') as HTMLInputElement | null;
+    fireEvent.click(settingsButton);
+    const colorInput = document.querySelector('input[type="color"]');
     expect(colorInput).toBeInTheDocument();
-    expect(colorInput!.value.toLowerCase()).toBe('#ffffff');
+    expect(colorInput.value.toLowerCase()).toBe('#ffffff');
   });
 });

@@ -20,7 +20,6 @@
       "react",
       "react-dom",
       "node",
-      "vitest",
       "vitest/globals",
       "@testing-library/jest-dom"
     ]

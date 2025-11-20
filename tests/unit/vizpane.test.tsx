@@ -22,7 +22,7 @@ describe('Vizpane Component', () => {
     expect(svgElement).toBeInTheDocument();
 
     // Click the SVG element directly
-    fireEvent.click(svgElement!);
+    fireEvent.click(svgElement);
 
     // Wait for the fullscreen-close button to appear in the portal
     await waitFor(() => {

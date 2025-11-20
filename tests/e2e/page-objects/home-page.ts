@@ -152,11 +152,11 @@ export class HomePage extends BasePage {
         const container = document.querySelector('.chart-container');
         if (!container) return false;
 
-        const visElement = container.querySelector('[aria-label="visualization"]') as HTMLElement | null;
+        const visElement = container.querySelector('[aria-label="visualization"]');
 
         const hasCanvasOrSvg = (root: ParentNode | null) => {
           if (!root) return false;
-          const canvas = root.querySelector('canvas') as HTMLCanvasElement | null;
+          const canvas = root.querySelector('canvas');
           if (canvas && canvas.width > 0 && canvas.height > 0) return true;
           const svg = root.querySelector('svg');
           if (svg) return true;
@@ -185,7 +185,7 @@ export class HomePage extends BasePage {
 
     if (hasError) {
       const isOpen = await this.page.evaluate(() => {
-        const header = document.querySelector('.pane-header') as HTMLElement;
+        const header = document.querySelector('.pane-header');
         return header != null && header.querySelector('.ChevronDown') != null;
       });
       if (!isOpen) {

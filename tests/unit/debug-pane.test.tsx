@@ -16,7 +16,7 @@ describe('Debug Pane Component', () => {
     expect(header).toBeInTheDocument();
 
     await waitFor(() => {
-      const tabs = header!.querySelectorAll('.tabs-nav li');
+      const tabs = header.querySelectorAll('.tabs-nav li');
       expect(tabs.length).toBe(4);
     });
 
@@ -32,7 +32,7 @@ describe('Debug Pane Component', () => {
     const header = document.querySelector('.debug-pane .pane-header');
     expect(header).toBeInTheDocument();
 
-    fireEvent.click(header!);
+    fireEvent.click(header);
 
     await waitFor(() => {
       const debugPane = document.querySelector('.debug-pane');
@@ -44,7 +44,7 @@ describe('Debug Pane Component', () => {
     seedValidVegaLiteSpec();
     renderApp();
 
-    let header = document.querySelector('.debug-pane .pane-header') as HTMLElement;
+    let header = document.querySelector('.debug-pane .pane-header');
     fireEvent.click(header);
     await waitFor(() => {
       const debugPane = document.querySelector('.debug-pane');
@@ -52,13 +52,13 @@ describe('Debug Pane Component', () => {
     });
 
     header = document.querySelector('.debug-pane .pane-header');
-    const logsTab = within(header).getByText(/Logs/i).closest('li');
+    const logsTab = within(header).getByText(/Logs/i).closest('li') as HTMLElement;
     await waitFor(() => expect(logsTab).toHaveClass('active-tab'));
 
     const dataViewerTabEl = await within(header).findByText(/Data Viewer/i);
     fireEvent.click(dataViewerTabEl);
 
-    const dataViewerTab = dataViewerTabEl.closest('li');
+    const dataViewerTab = dataViewerTabEl.closest('li') as HTMLElement;
     await waitFor(() => expect(dataViewerTab).toHaveClass('active-tab'));
     expect(logsTab).not.toHaveClass('active-tab');
 

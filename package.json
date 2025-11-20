@@ -38,13 +38,13 @@
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
     "@tippyjs/react": "^4.2.6",
-    "@types/cytoscape": "^3.31.0",
     "@types/d3": "^7.4.3",
     "@types/react": "^19.2.6",
     "@types/react-dom": "^19.2.3",
     "@types/semver": "^7.7.1",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "chromium-bidi": "^11.0.1",
     "cytoscape": "^3.33.1",
     "cytoscape-popper": "^4.0.1",
     "d3-array": "^3.2.4",
@@ -78,7 +78,7 @@
     "vega-themes": "^3.0.0",
     "vega-tooltip": "^1.1.0",
     "vega-typings": "^2.1.0",
-    "vitest": "^4.0.11",
+    "vitest": "^4.0.12",
     "web-worker": "^1.5.0"
   },
   "lint-staged": {
