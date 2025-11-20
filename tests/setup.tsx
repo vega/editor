@@ -6,6 +6,7 @@ import * as matchers from '@testing-library/jest-dom/matchers';
 import {HashRouter} from 'react-router-dom';
 import {AppContextProvider} from '../src/context/app-context';
 import AppShell from '../src/components/app-shell';
+import 'canvas';
 
 expect.extend(matchers);
 
