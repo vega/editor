@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import {resolve} from 'path';
 import {watch as fsWatch, readdirSync, lstatSync, existsSync} from 'fs';
 import {execSync} from 'child_process';
+import {playwright} from '@vitest/browser-playwright';
 
 const commitHash = execSync('git rev-parse HEAD', {encoding: 'utf8'}).trim();
 
@@ -189,7 +190,13 @@ export default defineConfig({
 
   optimizeDeps: {
     include: [],
-    exclude: vegaUtils.getVegaPackageNames(vegaUtils.getNodeModulesPath()),
+    exclude: [
+      ...vegaUtils.getVegaPackageNames(vegaUtils.getNodeModulesPath()),
+      'playwright',
+      'playwright-core',
+      'chromium-bidi',
+      'fsevents',
+    ],
   },
 
   publicDir: 'public',
@@ -210,7 +217,7 @@ export default defineConfig({
           include: ['tests/e2e/**/*.test.ts'],
           name: 'runtime',
           browser: {
-            provider: 'playwright',
+            provider: playwright(),
             enabled: true,
             headless: false,
             instances: [{browser: 'chromium'}],
