@@ -83,7 +83,7 @@ describe('Settings Component', () => {
     renderApp();
     const settingsButton = screen.getByText('Settings');
     fireEvent.click(settingsButton);
-    const colorInput = document.querySelector('input[type="color"]');
+    const colorInput = document.querySelector('input[type="color"]') as HTMLInputElement;
     expect(colorInput).toBeInTheDocument();
     expect(colorInput.value.toLowerCase()).toBe('#ffffff');
   });

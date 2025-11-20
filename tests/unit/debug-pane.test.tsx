@@ -12,7 +12,7 @@ describe('Debug Pane Component', () => {
     seedValidVegaLiteSpec();
     renderApp();
 
-    const header = document.querySelector('.debug-pane .pane-header');
+    const header = document.querySelector('.debug-pane .pane-header') as HTMLElement;
     expect(header).toBeInTheDocument();
 
     await waitFor(() => {
@@ -29,7 +29,7 @@ describe('Debug Pane Component', () => {
   it('shows debug pane after clicking the header', async () => {
     renderApp();
 
-    const header = document.querySelector('.debug-pane .pane-header');
+    const header = document.querySelector('.debug-pane .pane-header') as HTMLElement;
     expect(header).toBeInTheDocument();
 
     fireEvent.click(header);
@@ -44,14 +44,14 @@ describe('Debug Pane Component', () => {
     seedValidVegaLiteSpec();
     renderApp();
 
-    let header = document.querySelector('.debug-pane .pane-header');
+    let header = document.querySelector('.debug-pane .pane-header') as HTMLElement;
     fireEvent.click(header);
     await waitFor(() => {
       const debugPane = document.querySelector('.debug-pane');
       expect(debugPane).toBeInTheDocument();
     });
 
-    header = document.querySelector('.debug-pane .pane-header');
+    header = document.querySelector('.debug-pane .pane-header') as HTMLElement;
     const logsTab = within(header).getByText(/Logs/i).closest('li') as HTMLElement;
     await waitFor(() => expect(logsTab).toHaveClass('active-tab'));
 
