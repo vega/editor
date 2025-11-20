@@ -12,27 +12,27 @@ describe('Debug Pane Component', () => {
     seedValidVegaLiteSpec();
     renderApp();
 
-    const header = document.querySelector('.debug-pane .pane-header');
+    const header = document.querySelector('.debug-pane .pane-header') as HTMLElement;
     expect(header).toBeInTheDocument();
 
     await waitFor(() => {
-      const tabs = header!.querySelectorAll('.tabs-nav li');
+      const tabs = header.querySelectorAll('.tabs-nav li');
       expect(tabs.length).toBe(4);
     });
 
-    expect(within(header as HTMLElement).getByText(/Logs/i)).toBeInTheDocument();
-    await within(header as HTMLElement).findByText(/Data Viewer/i);
-    await within(header as HTMLElement).findByText(/Signal Viewer/i);
-    await within(header as HTMLElement).findByText(/Dataflow Viewer/i);
+    expect(within(header).getByText(/Logs/i)).toBeInTheDocument();
+    await within(header).findByText(/Data Viewer/i);
+    await within(header).findByText(/Signal Viewer/i);
+    await within(header).findByText(/Dataflow Viewer/i);
   });
 
   it('shows debug pane after clicking the header', async () => {
     renderApp();
 
-    const header = document.querySelector('.debug-pane .pane-header');
+    const header = document.querySelector('.debug-pane .pane-header') as HTMLElement;
     expect(header).toBeInTheDocument();
 
-    fireEvent.click(header!);
+    fireEvent.click(header);
 
     await waitFor(() => {
       const debugPane = document.querySelector('.debug-pane');
@@ -51,14 +51,14 @@ describe('Debug Pane Component', () => {
       expect(debugPane).toBeInTheDocument();
     });
 
-    header = document.querySelector('.debug-pane .pane-header');
-    const logsTab = within(header).getByText(/Logs/i).closest('li');
+    header = document.querySelector('.debug-pane .pane-header') as HTMLElement;
+    const logsTab = within(header).getByText(/Logs/i).closest('li') as HTMLElement;
     await waitFor(() => expect(logsTab).toHaveClass('active-tab'));
 
     const dataViewerTabEl = await within(header).findByText(/Data Viewer/i);
     fireEvent.click(dataViewerTabEl);
 
-    const dataViewerTab = dataViewerTabEl.closest('li');
+    const dataViewerTab = dataViewerTabEl.closest('li') as HTMLElement;
     await waitFor(() => expect(dataViewerTab).toHaveClass('active-tab'));
     expect(logsTab).not.toHaveClass('active-tab');
 

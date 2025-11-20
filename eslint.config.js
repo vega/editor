@@ -68,6 +68,7 @@ export default [
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-namespace': 'error',
       '@typescript-eslint/ban-ts-comment': 'warn',
+      '@typescript-eslint/no-unnecessary-type-assertion': 'off', // has false positives
 
       'no-unused-vars': 'off',
       'no-shadow': 'off',

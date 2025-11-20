@@ -86,7 +86,7 @@ export class ExportModal extends BasePage {
     const downloadable = this.page.waitForEvent('download', {timeout: 2000}).catch(() => null);
     await scopedDownload.click();
     const download = await downloadable;
-    if (download) return download as any;
+    if (download) return download;
 
     const filenameByFormat = {
       PNG: 'visualization.png',

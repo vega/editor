@@ -15,11 +15,11 @@ addMarkdownProps(vegaLiteSchema);
 const schemas = [
   {
     schema: vegaSchema,
-    uri: 'https://vega.github.io/schema/vega/v5.json',
+    uri: 'https://vega.github.io/schema/vega/v6.json',
   },
   {
     schema: vegaLiteSchema,
-    uri: 'https://vega.github.io/schema/vega-lite/v5.json',
+    uri: 'https://vega.github.io/schema/vega-lite/v6.json',
   },
   {
     schema: mergeDeep({}, vegaLiteSchema, {
@@ -34,14 +34,14 @@ const schemas = [
         },
       },
     }),
-    uri: 'https://vega.github.io/schema/vega-lite/v5.json#Config',
+    uri: 'https://vega.github.io/schema/vega-lite/v6.json#Config',
   },
   {
     schema: {
       $schema: 'http://json-schema.org/draft-06/schema#',
       type: 'object',
     },
-    uri: 'https://vega.github.io/schema/vega/v5.json#Config',
+    uri: 'https://vega.github.io/schema/vega/v6.json#Config',
   },
 ];
 

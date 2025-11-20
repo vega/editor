@@ -37,7 +37,7 @@ test.describe('Basic Functionality', () => {
 
   test('should allow typing in the spec editor', async () => {
     const testSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"a": "A", "b": 28}, {"a": "B", "b": 55},
@@ -61,7 +61,7 @@ test.describe('Basic Functionality', () => {
 
   test('should render visualization when valid spec is provided', async () => {
     const validSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"category": "A", "value": 28},
@@ -86,7 +86,7 @@ test.describe('Basic Functionality', () => {
 
   test('should show error for invalid spec', async () => {
     const invalidSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"category": "A", "value": 28}
@@ -133,7 +133,7 @@ test.describe('Basic Functionality', () => {
   });
 
   test('should handle keyboard shortcuts', async () => {
-    await homePage.typeInEditor('{"$schema": "https://vega.github.io/schema/vega-lite/v5.json"}');
+    await homePage.typeInEditor('{"$schema": "https://vega.github.io/schema/vega-lite/v6.json"}');
 
     await homePage.specEditor.click();
     const modifier = process.platform === 'darwin' ? 'Meta' : 'Control';

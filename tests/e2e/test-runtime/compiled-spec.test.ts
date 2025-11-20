@@ -5,7 +5,7 @@ test.describe('Compiled Spec Pane', () => {
   let homePage: HomePage;
 
   const vlSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Bar chart",
   "data": {"values": [{"a": "A", "b": 5}, {"a": "B", "b": 3}]},
   "mark": "bar",

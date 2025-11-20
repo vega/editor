@@ -54,7 +54,7 @@ describe('Header Component', () => {
         const control = modeSwitcher?.querySelector('.mode-switcher__control');
         expect(control).toBeInTheDocument();
 
-        fireEvent.mouseDown(control!);
+        fireEvent.mouseDown(control);
 
         await waitFor(() => {
           expect(screen.getByText('Vega')).toBeInTheDocument();
@@ -81,7 +81,7 @@ describe('Header Component', () => {
         expect(control).toBeInTheDocument();
 
         // Open and choose Manual
-        fireEvent.mouseDown(control!);
+        fireEvent.mouseDown(control);
         const manualOption = await screen.findByText('Manual');
         fireEvent.click(manualOption);
 
@@ -90,7 +90,7 @@ describe('Header Component', () => {
 
         // Open again and choose Auto to toggle back
         const control2 = document.querySelector('.auto-run-wrapper .auto-run__control');
-        fireEvent.mouseDown(control2!);
+        fireEvent.mouseDown(control2);
         const autoOption = await screen.findByText('Auto');
         fireEvent.click(autoOption);
 
@@ -129,7 +129,7 @@ describe('Header Component', () => {
         });
 
         const closeButton = document.querySelector('.close-button');
-        fireEvent.click(closeButton!);
+        fireEvent.click(closeButton);
 
         await waitFor(() => {
           const modalBackground = document.querySelector('.modal-background');
@@ -181,12 +181,12 @@ describe('Header Component', () => {
           expect(vegaLiteButton).toHaveClass('selected');
         }
 
-        fireEvent.click(vegaButton!);
+        fireEvent.click(vegaButton);
 
         expect(vegaButton).toHaveClass('selected');
         expect(vegaLiteButton).not.toHaveClass('selected');
 
-        fireEvent.click(vegaLiteButton!);
+        fireEvent.click(vegaLiteButton);
 
         expect(vegaLiteButton).toHaveClass('selected');
         expect(vegaButton).not.toHaveClass('selected');
@@ -200,7 +200,7 @@ describe('Header Component', () => {
         const signInButton = document.querySelector('.sign-in');
         expect(signInButton).toBeInTheDocument();
 
-        fireEvent.click(signInButton!);
+        fireEvent.click(signInButton);
 
         expect(mockWindowOpen).toHaveBeenCalledWith(
           expect.stringContaining('auth/github'),
@@ -237,7 +237,7 @@ describe('Header Component', () => {
 
         expect(document.querySelector('.profile-menu')).not.toBeInTheDocument();
 
-        fireEvent.click(profileImg!);
+        fireEvent.click(profileImg);
 
         await waitFor(() => {
           const profileMenu = document.querySelector('.profile-menu');
@@ -264,7 +264,7 @@ describe('Header Component', () => {
         const headerButton = document.querySelector('.header-button');
         expect(headerButton).toBeInTheDocument();
 
-        fireEvent.mouseEnter(headerButton!);
+        fireEvent.mouseEnter(headerButton);
         expect(headerButton).toHaveClass('header-button');
       });
     });

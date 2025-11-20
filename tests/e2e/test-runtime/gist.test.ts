@@ -68,7 +68,7 @@ test.describe('Gist Integration', () => {
 
   test('should handle share modal for creating gists', async () => {
     const testSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"category": "A", "value": 28},
@@ -177,7 +177,7 @@ test.describe('Gist Integration', () => {
 
   test('should preserve editor content when gist operations fail', async () => {
     const testSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {"values": [{"a": "A", "b": 28}]},
   "mark": "bar"
 }`;
