@@ -190,13 +190,7 @@ export default defineConfig({
 
   optimizeDeps: {
     include: [],
-    exclude: [
-      ...vegaUtils.getVegaPackageNames(vegaUtils.getNodeModulesPath()),
-      'playwright',
-      'playwright-core',
-      'chromium-bidi',
-      'fsevents',
-    ],
+    exclude: vegaUtils.getVegaPackageNames(vegaUtils.getNodeModulesPath()),
   },
 
   publicDir: 'public',
