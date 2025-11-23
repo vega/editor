@@ -307,7 +307,7 @@ const Header: React.FC<Props> = ({showExample}) => {
           vegaSpec && Object.keys(vegaSpec).length > 0
             ? stringify(vegaSpec)
             : `{
-  "$schema": "https://vega.github.io/schema/vega/v5.json"
+  "$schema": "https://vega.github.io/schema/vega/v6.json"
 }`;
         setState((s) => ({
           ...s,
@@ -319,7 +319,7 @@ const Header: React.FC<Props> = ({showExample}) => {
         onSelectNewVega();
       } else {
         const newEditorString = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json"
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json"
 }`;
         setState((s) => ({
           ...s,

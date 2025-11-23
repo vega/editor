@@ -11,7 +11,7 @@ test.describe('Visualization Rendering', () => {
 
   test('should render bar chart correctly', async () => {
     const barChartSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "A simple bar chart with embedded data.",
   "data": {
     "values": [
@@ -109,7 +109,7 @@ test.describe('Visualization Rendering', () => {
 
   test('should render line chart correctly', async () => {
     const lineChartSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "A simple line chart with embedded data.",
   "data": {
     "values": [
@@ -149,7 +149,7 @@ test.describe('Visualization Rendering', () => {
 
   test('should render scatter plot correctly', async () => {
     const scatterSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "A scatterplot showing horsepower and miles per gallon.",
   "data": {
     "values": [
@@ -194,7 +194,7 @@ test.describe('Visualization Rendering', () => {
 
   test('should render area chart correctly', async () => {
     const areaSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Area chart with embedded data.",
   "data": {
     "values": [
@@ -235,7 +235,7 @@ test.describe('Visualization Rendering', () => {
 
   test('should handle color encoding', async () => {
     const colorSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"category": "A", "value": 28, "group": "X"},
@@ -294,7 +294,7 @@ test.describe('Visualization Rendering', () => {
     await homePage.switchMode('Vega');
 
     const vegaSpec = `{
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "width": 400,
   "height": 200,
   "padding": 5,
@@ -365,7 +365,7 @@ test.describe('Visualization Rendering', () => {
 
   test('should handle interactive features', async () => {
     const interactiveSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"a": "A", "b": 28}, {"a": "B", "b": 55},
@@ -414,7 +414,7 @@ test.describe('Visualization Rendering', () => {
 
   test('should update visualization when spec changes', async () => {
     const barSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {"values": [{"a": "A", "b": 28}, {"a": "B", "b": 55}]},
   "mark": "bar",
   "encoding": {

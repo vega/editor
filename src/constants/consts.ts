@@ -1,12 +1,10 @@
 import * as vega from 'vega';
 
-// eslint-disable-next-line no-shadow
 export enum Mode {
   Vega = 'vega',
   VegaLite = 'vega-lite',
 }
 
-// eslint-disable-next-line no-shadow
 export enum GistPrivacy {
   PUBLIC = 'PUBLIC',
   ALL = 'ALL',
@@ -29,8 +27,8 @@ export const LAYOUT = {
 };
 
 export const SCHEMA = {
-  [Mode.Vega]: 'https://vega.github.io/schema/vega/v5.json',
-  [Mode.VegaLite]: 'https://vega.github.io/schema/vega-lite/v5.json',
+  [Mode.Vega]: 'https://vega.github.io/schema/vega/v6.json',
+  [Mode.VegaLite]: 'https://vega.github.io/schema/vega-lite/v6.json',
 };
 
 export const VEGA_START_SPEC = `{

@@ -15,10 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           cache: 'npm'
-          node-version: 20
+          node-version: 24
 
       - name: Install Node dependencies
         run: npm ci
@@ -36,10 +36,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           cache: 'npm'
-          node-version: 20
+          node-version: 24
 
       - name: Install Node dependencies
         run: npm ci
@@ -52,7 +52,7 @@ jobs:
 
       - name: Upload Playwright report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-report
           path: playwright-report
@@ -66,7 +66,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
 
       - name: Install Node dependencies
         run: npm ci

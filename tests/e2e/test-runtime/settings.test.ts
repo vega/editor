@@ -5,7 +5,7 @@ test.describe('Settings and Renderer', () => {
   let homePage: HomePage;
 
   const baseSpec = `{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {"values": [
     {"c":"A","v":1}, {"c":"B","v":2}, {"c":"C","v":3}
   ]},
