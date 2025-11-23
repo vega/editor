@@ -74,6 +74,7 @@
     "vega-datasets": "^3.2.1",
     "vega-embed": "^7.1.0",
     "vega-interpreter": "^2.2.1",
+    "vega-selections": "^6.1.2",
     "vega-schema-url-parser": "^3.0.2",
     "vega-themes": "^3.0.0",
     "vega-tooltip": "^1.1.0",
