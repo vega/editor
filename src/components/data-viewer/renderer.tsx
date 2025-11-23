@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {useCallback, useEffect, useMemo, useReducer, useRef, useState} from 'react';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import * as vega from 'vega';
@@ -22,6 +22,7 @@ const DataViewer: React.FC<OwnComponentProps> = (props) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedData, setSelectedData] = useState('');
   const debouncedDataChangedRef = useRef<(() => void) | null>(null);
+  const [renderTick, forceRerender] = useReducer((tick: number) => tick + 1, 0);
 
   const getDatasets = useCallback(() => {
     if (!view) {
@@ -55,8 +56,8 @@ const DataViewer: React.FC<OwnComponentProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    debouncedDataChangedRef.current = debounce(100, () => {
-      setCurrentPage((prev) => prev);
+    debouncedDataChangedRef.current = debounce(30, () => {
+      forceRerender();
     });
   }, []);
 
@@ -73,16 +74,21 @@ const DataViewer: React.FC<OwnComponentProps> = (props) => {
     if (datasets.indexOf(selectedData) === -1) {
       setCurrentPage(0);
       setSelectedData('');
-    } else if (selectedData && debouncedDataChangedRef.current) {
-      view.addDataListener(selectedData, debouncedDataChangedRef.current);
+      return;
+    }
+
+    const currentSelected = selectedData;
+
+    if (currentSelected && debouncedDataChangedRef.current) {
+      view.addDataListener(currentSelected, debouncedDataChangedRef.current);
     }
 
     return () => {
-      if (selectedData && debouncedDataChangedRef.current) {
-        view.removeDataListener(selectedData, debouncedDataChangedRef.current);
+      if (currentSelected && debouncedDataChangedRef.current) {
+        view.removeDataListener(currentSelected, debouncedDataChangedRef.current);
       }
     };
-  }, [view, getDatasets, selectedData]);
+  }, [view, selectedData, getDatasets]);
 
   const datasets = useMemo(() => {
     const datasetList = getDatasets();
@@ -100,7 +106,14 @@ const DataViewer: React.FC<OwnComponentProps> = (props) => {
     return selectedData;
   }, [datasets, selectedData]);
 
-  const data = view.data(selected) || [];
+  const data = useMemo(() => {
+    if (!view || !selected) {
+      return [];
+    }
+
+    const rawData = view.data(selected) ?? [];
+    return [...rawData];
+  }, [view, selected, renderTick]);
 
   const pageCount = useMemo(() => {
     return Math.ceil(data.length / ROWS_PER_PAGE);
