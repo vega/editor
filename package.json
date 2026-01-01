@@ -59,7 +59,7 @@
     "prettier2": "npm:prettier@^2.0.0",
     "rc-resize-observer": "^1.4.3",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "react-dom": "^19.2.3",
     "react-feather": "^2.0.10",
     "react-paginate": "^8.3.0",
     "react-portal": "^4.3.0",
