@@ -214,4 +214,11 @@ export class HomePage extends BasePage {
   async waitForVisualizationUpdate() {
     await this.page.waitForTimeout(1000);
   }
+
+  async postMessage(data: {spec: string; mode: 'vega' | 'vega-lite'}) {
+    await this.page.evaluate((messageData) => {
+      window.postMessage(messageData, '*');
+    }, data);
+    await this.waitForStableUI();
+  }
 }
