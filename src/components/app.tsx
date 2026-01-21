@@ -313,6 +313,10 @@ const App: React.FC<Props> = (props) => {
       if (data.renderer) {
         setState((s) => ({...s, renderer: data.renderer}));
       }
+      if (data.mode) {
+        const mode = data.mode === 'vega' ? Mode.Vega : Mode.VegaLite;
+        setState((s) => ({...s, mode}));
+      }
     };
 
     window.addEventListener('message', handleMessage, false);
