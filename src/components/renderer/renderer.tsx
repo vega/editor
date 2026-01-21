@@ -196,8 +196,8 @@ export default function Renderer(props: RendererProps) {
   );
 
   const initView = useCallback(async () => {
+    const chart = chartRef.current;
     const clearChartContainers = () => {
-      const chart = chartRef.current;
       const portalChart = portalChartRef.current;
       if (chart) chart.innerHTML = '';
       if (portalChart) portalChart.innerHTML = '';
@@ -229,6 +229,7 @@ export default function Renderer(props: RendererProps) {
         hover,
         loader,
         expr: expressionInterpreter ? vegaInterpreter : undefined,
+        container: chart,
       });
       newView.runAfter(runAfter, true);
       newView.logger(dispatchingLogger);
