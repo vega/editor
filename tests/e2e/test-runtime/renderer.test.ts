@@ -460,6 +460,7 @@ test.describe('Visualization Rendering', () => {
 
     await homePage.typeInEditor(responsiveSpec);
     await homePage.waitForVisualizationUpdate();
+    await homePage.page.waitForTimeout(2000);
 
     const svgWidth = await homePage.page
       .locator('.chart-container svg, .chart-container #vis svg, .vega-embed svg')
