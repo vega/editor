@@ -443,4 +443,30 @@ test.describe('Visualization Rendering', () => {
     });
     expect(hasUpdatedContent).toBe(true);
   });
+
+  test('should render responsive chart correctly', async () => {
+    const DEFAULT_CHART_WIDTH = '500';
+
+    const responsiveSpec = `{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "width": "container",
+  "data": {"values": [{"a": "A", "b": 28}, {"a": "B", "b": 55}]},
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "a", "type": "nominal"},
+    "y": {"field": "b", "type": "quantitative"}
+  }
+}`;
+
+    await homePage.typeInEditor(responsiveSpec);
+    await homePage.waitForVisualizationUpdate();
+    await homePage.page.waitForTimeout(2000);
+
+    const svgWidth = await homePage.page
+      .locator('.chart-container svg, .chart-container #vis svg, .vega-embed svg')
+      .first()
+      .getAttribute('width');
+
+    expect(svgWidth).toBe(DEFAULT_CHART_WIDTH);
+  });
 });
