@@ -15,7 +15,7 @@
     "@types/node": "^24.10.1",
     "@vitejs/plugin-react": "^5.1.2",
     "@vitest/browser-playwright": "^4.0.12",
-    "@vitest/eslint-plugin": "^1.4.3",
+    "@vitest/eslint-plugin": "^1.6.6",
     "@vitest/ui": "^4.0.11",
     "autoprefixer": "^10.4.22",
     "canvas": "^3.2.0",
