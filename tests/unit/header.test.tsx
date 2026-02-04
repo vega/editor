@@ -176,7 +176,6 @@ describe('Header Component', () => {
         const schema = parsed.editorString || '';
         const isVega = typeof schema === 'string' && schema.includes('/vega/v');
 
-        // Use ternary to avoid conditional expect statements
         expect(isVega ? vegaButton : vegaLiteButton).toHaveClass('selected');
 
         fireEvent.click(vegaButton);
