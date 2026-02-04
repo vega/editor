@@ -175,11 +175,8 @@ describe('Header Component', () => {
         const parsed = persisted ? JSON.parse(persisted) : {};
         const schema = parsed.editorString || '';
         const isVega = typeof schema === 'string' && schema.includes('/vega/v');
-        if (isVega) {
-          expect(vegaButton).toHaveClass('selected');
-        } else {
-          expect(vegaLiteButton).toHaveClass('selected');
-        }
+
+        expect(isVega ? vegaButton : vegaLiteButton).toHaveClass('selected');
 
         fireEvent.click(vegaButton);
 
