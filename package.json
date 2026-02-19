@@ -42,7 +42,7 @@
     "@types/react": "^19.2.6",
     "@types/react-dom": "^19.2.3",
     "@types/semver": "^7.7.1",
-    "ajv": "^8.17.1",
+    "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
     "chromium-bidi": "^11.0.1",
     "cytoscape": "^3.33.1",
