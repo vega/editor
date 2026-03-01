@@ -80,7 +80,7 @@
     "vega-themes": "^3.0.0",
     "vega-tooltip": "^1.1.0",
     "vega-typings": "^2.1.0",
-    "vitest": "^4.0.12",
+    "vitest": "^4.0.18",
     "web-worker": "^1.5.0"
   },
   "lint-staged": {
