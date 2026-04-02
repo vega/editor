@@ -150,9 +150,7 @@ ${code}`,
 
 export default defineConfig({
   plugins: [
-    react({
-      include: '**/*.{jsx,tsx,ts,js}',
-    }),
+    react(),
     createVegaHMRPlugin(),
   ],
 
