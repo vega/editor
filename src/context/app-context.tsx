@@ -47,7 +47,12 @@ export const AppContextProvider: FC<PropsWithChildren> = ({children}) => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(filterPersistedState(state)));
+      try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(filterPersistedState(state)));
+      } catch (e) {
+        // QuotaExceededError: spec too large for localStorage
+        console.warn('Failed to persist state to localStorage:', e);
+      }
     }
   }, [state]);
 
