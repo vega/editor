@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {useCallback, useEffect, useMemo, useReducer, useRef, useState} from 'react';
-import ReactPaginate from 'react-paginate';
+import ReactPaginateModule from 'react-paginate';
+
+const ReactPaginate = (ReactPaginateModule as any).default ?? ReactPaginateModule;
 import Select from 'react-select';
 import * as vega from 'vega';
 import {debounce} from 'vega';
