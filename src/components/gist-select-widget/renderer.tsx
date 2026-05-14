@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {File, Lock} from 'react-feather';
-import ReactPaginate from 'react-paginate';
+import ReactPaginateModule from 'react-paginate';
+
+const ReactPaginate = (ReactPaginateModule as any).default ?? ReactPaginateModule;
 
 import {GistPrivacy} from '../../constants/consts.js';
 import {getGithubToken} from '../../utils/github.js';
