@@ -32,6 +32,9 @@ jobs:
   e2e:
     name: E2E tests
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+      options: --user 1001
 
     steps:
       - uses: actions/checkout@v6
@@ -43,9 +46,6 @@ jobs:
 
       - name: Install Node dependencies
         run: npm ci
-
-      - name: Install Playwright
-        run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
         run: npx playwright test --project=chromium --reporter=github,html
