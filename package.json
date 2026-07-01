@@ -9,7 +9,7 @@
   "license": "BSD-3-Clause",
   "type": "module",
   "devDependencies": {
-    "@playwright/test": "^1.56.1",
+    "@playwright/test": "^1.61.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^25.5.0",
