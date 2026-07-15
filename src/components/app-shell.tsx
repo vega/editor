@@ -9,8 +9,10 @@ export default function AppShell() {
     <>
       <Routes>
         <Route path="/" element={<App showExample={false} />} />
+        <Route path="/view" element={<App showExample={false} />} />
         <Route path="/reset" element={<Reset />} />
         <Route path="/edited" element={<App showExample={false} />} />
+        <Route path="/edited/view" element={<App showExample={false} />} />
         <Route path="/gist/:id/:filename" element={<App showExample={false} />} />
         <Route path="/gist/:id/:filename/view" element={<App showExample={false} />} />
         <Route path="/gist/:id/:revision/:filename" element={<App showExample={false} />} />

@@ -126,17 +126,14 @@ export default function Renderer(props: RendererProps) {
 
   const openPortal = useCallback(() => {
     const pathname = location.pathname;
-    if (pathname !== '/' && pathname !== '/edited' && !pathname.endsWith('/view')) {
-      navigate(pathname + '/view', {replace: false});
+    if (!pathname.endsWith('/view')) {
+      navigate(pathname === '/' ? '/view' : pathname + '/view', {replace: false});
     }
   }, [location.pathname, navigate]);
 
   const closePortal = useCallback(() => {
-    const pathname = location.pathname
-      .split('/')
-      .filter((e) => e !== 'view')
-      .join('/');
-    if (pathname !== '/' && pathname !== '/edited') {
+    const pathname = location.pathname.replace(/\/view$/, '') || '/';
+    if (pathname !== location.pathname) {
       navigate(pathname, {replace: false});
     }
   }, [location.pathname, navigate]);
