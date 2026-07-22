@@ -5,9 +5,7 @@ const MAX_ARRAY_LENGTH = 20;
 const CLIPPED_SENTINAL = 'CLIPPED';
 
 export type SanitizedValue =
-  | {type: 'value'; value: unknown}
-  | {type: 'error'; error: string}
-  | {type: 'function'; functionName: string};
+  {type: 'value'; value: unknown} | {type: 'error'; error: string} | {type: 'function'; functionName: string};
 
 /**
  * Sanitizes the value of an operator, to make it suitable for storing in redux.

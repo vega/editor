@@ -23,7 +23,7 @@ const DataViewer: React.FC<OwnComponentProps> = (props) => {
   const {view} = state;
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedData, setSelectedData] = useState('');
-  const debouncedDataChangedRef = useRef<(() => void) | null>(null);
+  const debouncedDataChangedRef = useRef<((event: unknown) => void) | null>(null);
   const [renderTick, forceRerender] = useReducer((tick: number) => tick + 1, 0);
 
   const getDatasets = useCallback(() => {
