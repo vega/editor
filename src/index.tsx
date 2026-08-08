@@ -20,6 +20,21 @@ if (typeof window !== 'undefined') {
   console.log('Vega versions set on window.VEGA_DEBUG');
 }
 
+if (import.meta.hot) {
+  // Pointing to at the freshest linked vega source
+  window.addEventListener('vega-package-hmr', (event: Event) => {
+    const {packageName, module} = (event as CustomEvent).detail;
+    const w: typeof globalThis = window;
+    if (packageName === 'vega-lite' && module) {
+      w.VEGA_DEBUG.vegaLite = module;
+      w.VEGA_DEBUG.VEGA_LITE_VERSION = module.version;
+    } else if (packageName === 'vega' && module) {
+      w.VEGA_DEBUG.vega = module;
+      w.VEGA_DEBUG.VEGA_VERSION = module.version;
+    }
+  });
+}
+
 try {
   console.log('Setting up Monaco editor...');
   setupMonaco();
