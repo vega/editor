@@ -2,157 +2,83 @@
 import {defineConfig} from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import {resolve} from 'path';
-import {watch as fsWatch, readdirSync, lstatSync, existsSync} from 'fs';
+import {readdirSync, lstatSync, existsSync, realpathSync} from 'fs';
 import {execSync} from 'child_process';
 import {playwright} from '@vitest/browser-playwright';
 
 const commitHash = execSync('git rev-parse HEAD', {encoding: 'utf8'}).trim();
 
-const vegaUtils = {
-  isVegaPackage: (packageName: string): boolean => packageName === 'vega' || packageName.startsWith('vega-'),
+const nodeModulesPath = resolve(__dirname, 'node_modules');
 
-  isVegaModule: (url: string): boolean => url?.includes('vega-') || url?.includes('vega'),
+const isVegaPackage = (packageName: string): boolean => packageName === 'vega' || packageName.startsWith('vega-');
 
-  getNodeModulesPath: () => resolve(process.cwd(), 'node_modules'),
+const getVegaPackageNames = (): string[] => readdirSync(nodeModulesPath).filter(isVegaPackage);
 
-  getVegaPackageNames: (nodeModulesPath: string): string[] => {
-    const items = readdirSync(nodeModulesPath);
-    return items.filter((item) => vegaUtils.isVegaPackage(item));
-  },
+// Vega packages symlinked into node modules mapped
+// to their specific source entry point so edits are picked up without rebuilding.
+const getLinkedVegaPackages = (): Map<string, {entry: string; srcDir: string}> => {
+  const linked = new Map<string, {entry: string; srcDir: string}>();
+  for (const packageName of getVegaPackageNames()) {
+    const packagePath = resolve(nodeModulesPath, packageName);
+    if (!lstatSync(packagePath).isSymbolicLink()) continue;
 
-  findEntryPoint: (realPath: string): string | null => {
-    const entryPoints = [
+    const realPath = realpathSync(packagePath);
+    const entry = [
       resolve(realPath, 'index.js'),
       resolve(realPath, 'src', 'index.js'),
       resolve(realPath, 'src', 'index.ts'),
-    ];
-    return entryPoints.find(existsSync) || null;
-  },
+    ].find(existsSync);
+    const srcDir = resolve(realPath, 'src');
 
-  resolvePackagePath: (packageName: string, nodeModulesPath: string) => {
-    const packagePath = resolve(nodeModulesPath, packageName);
-    if (!existsSync(packagePath)) return null;
-
-    const stats = lstatSync(packagePath);
-    if (stats.isSymbolicLink()) {
-      const realPath = resolve(packagePath);
-      return {
-        realPath,
-        entryPoint: vegaUtils.findEntryPoint(realPath),
-        srcPath: resolve(realPath, 'src'),
-      };
+    if (entry && existsSync(srcDir)) {
+      linked.set(packageName, {entry, srcDir});
     }
-    return null;
-  },
-
-  handleVegaFileChange: (server: any) => {
-    const moduleGraph = server.moduleGraph;
-    const modules = Array.from(moduleGraph.urlToModuleMap.values());
-    const modulesToUpdate: any[] = [];
-
-    modules.forEach((module: any) => {
-      const isVegaModule = vegaUtils.isVegaModule(module.url);
-      const importsVega =
-        module.importedModules &&
-        Array.from(module.importedModules).some((importedModule: any) =>
-          vegaUtils.isVegaModule(importedModule.id || importedModule.url),
-        );
-
-      if (isVegaModule || importsVega) {
-        modulesToUpdate.push(module);
-        moduleGraph.invalidateModule(module);
-      }
-    });
-
-    if (modulesToUpdate.length > 0) {
-      server.ws.send({
-        type: 'update',
-        updates: modulesToUpdate.map((module) => ({
-          type: 'js-update' as const,
-          path: module.url,
-          acceptedPath: module.url,
-          timestamp: Date.now(),
-        })),
-      });
-
-      server.ws.send({
-        type: 'custom',
-        event: 'vega-package-updating',
-        data: {timestamp: Date.now()},
-      });
-    }
-  },
+  }
+  return linked;
 };
 
 function createVegaHMRPlugin() {
+  const linkedPackages = getLinkedVegaPackages();
   return {
     name: 'vega-packages-hmr',
     enforce: 'pre' as const,
 
-    configureServer(server: any) {
-      const nodeModulesPath = resolve(__dirname, 'node_modules');
-      const vegaPackageNames = vegaUtils.getVegaPackageNames(nodeModulesPath);
-
-      const {vegaPackagePaths, vegaPackageAliases} = vegaPackageNames.reduce(
-        (acc, packageName) => {
-          const resolved = vegaUtils.resolvePackagePath(packageName, nodeModulesPath);
-          if (resolved) {
-            if (existsSync(resolved.srcPath)) {
-              acc.vegaPackagePaths.push(resolved.srcPath);
-            }
-            if (resolved.entryPoint) {
-              acc.vegaPackageAliases[packageName] = resolved.entryPoint;
-            }
-          }
-          return acc;
-        },
-        {vegaPackagePaths: [] as string[], vegaPackageAliases: {} as Record<string, string>},
-      );
-
-      server.vegaPackageAliases = vegaPackageAliases;
-
-      const watchers = vegaPackagePaths.map((srcPath) =>
-        fsWatch(srcPath, {recursive: true}, (_, filename) => {
-          if (filename?.match(/\.(ts|js)$/)) {
-            vegaUtils.handleVegaFileChange(server);
-          }
-        }),
-      );
-
-      server.httpServer?.on('close', () => {
-        watchers.forEach((watcher) => watcher.close());
-      });
+    resolveId(id: string) {
+      return linkedPackages.get(id)?.entry ?? null;
     },
 
-    resolveId(id: string) {
-      if (vegaUtils.isVegaPackage(id)) {
-        const nodeModulesPath = resolve(__dirname, 'node_modules');
-        const resolved = vegaUtils.resolvePackagePath(id, nodeModulesPath);
-        return resolved?.entryPoint || null;
+    configureServer(server: {watcher: {add: (path: string) => void}}) {
+      for (const {srcDir} of linkedPackages.values()) {
+        server.watcher.add(srcDir);
+      }
+    },
+
+    // Make each linked package's entry module accept
+    // updates for the whole package tree, so propagation stops there
+    transform(code: string, id: string) {
+      for (const [packageName, {entry}] of linkedPackages) {
+        if (id === entry) {
+          return {
+            code: `${code}
+if (import.meta.hot) {
+  import.meta.hot.accept((newModule) => {
+    window.dispatchEvent(
+      new CustomEvent('vega-package-hmr', {detail: {packageName: ${JSON.stringify(packageName)}, module: newModule}}),
+    );
+  });
+}
+`,
+            map: null,
+          };
+        }
       }
       return null;
-    },
-
-    async transform(code: string, id: string) {
-      if (id.includes('/vega') && id.includes('/src/')) {
-        return {
-          code: `
-if (import.meta.hot) {
-    import.meta.hot.accept();
-}
-${code}`,
-          map: null,
-        };
-      }
     },
   };
 }
 
 export default defineConfig({
-  plugins: [
-    react(),
-    createVegaHMRPlugin(),
-  ],
+  plugins: [react(), createVegaHMRPlugin()],
 
   define: {
     'process.env.VITE_COMMIT_HASH': JSON.stringify(commitHash),
@@ -177,10 +103,6 @@ export default defineConfig({
   server: {
     port: 1234,
     open: true,
-    watch: {
-      ignored: ['!**/node_modules/vega-lite/**'],
-      followSymlinks: true,
-    },
     fs: {
       allow: ['..', resolve(__dirname, '../..')],
     },
@@ -188,7 +110,7 @@ export default defineConfig({
 
   optimizeDeps: {
     include: [],
-    exclude: vegaUtils.getVegaPackageNames(vegaUtils.getNodeModulesPath()),
+    exclude: getVegaPackageNames(),
   },
 
   publicDir: 'public',

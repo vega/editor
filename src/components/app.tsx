@@ -28,6 +28,10 @@ type Props = {
   showExample: boolean;
 };
 
+// Swapped out during dev when a linked vega-lite checkout is edited,
+// so specs recompile with the fresh code without a page reload
+let activeVegaLite: typeof vegaLite = vegaLite;
+
 const App: React.FC<Props> = (props) => {
   const appContext = useAppContext();
   const {state, setState} = appContext;
@@ -214,7 +218,7 @@ const App: React.FC<Props> = (props) => {
         validateVegaLite(vegaLiteSpec, currLogger);
 
         const compileResult =
-          editorString !== '{}' ? vegaLite.compile(vegaLiteSpec, options) : {spec: {}, normalized: {}};
+          editorString !== '{}' ? activeVegaLite.compile(vegaLiteSpec, options) : {spec: {}, normalized: {}};
         const normalizedSpec = compileResult.normalized;
 
         setState((s) => ({
@@ -289,6 +293,23 @@ const App: React.FC<Props> = (props) => {
     },
     [setState],
   );
+
+  // For dev, when a linked vega-lite checkout is edited, swap in the fresh
+  // module and re-parse the current spec so the change shows up immediately.
+  useEffect(() => {
+    if (!import.meta.hot) {
+      return;
+    }
+    const onVegaPackageHmr = (event: Event) => {
+      const {packageName, module} = (event as CustomEvent<{packageName: string; module: typeof vegaLite}>).detail;
+      if (packageName === 'vega-lite' && module) {
+        activeVegaLite = module;
+        setState((s) => ({...s, parse: true}));
+      }
+    };
+    window.addEventListener('vega-package-hmr', onVegaPackageHmr);
+    return () => window.removeEventListener('vega-package-hmr', onVegaPackageHmr);
+  }, [setState]);
 
   useEffect(() => {
     const handleMessage = (evt: MessageEvent) => {

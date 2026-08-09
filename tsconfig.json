@@ -17,6 +17,7 @@
     ],
     "skipLibCheck": true,
     "types": [
+      "vite/client",
       "react",
       "react-dom",
       "node",
