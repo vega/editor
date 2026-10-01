@@ -15,8 +15,8 @@ describe('Spec Editor Header Component', () => {
     //Check that the tab nav element has li elements that have test Vega or Vega-Lite and Config
     const tabNavItems = document.querySelectorAll('.editor-header.spec-editor-header .tabs-nav li');
     expect(tabNavItems).toHaveLength(2);
-    expect(tabNavItems[0]).toHaveTextContent(/Vega(-Lite)?/i);
-    expect(tabNavItems[1]).toHaveTextContent(/Config/i);
+    expect(tabNavItems[0].textContent).toMatch(/Vega(-Lite)?/i);
+    expect(tabNavItems[1].textContent).toMatch(/Config/i);
   });
 
   it('should highlight the correct tab as active', () => {
@@ -24,7 +24,7 @@ describe('Spec Editor Header Component', () => {
     // By default, the editor tab should be active
     const activeTab = document.querySelector('.editor-header.spec-editor-header .active-tab');
     expect(activeTab).toBeInTheDocument();
-    expect(activeTab).toHaveTextContent(/vega(-lite)?/i);
+    expect(activeTab?.textContent).toMatch(/vega(-lite)?/i);
   });
 
   it('should switch to config tab and render ConfigEditorHeader', () => {

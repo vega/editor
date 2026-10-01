@@ -42,9 +42,9 @@ describe('Compiled Spec Header Component', () => {
     expect(tabsNavItems).toHaveLength(2);
 
     //Check that the first li element has the text 'VEGA'
-    expect(tabsNavItems?.[0]).toHaveTextContent(/vega/i);
+    expect(tabsNavItems?.[0]?.textContent).toMatch(/vega/i);
     //Check that the second li element has the text 'CONFIG'
-    expect(tabsNavItems?.[1]).toHaveTextContent(/config/i);
+    expect(tabsNavItems?.[1]?.textContent).toMatch(/config/i);
   });
 
   it('should handle editing vega spec', () => {
@@ -73,9 +73,9 @@ describe('Compiled Spec Header Component', () => {
     expect(tabsNavItems).toHaveLength(2);
 
     //Check that the first li element has the text 'VEGA'
-    expect(tabsNavItems?.[0]).toHaveTextContent(/vega/i);
+    expect(tabsNavItems?.[0]?.textContent).toMatch(/vega/i);
     //Check that the second li element has the text 'CONFIG'
-    expect(tabsNavItems?.[1]).toHaveTextContent(/config/i);
+    expect(tabsNavItems?.[1]?.textContent).toMatch(/config/i);
   });
 
   it('should handle editing extended vega-lite spec', () => {
@@ -103,7 +103,7 @@ describe('Compiled Spec Header Component', () => {
     expect(tabsNavItems).toHaveLength(2);
 
     // First tab should reflect Vega-Lite mode; second should be Config
-    expect(tabsNavItems?.[0]).toHaveTextContent(/vega-lite/i);
-    expect(tabsNavItems?.[1]).toHaveTextContent(/config/i);
+    expect(tabsNavItems?.[0]?.textContent).toMatch(/vega-lite/i);
+    expect(tabsNavItems?.[1]?.textContent).toMatch(/config/i);
   });
 });
