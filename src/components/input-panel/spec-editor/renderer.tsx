@@ -10,8 +10,11 @@ import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {parse as parseJSONC} from 'jsonc-parser';
 import LZString from 'lz-string';
 import ResizeObserver from 'rc-resize-observer';
-import {debounce} from 'vega';
 import parser from 'vega-schema-url-parser';
+import {useMonacoValueSync} from '../../../utils/useMonacoValueSync.js';
+
+/** Quiet time after the last keystroke before an auto-run update is sent to the app. */
+export const SPEC_UPDATE_DEBOUNCE_MS = 1200;
 
 const EditorWithNavigation: React.FC<{
   clearConfig: () => void;
@@ -30,12 +33,16 @@ const EditorWithNavigation: React.FC<{
   const {state} = useAppContext();
   const {mode, editorString, decorations, manualParse, parse, sidePaneItem, configEditorString} = state;
 
-  const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
   const [currentDecorationIds, setCurrentDecorationIds] = useState<string[]>([]);
 
   const navigate = useNavigate();
   const location = useLocation();
   const {compressed} = useParams<{compressed?: string}>();
+
+  // Monaco calls `onMount` once, with the handler from the first render, so the
+  // editor actions registered there read the current mode and route from here.
+  const latestRef = useRef({mode, pathname: location.pathname});
+  latestRef.current = {mode, pathname: location.pathname};
 
   const updateSpec = useCallback(
     (spec: string, config: string = undefined) => {
@@ -50,7 +57,7 @@ const EditorWithNavigation: React.FC<{
             parsedMode = Mode.Vega;
           }
         }
-      } catch (e) {
+      } catch {
         // spec is not a valid JSON
       }
 
@@ -63,7 +70,31 @@ const EditorWithNavigation: React.FC<{
     [mode, props.updateVegaSpec, props.updateVegaLiteSpec],
   );
 
-  const debouncedUpdateSpec = useCallback(debounce(1200, updateSpec), [updateSpec]);
+  const submitUserEdit = useCallback(
+    (spec: string) => {
+      if (manualParse) {
+        props.updateEditorString(spec);
+      } else {
+        updateSpec(spec);
+      }
+    },
+    [manualParse, props.updateEditorString, updateSpec],
+  );
+
+  const markSpecAsEdited = useCallback(() => {
+    if (location.pathname.indexOf('/edited') === -1) {
+      navigate('/edited');
+    }
+  }, [location.pathname, navigate]);
+
+  // The editor owns the user's edits; `editorString` is only written into it
+  // when it changed elsewhere (examples, gists, URLs, config merges, ...).
+  const {editorRef, handleMount, handleChange} = useMonacoValueSync({
+    value: editorString,
+    debounceMs: manualParse ? 0 : SPEC_UPDATE_DEBOUNCE_MS,
+    onSubmit: submitUserEdit,
+    onUserEdit: markSpecAsEdited,
+  });
 
   useEffect(() => {
     if (compressed) {
@@ -119,7 +150,7 @@ const EditorWithNavigation: React.FC<{
 
   const handleEditorDidMount = useCallback(
     (editor: Monaco.editor.IStandaloneCodeEditor) => {
-      editorRef.current = editor;
+      handleMount(editor);
       props.setEditorReference(editor);
 
       const addVegaSchemaURL = () => {
@@ -158,7 +189,7 @@ const EditorWithNavigation: React.FC<{
 
       const handleMergeConfig = () => {
         if (confirm('The spec will be formatted on merge.')) {
-          if (location.pathname !== '/edited') {
+          if (latestRef.current.pathname !== '/edited') {
             navigate('/edited');
           }
           props.mergeConfigSpec();
@@ -198,7 +229,7 @@ const EditorWithNavigation: React.FC<{
         id: 'CLEAR_EDITOR',
         label: 'Clear Spec',
         run: () => {
-          if (mode === Mode.Vega) {
+          if (latestRef.current.mode === Mode.Vega) {
             navigate('/custom/vega');
           } else {
             navigate('/custom/vega-lite');
@@ -222,21 +253,7 @@ const EditorWithNavigation: React.FC<{
         run: handleExtractConfig,
       });
     },
-    [props, manualParse, debouncedUpdateSpec, location.pathname, navigate, mode],
-  );
-
-  const handleEditorChange = useCallback(
-    (value: string) => {
-      if (manualParse) {
-        props.updateEditorString(value);
-      } else {
-        debouncedUpdateSpec(value);
-      }
-      if (location.pathname.indexOf('/edited') === -1) {
-        navigate('/edited');
-      }
-    },
-    [manualParse, props.updateEditorString, debouncedUpdateSpec, location.pathname, navigate],
+    [handleMount, props, navigate],
   );
 
   useEffect(() => {
@@ -257,9 +274,9 @@ const EditorWithNavigation: React.FC<{
           <Editor
             height="100%"
             language="json"
-            value={editorString}
+            defaultValue={editorString}
             onMount={handleEditorDidMount}
-            onChange={handleEditorChange}
+            onChange={handleChange}
             options={{
               cursorBlinking: 'smooth',
               folding: true,
