@@ -110,7 +110,8 @@ export default defineConfig({
 
   optimizeDeps: {
     include: [],
-    exclude: getVegaPackageNames(),
+    // vega-webgpu imports CommonJS geometry helpers, which only work pre-bundled
+    exclude: getVegaPackageNames().filter((packageName) => packageName !== 'vega-webgpu'),
   },
 
   publicDir: 'public',

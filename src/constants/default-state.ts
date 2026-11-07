@@ -49,7 +49,7 @@ export type State = {
   parse: boolean;
   private: GistPrivacy;
   profilePicUrl: string;
-  renderer: Renderers;
+  renderer: Renderers | 'webgpu';
   selectedExample: string;
   settings: boolean;
   signals: any;
