@@ -30,6 +30,8 @@ interface SidebarProps {
   hoverEnable: boolean | 'auto';
   logLevel: number;
   renderer: string;
+  /** Whether the `webgpu` renderer is registered, which lists it as an option. */
+  webgpuAvailable: boolean;
   tooltipEnable: boolean;
   backgroundColor: string;
   expressionInterpreter: boolean;
@@ -102,6 +104,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
   const {
     logLevel,
     renderer,
+    webgpuAvailable,
     setRenderer,
     setBackgroundColor,
     backgroundColor,
@@ -118,14 +121,15 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
   const renderers = [
     {value: 'svg', label: 'SVG'},
     {value: 'canvas', label: 'Canvas'},
+    ...(webgpuAvailable ? [{value: 'webgpu', label: 'WebGPU'}] : []),
   ].map((d) => (
     <label key={d.label}>
       <input
         type="radio"
         name="renderer"
         value={d.value}
-        defaultChecked={renderer === d.value}
-        onClick={(e) => setRenderer(e.currentTarget.value)}
+        checked={renderer === d.value}
+        onChange={(e) => setRenderer(e.currentTarget.value)}
       />
       {d.label}
     </label>
@@ -138,7 +142,12 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
         {renderers}
       </div>
       <p className="settings-description">
-        Set Vega renderer. Canvas creates pixel graphics. SVG creates vector graphics.
+        Set Vega renderer. Canvas creates pixel graphics. SVG creates vector graphics. WebGPU, where the browser
+        supports it, draws pixel graphics on the GPU with{' '}
+        <a href="https://github.com/vega/vega-webgpu" target="_blank" rel="noopener noreferrer">
+          Vega WebGPU
+        </a>
+        .
       </p>
       <div className="select-container">
         <span>Background Color:</span>
