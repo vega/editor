@@ -81,3 +81,5 @@ export const BACKEND_URL =
   window.location.hostname === 'localhost' ? 'http://localhost:3000/' : 'https://vega-editor-backend.vercel.app/';
 
 export const COOKIE_NAME = 'vega_session';
+
+export const RENDERER_LABELS = {svg: 'SVG', canvas: 'Canvas', webgpu: 'WebGPU'} as const;

@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useRef} from 'react';
 import Select from 'react-select';
+import {RENDERER_LABELS} from '../../constants/index.js';
 import './index.css';
 
 /**
@@ -118,22 +119,20 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
   const hover = typeof props.hoverEnable !== 'boolean' ? 'Auto' : props.hoverEnable ? 'On' : 'Off';
   const hoverValue = typeof props.hoverEnable !== 'boolean' ? 'auto' : props.hoverEnable ? 'on' : 'off';
 
-  const renderers = [
-    {value: 'svg', label: 'SVG'},
-    {value: 'canvas', label: 'Canvas'},
-    ...(webgpuAvailable ? [{value: 'webgpu', label: 'WebGPU'}] : []),
-  ].map((d) => (
-    <label key={d.label}>
-      <input
-        type="radio"
-        name="renderer"
-        value={d.value}
-        checked={renderer === d.value}
-        onChange={(e) => setRenderer(e.currentTarget.value)}
-      />
-      {d.label}
-    </label>
-  ));
+  const renderers = Object.entries(RENDERER_LABELS)
+    .filter(([value]) => value !== 'webgpu' || webgpuAvailable)
+    .map(([value, label]) => (
+      <label key={value}>
+        <input
+          type="radio"
+          name="renderer"
+          value={value}
+          checked={renderer === value}
+          onChange={(e) => setRenderer(e.currentTarget.value)}
+        />
+        {label}
+      </label>
+    ));
 
   return (
     <div className="settings">

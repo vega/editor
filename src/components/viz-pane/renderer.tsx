@@ -4,7 +4,7 @@ import {version as VG_VERSION} from 'vega';
 import {version as VL_VERSION} from 'vega-lite';
 import {version as TOOLTIP_VERSION} from 'vega-tooltip';
 
-import {EDITOR_FOCUS, LAYOUT, NAVBAR, WORD_SEPARATORS} from '../../constants/index.js';
+import {EDITOR_FOCUS, LAYOUT, NAVBAR, RENDERER_LABELS, WORD_SEPARATORS} from '../../constants/index.js';
 import {DataflowViewer} from '../../features/dataflow/DataflowViewer.js';
 import DataViewer from '../data-viewer/renderer.js';
 import ErrorBoundary from '../error-boundary/index.js';
@@ -16,6 +16,7 @@ import DebugPaneHeader from './debug-pane-header/index.js';
 import './index.css';
 import type * as Monaco from 'monaco-editor';
 import {useAppContext} from '../../context/app-context.js';
+import {effectiveRenderer, useWebGPU} from '../../utils/webgpu.js';
 
 interface VizPaneProps {
   compiledEditorRef: any;
@@ -40,6 +41,7 @@ interface VizPaneProps {
 const VizPane: React.FC<VizPaneProps> = (props) => {
   const initialSetupDone = useRef(false);
   const {state, setState} = useAppContext();
+  const renderer = effectiveRenderer(state.renderer, useWebGPU());
   useEffect(() => {
     if (props.logs && !initialSetupDone.current) {
       initialSetupDone.current = true;
@@ -156,7 +158,8 @@ const VizPane: React.FC<VizPaneProps> = (props) => {
         </ErrorBoundary>
       </div>
       <div className="versions">
-        Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {COMMIT_HASH.slice(0, 7)}
+        Vega {VG_VERSION}, Vega-Lite {VL_VERSION}, Vega-Tooltip {TOOLTIP_VERSION}, Editor {COMMIT_HASH.slice(0, 7)},{' '}
+        {RENDERER_LABELS[renderer]} renderer
       </div>
     </div>
   );
