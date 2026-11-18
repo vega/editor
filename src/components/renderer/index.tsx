@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {useAppContext} from '../../context/app-context';
 import {useDataflowActions} from '../../features/dataflow/DataflowContext';
+import {effectiveRenderer, useWebGPU} from '../../utils/webgpu.js';
 import Renderer from './renderer';
 
 const RendererContainer: React.FC = () => {
   const {state, setState} = useAppContext();
   const {setRuntime, recordPulse} = useDataflowActions();
+  const webgpu = useWebGPU();
 
   const props = {
     baseURL: state.baseURL,
@@ -14,7 +16,7 @@ const RendererContainer: React.FC = () => {
     hoverEnable: state.hoverEnable,
     logLevel: state.logLevel,
     mode: state.mode,
-    renderer: state.renderer,
+    renderer: effectiveRenderer(state.renderer, webgpu),
     tooltipEnable: state.tooltipEnable,
     vegaLiteSpec: state.vegaLiteSpec,
     normalizedVegaLiteSpec: state.normalizedVegaLiteSpec,

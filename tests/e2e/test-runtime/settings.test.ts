@@ -52,6 +52,22 @@ test.describe('Settings and Renderer', () => {
     expect(svgCount).toBeGreaterThan(0);
   });
 
+  test('offer WebGPU only where the browser has an adapter', async () => {
+    const hasAdapter = await homePage.page.evaluate(
+      async () => !!(await (navigator as any).gpu?.requestAdapter().catch(() => null)),
+    );
+    await homePage.toggleSettings();
+    const webgpuRadio = homePage.page.locator('.settings input[type="radio"][value="webgpu"]');
+    await expect(webgpuRadio).toHaveCount(hasAdapter ? 1 : 0);
+    if (!hasAdapter) return;
+
+    await webgpuRadio.click();
+    await homePage.waitForVisualizationUpdate();
+    const canvas = homePage.page.locator('.chart-container canvas.marks');
+    await expect(canvas).toHaveCount(1);
+    expect(await canvas.evaluate((el: HTMLCanvasElement) => !!el.getContext('webgpu'))).toBe(true);
+  });
+
   test('toggle tooltips and hover mode', async () => {
     await homePage.toggleSettings();
 

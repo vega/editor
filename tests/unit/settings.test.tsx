@@ -1,6 +1,7 @@
 import React from 'react';
-import {fireEvent, screen, waitFor} from '@testing-library/react';
+import {fireEvent, render, screen, waitFor} from '@testing-library/react';
 import {renderApp} from '../setup';
+import SidebarRenderer from '../../src/components/sidebar/renderer';
 
 describe('Settings Component', () => {
   it('should toggle settings pane when clicked', () => {
@@ -77,6 +78,35 @@ describe('Settings Component', () => {
     fireEvent.click(canvasRadio);
     expect(canvasRadio).toBeChecked();
     expect(svgRadio).not.toBeChecked();
+
+    // jsdom has no WebGPU, so it is not offered
+    expect(screen.queryByLabelText('WebGPU')).not.toBeInTheDocument();
+  });
+
+  it('should offer WebGPU where the browser supports it', () => {
+    const setRenderer = vi.fn();
+    render(
+      <SidebarRenderer
+        hoverEnable="auto"
+        logLevel={2}
+        renderer="svg"
+        webgpuAvailable
+        tooltipEnable
+        backgroundColor="#ffffff"
+        expressionInterpreter={false}
+        setHover={vi.fn()}
+        setLogLevel={vi.fn()}
+        setRenderer={setRenderer}
+        setSettingsState={vi.fn()}
+        setTooltip={vi.fn()}
+        setBackgroundColor={vi.fn()}
+        setExpressionInterpreter={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getByLabelText('WebGPU'));
+
+    expect(setRenderer).toHaveBeenCalledWith('webgpu');
   });
 
   it('should render background color picker', () => {
