@@ -1,6 +1,6 @@
 import js from '@eslint/js';
 import prettier from 'eslint-plugin-prettier';
-import react from 'eslint-plugin-react';
+import react from '@eslint-react/eslint-plugin';
 import prettierConfig from 'eslint-config-prettier';
 import globals from 'globals';
 import vitest from '@vitest/eslint-plugin';
@@ -29,15 +29,12 @@ export default [
     },
     plugins: {
       prettier,
-      react,
+      '@eslint-react': react,
       vitest,
     },
     settings: {
       vitest: {
         typeCheck: true,
-      },
-      react: {
-        version: 'detect',
       },
     },
     rules: {
@@ -84,12 +81,14 @@ export default [
       'no-unreachable': 'off',
       'no-prototype-builtins': 'warn',
 
-      'react/react-in-jsx-scope': 'off',
-      'react/no-deprecated': 'warn',
-      'react/no-string-refs': 'warn',
-      'react/no-find-dom-node': 'warn',
-      'react/no-unescaped-entities': 'off',
-      'react/prop-types': 'off',
+      // deprecated React APIs
+      '@eslint-react/no-component-will-mount': 'warn',
+      '@eslint-react/no-component-will-receive-props': 'warn',
+      '@eslint-react/no-component-will-update': 'warn',
+      '@eslint-react/dom-no-render': 'warn',
+      '@eslint-react/dom-no-render-return-value': 'warn',
+      '@eslint-react/dom-no-hydrate': 'warn',
+      '@eslint-react/dom-no-find-dom-node': 'warn',
 
       'vitest/no-commented-out-tests': 'off',
     },
