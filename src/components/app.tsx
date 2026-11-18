@@ -211,7 +211,7 @@ const App: React.FC<Props> = (props) => {
               );
             }
           } catch (e) {
-            throw new Error('Could not parse $schema url.');
+            throw new Error('Could not parse $schema url.', {cause: e});
           }
         }
 
@@ -262,7 +262,7 @@ const App: React.FC<Props> = (props) => {
               currLogger.warn(`The specification expects Vega ${parsed.version} but the editor uses v${vega.version}.`);
             }
           } catch (e) {
-            throw new Error('Could not parse $schema url.');
+            throw new Error('Could not parse $schema url.', {cause: e});
           }
         }
         validateVega(spec, currLogger);
