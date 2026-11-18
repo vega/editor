@@ -137,9 +137,9 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
 
   return (
     <div className="settings">
-      <div className="select-container">
+      <div className="renderer-container">
         <span>Renderer:</span>
-        {renderers}
+        <div className="renderer-options">{renderers}</div>
       </div>
       <p className="settings-description">
         Set Vega renderer. Canvas creates pixel graphics. SVG creates vector graphics. WebGPU, where the browser

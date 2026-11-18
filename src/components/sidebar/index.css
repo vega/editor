@@ -32,6 +32,29 @@
   margin-right: 5px;
 }
 
+.renderer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.renderer-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.renderer-options > label {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.renderer-options input[type="radio"] {
+  margin: 0 4px 0 0;
+}
+
 .log-level-dropdown-wrapper,
 .hover-enable-dropdown-wrapper {
   width: 150px;
