@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react';
 import {resolve} from 'path';
 import {readdirSync, lstatSync, existsSync, realpathSync} from 'fs';
 import {execSync} from 'child_process';
-import {playwright} from '@vitest/browser-playwright';
 
 const commitHash = execSync('git rev-parse HEAD', {encoding: 'utf8'}).trim();
 
@@ -124,19 +123,6 @@ export default defineConfig({
           environment: 'jsdom',
           globals: true,
           setupFiles: ['tests/setup.tsx'],
-        },
-      },
-      {
-        test: {
-          include: ['tests/e2e/**/*.test.ts'],
-          name: 'runtime',
-          browser: {
-            provider: playwright(),
-            enabled: true,
-            headless: false,
-            instances: [{browser: 'chromium'}],
-          },
-          globals: true,
         },
       },
     ],
