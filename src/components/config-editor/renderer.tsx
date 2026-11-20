@@ -1,14 +1,17 @@
 import type * as Monaco from 'monaco-editor';
 import * as React from 'react';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import Editor from '@monaco-editor/react';
 import {useNavigate} from 'react-router-dom';
-import {debounce} from 'vega';
 import {SIDEPANE} from '../../constants/index.js';
 import {useAppContext} from '../../context/app-context.js';
 import './config-editor.css';
 import ResizeObserver from 'rc-resize-observer';
 import {parse as parseJSONC} from 'jsonc-parser';
+import {useMonacoValueSync} from '../../utils/useMonacoValueSync.js';
+
+/** Quiet time after the last keystroke before a config edit is sent to the app. */
+export const CONFIG_UPDATE_DEBOUNCE_MS = 700;
 
 type Props = {
   extractConfig: () => void;
@@ -20,14 +23,12 @@ type Props = {
 };
 
 const ConfigEditor: React.FC<Props> = (props) => {
-  const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
   const [currentDecorationIds, setCurrentDecorationIds] = useState<string[]>([]);
   const navigate = useNavigate();
-  const {state} = useAppContext();
+  const {state, setState} = useAppContext();
 
   const {configEditorString, manualParse, decorations, sidePaneItem} = state;
 
-  const {setState} = useAppContext();
   React.useEffect(() => {
     try {
       const parsed = configEditorString ? parseJSONC(configEditorString) : {};
@@ -37,20 +38,24 @@ const ConfigEditor: React.FC<Props> = (props) => {
     }
   }, [configEditorString, setState]);
 
-  const handleEditorChange = useCallback(
-    (value: string | undefined) => {
-      const spec = value === undefined ? '{}' : value;
-      props.setConfigEditorString(spec);
+  const submitUserEdit = useCallback(
+    (config: string) => {
+      props.setConfigEditorString(config);
       props.setThemeName('custom');
-      if (manualParse) {
-        return;
+      if (!manualParse) {
+        props.setConfig(config);
       }
-      props.setConfig(spec);
     },
     [manualParse, props],
   );
 
-  const debouncedHandleEditorChange = useCallback(debounce(700, handleEditorChange), [handleEditorChange]);
+  // The editor owns the user's edits; `configEditorString` is only written into
+  // it when it changed elsewhere (themes, config extraction, ...).
+  const {editorRef, handleMount, handleChange} = useMonacoValueSync({
+    value: configEditorString,
+    debounceMs: CONFIG_UPDATE_DEBOUNCE_MS,
+    onSubmit: submitUserEdit,
+  });
 
   const handleMergeConfig = useCallback(() => {
     if (confirm('The spec will be formatted on merge.')) {
@@ -67,7 +72,7 @@ const ConfigEditor: React.FC<Props> = (props) => {
 
   const handleEditorMount = useCallback(
     (editor: Monaco.editor.IStandaloneCodeEditor) => {
-      editorRef.current = editor;
+      handleMount(editor);
 
       editor.onDidFocusEditorText(() => {
         props.setEditorReference(editor);
@@ -89,7 +94,7 @@ const ConfigEditor: React.FC<Props> = (props) => {
         run: handleExtractConfig,
       });
     },
-    [handleExtractConfig, handleMergeConfig, props],
+    [handleExtractConfig, handleMergeConfig, handleMount, props],
   );
 
   useEffect(() => {
@@ -126,8 +131,8 @@ const ConfigEditor: React.FC<Props> = (props) => {
             enabled: false,
           },
         }}
-        value={configEditorString}
-        onChange={debouncedHandleEditorChange}
+        defaultValue={configEditorString}
+        onChange={handleChange}
         onMount={handleEditorMount}
       />
     </ResizeObserver>
