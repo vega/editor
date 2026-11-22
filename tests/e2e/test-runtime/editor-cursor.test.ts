@@ -1,11 +1,6 @@
 import {test, expect, Page} from '@playwright/test';
 import {HomePage} from '../page-objects/home-page';
 
-// Regression tests for https://github.com/vega/editor/issues/1512: in auto-run
-// mode the caret jumped to the end of the spec and keystrokes were lost when a
-// debounced update landed while the user kept typing. These run against the
-// real Monaco editor, which is why they live here rather than in the jsdom suite.
-
 const AUTO_RUN_DEBOUNCE_MS = 1200;
 const CONFIG_DEBOUNCE_MS = 700;
 

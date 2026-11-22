@@ -10,8 +10,8 @@ import ResizeObserver from 'rc-resize-observer';
 import {parse as parseJSONC} from 'jsonc-parser';
 import {useMonacoValueSync} from '../../utils/useMonacoValueSync.js';
 
-/** Quiet time after the last keystroke before a config edit is sent to the app. */
-export const CONFIG_UPDATE_DEBOUNCE_MS = 700;
+/** Delay time after the last keystroke before a config edit is sent to the app. */
+export const CONFIG_UPDATE_DEBOUNCE_MS = 1200;
 
 type Props = {
   extractConfig: () => void;

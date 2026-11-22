@@ -13,7 +13,7 @@ import ResizeObserver from 'rc-resize-observer';
 import parser from 'vega-schema-url-parser';
 import {useMonacoValueSync} from '../../../utils/useMonacoValueSync.js';
 
-/** Quiet time after the last keystroke before an auto-run update is sent to the app. */
+/** Delay after the last keystroke before an auto-run update is sent to the app. */
 export const SPEC_UPDATE_DEBOUNCE_MS = 1200;
 
 const EditorWithNavigation: React.FC<{
