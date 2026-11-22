@@ -32,24 +32,17 @@ export const EXTERNAL_EDIT_SOURCE = 'vega-editor.external';
 const MAX_PENDING_SUBMISSIONS = 32;
 
 /**
- * Keeps a Monaco editor and an application-state string in sync without
- * fighting over the caret.
- *
- * The controlled `value` prop of `@monaco-editor/react` rewrites the whole
- * document, moving the caret to the end, whenever the prop differs from the
- * editor's content. With debounced updates the prop lags behind what the user
- * has typed, so any render inside that window used to clobber the editor
- * (https://github.com/vega/editor/issues/1512).
+ * Keeps a Monaco editor and an application-state string in sync
  *
  * This hook makes the editor the source of truth for the user's own edits:
  *
- * - user edits are submitted from the editor's *current* content, through a
- *   single (optionally debounced) timer that survives re-renders;
+ * - user edits are submitted from the editor's current content, through a
+ *   single  timer that survives re-renders
  * - a `value` that is merely one of those submissions coming back through
  *   application state is ignored, even if the user has typed more since;
  * - any other `value` is a genuinely external change (example, gist, URL,
- *   config merge, ...) and is written into the editor as an undoable edit that
- *   keeps the caret where it was. It is not reported as a user edit.
+ *   config merge, ...) and is written into the editor as a genuine external edit
+ *   It is not reported as a user edit.
  *
  * Render the editor with `defaultValue={value}` rather than `value={value}` so
  * the library's own controlled-value effect stays out of the way.
@@ -61,7 +54,9 @@ export function useMonacoValueSync({value, onSubmit, debounceMs, onUserEdit}: Mo
   const latest = useRef({value, onSubmit, debounceMs, onUserEdit});
   latest.current = {value, onSubmit, debounceMs, onUserEdit};
 
+  // This timer survives re-renders. Each keystroke resets it, so stale timers don't build up
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Values submitted from the editor that have not come back through `value` yet, oldest first.
   const pendingSubmissionsRef = useRef<string[]>([]);
   const applyingExternalValueRef = useRef(false);
